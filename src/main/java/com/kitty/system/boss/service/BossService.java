@@ -37,13 +37,13 @@ public class BossService {
   }
   
   public Fight sendBossTeam(Team team, Role role, BossFightParam bossFightParam) {
-    FightNewService fightService = (FightNewService)SpringUtils.getBean(FightNewService.class);
+    FightNewService fightService = SpringUtils.getBean(FightNewService.class);
     if (!fightService.canFight(role, team.getList()))
       return null; 
     synchronized (role.getCanFight()) {
-      if (!role.getCanFight().booleanValue())
+      if (!role.getCanFight())
         return null; 
-      role.setCanFight(Boolean.valueOf(false));
+      role.setCanFight(Boolean.FALSE);
     } 
     if (SpringUtils.getTeamService().isInTeamAndNotLeader(role)) {
       this.logger.warn("{}({})不是队长触发战斗", role.getRoleId(), role.getName());
@@ -51,8 +51,8 @@ public class BossService {
     } 
     int type = bossFightParam.getFightType();
     Pos position = role.getPos();
-    int mapId = position.getMapId().intValue();
-    Fight battleground = FightFactory.getFightFactory(type).create(mapId, new Object[] { role, team, bossFightParam });
+    int mapId = position.getMapId();
+    Fight battleground = FightFactory.getFightFactory(type).create(mapId, role, team, bossFightParam);
     battleground.setSpecialMonsterType(bossFightParam.getSpecialMonsterType());
     battleground.start();
     return battleground;
@@ -62,7 +62,7 @@ public class BossService {
     if (npc == null || !npc.isShow())
       return; 
     ConcurrentHashSet<Integer> concurrentHashSet = SpringUtils.getMapService().getRoleIds(groupMapParam, npc.getMap());
-    if (concurrentHashSet == null || concurrentHashSet.size() <= 0)
+    if (concurrentHashSet == null || concurrentHashSet.isEmpty())
       return; 
     RespElseAppear respAppear = new RespElseAppear();
     respAppear.setId(npc.getId());
@@ -75,20 +75,20 @@ public class BossService {
       Role tempRole = SpringUtils.getRoleService().getOnlinePlayer(roleId);
       if (tempRole == null)
         continue; 
-      MessagePusher.pushMessage(tempRole, (Message)respAppear);
+      MessagePusher.pushMessage(tempRole, respAppear);
     } 
   }
   
   public void broadcastNpcHide(GroupMapParam groupMapParam, Npc npc) {
     ConcurrentHashSet<Integer> concurrentHashSet = SpringUtils.getMapService().getRoleIds(groupMapParam, npc.getMap());
-    if (concurrentHashSet == null || concurrentHashSet.size() <= 0)
+    if (concurrentHashSet == null || concurrentHashSet.isEmpty())
       return; 
     RespDisappear respDisappear = new RespDisappear();
     respDisappear.setId(npc.getId());
     respDisappear.setType(LOGIC.NPC.getValue());
     for (Integer roleId : concurrentHashSet) {
       Role role = SpringUtils.getRoleService().getOnlinePlayer(roleId);
-      MessagePusher.pushMessage(role, (Message)respDisappear);
+      MessagePusher.pushMessage(role, respDisappear);
     } 
   }
 }

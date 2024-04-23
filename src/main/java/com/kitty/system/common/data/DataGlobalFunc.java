@@ -131,23 +131,22 @@ public class DataGlobalFunc {
   }
   
   public static Integer GetObjType(Integer lTypeId) {
-    if (lTypeId != null && lTypeId.intValue() > 0) {
-      Integer rNum = Integer.valueOf(lTypeId.intValue() / 10000);
-      return rNum;
+    if (lTypeId != null && lTypeId > 0) {
+        return lTypeId / 10000;
     } 
-    return Integer.valueOf(0);
+    return 0;
   }
   
   public static Integer GetProType(int dis) {
     if (dis <= 0)
-      return Integer.valueOf(PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()); 
-    return Integer.valueOf(PRO_DICT_TYPE.getType(Integer.valueOf(dis % 10000)));
+      return PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue();
+    return PRO_DICT_TYPE.getType(dis % 10000);
   }
   
   public static Integer GetProDictType(int dis) {
     if (dis <= 0)
-      return Integer.valueOf(dis); 
-    return Integer.valueOf(dis % 10000);
+      return dis;
+    return dis % 10000;
   }
   
   public static Integer getRoleReborn(int rei, int race, int sex) {
@@ -156,17 +155,17 @@ public class DataGlobalFunc {
       for (Integer key : map.keySet()) {
         SysReiEn reiEn = map.get(key);
         if (reiEn.getRei() == rei && reiEn.getRace() == race && reiEn.getSex() == sex)
-          return Integer.valueOf(reiEn.getSerial()); 
+          return reiEn.getSerial();
       } 
     } 
-    return Integer.valueOf(-1);
+    return -1;
   }
   
   public static boolean checkPetFly(Pet pet) {
-    SysPet sysPet = (SysPet)PetDataPool.petMap.get(pet.getPetType());
+    SysPet sysPet = PetDataPool.petMap.get(pet.getPetType());
     if (sysPet == null)
       return false; 
-    if (!sysPet.getLevelType().equals(Integer.valueOf(PETLEVELTYPE.Pet_LevelType_GJSH.getValue())) && !sysPet.getLevelType().equals(Integer.valueOf(PETLEVELTYPE.Pet_LevelType_TSSS.getValue())))
+    if (!sysPet.getLevelType().equals(PETLEVELTYPE.Pet_LevelType_GJSH.getValue()) && !sysPet.getLevelType().equals(PETLEVELTYPE.Pet_LevelType_TSSS.getValue()))
       return false; 
     return true;
   }
@@ -185,10 +184,10 @@ public class DataGlobalFunc {
   }
   
   public static Integer getRace(Integer serial) {
-    Integer value = Integer.valueOf(1);
-    SysHero hero = (SysHero)PartDataPool.heroMap.get(serial);
+    int value = 1;
+    SysHero hero = PartDataPool.heroMap.get(serial);
     if (hero != null)
-      value = Integer.valueOf(hero.getRace()); 
+      value = hero.getRace();
     return value;
   }
   
@@ -198,47 +197,47 @@ public class DataGlobalFunc {
       Map<Integer, SysHero> data_hero = PartDataPool.heroMap;
       for (Integer key : data_hero.keySet()) {
         SysHero hero = data_hero.get(key);
-        Integer race = Integer.valueOf(hero.getRace());
-        Integer gender = Integer.valueOf(hero.getGender());
-        if (gender.intValue() == HERO.HERO_MALE.getValue()) {
-          if (race.intValue() == RACE.RACE_REN.getValue() && cable.contains(Integer.valueOf(1))) {
+        int race = hero.getRace();
+        int gender = hero.getGender();
+        if (gender == HERO.HERO_MALE.getValue()) {
+          if (race == RACE.RACE_REN.getValue() && cable.contains(1)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_XIAN.getValue() && cable.contains(Integer.valueOf(3))) {
+          if (race == RACE.RACE_XIAN.getValue() && cable.contains(3)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_MO.getValue() && cable.contains(Integer.valueOf(5))) {
+          if (race == RACE.RACE_MO.getValue() && cable.contains(5)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_GUI.getValue() && cable.contains(Integer.valueOf(7))) {
+          if (race == RACE.RACE_GUI.getValue() && cable.contains(7)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_LONG.getValue() && cable.contains(Integer.valueOf(9)))
+          if (race == RACE.RACE_LONG.getValue() && cable.contains(9))
             list.add(hero.getSerial()); 
           continue;
         } 
-        if (gender.intValue() == HERO.HERO_FEMALE.getValue()) {
-          if (race.intValue() == RACE.RACE_REN.getValue() && cable.contains(Integer.valueOf(2))) {
+        if (gender == HERO.HERO_FEMALE.getValue()) {
+          if (race == RACE.RACE_REN.getValue() && cable.contains(2)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_XIAN.getValue() && cable.contains(Integer.valueOf(4))) {
+          if (race == RACE.RACE_XIAN.getValue() && cable.contains(4)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_MO.getValue() && cable.contains(Integer.valueOf(6))) {
+          if (race == RACE.RACE_MO.getValue() && cable.contains(6)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_GUI.getValue() && cable.contains(Integer.valueOf(8))) {
+          if (race == RACE.RACE_GUI.getValue() && cable.contains(8)) {
             list.add(hero.getSerial());
             continue;
           } 
-          if (race.intValue() == RACE.RACE_LONG.getValue() && cable.contains(Integer.valueOf(10)))
+          if (race == RACE.RACE_LONG.getValue() && cable.contains(10))
             list.add(hero.getSerial()); 
         } 
       } 
@@ -249,11 +248,11 @@ public class DataGlobalFunc {
   
   public static Integer GetItemTypeByItemTypeId(Integer iTypeId) {
     if (iTypeId != null) {
-      Integer num = Integer.valueOf(iTypeId.intValue() / 10000);
-      if (num.intValue() > 100)
-        return Integer.valueOf(num.intValue() / 100 * 100); 
-      if (num.intValue() > 10)
-        return Integer.valueOf(num.intValue() / 10 * 10); 
+      int num = iTypeId / 10000;
+      if (num > 100)
+        return num / 100 * 100;
+      if (num > 10)
+        return num / 10 * 10;
       return num;
     } 
     return null;
@@ -261,48 +260,46 @@ public class DataGlobalFunc {
   
   public static Integer getItemSubTypeByItemTypeId(Integer iTypeId) {
     if (iTypeId != null) {
-      iTypeId = Integer.valueOf(iTypeId.intValue() % 10000);
-      Integer num = Integer.valueOf(iTypeId.intValue() / 1000);
-      return num;
+      iTypeId = iTypeId % 10000;
+        return iTypeId / 1000;
     } 
     return null;
   }
   
   public static Integer getPetSkillBookTypeByItemTypeId(Integer iTypeId) {
     if (iTypeId != null) {
-      iTypeId = Integer.valueOf(iTypeId.intValue() % 1000);
-      Integer bookType = Integer.valueOf(iTypeId.intValue() / 100);
-      return bookType;
+      iTypeId = iTypeId % 1000;
+        return iTypeId / 100;
     } 
     return null;
   }
   
   public static Map GetItemDataByItemTypeId(Integer iTypeId) {
     Integer type = GetItemTypeByItemTypeId(iTypeId);
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_DRUG.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_DRUG.getValue())
       return ItemDataPool.data_drug; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_PET.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_PET.getValue())
       return PetDataPool.petMap; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_GIFT.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_GIFT.getValue())
       return ItemDataPool.data_gift_item; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_STUFF.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_STUFF.getValue())
       return ItemDataPool.data_stuff; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_OTHERITEM.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_OTHERITEM.getValue())
       return ItemDataPool.data_other_item; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_TASK.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_TASK.getValue())
       return ItemDataPool.data_task_item; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue())
       return EquipDataPool.newBieEq; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue())
       return EquipDataPool.seniorBieEq; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue())
       return EquipDataPool.magicalBieEq; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue())
       return EquipDataPool.sinBieEq; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY_EGG.getValue())
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY_EGG.getValue())
       return ItemDataPool.acsryEggMap; 
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY.getValue())
-      return EquipDataPool.acsryMap; 
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY.getValue())
+      return EquipDataPool.acsryMap;
     type.intValue();
     ITEMLARGETYPE.ITEM_LARGE_TYPE_HUOBANEQPT.getValue();
     return null;
@@ -327,7 +324,7 @@ public class DataGlobalFunc {
       long gold = (value * serverService.getRatio());
       long total_gold = role.getTotalGold();
       if (total_gold < gold)
-        return (Message)new RespMsg(String.format(msg, new Object[] { Integer.valueOf(value) })); 
+        return new RespMsg(String.format(msg, value));
     } 
     return null;
   }
@@ -337,8 +334,8 @@ public class DataGlobalFunc {
     map.put("kzMonsterCoeff", Double.valueOf(1.0D));
     map.put("qkzMonsterCoeff", Double.valueOf(1.0D));
     if (flag) {
-      map.put("kzMonsterCoeff", ((SysWxOtherWarData)FightDataPool.data_wx_other_war_data.get(Integer.valueOf(1))).getValue());
-      map.put("qkzMonsterCoeff", ((SysWxOtherWarData)FightDataPool.data_wx_other_war_data.get(Integer.valueOf(2))).getValue());
+      map.put("kzMonsterCoeff", FightDataPool.data_wx_other_war_data.get(1).getValue());
+      map.put("qkzMonsterCoeff", FightDataPool.data_wx_other_war_data.get(2).getValue());
     } 
     return map;
   }
@@ -401,7 +398,7 @@ public class DataGlobalFunc {
   }
   
   public static Integer convertToGold(Integer coin, Integer silver, boolean flag) {
-    Integer gold = Integer.valueOf(0);
+    Integer gold = 0;
     gold = Integer.valueOf(gold.intValue() + coin.intValue() / 10000);
     gold = Integer.valueOf(gold.intValue() + silver.intValue() / 100);
     if (flag && gold.intValue() != Math.floor(gold.intValue()))

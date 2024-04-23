@@ -45,11 +45,11 @@ public class GameServerStartup extends SpringBootServletInitializer {
     StopWatch stopWatch = new StopWatch();
     stopWatch.start();
     try {
-      SpringApplicationBuilder applicationBuilder = new SpringApplicationBuilder(new Object[] { GameServerStartup.class });
+      SpringApplicationBuilder applicationBuilder = new SpringApplicationBuilder(GameServerStartup.class);
       applicationBuilder.bannerMode(Banner.Mode.OFF);
       applicationBuilder.run(args);
       SpringUtils.getIdentityService().init();
-      ((PlayerService)SpringUtils.getBean(PlayerService.class)).loadAllPlayerProfiles();
+      SpringUtils.getBean(PlayerService.class).loadAllPlayerProfiles();
       ProductDataPool.INSTANCE.load();
       ActingRank.initRank();
     } catch (Exception e) {
@@ -57,12 +57,8 @@ public class GameServerStartup extends SpringBootServletInitializer {
       System.exit(-1);
     } 
     stopWatch.stop();
-    logger.error("启动成功，耗時{}毫秒", Long.valueOf(stopWatch.getTime()));
-    Runtime.getRuntime().addShutdownHook(new Thread() {
-          public void run() {
-            GameServerStartup.onServerShutDown();
-          }
-        });
+    logger.error("启动成功，耗時{}毫秒", stopWatch.getTime());
+    Runtime.getRuntime().addShutdownHook(new Thread(GameServerStartup::onServerShutDown));
   }
   
   @Bean(name = {"idWorker"})

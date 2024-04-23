@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ActivityGlobalFunc {
   public static Team getApproximate(Team team, ArrayList<Team> arrayList) {
-    if (team == null || arrayList.size() <= 0)
+    if (team == null || arrayList.isEmpty())
       return null; 
     List<Approximate> objects = new ArrayList<>(arrayList.size());
     for (Team t : arrayList) {
@@ -27,7 +27,7 @@ public class ActivityGlobalFunc {
       List<Member> list = team.getList();
       for (int i = 0; i < list.size(); i++) {
         Member member = list.get(i);
-        Role role = SpringUtils.getRoleService().getPlayer(member.getRoleId().intValue());
+        Role role = SpringUtils.getRoleService().getPlayer(member.getRoleId());
         if (role != null)
           score += DataGlobalFunc.getEquipScore(SpringUtils.getEquipService().selectWearEquip(role)); 
       } 
@@ -40,10 +40,10 @@ public class ActivityGlobalFunc {
       return null; 
     if (src.size() == 1)
       return src.get(0); 
-    int minDifference = Math.abs(((Approximate)src.get(0)).getNum() - x);
+    int minDifference = Math.abs(src.get(0).getNum() - x);
     int minIndex = 0;
     for (int i = 1; i < src.size(); i++) {
-      int temp = Math.abs(((Approximate)src.get(i)).getNum() - x);
+      int temp = Math.abs(src.get(i).getNum() - x);
       if (temp < minDifference) {
         minIndex = i;
         minDifference = temp;

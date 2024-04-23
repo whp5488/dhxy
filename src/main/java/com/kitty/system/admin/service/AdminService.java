@@ -53,24 +53,24 @@ public class AdminService {
   
   public void shutChannel(Role target, long time) {
     if (time <= 0L) {
-      target.setWordTime(Long.valueOf(0L));
+      target.setWordTime(0L);
     } else {
-      target.setWordTime(Long.valueOf(time));
+      target.setWordTime(time);
     } 
     target.save();
   }
   
   public void blockPlayer(Role target, long time, String cause) {
     if (time <= 0L) {
-      target.setLockTime(Long.valueOf(0L));
+      target.setLockTime(0L);
     } else {
-      target.setLockTime(Long.valueOf(time));
+      target.setLockTime(time);
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      Date date = new Date(target.getLockTime().longValue());
+      Date date = new Date(target.getLockTime());
       String tips = simpleDateFormat.format(date);
       RespOtherLogin respOtherLogin = new RespOtherLogin();
       respOtherLogin.setContent("当前角色被封闭至#<R>" + tips + "#。");
-      respOtherLogin.setResult(Integer.valueOf(2));
+      respOtherLogin.setResult(2);
       MessagePusher.pushMessage(target, (Message)respOtherLogin);
       if (cause != null)
         this.gameSendService.sendSeal(target.getSid(), target.getName(), cause, tips); 
@@ -79,7 +79,7 @@ public class AdminService {
   }
   
   public short recharge(Role target, int serial) {
-    SysCharge charge = (SysCharge)WelfareDataPool.chargeMap.get(Integer.valueOf(serial));
+    SysCharge charge = WelfareDataPool.chargeMap.get(serial);
     if (charge == null)
       return 0; 
     long gold = (charge.getAmount() * this.serverService.getRatio());
@@ -87,17 +87,17 @@ public class AdminService {
     target.setTc(tc);
     long total_gold = target.getTotalGold();
     target.setTotalGold(total_gold + gold);
-    this.roleService.addCurrency(target, Const.RESTYPE_GOLD, Long.valueOf(gold + charge.getGive()), "充值成功", true, true);
+    this.roleService.addCurrency(target, Const.RESTYPE_GOLD, gold + charge.getGive(), "充值成功", true, true);
     if (charge.getScore() > 0L)
-      this.roleService.addCurrency(target, Const.RES_TYPE_CHARGE_SCORE, Long.valueOf(charge.getScore()), "角色充值", true, true); 
+      this.roleService.addCurrency(target, Const.RES_TYPE_CHARGE_SCORE, charge.getScore(), "角色充值", true, true);
     NutConcurrentMap dayRecharge = target.getTaskProgress().getEveryDayRecharge();
     String when = TimeUtil.when();
     long dayGold = dayRecharge.getLong(when + "_gold", 0L);
-    dayRecharge.setv(when + "_gold", Long.valueOf(dayGold + gold));
+    dayRecharge.setv(when + "_gold", dayGold + gold);
     int dayCash = dayRecharge.getInt(when + "_cash", 0);
-    dayRecharge.setv(when + "_cash", Integer.valueOf(dayCash + charge.getAmount()));
+    dayRecharge.setv(when + "_cash", dayCash + charge.getAmount());
     target.save();
-    RecordThread.getInstance().add2Queue(target.getId().longValue(), target.getRoleId().intValue(), (short)999, (byte)1, String.format("充值，金额：%d", new Object[] { Integer.valueOf(charge.getAmount()) }), target.getMarking());
+    RecordThread.getInstance().add2Queue(target.getId(), target.getRoleId(), (short)999, (byte)1, String.format("充值，金额：%d", charge.getAmount()), target.getMarking());
     return 1;
   }
   
@@ -107,17 +107,17 @@ public class AdminService {
     target.setTc(tc);
     long total_gold = target.getTotalGold();
     target.setTotalGold(total_gold + gold);
-    this.roleService.addCurrency(target, Const.RESTYPE_GOLD, Long.valueOf(gold), "角色自定义充值", true, true);
+    this.roleService.addCurrency(target, Const.RESTYPE_GOLD, gold, "角色自定义充值", true, true);
     int score = amount / 10;
-    this.roleService.addCurrency(target, Const.RES_TYPE_CHARGE_SCORE, Long.valueOf(score), "角色自定义充值", true, true);
+    this.roleService.addCurrency(target, Const.RES_TYPE_CHARGE_SCORE, (long) score, "角色自定义充值", true, true);
     NutConcurrentMap dayRecharge = target.getTaskProgress().getEveryDayRecharge();
     String when = TimeUtil.when();
     long dayGold = dayRecharge.getLong(when + "_gold", 0L);
-    dayRecharge.setv(when + "_gold", Long.valueOf(dayGold + gold));
+    dayRecharge.setv(when + "_gold", dayGold + gold);
     int dayCash = dayRecharge.getInt(when + "_cash", 0);
-    dayRecharge.setv(when + "_cash", Integer.valueOf(dayCash + amount));
+    dayRecharge.setv(when + "_cash", dayCash + amount);
     target.save();
-    RecordThread.getInstance().add2Queue(target.getId().longValue(), target.getRoleId().intValue(), (short)999, (byte)1, String.format("自定义充值充值，金额：%d", new Object[] { Integer.valueOf(amount) }), target.getMarking());
+    RecordThread.getInstance().add2Queue(target.getId(), target.getRoleId(), (short)999, (byte)1, String.format("自定义充值充值，金额：%d", amount), target.getMarking());
     return 1;
   }
 }
