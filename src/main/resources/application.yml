@@ -1,0 +1,58 @@
+# 服务相关配置
+game:
+  # 0.测试 1.开服
+  type: 1
+  # 是否开启充值：0.否 1.是
+  recharge: 1
+  # 经验倍数  如果无，设置 0
+  exp_times: 20
+  # 多少等级后经验乘以倍数  如果无，设置 0
+  exp_times_level: 1080
+  # 服务器编号  每增加一个台数字 +1
+  serial: 1
+  # 开服时间戳
+  date: 1655699168000
+  # 区组名称
+  name: 一区
+  # 区组标识  每增加一个，数字 +1
+  marking: 1
+  # 区组比例
+  ratio: 1000
+  # 区组端口
+  serverPort: 14721
+  # 游戏版本
+  versions: 1.12.2
+# 引擎版本
+engine:
+  versions: 20.23.13
+
+# 中心服配置
+cross:
+  center:
+   bit: 0
+   ip: 127.0.0.1
+   rpcPort: 6001
+   gamePort: 5011
+
+# 网关地址
+login_server_url: http://1.14.60.76:85
+
+# 内网通讯验证
+send:
+  # 网关服务器IP
+  sendIp: 127.0.0.1
+  # 网关服务端口
+  sendPort: 85
+
+#短信服务Redis
+sms:
+  redisHost: 127.0.0.1
+  # 端口
+  redisPort: 6379
+  # 密码
+  redisPassword:
+  # 索引库
+  redisDatabase: 15
+  # 连接超时
+  redisTimeout: 5000
+

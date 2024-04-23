@@ -1,0 +1,81 @@
+package com.kitty.common.utils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
+
+public class CodeUtils {
+  private static final String CHINA_TELECOM_PATTERN = "(?:^(?:\\+86)?1(?:33|49|53|7[37]|8[019]|9[19])\\d{8}$)|(?:^(?:\\+86)?1349\\d{7}$)|(?:^(?:\\+86)?1410\\d{7}$)|(?:^(?:\\+86)?170[0-2]\\d{7}$)";
+  
+  private static final String CHINA_UNICOM_PATTERN = "(?:^(?:\\+86)?1(?:3[0-2]|4[56]|5[56]|66|7[156]|8[56])\\d{8}$)|(?:^(?:\\+86)?170[47-9]\\d{7}$)";
+  
+  private static final String CHINA_MOBILE_PATTERN = "(?:^(?:\\+86)?1(?:3[4-9]|4[78]|5[0-27-9]|72|78|8[2-478]|98|95)\\d{8}$)|(?:^(?:\\+86)?1440\\d{7}$)|(?:^(?:\\+86)?170[356]\\d{7}$)";
+  
+  public static boolean verificationPhone(String phoneNo) {
+    Pattern pattern = Pattern.compile("^((17[0-1])|(16[2,5,7]))\\d{8}$");
+    Matcher matcher = pattern.matcher(phoneNo);
+    return matcher.matches();
+  }
+  
+  public static boolean checkPhone(String phone) {
+    if (StringUtils.isNotBlank(phone) && (
+      checkChinaMobile(phone) || checkChinaUnicom(phone) || checkChinaTelecom(phone)))
+      return true; 
+    return false;
+  }
+  
+  public static boolean checkChinaMobile(String phone) {
+    if (StringUtils.isNotBlank(phone)) {
+      Pattern regexp = Pattern.compile("(?:^(?:\\+86)?1(?:3[4-9]|4[78]|5[0-27-9]|72|78|8[2-478]|98|95)\\d{8}$)|(?:^(?:\\+86)?1440\\d{7}$)|(?:^(?:\\+86)?170[356]\\d{7}$)");
+      if (regexp.matcher(phone).matches())
+        return true; 
+    } 
+    return false;
+  }
+  
+  public static boolean checkChinaUnicom(String phone) {
+    if (StringUtils.isNotBlank(phone)) {
+      Pattern regexp = Pattern.compile("(?:^(?:\\+86)?1(?:3[0-2]|4[56]|5[56]|66|7[156]|8[56])\\d{8}$)|(?:^(?:\\+86)?170[47-9]\\d{7}$)");
+      if (regexp.matcher(phone).matches())
+        return true; 
+    } 
+    return false;
+  }
+  
+  public static boolean checkChinaTelecom(String phone) {
+    if (StringUtils.isNotBlank(phone)) {
+      Pattern regexp = Pattern.compile("(?:^(?:\\+86)?1(?:33|49|53|7[37]|8[019]|9[19])\\d{8}$)|(?:^(?:\\+86)?1349\\d{7}$)|(?:^(?:\\+86)?1410\\d{7}$)|(?:^(?:\\+86)?170[0-2]\\d{7}$)");
+      if (regexp.matcher(phone).matches())
+        return true; 
+    } 
+    return false;
+  }
+  
+  public static String nameMask(String name) {
+    String res = "";
+    if (name.length() == 2) {
+      res = name.replaceAll("^.", "*");
+    } else if (name.length() > 2) {
+      res = name.replaceAll("(?<=.).(?=.)", "*");
+    } 
+    return res;
+  }
+  
+  public static String idCardMask(String idCardNum) {
+    String res = "";
+    if (!StringUtils.isEmpty(idCardNum)) {
+      StringBuilder stringBuilder = new StringBuilder(idCardNum);
+      res = stringBuilder.replace(6, 14, "********").toString();
+    } 
+    return res;
+  }
+  
+  public static String phoneMask(String phone) {
+    String res = "";
+    if (!StringUtils.isEmpty(phone)) {
+      StringBuilder stringBuilder = new StringBuilder(phone);
+      res = stringBuilder.replace(3, 7, "****").toString();
+    } 
+    return res;
+  }
+}

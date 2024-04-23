@@ -1,0 +1,32 @@
+package com.kitty.listener.event;
+
+import com.kitty.listener.BasePlayerEvent;
+import com.kitty.listener.EventType;
+import com.kitty.system.game.role.domain.Role;
+
+public class HeartBeatEvent extends BasePlayerEvent {
+  private Role role;
+  
+  private long prevHeartTime;
+  
+  private long curveHeartTime;
+  
+  public Role getRole() {
+    return this.role;
+  }
+  
+  public long getPrevHeartTime() {
+    return this.prevHeartTime;
+  }
+  
+  public long getCurveHeartTime() {
+    return this.curveHeartTime;
+  }
+  
+  public HeartBeatEvent(EventType evtType, Role role, long prevHeartTime) {
+    super(evtType, role);
+    this.role = role;
+    this.prevHeartTime = prevHeartTime;
+    this.curveHeartTime = role.getPrevHeartTime();
+  }
+}

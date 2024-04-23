@@ -1,0 +1,22 @@
+package com.kitty.listener.event.ranking;
+
+import com.kitty.listener.BaseGameEvent;
+import com.kitty.listener.EventType;
+import com.kitty.system.game.equip.domain.WearEquip;
+
+public class WearEquipChangeEvent extends BaseGameEvent {
+  private WearEquip wearEquip;
+  
+  public WearEquipChangeEvent(EventType eventType, WearEquip wearEquip) {
+    super(eventType);
+    this.wearEquip = wearEquip;
+  }
+  
+  public WearEquip getWearEquip() {
+    return this.wearEquip;
+  }
+  
+  public void setWearEquip(WearEquip wearEquip) {
+    this.wearEquip = wearEquip;
+  }
+}

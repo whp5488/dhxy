@@ -1,0 +1,883 @@
+package com.kitty.mina;
+
+public interface Modules {
+  public static final int MSC_403 = 403;
+  
+  public static final int CMD_VERIFICATION_CODE = 105;
+  
+  public static final int CMD_MOBILE = 106;
+  
+  public static final int MSG_CORRELATION = 107;
+  
+  public static final int CMD_RANDOM_NAME = 45073;
+  
+  public static final int MSG_REPLY_SERVER_TIME = 41009;
+  
+  public static final int CMD_ASK_SERVER_TIME = 41008;
+  
+  public static final int CMD_L_ACCOUNT = 9040;
+  
+  public static final int CMD_L_REQUEST_LINE_INFO = 45144;
+  
+  public static final int CMD_LOGIN = 12290;
+  
+  public static final int CMD_ECHO = 4274;
+  
+  public static final int CMD_CREATE_NEW_CHAR = 8284;
+  
+  public static final int CMD_LOAD_EXISTED_CHAR = 4192;
+  
+  public static final int CMD_TELEPORT = 32768;
+  
+  public static final int CMD_MULTI_MOVE_TO = 61634;
+  
+  public static final int CMD_ENTER_ROOM = 4144;
+  
+  public static final int CMD_LOGOUT = 4;
+  
+  public static final int CMD_OPEN_MENU = 4150;
+  
+  public static final int MSG_EQ_UPDATE_DUR = 222;
+  
+  public static final int CMD_CHAT_EX = 16482;
+  
+  public static final int CMD_APPLY = 8236;
+  
+  public static final int CMD_USE_DRUG = 8237;
+  
+  public static final int CMD_GENERAL_NOTIFY = 63752;
+  
+  public static final int CMD_ASSIGN_ATTRIB = 8254;
+  
+  public static final int CMD_SET_PET_NAME = 8272;
+  
+  public static final int CMD_SET_MOUNT_NAME = 8273;
+  
+  public static final int CMD_ASSIGN_CORRECTION_PET = 14338;
+  
+  public static final int CMD_RESET_ASSIGN_CORRECTION_PET = 14339;
+  
+  public static final int CMD_RESET_ATTRIBUTE_PET = 14340;
+  
+  public static final int CMD_RESET_ATTRIBUTE_HERO = 14341;
+  
+  public static final int CMD_CHANGE_COLOR_PET = 14342;
+  
+  public static final int CMD_EQUIP = 4136;
+  
+  public static final int CMD_PET_EQUIP = 4137;
+  
+  public static final int CMD_UN_EQUIP = 8234;
+  
+  public static final int CMD_UN_PET_EQUIP = 8235;
+  
+  public static final int CMD_REPAIR_PET_ACSRY = 8238;
+  
+  public static final int CMD_PET_ACSRY_LOCK = 32700;
+  
+  public static final int CMD_GET_CHAR_INFO = 33287;
+  
+  public static final int CMD_DROP_PET = 4230;
+  
+  public static final int CMD_TRY_USE_LABA = 45437;
+  
+  public static final int CMD_EXCUTE_STORE_PARA = 65465;
+  
+  public static final int CMD_OPEN_ONLINE_MALL = 216;
+  
+  public static final int CMD_SET_RECOMMEND_ATTRIB = 8852;
+  
+  public static final int CMD_DEY = 64700;
+  
+  public static final int CMD_CONFIRM_RESULT = 20736;
+  
+  public static final int CMD_SELECT_CURRENT_PET = 4162;
+  
+  public static final int CMD_FEED_PET = 8270;
+  
+  public static final int CMD_LEARN_SKILL = 8308;
+  
+  public static final int CMD_ACTIVATE_SKILL_EFFECTS = 8309;
+  
+  public static final int CMD_SUIT_SKILL_EFFECTS = 8310;
+  
+  public static final int CMD_SKILL_EFFECTS = 8311;
+  
+  public static final int MSG_SKILL_EFFECTS = 8312;
+  
+  public static final int CMD_CHANGE_TITLE = 4288;
+  
+  public static final int MSG_SUIT_INFO = 4755;
+  
+  public static final int CMD_SWITCHOVER_SUIT = 4756;
+  
+  public static final int CMD_SUIT = 4757;
+  
+  public static final int MSG_SUIT = 4758;
+  
+  public static final int MSG_CHANGE_TITLE = 4289;
+  
+  public static final int CMD_RIDE_MOUNT = 4382;
+  
+  public static final int CMD_UP_TASK_EVENT = 33023;
+  
+  public static final int CMD_ASK_TASK_FIGHT = 33024;
+  
+  public static final int MSG_NOTIFY_SHOW_ELSE_FIGHT = 42035;
+  
+  public static final int MSG_POTHOLING = 33042;
+  
+  public static final int MSG_POTHOLING_NOTICE = 4308;
+  
+  public static final int CMD_RECOVER = 518;
+  
+  public static final int CMD_SET_SHAPE_TEMP = 32772;
+  
+  public static final int CMD_PARTY_INFO = 178;
+  
+  public static final int CMD_DESTROY_SUCCEED = 32918;
+  
+  public static final int CMD_KICK_OFF_CLIENT = 53752;
+  
+  public static final int CMD_UPGRADE_EQUIP = 32776;
+  
+  public static final int CMD_OPERATE_ITEM = 30778;
+  
+  public static final int CMD_CHAT_OBJECT_DETAIL = 20701;
+  
+  public static final int CMD_REQUEST_UPGRADE_TASK_PET = 41153;
+  
+  public static final int CMD_AUTO_TALK_SAVE = 32914;
+  
+  public static final int CMD_SET_STALL_GOODS = 16582;
+  
+  public static final int CMD_REQUEST_ITEM_INFO = 4301;
+  
+  public static final int CMD_BUY_FROM_STALL = 12490;
+  
+  public static final int CMD_BUY_FROM_ONLINE_MALL = 8410;
+  
+  public static final int CMD_BUY_FROM_ELITE_PET_SHOP = 53252;
+  
+  public static final int CMD_EXCHANGE_SHOP = 20654;
+  
+  public static final int CMD_SELECT_MENU_ITEM = 12344;
+  
+  public static final int CMD_GOODS_BUY = 12356;
+  
+  public static final int CMD_OPER_SCENARIOD = 45057;
+  
+  public static final int CMD_MOUNT_CONTROL_PET = 41044;
+  
+  public static final int CMD_UPGRADE_MOUNT = 41040;
+  
+  public static final int CMD_LUCK_DRAW = 45385;
+  
+  public static final int CMD_WORSHIP = 6888;
+  
+  public static final int MSG_WORSHIP = 6889;
+  
+  public static final int CMD_MOTTO = 6890;
+  
+  public static final int CMD_GET_PARTY_CHANNEL_DENY_LIST = 11836;
+  
+  public static final int CMD_PARTY_MEMBERS = 8376;
+  
+  public static final int CMD_QUERY_PARTYS = 32782;
+  
+  public static final int CMD_CREATE_PARTY = 32780;
+  
+  public static final int CMD_PARTY_POLITICS = 20534;
+  
+  public static final int CMD_PARTY_MODIFY_ANNOUNCE = 4278;
+  
+  public static final int CMD_PARTY_REQUEST_LIST = 4272;
+  
+  public static final int CMD_PARTY_MODIFY_MEMBER = 16570;
+  
+  public static final int CMD_SAFE_LOCK_OPEN_DLG = 32826;
+  
+  public static final int CMD_SAFE_LOCK_SET = 32828;
+  
+  public static final int CMD_SAFE_LOCK_UNLOCK = 32832;
+  
+  public static final int CMD_SAFE_LOCK_CHANGE = 32830;
+  
+  public static final int CMD_ACCEPT = 4132;
+  
+  public static final int CMD_REJECT = 4134;
+  
+  public static final int CMD_PET_FLY = 45093;
+  
+  public static final int CMD_PET_FLY_STARTER = 45094;
+  
+  public static final int CMD_CLOSE_MENU = 58;
+  
+  public static final int CMD_AUTO_TASK_STATE = 53958;
+  
+  public static final int CMD_L_LOGIN_PREVIEW_PLAYER = 24112;
+  
+  public static final int CMD_TASK_SUBMIT = 45056;
+  
+  public static final int CMD_CHANGE = 45061;
+  
+  public static final int MSG_L_LOGIN_PREVIEW_PLAYER = 24113;
+  
+  public static final int MSG_L_WAIT_IN_LINE = 45143;
+  
+  public static final int MSG_L_START_LOGIN = 45555;
+  
+  public static final int MSG_INSTRUCT = 45556;
+  
+  public static final int CMD_UPDATE_INSTRUCT = 45557;
+  
+  public static final int MSG_L_AGENT_RESULT = 13143;
+  
+  public static final int MSG_SEND_RECOMMEND_ATTRIB = 8853;
+  
+  public static final int MSG_RECTIFY_TIME = 8854;
+  
+  public static final int MSG_OTHER_LOGIN = 45140;
+  
+  public static final int MSG_MENU_CLOSED = 4155;
+  
+  public static final int MSG_AUTO_TALK_DATA = 32913;
+  
+  public static final int MSG_LOOK_PLAYER = 49152;
+  
+  public static final int MSG_OPEN_URL = 32853;
+  
+  public static final int MSG_ADD_FRIEND_VERIFY = 41000;
+  
+  public static final int MSG_MARKET_SEARCH_ITEM = 33054;
+  
+  public static final int MSG_PRE_UPGRADE_EQUIP = 32775;
+  
+  public static final int MSG_PRE_UPGRADE_MOUNT = 45079;
+  
+  public static final int MSG_CARD_INFO = 40962;
+  
+  public static final int MSG_UPGRADE_TASK_PET = 45315;
+  
+  public static final int MSG_TEAM_ASK_ASSURE = 45111;
+  
+  public static final int CMD_OPERATE_EFFECT = 41490;
+  
+  public static final int CMD_EFFECT = 41491;
+  
+  public static final int MSG_EFFECT_LIST = 41492;
+  
+  public static final int MSG_PET_PRE_UPGRADE_EQUIP = 32777;
+  
+  public static final int MSG_DEL_PET_EQUIP = 32778;
+  
+  public static final int MSG_DEL_PET_EQUIP_DISPLACE = 32779;
+  
+  public static final int MSG_DOMESTICATE_INFO = 41481;
+  
+  public static final int CMD_DOMESTICATE = 41483;
+  
+  public static final int CMD_PET_CUT_ACC_COLOR = 14343;
+  
+  public static final int MSG_TREASURE_INFO = 8411;
+  
+  public static final int MSG_TREASURE_AWARD_INFO = 8412;
+  
+  public static final int MSG_TREASURE_STONE_COMPOSE = 8413;
+  
+  public static final int MSG_ONLINE_MALL_LIST = 65499;
+  
+  public static final int MSG_EXISTED_CHAR_LIST = 61537;
+  
+  public static final int MSG_MATCH_LOBBY = 45075;
+  
+  public static final int MSG_NEARBY = 20466;
+  
+  public static final int MSG_DIALOG = 20467;
+  
+  public static final int MSG_DIALOG_PLAYER = 20468;
+  
+  public static final int MSG_REPLY_ECHO = 4275;
+  
+  public static final int MSG_UPDATE = 65527;
+  
+  public static final int MSG_REFRESH_STORE = 6552;
+  
+  public static final int MSG_CREATE_NEW_CHAR = 8285;
+  
+  public static final int MSG_ENTER_ROOM = 65505;
+  
+  public static final int MSG_MAP_TARGET = 65506;
+  
+  public static final int MSG_CLEAR_ALL_CHAR = 45157;
+  
+  public static final int MSG_UPDATE_APPEARANCE = 61661;
+  
+  public static final int MSG_APPEAR = 65529;
+  
+  public static final int MSG_ELSE_APPEAR = 65530;
+  
+  public static final int MSG_TITLE = 61671;
+  
+  public static final int MSG_MOVED = 16431;
+  
+  public static final int MSG_EXITS = 65531;
+  
+  public static final int MSG_MENU_LIST = 8247;
+  
+  public static final int MSG_SWITCH_SERVER = 8405;
+  
+  public static final int MSG_HINT = 8866;
+  
+  public static final int MSG_CHERISH = 6666;
+  
+  public static final int MSG_DISAPPEAR = 12285;
+  
+  public static final int MSG_MESSAGE_EX = 16383;
+  
+  public static final int MSG_MESSAGE_SYSTEM = 16384;
+  
+  public static final int MSG_VIEW_TASK_AWARD = 61552;
+  
+  public static final int MSG_TASK_PROMPT = 61553;
+  
+  public static final int MSG_TASK_PROMPT_DEL = 61554;
+  
+  public static final int MSG_NOTIFY_MISC = 20480;
+  
+  public static final int MSG_NOTIFY_MISC_EX = 20481;
+  
+  public static final int MSG_DIALOG_OK = 8165;
+  
+  public static final int MSG_APPELLATION_LIST = 62209;
+  
+  public static final int MSG_DEL_FRIEND = 61542;
+  
+  public static final int MSG_FINGER = 61555;
+  
+  public static final int MSG_PARTY_INFO = 61601;
+  
+  public static final int MSG_LIVENESS_INFO = 36883;
+  
+  public static final int MSG_STATE_REFRESH = 45060;
+  
+  public static final int MSG_LOD_TEMPORARY = 45797;
+  
+  public static final int CMD_MARKET_SEARCH_ITEM = 45096;
+  
+  public static final int MSG_CS_SERVER_TYPE = 45277;
+  
+  public static final int MSG_FRIEND_GROUP_LIST = 45193;
+  
+  public static final int MSG_GENERAL_NOTIFY = 9129;
+  
+  public static final int MSG_HML_NOTIFY = 45388;
+  
+  public static final int MSG_FIVE_EXERCISE = 45219;
+  
+  public static final int MSG_CHAR_ALREADY_LOGIN = 45121;
+  
+  public static final int MSG_ICON_CARTOON = 40964;
+  
+  public static final int MSG_STALL_MINE = 49179;
+  
+  public static final int MSG_STALL_ITEM_LIST = 49183;
+  
+  public static final int MSG_MARKET_GOOD_CARD = 45104;
+  
+  public static final int MSG_MARKET_PET_CARD = 45105;
+  
+  public static final int MSG_MARKET_TRANSCATION = 49185;
+  
+  public static final int MSG_MOUNT_INFO = 41041;
+  
+  public static final int MSG_NEW_DISTRICT_SIGN = 41240;
+  
+  public static final int MSG_NEW_LOTTERY_INFO = 45381;
+  
+  public static final int MSG_ONLINE_MALL_CASH_LIST = 53267;
+  
+  public static final int MSG_UPDATE_PETS = 65507;
+  
+  public static final int MSG_UPDATE_IMPROVEMENT = 65511;
+  
+  public static final int MSG_RANDOM_NAME = 45072;
+  
+  public static final int MSG_UPDATE_TEAM_LIST = 4119;
+  
+  public static final int MSG_TEAM_LIST = 4118;
+  
+  public static final int MSG_SMART_TEAM_MEMER_LIST = 4117;
+  
+  public static final int MSG_CLEAN_ALL_REQUEST = 61593;
+  
+  public static final int MSG_CLEAN_REQUEST = 61591;
+  
+  public static final int MSG_FRIEND_UPDATE_PARTIAL = 24505;
+  
+  public static final int MSG_CONFIRM = 45240;
+  
+  public static final int MSG_INVENTORY = 65525;
+  
+  public static final int MSG_CARD_INVENTORY = 65524;
+  
+  public static final int MSG_PET_INVENTORY = 65523;
+  
+  public static final int MSG_DELETE_PACK_ITEM = 65461;
+  
+  public static final int MSG_FRIEND = 45207;
+  
+  public static final int MSG_MESSAGE = 12287;
+  
+  public static final int MSG_DAN_MU_MESSAGE = 12288;
+  
+  public static final int MSG_CURRENCY_INFO = 54977;
+  
+  public static final int MSG_BUY_FROM_MALL_RESULT = 12219;
+  
+  public static final int MSG_TASK_ICON = 16007;
+  
+  public static final int CMD_SEARCH_ROLE = 45225;
+  
+  public static final int MSG_SEARCH_ROLE = 45226;
+  
+  public static final int CMD_TRACE_ROLE = 45227;
+  
+  public static final int MSG_TRACE_ROLE = 45228;
+  
+  public static final int CMD_TRACE_GO = 45229;
+  
+  public static final int CMD_START_GUESS = 40994;
+  
+  public static final int MSG_OPEN_GUESS_DIALOG = 40995;
+  
+  public static final int CMD_START_GUESS_REPLY = 40996;
+  
+  public static final int CMD_DRAW_MONEY_GUESS = 40997;
+  
+  public static final int CMD_MAGIC_BOX_INFO = 45386;
+  
+  public static final int MSG_MAGIC_BOX_INFO = 45387;
+  
+  public static final int CMD_MAGIC_BOX_LOTTO = 45389;
+  
+  public static final int MSG_ZHEN_LU_COMPOSE_INFO = 20680;
+  
+  public static final int MSG_ZHEN_LU_CASE_PET = 20681;
+  
+  public static final int MSG_C_FRIENDS = 65019;
+  
+  public static final int MSG_C_OPPONENTS = 65017;
+  
+  public static final int MSG_C_ADD_FRIEND = 64995;
+  
+  public static final int MSG_C_ADD_OPPONENT = 64993;
+  
+  public static final int MSG_GODBOOK_EFFECT_NORMAL = 12025;
+  
+  public static final int MSG_C_END_COMBAT = 3581;
+  
+  public static final int MSG_FIGHT_CMD_INFO = 36889;
+  
+  public static final int MSG_C_COMMAND_ACCEPTED = 11731;
+  
+  public static final int MSG_UPDATE_SKILLS = 32747;
+  
+  public static final int MSG_OPERATE_RESULT = 41191;
+  
+  public static final int MSG_GOODS_LIST = 65503;
+  
+  public static final int MSG_LEVEL_UP = 4323;
+  
+  public static final int MSG_TASK_FIGHT_END_NOTIFY = 33025;
+  
+  public static final int MSG_FRIEND_ADD_CHAR = 61545;
+  
+  public static final int CMD_PARTY_UNLOCK_FLAG = 11800;
+  
+  public static final int CMD_PARTY_FLAG = 11801;
+  
+  public static final int MSG_PARTY_FLAG = 11802;
+  
+  public static final int CMD_SAVE_PARTY_FLAG = 11803;
+  
+  public static final int MSG_PARTY_CHANNEL_DENY_LIST = 11833;
+  
+  public static final int MSG_PARTY_MEMBERS = 61603;
+  
+  public static final int MSG_PARTY_LIST_EX = 40977;
+  
+  public static final int MSG_ACTIVITY_OPEN_NOTICE = 49000;
+  
+  public static final int MSG_WATER_ICON = 49160;
+  
+  public static final int CMD_WATER_INFO = 49161;
+  
+  public static final int MSG_WATER_STAGE = 49162;
+  
+  public static final int MSG_WATER_END = 49163;
+  
+  public static final int MSG_GANG_WARS_ICON = 49164;
+  
+  public static final int MSG_GANG_WARS_INFO = 49165;
+  
+  public static final int MSG_GANG_WARS_MATCH_INFO = 49166;
+  
+  public static final int MSG_GANG_WARS_ROLE_STATE = 49167;
+  
+  public static final int MSG_GANG_WARS_GATE_LIFE = 49168;
+  
+  public static final int MSG_CA_ICON = 49180;
+  
+  public static final int CMD_CA_INFO = 49181;
+  
+  public static final int MSG_CA_INFO = 49182;
+  
+  public static final int MSG_ACTIVITY_PK_TASK_INFO = 49177;
+  
+  public static final int MSG_OFF_ROLE_STATE = 49999;
+  
+  public static final int MSG_NEW_BIE_GIFT = 49171;
+  
+  public static final int MSG_PAY_BIE_GIFT = 49172;
+  
+  public static final int MSG_PRIZE_DRAW_COUNT = 41482;
+  
+  public static final int MSG_SAFE_LOCK_INFO = 32827;
+  
+  public static final int CMD_PARTY_REJECT_LEVEL = 32784;
+  
+  public static final int CMD_PARTY_ROLE = 8368;
+  
+  public static final int MSG_PARTY_ROLE = 8369;
+  
+  public static final int CMD_CONTROL_PARTY_CHANNEL = 11834;
+  
+  public static final int CMD_GET_PARTY_LOG = 8608;
+  
+  public static final int MSG_HG_PREPARE = 49169;
+  
+  public static final int CMD_PARTY_PRACTICE_UP_GRADE = 28840;
+  
+  public static final int CMD_PARTY_PRACTICE_INFO = 28841;
+  
+  public static final int MSG_PARTY_PRACTICE_INFO = 28842;
+  
+  public static final int CMD_ASSIGN_PARTY_PRACTICE = 28843;
+  
+  public static final int CMD_RESET_ASSIGN_PARTY_PRACTICE = 28844;
+  
+  public static final int MSG_AT_GUESS_RACE_INFO = 45244;
+  
+  public static final int MSG_CLASH_PLANS = 45245;
+  
+  public static final int MSG_AT_CLASH_RESULT = 45246;
+  
+  public static final int MSG_WATER_CLASH_RESULT = 45247;
+  
+  public static final int MSG_CA_CLASH_RESULT = 45248;
+  
+  public static final int CMD_USE_CARD = 250;
+  
+  public static final int CMD_REFRESH_USER_DATA = 53320;
+  
+  public static final int CMD_PREVIEW_PET = 53360;
+  
+  public static final int CMD_PARTY_RENAME = 32836;
+  
+  public static final int CMD_PT_RB_SEND_INFO = 32838;
+  
+  public static final int CMD_PT_RB_SEND_REDBAG = 32840;
+  
+  public static final int CMD_PT_RB_RECV_REDBAG = 32842;
+  
+  public static final int CMD_PT_RB_LIST = 32844;
+  
+  public static final int CMD_PT_RB_SHOW_REDBAG = 32846;
+  
+  public static final int CMD_PT_RB_RECORD = 32848;
+  
+  public static final int CMD_REQUEST_TEMP_FRIEND_STATE = 53574;
+  
+  public static final int CMD_EXCHANGE_CONTACT_SELLER = 32956;
+  
+  public static final int MSG_QUESTION = 53718;
+  
+  public static final int CMD_SUBMIT_QUESTION = 53719;
+  
+  public static final int MSG_QUESTION_CONFIRM = 53720;
+  
+  public static final int MSG_QUESTION_COUNTRY = 53721;
+  
+  public static final int CMD_SUBMIT_QUESTION_COUNTRY = 53722;
+  
+  public static final int MSG_QUESTION_PROVINCE = 53723;
+  
+  public static final int CMD_SUBMIT_QUESTION_PROVINCE = 53724;
+  
+  public static final int MSG_QUESTION_HALL = 53725;
+  
+  public static final int CMD_SUBMIT_QUESTION_HALL = 53726;
+  
+  public static final int MSG_QUESTION_HALL_RANK = 53727;
+  
+  public static final int CMD_L_LINE_DATA = 45627;
+  
+  public static final int CMD_STORE_ADD_SIZE = 20645;
+  
+  public static final int CMD_L_GET_COMMUNITY_ADDRESS = 45696;
+  
+  public static final int MSG_SEND_PARTY_LOG = 9011;
+  
+  public static final int MSG_NOTIFICATION = 4115;
+  
+  public static final int MSG_GIFT_STATE = 40971;
+  
+  public static final int MSG_KICK_OFF = 53405;
+  
+  public static final int MSG_PT_RB_SEND_INFO = 32839;
+  
+  public static final int MSG_PT_RB_RECV_REDBAG = 32843;
+  
+  public static final int MSG_PT_RB_LIST = 32845;
+  
+  public static final int MSG_PT_RB_RECORD = 32849;
+  
+  public static final int MSG_LOOKON_CHANNEL_MESSAGE = 24074;
+  
+  public static final int MSG_HOSUE_CUR_PET_PRACTICE_INFO = 45338;
+  
+  public static final int MSG_TEMP_FRIEND_STATE = 53569;
+  
+  public static final int MSG_COLUMBIA = 32901;
+  
+  public static final int MSG_PREVIEW_PET_ATTR_DATA = 41154;
+  
+  public static final int MSG_UPGRADE_PREVIEW = 41239;
+  
+  public static final int MSG_ACSRY_PREVIEW = 41241;
+  
+  public static final int MSG_L_LINE_DATA = 45628;
+  
+  public static final int MSG_L_GET_COMMUNITY_ADDRESS = 45697;
+  
+  public static final int MSG_GS_REBOOT = 45565;
+  
+  public static final int CMD_FOUND_JOIN = 4156;
+  
+  public static final int CMD_REQUEST_JOIN = 4157;
+  
+  public static final int CMD_TEAM_LIST = 4158;
+  
+  public static final int CMD_UPDATE_TEAM_TARGET = 4159;
+  
+  public static final int CMD_JOIN_TEAM_LIST = 4160;
+  
+  public static final int CMD_GET_TEAM_BY_ID = 4161;
+  
+  public static final int CMD_LEAVE_TEMP_TEAM = 4128;
+  
+  public static final int CMD_RETURN_TEAM = 28;
+  
+  public static final int CMD_QUIT_TEAM = 26;
+  
+  public static final int CMD_REFRESH_REQUEST_INFO = 41125;
+  
+  public static final int CMD_CHANGE_TEAM_LEADER = 30;
+  
+  public static final int CMD_KICKOUT = 4120;
+  
+  public static final int CMD_OPER_TELEPORT_ITEM = 16590;
+  
+  public static final int MSG_SHIFT = 4249;
+  
+  public static final int CMD_ADD_FRIEND_GROUP = 45178;
+  
+  public static final int CMD_ADD_FRIEND = 8294;
+  
+  public static final int CMD_FRIEND_VERIFY_RESULT = 36868;
+  
+  public static final int CMD_DEL_FRIEND_GROUP = 45180;
+  
+  public static final int CMD_SORT_FRIEND_GROUP = 45181;
+  
+  public static final int CMD_ALTER_FRIEND_GROUP = 45199;
+  
+  public static final int CMD_FINGER = 4210;
+  
+  public static final int CMD_ALTER_FRIEND = 45214;
+  
+  public static final int CMD_DEL_FRIEND = 8296;
+  
+  public static final int CMD_FRIEND_TELL_EX = 20590;
+  
+  public static final int MSG_DEL_FRIEND_GROUP = 45317;
+  
+  public static final int CMD_TIAN_FU = 4400;
+  
+  public static final int CMD_TIAN_FU_SYNTHESIS = 4401;
+  
+  public static final int CMD_TIAN_FU_RESOLVE = 4402;
+  
+  public static final int CMD_DAY_IN_CE_UPGRADE = 4403;
+  
+  public static final int CMD_TIAN_FU_WEAR = 4404;
+  
+  public static final int MSG_TIAN_FU_LIST = 44000;
+  
+  public static final int MSG_TIAN_FU_DEBRIS = 44001;
+  
+  public static final int MSG_DAY_IN_CE = 44002;
+  
+  public static final int MSG_RETURN_ACHIEVEMENT = 44003;
+  
+  public static final int MSG_TIAN_FU_DELETE = 44004;
+  
+  public static final int CMD_SELECT_CURRENT_PARTNER = 4201;
+  
+  public static final int CMD_PARTNER_RECRUITS = 4202;
+  
+  public static final int CMD_PARTNER_LIST = 4203;
+  
+  public static final int CMD_FEED_PARTNER = 4204;
+  
+  public static final int CMD_CHANGE_DEFAULT_SKILL = 4205;
+  
+  public static final int MSG_PARTNER_LIST = 42100;
+  
+  public static final int MSG_UPDATE_PARTNER = 65526;
+  
+  public static final int MSG_CHANGE_DEFAULT_SKILL = 42101;
+  
+  public static final int CMD_MY_RANKING = 42120;
+  
+  public static final int CMD_CLASSIFY_PET_RANKING = 4221;
+  
+  public static final int CMD_PROPERTY_PET_RANKING = 4222;
+  
+  public static final int CMD_COMPREHENSIVE_STRENGTH_RANKING = 4223;
+  
+  public static final int CMD_PRACTITIONERS_RANKING = 4224;
+  
+  public static final int CMD_WEAPONS_RANKING = 4225;
+  
+  public static final int CMD_QLK_RANKING = 4226;
+  
+  public static final int CMD_MATER_NOM_RANKING = 4227;
+  
+  public static final int CMD_MATER_TEAM_RANKING = 4228;
+  
+  public static final int CMD_CA_NOM_RANKING = 4229;
+  
+  public static final int MSG_CLASSIFY_PET_RANKING_LIST = 42121;
+  
+  public static final int MSG_MY_RANKING = 42122;
+  
+  public static final int MSG_PROPERTY_PET_RANKING_LIST = 42123;
+  
+  public static final int MSG_COMPREHENSIVE_STRENGTH_RANKING_LIST = 42124;
+  
+  public static final int MSG_PRACTITIONERS_RANKING_LIST = 42125;
+  
+  public static final int MSG_WEAPONS_RANKING_LIST = 42126;
+  
+  public static final int MSG_QLK_RANKING_LIST = 42127;
+  
+  public static final int MSG_MATER_NOM_RANKING = 42128;
+  
+  public static final int MSG_MATER_TEAM_RANKING = 42129;
+  
+  public static final int MSG_CA_NOM_RANKING = 42130;
+  
+  public static final int CMD_BUY_FURNITURE = 20577;
+  
+  public static final int MSG_HOUSE = 20578;
+  
+  public static final int CMD_HOUSE_GO_HOME = 20586;
+  
+  public static final int CMD_HOUSE_FRIEND_VISIT = 20605;
+  
+  public static final int MSG_FURNITURE_STORE = 20606;
+  
+  public static final int CMD_ASSIST_PET_LIST = 4250;
+  
+  public static final int CMD_ADD_ASSIST_SUIT = 4251;
+  
+  public static final int MSG_ASSIST_PET_LIST = 42140;
+  
+  public static final int MSG_PRISONER_INFO = 45230;
+  
+  public static final int CMD_RELEASE_INFO = 45231;
+  
+  public static final int MSG_RELEASE_INFO = 45232;
+  
+  public static final int CMD_PRISONER_RELEASE = 45233;
+  
+  public static final int MSG_RELEASE_SUCCEED = 45234;
+  
+  public static final int CMD_PLUG_EXECUTE_TREASURE = 45300;
+  
+  public static final int CMD_PLUG_CEASE = 45301;
+  
+  public static final int MSG_PLUG_EXECUTE = 45302;
+  
+  public static final int MSG_PLUG_END_TIME = 45303;
+  
+  public static final int MSG_PLUG_EXECUTE_INFO = 45304;
+  
+  public static final int MSG_PLUG_CEASE = 45305;
+  
+  public static final int CMD_DISASSEMBLE_YUANQIDAN = 4270;
+  
+  public static final int CMD_USE_INCENSE = 4290;
+  
+  public static final int MSG_USE_INCENSE = 42160;
+  
+  public static final int MSG_BROADCAST_TEAM_ASK_STATE = 45127;
+  
+  public static final int MSG_SYNC_MESSAGE = 64977;
+  
+  public static final int MSG_ROUND_DATA_END = 65000;
+  
+  public static final int CMD_NEW_KILL = 4113;
+  
+  public static final int CMD_FIGHT_HANDLE = 3470;
+  
+  public static final int CMD_RETURN_ANIMATION_PREDICT_TIME = 3471;
+  
+  public static final int CMD_RETURN_ROUND_END = 3472;
+  
+  public static final int CMD_SET_OFF_AUTO_FIGHT = 3473;
+  
+  public static final int CMD_AUTO_FIGHT_SET_DATA = 32984;
+  
+  public static final int MSG_FIGHT_IN = 3584;
+  
+  public static final int MSG_RETURN_SUCCESS = 3587;
+  
+  public static final int MSG_INPUT_INSTRUCT = 53716;
+  
+  public static final int MSG_ROUND_START = 3586;
+  
+  public static final int MSG_EXCUTE_FIGHT = 3585;
+  
+  public static final int CMD_LOOK_ON_NEW = 4241;
+  
+  public static final int CMD_FIGHT_RECORDS = 4240;
+  
+  public static final int MSG_FIGHT_RECORDS = 4340;
+  
+  public static final int CMD_FIGHT_OBJECT_ATTR = 4243;
+  
+  public static final int MSG_FIGHT_OBJECT_ATTR = 4341;
+  
+  public static final int CMD_EMAIL_DETAIL = 4310;
+  
+  public static final int CMD_EMAIL_LIST = 4311;
+  
+  public static final int CMD_EMAIL_PICK_UP_GOODS = 4312;
+  
+  public static final int MSG_EMAIL_DETAIL = 4320;
+  
+  public static final int MSG_EMAIL_LIST = 4321;
+}
