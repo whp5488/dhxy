@@ -1,0 +1,73 @@
+custom:
+  datasource:
+    names: ac,se
+    ac:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/xy_ac?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+      username: root
+      password: root
+    se:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/xy_se?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+      username: root
+      password: root
+mina:
+  firewall:
+    config:
+      anonymousAliveMilli: 60000
+      floodWindowSeconds: 60
+      maxFloodTimes: 5
+      maxPackagePerSecond: 3
+nutz:
+  dao:
+    runtime:
+      basepackage: com.kitty
+      create: false
+      delete-column: false
+      migration: true
+    sqlmanager:
+      paths:
+        '-': sqls
+  json:
+    auto-unicode: false
+    enabled: true
+    ignore-null: true
+    mode: compact
+    null-as-emtry: true
+    quote-name: true
+spring:
+  data:
+    mongodb:
+      database: operator_log
+      host: 127.0.0.1
+      port: 27017
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      initial-size: 5
+      log-abandoned: true
+      max-active: 50
+      max-wait: 3000
+      pool-prepared-statements: false
+      remove-abandoned: true
+      remove-abandoned-timeout: 300
+      use-unfair-lock: true
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/xy_st?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+  rabbitmq:
+    host: 127.0.0.1
+    password: guest
+    port: 5672
+    username: guest
+  redis:
+    database: 0
+    host: 127.0.0.1
+    jedis:
+      pool:
+        max-active: 25
+        max-idle: 8
+        min-idle: 1
+    port: 6379
+    timeout: 5000
