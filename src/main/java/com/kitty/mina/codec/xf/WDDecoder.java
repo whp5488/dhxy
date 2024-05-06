@@ -48,7 +48,7 @@ public class WDDecoder extends CumulativeProtocolDecoder {
           return false;
         } else {
           int moduleId = ioBuffer.getUnsignedShort();
-          Class msgClazz = MessageFactory.INSTANCE.getMessage(moduleId, 0);
+          Class<?> msgClazz = MessageFactory.INSTANCE.getMessage(moduleId, 0);
           if (msgClazz == null) {
             this.logger.warn("未处理封包==协议号={}={}", moduleId, ioBuffer.getHexDump());
             length -= 2;
@@ -59,7 +59,7 @@ public class WDDecoder extends CumulativeProtocolDecoder {
 
             return true;
           } else {
-            HashMap heartbeatMap = (HashMap) SessionManager.INSTANCE.getSessionAttr(ioSession, SessionProperties.HEARTBEAT_MAP, HashMap.class);
+            HashMap heartbeatMap = SessionManager.INSTANCE.getSessionAttr(ioSession, SessionProperties.HEARTBEAT_MAP, HashMap.class);
             if (heartbeatMap == null) {
               heartbeatMap = new HashMap();
             }
@@ -83,7 +83,7 @@ public class WDDecoder extends CumulativeProtocolDecoder {
             } catch (Exception var14) {
               Role role = SessionUtils.getRoleBySession(ioSession);
               if (role != null) {
-                this.logger.error("解包出错: 玩家编号 = {}，协议号 = {}，包体内容 = {}", new Object[]{role.getRoleId(), moduleId, convert16HexStr(body)});
+                this.logger.error("解包出错: 玩家编号 = {}，协议号 = {}，包体内容 = {}", role.getRoleId(), moduleId, convert16HexStr(body));
               } else {
                 this.logger.error("解包出错: 协议号 = {}，包体内容 = {}", moduleId, convert16HexStr(body));
               }

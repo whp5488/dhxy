@@ -98,10 +98,10 @@ public class PlayerService {
     private PlayerRowMapper() {}
     
     public PlayerProfile mapRow(ResultSet re, int arg1) throws SQLException {
-      return new PlayerProfile(re.getString("s_id"), Integer.valueOf(re.getInt("role_id")), Long.valueOf(re.getLong("id")), re.getString("name"), 
-          Integer.valueOf(re.getInt("icon")), Integer.valueOf(re.getInt("serial")), Integer.valueOf(re.getInt("level")), re.getLong("exp"), Integer.valueOf(re.getInt("relive")), Integer.valueOf(re.getInt("race")), re
+      return new PlayerProfile(re.getString("s_id"), re.getInt("role_id"), re.getLong("id"), re.getString("name"),
+              re.getInt("icon"), re.getInt("serial"), re.getInt("level"), re.getLong("exp"), re.getInt("relive"), re.getInt("race"), re
           .getLong("enter_time"), re
-          .getLong("of_line_time"), Integer.valueOf(re.getInt("sex")), re.getInt("faction"), re.getString("extend_box_json"), re.getString("marking"));
+          .getLong("of_line_time"), re.getInt("sex"), re.getInt("faction"), re.getString("extend_box_json"), re.getString("marking"));
     }
   }
   
@@ -110,7 +110,7 @@ public class PlayerService {
     this.name2roleUid.clear();
     String sql = "select id, s_id, role_id, `name`, icon, serial, `level`, `exp`, relive, race, enter_time, of_line_time, sex, faction, extend_box_json, marking from role";
     List<PlayerProfile> profileList = this.jdbcTemplate.query(sql, new PlayerRowMapper());
-    this.logger.info("玩家数量=={}", Integer.valueOf(profileList.size()));
+    this.logger.info("玩家数量=={}", profileList.size());
     profileList.forEach(p -> addPlayerProfile(p));
   }
   
@@ -132,7 +132,7 @@ public class PlayerService {
       respExistedRoleList.setOpenServerTime((new Long(System.currentTimeMillis() / 1000L)).intValue());
       respExistedRoleList.setList(list);
       respExistedRoleList.setAccount_online(1);
-      MessagePusher.pushMessage(session, (Message)respExistedRoleList);
+      MessagePusher.pushMessage(session, respExistedRoleList);
     } 
     return list;
   }
@@ -155,7 +155,7 @@ public class PlayerService {
   }
   
   public boolean occupyName(String roleName, long id) {
-    return (this.name2roleUid.putIfAbsent(roleName, Long.valueOf(id)) == null);
+    return (this.name2roleUid.putIfAbsent(roleName, id) == null);
   }
   
   public void addPlayerProfile(PlayerProfile baseInfo) {
@@ -166,21 +166,21 @@ public class PlayerService {
   }
   
   public void cacheRoles(String sid, Long id) {
-    PlayerRoles playerRoles = (PlayerRoles)this.redisService.get(sid + "_sid", PlayerRoles.class);
+    PlayerRoles playerRoles = this.redisService.get(sid + "_sid", PlayerRoles.class);
     if (playerRoles == null) {
       playerRoles = new PlayerRoles();
-      List<Role> roles = this.dao.query(Role.class, (Condition)Cnd.where("s_id", "=", sid));
+      List<Role> roles = this.dao.query(Role.class, Cnd.where("s_id", "=", sid));
       for (Role role : roles)
         playerRoles.getList().add(role.getId()); 
     } 
     playerRoles.getList().add(id);
-    this.redisService.set(sid + "_sid", (Serializable)playerRoles, 0L);
+    this.redisService.set(sid + "_sid", playerRoles, 0L);
   }
   
   public List<PlayerProfile> getPlayersBy(String sid) {
     List<PlayerProfile> list = new ArrayList<>();
-    PlayerProfile playerProfile = (PlayerProfile)this.redisService.get(sid, PlayerProfile.class);
-    List<Role> roles = this.dao.query(Role.class, (Condition)Cnd.where("s_id", "=", sid));
+    PlayerProfile playerProfile = this.redisService.get(sid, PlayerProfile.class);
+    List<Role> roles = this.dao.query(Role.class, Cnd.where("s_id", "=", sid));
     for (Role role : roles)
       list.add(new PlayerProfile(role)); 
     if (playerProfile != null) {
@@ -194,12 +194,12 @@ public class PlayerService {
   public Role getPlayerBy(long id) {
     if (id <= 0L)
       return null; 
-    Role role = (Role)this.dao.fetch(Role.class, (Condition)Cnd.where("id", "=", Long.valueOf(id)));
+    Role role = this.dao.fetch(Role.class, Cnd.where("id", "=", id));
     if (role != null) {
-      ((PartnerService)SpringUtils.getBean(PartnerService.class)).loadPartner(role);
+      SpringUtils.getBean(PartnerService.class).loadPartner(role);
       role.doAfterInit();
       loadRoleRests(role);
-      if (!DataCache.ONLINE_ROLES.containsKey(Long.valueOf(id))) {
+      if (!DataCache.ONLINE_ROLES.containsKey(id)) {
         role.setState(2);
         SpringUtils.getRoleService().addOffline(role, false);
       } 
@@ -213,7 +213,7 @@ public class PlayerService {
     this.cardService.getCard(role);
     this.cardService.getCardExercise(role);
     this.bagService.getBagGoods(role);
-    this.bagService.getPetBagEquip(role.getId().longValue());
+    this.bagService.getPetBagEquip(role.getId());
     this.bagService.getBagEquip(role);
     this.storeService.getStoreGoods(role);
     this.storeService.getStoreEquip(role);
@@ -226,23 +226,23 @@ public class PlayerService {
     SpringUtils.getFriendService().loadPal(role);
     ((SettingService)SpringUtils.getBean(SettingService.class)).getSetting(role);
     ((GeneralService)SpringUtils.getBean(GeneralService.class)).loadDomesticate(role);
-    ((HouseService)SpringUtils.getBean(HouseService.class)).getHouse(role.getRoleId().intValue());
+    ((HouseService)SpringUtils.getBean(HouseService.class)).getHouse(role.getRoleId());
     ((EmailService)SpringUtils.getBean(EmailService.class)).loadRoleEmail(role);
   }
   
   public void onPlayerLogout(Role role) {
-    SceneManager.INSTANCE.leaveMap(role.getPos().getMapId().intValue(), role);
+    SceneManager.INSTANCE.leaveMap(role.getPos().getMapId(), role);
     EventDispatcher.getInstance().fireEvent((BaseGameEvent)new LogoutSelfEvent(EventType.LOGOUT_SELF, role));
     EventDispatcher.getInstance().fireEvent((BaseGameEvent)new RoleExpireEvent(EventType.ROLE_EXPIRE, role));
     EventDispatcher.getInstance().fireEvent((BaseGameEvent)new LogoutEvent(EventType.LOGOUT, role));
-    SessionManager.INSTANCE.unRegisterSession(role.getRoleId().intValue());
+    SessionManager.INSTANCE.unRegisterSession(role.getRoleId());
   }
   
   public long getUidBy(int roleId) {
-    return ((Long)this.roleId2roleUid.getOrDefault(Integer.valueOf(roleId), Long.valueOf(0L))).longValue();
+    return this.roleId2roleUid.getOrDefault(roleId, 0L);
   }
   
   public long getUidBy(String name) {
-    return ((Long)this.name2roleUid.getOrDefault(name, Long.valueOf(0L))).longValue();
+    return this.name2roleUid.getOrDefault(name, 0L);
   }
 }

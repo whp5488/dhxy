@@ -9,7 +9,7 @@ public class MapStringUtil {
   public static String getMapToString(Map<String, Object> map) {
     Set<String> keySet = map.keySet();
     String[] keyArray = keySet.<String>toArray(new String[keySet.size()]);
-    Arrays.sort((Object[])keyArray);
+    Arrays.sort(keyArray);
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < keyArray.length; i++) {
       if (String.valueOf(map.get(keyArray[i])).trim().length() > 0)
@@ -38,13 +38,13 @@ public class MapStringUtil {
   }
   
   public static Map<String, Object> resolution(String str, String symbol, String tow_symbol) {
-    Map<Object, Object> map = new HashMap<>();
+    Map<String, Object> map = new HashMap<>();
     String[] split = str.split(symbol);
     for (int i = 0; i < split.length; i++) {
       String strings = split[i].trim();
       String[] data = strings.split(tow_symbol);
       map.put(data[0], data[1]);
     } 
-    return (Map)map;
+    return map;
   }
 }

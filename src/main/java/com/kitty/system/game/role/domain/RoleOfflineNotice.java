@@ -2,6 +2,7 @@ package com.kitty.system.game.role.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.Serializable;
 
@@ -11,8 +12,10 @@ public class RoleOfflineNotice implements Serializable {
 
   private int state = 0;
 
+  @Value("${game.aloneOfflineTime}")
   private int aloneOfflineTime = 1200000;
 
+  @Value("${game.teamOfflineTime}")
   private int teamOfflineTime = 2400000;
 
 }

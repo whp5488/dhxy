@@ -17,37 +17,37 @@ public class PlayerExtendBox implements Serializable {
   
   private int buyPetGrid = 0;
   
-  private Integer position = Integer.valueOf(0);
+  private Integer position = 0;
   
-  private Integer storePosition = Integer.valueOf(0);
+  private Integer storePosition = 0;
   
   private int petEquipPosition = 0;
   
-  private Integer combatPet = Integer.valueOf(0);
+  private Integer combatPet = 0;
   
-  private Long guoScore = Long.valueOf(0L);
+  private Long guoScore = 0L;
   
-  private Long bracScore = Long.valueOf(0L);
+  private Long bracScore = 0L;
   
-  private Long naoScore = Long.valueOf(0L);
+  private Long naoScore = 0L;
   
-  private Long diScore = Long.valueOf(0L);
+  private Long diScore = 0L;
   
-  private Long arenaScore = Long.valueOf(0L);
+  private Long arenaScore = 0L;
   
-  private Long longScore = Long.valueOf(0L);
+  private Long longScore = 0L;
   
-  private Long niceScore = Long.valueOf(0L);
+  private Long niceScore = 0L;
   
-  private Long helpScore = Long.valueOf(0L);
+  private Long helpScore = 0L;
   
-  private Long featsScore = Long.valueOf(0L);
+  private Long featsScore = 0L;
   
-  private Long chargeScore = Long.valueOf(0L);
+  private Long chargeScore = 0L;
   
-  private Long boundGold = Long.valueOf(0L);
+  private Long boundGold = 0L;
   
-  private Long achievementScore = Long.valueOf(0L);
+  private Long achievementScore = 0L;
   
   private int banTrade = 0;
   

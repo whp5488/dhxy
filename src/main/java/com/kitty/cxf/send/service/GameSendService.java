@@ -30,7 +30,7 @@ public class GameSendService {
       map.put("n", name);
       map.put("c", cause);
       map.put("u", unbind);
-      Map map1 = SendMapper.Client(map, "seal", this.serverService.getSendIp(), this.serverService.getSendPort(), this.serverService.getSendName(), this.serverService.getSendPwd());
+      Map<String, Object> map1 = SendMapper.Client(map, "seal", this.serverService.getSendIp(), this.serverService.getSendPort(), this.serverService.getSendName(), this.serverService.getSendPwd());
     } catch (Exception e) {
       e.printStackTrace();
     } 
@@ -58,8 +58,8 @@ public class GameSendService {
       map.put("id", sId);
       map.put("mob", smsMob);
       map.put("c", code);
-      map.put("t", Integer.valueOf(time));
-      Map client = SendMapper.Client(map, "sms", this.serverService.getSendIp(), this.serverService.getSendPort(), this.serverService.getSendName(), this.serverService.getSendPwd());
+      map.put("t", time);
+      Map<String, Object> client = SendMapper.Client(map, "sms", this.serverService.getSendIp(), this.serverService.getSendPort(), this.serverService.getSendName(), this.serverService.getSendPwd());
       return client.get("msg").toString();
     } catch (Exception e) {
       e.printStackTrace();

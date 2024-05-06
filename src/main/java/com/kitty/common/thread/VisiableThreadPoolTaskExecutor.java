@@ -15,12 +15,11 @@ public class VisiableThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
     ThreadPoolExecutor threadPoolExecutor = getThreadPoolExecutor();
     if (null == threadPoolExecutor)
       return; 
-    logger.info("{}, {},taskCount [{}], completedTaskCount [{}], activeCount [{}], queueSize [{}]", new Object[] { getThreadNamePrefix(), prefix, 
-          
-          Long.valueOf(threadPoolExecutor.getTaskCount()), 
-          Long.valueOf(threadPoolExecutor.getCompletedTaskCount()), 
-          Integer.valueOf(threadPoolExecutor.getActiveCount()), 
-          Integer.valueOf(threadPoolExecutor.getQueue().size()) });
+    logger.info("{}, {},taskCount [{}], completedTaskCount [{}], activeCount [{}], queueSize [{}]", getThreadNamePrefix(), prefix,
+            threadPoolExecutor.getTaskCount(),
+            threadPoolExecutor.getCompletedTaskCount(),
+            threadPoolExecutor.getActiveCount(),
+            threadPoolExecutor.getQueue().size());
   }
   
   public void execute(Runnable task) {

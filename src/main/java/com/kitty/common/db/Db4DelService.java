@@ -61,7 +61,7 @@ public class Db4DelService {
           LoggerUtils.error("", e);
           e.printStackTrace();
         } 
-        Db4DelService.this.logger.error("队列剩余数量=={}", Integer.valueOf(Db4DelService.this.queue.size()));
+        Db4DelService.this.logger.error("队列剩余数量=={}", Db4DelService.this.queue.size());
       } 
     }
   }

@@ -16,7 +16,7 @@ public class ReflectEncoder implements IMessageEncoder {
       Serializer messageCodec = Serializer.getSerializer(message.getClass());
       messageCodec.encode(out, message, null);
     } catch (Exception e) {
-      logger.error("读取消息出错,模块号{}，类型{},异常{}", Integer.valueOf(message.getModule()), e);
+      logger.error("读取消息出错,模块号{}，类型{},异常{}", message.getModule(), e);
     } 
     out.flip();
     byte[] body = new byte[out.remaining()];

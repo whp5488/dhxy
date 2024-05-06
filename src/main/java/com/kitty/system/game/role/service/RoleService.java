@@ -307,7 +307,7 @@ public class RoleService {
   public boolean checkCondition(Role role, List<Item> items, Map<Integer, Integer> map) {
     if (map != null)
       for (Integer key : map.keySet()) {
-        boolean flag = checkCurrency(role, key, ((Integer)map.get(key)).intValue());
+        boolean flag = checkCurrency(role, key, map.get(key));
         if (!flag)
           return false; 
       }  
@@ -322,14 +322,14 @@ public class RoleService {
   public boolean costCondition(Role role, Condition condition, String reason, boolean bnotify, boolean bnotcut) {
     if (condition.getList() != null)
       for (Item item : condition.getList()) {
-        Integer goods = this.bagService.consumeBagGoods(role, item.getItem().intValue(), item.getNum().intValue(), true, true, "costCondition");
+        Integer goods = this.bagService.consumeBagGoods(role, item.getItem(), item.getNum(), true, true, "costCondition");
         if (goods != null)
           return false; 
       }  
     if (condition.getMap() != null) {
       Map<Integer, Integer> map = condition.getMap();
       for (Integer type : map.keySet()) {
-        boolean flag = deductCurrency(role, type, ((Integer)map.get(type)).intValue(), "costCondition");
+        boolean flag = deductCurrency(role, type, map.get(type), "costCondition");
         if (!flag)
           return false; 
       } 
@@ -341,7 +341,7 @@ public class RoleService {
     if (role == null)
       return; 
     DataCache.ONLINE_ROLES.put(role.getId(), role);
-    this.redisService.del(new Serializable[] { role.getId() + "_countdown_" + ((ServerService)SpringUtils.getBean(ServerService.class)).getMarking() });
+    this.redisService.del(role.getId() + "_countdown_" + SpringUtils.getBean(ServerService.class).getMarking());
   }
   
   public void removeOnline(Role role) {
@@ -353,11 +353,11 @@ public class RoleService {
   public void addOffline(Role role, boolean flag) {
     if (role == null)
       return; 
-    role.setOfLineTime(Long.valueOf(System.currentTimeMillis()));
+    role.setOfLineTime(System.currentTimeMillis());
     DataCache.OFFLINE_ROLES.put(role.getId(), role);
     String key = "temporary" + role.getId();
     Boolean exists = this.redisService.exists(key);
-    if (exists.booleanValue())
+    if (exists)
       this.redisService.expire(key, 54000L); 
     sendOffline(role, flag);
   }
@@ -368,7 +368,7 @@ public class RoleService {
     DataCache.OFFLINE_ROLES.remove(role.getId());
     String key = "temporary" + role.getId();
     Boolean exists = this.redisService.exists(key);
-    if (exists.booleanValue())
+    if (exists)
       this.redisService.persist(key); 
   }
   
@@ -377,35 +377,31 @@ public class RoleService {
   }
   
   public boolean isOnline(long id) {
-    return DataCache.ONLINE_ROLES.containsKey(Long.valueOf(id));
+    return DataCache.ONLINE_ROLES.containsKey(id);
   }
   
   public boolean canLogin(Account account, final IoSession session) {
-    ServerService serverService = (ServerService)SpringUtils.getBean(ServerService.class);
+    ServerService serverService = SpringUtils.getBean(ServerService.class);
     if (account == null) {
-      MessagePusher.pushMessage(session, (Message)new RespNotifyMiscEx("账号不存在！！"));
-      serverService.getScheduledExecutorService().schedule(new Runnable() {
-            public void run() {
-              session.closeNow();
-            }
-          },  3L, TimeUnit.SECONDS);
+      MessagePusher.pushMessage(session, new RespNotifyMiscEx("账号不存在！！"));
+      serverService.getScheduledExecutorService().schedule(() -> {
+        session.closeNow();
+      },  3L, TimeUnit.SECONDS);
       return false;
     } 
     if (account.getIsStop() <= 0) {
-      MessagePusher.pushMessage(session, (Message)new RespNotifyMiscEx("账号已经被封闭，请联系管理员！！"));
-      serverService.getScheduledExecutorService().schedule(new Runnable() {
-            public void run() {
-              session.closeNow();
-            }
-          },  3L, TimeUnit.SECONDS);
+      MessagePusher.pushMessage(session, new RespNotifyMiscEx("账号已经被封闭，请联系管理员！！"));
+      serverService.getScheduledExecutorService().schedule(() -> {
+        session.closeNow();
+      },  3L, TimeUnit.SECONDS);
       return false;
     } 
     return true;
   }
   
   public Role createRole(IoSession session, String sid, ReqCreateNewChar reqCreateNewChar) {
-    SysHero hero = (SysHero)PartDataPool.heroMap.get(reqCreateNewChar.getSerial());
-    SysRbAttr data = (SysRbAttr)PartDataPool.rbAttrMap.get(Integer.valueOf(1));
+    SysHero hero = PartDataPool.heroMap.get(reqCreateNewChar.getSerial());
+    SysRbAttr data = PartDataPool.rbAttrMap.get(1);
     if (hero != null) {
       String name = reqCreateNewChar.getName().trim();
       name = name.replace("#", "");
@@ -413,20 +409,20 @@ public class RoleService {
         return null; 
       name = CheckCharUtils.replaceName(name);
       Role role = new Role();
-      role.setId(Long.valueOf(IdGenerator.getNextId()));
+      role.setId(IdGenerator.getNextId());
       role.setSid(sid);
-      role.setRoleId(Integer.valueOf(getRoleId()));
+      role.setRoleId(getRoleId());
       role.setName(name);
       role.setSex(reqCreateNewChar.getSex());
       role.setRace(reqCreateNewChar.getRace());
-      role.setLevel(Integer.valueOf(0));
-      role.setRelive(Integer.valueOf(0));
+      role.setLevel(0);
+      role.setRelive(0);
       role.setExp(0L);
-      role.setSaveLife(Long.valueOf(0L));
-      role.setSaveMana(Long.valueOf(0L));
-      role.setGold(Long.valueOf(0L));
-      role.setIcon(hero.getShape().intValue());
-      role.getTask().setIcon(hero.getShape().intValue());
+      role.setSaveLife(0L);
+      role.setSaveMana(0L);
+      role.setGold(0L);
+      role.setIcon(hero.getShape());
+      role.getTask().setIcon(hero.getShape());
       role.setSerial(hero.getSerial());
       role.setSkills(createSkillBox(role, reqCreateNewChar.getRace(), reqCreateNewChar.getSex(), data));
       role.setPos(new Pos());
@@ -437,39 +433,39 @@ public class RoleService {
       calculateBase(role);
       role.setMarking(reqCreateNewChar.getMarking());
       NutMap map = new NutMap();
-      map.setv("a", Integer.valueOf(0));
-      map.setv("b", Integer.valueOf(0));
+      map.setv("a", 0);
+      map.setv("b", 0);
       role.setColor(map.toString());
       long time = System.currentTimeMillis();
-      role.setEnterTime(Long.valueOf(time));
+      role.setEnterTime(time);
       role.save();
       createRoleRests(role);
       SpringUtils.getPlayerService().addPlayerProfile(new PlayerProfile(role));
       addOffline(role, false);
-      EventDispatcher.getInstance().fireEvent((BaseGameEvent)new CreationRoleEvent(EventType.CREATION_ROLE, role));
+      EventDispatcher.getInstance().fireEvent(new CreationRoleEvent(EventType.CREATION_ROLE, role));
       return role;
     } 
     return null;
   }
   
   public void createRoleRests(Role role) {
-    CardExercise cardExercise = new CardExercise(this.worker.nextId(), role.getId().longValue());
+    CardExercise cardExercise = new CardExercise(this.worker.nextId(), role.getId());
     cardExercise.save();
     DataCache.CARD_EXERCISE_MAP.put(role.getId(), cardExercise);
     SpringUtils.getHorseService().creationHorse(role);
-    Setting setting = new Setting(this.worker.nextId(), role.getId().longValue());
+    Setting setting = new Setting(this.worker.nextId(), role.getId());
     setting.save();
     DataCache.SETTING_MAP.put(role.getId(), setting);
-    ((HouseService)SpringUtils.getBean(HouseService.class)).addHouse(role.getId().longValue(), 5100);
+    ((HouseService)SpringUtils.getBean(HouseService.class)).addHouse(role.getId(), 5100);
   }
   
   public void calculateBase(Role role) {
     int life = CountUtils.countLife(role);
-    role.setCurrLife(Integer.valueOf(life));
-    role.setMaxLife(Integer.valueOf(life));
+    role.setCurrLife(life);
+    role.setMaxLife(life);
     int mana = CountUtils.countMana(role);
-    role.setCurrMana(Integer.valueOf(mana));
-    role.setMaxMana(Integer.valueOf(mana));
+    role.setCurrMana(mana);
+    role.setMaxMana(mana);
   }
   
   public Map<Integer, RoleSkill> createSkillBox(Role role, Integer race, Integer sex, SysRbAttr data) {
@@ -479,20 +475,20 @@ public class RoleService {
       Map<Integer, SysSkill> skillMap = DataGlobalFunc.getSkillListByAttr(integer);
       for (Integer key : skillMap.keySet()) {
         SysSkill sysSkill = skillMap.get(key);
-        int max_proficient = data.getMaxSkillExp().intValue();
+        int max_proficient = data.getMaxSkillExp();
         List<FieldByte> effects = null;
         if (role.getSkills().size() > 0)
           for (RoleSkill value : role.getSkills().values()) {
-            SysSkill skill = (SysSkill)SkillDataPool.skillMap.get(value.getSkillId());
+            SysSkill skill = SkillDataPool.skillMap.get(value.getSkillId());
             if (skill.getPos().equals(sysSkill.getPos()) && value.getEffects().size() > 0) {
               effects = new ArrayList<>();
               for (FieldByte fieldByte : value.getEffects()) {
-                int type = fieldByte.getK().intValue() % 10;
-                effects.add(new FieldByte(Integer.valueOf(sysSkill.getIcon() * 10 + type), fieldByte.getV()));
+                int type = fieldByte.getK() % 10;
+                effects.add(new FieldByte(sysSkill.getIcon() * 10 + type, fieldByte.getV()));
               } 
             } 
           }  
-        RoleSkill skill2 = new RoleSkill(sysSkill.getSerial(), integer, data.getInitSkillExp(), Integer.valueOf(max_proficient));
+        RoleSkill skill2 = new RoleSkill(sysSkill.getSerial(), integer, data.getInitSkillExp(), max_proficient);
         if (effects != null)
           skill2.setEffects(effects); 
         skills.put(sysSkill.getSerial(), skill2);
@@ -509,34 +505,34 @@ public class RoleService {
       type = "坐骑";
     } 
     if (Strings.isEmpty(name)) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg(String.format("请输入正确的%s名。", new Object[] { type })));
+      MessagePusher.pushMessage(session, new RespMsg(String.format("请输入正确的%s名。", type)));
       return false;
     } 
     if (name.length() > 6) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg(String.format("%s名称过长。", new Object[] { type })));
+      MessagePusher.pushMessage(session, new RespMsg(String.format("%s名称过长。", type)));
       return false;
     } 
     name = CheckCharUtils.replaceName(name);
     if (name.length() <= 1) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg(String.format("请输入正确的%s名。", new Object[] { type })));
+      MessagePusher.pushMessage(session, new RespMsg(String.format("请输入正确的%s名。", type)));
       return false;
     } 
     List<String> set = WordDisposePool.checkDirtyWords(name);
     if (set.size() >= 1) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg(String.format("%s名存在非法字符。", new Object[] { type })));
+      MessagePusher.pushMessage(session, new RespMsg(String.format("%s名存在非法字符。", type)));
       return false;
     } 
     if (CheckCharUtils.checkQQNumber(name)) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg(String.format("%s名存在非法字符。", new Object[] { type })));
+      MessagePusher.pushMessage(session, new RespMsg(String.format("%s名存在非法字符。", type)));
       return false;
     } 
     Matcher emojiTitle = CheckCharUtils.CHECK_EMOJI.matcher(name);
     if (emojiTitle.find()) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg(String.format("%s名存在非法字符。", new Object[] { type })));
+      MessagePusher.pushMessage(session, new RespMsg(String.format("%s名存在非法字符。", type)));
       return false;
     } 
     if (LOGIC.LOGICTYPE_HERO.getValue() == logic && !SpringUtils.getPlayerService().occupyName(name, 0L)) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg("这个角色名字已经存在。"));
+      MessagePusher.pushMessage(session, new RespMsg("这个角色名字已经存在。"));
       return false;
     } 
     return true;
@@ -545,23 +541,19 @@ public class RoleService {
   public void enterMap(IoSession session, Role role) throws Exception {
     List<PlayerProfile> playerProfiles = SpringUtils.getPlayerService().getPlayersBy(role.getSid());
     for (PlayerProfile playerProfile : playerProfiles) {
-      Role onlineRole = getOnlinePlayer(playerProfile.getId().longValue());
+      Role onlineRole = getOnlinePlayer(playerProfile.getId());
       if (onlineRole != null) {
-        final IoSession ioSession = SessionUtils.getSessionBy(onlineRole.getId().longValue());
+        final IoSession ioSession = SessionUtils.getSessionBy(onlineRole.getId());
         if (ioSession != null && ioSession.getId() != session.getId()) {
           RespOtherLogin respOtherLogin = new RespOtherLogin();
-          respOtherLogin.setResult(Integer.valueOf(1));
-          MessagePusher.pushMessage(ioSession, (Message)respOtherLogin);
+          respOtherLogin.setResult(1);
+          MessagePusher.pushMessage(ioSession, respOtherLogin);
           Thread.sleep(1000L);
-          ioSession.write(new RespKickClient("你的账号已在其它设备登录。")).addListener(new IoFutureListener<IoFuture>() {
-                public void operationComplete(IoFuture future) {
-                  ioSession.closeNow();
-                }
-              });
+          ioSession.write(new RespKickClient("你的账号已在其它设备登录。")).addListener(future -> ioSession.closeNow());
         } 
       } 
     } 
-    SessionManager.INSTANCE.registerSession(role.getRoleId().intValue(), session);
+    SessionManager.INSTANCE.registerSession(role.getRoleId(), session);
     addOnline(role);
     removeOffline(role);
     session.setAttribute(SessionProperties.CLIENT_STATUS, "1");
@@ -572,26 +564,26 @@ public class RoleService {
     role.setState(1);
     RespRoleAlreadyLogin respRoleAlreadyLogin = new RespRoleAlreadyLogin();
     respRoleAlreadyLogin.setRoleName(role.getName());
-    MessagePusher.pushMessage(role, (Message)respRoleAlreadyLogin);
+    MessagePusher.pushMessage(role, respRoleAlreadyLogin);
     RespReplyServerTime respReplyServerTime = new RespReplyServerTime();
     respReplyServerTime.setServerTime(String.valueOf(TimeUtil.timeInMillis()));
-    MessagePusher.pushMessage(role, (Message)respReplyServerTime);
-    if (role.getLockTime().longValue() > System.currentTimeMillis()) {
+    MessagePusher.pushMessage(role, respReplyServerTime);
+    if (role.getLockTime() > System.currentTimeMillis()) {
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      Date date = new Date(role.getLockTime().longValue());
+      Date date = new Date(role.getLockTime());
       String tips = simpleDateFormat.format(date);
       RespOtherLogin respOtherLogin2 = new RespOtherLogin();
       respOtherLogin2.setContent("您违规游戏行为，角色已被封停。\n解封时间：" + tips);
-      respOtherLogin2.setResult(Integer.valueOf(2));
-      MessagePusher.pushMessage(role, (Message)respOtherLogin2);
+      respOtherLogin2.setResult(2);
+      MessagePusher.pushMessage(role, respOtherLogin2);
       return;
     } 
     sendPacket(role);
-    MessagePusher.pushMessage(role, (Message)SafeUtil.getLockStatus(role));
+    MessagePusher.pushMessage(role, SafeUtil.getLockStatus(role));
     ((PkService)SpringUtils.getBean(PkService.class)).loginCheckFromPrison(role);
-    EventDispatcher.getInstance().fireEvent((BaseGameEvent)new EnterMapEvent(EventType.ENTER_MAP, role));
-    EventDispatcher.getInstance().fireEvent((BaseGameEvent)new LoginEvent(EventType.LOGIN, role));
-    Team team = this.teamService.getTeam(role.getRoleId().intValue());
+    EventDispatcher.getInstance().fireEvent(new EnterMapEvent(EventType.ENTER_MAP, role));
+    EventDispatcher.getInstance().fireEvent(new LoginEvent(EventType.LOGIN, role));
+    Team team = this.teamService.getTeam(role.getRoleId());
     if (team != null) {
       int teamCount = this.teamService.getTeamCount(team);
       if (teamCount == 0) {
@@ -601,9 +593,9 @@ public class RoleService {
         this.teamService.liveLoadTeamList(role);
       } 
     } 
-    ((EnterService)SpringUtils.getBean(EnterService.class)).loadHmlNotify(role);
+    SpringUtils.getBean(EnterService.class).loadHmlNotify(role);
     if (role.getMobile() != null && role.getMobile().length() > 1)
-      MessagePusher.pushMessage(role.getId().longValue(), (Message)new RespCorrelation(role.getMobile())); 
+      MessagePusher.pushMessage(role.getId(), new RespCorrelation(role.getMobile()));
     this.cardService.reqFiveExercise(role, false);
     stateRefresh(role);
     this.titleService.refreshTitle(role);
@@ -642,8 +634,8 @@ public class RoleService {
       if (roleTianFu.getStorePos() > 0)
         this.storeService.refreshStoreTianFu(role, roleTianFu); 
     } 
-    role.setEnterTime(Long.valueOf(System.currentTimeMillis()));
-    role.setOfLineTime(Long.valueOf(0L));
+    role.setEnterTime(System.currentTimeMillis());
+    role.setOfLineTime(0L);
     role.setOnlineLoginTime(System.currentTimeMillis());
     role.setPrevHeartTime(0L);
     role.save();
@@ -652,25 +644,25 @@ public class RoleService {
     RespGeneralNotify respGeneralNotify = new RespGeneralNotify();
     respGeneralNotify.setNotify(39);
     respGeneralNotify.setValue("1");
-    MessagePusher.pushMessage(role, (Message)respGeneralNotify);
+    MessagePusher.pushMessage(role, respGeneralNotify);
   }
   
   public void refreshParty(Role role) {
     this.titleService.refreshTitle(role);
     RespUpdate respUpdate = new RespUpdate();
-    respUpdate.setId(role.getRoleId().intValue());
+    respUpdate.setId(role.getRoleId());
     List<FiedValue> list = new ArrayList<>();
     list.add(new FiedValue("faction", (byte)3, role.getFaction()));
-    list.add(new FiedValue("factionLevel", (byte)3, Byte.valueOf(getFactionLevel(role))));
+    list.add(new FiedValue("factionLevel", (byte)3, getFactionLevel(role)));
     list.add(new FiedValue("factionName", (byte)4, getFactionName(role)));
     respUpdate.setList(list);
-    MessagePusher.pushMessage(role, (Message)respUpdate);
+    MessagePusher.pushMessage(role, respUpdate);
   }
   
   public void refreshRole(Role role) {
     refreshRoleStore(role);
     RespUpdate respUpdate = new RespUpdate();
-    respUpdate.setId(role.getRoleId().intValue());
+    respUpdate.setId(role.getRoleId());
     List<FiedValue> list = new ArrayList<>();
     list.add(new FiedValue("life", (byte)3, Integer.valueOf(CountUtils.countLife(role))));
     list.add(new FiedValue("mana", (byte)3, Integer.valueOf(CountUtils.countMana(role))));
@@ -2013,25 +2005,25 @@ public class RoleService {
   
   public void sendOffline(Role role, boolean flag) {
     long millis = System.currentTimeMillis();
-    String marking = ((ServerService)SpringUtils.getBean(ServerService.class)).getMarking();
+    String marking = SpringUtils.getBean(ServerService.class).getMarking();
     String key = role.getId() + "_countdown_" + marking + (millis / 1000L);
-    if (this.redisService.exists(key).booleanValue())
+    if (this.redisService.exists(key))
       return; 
     this.redisService.set(key, "", 0L);
     ThreadLocalUtil.addLocalTask(role, () -> {
           int time = 300000;
           if (flag) {
-            Team team = ((TeamService)SpringUtils.getBean(TeamService.class)).getTeam(role.getRoleId().intValue());
+            Team team = SpringUtils.getBean(TeamService.class).getTeam(role.getRoleId());
             if (team != null) {
               time = role.getOfflineNotice().getTeamOfflineTime();
             } else {
               time = role.getOfflineNotice().getAloneOfflineTime();
             } 
           } 
-          role.setOfLineTime(Long.valueOf(millis));
+          role.setOfLineTime(millis);
           role.setState(2);
           role.save();
-          ((RabbitService)SpringUtils.getBean(RabbitService.class)).sendMessage(key, Integer.valueOf(time));
+          SpringUtils.getBean(RabbitService.class).sendMessage(key, time);
         });
   }
   
@@ -2039,13 +2031,13 @@ public class RoleService {
     long now = System.currentTimeMillis();
     if (now > role.getOnlineLoginTime()) {
       int currentOnlineSec = (int)((now - role.getOnlineLoginTime()) / 1000L);
-      return currentOnlineSec + role.getPreOnlineSec().longValue();
+      return currentOnlineSec + role.getPreOnlineSec();
     } 
     return 0L;
   }
   
   public void resetOnlineSec(Role role) {
-    role.setPreOnlineSec(Long.valueOf(0L));
+    role.setPreOnlineSec(0L);
     role.setOnlineLoginTime(System.currentTimeMillis());
   }
   
@@ -2072,19 +2064,19 @@ public class RoleService {
   public void doDailyFiveReset(Role role, boolean flag) {
     if (flag)
       checkWeeklyReset(role); 
-    role.setDailyFiveResetTime(Long.valueOf(System.currentTimeMillis()));
+    role.setDailyFiveResetTime(System.currentTimeMillis());
     resetOnlineSec(role);
-    ((SafeService)SpringUtils.getBean(SafeService.class)).checkSafePasswordReset(role);
+    SpringUtils.getBean(SafeService.class).checkSafePasswordReset(role);
     resetQuotaLimit(role);
     role.getExtendBox().setDayQuotaLimit(NutMap.NEW());
-    ((ActivityService)SpringUtils.getBean(ActivityService.class)).dailyResetActivity(role);
-    ((TaskService)SpringUtils.getBean(TaskService.class)).dailyResetTask(role);
+    SpringUtils.getBean(ActivityService.class).dailyResetActivity(role);
+    SpringUtils.getBean(TaskService.class).dailyResetTask(role);
     role.save();
-    ((WelfareService)SpringUtils.getBean(WelfareService.class)).dailyResetFiveGuess(role);
+    SpringUtils.getBean(WelfareService.class).dailyResetFiveGuess(role);
   }
   
   private boolean isCanDailyFiveReset(Role role) {
-    long dailyFiveResetTime = role.getDailyFiveResetTime().longValue();
+    long dailyFiveResetTime = role.getDailyFiveResetTime();
     Calendar roleResetCalader = Calendar.getInstance();
     roleResetCalader.setTimeInMillis(dailyFiveResetTime);
     Calendar systemResetTime = getSystemFiveResetTime();
@@ -2094,7 +2086,7 @@ public class RoleService {
   private Calendar getSystemFiveResetTime() {
     Calendar calendar = Calendar.getInstance();
     if (calendar.get(11) < 5)
-      calendar.add(6, -1); 
+      calendar.add(6, -1);
     calendar.set(11, 5);
     calendar.set(12, 0);
     calendar.set(13, 0);

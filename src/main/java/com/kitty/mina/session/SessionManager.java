@@ -39,31 +39,31 @@ public enum SessionManager {
   }
   
   public void registerSession(int roleId, IoSession session) {
-    session.setAttribute(SessionProperties.PLAYER_ID, Integer.valueOf(roleId));
-    this.player2sessions.put(Integer.valueOf(roleId), session);
+    session.setAttribute(SessionProperties.PLAYER_ID, roleId);
+    this.player2sessions.put(roleId, session);
   }
   
   public void unRegisterSession(int playerId) {
-    this.player2sessions.remove(Integer.valueOf(playerId));
+    this.player2sessions.remove(playerId);
   }
   
   public void add2Anonymous(IoSession session) {
-    this.anonymouSessions.putIfAbsent(Long.valueOf(session.getId()), session);
+    this.anonymouSessions.putIfAbsent(session.getId(), session);
   }
   
   public void removeFromAnonymous(IoSession session) {
-    this.anonymouSessions.remove(Long.valueOf(session.getId()));
+    this.anonymouSessions.remove(session.getId());
   }
   
   public long getPlayerIdBy(IoSession session) {
     if (session != null && 
       session.containsAttribute(SessionProperties.PLAYER_ID))
-      return ((Long)getSessionAttr(session, SessionProperties.PLAYER_ID, Long.class)).longValue(); 
+      return (Long) getSessionAttr(session, SessionProperties.PLAYER_ID, Long.class);
     return 0L;
   }
   
   public IoSession getSessionBy(int playerId) {
-    return this.player2sessions.get(Integer.valueOf(playerId));
+    return this.player2sessions.get(playerId);
   }
   
   public <T> T getSessionAttr(IoSession session, AttributeKey attrKey, Class<T> attrType) {
@@ -88,14 +88,14 @@ public enum SessionManager {
       CloseFuture future = session.closeNow();
       future.addListener(new IoFutureListener<IoFuture>() {
             public void operationComplete(IoFuture future) {
-              logger.error("session[{}] closed complete,player[{}]", Long.valueOf(session.getId()), name);
+              logger.error("session[{}] closed complete,player[{}]", session.getId(), name);
             }
           });
     } 
-    this.anonymouSessions.remove(Long.valueOf(session.getId()));
+    this.anonymouSessions.remove(session.getId());
     if (role != null) {
       TeamService teamService = SpringUtils.getTeamService();
-      Team team = teamService.getTeam(role.getRoleId().intValue());
+      Team team = teamService.getTeam(role.getRoleId());
       if (team != null)
         teamService.leave(role, false); 
       SpringUtils.getRoleService().removeOnline(role);

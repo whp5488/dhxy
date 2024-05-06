@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,7 @@ public class FileUtils {
       throw new FileNotFoundException(); 
     FileInputStream in = new FileInputStream(file);
     StringBuilder result = new StringBuilder();
-    try (BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"))) {
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
       String line;
       while ((line = br.readLine()) != null)
         result.append(line).append("\n"); 

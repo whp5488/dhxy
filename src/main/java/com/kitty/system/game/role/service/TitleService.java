@@ -43,7 +43,7 @@ public class TitleService extends EchoHandler {
           int currTime = (new Long(System.currentTimeMillis() / 1000L)).intValue();
           for (TitleInfo titleInfo : list) {
             if (currTime >= titleInfo.getTime()) {
-              SysDataTitle title = (SysDataTitle)PartDataPool.titleMap.get(Integer.valueOf(titleInfo.getSerial()));
+              SysDataTitle title = (SysDataTitle)PartDataPool.titleMap.get(titleInfo.getSerial());
               if (title != null)
                 MessagePusher.notify2Misc(role, false, 501, new Object[] { title.getName() }); 
               delTitle(role, titleInfo.getSerial());
@@ -56,7 +56,7 @@ public class TitleService extends EchoHandler {
   }
   
   public void changeTitle(Role role, int serial, byte type) {
-    TitleInfo titleInfo = (TitleInfo)role.getExtendBox().getTitleMap().get(Integer.valueOf(serial));
+    TitleInfo titleInfo = (TitleInfo)role.getExtendBox().getTitleMap().get(serial);
     if (titleInfo != null) {
       if (type == 1) {
         role.setCurrTitle(serial);
@@ -67,8 +67,8 @@ public class TitleService extends EchoHandler {
       } 
       RespUpdate respUpdate = new RespUpdate();
       List<FiedValue> list = new ArrayList<>();
-      respUpdate.setId(role.getRoleId().intValue());
-      list.add(new FiedValue("title", (byte)3, Integer.valueOf(role.getCurrTitle())));
+      respUpdate.setId(role.getRoleId());
+      list.add(new FiedValue("title", (byte)3, role.getCurrTitle()));
       respUpdate.setList(list);
       MessagePusher.pushMessage(role, (Message)respUpdate);
       this.broadcastService.sendUpdateAppear(role);
@@ -78,15 +78,15 @@ public class TitleService extends EchoHandler {
   
   public void addTitle(Role role, TitleInfo titleInfo) {
     boolean flag = false;
-    if (Const.PARTY_TITLE_LIST.contains(Integer.valueOf(titleInfo.getSerial()))) {
+    if (Const.PARTY_TITLE_LIST.contains(titleInfo.getSerial())) {
       for (Integer serial : Const.PARTY_TITLE_LIST)
         role.getExtendBox().getTitleMap().remove(serial); 
-      if (Const.PARTY_TITLE_LIST.contains(Integer.valueOf(role.getCurrTitle()))) {
+      if (Const.PARTY_TITLE_LIST.contains(role.getCurrTitle())) {
         role.setCurrTitle(titleInfo.getSerial());
         flag = true;
       } 
     } 
-    role.getExtendBox().getTitleMap().put(Integer.valueOf(titleInfo.getSerial()), titleInfo);
+    role.getExtendBox().getTitleMap().put(titleInfo.getSerial(), titleInfo);
     refreshTitle(role);
     if (flag)
       this.broadcastService.sendUpdateAppear(role); 
@@ -94,12 +94,12 @@ public class TitleService extends EchoHandler {
   }
   
   public void delTitle(Role role, int serial) {
-    TitleInfo titleInfo = (TitleInfo)role.getExtendBox().getTitleMap().get(Integer.valueOf(serial));
+    TitleInfo titleInfo = (TitleInfo)role.getExtendBox().getTitleMap().get(serial);
     if (titleInfo != null) {
       if (role.getCurrTitle() == serial)
         role.setCurrTitle(-1); 
-      role.getExtendBox().getTitleMap().remove(Integer.valueOf(serial));
-      if (this.roleService.isOnline(role.getId().longValue())) {
+      role.getExtendBox().getTitleMap().remove(serial);
+      if (this.roleService.isOnline(role.getId())) {
         this.broadcastService.sendUpdateAppear(role);
         MessagePusher.pushMessage(role, (Message)new RespChangeTitle(serial));
       } 
@@ -108,7 +108,7 @@ public class TitleService extends EchoHandler {
   }
   
   public int getTitle(Role role) {
-    TitleInfo titleInfo = (TitleInfo)role.getExtendBox().getTitleMap().get(Integer.valueOf(role.getCurrTitle()));
+    TitleInfo titleInfo = (TitleInfo)role.getExtendBox().getTitleMap().get(role.getCurrTitle());
     if (titleInfo != null)
       return titleInfo.getSerial(); 
     return -1;

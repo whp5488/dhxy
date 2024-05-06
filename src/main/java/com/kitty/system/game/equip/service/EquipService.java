@@ -483,9 +483,9 @@ public class EquipService {
     if (type != 11)
       if (!SafeUtil.isUnlock(role))
         return;  
-    UpgradeHandler handler = UpgradeHelper.INSTANCE.getHandler(Integer.valueOf(type));
+    UpgradeHandler handler = UpgradeHelper.INSTANCE.getHandler(type);
     if (handler != null) {
-      String message = handler.acceptUpgrade(role, Integer.valueOf(pos), Integer.valueOf(operationType), param, cause);
+      String message = handler.acceptUpgrade(role, pos, operationType, param, cause);
       if (!Strings.isEmpty(message) && message != null) {
         MessagePusher.pushMessage(role, (Message)new RespNotifyMiscEx(role.getId(), message, false));
       } else {
@@ -506,11 +506,11 @@ public class EquipService {
   }
   
   public void addEffect(Role role, int serial, int bd) {
-    SysEffect sysEffect = (SysEffect)ItemDataPool.effectMap.get(Integer.valueOf(serial));
+    SysEffect sysEffect = (SysEffect)ItemDataPool.effectMap.get(serial);
     if (sysEffect == null)
       return; 
     List<Effect> effects = selectEffect(role);
-    Effect effect = new Effect(Long.valueOf(this.worker.nextId()), role.getId().longValue(), serial, (byte)0, bd, sysEffect.getPart());
+    Effect effect = new Effect(this.worker.nextId(), role.getId(), serial, (byte)0, bd, sysEffect.getPart());
     effects.add(effect);
     effect.save();
   }
@@ -531,13 +531,13 @@ public class EquipService {
     List<Effect> effects = selectEffect(role);
     List<Effect> collect = (List<Effect>)effects.stream().filter(e -> (e.getState() == 1)).collect(Collectors.toList());
     for (Effect effect : collect)
-      list.add(Integer.valueOf(effect.getSerial())); 
+      list.add(effect.getSerial());
     return list;
   }
   
   public void wearEffect(Role role, int serial) {
     Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
-    SysEffect effect = effectMap.get(Integer.valueOf(serial));
+    SysEffect effect = effectMap.get(serial);
     if (effect == null)
       return; 
     List<Effect> effects = selectEffect(role);
@@ -558,7 +558,7 @@ public class EquipService {
   
   public void unEffect(Role role, int serial) {
     Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
-    SysEffect effect = effectMap.get(Integer.valueOf(serial));
+    SysEffect effect = effectMap.get(serial);
     if (effect == null)
       return; 
     List<Effect> effects = selectEffect(role);
@@ -578,19 +578,19 @@ public class EquipService {
       return; 
     if (!NumberUtil.isNumber(reqPetEquip.getId()) || !NumberUtil.isNumber(reqPetEquip.getEId()))
       return; 
-    int petId = Integer.valueOf(reqPetEquip.getId()).intValue();
-    long eId = Long.valueOf(reqPetEquip.getEId()).longValue();
-    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId().longValue());
+    int petId = Integer.valueOf(reqPetEquip.getId());
+    long eId = Long.valueOf(reqPetEquip.getEId());
+    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
     if (petEquipMap == null || petEquipMap.size() <= 0)
       return; 
-    PetEquip equip = petEquipMap.values().stream().filter(e -> e.getId().equals(Long.valueOf(eId))).findFirst().orElse(null);
+    PetEquip equip = petEquipMap.values().stream().filter(e -> e.getId().equals(eId)).findFirst().orElse(null);
     if (equip != null && equip.getId() != null && equip.getPId() <= 0L) {
-      Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(petId));
+      Pet pet = (Pet)this.petService.selectPet(role).get(petId);
       if (pet == null)
         return; 
-      SysPetAcsry sysPetAcsry = (SysPetAcsry)EquipDataPool.petAcsryMap.get(Integer.valueOf(equip.getSerial()));
-      if (pet.getRebirth().intValue() * 1000 + pet.getPetLv().intValue() >= sysPetAcsry.getNeedRei() * 1000 + sysPetAcsry.getNeedGrade()) {
-        PetEquip wearEquip = petEquipMap.values().stream().filter(e -> (e.getPosition() == sysPetAcsry.getPos() && pet.getId().equals(Long.valueOf(e.getPId())))).findFirst().orElse(null);
+      SysPetAcsry sysPetAcsry = (SysPetAcsry)EquipDataPool.petAcsryMap.get(equip.getSerial());
+      if (pet.getRebirth() * 1000 + pet.getPetLv() >= sysPetAcsry.getNeedRei() * 1000 + sysPetAcsry.getNeedGrade()) {
+        PetEquip wearEquip = petEquipMap.values().stream().filter(e -> (e.getPosition() == sysPetAcsry.getPos() && pet.getId().equals(e.getPId()))).findFirst().orElse(null);
         if (wearEquip != null) {
           wearEquip.setPId(0L);
           int positionNum = wearEquip.getPositionNum() - 1;
@@ -598,30 +598,30 @@ public class EquipService {
           wearEquip.save();
           refreshPetEquip(role, wearEquip);
         } 
-        equip.setPId(pet.getId().longValue());
+        equip.setPId(pet.getId());
         equip.save();
         refreshPetEquip(role, equip);
-        this.petService.calculateBase(role.getId().longValue(), pet);
-        this.petService.getArenaScore(role.getId().longValue(), pet);
+        this.petService.calculateBase(role.getId(), pet);
+        this.petService.getArenaScore(role.getId(), pet);
         this.petService.sendPetPanels(role, pet);
         pet.save();
       } else {
-        String tips = String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", new Object[] { Integer.valueOf(sysPetAcsry.getSerial()), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(sysPetAcsry.getSerial()), Integer.valueOf(sysPetAcsry.getSerial()), sysPetAcsry.getName() });
-        String msg = String.format("%s需要召唤兽达到#<R>%s转%d级#之后才可装备", new Object[] { tips, Integer.valueOf(sysPetAcsry.getNeedRei()), Integer.valueOf(sysPetAcsry.getNeedGrade()) });
+        String tips = String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", sysPetAcsry.getSerial(), 0, 0, sysPetAcsry.getSerial(), sysPetAcsry.getSerial(), sysPetAcsry.getName());
+        String msg = String.format("%s需要召唤兽达到#<R>%s转%d级#之后才可装备", tips, sysPetAcsry.getNeedRei(), sysPetAcsry.getNeedGrade());
         MessagePusher.pushMessage(role, (Message)new RespMsg(msg));
       } 
     } 
   }
   
   public void unEquip(Role role, ReqUnPetEquip reqUnPetEquip) {
-    int petId = Integer.valueOf(reqUnPetEquip.getId()).intValue();
-    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId().longValue());
+    int petId = Integer.valueOf(reqUnPetEquip.getId());
+    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
     if (petEquipMap == null || petEquipMap.size() <= 0)
       return; 
-    Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(petId));
+    Pet pet = (Pet)this.petService.selectPet(role).get(petId);
     if (pet == null)
       return; 
-    PetEquip equip = petEquipMap.values().stream().filter(e -> (e.getPosition() == reqUnPetEquip.getPosition() && pet.getId().equals(Long.valueOf(e.getPId())))).findFirst().orElse(null);
+    PetEquip equip = petEquipMap.values().stream().filter(e -> (e.getPosition() == reqUnPetEquip.getPosition() && pet.getId().equals(e.getPId()))).findFirst().orElse(null);
     if (equip != null && equip.getId() != null) {
       int pos = this.bagService.getPos(role, true);
       if (pos <= 0) {
@@ -633,15 +633,15 @@ public class EquipService {
       equip.setPositionNum((short)((positionNum < 0) ? 0 : positionNum));
       equip.save();
       refreshPetEquip(role, equip);
-      this.petService.calculateBase(role.getId().longValue(), pet);
-      this.petService.getArenaScore(role.getId().longValue(), pet);
+      this.petService.calculateBase(role.getId(), pet);
+      this.petService.getArenaScore(role.getId(), pet);
       this.petService.sendPetPanels(role, pet);
       pet.save();
     } 
   }
   
   public void repairPetAcsry(Role role, ReqRepairPetAcsry repairPetAcsry) {
-    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId().longValue());
+    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
     if (petEquipMap == null || petEquipMap.size() <= 0 || !NumberUtil.isNumber(repairPetAcsry.getId()))
       return; 
     Long id = Long.valueOf(repairPetAcsry.getId());
@@ -650,7 +650,7 @@ public class EquipService {
       return; 
     int num = (repairPetAcsry.getNum() > 2) ? 2 : repairPetAcsry.getNum();
     Long price = (Long)Const.PET_ACSRY_REPAIR_COST.get(Byte.valueOf(equip.getProductOrder()));
-    if (this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, price.longValue() * num, "宠物佩饰修复")) {
+    if (this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, price * num, "宠物佩饰修复")) {
       int positionNum = (equip.getPositionNum() <= 0) ? 0 : equip.getPositionNum();
       equip.setPositionNum((short)((positionNum + num > 2) ? 2 : (positionNum + num)));
       equip.save();
@@ -661,7 +661,7 @@ public class EquipService {
   public void petAcsryLock(Role role, ReqPetAcsryLock petAcsryLock) {
     if (petAcsryLock.getLock() < 0 || petAcsryLock.getLock() > 1)
       return; 
-    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId().longValue());
+    Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
     if (petEquipMap == null || petEquipMap.size() <= 0 || !NumberUtil.isNumber(petAcsryLock.getId()))
       return; 
     Long id = Long.valueOf(petAcsryLock.getId());

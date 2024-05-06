@@ -59,8 +59,8 @@ public class DbTianFuService {
           DbTianFuService.this.saveToDb(entity);
           stopWatch.stop();
           if (stopWatch.getTime() > 500L) {
-            LoggerUtils.info(entity.getClass().getName() + "数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
-            LoggerUtils.info(entity.getClass().getName() + "数据持久化队列长度：" + DbTianFuService.this.queue.size(), new Object[0]);
+            LoggerUtils.info(entity.getClass().getName() + "数据持久化消耗毫秒：" + stopWatch.getTime());
+            LoggerUtils.info(entity.getClass().getName() + "数据持久化队列长度：" + DbTianFuService.this.queue.size());
           } 
         } catch (Exception e) {
           LoggerUtils.error(entity.getClass().getName() + "存档异常", e);
@@ -84,7 +84,7 @@ public class DbTianFuService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[DbStoreBag] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[DbStoreBag] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

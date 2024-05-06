@@ -52,7 +52,7 @@ public class PartDataPool {
     roleChangeColor = initService.initRoleChangeColor();
     titleMap = initService.initTitle();
     initCanMove(initService.initCanMove());
-    String[] split = ((ServerService)SpringUtils.getBean(ServerService.class)).getMarking().split(",");
+    String[] split = SpringUtils.getBean(ServerService.class).getMarking().split(",");
     for (String s : split)
       MARKING.add(s); 
     tgroupsMap = initService.initGroups();
@@ -60,15 +60,15 @@ public class PartDataPool {
   }
   
   public static void initCanMove(List<SysCanMove> list) {
-    RedisService redisService = (RedisService)SpringUtils.getBean(RedisService.class);
+    RedisService redisService = SpringUtils.getBean(RedisService.class);
     for (SysCanMove sysCanMove : list) {
       Move move = new Move();
       String uncompress = ZipUtil.uncompress(sysCanMove.getCanMove());
-      List<String> collection = (List<String>)JsonUtils.string2Collection(uncompress, List.class, String.class);
+      List<String> collection = JsonUtils.string2Collection(uncompress, List.class, String.class);
       move.getList().addAll(collection);
       redisService.set("move_" + sysCanMove.getSerial(), (Serializable)move, 0L);
       if (sysCanMove.getTab() <= 0)
-        can_move_map.add(Integer.valueOf(sysCanMove.getSerial())); 
+        can_move_map.add(sysCanMove.getSerial());
     } 
   }
 }

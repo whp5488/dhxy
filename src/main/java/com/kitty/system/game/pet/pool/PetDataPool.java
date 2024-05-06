@@ -31,25 +31,25 @@ public class PetDataPool {
     List<Map<String, Integer>> dogz_maps = DOGZ_PETSKILL.toList();
     for (Map<String, Integer> map : dogz_maps) {
       Integer type = map.get("type");
-      if (type.intValue() == 1)
+      if (type == 1)
         ACTIVE_PETSKILLLIST.add(map.get("value")); 
     } 
     List<Map<String, Integer>> generl_maps = GENERAL_PETSKILL.toList();
     for (Map<String, Integer> map : generl_maps) {
       Integer type = map.get("type");
-      if (type.intValue() == 1)
+      if (type == 1)
         ACTIVE_PETSKILLLIST.add(map.get("value")); 
     } 
     List<Map<String, Integer>> high_maps = HIGH_PETSKILL.toList();
     for (Map<String, Integer> map : high_maps) {
       Integer type = map.get("type");
-      if (type.intValue() == 1)
+      if (type == 1)
         ACTIVE_PETSKILLLIST.add(map.get("value")); 
     } 
     List<Map<String, Integer>> ultimate_maps = ULTIMATE_PETSKILL.toList();
     for (Map<String, Integer> map : ultimate_maps) {
       Integer type = map.get("type");
-      if (type.intValue() == 1)
+      if (type == 1)
         ACTIVE_PETSKILLLIST.add(map.get("value")); 
     } 
   }

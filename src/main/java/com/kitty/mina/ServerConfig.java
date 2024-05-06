@@ -33,7 +33,7 @@ public class ServerConfig {
     sql = sql.setCallback(Sqls.callback.str());
     this.dao.execute(sql);
     if (sql.getString() != null) {
-      int level = Integer.valueOf(sql.getString()).intValue();
+      int level = Integer.valueOf(sql.getString());
       if (level > this.serverLevel)
         this.serverLevel = level; 
     } 

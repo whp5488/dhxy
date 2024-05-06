@@ -46,7 +46,7 @@ public class EventsUtils {
     List<GeneralClash> listA = new ArrayList<>(teamA.size());
     for (int i = 0; i < teamA.size(); i++) {
       Member member1 = teamA.get(i);
-      Role role = roleService.getPlayer(member1.getId().longValue());
+      Role role = roleService.getPlayer(member1.getId());
       if (role != null) {
         objects.add(role);
         listA.add(new GeneralClash(role.getName(), role.getIcon(), role.getRelive().byteValue(), role.getLevel().shortValue()));
@@ -55,7 +55,7 @@ public class EventsUtils {
     List<GeneralClash> listB = new ArrayList<>(teamB.size());
     for (int j = 0; j < teamB.size(); j++) {
       Member member2 = teamB.get(j);
-      Role role = roleService.getPlayer(member2.getId().longValue());
+      Role role = roleService.getPlayer(member2.getId());
       if (role != null) {
         listB.add(new GeneralClash(role.getName(), role.getIcon(), role.getRelive().byteValue(), role.getLevel().shortValue()));
         objects.add(role);
@@ -85,7 +85,7 @@ public class EventsUtils {
   }
   
   public static FightInfo getFightInfo(List<Role> listA, List<Role> listB, long id) {
-    Role role = listA.stream().filter(e -> e.getId().equals(Long.valueOf(id))).findFirst().orElse(null);
+    Role role = listA.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
     if (role != null)
       return getFightInfo(listA, listB); 
     return getFightInfo(listB, listA);

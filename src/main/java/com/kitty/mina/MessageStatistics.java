@@ -21,14 +21,14 @@ public class MessageStatistics {
   }
   
   public void addReceived(int cmd) {
-    this.receivedCounter.putIfAbsent(Integer.valueOf(cmd), new AtomicInteger());
-    AtomicInteger counter = this.receivedCounter.get(Integer.valueOf(cmd));
+    this.receivedCounter.putIfAbsent(cmd, new AtomicInteger());
+    AtomicInteger counter = this.receivedCounter.get(cmd);
     counter.incrementAndGet();
   }
   
   public void addSent(int cmd) {
-    this.sentCounter.putIfAbsent(Integer.valueOf(cmd), new AtomicInteger());
-    AtomicInteger counter = this.sentCounter.get(Integer.valueOf(cmd));
+    this.sentCounter.putIfAbsent(cmd, new AtomicInteger());
+    AtomicInteger counter = this.sentCounter.get(cmd);
     counter.incrementAndGet();
   }
   
@@ -36,9 +36,9 @@ public class MessageStatistics {
     List<CmdRecord> received = new ArrayList<>();
     List<CmdRecord> sent = new ArrayList<>();
     for (Map.Entry<Integer, AtomicInteger> entry : this.receivedCounter.entrySet())
-      received.add(new CmdRecord(((Integer)entry.getKey()).intValue(), ((AtomicInteger)entry.getValue()).get())); 
+      received.add(new CmdRecord(entry.getKey(), ((AtomicInteger)entry.getValue()).get()));
     for (Map.Entry<Integer, AtomicInteger> entry : this.sentCounter.entrySet())
-      sent.add(new CmdRecord(((Integer)entry.getKey()).intValue(), ((AtomicInteger)entry.getValue()).get())); 
+      sent.add(new CmdRecord(entry.getKey(), ((AtomicInteger)entry.getValue()).get()));
     Collections.sort(received);
     Collections.sort(sent);
     StringBuilder result = new StringBuilder();

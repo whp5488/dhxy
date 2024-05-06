@@ -90,7 +90,7 @@ public class PetFightObject extends FightObject {
     setASide(master.isASide());
     setHostId(master.getId());
     setTargetId(pet.getPetId());
-    if (nutMap.size() > 0) {
+    if (nutMap != null && nutMap.size() > 0) {
       int type = Integer.valueOf(String.valueOf(nutMap.get("type"))).intValue();
       int autoSkillId = Integer.valueOf(String.valueOf(nutMap.get("skillId"))).intValue();
       setType(type);
@@ -116,7 +116,7 @@ public class PetFightObject extends FightObject {
   public void color() {
     if (this.pet.getColorList() != null && this.pet.getColorList().size() > 0) {
       byte currentColor = 0;
-      for (Map<String, Byte> map : (Iterable<Map<String, Byte>>)this.pet.getColorList()) {
+      for (Map<String, Byte> map : this.pet.getColorList()) {
         if (((Byte)map.get("is_use")).byteValue() == 1) {
           currentColor = ((Byte)map.get("color")).byteValue();
           break;

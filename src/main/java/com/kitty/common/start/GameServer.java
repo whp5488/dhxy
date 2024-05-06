@@ -84,7 +84,7 @@ public class GameServer implements CommandLineRunner {
     } catch (Exception e) {
       System.out.println("e = " + e);
     } 
-    this.logger.warn("socket server start at port:{},", Integer.valueOf(this.serverService.getPort()));
+    this.logger.warn("socket server start at port:{},", this.serverService.getPort());
     this.logger.warn("start GameServer success!!");
   }
   

@@ -78,13 +78,13 @@ public class MongoPetThread {
     update.set("petLv", entity.getPetLv());
     update.set("rebirth", entity.getRebirth());
     update.set("fpoint", entity.getFpoint());
-    update.set("exp", Long.valueOf(entity.getExp()));
-    update.set("petClose", Long.valueOf(entity.getPetClose()));
+    update.set("exp", entity.getExp());
+    update.set("petClose", entity.getPetClose());
     update.set("gg", entity.getGg());
     update.set("lx", entity.getLx());
     update.set("ll", entity.getLl());
     update.set("mj", entity.getMj());
-    update.set("currLife", Integer.valueOf(entity.getCurrLife()));
+    update.set("currLife", entity.getCurrLife());
     update.set("maxLife", entity.getMaxLife());
     update.set("currMana", entity.getMaxMana());
     update.set("maxMana", entity.getMaxMana());
@@ -102,8 +102,8 @@ public class MongoPetThread {
     update.set("autoFightSet", entity.getAutoFightSet());
     update.set("darkBaseMap", entity.getDarkBaseMap());
     update.set("colorList", entity.getColorList());
-    update.set("horse", Long.valueOf(entity.getHorse()));
-    update.set("bindTime", Integer.valueOf(entity.getBindTime()));
+    update.set("horse", entity.getHorse());
+    update.set("bindTime", entity.getBindTime());
     update.set("petBase", entity.getPetBase());
     update.set("correctionInfo", entity.getCorrectionInfo());
     this.mongoTemplate.upsert(query, update, Pet.class, "pet");
@@ -114,7 +114,7 @@ public class MongoPetThread {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[MongoPet] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[MongoPet] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

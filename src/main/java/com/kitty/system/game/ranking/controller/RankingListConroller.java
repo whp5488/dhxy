@@ -82,16 +82,16 @@ public class RankingListConroller {
   public void getMyRankingList(IoSession session, ReqMyRanking reqMyRanking) {
     Role role = SessionUtils.getRoleBySession(session);
     if (role == null)
-      return; 
+      return;
     byte type = reqMyRanking.getType();
     if (type < 0)
-      return; 
+      return;
     byte serverId = reqMyRanking.getServerId();
     if (serverId < 0)
-      return; 
+      return;
     int serial = reqMyRanking.getSerial();
     if (serial < 0)
-      return; 
+      return;
     getMyRankingList(role, type, serverId, serial);
   }
   

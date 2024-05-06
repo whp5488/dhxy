@@ -13,10 +13,10 @@ public class CallBackService {
     CallBack callBack = new CallBack();
     callBack.setIndex(index);
     callBack.setData(message);
-    this.callbacks.put(Integer.valueOf(index), callBack);
+    this.callbacks.put(index, callBack);
   }
   
   public CallBack removeCallBack(int index) {
-    return this.callbacks.remove(Integer.valueOf(index));
+    return this.callbacks.remove(index);
   }
 }

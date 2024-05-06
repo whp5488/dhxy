@@ -42,7 +42,7 @@ public class SchedulerManager {
   public void shutDown() {
     this.service.shutdown();
     this.service.shutdownNow();
-    LoggerUtils.error("定时器关闭结束", new Object[0]);
+    LoggerUtils.error("定时器关闭结束");
   }
   
   private static class LogTask implements Runnable {
@@ -57,7 +57,7 @@ public class SchedulerManager {
         this.wrapper.run();
       } catch (Throwable e) {
         e.printStackTrace();
-        LoggerUtils.error("定时任务执行异常", new Object[] { e.getMessage() });
+        LoggerUtils.error("定时任务执行异常", e.getMessage());
       } 
     }
   }

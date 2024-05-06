@@ -33,7 +33,7 @@ public class IdentityService {
             this.dao.insertOrUpdate(ent);
           } 
         } 
-        this.map.put(Integer.valueOf(ent.getType()), ent);
+        this.map.put(ent.getType(), ent);
       } 
     } 
   }
@@ -49,7 +49,7 @@ public class IdentityService {
     if (!idType.isSave())
       return this.defaultFactory.getAndIncrement(); 
     int type = idType.getType();
-    IdentityEnt ent = this.map.get(Integer.valueOf(type));
+    IdentityEnt ent = this.map.get(type);
     int nextId = ent.getNextId();
     Db4CommonService.getInstance().add2Queue(ent);
     return nextId;

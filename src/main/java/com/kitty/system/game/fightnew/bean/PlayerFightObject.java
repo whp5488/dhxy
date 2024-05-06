@@ -88,14 +88,13 @@ public class PlayerFightObject extends FightObject {
   }
   
   static {
-    publicAutoSet.setv("type", Integer.valueOf(0));
-    publicAutoSet.setv("action", Integer.valueOf(1));
-    publicAutoSet.setv("skillId", Integer.valueOf(0));
-    publicAutoSet.setv("born", Integer.valueOf(0));
+    publicAutoSet.setv("type", 0);
+    publicAutoSet.setv("action", 1);
+    publicAutoSet.setv("skillId", 0);
+    publicAutoSet.setv("born", 0);
   }
   
   public PlayerFightObject(Role role, int index, int customIndex, boolean isA) {
-    NutMap nutMap = null;
     this.assistParams = new ArrayList<>();
     this.dayInCeFight = new DayInCeFight();
     this.abnormalRoundMap = new HashMap<>();
@@ -106,52 +105,56 @@ public class PlayerFightObject extends FightObject {
     this.customIndex = customIndex;
     this.role = role;
     Map<String, Object> autoSet = role.getExtendBox().getAutoFightSet();
-    if (autoSet == null || autoSet.size() <= 0)
-      nutMap = publicAutoSet; 
+    if (autoSet == null || autoSet.isEmpty()) {
+      autoSet = publicAutoSet;
+    }
+
     setId(role.getRoleId());
-    setHostId(role.getRoleId().intValue());
-    setSerial(role.getSerial().intValue());
+    setHostId(role.getRoleId());
+    setSerial(role.getSerial());
     setWeaponId(role.getWeaponIcon());
     setName(role.getName());
-    setRelive(role.getRelive().intValue());
-    setLevel(role.getLevel().intValue());
+    setRelive(role.getRelive());
+    setLevel(role.getLevel());
     setIcon(role.getIcon());
-    setRace(role.getRace().intValue());
+    setRace(role.getRace());
     setColor(role.getColor());
     setASide(isA);
     setLogic(LOGIC.LOGICTYPE_HERO.getValue());
-    setPos(((Short)PositionUtils.positions.get(index)).shortValue());
-    setMaxLife(role.getMaxLife().intValue());
-    setMaxMana(role.getMaxMana().intValue());
-    setCurrMana(role.getCurrMana().intValue());
-    setCurrLife(role.getCurrLife().intValue());
+    setPos(PositionUtils.positions.get(index));
+    setMaxLife(role.getMaxLife());
+    setMaxMana(role.getMaxMana());
+    setCurrMana(role.getCurrMana());
+    setCurrLife(role.getCurrLife());
     setPhyPower(CountUtils.countPhyPower(role));
     setSpeed(CountUtils.countSpeed(role));
     setFightMsg(role.getExtendBox().getMsgMap());
-    setFightPetId(role.getExtendBox().getCombatPet().intValue());
+    setFightPetId(role.getExtendBox().getCombatPet());
     this.yepFightPet.add(role.getExtendBox().getCombatPet());
     this.role = role;
     setAutoFight(role.getExtendBox().getAutoFight());
-    List<RoleSkill> collect = (List<RoleSkill>)role.getSkills().values().stream().collect(Collectors.toList());
+    List<RoleSkill> collect = role.getSkills().values().stream().collect(Collectors.toList());
     setSkillIds(collect);
-    int type = Integer.valueOf(String.valueOf(nutMap.get("type"))).intValue();
-    int skillId = Integer.valueOf(String.valueOf(nutMap.get("skillId"))).intValue();
-    int action = Integer.valueOf(String.valueOf(nutMap.get("action"))).intValue();
+
+    int type = Integer.valueOf(String.valueOf(autoSet.get("type")));
+    int skillId = Integer.valueOf(String.valueOf(autoSet.get("skillId")));
+    int action = Integer.valueOf(String.valueOf(autoSet.get("action")));
+
     setType(type);
     setSkillId(skillId);
     setAutoFightType(type);
     setAutoSkillId(skillId);
     setAction(action);
-    if (nutMap.get("target") != null && !"".equals(nutMap.get("target"))) {
-      String target = String.valueOf(nutMap.get("target"));
-      setTargetId(Integer.valueOf(target).intValue());
-      setAutoTarget(Integer.valueOf(target).intValue());
+    if (autoSet.get("target") != null && !"".equals(autoSet.get("target"))) {
+      String target = String.valueOf(autoSet.get("target"));
+      setTargetId(Integer.valueOf(target));
+      setAutoTarget(Integer.valueOf(target));
     } 
-    if (role.getRace().intValue() == RACE.RACE_LONG.getValue()) {
-      getSkillCoolMap().setv(String.valueOf(30041), Integer.valueOf(4));
-      Object born = nutMap.get("born");
+    if (role.getRace() == RACE.RACE_LONG.getValue()) {
+      getSkillCoolMap().setv(String.valueOf(30041), 4);
+      Object born = autoSet.get("born");
       if (born != null) {
-        setBorn(((Integer)nutMap.get("born")).intValue());
+        setBorn((Integer) autoSet.get("born"));
       } else {
         setBorn(1);
       } 
@@ -159,15 +162,13 @@ public class PlayerFightObject extends FightObject {
     setPropertyMap(CountUtils.countPro(role));
     List<SuitParam> suits = role.getExtendBox().getSuits();
     if (suits.size() > 0) {
-      List<Integer> petIds = ((SuitParam)suits.get(0)).getPetIds();
+      List<Integer> petIds = suits.get(0).getPetIds();
       if (petIds != null && petIds.size() > 0)
-        this
-          
-          .assistParams = (List<AssistParam>)petIds.stream().map(petId -> {
+        this.assistParams = petIds.stream().map(petId -> {
               AssistParam assist = new AssistParam();
               assist.setPetId(petId);
               return assist;
-            }).collect(Collectors.toList()); 
+        }).collect(Collectors.toList());
     } 
     List<WearEquip> wearEquips = SpringUtils.getEquipService().getEquipValid(role, false);
     if (wearEquips.size() > 0) {
@@ -176,7 +177,7 @@ public class PlayerFightObject extends FightObject {
     } 
     int currTime = (new Long(System.currentTimeMillis() / 1000L)).intValue();
     if (role.getMasquerade() > 0 && role.getCardExpireTime() > currTime) {
-      SysDataCard dataCard = (SysDataCard)CardDataPool.cardMap.get(Integer.valueOf(role.getMasquerade()));
+      SysDataCard dataCard = CardDataPool.cardMap.get(role.getMasquerade());
       if (dataCard != null && dataCard.getMorph() > 0)
         setIcon(dataCard.getMorph()); 
     } 
@@ -185,16 +186,16 @@ public class PlayerFightObject extends FightObject {
   }
   
   public RoleSkill getSkillBy(Integer skillId) {
-    return (RoleSkill)getRole().getSkills().get(skillId);
+    return getRole().getSkills().get(skillId);
   }
   
   public IoSession getSession() {
-    return SessionUtils.getSessionBy(getRole().getId().longValue());
+    return SessionUtils.getSessionBy(getRole().getId());
   }
   
   private DayInCeFight getDayInCeFightValues() {
-    RoleDayInCe roleDayInCe = (RoleDayInCe)DataCache.ROLE_DAY_IN_CE.get(this.role.getId());
-    Map<Long, RoleTianFu> roleTianFus = (Map<Long, RoleTianFu>)((List)DataCache.ROLE_TIAN_FU.get(this.role.getId())).stream().collect(Collectors.toMap(RoleTianFu::getId, roleTianFu -> roleTianFu));
+    RoleDayInCe roleDayInCe = DataCache.ROLE_DAY_IN_CE.get(this.role.getId());
+    Map<Long, RoleTianFu> roleTianFus = DataCache.ROLE_TIAN_FU.get(this.role.getId()).stream().collect(Collectors.toMap(RoleTianFu::getId, roleTianFu -> roleTianFu));
     List<Long> tianFuSerials = TianFuUtils.getAllGridValues(roleDayInCe);
     List<TianFuObject> tianFuList = new ArrayList<>();
     for (Long id : tianFuSerials) {
@@ -202,12 +203,12 @@ public class PlayerFightObject extends FightObject {
       if (roleTianFu == null || roleTianFu.getIsWear() != 1)
         continue; 
       TianFuObject tianFuObject = new TianFuObject();
-      tianFuObject.setRoleTianFuId(roleTianFu.getId().longValue());
+      tianFuObject.setRoleTianFuId(roleTianFu.getId());
       tianFuObject.setCeSerial(roleTianFu.getTianFuSerial());
       tianFuObject.setLevel(roleTianFu.getLevel());
       tianFuObject.setProductOrder(roleTianFu.getProductOrder());
       if (roleTianFu.getTriggerType() == null) {
-        SysTianFuSkill sysTianFuSkill = (SysTianFuSkill)SkillDataPool.tianFuSkillMap.get(Integer.valueOf(roleTianFu.getTianFuSerial()));
+        SysTianFuSkill sysTianFuSkill = SkillDataPool.tianFuSkillMap.get(roleTianFu.getTianFuSerial());
         if (sysTianFuSkill != null)
           tianFuObject.setTriggerType(sysTianFuSkill.getOpportunity()); 
       } else {
@@ -223,13 +224,13 @@ public class PlayerFightObject extends FightObject {
   
   public void instalAbnormalRoundMap(Fight fight) {
     if (getStatusValue(1002) > 0) {
-      getAbnormalRoundMap().put(Integer.valueOf(fight.getRound()), Integer.valueOf(1002));
+      getAbnormalRoundMap().put(fight.getRound(), 1002);
     } else if (getStatusValue(1003) > 0) {
-      getAbnormalRoundMap().put(Integer.valueOf(fight.getRound()), Integer.valueOf(1003));
+      getAbnormalRoundMap().put(fight.getRound(), 1003);
     } else if (getStatusValue(1004) > 0) {
-      getAbnormalRoundMap().put(Integer.valueOf(fight.getRound()), Integer.valueOf(1004));
+      getAbnormalRoundMap().put(fight.getRound(), 1004);
     } else if (getStatusValue(1006) > 0) {
-      getAbnormalRoundMap().put(Integer.valueOf(fight.getRound()), Integer.valueOf(1006));
+      getAbnormalRoundMap().put(fight.getRound(), 1006);
     } 
   }
   

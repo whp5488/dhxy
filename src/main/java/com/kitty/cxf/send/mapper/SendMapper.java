@@ -9,16 +9,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SendMapper {
-  public static Map Client(Map<String, Object> map, String api, String ip, int port, String name, String pwd) {
+  public static Map<String, Object> Client(Map<String, Object> map, String api, String ip, int port, String name, String pwd) {
     JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
     try {
       Client client = dcf.createClient("http://" + ip + ":" + port + "/services/ServiceMaster?wsdl");
       client.getOutInterceptors().add(new ClientCheckInterceptor(name, pwd));
-      Object[] objects = new Object[0];
+      Object[] objects;
       String string = "";
       if (map != null)
         string = MapStringUtil.getMapToString(map); 
-      objects = client.invoke(api, new Object[] { string });
+      objects = client.invoke(api, string);
       return MapStringUtil.getStringToMap(objects[0].toString());
     } catch (Exception e) {
       e.printStackTrace();

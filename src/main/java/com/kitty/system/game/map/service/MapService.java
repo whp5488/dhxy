@@ -93,50 +93,50 @@ public class MapService {
   
   @EventHandler({EventType.ENTER_MAP})
   public void handleEnterMapEvent(EnterMapEvent enterMapEvent) {
-    Role role = enterMapEvent.getRole();
-    int mapId = role.getPos().getMapId().intValue();
-    SysMapInfo mapInfo = getMap(mapId);
-    if (mapInfo == null) {
-      role.setPos(new Pos());
-      mapId = role.getPos().getMapId().intValue();
-    } 
-    RespClearAllRole respClearAllRole = new RespClearAllRole();
-    respClearAllRole.setRoleId(role.getRoleId().intValue());
-    respClearAllRole.setMapId(mapId);
-    MessagePusher.pushMessage(role, (Message)respClearAllRole);
-    cache(role, mapId);
-    sendEnterMap(role);
-    sendGameMapTransmission(role, mapId);
-    try {
-      broadcastNpc(role, mapId);
-    } catch (Exception e) {
-      this.logger.error("加载NPC错误：", e);
-    } 
-    Integer incenseExpireTime = (Integer)role.getExpireTimeMap().get("incenseExpireTime");
-    if (incenseExpireTime.intValue() > 0) {
-      role.getExpireTimeMap().put("incenseExpireTime", Integer.valueOf(0));
-      MessagePusher.pushMessage(role, (Message)new RespUseIncense(Integer.valueOf(90005), Integer.valueOf(0)));
-    } 
-    if (DataCache.ONLINE_ROLES.containsKey(role.getId()))
-      DataCache.ONLINE_ROLES.put(role.getId(), role); 
-    role.save();
-    this.broadcastService.sendAppear(role);
-    SceneManager.INSTANCE.enterMap(mapId, role);
+      Role role = enterMapEvent.getRole();
+      int mapId = role.getPos().getMapId();
+      SysMapInfo mapInfo = getMap(mapId);
+      if (mapInfo == null) {
+          role.setPos(new Pos());
+          mapId = role.getPos().getMapId();
+      }
+      RespClearAllRole respClearAllRole = new RespClearAllRole();
+      respClearAllRole.setRoleId(role.getRoleId());
+      respClearAllRole.setMapId(mapId);
+      MessagePusher.pushMessage(role, respClearAllRole);
+      cache(role, mapId);
+      sendEnterMap(role);
+      sendGameMapTransmission(role, mapId);
+      try {
+          broadcastNpc(role, mapId);
+      } catch (Exception e) {
+          this.logger.error("加载NPC错误：", e);
+      }
+      Integer incenseExpireTime = role.getExpireTimeMap().get("incenseExpireTime");
+      if (incenseExpireTime != null && incenseExpireTime > 0) {
+          role.getExpireTimeMap().put("incenseExpireTime", 0);
+          MessagePusher.pushMessage(role, new RespUseIncense(90005, 0));
+      }
+      if (DataCache.ONLINE_ROLES.containsKey(role.getId()))
+          DataCache.ONLINE_ROLES.put(role.getId(), role);
+      role.save();
+      this.broadcastService.sendAppear(role);
+      SceneManager.INSTANCE.enterMap(mapId, role);
   }
   
   @EventHandler({EventType.MOVE})
   public void handleLoginEvent(MoveEvent moveEvent) {
     Role role = moveEvent.getRole();
     SceneManager.INSTANCE.movePosition(role);
-    Team team = this.teamService.getTeam(role.getRoleId().intValue());
-    if (team != null && role.getId().equals(Long.valueOf(team.getLeaderUid())))
+    Team team = this.teamService.getTeam(role.getRoleId());
+    if (team != null && role.getId().equals(team.getLeaderUid()))
       for (int i = 0; i < team.getList().size(); i++) {
         Member member = team.getList().get(i);
         if (!member.getId().equals(role.getId()))
           if (member.isInTeam()) {
-            Role player = this.roleService.getPlayer(member.getId().longValue());
+            Role player = this.roleService.getPlayer(member.getId());
             if (player != null && player.getPos().getMapId().equals(role.getPos().getMapId())) {
-              player.setPos(role.getPos().getX().intValue(), role.getPos().getY().intValue(), role.getPos().getDir().intValue(), role.getPos().getMapId().intValue());
+              player.setPos(role.getPos().getX(), role.getPos().getY(), role.getPos().getDir(), role.getPos().getMapId());
               SceneManager.INSTANCE.movePosition(player);
             } 
           }  
@@ -155,7 +155,7 @@ public class MapService {
         RespDisappear respDisappear = new RespDisappear();
         respDisappear.setId(npc.getId());
         respDisappear.setType(LOGIC.NPC.getValue());
-        MessagePusher.pushMessage(role, (Message)respDisappear);
+        MessagePusher.pushMessage(role, respDisappear);
       }  
   }
   
@@ -172,43 +172,43 @@ public class MapService {
   }
   
   public int getMapIdByName(String mapName) {
-    return ((Integer)MapDataPool.mapName2Id.get(mapName)).intValue();
+    return MapDataPool.mapName2Id.get(mapName);
   }
   
   public List<Npc> getNpcList(GroupMapParam groupMapParam, int mapId) {
-    Set<Integer> set = (Set<Integer>)DataCache.MAP_NPC_ID_S.get(Integer.valueOf(mapId));
+    Set<Integer> set = DataCache.MAP_NPC_ID_S.get(mapId);
     ArrayList<Npc> arrayList = new ArrayList<>();
     if (set != null)
       for (Integer npcId : set) {
-        SysNpcInfo npc = (SysNpcInfo)DataCache.ID_NPC.get(npcId);
+        SysNpcInfo npc = DataCache.ID_NPC.get(npcId);
         if (npc == null)
           continue; 
         arrayList.add(new Npc(npc));
       }  
-    Function<Role, Serializable> mapKeyGenerater = (Function<Role, Serializable>)MapDataPool.MAP_KEY_GENERATE.get(Integer.valueOf(mapId));
+    Function<Role, Serializable> mapKeyGenerater = MapDataPool.MAP_KEY_GENERATE.get(mapId);
     if (mapKeyGenerater != null) {
-      Map<Serializable, Set<Integer>> map = (Map<Serializable, Set<Integer>>)DataCache.GROUP_NPC_ID_MAP.get(Integer.valueOf(mapId));
+      Map<Serializable, Set<Integer>> map = DataCache.GROUP_NPC_ID_MAP.get(mapId);
       if (map != null) {
         Serializable key = (groupMapParam.getRole() != null) ? mapKeyGenerater.apply(groupMapParam.getRole()) : groupMapParam.getGroupKey();
         set = (key != null) ? map.get(key) : null;
         if (set != null)
           for (Integer npcId : set) {
-            Npc npc = (Npc)DataCache.GROUP_NPC.get(npcId);
+            Npc npc = DataCache.GROUP_NPC.get(npcId);
             if (npc == null)
               continue; 
             arrayList.add(npc);
           }  
       } 
     } 
-    set = (Set<Integer>)DataCache.BOOS_OFFICER_MAP_NPC.get(Integer.valueOf(mapId));
+    set = DataCache.BOOS_OFFICER_MAP_NPC.get(mapId);
     if (set != null)
       for (Integer npcId : set) {
-        Npc npc = (Npc)DataCache.BOOS_OFFICER_SET.get(npcId);
+        Npc npc = DataCache.BOOS_OFFICER_SET.get(npcId);
         if (npc == null)
           continue; 
         arrayList.add(npc);
       }  
-    set = (Set<Integer>)DataCache.STAR_OFFICER_MAP_NPC.get(Integer.valueOf(mapId));
+    set = DataCache.STAR_OFFICER_MAP_NPC.get(mapId);
     if (set != null)
       for (Integer npcId : set) {
         Npc npc = (Npc)DataCache.STAR_OFFICER_SET.get(npcId);
@@ -216,15 +216,15 @@ public class MapService {
           continue; 
         arrayList.add(npc);
       }  
-    set = (Set<Integer>)DataCache.SEAL_DEMON_MAP_NPC.get(Integer.valueOf(mapId));
+    set = DataCache.SEAL_DEMON_MAP_NPC.get(mapId);
     if (set != null)
       for (Integer npcId : set) {
-        Npc npc = (Npc)DataCache.SEAL_DEMON_SET.get(npcId);
+        Npc npc = DataCache.SEAL_DEMON_SET.get(npcId);
         if (npc == null)
           continue; 
         arrayList.add(npc);
       }  
-    Set<Long> longs = (Set<Long>)DataCache.MIRROR_MAP_NPC.get(Integer.valueOf(mapId));
+    Set<Long> longs = DataCache.MIRROR_MAP_NPC.get(mapId);
     if (longs != null)
       for (Long id : longs) {
         Npc npc = creationMirror(id);
@@ -232,11 +232,11 @@ public class MapService {
           continue; 
         arrayList.add(npc);
       }  
-    List<SysNpcInfo> collect = (List<SysNpcInfo>)DataCache.PLACE_NPC.values().stream().filter(e -> (e.getPeriod() != null && e.getPos().getMapId().equals(Integer.valueOf(mapId)))).collect(Collectors.toList());
+    List<SysNpcInfo> collect = DataCache.PLACE_NPC.values().stream().filter(e -> (e.getPeriod() != null && e.getPos().getMapId().equals(mapId))).collect(Collectors.toList());
     if (collect.size() > 0) {
-      int day = Integer.valueOf(DateUtils.dayForWeek(new Date())).intValue();
+      int day = Integer.parseInt(DateUtils.dayForWeek(new Date()));
       for (SysNpcInfo npcInfo : collect) {
-        if (npcInfo.getPeriod().contains(Integer.valueOf(day)))
+        if (npcInfo.getPeriod().contains(day))
           arrayList.add(new Npc(npcInfo)); 
       } 
     } 
@@ -244,13 +244,13 @@ public class MapService {
   }
   
   public Npc creationMirror(Long id) {
-    Role player = this.roleService.getPlayer(id.longValue());
+    Role player = this.roleService.getPlayer(id);
     if (player != null) {
-      Mirror mirror = (Mirror)DataCache.MIRROR_MAP.get(player.getId());
+      Mirror mirror = DataCache.MIRROR_MAP.get(player.getId());
       if (mirror != null) {
-        Pos pos = (Pos)JsonUtils.string2Object(mirror.getPosInfo(), Pos.class);
-        SysHero sysHero = (SysHero)PartDataPool.heroMap.get(player.getSerial());
-        Npc npc = new Npc(player.getRoleId().intValue(), 0, pos.getMapId().intValue(), pos.getX().intValue(), pos.getY().intValue(), sysHero.getMirror(), player.getName(), mirror.getTitle(), 0, 0, 0, 0);
+        Pos pos = JsonUtils.string2Object(mirror.getPosInfo(), Pos.class);
+        SysHero sysHero = PartDataPool.heroMap.get(player.getSerial());
+        Npc npc = new Npc(player.getRoleId(), 0, pos.getMapId(), pos.getX(), pos.getY(), sysHero.getMirror(), player.getName(), mirror.getTitle(), 0, 0, 0, 0);
         npc.setMirror((byte)1);
         return npc;
       } 
@@ -259,40 +259,40 @@ public class MapService {
   }
   
   public Npc getNpc(int id) {
-    SysNpcInfo npc = (SysNpcInfo)DataCache.ID_NPC.get(Integer.valueOf(id));
+    SysNpcInfo npc = DataCache.ID_NPC.get(id);
     if (npc != null)
       return new Npc(npc); 
-    npc = (SysNpcInfo)DataCache.PLACE_NPC.get(Integer.valueOf(id));
+    npc = DataCache.PLACE_NPC.get(id);
     if (npc != null)
       return new Npc(npc); 
-    Npc npc_ = (Npc)DataCache.GROUP_NPC.get(Integer.valueOf(id));
+    Npc npc_ = DataCache.GROUP_NPC.get(id);
     if (npc_ != null)
       return npc_; 
-    npc_ = (Npc)DataCache.SCENE_TASK_NPC.get(Integer.valueOf(id));
+    npc_ = DataCache.SCENE_TASK_NPC.get(id);
     if (npc_ != null)
       return npc_; 
-    npc_ = (Npc)DataCache.BOOS_OFFICER_SET.get(Integer.valueOf(id));
+    npc_ = DataCache.BOOS_OFFICER_SET.get(id);
     if (npc_ != null)
       return npc_; 
-    npc_ = (Npc)DataCache.STAR_OFFICER_SET.get(Integer.valueOf(id));
+    npc_ = DataCache.STAR_OFFICER_SET.get(id);
     if (npc_ != null)
       return npc_; 
-    npc_ = (Npc)DataCache.SEAL_DEMON_SET.get(Integer.valueOf(id));
+    npc_ = DataCache.SEAL_DEMON_SET.get(id);
     if (npc_ != null)
       return npc_; 
-    npc_ = (Npc)DataCache.THREE_SCOPE_SET.get(Integer.valueOf(id));
+    npc_ = DataCache.THREE_SCOPE_SET.get(id);
     if (npc_ != null)
       return npc_; 
     return null;
   }
   
   public List<MapTransmission> getTrasferInfo(int mapId) {
-    Set<Integer> set = (Set<Integer>)MapDataPool.mapId2TrasferIdSet.get(Integer.valueOf(mapId));
-    if (set == null || set.size() <= 0)
+    Set<Integer> set = MapDataPool.mapId2TrasferIdSet.get(mapId);
+    if (set == null || set.isEmpty())
       return new ArrayList<>(); 
     List<MapTransmission> list = new ArrayList<>();
     for (Integer transferId : set) {
-      SysMapTeleporter transfer = getTransferById(transferId.intValue());
+      SysMapTeleporter transfer = getTransferById(transferId);
       MapTransmission MapTransmission = new MapTransmission();
       MapTransmission.setName(transfer.getToMapName());
       MapTransmission.setX(transfer.getFromX());
@@ -304,13 +304,13 @@ public class MapService {
   }
   
   public SysMapTeleporter getTrasfer(String toMapName, int fromMapId) {
-    Set<Integer> set = (Set<Integer>)MapDataPool.mapId2TrasferIdSet.get(Integer.valueOf(fromMapId));
+    Set<Integer> set = MapDataPool.mapId2TrasferIdSet.get(fromMapId);
     if (set == null) {
       this.logger.error("根据目标地图名和当前取传送点数据错误，toMapName = {}，fromMapId = {}", toMapName, Integer.valueOf(fromMapId));
       return null;
     } 
     for (Iterator<Integer> iterator = set.iterator(); iterator.hasNext(); ) {
-      int transferId = ((Integer)iterator.next()).intValue();
+      int transferId = iterator.next();
       SysMapTeleporter transfer = getTransferById(transferId);
       if (transfer.getToMapName().equals(toMapName))
         return transfer; 
@@ -319,14 +319,14 @@ public class MapService {
   }
   
   public SysMapInfo getMap(int mapId) {
-    return (SysMapInfo)MapDataPool.id2GameMaps.get(Integer.valueOf(mapId));
+    return MapDataPool.id2GameMaps.get(mapId);
   }
   
   public ConcurrentHashSet<Integer> getRoleIds(GroupMapParam groupMapParam, int mapId) {
     if (groupMapParam != null) {
-      Function<Role, Serializable> mapKeyGenerater = (Function<Role, Serializable>)MapDataPool.MAP_KEY_GENERATE.get(Integer.valueOf(mapId));
+      Function<Role, Serializable> mapKeyGenerater = MapDataPool.MAP_KEY_GENERATE.get(mapId);
       if (mapKeyGenerater != null) {
-        Map<Serializable, ConcurrentHashSet<Integer>> map = (Map<Serializable, ConcurrentHashSet<Integer>>)SessionCache.GROUP_MAPID_ROLEIDS.get(Integer.valueOf(mapId));
+        Map<Serializable, ConcurrentHashSet<Integer>> map = SessionCache.GROUP_MAPID_ROLEIDS.get(mapId);
         if (map == null)
           return null; 
         Serializable key = (groupMapParam.getRole() != null) ? mapKeyGenerater.apply(groupMapParam.getRole()) : groupMapParam.getGroupKey();
@@ -335,38 +335,38 @@ public class MapService {
         return map.get(key);
       } 
     } 
-    return (ConcurrentHashSet<Integer>)SessionCache.MAPID_ROLEIDS.get(Integer.valueOf(mapId));
+    return SessionCache.MAPID_ROLEIDS.get(mapId);
   }
   
   public SysMapTeleporter getTransferById(int transferId) {
-    return (SysMapTeleporter)MapDataPool.trasferId2Trasfer.get(Integer.valueOf(transferId));
+    return MapDataPool.trasferId2Trasfer.get(transferId);
   }
   
   public void cache(Role role, int mapId) {
     ConcurrentHashSet<Integer> set = null;
-    Function<Role, Serializable> mapKeyGenerater = (Function<Role, Serializable>)MapDataPool.MAP_KEY_GENERATE.get(Integer.valueOf(mapId));
+    Function<Role, Serializable> mapKeyGenerater = MapDataPool.MAP_KEY_GENERATE.get(mapId);
     if (mapKeyGenerater != null) {
       Serializable key = mapKeyGenerater.apply(role);
       if (key == null)
         return; 
-      Map<Serializable, ConcurrentHashSet<Integer>> map = (Map<Serializable, ConcurrentHashSet<Integer>>)SessionCache.GROUP_MAPID_ROLEIDS.get(Integer.valueOf(mapId));
+      Map<Serializable, ConcurrentHashSet<Integer>> map = SessionCache.GROUP_MAPID_ROLEIDS.get(mapId);
       if (map == null) {
-        map = SessionCache.GROUP_MAPID_ROLEIDS.putIfAbsent(Integer.valueOf(mapId), new ConcurrentHashMap<>());
+        map = SessionCache.GROUP_MAPID_ROLEIDS.putIfAbsent(mapId, new ConcurrentHashMap<>());
         if (map == null)
-          map = (Map<Serializable, ConcurrentHashSet<Integer>>)SessionCache.GROUP_MAPID_ROLEIDS.get(Integer.valueOf(mapId)); 
+          map = SessionCache.GROUP_MAPID_ROLEIDS.get(mapId);
       } 
       set = map.get(key);
       if (set == null) {
-        set = map.putIfAbsent(key, new ConcurrentHashSet());
+        set = map.putIfAbsent(key, new ConcurrentHashSet<>());
         if (set == null)
           set = map.get(key); 
       } 
     } else {
-      set = (ConcurrentHashSet<Integer>)SessionCache.MAPID_ROLEIDS.get(Integer.valueOf(mapId));
+      set = SessionCache.MAPID_ROLEIDS.get(mapId);
       if (set == null) {
-        set = SessionCache.MAPID_ROLEIDS.put(Integer.valueOf(mapId), new ConcurrentHashSet());
+        set = SessionCache.MAPID_ROLEIDS.put(mapId, new ConcurrentHashSet<>());
         if (set == null)
-          set = (ConcurrentHashSet<Integer>)SessionCache.MAPID_ROLEIDS.get(Integer.valueOf(mapId)); 
+          set = SessionCache.MAPID_ROLEIDS.get(mapId);
       } 
     } 
     set.add(role.getRoleId());
@@ -374,15 +374,15 @@ public class MapService {
   
   private void removeCache(Role role, int oldMapId) {
     ConcurrentHashSet<Integer> set = null;
-    Function<Role, Serializable> mapKeyGenerater = (Function<Role, Serializable>)MapDataPool.MAP_KEY_GENERATE.get(Integer.valueOf(oldMapId));
+    Function<Role, Serializable> mapKeyGenerater = MapDataPool.MAP_KEY_GENERATE.get(Integer.valueOf(oldMapId));
     if (mapKeyGenerater != null) {
-      Map<Serializable, ConcurrentHashSet<Integer>> map = (Map<Serializable, ConcurrentHashSet<Integer>>)SessionCache.GROUP_MAPID_ROLEIDS.get(Integer.valueOf(oldMapId));
+      Map<Serializable, ConcurrentHashSet<Integer>> map = SessionCache.GROUP_MAPID_ROLEIDS.get(Integer.valueOf(oldMapId));
       if (map != null) {
         Serializable key = mapKeyGenerater.apply(role);
         set = (key != null) ? map.get(key) : null;
       } 
     } else {
-      set = (ConcurrentHashSet<Integer>)SessionCache.MAPID_ROLEIDS.get(Integer.valueOf(oldMapId));
+      set = SessionCache.MAPID_ROLEIDS.get(oldMapId);
     } 
     if (set != null)
       set.remove(role.getRoleId()); 
@@ -399,7 +399,7 @@ public class MapService {
     if (mapId == 3002 || mapId == 3021 || mapId == 3022) {
       Party party = SpringUtils.getPartyService().getParty(role);
       if (party == null) {
-        MessagePusher.pushMessage(role, (Message)new RespMsg("你还没有帮派哦#<E:51>#"));
+        MessagePusher.pushMessage(role, new RespMsg("你还没有帮派哦#<E:51>#"));
         return;
       } 
       int scene = PartyDataPool.getScene(party.getLevel());
@@ -424,8 +424,8 @@ public class MapService {
     int oldMapId = role.getPos().getMapId().intValue();
     role.setPos(x, y, 5, mapId);
     this.teamService.teamTemporary(role, mapId);
-    EventDispatcher.getInstance().fireEvent((BaseGameEvent)new LeaveMapEvent(EventType.LEAVE_MAP, role, oldMapId));
-    EventDispatcher.getInstance().fireEvent((BaseGameEvent)new EnterMapEvent(EventType.ENTER_MAP, role));
+    EventDispatcher.getInstance().fireEvent(new LeaveMapEvent(EventType.LEAVE_MAP, role, oldMapId));
+    EventDispatcher.getInstance().fireEvent(new EnterMapEvent(EventType.ENTER_MAP, role));
   }
   
   public void changeMap(Role role, ReqTelePort reqTelePort, String param) {
@@ -435,14 +435,14 @@ public class MapService {
   
   private boolean checkChangeMap(Role role, int map, String param) {
     if (role.popTempCache("not_check_change_map") == null && MapDataPool.NOT_CHANGE_MAPS.contains(role.getPos().getMapId())) {
-      SysMapInfo mapInfo = getMap(role.getPos().getMapId().intValue());
-      String msg = MessageFormat.format("本场景禁止传送，请点击#<LG1>【{0}】#按钮离开。", new Object[] { mapInfo.getName() });
+      SysMapInfo mapInfo = getMap(role.getPos().getMapId());
+      String msg = MessageFormat.format("本场景禁止传送，请点击#<LG1>【{0}】#按钮离开。", mapInfo.getName());
       if (mapInfo.getHowToOut() != null)
         msg = mapInfo.getHowToOut(); 
-      this.teamService.pushMessage(role, (Message)new RespMsg(msg));
+      this.teamService.pushMessage(role, new RespMsg(msg));
       return false;
     } 
-    if (role.getPos().getMapId().equals(Integer.valueOf(1201))) {
+    if (role.getPos().getMapId().equals(1201)) {
       if (((PkService)SpringUtils.getBean(PkService.class)).isInPrisonTime(role)) {
         MessagePusher.notify2Player(role, 1113, new Object[0]);
         return false;
@@ -453,8 +453,8 @@ public class MapService {
       } 
     } 
     if (role.getPkInfoBox().getConceal() > 0 && map != 1201) {
-      Team team = this.teamService.getTeam(role.getRoleId().intValue());
-      if (team != null && !team.isLeader(role.getRoleId().intValue()))
+      Team team = this.teamService.getTeam(role.getRoleId());
+      if (team != null && !team.isLeader(role.getRoleId()))
         this.teamService.leaveTemp(role, true); 
       MessagePusher.notify2Player(role, 1108, new Object[0]);
       return false;
@@ -467,7 +467,7 @@ public class MapService {
     mapTarget.setMapId(map);
     mapTarget.setPosX(x);
     mapTarget.setPosY(y);
-    MessagePusher.pushMessage(role, (Message)mapTarget);
+    MessagePusher.pushMessage(role, mapTarget);
   }
   
   public void sendEnterMap(Role role) {
@@ -475,25 +475,25 @@ public class MapService {
   }
   
   public void sendEnterMap(Role role, Pos pos, boolean isTaskWalk) {
-    SysMapInfo mapInfo = getMap(pos.getMapId().intValue());
+    SysMapInfo mapInfo = getMap(pos.getMapId());
     RespEnterMap respEnterMap = new RespEnterMap();
-    respEnterMap.setDir(pos.getDir().intValue());
-    respEnterMap.setPosX(pos.getX().intValue());
-    respEnterMap.setPosY(pos.getY().intValue());
-    respEnterMap.setMapId(pos.getMapId().intValue());
+    respEnterMap.setDir(pos.getDir());
+    respEnterMap.setPosX(pos.getX());
+    respEnterMap.setPosY(pos.getY());
+    respEnterMap.setMapId(pos.getMapId());
     respEnterMap.setSafeZone((byte)mapInfo.getIsPkMap());
     if (isTaskWalk)
       respEnterMap.setIsTaskWalk((byte)1); 
-    MessagePusher.pushMessage(role, (Message)respEnterMap);
+    MessagePusher.pushMessage(role, respEnterMap);
     if (mapInfo.getIsPkMap() == 1)
-      ((ChatService)SpringUtils.getBean(ChatService.class)).sendInfo(role.getId(), "大侠已进入非安全区域，可进行野外决斗，请务必小心！"); 
+      SpringUtils.getBean(ChatService.class).sendInfo(role.getId(), "大侠已进入非安全区域，可进行野外决斗，请务必小心！");
   }
   
   private void sendGameMapTransmission(Role role, int mapId) {
     List<MapTransmission> list = getTrasferInfo(mapId);
     RespMapTransmission respMapTransmission = new RespMapTransmission();
     respMapTransmission.setList(list);
-    MessagePusher.pushMessage(role, (Message)respMapTransmission);
+    MessagePusher.pushMessage(role, respMapTransmission);
   }
   
   public void broadcastNpc(Role role, int mapId) {
@@ -507,40 +507,40 @@ public class MapService {
       elseAppear.setN(npc.getName());
       elseAppear.setT(npc.getTitle());
       elseAppear.setC(npc.getMirror());
-      MessagePusher.pushMessage(role, (Message)elseAppear);
+      MessagePusher.pushMessage(role, elseAppear);
     } 
   }
   
   public boolean isInPosition(Role role, int mapId, short x, short y, int perimeter) {
-    if (role.getPos().getMapId().intValue() != mapId)
+    if (role.getPos().getMapId() != mapId)
       return false; 
-    int roleX = role.getPos().getX().intValue();
-    int roleY = role.getPos().getY().intValue();
+    int roleX = role.getPos().getX();
+    int roleY = role.getPos().getY();
     return (Math.abs(roleX - x) <= perimeter && Math.abs(roleY - y) <= perimeter);
   }
   
   public void addGroupMapNpc(GroupMapParam groupMapParam, Npc npc) {
     int mapId = npc.getMap();
-    Function<Role, Serializable> mapKeyGenerater = (Function<Role, Serializable>)MapDataPool.MAP_KEY_GENERATE.get(Integer.valueOf(mapId));
+    Function<Role, Serializable> mapKeyGenerater = MapDataPool.MAP_KEY_GENERATE.get(mapId);
     if (mapKeyGenerater != null) {
       Serializable key = (groupMapParam.getRole() != null) ? mapKeyGenerater.apply(groupMapParam.getRole()) : groupMapParam.getGroupKey();
-      Map<Serializable, Set<Integer>> map = DataCache.GROUP_NPC_ID_MAP.computeIfAbsent(Integer.valueOf(mapId), k -> new ConcurrentHashMap<>());
-      Set<Integer> set = map.computeIfAbsent(key, k -> new ConcurrentHashSet());
-      set.add(Integer.valueOf(npc.getId()));
-      DataCache.GROUP_NPC.put(Integer.valueOf(npc.getId()), npc);
+      Map<Serializable, Set<Integer>> map = DataCache.GROUP_NPC_ID_MAP.computeIfAbsent(mapId, k -> new ConcurrentHashMap<>());
+      Set<Integer> set = map.computeIfAbsent(key, k -> new ConcurrentHashSet<>());
+      set.add(npc.getId());
+      DataCache.GROUP_NPC.put(npc.getId(), npc);
     } 
   }
   
   public void removeGroupMapNpc(GroupMapParam groupMapParam, Npc npc) {
     int mapId = npc.getMap();
-    Function<Role, Serializable> mapKeyGenerater = (Function<Role, Serializable>)MapDataPool.MAP_KEY_GENERATE.get(Integer.valueOf(mapId));
+    Function<Role, Serializable> mapKeyGenerater = MapDataPool.MAP_KEY_GENERATE.get(mapId);
     if (mapKeyGenerater != null) {
       Serializable key = (groupMapParam.getRole() != null) ? mapKeyGenerater.apply(groupMapParam.getRole()) : groupMapParam.getGroupKey();
-      Map<Serializable, Set<Integer>> map = (Map<Serializable, Set<Integer>>)DataCache.GROUP_NPC_ID_MAP.get(Integer.valueOf(mapId));
+      Map<Serializable, Set<Integer>> map = DataCache.GROUP_NPC_ID_MAP.get(mapId);
       if (map != null && key != null) {
         Set<Integer> set = map.get(key);
         if (set != null)
-          set.remove(Integer.valueOf(npc.getId())); 
+          set.remove(npc.getId());
       } 
       DataCache.GROUP_NPC.remove(npc);
     } 
@@ -548,6 +548,6 @@ public class MapService {
   
   public void leaveMap(Role role, int mapId) {
     int oldMapId = mapId;
-    EventDispatcher.getInstance().fireEvent((BaseGameEvent)new LeaveMapEvent(EventType.LEAVE_MAP, role, oldMapId));
+    EventDispatcher.getInstance().fireEvent(new LeaveMapEvent(EventType.LEAVE_MAP, role, oldMapId));
   }
 }

@@ -83,13 +83,11 @@ public class RedisService {
   }
   
   public <T extends Serializable> T get(final Serializable key, final Class<T> clazz) {
-    return (T)this.redisTemplate.execute(new RedisCallback<T>() {
-          public T doInRedis(RedisConnection connection) throws DataAccessException {
-            byte[] k = RedisSerializer.serialize(key);
-            byte[] result = connection.get(k);
-            return (T)RedisSerializer.deserialize(result, clazz);
-          }
-        });
+    return this.redisTemplate.execute((RedisCallback<T>) connection -> {
+      byte[] k = RedisSerializer.serialize(key);
+      byte[] result = connection.get(k);
+      return (T)RedisSerializer.deserialize(result, clazz);
+    });
   }
   
   public String getSet(final String key, final String value) {

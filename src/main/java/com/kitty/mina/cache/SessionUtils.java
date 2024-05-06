@@ -19,7 +19,7 @@ public class SessionUtils {
     PlayerProfile playerProfile = SpringUtils.getPlayerService().queryPlayerProfile(id);
     if (playerProfile == null)
       return null; 
-    return getSession(playerProfile.getRoleId().intValue());
+    return getSession(playerProfile.getRoleId());
   }
   
   public static Map<Long, IoSession> getSessionList() {
@@ -35,6 +35,6 @@ public class SessionUtils {
     Long uId = (Long)SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.PLAYER_UID, Long.class);
     if (uId == null)
       return null; 
-    return SpringUtils.getRoleService().getPlayer(uId.longValue());
+    return SpringUtils.getRoleService().getPlayer(uId);
   }
 }

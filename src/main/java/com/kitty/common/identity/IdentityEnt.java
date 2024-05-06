@@ -18,7 +18,7 @@ public class IdentityEnt extends BaseEntity<Integer> {
   
   public static IdentityEnt valueOf(int type, int seed) {
     IdentityEnt ent = new IdentityEnt();
-    ent.type = Integer.valueOf(type);
+    ent.type = type;
     ent.currId = seed;
     return ent;
   }

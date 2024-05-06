@@ -16,7 +16,7 @@ public class CallBack {
   }
   
   protected void doTimeOut() {
-    LoggerUtils.error("回调方法已过期", new Object[0]);
+    LoggerUtils.error("回调方法已过期");
   }
   
   public int getIndex() {

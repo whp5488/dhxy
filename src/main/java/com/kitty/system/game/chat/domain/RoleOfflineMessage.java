@@ -1,10 +1,15 @@
 package com.kitty.system.game.chat.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Setter
+@Getter
 public class RoleOfflineMessage {
   private Map<Long, List<OfflineMessage>> messageMap = new ConcurrentHashMap<>();
   
@@ -12,12 +17,5 @@ public class RoleOfflineMessage {
     List<OfflineMessage> messageList = this.messageMap.computeIfAbsent(sendUid, k -> new ArrayList<>());
     messageList.add(new OfflineMessage(sendTime, msg));
   }
-  
-  public void setMessageMap(Map<Long, List<OfflineMessage>> messageMap) {
-    this.messageMap = messageMap;
-  }
-  
-  public Map<Long, List<OfflineMessage>> getMessageMap() {
-    return this.messageMap;
-  }
+
 }

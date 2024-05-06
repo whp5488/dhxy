@@ -56,10 +56,10 @@ public class FightMonsterNewService {
   public BroadcastService broadcastService;
   
   public boolean runAway(Fight fight, FightObject attacker) {
-    SysDataMonster monster = (SysDataMonster)FightDataPool.data_monster.get(Integer.valueOf(attacker.getSerial()));
+    SysDataMonster monster = (SysDataMonster)FightDataPool.data_monster.get(attacker.getSerial());
     if (monster == null)
       return false; 
-    if (monster.getEscapeRound().intValue() == -1 || fight.getRound() < monster.getEscapeRound().intValue())
+    if (monster.getEscapeRound() == -1 || fight.getRound() < monster.getEscapeRound())
       return false; 
     if (attacker.getStatusValue(1002) > 0 && 
       isRunAway(monster.getCEscapeRatio()))
@@ -72,15 +72,15 @@ public class FightMonsterNewService {
     if (attacker.getStatusValue(1005) > 0 && 
       isRunAway(monster.getEscapeRatio()))
       return true; 
-    List<FightObject> targetSide = (List<FightObject>)fight.getTargetSide(monster.getId().intValue()).stream().filter(obj -> (!obj.isFallDown() && (RACE.RACE_REN.getValue() == obj.getRace() || RACE.RACE_GUI.getValue() == obj.getRace()))).collect(Collectors.toList());
+    List<FightObject> targetSide = (List<FightObject>)fight.getTargetSide(monster.getId()).stream().filter(obj -> (!obj.isFallDown() && (RACE.RACE_REN.getValue() == obj.getRace() || RACE.RACE_GUI.getValue() == obj.getRace()))).collect(Collectors.toList());
     if (targetSide.size() > 0 && attacker.getStatusValue(1003) <= 0 && 
       isRunAway(monster.getEscapeRatio()))
       return true; 
-    List<FightObject> mySide = (List<FightObject>)fight.getMySide(monster.getId().intValue()).stream().filter(obj -> !obj.isFallDown()).collect(Collectors.toList());
+    List<FightObject> mySide = (List<FightObject>)fight.getMySide(monster.getId()).stream().filter(obj -> !obj.isFallDown()).collect(Collectors.toList());
     boolean isFlag = true;
     for (FightObject fightObject : mySide) {
-      SysDataMonster mySideMonster = (SysDataMonster)FightDataPool.data_monster.get(Integer.valueOf(fightObject.getSerial()));
-      if (mySideMonster.getIsBoss().intValue() == 0) {
+      SysDataMonster mySideMonster = (SysDataMonster)FightDataPool.data_monster.get(fightObject.getSerial());
+      if (mySideMonster.getIsBoss() == 0) {
         isFlag = false;
         break;
       } 

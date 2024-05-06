@@ -76,7 +76,7 @@ public class Db4FightSkillRecordService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[Db4FightSkillRecord] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[Db4FightSkillRecord] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

@@ -25,10 +25,10 @@ public class BitSet {
     for (int j = 1; j <= 32; j++) {
       int i = 33 - j - 1;
       if (i32 >= this.BV[i]) {
-        this.bit[startPos + i] = Boolean.valueOf(true);
+        this.bit[startPos + i] = Boolean.TRUE;
         i32 -= this.BV[i];
       } else {
-        this.bit[startPos + i] = Boolean.valueOf(false);
+        this.bit[startPos + i] = Boolean.FALSE;
       } 
     } 
   }
@@ -56,21 +56,20 @@ public class BitSet {
       index -= 32; 
     if (index < 0 || index > this.bit.length)
       return; 
-    this.bit[index] = Boolean.valueOf(true);
+    this.bit[index] = Boolean.TRUE;
   }
   
   public boolean isSet(int index) {
     if (index < 0 || index > this.bit.length)
       return false; 
-    return this.bit[index].booleanValue();
+    return this.bit[index];
   }
   
   public int getI32() {
     int i32 = 0;
     int i = 0;
     for (Boolean boo : this.bit) {
-      if (boo != null && 
-        boo.booleanValue())
+      if (boo != null && boo)
         i32 = (int)(i32 + this.BV[i]); 
       i++;
     } 

@@ -71,29 +71,28 @@ public class EnterGameController {
   @RequestMapping
   public void loadExistedRole(IoSession session, ReqLoadExistedChar req) {
     Role temp = SessionUtils.getRoleBySession(session);
-    if (temp != null && 
-      !temp.getId().equals(req.getId())) {
+    if (temp != null && !temp.getId().equals(req.getId())) {
       session.closeNow();
       return;
     } 
-    Role role = this.roleService.getPlayer(Long.valueOf(req.getId()).longValue());
+    Role role = this.roleService.getPlayer(Long.valueOf(req.getId()));
     if (role == null)
       return; 
-    String sid = (String)SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.ACCOUNT_SID, String.class);
+    String sid = SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.ACCOUNT_SID, String.class);
     if (sid == null || !sid.equals(role.getSid())) {
       RespOtherLogin respOtherLogin = new RespOtherLogin();
       respOtherLogin.setContent("角色登录失败。#r（原因：9025）");
-      respOtherLogin.setResult(Integer.valueOf(0));
-      MessagePusher.pushMessage(session, (Message)respOtherLogin);
+      respOtherLogin.setResult(0);
+      MessagePusher.pushMessage(session, respOtherLogin);
       if (role.getSid() != null) {
-        LoggerFunction.MONOIOR.getLogger().warn("角色登录失败。#r（原因：9025）,sessionSid:{},roleSid:{},roleUid:{},roleName:{}", new Object[] { sid, role.getSid(), role.getId(), role.getName() });
+        LoggerFunction.MONOIOR.getLogger().warn("角色登录失败。#r（原因：9025）,sessionSid:{},roleSid:{},roleUid:{},roleName:{}", sid, role.getSid(), role.getId(), role.getName());
       } else {
-        LoggerFunction.MONOIOR.getLogger().warn("角色登录失败。#r（原因：9025）,sessionSid:{},roleSid:{}");
+        LoggerFunction.MONOIOR.getLogger().warn("角色登录失败。#r（原因：9025）,sessionSid:{},roleSid:{}", sid, role.getSid());
       } 
       return;
     } 
-    Long attr = (Long)SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.PLAYER_UID, Long.class);
-    if (attr != null && attr.longValue() > 0L) {
+    Long attr = SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.PLAYER_UID, Long.class);
+    if (attr != null && attr > 0L) {
       this.logger.error("角色已登录=UID:{},角色名:{}", attr, SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.PLAYER_NAME, String.class));
       return;
     } 
@@ -101,7 +100,7 @@ public class EnterGameController {
       Account account = SpringUtils.getAccountService().getAccount(role.getSid());
       if (!this.roleService.canLogin(account, session))
         return; 
-      Lock lock = (Lock)DataCache.UID_LOCK_MAP.getOrDefault(role.getId(), new ReentrantLock());
+      Lock lock = DataCache.UID_LOCK_MAP.getOrDefault(role.getId(), new ReentrantLock());
       if (lock.tryLock()) {
         try {
           role.setMobile(account.getMobile());
@@ -128,23 +127,23 @@ public class EnterGameController {
     Role role = SessionUtils.getRoleBySession(session);
     if (role == null)
       return; 
-    SysMapTeleporter transfer = this.mapService.getTrasfer(reqEnterRoom.getMapName(), role.getPos().getMapId().intValue());
+    SysMapTeleporter transfer = this.mapService.getTrasfer(reqEnterRoom.getMapName(), role.getPos().getMapId());
     if (transfer == null)
       return; 
-    SysMapInfo map = this.mapService.getMap(transfer.getToMapSerial().intValue());
+    SysMapInfo map = this.mapService.getMap(transfer.getToMapSerial());
     if (map == null)
       return; 
-    int oldMapId = role.getPos().getMapId().intValue();
-    EventDispatcher.getInstance().fireEvent((BaseGameEvent)new LeaveMapEvent(EventType.LEAVE_MAP, role, oldMapId));
-    role.setPos(transfer.getToMapX().intValue(), transfer.getToMapY().intValue(), transfer.getDir().intValue(), transfer.getToMapSerial().intValue());
-    EventDispatcher.getInstance().fireEvent((BaseGameEvent)new EnterMapEvent(EventType.ENTER_MAP, role));
+    int oldMapId = role.getPos().getMapId();
+    EventDispatcher.getInstance().fireEvent(new LeaveMapEvent(EventType.LEAVE_MAP, role, oldMapId));
+    role.setPos(transfer.getToMapX(), transfer.getToMapY(), transfer.getDir(), transfer.getToMapSerial());
+    EventDispatcher.getInstance().fireEvent(new EnterMapEvent(EventType.ENTER_MAP, role));
   }
   
   @RequestMapping
   public void quiltRole(IoSession session, ReqLogout reqLogout) {
     Role role = SessionUtils.getRoleBySession(session);
     if (role != null) {
-      Fight fightByRoleId = this.fightNewService.getFightByRoleId(role.getRoleId().intValue());
+      Fight fightByRoleId = this.fightNewService.getFightByRoleId(role.getRoleId());
       if (fightByRoleId != null)
         MessagePusher.pushMessage(session, (Message)new RespMsg("战斗中不可以直接退出哦")); 
       this.roleService.addOffline(role, true);

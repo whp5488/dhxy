@@ -117,7 +117,7 @@ public class ReflectUtils {
             if (args[i] instanceof String) {
               args[i] = DateUtils.parseDate(args[i]);
             } else {
-              args[i] = DateUtil.getJavaDate(((Double)args[i]).doubleValue());
+              args[i] = DateUtil.getJavaDate((Double) args[i]);
             } 
           } else if (cs[i] == boolean.class || cs[i] == Boolean.class) {
             args[i] = Convert.toBool(args[i]);
@@ -133,7 +133,7 @@ public class ReflectUtils {
   public static Field getAccessibleField(Object obj, String fieldName) {
     if (obj == null)
       return null; 
-    Validate.notBlank(fieldName, "fieldName can't be blank", new Object[0]);
+    Validate.notBlank(fieldName, "fieldName can't be blank");
     for (Class<?> superClass = obj.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
       try {
         Field field = superClass.getDeclaredField(fieldName);
@@ -147,7 +147,7 @@ public class ReflectUtils {
   public static Method getAccessibleMethod(Object obj, String methodName, Class<?>... parameterTypes) {
     if (obj == null)
       return null; 
-    Validate.notBlank(methodName, "methodName can't be blank", new Object[0]);
+    Validate.notBlank(methodName, "methodName can't be blank");
     for (Class<?> searchType = obj.getClass(); searchType != Object.class; searchType = searchType.getSuperclass()) {
       try {
         Method method = searchType.getDeclaredMethod(methodName, parameterTypes);
@@ -161,7 +161,7 @@ public class ReflectUtils {
   public static Method getAccessibleMethodByName(Object obj, String methodName, int argsNum) {
     if (obj == null)
       return null; 
-    Validate.notBlank(methodName, "methodName can't be blank", new Object[0]);
+    Validate.notBlank(methodName, "methodName can't be blank");
     for (Class<?> searchType = obj.getClass(); searchType != Object.class; searchType = searchType.getSuperclass()) {
       Method[] methods = searchType.getDeclaredMethods();
       for (Method method : methods) {

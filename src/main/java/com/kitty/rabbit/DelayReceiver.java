@@ -26,20 +26,20 @@ public class DelayReceiver {
   @RabbitListener(queues = {"delay_queue"})
   public void orderDelayQueue(String string, Message message, Channel channel) {
     try {
-      long id = Long.valueOf(string.split("_")[0]).longValue();
+      long id = Long.valueOf(string.split("_")[0]);
       Role role = null;
-      if (DataCache.OFFLINE_ROLES.containsKey(Long.valueOf(id))) {
-        role = (Role)DataCache.OFFLINE_ROLES.get(Long.valueOf(id));
-      } else if (DataCache.ONLINE_ROLES.containsKey(Long.valueOf(id))) {
-        role = (Role)DataCache.ONLINE_ROLES.get(Long.valueOf(id));
+      if (DataCache.OFFLINE_ROLES.containsKey(id)) {
+        role = DataCache.OFFLINE_ROLES.get(id);
+      } else if (DataCache.ONLINE_ROLES.containsKey(id)) {
+        role = DataCache.ONLINE_ROLES.get(id);
       } 
       Boolean exists = this.redisService.exists(string);
       if (role.getState() == 1) {
-        this.redisService.del(new Serializable[] { string });
+        this.redisService.del(string);
         return;
       } 
-      if (role != null && exists.booleanValue()) {
-        this.redisService.del(new Serializable[] { string });
+      if (role != null && exists) {
+        this.redisService.del(string);
         this.playerService.onPlayerLogout(role);
       } 
     } catch (Exception e) {

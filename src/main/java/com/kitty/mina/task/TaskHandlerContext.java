@@ -55,13 +55,13 @@ public enum TaskHandlerContext {
   
   public void shutDown() {
     this.run.set(false);
-    LoggerUtils.error("关闭业务场景线程结束", new Object[0]);
+    LoggerUtils.error("关闭业务场景线程结束");
   }
   
   public String statistics() {
     Map<Integer, Integer> map = new HashMap<>();
     for (TaskWorker worker : this.workerPool)
-      map.put(Integer.valueOf(worker.id), Integer.valueOf(worker.taskQueue.size())); 
+      map.put(worker.id, worker.taskQueue.size());
     return JsonUtils.map2String(map);
   }
   

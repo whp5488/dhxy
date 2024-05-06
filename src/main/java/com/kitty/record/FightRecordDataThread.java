@@ -71,7 +71,7 @@ public class FightRecordDataThread {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[mongodb4FightRecord] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[mongodb4FightRecord] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

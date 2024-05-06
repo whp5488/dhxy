@@ -64,8 +64,8 @@ public class DbBagGoodsService {
           DbBagGoodsService.this.saveToDb(entity);
           stopWatch.stop();
           if (stopWatch.getTime() > 500L) {
-            LoggerUtils.info("背包物品数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
-            LoggerUtils.info("背包物品数据持久化队列长度：" + DbBagGoodsService.this.queue.size(), new Object[0]);
+            LoggerUtils.info("背包物品数据持久化消耗毫秒：" + stopWatch.getTime());
+            LoggerUtils.info("背包物品数据持久化队列长度：" + DbBagGoodsService.this.queue.size());
           } 
         } catch (Exception e) {
           DbBagGoodsService.this.logger.error("背包物品存档异常", e);
@@ -89,7 +89,7 @@ public class DbBagGoodsService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[DbBagGoods] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[DbBagGoods] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

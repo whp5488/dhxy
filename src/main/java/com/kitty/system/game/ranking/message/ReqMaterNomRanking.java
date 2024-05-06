@@ -5,6 +5,7 @@ import com.kitty.mina.message.Message;
 
 @MessageMeta(module = 4227)
 public class ReqMaterNomRanking extends Message {
+
   public boolean equals(Object o) {
     if (o == this)
       return true; 

@@ -60,8 +60,8 @@ public class Db4BagEquipService {
           Db4BagEquipService.this.saveToDb(entity);
           stopWatch.stop();
           if (stopWatch.getTime() > 500L) {
-            LoggerUtils.info("背包装备数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
-            LoggerUtils.info("背包装备数据持久化队列长度：" + Db4BagEquipService.this.queue.size(), new Object[0]);
+            LoggerUtils.info("背包装备数据持久化消耗毫秒：" + stopWatch.getTime());
+            LoggerUtils.info("背包装备数据持久化队列长度：" + Db4BagEquipService.this.queue.size());
           } 
         } catch (Exception e) {
           LoggerUtils.error("装备存档异常", e);
@@ -85,7 +85,7 @@ public class Db4BagEquipService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[db4BagEquip] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[db4BagEquip] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

@@ -44,27 +44,27 @@ public class Deploy {
   
   public static List<Param> mobile_binding = new ArrayList<>();
   
-  public static List<Integer> firstClaimPet = Arrays.asList(new Integer[] { Integer.valueOf(21057), Integer.valueOf(21058) });
+  public static List<Integer> firstClaimPet = Arrays.asList(new Integer[] {21057, 21058});
   
   public static void load(Map<String, String> map) {
     String speak = map.get("speak");
     if (speak != null)
-      Deploy.speak = Integer.valueOf(speak).intValue(); 
+      Deploy.speak = Integer.valueOf(speak);
     String market = map.get("market");
     if (market != null)
-      Deploy.market = Integer.valueOf(market).intValue(); 
+      Deploy.market = Integer.valueOf(market);
     String party = map.get("party");
     if (party != null)
-      Deploy.party = Integer.valueOf(party).intValue(); 
+      Deploy.party = Integer.valueOf(party);
     String party_limit = map.get("party_limit");
     if (party_limit != null)
-      Deploy.party_limit = Integer.valueOf(party_limit).intValue(); 
+      Deploy.party_limit = Integer.valueOf(party_limit);
     String fiveGuess = map.get("five_guess");
     if (fiveGuess != null)
-      five_guess = Integer.valueOf(fiveGuess).intValue(); 
+      five_guess = Integer.valueOf(fiveGuess);
     String mobile = map.get("mobile");
     if (mobile != null)
-      Deploy.mobile = Integer.valueOf(mobile).intValue(); 
+      Deploy.mobile = Integer.valueOf(mobile);
     String mobile_binding = map.get("mobile_binding");
     if (mobile_binding != null)
       try {
@@ -75,21 +75,21 @@ public class Deploy {
     String curfew = map.get("curfew");
     if (curfew != null)
       try {
-        Deploy.curfew = (Integer.valueOf(curfew).intValue() == 1);
+        Deploy.curfew = (Integer.valueOf(curfew) == 1);
       } catch (Exception e) {
         Logger.getLogger("发言限制-宵禁设置初始化异常");
       }  
     String curfewStartTime = map.get("curfewStartTime");
     if (curfewStartTime != null)
       try {
-        Deploy.curfewStartTime = Double.valueOf(curfewStartTime).doubleValue();
+        Deploy.curfewStartTime = Double.valueOf(curfewStartTime);
       } catch (Exception e) {
         Logger.getLogger("发言限制-宵禁开始时间初始化异常");
       }  
     String curfewEndTime = map.get("curfewEndTime");
     if (curfewEndTime != null)
       try {
-        Deploy.curfewEndTime = Double.valueOf(curfewEndTime).doubleValue();
+        Deploy.curfewEndTime = Double.valueOf(curfewEndTime);
       } catch (Exception e) {
         Logger.getLogger("发言限制-宵禁结束时间初始化异常");
       }  

@@ -22,7 +22,7 @@ public class ReflectDecoder implements IMessageDecoder {
       Serializer messageCodec = Serializer.getSerializer(msgClazz);
       return (Message)messageCodec.decode(in, msgClazz, null);
     } catch (Exception e) {
-      logger.error("读取消息出错,模块号{}，类型{},异常{}", new Object[] { Integer.valueOf(module), Integer.valueOf(cmd), e });
+      logger.error("读取消息出错,模块号{}，类型{},异常{}", module, cmd, e);
       return null;
     } 
   }

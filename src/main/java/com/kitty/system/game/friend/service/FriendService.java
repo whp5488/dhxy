@@ -539,14 +539,14 @@ public class FriendService {
   }
   
   private void addOfflineMessage(Role role, long att, String msg, int sendTime) {
-    RoleOfflineMessage roleOfflineMessage = DataCache.OFFLINE_MESSAGES.computeIfAbsent(Long.valueOf(att), k -> new RoleOfflineMessage());
-    roleOfflineMessage.add(role.getId().longValue(), sendTime, msg);
+    RoleOfflineMessage roleOfflineMessage = DataCache.OFFLINE_MESSAGES.computeIfAbsent(att, k -> new RoleOfflineMessage());
+    roleOfflineMessage.add(role.getId(), sendTime, msg);
   }
   
   public void sendOfflineMessageLogin(Role role) {
     if (role == null)
       return; 
-    RoleOfflineMessage roleOfflineMessage = (RoleOfflineMessage)DataCache.OFFLINE_MESSAGES.remove(role.getId());
+    RoleOfflineMessage roleOfflineMessage = DataCache.OFFLINE_MESSAGES.remove(role.getId());
     if (roleOfflineMessage == null)
       return; 
     sendOfflineMessage(role, roleOfflineMessage);
@@ -560,10 +560,10 @@ public class FriendService {
     Map<Long, PalFriend> friendMap = att.getFriendMap();
     Set<Long> sendIds = roleOfflineMessage.getMessageMap().keySet();
     for (Iterator<Long> iterator = sendIds.iterator(); iterator.hasNext(); ) {
-      long id = ((Long)iterator.next()).longValue();
-      List<OfflineMessage> messages = (List<OfflineMessage>)roleOfflineMessage.getMessageMap().remove(Long.valueOf(id));
+      long id = iterator.next();
+      List<OfflineMessage> messages = roleOfflineMessage.getMessageMap().remove(id);
       Role player = this.roleService.getPlayer(id);
-      PalFriend palFriend = friendMap.get(Long.valueOf(id));
+      PalFriend palFriend = friendMap.get(id);
       if (palFriend != null && palFriend.getGroupId() == 1L)
         continue; 
       for (OfflineMessage message : messages)
@@ -573,21 +573,21 @@ public class FriendService {
   
   public void searchFriend(IoSession session, String name) {
     if (name.length() <= 0) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg("搜索玩家不在线或不存在。"));
-      MessagePusher.pushMessage(session, (Message)new RespSearchFriend());
+      MessagePusher.pushMessage(session, new RespMsg("搜索玩家不在线或不存在。"));
+      MessagePusher.pushMessage(session, new RespSearchFriend());
       return;
     } 
-    List<Role> collect = (List<Role>)DataCache.ONLINE_ROLES.values().stream().filter(e -> (e.getName().contains(name) || e.getRoleId().toString().equals(name))).collect(Collectors.toList());
+    List<Role> collect = DataCache.ONLINE_ROLES.values().stream().filter(e -> (e.getName().contains(name) || e.getRoleId().toString().equals(name))).collect(Collectors.toList());
     if (collect.size() <= 0) {
-      MessagePusher.pushMessage(session, (Message)new RespMsg("搜索玩家不在线或不存在。"));
-      MessagePusher.pushMessage(session, (Message)new RespSearchFriend());
+      MessagePusher.pushMessage(session, new RespMsg("搜索玩家不在线或不存在。"));
+      MessagePusher.pushMessage(session, new RespSearchFriend());
     } else {
       List<SearchFriend> objects = new ArrayList<>();
       for (Role role : collect)
-        objects.add(new SearchFriend(role.getRoleId().intValue(), role.getName(), role.getSerial().intValue(), role.getRelive().byteValue(), role.getLevel().shortValue())); 
+        objects.add(new SearchFriend(role.getRoleId(), role.getName(), role.getSerial(), role.getRelive().byteValue(), role.getLevel().shortValue()));
       RespSearchFriend respSearchFriend = new RespSearchFriend();
       respSearchFriend.setList(objects);
-      MessagePusher.pushMessage(session, (Message)respSearchFriend);
+      MessagePusher.pushMessage(session, respSearchFriend);
     } 
   }
 }

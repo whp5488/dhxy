@@ -77,7 +77,7 @@ public class PartyDataPool {
     partyUpgrades.put(Byte.valueOf((byte)5), Integer.valueOf(15000000));
     partyUpgrades.put(Byte.valueOf((byte)6), Integer.valueOf(25000000));
     partyUpgrades.put(Byte.valueOf((byte)7), Integer.valueOf(35000000));
-    partyUpgrades.put(Byte.valueOf((byte)8), Integer.valueOf(45000000));
+    partyUpgrades.put(Byte.valueOf((byte)8), Integer.valueOf(45_000_000));
     partyUpgradesSilver.put(Byte.valueOf((byte)2), Integer.valueOf(2000000));
     partyUpgradesSilver.put(Byte.valueOf((byte)3), Integer.valueOf(3000000));
     partyUpgradesSilver.put(Byte.valueOf((byte)4), Integer.valueOf(5000000));

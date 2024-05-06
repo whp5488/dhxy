@@ -60,8 +60,8 @@ public class DbCardChangeService {
           DbCardChangeService.this.saveToDb(entity);
           stopWatch.stop();
           if (stopWatch.getTime() > 500L) {
-            LoggerUtils.info("变身卡-卡包数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
-            LoggerUtils.info("变身卡-卡包数据持久化队列长度：" + DbCardChangeService.this.queue.size(), new Object[0]);
+            LoggerUtils.info("变身卡-卡包数据持久化消耗毫秒：" + stopWatch.getTime());
+            LoggerUtils.info("变身卡-卡包数据持久化队列长度：" + DbCardChangeService.this.queue.size());
           } 
         } catch (Exception e) {
           LoggerUtils.error("变身卡存档异常", e);
@@ -85,7 +85,7 @@ public class DbCardChangeService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[DbCardChange] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[DbCardChange] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

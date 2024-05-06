@@ -104,7 +104,7 @@ public class ServiceMasterImpl implements ServiceMaster {
         String msg = String.valueOf(toMap.get("msg"));
         Integer num = Integer.valueOf(String.valueOf(toMap.get("num")));
         Integer second = Integer.valueOf(String.valueOf(toMap.get("second")));
-        this.adminService.asyncThreadNotice(msg, num.intValue(), second.intValue());
+        this.adminService.asyncThreadNotice(msg, num, second);
         return result("0", "操作成功");
       } 
       return result("500", "未知操作");
@@ -139,9 +139,9 @@ public class ServiceMasterImpl implements ServiceMaster {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(speak);
         Integer roleId = Integer.valueOf(String.valueOf(toMap.get("name")));
         Integer type = Integer.valueOf(String.valueOf(toMap.get("type")));
-        long day = Long.valueOf(String.valueOf(toMap.get("day"))).longValue();
-        Role target = this.roleService.getPlayer(roleId.intValue());
-        if (type.intValue() == 0) {
+        long day = Long.valueOf(String.valueOf(toMap.get("day")));
+        Role target = this.roleService.getPlayer(roleId);
+        if (type == 0) {
           this.adminService.shutChannel(target, day);
           MessagePusher.pushMessage(target, (Message)new RespNotifyMiscEx("你已被禁言!"));
           return result("0", "操作成功");
@@ -162,9 +162,9 @@ public class ServiceMasterImpl implements ServiceMaster {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(seal);
         Integer roleId = Integer.valueOf(String.valueOf(toMap.get("name")));
         Integer type = Integer.valueOf(String.valueOf(toMap.get("type")));
-        long day = Long.valueOf(String.valueOf(toMap.get("day"))).longValue();
-        Role target = this.roleService.getPlayer(roleId.intValue());
-        if (type.intValue() == 0) {
+        long day = Long.valueOf(String.valueOf(toMap.get("day")));
+        Role target = this.roleService.getPlayer(roleId);
+        if (type == 0) {
           this.adminService.blockPlayer(target, day, null);
           return result("0", "操作成功", target.getSid());
         } 
@@ -185,13 +185,13 @@ public class ServiceMasterImpl implements ServiceMaster {
         Integer serial = Integer.valueOf(toMap.get("serial").toString());
         Integer roleId = Integer.valueOf(String.valueOf(toMap.get("name")));
         Long num = Long.valueOf(String.valueOf(toMap.get("num")));
-        Role player = this.roleService.getPlayer(roleId.intValue());
+        Role player = this.roleService.getPlayer(roleId);
         if (player == null)
           result("500", "未找到玩家信息"); 
         boolean b = false;
-        if (type.intValue() <= 0) {
-          b = this.roleService.deductCurrency(player, serial, num.longValue(), "系统");
-          RecordThread.getInstance().add2Queue(player.getId().longValue(), player.getRoleId().intValue(), (short)1000, (byte)2, String.format("系统扣除，货币类型：%d，扣除数量：%d", new Object[] { type, num }), player.getMarking());
+        if (type <= 0) {
+          b = this.roleService.deductCurrency(player, serial, num, "系统");
+          RecordThread.getInstance().add2Queue(player.getId(), player.getRoleId(), (short)1000, (byte)2, String.format("系统扣除，货币类型：%d，扣除数量：%d", type, num), player.getMarking());
         } else {
           b = this.roleService.addCurrency(player, serial, num, "系统", true, false);
         } 
@@ -215,13 +215,13 @@ public class ServiceMasterImpl implements ServiceMaster {
         Integer roleId = Integer.valueOf(String.valueOf(toMap.get("name")));
         Integer serial = Integer.valueOf(String.valueOf(toMap.get("serial")));
         Integer num = Integer.valueOf(String.valueOf(toMap.get("num")));
-        Role player = SpringUtils.getRoleService().getPlayer(roleId.intValue());
+        Role player = SpringUtils.getRoleService().getPlayer(roleId);
         if (player != null) {
-          short status = this.adminService.recharge(player, serial.intValue());
+          short status = this.adminService.recharge(player, serial);
           if (status == 0)
             return result("500", "充值失败，未找到该充值项"); 
-          for (int i = 0; i < num.intValue() - 1; i++)
-            this.adminService.recharge(player, serial.intValue()); 
+          for (int i = 0; i < num - 1; i++)
+            this.adminService.recharge(player, serial);
           return result("0", "充值成功");
         } 
         return result("500", "未找到该角色");
@@ -238,9 +238,9 @@ public class ServiceMasterImpl implements ServiceMaster {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(rechargeable);
         Integer roleId = Integer.valueOf(String.valueOf(toMap.get("name")));
         Integer num = Integer.valueOf(String.valueOf(toMap.get("num")));
-        Role player = SpringUtils.getRoleService().getPlayer(roleId.intValue());
+        Role player = SpringUtils.getRoleService().getPlayer(roleId);
         if (player != null) {
-          short status = this.adminService.customRecharge(player, num.intValue());
+          short status = this.adminService.customRecharge(player, num);
           if (status == 0)
             return result("500", "充值失败"); 
           return result("0", "充值成功");
@@ -261,7 +261,7 @@ public class ServiceMasterImpl implements ServiceMaster {
         Integer serial = Integer.valueOf(String.valueOf(toMap.get("serial")));
         Integer num = Integer.valueOf(String.valueOf(toMap.get("num")));
         Integer type = DataGlobalFunc.GetItemTypeByItemTypeId(serial);
-        if (type.equals(Integer.valueOf(ITEMLARGETYPE.ITEM_LARGE_TYPE_PET.getValue()))) {
+        if (type.equals(ITEMLARGETYPE.ITEM_LARGE_TYPE_PET.getValue())) {
           SysPet sysPet = (SysPet)PetDataPool.petMap.get(serial);
           if (sysPet == null)
             return result("500", "发送失败，未找到该道具"); 
@@ -270,12 +270,12 @@ public class ServiceMasterImpl implements ServiceMaster {
           if (itemEasyInfo == null)
             return result("500", "发送失败，未找到该道具"); 
         } 
-        Role player = SpringUtils.getRoleService().getPlayer(roleId.intValue());
+        Role player = SpringUtils.getRoleService().getPlayer(roleId);
         if (player != null) {
-          boolean checkPos = this.bagService.checkPos(player, serial.intValue(), num.intValue());
+          boolean checkPos = this.bagService.checkPos(player, serial, num);
           if (!checkPos)
             return result("500", "玩家物品栏空间不足"); 
-          this.bagService.addGoods(player, serial.intValue(), num.intValue(), 0, true, false, "后台发送");
+          this.bagService.addGoods(player, serial, num, 0, true, false, "后台发送");
           return result("0", "发送成功");
         } 
         return result("500", "未找到该角色");
@@ -291,7 +291,7 @@ public class ServiceMasterImpl implements ServiceMaster {
       if (gamers != null) {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(gamers);
         Integer type = Integer.valueOf(String.valueOf(toMap.get("type")));
-        if (type.intValue() == 1) {
+        if (type == 1) {
           long uid = SpringUtils.getPlayerService().getUidBy(String.valueOf(toMap.get("name")));
           Role role = this.roleService.getPlayer(uid);
           if (role != null)
@@ -299,7 +299,7 @@ public class ServiceMasterImpl implements ServiceMaster {
         } else {
           String name = String.valueOf(toMap.get("name"));
           if (NumberUtil.isNumber(name)) {
-            Role role = this.roleService.getPlayer(Integer.valueOf(name).intValue());
+            Role role = this.roleService.getPlayer(Integer.valueOf(name));
             if (role != null)
               return packaging(role); 
           } else {
@@ -319,9 +319,9 @@ public class ServiceMasterImpl implements ServiceMaster {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(exp);
         Integer roleId = Integer.valueOf(String.valueOf(toMap.get("name")));
         Long num = Long.valueOf(String.valueOf(toMap.get("num")));
-        Role player = SpringUtils.getRoleService().getPlayer(roleId.intValue());
+        Role player = SpringUtils.getRoleService().getPlayer(roleId);
         if (player != null) {
-          this.roleService.addExp(player, num.longValue(), "系统", true);
+          this.roleService.addExp(player, num, "系统", true);
           return result("0", "发送成功");
         } 
         return result("500", "未找到该角色");
@@ -337,11 +337,11 @@ public class ServiceMasterImpl implements ServiceMaster {
       if (task != null) {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(task);
         Integer taskId = Integer.valueOf(String.valueOf(toMap.get("taskId")));
-        TaskSet taskSet = this.taskService.getTaskSet(taskId.intValue());
+        TaskSet taskSet = this.taskService.getTaskSet(taskId);
         if (taskSet == null)
           return result("500", "没有该任务"); 
         Integer name = Integer.valueOf(String.valueOf(toMap.get("name")));
-        Role role = this.roleService.getPlayer(name.intValue());
+        Role role = this.roleService.getPlayer(name);
         role.getTask().updateToFinished(taskSet.getSerial());
         role.save();
         RespTasksDel respTasksDel = new RespTasksDel();
@@ -365,10 +365,10 @@ public class ServiceMasterImpl implements ServiceMaster {
         List<PlayerProfile> profiles = SpringUtils.getPlayerService().getPlayersBy(sid);
         if (profiles != null && profiles.size() > 0)
           for (PlayerProfile profile : profiles) {
-            Role r = this.roleService.getPlayer(profile.getId().longValue());
+            Role r = this.roleService.getPlayer(profile.getId());
             if (r != null) {
               long totalGold = r.getTotalGold();
-              objects.add(new Inquire(r.getId().longValue(), r.getRoleId().intValue(), r.getName(), r.getSerial().intValue(), r.getRelive().byteValue(), r.getLevel().shortValue(), r.getGold().toString(), r.getSilver().toString(), String.valueOf(totalGold)));
+              objects.add(new Inquire(r.getId(), r.getRoleId(), r.getName(), r.getSerial(), r.getRelive().byteValue(), r.getLevel().shortValue(), r.getGold().toString(), r.getSilver().toString(), String.valueOf(totalGold)));
             } 
           }  
         String data = JsonUtils.object2String(objects);
@@ -388,12 +388,12 @@ public class ServiceMasterImpl implements ServiceMaster {
         Role player;
         String str1;
         Map<String, Object> toMap = MapStringUtil.getStringToMap(market);
-        int type = Integer.valueOf(String.valueOf(toMap.get("type"))).intValue();
-        int classify = Integer.valueOf(String.valueOf(toMap.get("classify"))).intValue();
-        long id = Long.valueOf(String.valueOf(toMap.get("id"))).longValue();
+        int type = Integer.valueOf(String.valueOf(toMap.get("type")));
+        int classify = Integer.valueOf(String.valueOf(toMap.get("classify")));
+        long id = Long.valueOf(String.valueOf(toMap.get("id")));
         switch (type) {
           case 0:
-            status = Byte.valueOf(String.valueOf(toMap.get("status"))).byteValue();
+            status = Byte.valueOf(String.valueOf(toMap.get("status")));
             str1 = this.marketService.updateMarketStatus(classify, id, status);
             if (str1 != null)
               return result("500", str1); 
@@ -431,7 +431,7 @@ public class ServiceMasterImpl implements ServiceMaster {
       if (load != null) {
         int id;
         Map<String, Object> toMap = MapStringUtil.getStringToMap(load);
-        int type = Integer.valueOf(String.valueOf(toMap.get("type"))).intValue();
+        int type = Integer.valueOf(String.valueOf(toMap.get("type")));
         switch (type) {
           case 0:
             ((ServerService)SpringUtils.getBean(ServerService.class)).versions(this.initService.initVersion());
@@ -443,7 +443,7 @@ public class ServiceMasterImpl implements ServiceMaster {
             WelfareDataPool.loadGiftBag(this.initService);
             return result("0", "更新成功");
           case 3:
-            id = Integer.valueOf(String.valueOf(toMap.get("id"))).intValue();
+            id = Integer.valueOf(String.valueOf(toMap.get("id")));
             CxfDataPool.load(id);
             return result("0", "更新成功");
         } 
@@ -478,8 +478,8 @@ public class ServiceMasterImpl implements ServiceMaster {
     try {
       if (adjustRoleGrade != null) {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(adjustRoleGrade);
-        int name = Integer.valueOf(String.valueOf(toMap.get("name"))).intValue();
-        int grade = Integer.valueOf(String.valueOf(toMap.get("grade"))).intValue();
+        int name = Integer.valueOf(String.valueOf(toMap.get("name")));
+        int grade = Integer.valueOf(String.valueOf(toMap.get("grade")));
         if (!this.gmService.adjustRoleGrade(name, grade))
           return result("500", "操作失败"); 
       } 
@@ -521,9 +521,9 @@ public class ServiceMasterImpl implements ServiceMaster {
     try {
       if (rune != null) {
         Map<String, Object> toMap = MapStringUtil.getStringToMap(rune);
-        int name = Integer.valueOf(String.valueOf(toMap.get("name"))).intValue();
-        int serial = Integer.valueOf(String.valueOf(toMap.get("serial"))).intValue();
-        byte grade = Byte.valueOf(String.valueOf(toMap.get("grade"))).byteValue();
+        int name = Integer.valueOf(String.valueOf(toMap.get("name")));
+        int serial = Integer.valueOf(String.valueOf(toMap.get("serial")));
+        byte grade = Byte.valueOf(String.valueOf(toMap.get("grade")));
         if (!this.gmService.customRune(name, serial, grade))
           return result("500", "操作失败"); 
       } 
@@ -629,7 +629,7 @@ public class ServiceMasterImpl implements ServiceMaster {
     map.put("xy", role.getGold());
     map.put("yl", role.getSilver());
     long totalGold = role.getTotalGold();
-    map.put("total", Long.valueOf(totalGold));
+    map.put("total", totalGold);
     map.put("lock", role.getSafePwd());
     return MapStringUtil.getMapToString(map);
   }
@@ -659,14 +659,14 @@ public class ServiceMasterImpl implements ServiceMaster {
           Role player = this.roleService.getPlayer(briefEmail.getRec());
           if (player == null)
             return result("500", "用户不存在"); 
-          recipient = player.getId().longValue();
+          recipient = player.getId();
         } 
         EmailSystem emailSystem = new EmailSystem();
         emailSystem.setEmailTitle(briefEmail.getTitle());
         emailSystem.setSender(briefEmail.getSen());
         emailSystem.setRecipient(recipient);
         emailSystem.setContent(briefEmail.getCon());
-        emailSystem.setExpirationTime(briefEmail.getTime().longValue());
+        emailSystem.setExpirationTime(briefEmail.getTime());
         emailSystem.setAccessory(briefEmail.getList());
         this.emailService.addEmailSystem(emailSystem);
         return result("0", "操作成功");
@@ -679,7 +679,7 @@ public class ServiceMasterImpl implements ServiceMaster {
   
   public String delEmail(String emailId) {
     Map<String, Object> toMap = MapStringUtil.getStringToMap(emailId);
-    Long eid = Long.valueOf(Long.parseLong(String.valueOf(toMap.get("eid"))));
+    Long eid = Long.parseLong(String.valueOf(toMap.get("eid")));
     this.emailService.deleteEmailSystem(eid);
     return result("0", "操作成功");
   }

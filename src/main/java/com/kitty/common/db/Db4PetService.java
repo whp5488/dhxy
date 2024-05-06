@@ -64,8 +64,8 @@ public class Db4PetService {
           Db4PetService.this.saveToDb(entity);
           stopWatch.stop();
           if (stopWatch.getTime() > 500L) {
-            LoggerUtils.info("宠物数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
-            LoggerUtils.info("宠物数据持久化队列长度：" + Db4PetService.this.queue.size(), new Object[0]);
+            LoggerUtils.info("宠物数据持久化消耗毫秒：" + stopWatch.getTime());
+            LoggerUtils.info("宠物数据持久化队列长度：" + Db4PetService.this.queue.size());
           } 
         } catch (Exception e) {
           Db4PetService.this.logger.error("宠物存档异常", e);
@@ -89,7 +89,7 @@ public class Db4PetService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[db4Pet] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[db4Pet] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

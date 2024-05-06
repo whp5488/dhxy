@@ -11,7 +11,7 @@ public abstract class CallbackHandler {
   
   @PostConstruct
   private void init() {
-    handlers.put(Integer.valueOf(cmdType()), this);
+    handlers.put(cmdType(), this);
   }
   
   public abstract void onRequest(SCSession paramSCSession, CReqCallBack paramCReqCallBack);
@@ -25,6 +25,6 @@ public abstract class CallbackHandler {
   public abstract int cmdType();
   
   public static CallbackHandler queryHandler(int type) {
-    return handlers.get(Integer.valueOf(type));
+    return handlers.get(type);
   }
 }

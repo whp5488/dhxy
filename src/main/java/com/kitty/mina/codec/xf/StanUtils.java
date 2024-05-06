@@ -113,22 +113,22 @@ public class StanUtils {
   
   public static void main(String[] args) {
     int authKey = 13050799;
-    System.out.printf("origin key: 0x%X\n", new Object[] { Integer.valueOf(authKey) });
-    System.out.printf("auth key: 0x%X\n", new Object[] { Integer.valueOf(calcAuthKey(authKey)) });
-    System.out.printf("xor key: 0x%X\n", new Object[] { Integer.valueOf(calcXorKeyByOriginAuthKey(authKey)) });
+    System.out.printf("origin key: 0x%X\n", authKey);
+    System.out.printf("auth key: 0x%X\n", calcAuthKey(authKey));
+    System.out.printf("xor key: 0x%X\n", calcXorKeyByOriginAuthKey(authKey));
     int xorKey = calcXorKeyByOriginAuthKey(authKey);
     int en = calcVal(xorKey, 8201);
-    System.out.printf("val en: 0x%X\n", new Object[] { Integer.valueOf(en) });
-    System.out.printf("val de: %d\n", new Object[] { Integer.valueOf(calcVal(xorKey, en)) });
+    System.out.printf("val en: 0x%X\n", en);
+    System.out.printf("val de: %d\n", calcVal(xorKey, en));
     int x = 84;
     int y = 80;
     int mapId = 1000;
     int xx = calcX(x);
-    System.out.printf("val x: 0x%X\n", new Object[] { Integer.valueOf(xx) });
+    System.out.printf("val x: 0x%X\n", xx);
     int yy = x ^ y;
-    System.out.printf("val x, y, y: 0x%X, 0x%X, 0x%X\n", new Object[] { Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(yy) });
+    System.out.printf("val x, y, y: 0x%X, 0x%X, 0x%X\n", x, y, yy);
     mapId = calcMapId(x, y, mapId);
-    System.out.printf("val mapId: 0x%X\n", new Object[] { Integer.valueOf(mapId) });
+    System.out.printf("val mapId: 0x%X\n", mapId);
   }
   
   public static String decrypt(String hex) throws ScriptException, NoSuchMethodException {

@@ -74,12 +74,12 @@ public class ActivityDataPool {
     addActivityLivenessSet(new ActivityLivenessSet("大理寺答题", ActivityType.QUESTION_DLS, 2.0F, 20));
     addActivityLivenessSet(new ActivityLivenessSet("嘉年华", ActivityType.CARNIVAL, 0.5F, 30));
     addActivityLivenessSet(new ActivityLivenessSet("心魔", ActivityType.XM_DUGEON, 1.33F, 20));
-    activityLivenessRewardSetMap.put(Integer.valueOf(1), new ActivityLivenessRewardSet(25, Arrays.asList(new Param[] { new Param(Integer.valueOf(ItemClassify.RES_TYPE_GOLD.getId()), Integer.valueOf(1000), Integer.valueOf(0)) })));
-    activityLivenessRewardSetMap.put(Integer.valueOf(2), new ActivityLivenessRewardSet(50, Arrays.asList(new Param[] { new Param(Integer.valueOf(ItemClassify.RES_TYPE_GOLD.getId()), Integer.valueOf(1500), Integer.valueOf(0)) })));
-    activityLivenessRewardSetMap.put(Integer.valueOf(3), new ActivityLivenessRewardSet(75, Arrays.asList(new Param[] { new Param(Integer.valueOf(ItemClassify.RES_TYPE_GOLD.getId()), Integer.valueOf(2000), Integer.valueOf(0)) })));
-    activityLivenessRewardSetMap.put(Integer.valueOf(4), new ActivityLivenessRewardSet(100, Arrays.asList(new Param[] { new Param(Integer.valueOf(ItemClassify.RES_TYPE_GOLD.getId()), Integer.valueOf(2500), Integer.valueOf(0)) })));
-    activityLivenessRewardSetMap.put(Integer.valueOf(5), new ActivityLivenessRewardSet(125, Arrays.asList(new Param[] { new Param(Integer.valueOf(ItemClassify.RES_TYPE_GOLD.getId()), Integer.valueOf(3000), Integer.valueOf(0)) })));
-    activityLivenessRewardSetMap.put(Integer.valueOf(6), new ActivityLivenessRewardSet(150, Arrays.asList(new Param[] { new Param(Integer.valueOf(ItemClassify.RES_TYPE_GOLD.getId()), Integer.valueOf(3500), Integer.valueOf(0)) })));
+    activityLivenessRewardSetMap.put(1, new ActivityLivenessRewardSet(25, Arrays.asList(new Param(ItemClassify.RES_TYPE_GOLD.getId(), 1000, 0))));
+    activityLivenessRewardSetMap.put(2, new ActivityLivenessRewardSet(50, Arrays.asList(new Param(ItemClassify.RES_TYPE_GOLD.getId(), 1500, 0))));
+    activityLivenessRewardSetMap.put(3, new ActivityLivenessRewardSet(75, Arrays.asList(new Param(ItemClassify.RES_TYPE_GOLD.getId(), 2000, 0))));
+    activityLivenessRewardSetMap.put(4, new ActivityLivenessRewardSet(100, Arrays.asList(new Param(ItemClassify.RES_TYPE_GOLD.getId(), 2500, 0))));
+    activityLivenessRewardSetMap.put(5, new ActivityLivenessRewardSet(125, Arrays.asList(new Param(ItemClassify.RES_TYPE_GOLD.getId(), 3000, 0))));
+    activityLivenessRewardSetMap.put(6, new ActivityLivenessRewardSet(150, Arrays.asList(new Param(ItemClassify.RES_TYPE_GOLD.getId(), 3500, 0))));
   }
   
   private static void addActivityLivenessSet(ActivityLivenessSet activityLivenessSet) {

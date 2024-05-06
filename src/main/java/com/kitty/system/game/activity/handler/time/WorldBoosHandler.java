@@ -74,12 +74,12 @@ public class WorldBoosHandler extends FightActivityHandler {
         for (int i = 0; i < count; i++) {
           Position position = getRandomPosition(obj.getScene());
           if (position != null) {
-            int id = ((BossService)SpringUtils.getBean(BossService.class)).getTempNpcId();
-            Npc npc = new Npc(id, 0, obj.getScene(), position.getX().intValue(), position.getY().intValue(), obj.getIcon(), obj.getName(), obj.getTitle(), obj.getId(), obj.getLevel(), 0, 23);
+            int id = SpringUtils.getBean(BossService.class).getTempNpcId();
+            Npc npc = new Npc(id, 0, obj.getScene(), position.getX(), position.getY(), obj.getIcon(), obj.getName(), obj.getTitle(), obj.getId(), obj.getLevel(), 0, 23);
             npc.setEndTime(npc.getCreateTime() + 1800);
-            DataCache.BOOS_OFFICER_SET.put(Integer.valueOf(npc.getId()), npc);
-            Set<Integer> set = DataCache.BOOS_OFFICER_MAP_NPC.computeIfAbsent(Integer.valueOf(obj.getScene()), k -> new HashSet());
-            set.add(Integer.valueOf(npc.getId()));
+            DataCache.BOOS_OFFICER_SET.put(npc.getId(), npc);
+            Set<Integer> set = DataCache.BOOS_OFFICER_MAP_NPC.computeIfAbsent(obj.getScene(), k -> new HashSet<>());
+            set.add(npc.getId());
             this.bossService.broadcastNpcShow(null, npc);
             SchedulerManager.getInstance().schedule(() -> clearBoosTimeOut(npc), 1800000L);
           } 
@@ -98,7 +98,7 @@ public class WorldBoosHandler extends FightActivityHandler {
       sendNpcContent(role, npc, "我要观战/guard|再见/离开");
       return "我要观战/guard|再见/离开";
     } 
-    Team team = this.teamService.getTeam(role.getRoleId().intValue());
+    Team team = this.teamService.getTeam(role.getRoleId());
     String names = null;
     if (this.teamService.isInTeam(role)) {
       names = this.teamService.checkMember(team, memberRole -> !SpringUtils.getActivityService().isLevel(memberRole, 35));
@@ -117,7 +117,7 @@ public class WorldBoosHandler extends FightActivityHandler {
   public void setContent(Npc npc, String talk) {
     SysDataWorldBoos obj = TaskDataPool.worldBoosList.stream().filter(e -> (e.getId() == npc.getNs())).findFirst().orElse(null);
     if (obj != null)
-      npc.setTalk(MessageFormat.format(talk, new Object[] { obj.getName() })); 
+      npc.setTalk(MessageFormat.format(talk, obj.getName()));
   }
   
   public void doStartFight(Role role, Npc npc) {
@@ -145,7 +145,7 @@ public class WorldBoosHandler extends FightActivityHandler {
         if (fight == null)
           setNotInFight(npc); 
       } else {
-        this.logger.error("世界BOOS获取战斗NPC错误，{}", Integer.valueOf(npc.getId()));
+        this.logger.error("世界BOOS获取战斗NPC错误，{}", npc.getId());
         setNotInFight(npc);
       } 
     } else {
@@ -154,7 +154,7 @@ public class WorldBoosHandler extends FightActivityHandler {
   }
   
   protected Npc getBossNpc(int npcId) {
-    return (Npc)DataCache.BOOS_OFFICER_SET.get(Integer.valueOf(npcId));
+    return (Npc)DataCache.BOOS_OFFICER_SET.get(npcId);
   }
   
   public void doFightWinForSingle(Role role, FightEndEvent fightEndEvent, Npc npc) {
@@ -172,28 +172,28 @@ public class WorldBoosHandler extends FightActivityHandler {
   
   public void doFightFail(Role role, FightEndEvent fightEndEvent) {
     super.doFightFail(role, fightEndEvent);
-    long exp = BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(role.getExp() * 0.02D)).longValue();
+    long exp = BigDecimalUtil.decimalScaleDown(0, Double.valueOf(role.getExp() * 0.02D)).longValue();
     long deduct = deduct(getBossNpc(fightEndEvent.getNpcId()));
     if (deduct > 0L)
       exp = deduct; 
     long finalExp = exp;
     this.teamService.memberHandleThreadLocal(role, memberRole -> SpringUtils.getRoleService().punishFightDead(memberRole, -finalExp, "由于你的死亡，你丢失了"));
-    SpringUtils.getRoleService().goBackBorn(role, new Pos(Integer.valueOf(107), Integer.valueOf(64), Integer.valueOf(5), Integer.valueOf(1002)));
+    SpringUtils.getRoleService().goBackBorn(role, new Pos(107, 64, 5, 1002));
   }
   
   public long deduct(Npc npc) {
     long exp = 0L;
     if (npc != null) {
       SysDataWorldBoos obj = TaskDataPool.worldBoosList.stream().filter(e -> (e.getId() == npc.getNs())).findFirst().orElse(null);
-      Param param = obj.getAward().stream().filter(e -> (e.getK().equals(Integer.valueOf(ItemClassify.HERO_EXP.getId())) && e.getT().equals(Integer.valueOf(0)))).findFirst().orElse(null);
+      Param param = obj.getAward().stream().filter(e -> (e.getK().equals(ItemClassify.HERO_EXP.getId()) && e.getT().equals(0))).findFirst().orElse(null);
       if (param != null)
-        exp = BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(param.getV().intValue() * 0.2D)).longValue(); 
+        exp = BigDecimalUtil.decimalScaleDown(0, Double.valueOf(param.getV() * 0.2D)).longValue();
     } 
     return exp;
   }
   
   public void giveReward(Role role, FightEndEvent fightEndEvent, Npc npc) {
-    if (this.teamService.getTeam(role.getRoleId().intValue()) != null)
+    if (this.teamService.getTeam(role.getRoleId()) != null)
       if (!this.teamService.isInTeam(role)) {
         MessagePusher.pushMessage(role, (Message)new RespNotifyMiscEx("离队无法获得奖励"));
         return;
@@ -215,30 +215,30 @@ public class WorldBoosHandler extends FightActivityHandler {
       return; 
     List<Lottery> list = new ArrayList<>();
     for (Param param : special)
-      list.add(new Lottery(param.getK(), "", Double.valueOf(param.getR().intValue() / 1000.0D), param.getV().intValue())); 
+      list.add(new Lottery(param.getK(), "", Double.valueOf(param.getR() / 1000.0D), param.getV()));
     List<Double> rates = new ArrayList<>(list.size());
     for (Lottery lottery1 : list)
       rates.add(lottery1.getBili()); 
     Lottery lottery = list.get(LotteryUtils.lottery(rates));
     if (lottery.getNum() > 0) {
       FiedEquip info = EquipDistKind.getInfo(lottery.getSerial());
-      if (info != null && !info.getType().equals(Integer.valueOf(ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY_EGG.getValue()))) {
-        int serial = DataGlobalFunc.randomEquip(info.getType().intValue(), info.getValue().intValue(), role.getRace().intValue());
+      if (info != null && !info.getType().equals(ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY_EGG.getValue())) {
+        int serial = DataGlobalFunc.randomEquip(info.getType(), info.getValue(), role.getRace());
         if (serial > 0) {
-          BagEquip equip = EquipManage.createEquip(Integer.valueOf(serial));
+          BagEquip equip = EquipManage.createEquip(serial);
           if (equip != null) {
             ((EquipService)SpringUtils.getBean(EquipService.class)).addEquip(role, equip, pos, 0, cause);
-            MessagePusher.notify2Lb(role, 214, new Object[] { role.getName(), cause, String.format("#<MI:%s,MP:%d,M:1,MT:%d,CI:%d}>%s#", new Object[] { equip.getId(), role.getRoleId(), Integer.valueOf(equip.getType()), Integer.valueOf(equip.getType()), DataGlobalFunc.getEquipDesc(serial, DataGlobalFunc.getPj(equip.getType())) }), String.format("#<O>X%d#", new Object[] { Integer.valueOf(1) }) });
+            MessagePusher.notify2Lb(role, 214, role.getName(), cause, String.format("#<MI:%s,MP:%d,M:1,MT:%d,CI:%d}>%s#", equip.getId(), role.getRoleId(), equip.getType(), equip.getType(), DataGlobalFunc.getEquipDesc(serial, DataGlobalFunc.getPj(equip.getType()))), String.format("#<O>X%d#", 1));
           } 
         } 
       } else {
-        int serial = lottery.getSerial().intValue();
+        int serial = lottery.getSerial();
         if (serial == EquipDistKind.SUIT.getNote())
-          serial = DataGlobalFunc.randomAcsryEgg(role.getRace().intValue()); 
+          serial = DataGlobalFunc.randomAcsryEgg(role.getRace());
         ((BagService)SpringUtils.getBean(BagService.class)).rewardItem(role, serial, lottery.getNum(), 0, cause);
-        ItemEasyInfo itemEasyInfo = DataGlobalFunc.getItemEasyInfo(Integer.valueOf(serial));
+        ItemEasyInfo itemEasyInfo = DataGlobalFunc.getItemEasyInfo(serial);
         if (itemEasyInfo != null)
-          MessagePusher.notify2Lb(role, 214, new Object[] { role.getName(), cause, String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", new Object[] { itemEasyInfo.getSerial(), Integer.valueOf(0), Integer.valueOf(0), itemEasyInfo.getSerial(), itemEasyInfo.getSerial(), itemEasyInfo.getName() }), String.format("#<ZWG3>X%d#", new Object[] { Integer.valueOf(lottery.getNum()) }) }); 
+          MessagePusher.notify2Lb(role, 214, new Object[] { role.getName(), cause, String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", itemEasyInfo.getSerial(), 0, 0, itemEasyInfo.getSerial(), itemEasyInfo.getSerial(), itemEasyInfo.getName()), String.format("#<ZWG3>X%d#", lottery.getNum()) });
       } 
     } 
   }
@@ -246,13 +246,13 @@ public class WorldBoosHandler extends FightActivityHandler {
   private void clearStarOfficerTimeOut(Npc npc) {
     if (npc == null)
       return; 
-    if (DataCache.BOOS_OFFICER_SET.get(Integer.valueOf(npc.getId())) == null)
+    if (DataCache.BOOS_OFFICER_SET.get(npc.getId()) == null)
       return; 
     if (npc.isInFight()) {
       this.bossService.broadcastNpcHide(null, npc);
     } else {
       clearStarOfficer(npc);
-      DataCache.BOOS_OFFICER_SET.remove(Integer.valueOf(npc.getId()));
+      DataCache.BOOS_OFFICER_SET.remove(npc.getId());
     } 
   }
   
@@ -263,7 +263,7 @@ public class WorldBoosHandler extends FightActivityHandler {
   private void clearBoosTimeOut(Npc npc) {
     if (npc == null)
       return; 
-    if (DataCache.BOOS_OFFICER_SET.get(Integer.valueOf(npc.getId())) == null)
+    if (DataCache.BOOS_OFFICER_SET.get(npc.getId()) == null)
       return; 
     if (npc.isInFight()) {
       this.bossService.broadcastNpcHide(null, npc);
@@ -275,10 +275,10 @@ public class WorldBoosHandler extends FightActivityHandler {
   private void clearStarOfficer(Npc npc) {
     if (npc == null)
       return; 
-    DataCache.BOOS_OFFICER_SET.remove(Integer.valueOf(npc.getId()));
-    Set<Integer> set = (Set<Integer>)DataCache.BOOS_OFFICER_MAP_NPC.get(Integer.valueOf(npc.getMap()));
+    DataCache.BOOS_OFFICER_SET.remove(npc.getId());
+    Set<Integer> set = (Set<Integer>)DataCache.BOOS_OFFICER_MAP_NPC.get(npc.getMap());
     if (set != null) {
-      set.remove(Integer.valueOf(npc.getId()));
+      set.remove(npc.getId());
       removeUsedPosition(npc.getMap(), npc.getX(), npc.getY());
       this.bossService.broadcastNpcHide(null, npc);
     } 

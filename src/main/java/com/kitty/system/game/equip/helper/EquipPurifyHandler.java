@@ -38,19 +38,19 @@ public class EquipPurifyHandler extends UpgradeHandler {
   
   public String acceptUpgrade(Role role, Integer pos, Integer type, String param, String cause) {
     Long id = Long.valueOf(param);
-    EquipInfo equipInfo = getEquip(role, pos.intValue(), id);
+    EquipInfo equipInfo = getEquip(role, pos, id);
     if (equipInfo.getTips() != null) {
       this.logger.error("五阶仙器炼器：获取物品所在位置为 = {}，获取物品ID = {}", role.getPos(), id);
       return equipInfo.getTips();
     } 
     BagEquip equip = equipInfo.getEquip();
     int pj = getPj(equip.getType());
-    if (pj != 5)
+    if (pj != 5 && pj != 6)
       return null; 
-    int count = expend(type.intValue());
+    int count = expend(type);
     Integer goods = this.bagService.getBagGoods(role, 75031, count * 2);
     if (goods != null)
-      return MessageFormat.format("需要{0}个八荒遗风", new Object[] { goods }); 
+      return MessageFormat.format("需要{0}个八荒遗风", goods);
     boolean flag = this.roleService.checkCurrency(role, Const.RESTYPE_SILVER, (5000000 * count));
     if (!flag)
       return null; 
@@ -64,7 +64,7 @@ public class EquipPurifyHandler extends UpgradeHandler {
     List<EquipNeo> list = new ArrayList<>();
     BeanUtils.copyBeanProp(calculate, equipInfo.getEquip());
     int bn = DataGlobalFunc.getGemNum(equip);
-    SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(Integer.valueOf(equip.getType()));
+    SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(equip.getType());
     List<List<FiedEquip>> redo = new ArrayList<>();
     double refining = equip.getRefining();
     for (int i = 0; i < count; i++) {
@@ -74,25 +74,25 @@ public class EquipPurifyHandler extends UpgradeHandler {
       List<FiedEquip> field = MakeAttribute.createBaseBieEq(refining, bieEq.getCoef(), bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bn, SkillAi.canAffectOnPro(odds));
       calculate.setField(field);
       Integer score = MakeAttribute.calEquipScore(calculate);
-      field.add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf(score.intValue() + bieEq.getBaseScore())));
+      field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
       list.add(new EquipNeo(field));
       redo.add(field);
     } 
     equip.setRefining(refining);
     MessagePusher.pushMessage(role, (Message)new RespPreUpgradeEquip((byte)2, param, list, (byte)type.intValue()));
-    equip = remoldPurifySave(equip, redo, type.intValue());
+    equip = remoldPurifySave(equip, redo, type);
     equip = updateRemold(equip, bn);
-    refresh(role, equip, pos.intValue(), id, false);
+    refresh(role, equip, pos, id, false);
     return null;
   }
   
   public double getRefining(double refining) {
-    int round = RandomUtil.round(Integer.valueOf(1), Integer.valueOf(100));
+    int round = RandomUtil.round(1, 100);
     if (round > 60) {
       refining++;
       boolean flag = SkillAi.canAffectOnPro(0.005D);
       if (flag) {
-        double v = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(RandomUtil.getRandomDouble(Double.valueOf(1.5D), Double.valueOf(2.2D))));
+        double v = BigDecimalUtil.decimalScaleObjectDown(3, Double.valueOf(RandomUtil.getRandomDouble(Double.valueOf(1.5D), Double.valueOf(2.2D))));
         refining += v;
       } 
     } else if (round > 15 && round < 35) {
@@ -128,11 +128,11 @@ public class EquipPurifyHandler extends UpgradeHandler {
   }
   
   public List<FiedEquip> recastField(BagEquip equip, int serial, int bn) {
-    SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(Integer.valueOf(serial));
+    SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(serial);
     List<FiedEquip> field = MakeAttribute.createBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bn, bieEq.getCoef(), equip.getRefining());
     Integer score = MakeAttribute.calEquipScore(equip);
-    field.add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf(score.intValue() + bieEq.getBaseScore())));
-    field.add(new FiedEquip(Integer.valueOf(6680), Integer.valueOf(bieEq.getSerial())));
+    field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
+    field.add(new FiedEquip(6680, bieEq.getSerial()));
     return field;
   }
 }

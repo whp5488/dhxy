@@ -111,12 +111,12 @@ public class CaPkHandler extends ActivityHandler {
     for (CaPkData data : list) {
       Team team = this.teamService.getTeamByTeamId(data.getTeamId());
       if (team == null) {
-        clearTeamList.add(Integer.valueOf(data.getTeamId()));
+        clearTeamList.add(data.getTeamId());
         for (Long member : data.getMembers()) {
-          Role role = this.roleService.getPlayer(member.longValue());
+          Role role = this.roleService.getPlayer(member);
           if (role != null)
             if (this.caHandler.isInMap(role)) {
-              role.pushTempCache("ca_leave", Boolean.valueOf(true));
+              role.pushTempCache("ca_leave", Boolean.TRUE);
               this.teamService.leave(role, false);
               this.caHandler.leave(role);
             }  
@@ -128,25 +128,25 @@ public class CaPkHandler extends ActivityHandler {
         if (player != null) {
           this.caHandler.leave(player);
         } else {
-          this.logger.error("决战长安比赛开始前弃权,队伍人数小于参赛最小人数清理出场。获取角色错误：{}", Long.valueOf(team.getLeaderUid()));
+          this.logger.error("决战长安比赛开始前弃权,队伍人数小于参赛最小人数清理出场。获取角色错误：{}", team.getLeaderUid());
         } 
-        clearTeamList.add(Integer.valueOf(team.getId()));
+        clearTeamList.add(team.getId());
         continue;
       } 
       boolean flag = true;
       List<Integer> objects = this.teamService.getTeamAfkMember(team);
       for (Integer object : objects) {
-        Role role = this.roleService.getPlayer(object.intValue());
+        Role role = this.roleService.getPlayer(object);
         if (role != null) {
-          role.pushTempCache("ca_leave", Boolean.valueOf(true));
+          role.pushTempCache("ca_leave", Boolean.TRUE);
           this.teamService.leave(role, false);
           this.caHandler.leave(role);
-          role.pushTempCache("ca_leave", Boolean.valueOf(false));
+          role.pushTempCache("ca_leave", Boolean.FALSE);
           if (this.teamService.getTeamCount(team) < set.getMinTeamMemberCount()) {
             Role player = this.roleService.getPlayer(team.getLeaderUid());
             if (player != null)
               this.caHandler.leave(player); 
-            clearTeamList.add(Integer.valueOf(team.getId()));
+            clearTeamList.add(team.getId());
             flag = false;
           } 
         } 
@@ -155,7 +155,7 @@ public class CaPkHandler extends ActivityHandler {
         this.caHandler.enter(data, team); 
     } 
     for (Iterator<Integer> iterator = clearTeamList.iterator(); iterator.hasNext(); ) {
-      int teamId = ((Integer)iterator.next()).intValue();
+      int teamId = (Integer) iterator.next();
       list.removeIf(e -> (e.getTeamId() == teamId));
     } 
     list = (List<CaPkData>)list.stream().sorted(Comparator.comparing(CaPkData::getScore, Comparator.reverseOrder()).thenComparing(CaPkData::getMemberEquipScore, Comparator.reverseOrder()).thenComparing(CaPkData::getMemberGrade, Comparator.reverseOrder())).collect(Collectors.toList());
@@ -213,7 +213,7 @@ public class CaPkHandler extends ActivityHandler {
       e.printStackTrace();
     } 
     if (this.scheduledFuture != null)
-      this.scheduledFuture.cancel(Boolean.FALSE.booleanValue()); 
+      this.scheduledFuture.cancel(false);
   }
   
   public void grouping() {
@@ -228,11 +228,11 @@ public class CaPkHandler extends ActivityHandler {
         continue; 
       if (!this.caHandler.isInMap(player))
         continue; 
-      List<CaPkData> list = map.get(Integer.valueOf(caPkData.getGroup()));
+      List<CaPkData> list = map.get(caPkData.getGroup());
       if (list == null)
         list = new ArrayList<>(); 
       list.add(caPkData);
-      map.put(Integer.valueOf(caPkData.getGroup()), list);
+      map.put(caPkData.getGroup(), list);
     } 
     grouping(map);
   }
@@ -246,7 +246,7 @@ public class CaPkHandler extends ActivityHandler {
           continue; 
         int index = caPkDataList.indexOf(datum);
         if (index + 1 >= caPkDataList.size()) {
-          datum.getFight().add(new CaFight(-1, new ArrayList(), (byte)0, this.session));
+          datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte)0, this.session));
           break;
         } 
         CaPkData caPkData = caPkDataList.get(index + 1);
@@ -279,14 +279,14 @@ public class CaPkHandler extends ActivityHandler {
           resList.add(pkData);
         } 
         if (datum.getFight().size() < this.session && resList.size() > 0) {
-          CaPkData data = resList.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(resList.size() - 1)));
+          CaPkData data = resList.get(RandomUtil.round(0, resList.size() - 1));
           int temId = data.getTeamId();
           datum.getFight().add(new CaFight(data.getTeamId(), data.getMembers(), (byte)0, this.session));
           data = caPkDataList.stream().filter(e -> (e.getTeamId() == temId)).findFirst().orElse(null);
           data.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte)0, this.session));
           continue;
         } 
-        datum.getFight().add(new CaFight(-1, new ArrayList(), (byte)0, this.session));
+        datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte)0, this.session));
       } 
     } 
   }
@@ -297,7 +297,7 @@ public class CaPkHandler extends ActivityHandler {
       List<CaPkData> objPkDataList = obj.getPkDataList();
       Map<Integer, Integer> map = new HashMap<>(objPkDataList.size());
       for (CaPkData data : objPkDataList) {
-        if (map.get(Integer.valueOf(data.getTeamId())) == null) {
+        if (map.get(data.getTeamId()) == null) {
           CaFight fight = EventsUtils.getMinNotFight(data);
           Team teamA = this.teamService.getTeamByTeamId(data.getTeamId());
           if (fight.getTeamId() == -1) {
@@ -310,8 +310,8 @@ public class CaPkHandler extends ActivityHandler {
           if (fight != null) {
             Team teamB = this.teamService.getTeamByTeamId(fight.getTeamId());
             match(teamA, teamB);
-            map.put(Integer.valueOf(teamA.getId()), Integer.valueOf(teamB.getId()));
-            map.put(Integer.valueOf(teamB.getId()), Integer.valueOf(teamA.getId()));
+            map.put(teamA.getId(), teamB.getId());
+            map.put(teamB.getId(), teamA.getId());
           } 
         } 
       } 
@@ -338,7 +338,7 @@ public class CaPkHandler extends ActivityHandler {
                 if (team != null) {
                   Role player = CaPkHandler.this.roleService.getPlayer(team.getLeaderUid());
                   if (CaPkHandler.this.caHandler.isInMap(player) && CaPkHandler.this.fightNewService.isInFight(CaPkHandler.this.roleService.getPlayer(team.getLeaderUid()))) {
-                    Fight fight = CaPkHandler.this.fightNewService.getFightByRoleId(player.getRoleId().intValue());
+                    Fight fight = CaPkHandler.this.fightNewService.getFightByRoleId(player.getRoleId());
                     CaPkHandler.this.fightNewService.quitFight(fight);
                   } 
                 } 
@@ -378,13 +378,13 @@ public class CaPkHandler extends ActivityHandler {
         pkDataA.setTime(0);
         pkDataA.updateTeamMember((byte)1);
       } else {
-        this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", Integer.valueOf(teamA.getId()));
+        this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", teamA.getId());
       } 
       if (pkDataB != null) {
         pkDataB.setTime(0);
         pkDataB.updateTeamMember((byte)1);
       } else {
-        this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", Integer.valueOf(teamB.getId()));
+        this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", teamB.getId());
       } 
     } 
   }
@@ -395,7 +395,7 @@ public class CaPkHandler extends ActivityHandler {
     EventsUtils.clashPlans(teamA.getList(), teamB.getList(), 3002, 10);
     SchedulerManager.getInstance().schedule(new Runnable() {
           public void run() {
-            Fight fight = FightFactory.getFightFactory(fightType).create(mapId, new Object[] {fightType, teamA.getList(), teamB.getList() });
+            Fight fight = FightFactory.getFightFactory(fightType).create(mapId, fightType, teamA.getList(), teamB.getList());
             fight.setMaxRound(CaPkHandler.MAX_ROUND);
             fight.start();
           }
@@ -412,10 +412,10 @@ public class CaPkHandler extends ActivityHandler {
         return; 
       if (!isMatchFightType(fightEndEvent.getFightType()))
         return; 
-      if (!role.getPos().getMapId().equals(Integer.valueOf(3005)))
+      if (!role.getPos().getMapId().equals(3005))
         return; 
       CaData caData = this.caHandler.getCaData();
-      Team team = this.teamService.getTeam(role.getRoleId().intValue());
+      Team team = this.teamService.getTeam(role.getRoleId());
       if (team == null)
         return; 
       CaPkData itselfData = caData.getPkDataList().stream().filter(e -> (e.getTeamId() == team.getId())).findFirst().orElse(null);
@@ -426,7 +426,7 @@ public class CaPkHandler extends ActivityHandler {
         return;
       } 
       itselfData.subPkValue((short)1);
-      FightInfo fightInfo = EventsUtils.getFightInfo(fightEndEvent.getRolesA(), fightEndEvent.getRolesB(), role.getId().longValue());
+      FightInfo fightInfo = EventsUtils.getFightInfo(fightEndEvent.getRolesA(), fightEndEvent.getRolesB(), role.getId());
       if (fightInfo == null)
         return; 
       CaFight fight = updateFightData(itselfData, fightInfo, fightEndEvent.getStatus());
@@ -453,7 +453,7 @@ public class CaPkHandler extends ActivityHandler {
   
   private void doFightWin(FightInfo fightInfo, int score) {
     for (Long id : fightInfo.getItself()) {
-      Role player = this.roleService.getPlayer(id.longValue());
+      Role player = this.roleService.getPlayer(id);
       if (player != null)
         this.caHandler.compensate(player, score); 
     } 
@@ -473,7 +473,7 @@ public class CaPkHandler extends ActivityHandler {
       } 
       itselfData.setTime(0);
       for (int i = 0; i < fightInfo.getItself().size(); i++) {
-        Role player = this.roleService.getPlayer(((Long)fightInfo.getItself().get(i)).longValue());
+        Role player = this.roleService.getPlayer((Long) fightInfo.getItself().get(i));
         if (player != null) {
           sendAward(player, result);
           this.caHandler.sendRespIcon(player);
@@ -497,14 +497,14 @@ public class CaPkHandler extends ActivityHandler {
       Member member = itselfTeam.getList().get(i);
       if (member != null)
         if (member.isInTeam()) {
-          Role player = this.roleService.getPlayer(member.getId().longValue());
+          Role player = this.roleService.getPlayer(member.getId());
           if (player != null)
             listA.add(player); 
         }  
     } 
     List<Role> listB = new ArrayList<>();
     for (Long id : fight.getMembers()) {
-      Role player = this.roleService.getPlayer(id.longValue());
+      Role player = this.roleService.getPlayer(id);
       if (player != null)
         listA.add(player); 
     } 
@@ -517,16 +517,16 @@ public class CaPkHandler extends ActivityHandler {
   
   private List<FiedValue> sendAward(Role role, byte type) {
     List<FiedValue> objects = new ArrayList<>();
-    long heroExp = calculate(role.getLevel().intValue(), role.getRelive().intValue(), ItemClassify.HERO_EXP);
+    long heroExp = calculate(role.getLevel(), role.getRelive(), ItemClassify.HERO_EXP);
     heroExp = (long)((type == 2) ? (heroExp * 2.0D) : heroExp);
     objects.add(new FiedValue(String.valueOf(ItemClassify.HERO_EXP.getId()), (byte)4, String.valueOf(heroExp)));
     this.roleService.addExp(role, heroExp, "", true);
     Integer combatPet = role.getExtendBox().getCombatPet();
-    if (combatPet.intValue() > 0) {
+    if (combatPet > 0) {
       PetService petService = SpringUtils.getPetService();
       Pet pet = (Pet)petService.selectPet(role).get(combatPet);
       if (pet != null) {
-        long calculate = calculate(pet.getPetLv().intValue(), pet.getRebirth().intValue(), ItemClassify.PET_EXP);
+        long calculate = calculate(pet.getPetLv(), pet.getRebirth(), ItemClassify.PET_EXP);
         calculate = (long)((type == 2) ? (calculate * 2.0D) : calculate);
         objects.add(new FiedValue(String.valueOf(ItemClassify.PET_EXP.getId()), (byte)4, String.valueOf(calculate)));
         petService.addExp(role, pet, calculate, true);
@@ -537,9 +537,9 @@ public class CaPkHandler extends ActivityHandler {
   
   private static long calculate(int grade, int rei, ItemClassify type) {
     if (type == ItemClassify.HERO_EXP)
-      return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(1.9E7D * (1.0D + (grade + rei * 15.0D) / 140.0D * 2.5D) / 30.0D / 1.39D * (0.23D + Math.pow(1.0D, 0.35D)) * 1.3D)).longValue(); 
+      return BigDecimalUtil.decimalScaleDown(0, Double.valueOf(1.9E7D * (1.0D + (grade + rei * 15.0D) / 140.0D * 2.5D) / 30.0D / 1.39D * (0.23D + Math.pow(1.0D, 0.35D)) * 1.3D)).longValue();
     if (type == ItemClassify.PET_EXP)
-      return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(1.9E7D * (1.0D + (grade + rei * 15.0D) / 140.0D * 2.5D) / 30.0D / 1.39D * (0.23D + Math.pow(1.0D, 0.35D)) * 1.3D * 1.2D)).longValue(); 
+      return BigDecimalUtil.decimalScaleDown(0, Double.valueOf(1.9E7D * (1.0D + (grade + rei * 15.0D) / 140.0D * 2.5D) / 30.0D / 1.39D * (0.23D + Math.pow(1.0D, 0.35D)) * 1.3D * 1.2D)).longValue();
     return 0L;
   }
 }

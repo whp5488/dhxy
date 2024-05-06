@@ -117,24 +117,24 @@ public class MoneyUtil {
   }
   
   public static String colours(Long num) {
-    if (num == null || num.longValue() <= 0L)
+    if (num == null || num <= 0L)
       return ""; 
     String msg = "";
-    if (num.longValue() < 10000L) {
+    if (num < 10000L) {
       msg = "#<r:255,g:255,b:255,SD:1>";
-    } else if (num.longValue() < 100000L) {
+    } else if (num < 100000L) {
       msg = "#<r:160,g:255,b:150,SD:1>";
-    } else if (num.longValue() < 1000000L) {
+    } else if (num < 1000000L) {
       msg = "#<r:255,g:116,b:255>";
-    } else if (num.longValue() < 10000000L) {
+    } else if (num < 10000000L) {
       msg = "#<r:255,g:250,b:75,SD:1>";
-    } else if (num.longValue() < 100000000L) {
+    } else if (num < 100000000L) {
       msg = "#<r:125,g:255,b:255>";
-    } else if (num.longValue() < 1000000000L) {
+    } else if (num < 1000000000L) {
       msg = "#<r:94,g:255,b:94>";
     } else {
       msg = "#<r:244,g:183,b:87>";
     } 
-    return msg + partition(new BigDecimal(num.longValue())) + "#";
+    return msg + partition(new BigDecimal(num)) + "#";
   }
 }

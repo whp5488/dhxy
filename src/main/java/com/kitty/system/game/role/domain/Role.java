@@ -403,7 +403,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("角色转生")
   @Column("relive")
-  private Integer relive = Integer.valueOf(0);
+  private Integer relive = 0;
   
   public Integer getRelive() {
     return this.relive;
@@ -459,7 +459,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("银币（银元宝）")
   @Column("silver")
-  private Long silver = Long.valueOf(0L);
+  private Long silver = 0L;
   
   public Long getSilver() {
     return this.silver;
@@ -467,7 +467,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("铜币（师贡）")
   @Column("coin")
-  private Long coin = Long.valueOf(0L);
+  private Long coin = 0L;
   
   @Comment("角色外观")
   @Column("icon")
@@ -539,7 +539,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("基础根骨")
   @Column("gg")
-  private Integer gg = Integer.valueOf(0);
+  private Integer gg = 0;
   
   public Integer getGg() {
     return this.gg;
@@ -547,7 +547,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("基础灵性")
   @Column("lx")
-  private Integer lx = Integer.valueOf(0);
+  private Integer lx = 0;
   
   public Integer getLx() {
     return this.lx;
@@ -555,7 +555,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("基础力量")
   @Column("ll")
-  private Integer ll = Integer.valueOf(0);
+  private Integer ll = 0;
   
   public Integer getLl() {
     return this.ll;
@@ -563,7 +563,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("基础敏捷")
   @Column("mj")
-  private Integer mj = Integer.valueOf(0);
+  private Integer mj = 0;
   
   public Integer getMj() {
     return this.mj;
@@ -571,7 +571,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("未分配点数")
   @Column("fpoint")
-  private Integer fpoint = Integer.valueOf(0);
+  private Integer fpoint = 0;
   
   @Comment("气血值")
   @Column("curr_life")
@@ -629,7 +629,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("帮派编号（0未加入帮派）")
   @Column("faction")
-  private Integer faction = Integer.valueOf(0);
+  private Integer faction = 0;
   
   @JSONField(serialize = false)
   @Comment("任务数据")
@@ -720,7 +720,7 @@ public class Role extends BaseEntity<Long> {
   @Comment("禁言时间")
   @Column("word_time")
   @Default("0")
-  private Long WordTime = Long.valueOf(0L);
+  private Long WordTime = 0L;
   
   public Long getWordTime() {
     return this.WordTime;
@@ -728,7 +728,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("封号截止时间")
   @Column("lock_time")
-  private Long lockTime = Long.valueOf(0L);
+  private Long lockTime = 0L;
   
   @Comment("本次登录时间")
   @Column("enter_time")
@@ -744,7 +744,7 @@ public class Role extends BaseEntity<Long> {
   
   @Comment("离线时间")
   @Column("of_line_time")
-  private Long ofLineTime = Long.valueOf(0L);
+  private Long ofLineTime = 0L;
   
   public Long getOfLineTime() {
     return this.ofLineTime;
@@ -752,7 +752,7 @@ public class Role extends BaseEntity<Long> {
   
   @Column("pre_online_sec")
   @Comment("之前累计当天在线时长秒数")
-  private Long preOnlineSec = Long.valueOf(0L);
+  private Long preOnlineSec = 0L;
   
   @Column("marking")
   @Comment("区组标识")

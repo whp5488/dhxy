@@ -23,7 +23,7 @@ public class CxfConfig {
   
   @Bean
   public ServletRegistrationBean cxfServlet() {
-    return new ServletRegistrationBean((Servlet)new CXFServlet(), new String[] { "/services/*" });
+    return new ServletRegistrationBean(new CXFServlet(), "/services/*");
   }
   
   @Bean

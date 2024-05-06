@@ -64,11 +64,11 @@ public enum SceneManager {
   
   public void leaveMap(int mapId, Role role) {
     AOI scene = getScene(mapId);
-    acceptTask(scene.getId(), () -> scene.leave(role.getId().longValue()));
+    acceptTask(scene.getId(), () -> scene.leave(role.getId()));
   }
   
   public void movePosition(Role role) {
-    int mapId = role.getPos().getMapId().intValue();
+    int mapId = role.getPos().getMapId();
     AOI scene = getScene(mapId);
     acceptTask(scene.getId(), () -> scene.move(role));
   }

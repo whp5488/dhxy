@@ -156,13 +156,13 @@ public class CaHandler extends ActivityHandler {
     calendarStart.setTime(new Date());
     CaSet caSet = getCaSet();
     String[] signUp = caSet.getSignUpTime().split(":");
-    calendarStart.set(11, Integer.valueOf(signUp[0]).intValue());
-    calendarStart.set(12, Integer.valueOf(signUp[1]).intValue());
+    calendarStart.set(11, Integer.valueOf(signUp[0]));
+    calendarStart.set(12, Integer.valueOf(signUp[1]));
     calendarStart.set(13, 0);
     objData.setSignUpTime(EventsUtils.getTime(calendarStart));
     String[] start = caSet.getStartTime().split(":");
-    calendarStart.set(11, Integer.valueOf(start[0]).intValue());
-    calendarStart.set(12, Integer.valueOf(start[1]).intValue());
+    calendarStart.set(11, Integer.valueOf(start[0]));
+    calendarStart.set(12, Integer.valueOf(start[1]));
     calendarStart.set(13, 0);
     objData.setStartTime(EventsUtils.getTime(calendarStart));
     calendarStart.add(12, caSet.getSustain());
@@ -176,7 +176,7 @@ public class CaHandler extends ActivityHandler {
     calendar.setTime(this.caData.getStartTime().getTime());
     calendar.add(11, -1);
     long initialDelay = this.caData.getStartTime().getTimeInMillis() - System.currentTimeMillis();
-    this.logger.error("添加定时检测的定时任务==={}", Long.valueOf(initialDelay));
+    this.logger.error("添加定时检测的定时任务==={}", initialDelay);
     try {
       if (this.scheduledFuture != null)
         this.scheduledFuture.cancel(false); 
@@ -187,24 +187,24 @@ public class CaHandler extends ActivityHandler {
   
   private void addStartJob() {
     long initialDelay = this.caData.getStartTime().getTimeInMillis() - System.currentTimeMillis();
-    this.logger.error("添加决战长安开始的定时任务==={}", Long.valueOf(initialDelay));
+    this.logger.error("添加决战长安开始的定时任务==={}", initialDelay);
     SchedulerManager.getInstance().schedule(() -> ((CaPkHandler)SpringUtils.getBean(CaPkHandler.class)).start(), initialDelay);
   }
   
   private void addEndJob() {
     long initialDelay = this.caData.getEndTime().getTimeInMillis() - System.currentTimeMillis();
-    this.logger.error("添加决战长安结束的定时任务==={}", Long.valueOf(initialDelay));
+    this.logger.error("添加决战长安结束的定时任务==={}", initialDelay);
     SchedulerManager.getInstance().schedule(() -> end(), initialDelay);
   }
   
   public void clearRankRecord() {
     CaEventSet eventSet;
-    Event event = (Event)ActivityDataPool.eventMap.get(Integer.valueOf(3002));
+    Event event = (Event)ActivityDataPool.eventMap.get(3002);
     if (event == null) {
-      event = new Event(Long.valueOf(this.worker.nextId()), 3002);
+      event = new Event(this.worker.nextId(), 3002);
       eventSet = new CaEventSet();
       event.setPara(JsonUtils.object2String(eventSet));
-      ActivityDataPool.eventMap.put(Integer.valueOf(3002), event);
+      ActivityDataPool.eventMap.put(3002, event);
       event.save();
     } else {
       eventSet = (CaEventSet)Json.fromJson(CaEventSet.class, event.getPara());
@@ -221,9 +221,9 @@ public class CaHandler extends ActivityHandler {
   private void end() {
     ((CaPkHandler)SpringUtils.getBean(CaPkHandler.class)).end();
     if (this.scheduledFuture != null)
-      this.scheduledFuture.cancel(Boolean.FALSE.booleanValue()); 
+      this.scheduledFuture.cancel(false);
     ((AsyncService)SpringUtils.getBean(AsyncService.class)).syncCaRan();
-    Event event = (Event)ActivityDataPool.eventMap.get(Integer.valueOf(3002));
+    Event event = (Event)ActivityDataPool.eventMap.get(3002);
     CaEventSet eventSet = (CaEventSet)Json.fromJson(CaEventSet.class, event.getPara());
     int round = eventSet.getRound() + 1;
     if (round > eventSet.getMax()) {
@@ -241,7 +241,7 @@ public class CaHandler extends ActivityHandler {
   public void compensate(Role role, int score) {
     CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(role.getId());
     if (record == null) {
-      RankingList.CA_RANK_RECORDS.put(role.getId(), new CaRankRecord(Long.valueOf(this.worker.nextId()), role.getId().longValue(), role.getRoleId().intValue(), role.getSerial().intValue(), role.getName()));
+      RankingList.CA_RANK_RECORDS.put(role.getId(), new CaRankRecord(this.worker.nextId(), role.getId(), role.getRoleId(), role.getSerial(), role.getName()));
       record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(role.getId());
     } 
     int newScore = record.getScore() + score;
@@ -249,11 +249,11 @@ public class CaHandler extends ActivityHandler {
     record.save();
     CaCache caCache = new CaCache();
     caCache.setId(role.getId());
-    caCache.setRoleId(role.getRoleId().intValue());
-    caCache.setSerial(role.getSerial().intValue());
+    caCache.setRoleId(role.getRoleId());
+    caCache.setSerial(role.getSerial());
     caCache.setName(role.getName());
     caCache.setScore(record.getScore());
-    caCache.setGrade(role.getRelive().intValue() * 1000 + role.getLevel().intValue());
+    caCache.setGrade(role.getRelive() * 1000 + role.getLevel());
     caCache.setFactionName(this.roleService.getFactionName(role));
     caCache.setMarking(role.getMarking());
     JedisUtil.set("jzca:" + this.serverService.getMarking() + "_" + role.getId(), JsonUtils.object2String(caCache));
@@ -262,7 +262,7 @@ public class CaHandler extends ActivityHandler {
   public void updateWaterRank(Role role, int score, int equip, int grade) {
     CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(role.getId());
     if (record == null) {
-      RankingList.CA_RANK_RECORDS.put(role.getId(), new CaRankRecord(Long.valueOf(this.worker.nextId()), role.getId().longValue(), role.getRoleId().intValue(), role.getSerial().intValue(), role.getName()));
+      RankingList.CA_RANK_RECORDS.put(role.getId(), new CaRankRecord(this.worker.nextId(), role.getId(), role.getRoleId(), role.getSerial(), role.getName()));
       record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(role.getId());
     } 
     if (score > 0)
@@ -287,39 +287,40 @@ public class CaHandler extends ActivityHandler {
   public String canEnter(Role role) {
     CaData obj = getCaData();
     if (obj == null) {
-      MessagePusher.pushMessage(role, (Message)new RespMsg(EventsUtils.canEnterTips(this.caSet.getDayOfWeek(), this.caSet.getSignUpTime(), this.caSet.getStartTime(), "决战长安")));
-      return "";
+      initData();
+      //MessagePusher.pushMessage(role, (Message)new RespMsg(EventsUtils.canEnterTips(this.caSet.getDayOfWeek(), this.caSet.getSignUpTime(), this.caSet.getStartTime(), "决战长安")));
+      //return "";
     } 
     Calendar calendar = Calendar.getInstance();
     if (calendar.before(obj.getSignUpTime()))
-      return MessageFormat.format("现在还不是报名时间，决战长安下一场将于#<R>{0}#开始报名。", new Object[] { TimeUtil.formatDate(obj.getSignUpTime().getTime(), "yyyy-MM-dd-HH:mm:ss") }); 
-    if (role.getLevel().intValue() < this.caSet.getMinLevel())
+      return MessageFormat.format("现在还不是报名时间，决战长安下一场将于#<R>{0}#开始报名。", TimeUtil.formatDate(obj.getSignUpTime().getTime(), "yyyy-MM-dd-HH:mm:ss"));
+    if (role.getLevel() < this.caSet.getMinLevel())
       return "等级达到60级方可参加决战长安。"; 
     if (calendar.after(obj.getStartTime()))
       return "决战长安正在举行中不可报名参加"; 
     int teamCount = this.teamService.getTeamCount(role);
     if (teamCount < this.caSet.getMinTeamMemberCount())
       return "少侠组决战长安。"; 
-    Team team = this.teamService.getTeam(role.getRoleId().intValue());
+    Team team = this.teamService.getTeam(role.getRoleId());
     String names = this.teamService.getNotInTeam(team);
     if (names != null)
-      return MessageFormat.format("#<R>{0}#暂离，无法参加决战长安人以上队伍方可前来参赛～", new Object[] { names }); 
+      return MessageFormat.format("#<R>{0}#暂离，无法参加决战长安人以上队伍方可前来参赛～", names);
     return null;
   }
   
   public void doEnterMap(Role role) {
-    Team team = this.teamService.getTeam(role.getRoleId().intValue());
+    Team team = this.teamService.getTeam(role.getRoleId());
     if (team != null) {
       List<Integer> memberGrade = this.teamService.getMemberGrade(this.roleService.getPlayer(team.getLeaderUid()));
-      if (memberGrade == null || memberGrade.size() <= 0) {
+      if (memberGrade == null || memberGrade.isEmpty()) {
         this.logger.error("决战长安进入地图获取队伍最大等级出错：{}", memberGrade);
         return;
       } 
       Integer max = Collections.<Integer>max(memberGrade);
-      int group = getGroup(max.intValue() / 1000, max.intValue() % 1000);
+      int group = getGroup(max / 1000, max % 1000);
       for (int i = 0; i < team.getList().size(); i++) {
         Member member = team.getList().get(i);
-        Role player = this.roleService.getPlayer(member.getId().longValue());
+        Role player = this.roleService.getPlayer(member.getId());
         if (player != null)
           player.setVisible(group); 
       } 
@@ -341,7 +342,7 @@ public class CaHandler extends ActivityHandler {
       this.caData.getPkDataList().add(data);
     } 
     List<Integer> memberGrade = this.teamService.getMemberGrade(this.roleService.getPlayer(team.getLeaderUid()));
-    if (memberGrade == null || memberGrade.size() <= 0) {
+    if (memberGrade == null || memberGrade.isEmpty()) {
       this.logger.error("决战长安进入地图获取队伍最大等级出错：{}", memberGrade);
       return;
     } 
@@ -349,12 +350,12 @@ public class CaHandler extends ActivityHandler {
     int sumGrade = 0;
     int sumEquipScore = 0;
     Integer max = Collections.<Integer>max(memberGrade);
-    int group = getGroup(max.intValue() / 1000, max.intValue() % 1000);
+    int group = getGroup(max / 1000, max % 1000);
     for (int i = 0; i < team.getList().size(); i++) {
       Member member = team.getList().get(i);
-      Role player = this.roleService.getPlayer(member.getId().longValue());
+      Role player = this.roleService.getPlayer(member.getId());
       if (player != null) {
-        int grade = player.getRelive().intValue() * 1000 + player.getLevel().intValue();
+        int grade = player.getRelive() * 1000 + player.getLevel();
         int equipScore = DataGlobalFunc.getEquipScore(SpringUtils.getEquipService().selectWearEquip(player));
         updateWaterRank(player, 0, equipScore, grade);
         CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(player.getId());
@@ -377,8 +378,8 @@ public class CaHandler extends ActivityHandler {
     if (role != null)
       setRankRecord(list, role); 
     for (Long id : members) {
-      if (!id.equals(Long.valueOf(leader))) {
-        Role player = this.roleService.getPlayer(id.longValue());
+      if (!id.equals(leader)) {
+        Role player = this.roleService.getPlayer(id);
         if (player != null)
           setRankRecord(list, player); 
       } 
@@ -400,7 +401,7 @@ public class CaHandler extends ActivityHandler {
   
   public RespCaIcon getRespIcon(Role role) {
     byte state;
-    Team team = this.teamService.getTeam(role.getRoleId().intValue());
+    Team team = this.teamService.getTeam(role.getRoleId());
     if (team == null)
       return null; 
     CaPkData data = this.caData.getPkDataList().stream().filter(e -> (e.getTeamId() == team.getId())).findFirst().orElse(null);
@@ -432,7 +433,7 @@ public class CaHandler extends ActivityHandler {
       return; 
     if (!isInMap(role))
       return; 
-    Team team = this.teamService.getTeam(role.getRoleId().intValue());
+    Team team = this.teamService.getTeam(role.getRoleId());
     if (team == null)
       return; 
     CaPkData data = this.caData.getPkDataList().stream().filter(e -> (e.getTeamId() == team.getId())).findFirst().orElse(null);
@@ -442,7 +443,7 @@ public class CaHandler extends ActivityHandler {
     caInfo.setRound(this.round);
     caInfo.setGroup((byte)data.getGroup());
     Role leader = this.teamService.getTeamLeader(data.getTeamId());
-    caInfo.setItself(fightMember(data.getMembers(), leader.getId().longValue()));
+    caInfo.setItself(fightMember(data.getMembers(), leader.getId()));
     if (this.caData.getStage() == 1)
       caInfo.setCurrentSession((byte)(((CaPkHandler)SpringUtils.getBean(CaPkHandler.class)).session - 1)); 
     MessagePusher.pushMessage(role, (Message)caInfo);
@@ -450,8 +451,8 @@ public class CaHandler extends ActivityHandler {
   
   public void leave(Role role) {
     if (role != null) {
-      Team team = this.teamService.getTeam(role.getRoleId().intValue());
-      if (team != null && team.getLeaderUid() == role.getId().longValue()) {
+      Team team = this.teamService.getTeam(role.getRoleId());
+      if (team != null && team.getLeaderUid() == role.getId()) {
         doAfterLeaveTeam(role, team);
       } else {
         leaveMap(role);
@@ -462,9 +463,9 @@ public class CaHandler extends ActivityHandler {
   public void leaveMap(Role role) {
     if (role == null)
       return; 
-    if (role.getPos().getMapId().intValue() != 3005)
+    if (role.getPos().getMapId() != 3005)
       return; 
-    role.pushTempCache("not_check_change_map", Boolean.valueOf(true));
+    role.pushTempCache("not_check_change_map", Boolean.TRUE);
     ReqTelePort reqTelePort = new ReqTelePort();
     reqTelePort.setMapId(1011);
     reqTelePort.setX(124);
@@ -523,14 +524,14 @@ public class CaHandler extends ActivityHandler {
     Role leaderRole = this.roleService.getPlayer(team.getLeaderUid());
     if (isInMap(leaderRole) && this.caData != null && this.caData.getStage() == 1) {
       Pos pos = leaderRole.getPos();
-      MessagePusher.pushMessage(memberRole, (Message)new RespMsg(String.format("队长现在位于决战比武场 (%d，%d) ，暂时无法归队。", new Object[] { pos.getX(), pos.getY() })));
+      MessagePusher.pushMessage(memberRole, (Message)new RespMsg(String.format("队长现在位于决战比武场 (%d，%d) ，暂时无法归队。", pos.getX(), pos.getY())));
       return false;
     } 
     return true;
   }
   
   public void handleTeamLeaveMoment(Role role) {
-    upTeamLeave(role, this.teamService.getTeam(role.getRoleId().intValue()));
+    upTeamLeave(role, this.teamService.getTeam(role.getRoleId()));
     super.handleTeamLeaveMoment(role);
   }
   
@@ -545,12 +546,12 @@ public class CaHandler extends ActivityHandler {
       leaveMap(role);
       if (this.caData != null && this.caData.getStage() == 0) {
         flag = true;
-        MessagePusher.pushMessage(role, (Message)new RespMsg(String.format("你取消了决战长安的%s资格", new Object[] { "准备" })));
+        MessagePusher.pushMessage(role, (Message)new RespMsg(String.format("你取消了决战长安的%s资格", "准备")));
       } 
       if (flag)
         if (team != null && this.teamService.getTeamCount(team) < this.caSet.getMinTeamMemberCount()) {
           doAfterLeaveTeam(role, team);
-          RespMsg respMsg = new RespMsg(String.format("由于队伍少于%d人，无法参加决战长安，请重新组满队伍参赛", new Object[] { Integer.valueOf(this.caSet.getMinTeamMemberCount()) }));
+          RespMsg respMsg = new RespMsg(String.format("由于队伍少于%d人，无法参加决战长安，请重新组满队伍参赛", this.caSet.getMinTeamMemberCount()));
           this.teamService.memberHandleThreadLocal(team, memberRole -> MessagePusher.pushMessage(memberRole, (Message)respMsg));
         } else if (team != null && this.caData != null && this.caData.getStage() == 0) {
           CaPkData data = this.caData.getPkDataList().stream().filter(e -> (e.getTeamId() == team.getId())).findFirst().orElse(null);
@@ -590,19 +591,19 @@ public class CaHandler extends ActivityHandler {
     Role role = roleChangeEvent.getRole();
     CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(role.getId());
     if (record != null) {
-      record.setGrade(role.getRelive().intValue() * 1000 + role.getLevel().intValue());
-      record.setSerial(role.getSerial().intValue());
+      record.setGrade(role.getRelive() * 1000 + role.getLevel());
+      record.setSerial(role.getSerial());
       record.setName(role.getName());
       record.save();
       String json = JedisUtil.get("jzca:" + this.serverService.getMarking() + "_" + role.getId());
       if (json != null) {
         CaCache caCache = new CaCache();
         caCache.setId(role.getId());
-        caCache.setRoleId(role.getRoleId().intValue());
-        caCache.setSerial(role.getSerial().intValue());
+        caCache.setRoleId(role.getRoleId());
+        caCache.setSerial(role.getSerial());
         caCache.setName(role.getName());
         caCache.setScore(record.getScore());
-        caCache.setGrade(role.getRelive().intValue() * 1000 + role.getLevel().intValue());
+        caCache.setGrade(role.getRelive() * 1000 + role.getLevel());
         caCache.setFactionName(this.roleService.getFactionName(role));
         caCache.setMarking(role.getMarking());
         JedisUtil.set("jzca:" + this.serverService.getMarking() + "_" + role.getId(), JsonUtils.object2String(caCache));
@@ -625,9 +626,9 @@ public class CaHandler extends ActivityHandler {
         if (leaderRole != null)
           if (leaderRole.getId().equals(role.getId()) || this.teamService.getTeamCount(team) < this.caSet.getMinTeamMemberCount()) {
             for (Member member : team.getList()) {
-              Role player = this.roleService.getPlayer(member.getId().longValue());
+              Role player = this.roleService.getPlayer(member.getId());
               if (player != null) {
-                player.pushTempCache("not_check_change_map", Boolean.valueOf(true));
+                player.pushTempCache("not_check_change_map", Boolean.TRUE);
                 MessagePusher.pushMessage(player, (Message)new RespTaskIcon(3002, "ca", (byte)0));
               } 
             } 
@@ -686,7 +687,7 @@ public class CaHandler extends ActivityHandler {
     String day = DateUtils.dayForWeek(new Date());
     if (!this.caSet.getDayOfWeek().contains(day))
       return; 
-    Event event = (Event)ActivityDataPool.eventMap.get(Integer.valueOf(3002));
+    Event event = (Event)ActivityDataPool.eventMap.get(3002);
     if (event == null) {
       eventSet = new CaEventSet();
     } else {
@@ -694,17 +695,15 @@ public class CaHandler extends ActivityHandler {
     } 
     this.round = eventSet.getRound();
     prepareOnce();
-    SchedulerManager.getInstance().schedule(new Runnable() {
-          public void run() {
-            String notice = "万众瞩目的决战长安今晚20点整准时开始，请各位少侠届时踊跃参加";
-            CaHandler.this.chatService.sendAdnotice(notice);
-          }
-        },  30000L);
+    SchedulerManager.getInstance().schedule(() -> {
+      String notice = "万众瞩目的决战长安今晚20点整准时开始，请各位少侠届时踊跃参加";
+      CaHandler.this.chatService.sendAdnotice(notice);
+    },  30000L);
   }
   
   public void cs() {
     CaEventSet eventSet;
-    Event event = (Event)ActivityDataPool.eventMap.get(Integer.valueOf(3002));
+    Event event = (Event)ActivityDataPool.eventMap.get(3002);
     if (event == null) {
       eventSet = new CaEventSet();
     } else {
@@ -736,7 +735,7 @@ public class CaHandler extends ActivityHandler {
       return; 
     CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(role.getId());
     if (record != null) {
-      record.setGrade(role.getRelive().intValue() * 1000 + role.getLevel().intValue());
+      record.setGrade(role.getRelive() * 1000 + role.getLevel());
       record.save();
     } 
   }

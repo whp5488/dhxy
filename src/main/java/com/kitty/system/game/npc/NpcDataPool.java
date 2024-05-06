@@ -123,11 +123,11 @@ public class NpcDataPool {
     npcButtonHandlers.put("threats_mo_1700001", npcButtonParam -> ((DungeonMwkFront)SpringUtils.getBean(DungeonMwkFront.class)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc(), null));
     npcButtonHandlers.put("threats_mo_c_170002", npcButtonParam -> ((DungeonMwkFront)SpringUtils.getBean(DungeonMwkFront.class)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc(), "threats_mo_c_170002"));
     npcButtonHandlers.put("threats_mo_z_170003", npcButtonParam -> ((DungeonMwkFront)SpringUtils.getBean(DungeonMwkFront.class)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc(), "threats_mo_z_170003"));
-    npcContentHandlers.put(Integer.valueOf(24), npcContentParam -> ((PartyBanditHandler)SpringUtils.getBean(PartyBanditHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
-    npcContentHandlers.put(Integer.valueOf(20), npcContentParam -> ((StarOfficerHandler)SpringUtils.getBean(StarOfficerHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
-    npcContentHandlers.put(Integer.valueOf(21), npcContentParam -> ((SealDemonHandler)SpringUtils.getBean(SealDemonHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
-    npcContentHandlers.put(Integer.valueOf(22), npcContentParam -> ((ThreeScopeHandler)SpringUtils.getBean(ThreeScopeHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
-    npcContentHandlers.put(Integer.valueOf(23), npcContentParam -> ((WorldBoosHandler)SpringUtils.getBean(WorldBoosHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
+    npcContentHandlers.put(24, npcContentParam -> ((PartyBanditHandler)SpringUtils.getBean(PartyBanditHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
+    npcContentHandlers.put(20, npcContentParam -> ((StarOfficerHandler)SpringUtils.getBean(StarOfficerHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
+    npcContentHandlers.put(21, npcContentParam -> ((SealDemonHandler)SpringUtils.getBean(SealDemonHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
+    npcContentHandlers.put(22, npcContentParam -> ((ThreeScopeHandler)SpringUtils.getBean(ThreeScopeHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
+    npcContentHandlers.put(23, npcContentParam -> ((WorldBoosHandler)SpringUtils.getBean(WorldBoosHandler.class)).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
     npcButtonHandlers.put("enter_at", npcButtonParam -> ((AtWillHandler)SpringUtils.getBean(AtWillHandler.class)).enterMap(npcButtonParam.getRole(), npcButtonParam.getNpc()));
     npcButtonHandlers.put("runs_at", npcButtonParam -> ((AtWillHandler)SpringUtils.getBean(AtWillHandler.class)).leave(npcButtonParam.getRole()));
     npcButtonHandlers.put("enter_ca", npcButtonParam -> ((CaHandler)SpringUtils.getBean(CaHandler.class)).enterMap(npcButtonParam.getRole(), npcButtonParam.getNpc()));
@@ -167,7 +167,7 @@ public class NpcDataPool {
       } 
       DataCache.ID_NPC.put(npc.getSerial(), npc);
       DataCache.NAME_NPC_ID.put(npc.getName(), npc.getSerial());
-      Set<Integer> set = DataCache.MAP_NPC_ID_S.computeIfAbsent(npc.getPos().getMapId(), k -> new HashSet());
+      Set<Integer> set = DataCache.MAP_NPC_ID_S.computeIfAbsent(npc.getPos().getMapId(), k -> new HashSet<>());
       set.add(npc.getSerial());
     } 
   }

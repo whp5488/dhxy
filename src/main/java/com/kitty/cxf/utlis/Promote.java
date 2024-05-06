@@ -23,12 +23,12 @@ public class Promote {
         CloseFuture future = session.closeNow();
         future.addListener(new IoFutureListener<IoFuture>() {
               public void operationComplete(IoFuture future) {
-                logger.error("session[{}] closed complete,player[{}]", Long.valueOf(session.getId()), name);
+                logger.error("session[{}] closed complete,player[{}]", session.getId(), name);
               }
             });
       } 
     } catch (Exception e) {
-      logger.error("session[{}] closed complete exception, player[{}]", Long.valueOf(session.getId()), role.getName());
+      logger.error("session[{}] closed complete exception, player[{}]", session.getId(), role.getName());
       e.getMessage();
     } 
   }

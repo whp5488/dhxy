@@ -189,23 +189,23 @@ public class InitService {
   
   @TargetDataSource(name = "ac")
   public Map<String, Tgroups> initGroups() {
-    List<Tgroups> list = this.dao.query(Tgroups.class, (Condition)Cnd.where("skid", "!=", "NULL"));
-    return (Map<String, Tgroups>)list.stream().collect(Collectors.toMap(Tgroups::getSkid, tgroups -> tgroups));
+    List<Tgroups> list = this.dao.query(Tgroups.class, Cnd.where("skid", "!=", "NULL"));
+    return list.stream().collect(Collectors.toMap(Tgroups::getSkid, tgroups -> tgroups));
   }
   
   public Map<String, GiftBag> initGiftBag() {
-    List<GiftBag> list = this.dao.query(GiftBag.class, (Condition)Cnd.NEW());
-    return (Map<String, GiftBag>)list.stream().collect(Collectors.toMap(GiftBag::getName, giftBag -> giftBag));
+    List<GiftBag> list = this.dao.query(GiftBag.class, Cnd.NEW());
+    return list.stream().collect(Collectors.toMap(GiftBag::getName, giftBag -> giftBag));
   }
   
   public Map<Integer, Event> initEvent() {
-    List<Event> list = this.dao.query(Event.class, (Condition)Cnd.NEW());
-    return (Map<Integer, Event>)list.stream().collect(Collectors.toMap(Event::getSerial, event -> event));
+    List<Event> list = this.dao.query(Event.class, Cnd.NEW());
+    return list.stream().collect(Collectors.toMap(Event::getSerial, event -> event));
   }
   
   @TargetDataSource(name = "ac")
   public long initDate() {
-    String[] split = ((ServerService)SpringUtils.getBean(ServerService.class)).getMarking().split(",");
+    String[] split = SpringUtils.getBean(ServerService.class).getMarking().split(",");
     Sql sql = Sqls.create("SELECT opday FROM t_groups WHERE skid = '" + split[0] + "'");
     sql = sql.setCallback(Sqls.callback.str());
     this.dao.execute(sql);
@@ -216,43 +216,43 @@ public class InitService {
   
   @TargetDataSource(name = "se")
   public List<SysCanMove> initCanMove() {
-    List<SysCanMove> list = this.dao.query(SysCanMove.class, (Condition)Cnd.NEW());
+    List<SysCanMove> list = this.dao.query(SysCanMove.class, Cnd.NEW());
     return list;
   }
   
   @TargetDataSource(name = "se")
   public Map<Integer, SysPet> initPet() {
-    List<SysPet> list = this.dao.query(SysPet.class, (Condition)Cnd.NEW());
+    List<SysPet> list = this.dao.query(SysPet.class, Cnd.NEW());
     return (Map<Integer, SysPet>)list.stream().collect(Collectors.toMap(SysPet::getSerial, sysPet -> sysPet));
   }
   
   @TargetDataSource(name = "se")
   public Map<Integer, SysHorse> initHorse() {
-    List<SysHorse> list = this.dao.query(SysHorse.class, (Condition)Cnd.NEW());
-    return (Map<Integer, SysHorse>)list.stream().collect(Collectors.toMap(SysHorse::getSerial, sysHorse -> sysHorse));
+    List<SysHorse> list = this.dao.query(SysHorse.class, Cnd.NEW());
+    return list.stream().collect(Collectors.toMap(SysHorse::getSerial, sysHorse -> sysHorse));
   }
   
   @TargetDataSource(name = "se")
   public List<HorseSkill> initHorseSkill() {
-    return this.dao.query(HorseSkill.class, (Condition)Cnd.NEW());
+    return this.dao.query(HorseSkill.class, Cnd.NEW());
   }
   
   @TargetDataSource(name = "se")
   public Map<Integer, SysReiEn> initReiEn() {
-    List<SysReiEn> list = this.dao.query(SysReiEn.class, (Condition)Cnd.NEW());
-    return (Map<Integer, SysReiEn>)list.stream().collect(Collectors.toMap(SysReiEn::getSerial, sysReiEn -> sysReiEn));
+    List<SysReiEn> list = this.dao.query(SysReiEn.class, Cnd.NEW());
+    return list.stream().collect(Collectors.toMap(SysReiEn::getSerial, sysReiEn -> sysReiEn));
   }
   
   @TargetDataSource(name = "se")
   public Map<Integer, SysCountryQuestion> initCountryQuestionLib() {
-    List<SysCountryQuestion> list = this.dao.query(SysCountryQuestion.class, (Condition)Cnd.NEW());
-    return (Map<Integer, SysCountryQuestion>)list.stream().collect(Collectors.toMap(SysCountryQuestion::getSerial, sysCountryQuestion -> sysCountryQuestion));
+    List<SysCountryQuestion> list = this.dao.query(SysCountryQuestion.class, Cnd.NEW());
+    return list.stream().collect(Collectors.toMap(SysCountryQuestion::getSerial, sysCountryQuestion -> sysCountryQuestion));
   }
   
   @TargetDataSource(name = "se")
   public Map<Integer, SysProvinceQuestion> initProvinceQuestion() {
-    List<SysProvinceQuestion> list = this.dao.query(SysProvinceQuestion.class, (Condition)Cnd.NEW());
-    return (Map<Integer, SysProvinceQuestion>)list.stream().collect(Collectors.toMap(SysProvinceQuestion::getSerial, sysProvinceQuestion -> sysProvinceQuestion));
+    List<SysProvinceQuestion> list = this.dao.query(SysProvinceQuestion.class, Cnd.NEW());
+    return list.stream().collect(Collectors.toMap(SysProvinceQuestion::getSerial, sysProvinceQuestion -> sysProvinceQuestion));
   }
   
   @TargetDataSource(name = "se")

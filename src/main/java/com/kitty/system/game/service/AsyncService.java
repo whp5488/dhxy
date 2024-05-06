@@ -78,13 +78,13 @@ public class AsyncService {
     KejuTaskHandler kejuTaskHandler = (KejuTaskHandler)SpringUtils.getBean(KejuTaskHandler.class);
     for (Integer key : memberMap.keySet()) {
       Boolean flag = memberMap.get(key);
-      if (!flag.booleanValue())
+      if (!flag)
         continue; 
-      Role role = this.roleService.getPlayer(key.intValue());
+      Role role = this.roleService.getPlayer(key);
       if (role != null) {
         RecordHallQuestion question = (RecordHallQuestion)this.redisService.get("hall:" + role.getRoleId() + "_" + serial + "_" + num, RecordHallQuestion.class);
         if (question == null) {
-          this.logger.error("玩家{}科举殿试，第{}道题获取为空", role.getName(), Integer.valueOf(num));
+          this.logger.error("玩家{}科举殿试，第{}道题获取为空", role.getName(), num);
           continue;
         } 
         String msg = "很可惜，你答错了#<E:17>#";
@@ -93,11 +93,11 @@ public class AsyncService {
           multiple = 4;
           msg = "恭喜您答对了#<E:93>#";
         } 
-        this.roleService.addExp(role, DataExpFunc.calculateKj(role.getLevel().intValue(), role.getRelive().intValue(), ItemClassify.HERO_EXP.getId(), multiple), "殿试答题", true);
+        this.roleService.addExp(role, DataExpFunc.calculateKj(role.getLevel(), role.getRelive(), ItemClassify.HERO_EXP.getId(), multiple), "殿试答题", true);
         Integer combatPet = role.getExtendBox().getCombatPet();
-        if (combatPet.intValue() > 0) {
+        if (combatPet > 0) {
           Pet pet = (Pet)this.petService.selectPet(role).get(combatPet);
-          this.petService.addExp(role, pet, DataExpFunc.calculateKj(pet.getPetLv().intValue(), pet.getRebirth().intValue(), ItemClassify.PET_EXP.getId(), multiple), true);
+          this.petService.addExp(role, pet, DataExpFunc.calculateKj(pet.getPetLv(), pet.getRebirth(), ItemClassify.PET_EXP.getId(), multiple), true);
         } 
         if (question.getR() == 1)
           kejuTaskHandler.award(role, (SysCommonAward)PartDataPool.commonAwardMap.get("hall")); 
@@ -114,11 +114,11 @@ public class AsyncService {
   public void clearKjTitle() {
     List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", Long.class);
     for (Long id : roles) {
-      Role player = this.roleService.getPlayer(id.longValue());
+      Role player = this.roleService.getPlayer(id);
       if (player != null)
         try {
           for (Integer serial : KejuTaskHandler.TITLE)
-            this.titleService.delTitle(player, serial.intValue()); 
+            this.titleService.delTitle(player, serial);
         } catch (Exception e) {
           e.printStackTrace();
         }  
@@ -129,7 +129,7 @@ public class AsyncService {
   public void clearWaterTitle() {
     List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", Long.class);
     for (Long id : roles) {
-      Role player = this.roleService.getPlayer(id.longValue());
+      Role player = this.roleService.getPlayer(id);
       if (player != null)
         try {
           this.titleService.delTitle(player, 400001);
@@ -147,8 +147,8 @@ public class AsyncService {
   @Async("asyncServiceExecutor")
   public void awardWaterSeason() {
     int map = 1000;
-    List<Mirror> mirrors = this.dao.query(Mirror.class, (Condition)Cnd.where("type", "=", Integer.valueOf(3003)));
-    Set<Long> set = (Set<Long>)DataCache.MIRROR_MAP_NPC.get(Integer.valueOf(map));
+    List<Mirror> mirrors = this.dao.query(Mirror.class, (Condition)Cnd.where("type", "=", 3003));
+    Set<Long> set = (Set<Long>)DataCache.MIRROR_MAP_NPC.get(map);
     if (set == null)
       set = new HashSet<>(); 
     for (Mirror mirror : mirrors) {
@@ -165,8 +165,8 @@ public class AsyncService {
         if (i < 5) {
           this.titleService.addTitle(role, new TitleInfo(400001, 0));
           String[] split = ((String)Const.WATER_MIRRIR_POS.get(i)).split(",");
-          String pos = JsonUtils.object2String(new Pos(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Integer.valueOf(5), Integer.valueOf(map)));
-          Mirror mirror = new Mirror(Long.valueOf(this.worker.nextId()), role.getId(), "水陆战神", "水陆战神很忙，此处什么都没有留下……", pos, 3003);
+          String pos = JsonUtils.object2String(new Pos(Integer.valueOf(split[0]), Integer.valueOf(split[1]), 5, map));
+          Mirror mirror = new Mirror(this.worker.nextId(), role.getId(), "水陆战神", "水陆战神很忙，此处什么都没有留下……", pos, 3003);
           DataCache.MIRROR_MAP.put(role.getId(), mirror);
           set.add(mirror.getRId());
           mirror.save();
@@ -183,14 +183,14 @@ public class AsyncService {
         }  
     } 
     if (set.size() > 0)
-      DataCache.MIRROR_MAP_NPC.put(Integer.valueOf(map), set); 
+      DataCache.MIRROR_MAP_NPC.put(map, set);
   }
   
   @Async("asyncServiceExecutor")
   public void clearCaTitle() {
     List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", Long.class);
     for (Long id : roles) {
-      Role player = this.roleService.getPlayer(id.longValue());
+      Role player = this.roleService.getPlayer(id);
       if (player != null)
         try {
           this.titleService.delTitle(player, 900003);
@@ -208,7 +208,7 @@ public class AsyncService {
   public void awardCaSeason() {
     for (Long key : RankingList.CA_RANK_RECORDS.keySet()) {
       CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(key);
-      Role role = this.roleService.getPlayer(key.longValue());
+      Role role = this.roleService.getPlayer(key);
       if (role == null)
         continue; 
       if (record.getGrade() < 1080) {

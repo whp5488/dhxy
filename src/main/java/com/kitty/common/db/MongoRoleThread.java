@@ -59,7 +59,7 @@ public class MongoRoleThread {
   
   private void saveToDb(Role entity) {
     Query query = new Query();
-    query.addCriteria((CriteriaDefinition)Criteria.where("id").is(entity.getId()));
+    query.addCriteria(Criteria.where("id").is(entity.getId()));
     Update update = new Update();
     update.set("roleId", entity.getRoleId());
     update.set("sid", entity.getSid());
@@ -68,22 +68,22 @@ public class MongoRoleThread {
     update.set("race", entity.getRace());
     update.set("level", entity.getLevel());
     update.set("relive", entity.getRelive());
-    update.set("exp", Long.valueOf(entity.getExp()));
+    update.set("exp", entity.getExp());
     update.set("saveLife", entity.getSaveLife());
     update.set("saveMana", entity.getSaveMana());
     update.set("gold", entity.getGold());
-    update.set("tc", Integer.valueOf(entity.getTc()));
-    update.set("totalGold", Long.valueOf(entity.getTotalGold()));
+    update.set("tc", entity.getTc());
+    update.set("totalGold", entity.getTotalGold());
     update.set("silver", entity.getSilver());
     update.set("coin", entity.getCoin());
-    update.set("icon", Integer.valueOf(entity.getIcon()));
-    update.set("weaponIcon", Integer.valueOf(entity.getWeaponIcon()));
-    update.set("masquerade", Integer.valueOf(entity.getMasquerade()));
-    update.set("cardExpireTime", Integer.valueOf(entity.getCardExpireTime()));
+    update.set("icon", entity.getIcon());
+    update.set("weaponIcon", entity.getWeaponIcon());
+    update.set("masquerade", entity.getMasquerade());
+    update.set("cardExpireTime", entity.getCardExpireTime());
     update.set("color", entity.getColor());
     update.set("serial", entity.getSerial());
     update.set("vip", entity.getVip());
-    update.set("currTitle", Integer.valueOf(entity.getCurrTitle()));
+    update.set("currTitle", entity.getCurrTitle());
     update.set("gg", entity.getGg());
     update.set("lx", entity.getLx());
     update.set("ll", entity.getLl());
@@ -96,8 +96,8 @@ public class MongoRoleThread {
     update.set("faction", entity.getFaction());
     update.set("safePwd", entity.getSafePwd());
     update.set("dailyFiveResetTime", entity.getDailyFiveResetTime());
-    update.set("weeklyResetTime", Long.valueOf(entity.getWeeklyResetTime()));
-    update.set("monthResetTime", Long.valueOf(entity.getMonthResetTime()));
+    update.set("weeklyResetTime", entity.getWeeklyResetTime());
+    update.set("monthResetTime", entity.getMonthResetTime());
     update.set("lockTime", entity.getLockTime());
     update.set("enterTime", entity.getEnterTime());
     update.set("ofLineTime", entity.getOfLineTime());
@@ -112,7 +112,7 @@ public class MongoRoleThread {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[MongoRole] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[MongoRole] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

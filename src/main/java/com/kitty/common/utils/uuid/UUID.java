@@ -77,14 +77,14 @@ public final class UUID implements Serializable, Comparable<UUID> {
       throw new IllegalArgumentException("Invalid UUID string: " + name); 
     for (int i = 0; i < 5; i++)
       components[i] = "0x" + components[i]; 
-    long mostSigBits = Long.decode(components[0]).longValue();
+    long mostSigBits = Long.decode(components[0]);
     mostSigBits <<= 16L;
-    mostSigBits |= Long.decode(components[1]).longValue();
+    mostSigBits |= Long.decode(components[1]);
     mostSigBits <<= 16L;
-    mostSigBits |= Long.decode(components[2]).longValue();
-    long leastSigBits = Long.decode(components[3]).longValue();
+    mostSigBits |= Long.decode(components[2]);
+    long leastSigBits = Long.decode(components[3]);
     leastSigBits <<= 48L;
-    leastSigBits |= Long.decode(components[4]).longValue();
+    leastSigBits |= Long.decode(components[4]);
     return new UUID(mostSigBits, leastSigBits);
   }
   
@@ -126,16 +126,16 @@ public final class UUID implements Serializable, Comparable<UUID> {
   public String toString(boolean isSimple) {
     StringBuilder builder = new StringBuilder(isSimple ? 32 : 36);
     builder.append(digits(this.mostSigBits >> 32L, 8));
-    if (false == isSimple)
+    if (!isSimple)
       builder.append('-'); 
     builder.append(digits(this.mostSigBits >> 16L, 4));
-    if (false == isSimple)
+    if (!isSimple)
       builder.append('-'); 
     builder.append(digits(this.mostSigBits, 4));
-    if (false == isSimple)
+    if (!isSimple)
       builder.append('-'); 
     builder.append(digits(this.leastSigBits >> 48L, 4));
-    if (false == isSimple)
+    if (!isSimple)
       builder.append('-'); 
     builder.append(digits(this.leastSigBits, 12));
     return builder.toString();

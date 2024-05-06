@@ -53,8 +53,8 @@ public class RedisSerializer {
           Character c = Character.valueOf(s.charAt(0));
           return (T)c;
         } 
-        Method method = clazz.getMethod("valueOf", new Class[] { String.class });
-        Object object = method.invoke(null, new Object[] { s });
+        Method method = clazz.getMethod("valueOf", String.class);
+        Object object = method.invoke(null, s);
         return (T)object;
       } 
       try {

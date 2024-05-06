@@ -167,7 +167,7 @@ public class FightNewService {
       IoSession session = fightObject.getSession();
       if (session == null)
         continue; 
-      int objId = fightObject.getId().intValue();
+      int objId = fightObject.getId();
       if (fightObject.isPet())
         objId = fightObject.getHostId(); 
       RespRoundStartParam respRoundStartParam = getRespRoundStartParam(fight, objId);
@@ -185,7 +185,7 @@ public class FightNewService {
       AutoFightSkillParam autoFightSkillParam = this.fightMessageNewService.selfAuto(fightObject, fight);
       if (autoFightSkillParam != null) {
         if (fightObject.isPlayer()) {
-          FightObject petObject = fight.queryFightObject(Integer.valueOf(fightObject.getFightPetId()));
+          FightObject petObject = fight.queryFightObject(fightObject.getFightPetId());
           if (petObject != null)
             petObject.setAutoFight(1); 
         } 
@@ -197,9 +197,9 @@ public class FightNewService {
         List<RefreshPet> refreshPets = getFightInParamPetList(fight, fightObject);
         roleFightInParam.setPetList(refreshPets);
       } 
-      TianFuProcessor tianFuProcessor = TianFuProcessor.queryProcessor(Integer.valueOf(324507));
-      tianFuProcessor.passive(fight, fightObject, null, new Object[0]);
-      fight.getRespRoundStartParamMap().put(Integer.valueOf(respRoundStartParam.getObjId()), respRoundStartParam);
+      TianFuProcessor tianFuProcessor = TianFuProcessor.queryProcessor(324507);
+      tianFuProcessor.passive(fight, fightObject, null);
+      fight.getRespRoundStartParamMap().put(respRoundStartParam.getObjId(), respRoundStartParam);
     } 
   }
   
@@ -219,7 +219,7 @@ public class FightNewService {
       for (int i = fleeList.size() - 1; i >= 0; i--) {
         Integer fightObjectId = fleeList.get(i);
         deleteRoleFightData(fight, fightObjectId);
-        Role role = this.roleService.getPlayer(fightObjectId.intValue());
+        Role role = this.roleService.getPlayer(fightObjectId);
         if (role != null)
           this.broadcastService.sendTitleInfoNew(role); 
         fleeList.remove(fightObjectId);
@@ -257,7 +257,7 @@ public class FightNewService {
             try {
               FightNewService.this.fightDoAction(reqFightHandle, hostId, fight);
             } catch (Exception e) {
-              FightNewService.this.logger.error("战斗出手报错了战场ID[{}]出手id[{}}{}{}{}", new Object[] { Integer.valueOf(fight.getId()), Integer.valueOf(reqFightHandle.getAttackerId()), e.getMessage(), e.getStackTrace(), e });
+              FightNewService.this.logger.error("战斗出手报错了战场ID[{}]出手id[{}}{}{}{}", fight.getId(), reqFightHandle.getAttackerId(), e.getMessage(), e.getStackTrace(), e);
             } 
           }
         });
@@ -265,9 +265,9 @@ public class FightNewService {
   
   public void animationPlayEnd(final Fight fight, int roleId) {
     fight.removeRoundFinishTask(roleId);
-    FightObject fightObject = fight.queryFightObject(Integer.valueOf(roleId));
+    FightObject fightObject = fight.queryFightObject(roleId);
     if (fightObject == null) {
-      if (fight.getFleeList().contains(Integer.valueOf(roleId)))
+      if (fight.getFleeList().contains(roleId))
         excuteFlee(fight); 
       return;
     } 
@@ -309,7 +309,7 @@ public class FightNewService {
   private void fightDoAction(ReqFightHandle reqFightHandle, int hostId, Fight fight) {
     if (fight.isOver())
       return; 
-    FightObject fightObject = fight.queryFightObject(Integer.valueOf(reqFightHandle.getAttackerId()));
+    FightObject fightObject = fight.queryFightObject(reqFightHandle.getAttackerId());
     if (fightObject == null)
       return; 
     Role role = fightObject.getRole();
@@ -317,12 +317,12 @@ public class FightNewService {
       return; 
     if (fightObject.isPlayer() && reqFightHandle.getType() == 3 && reqFightHandle.getSkillId() == 0) {
       int petId = reqFightHandle.getTargetId();
-      Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(petId));
+      Pet pet = (Pet)this.petService.selectPet(role).get(petId);
       if (pet != null) {
-        int petLevel = pet.getPetLv().intValue() + pet.getRebirth().intValue() * 1000;
-        int roleLevle = role.getLevel().intValue() + role.getRelive().intValue() * 1000;
-        if (pet == null || petLevel - roleLevle > 10 || pet.getPetId().equals(Integer.valueOf(fightObject.getFightPetId())) || FightExecutorNewService.PETID_ROLEID.get(Integer.valueOf(petId)) != null) {
-          MessageAssistUtil.sendIsSuccess(role, fightObject.getId().intValue(), (byte)4, null);
+        int petLevel = pet.getPetLv() + pet.getRebirth() * 1000;
+        int roleLevle = role.getLevel() + role.getRelive() * 1000;
+        if (pet == null || petLevel - roleLevle > 10 || pet.getPetId().equals(fightObject.getFightPetId()) || FightExecutorNewService.PETID_ROLEID.get(Integer.valueOf(petId)) != null) {
+          MessageAssistUtil.sendIsSuccess(role, fightObject.getId(), (byte)4, null);
           return;
         } 
       } 
@@ -335,8 +335,8 @@ public class FightNewService {
     } 
     updateDoActionStatus(fight, reqFightHandle.getAttackerId(), reqFightHandle.getTargetId(), reqFightHandle.getType(), reqFightHandle.getSkillId());
     monsterAI(fight);
-    MessageAssistUtil.sendIsSuccess(role, fightObject.getId().intValue(), (byte)1, null);
-    RespInputInstruct respInputInstruct = new RespInputInstruct(fightObject.getId().intValue(), fightObject.getTargetId(), fightObject.getType(), fightObject.getSkillId(), 0);
+    MessageAssistUtil.sendIsSuccess(role, fightObject.getId(), (byte)1, null);
+    RespInputInstruct respInputInstruct = new RespInputInstruct(fightObject.getId(), fightObject.getTargetId(), fightObject.getType(), fightObject.getSkillId(), 0);
     FightMessageUtil.sendFightPackage(fight, (Message)respInputInstruct);
     try {
       roundAction(fight);
@@ -360,15 +360,15 @@ public class FightNewService {
               if (attacker.getCurrLife() < attacker.getMaxLife() * 0.2D) {
                 attacker.setType(5);
               } else {
-                FightObject hostObject = fight.queryFightObject(Integer.valueOf(attacker.getHostId()));
+                FightObject hostObject = fight.queryFightObject(attacker.getHostId());
                 if (hostObject != null && hostObject.isFallDown()) {
-                  attacker.setTargetId(hostObject.getId().intValue());
+                  attacker.setTargetId(hostObject.getId());
                   attacker.setType(5);
                 } else {
                   attacker.setType((attacker.getSkillIds().size() == 0) ? 0 : 7);
                   if (attacker.getType() == 7) {
                     int index = random.nextInt(attacker.getSkillIds().size());
-                    attacker.setSkillId(((RoleSkill)attacker.getSkillIds().get(index)).getSkillId().intValue());
+                    attacker.setSkillId(((RoleSkill) attacker.getSkillIds().get(index)).getSkillId());
                   } else {
                     attacker.setSkillId(0);
                   } 
@@ -379,7 +379,7 @@ public class FightNewService {
               attacker.setType(canUseMagic ? 7 : 0);
               if (attacker.getType() == 7) {
                 int index = random.nextInt(attacker.getSkillIds().size());
-                attacker.setSkillId(((RoleSkill)attacker.getSkillIds().get(index)).getSkillId().intValue());
+                attacker.setSkillId(((RoleSkill) attacker.getSkillIds().get(index)).getSkillId());
               } else {
                 attacker.setSkillId(0);
               } 
@@ -390,36 +390,36 @@ public class FightNewService {
   }
   
   private void roundAction(Fight fight) {
-    if (!fight.isStartFight())
-      return; 
-    ActionParam actionParam = ActionParamUtils.createActionParam(fight);
-    fight.setActionParam(actionParam);
-    fight.setRoundType(2);
-    fight.cancelTask(fight.getTimeOutTask());
-    if (fight.getRound() >= fight.getMaxRound()) {
-      this.logger.error("最大回合数=={}", Integer.valueOf(fight.getMaxRound()));
-      boolean isReward = false;
-      if (fight.isPvp() == 1) {
-        fight.setFightOverReason((byte)1);
-        isReward = true;
-      } 
-      quiteFightAll(fight, isReward);
-      clearFight(fight);
-      return;
-    } 
-    PassiveSkillUtils.roundStart(fight);
-    excuteRoundStartPoison(fight);
-    PetPassiveSkillUtil.roundStartPassive(fight);
-    PassiveSkillUtils.afterPrintCommand(fight);
-    actionStart(fight, fight.getAllFightObjects());
-    Map<Integer, List<Integer>> clearStatusMap = excuteStatusReduce(fight);
-    PassiveSkillUtils.statusOver(fight, clearStatusMap);
-    PassiveSkillUtils.roundEnd(fight);
-    boolean isRoundFinishTask = sendFightParams(fight, false);
-    besure(fight);
-    if (isRoundFinishTask)
-      maxRoundTimer(fight, 180000L); 
-    fight.setRoundType(3);
+      if (!fight.isStartFight())
+          return;
+      ActionParam actionParam = ActionParamUtils.createActionParam(fight);
+      fight.setActionParam(actionParam);
+      fight.setRoundType(2);
+      fight.cancelTask(fight.getTimeOutTask());
+      if (fight.getRound() >= fight.getMaxRound()) {
+          this.logger.error("最大回合数=={}", fight.getMaxRound());
+          boolean isReward = false;
+          if (fight.isPvp() == 1) {
+              fight.setFightOverReason((byte) 1);
+              isReward = true;
+          }
+          quiteFightAll(fight, isReward);
+          clearFight(fight);
+          return;
+      }
+      PassiveSkillUtils.roundStart(fight);
+      excuteRoundStartPoison(fight);
+      PetPassiveSkillUtil.roundStartPassive(fight);
+      PassiveSkillUtils.afterPrintCommand(fight);
+      actionStart(fight, fight.getAllFightObjects());
+      Map<Integer, List<Integer>> clearStatusMap = excuteStatusReduce(fight);
+      PassiveSkillUtils.statusOver(fight, clearStatusMap);
+      PassiveSkillUtils.roundEnd(fight);
+      boolean isRoundFinishTask = sendFightParams(fight, false);
+      besure(fight);
+      if (isRoundFinishTask)
+          maxRoundTimer(fight, 180000L);
+      fight.setRoundType(3);
   }
   
   private void actionStart(Fight fight, List<FightObject> list) {

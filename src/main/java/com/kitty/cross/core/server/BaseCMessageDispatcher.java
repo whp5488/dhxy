@@ -31,19 +31,17 @@ public class BaseCMessageDispatcher implements CMessageDispatcher {
           int meta = getMessageMeta(method);
           if (meta >= 0)
             throw new RuntimeException(
-                String.format("facade[%s] method[%s] lack of RequestMapping annotation", new Object[] { controller.getClass().getSimpleName(), method.getName() })); 
+                String.format("facade[%s] method[%s] lack of RequestMapping annotation", controller.getClass().getSimpleName(), method.getName()));
           Class<?>[] paramTypes = method.getParameterTypes();
           if (paramTypes.length != 2)
             throw new RuntimeException(
-                String.format("facade[%d] method[%d] must have two arguments", new Object[] { controller.getClass().getSimpleName(), method.getName() })); 
+                String.format("facade[%d] method[%d] must have two arguments", controller.getClass().getSimpleName(), method.getName()));
           if ((paramTypes[0] != SCSession.class && paramTypes[0] != CCSession.class) || paramTypes[1]
             .isAssignableFrom(Message.class))
-            throw new RuntimeException(String.format("facade[%d] method[%d] arguments error", new Object[] { controller
-                    .getClass().getSimpleName(), method.getName() })); 
+            throw new RuntimeException(String.format("facade[%d] method[%d] arguments error", controller.getClass().getSimpleName(), method.getName()));
           CmdExecutor cmdExecutor = HANDLERS.get(paramTypes[1]);
           if (cmdExecutor != null)
-            throw new RuntimeException(String.format("facade[%d] method[%d] duplicated", new Object[] { controller
-                    .getClass().getSimpleName(), method.getName() })); 
+            throw new RuntimeException(String.format("facade[%d] method[%d] duplicated", controller.getClass().getSimpleName(), method.getName()));
           cmdExecutor = CmdExecutor.valueOf(method, method.getParameterTypes(), controller);
           HANDLERS.put(paramTypes[1], cmdExecutor);
         } 
@@ -56,7 +54,7 @@ public class BaseCMessageDispatcher implements CMessageDispatcher {
   private int getMessageMeta(Method method) {
     for (Class<?> paramClazz : method.getParameterTypes()) {
       if (Message.class.isAssignableFrom(paramClazz)) {
-        MessageMeta protocol = paramClazz.<MessageMeta>getAnnotation(MessageMeta.class);
+        MessageMeta protocol = paramClazz.getAnnotation(MessageMeta.class);
         if (protocol != null)
           return protocol.module(); 
       } 

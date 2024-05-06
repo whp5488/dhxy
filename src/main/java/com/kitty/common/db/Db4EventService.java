@@ -49,7 +49,7 @@ public class Db4EventService {
           entity = Db4EventService.this.queue.take();
           Db4EventService.this.saveToDb(entity);
         } catch (Exception e) {
-          LoggerUtils.error("区组活动公共数据持久化队列异常", new Object[0]);
+          LoggerUtils.error("区组活动公共数据持久化队列异常");
           e.printStackTrace();
         } 
       } 
@@ -70,7 +70,7 @@ public class Db4EventService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[Db4Event] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[Db4Event] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {

@@ -15,13 +15,13 @@ public class EquipManage {
   public static BagEquip createEquip(Integer serial) {
     Integer type = DataGlobalFunc.GetItemTypeByItemTypeId(serial);
     BagEquip equip = null;
-    if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue()) {
+    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue()) {
       equip = createNormalEquip(serial);
-    } else if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue()) {
+    } else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue()) {
       equip = createSeniorEquip(serial);
-    } else if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue()) {
+    } else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue()) {
       equip = createMagicalEquip(serial);
-    } else if (type.intValue() == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue()) {
+    } else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue()) {
       equip = createFairyEquip(serial);
     } 
     return equip;
@@ -40,11 +40,11 @@ public class EquipManage {
       BagEquip equip = new BagEquip();
       equip.setPosition(bieEq.getPos());
       List<FiedEquip> field = MakeAttribute.createHighBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bieEq.getAttrFactor(), 0);
-      equip.setType(serial.intValue());
+      equip.setType(serial);
       equip.setName(bieEq.getName());
       equip.setField(field);
       Integer score = MakeAttribute.calEquipScore(equip);
-      field.add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf(score.intValue() + bieEq.getBaseScore())));
+      field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
       equip.setField(field);
       return equip;
     } 
@@ -57,11 +57,11 @@ public class EquipManage {
       BagEquip equip = new BagEquip();
       equip.setPosition(bieEq.getPos());
       List<FiedEquip> field = MakeAttribute.createBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bieEq.getRndRange(), 0);
-      equip.setType(serial.intValue());
+      equip.setType(serial);
       equip.setName(bieEq.getName());
       equip.setField(field);
       Integer score = MakeAttribute.calEquipScore(equip);
-      field.add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf(score.intValue() + bieEq.getBaseScore())));
+      field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
       equip.setField(field);
       return equip;
     } 
@@ -83,7 +83,7 @@ public class EquipManage {
     equip.setName(name);
     equip.setField(field);
     Integer score = MakeAttribute.calEquipScore(equip);
-    field.add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf(score.intValue() + baseScore)));
+    field.add(new FiedEquip(6679, score + baseScore));
     equip.setField(field);
     return equip;
   }

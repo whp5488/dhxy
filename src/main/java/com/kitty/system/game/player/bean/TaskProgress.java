@@ -33,7 +33,7 @@ public class TaskProgress implements Serializable {
     int loop = this.finishCounts.getInt(ActivityType.LOOP.getActivityId(), 0);
     this.finishCounts = NutConcurrentMap.NEW();
     if (loop > 0 && !flag)
-      this.finishCounts.setv(ActivityType.LOOP.getActivityId(), Integer.valueOf(loop)); 
+      this.finishCounts.setv(ActivityType.LOOP.getActivityId(), loop);
     this.liveness = 0.0F;
     this.everyDayUpperLimit = NutConcurrentMap.NEW();
     this.livenessRewardFetchStatus = new ConcurrentHashMap<>();
@@ -50,6 +50,6 @@ public class TaskProgress implements Serializable {
     int moFrontCount = this.finishRecord.getInt(ActivityType.MWK_FRONT.getActivityId(), 0);
     this.finishRecord = NutConcurrentMap.NEW();
     if (!"星期六".equals(when))
-      this.finishRecord.setv(ActivityType.MWK_FRONT.getActivityId(), Integer.valueOf(moFrontCount)); 
+      this.finishRecord.setv(ActivityType.MWK_FRONT.getActivityId(), moFrontCount);
   }
 }

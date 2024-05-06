@@ -69,8 +69,8 @@ public class Db4PlayerService {
           Db4PlayerService.this.saveToDb(entity);
           stopWatch.stop();
           if (stopWatch.getTime() > 500L) {
-            LoggerUtils.info("玩家数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
-            LoggerUtils.info("玩家数据持久化队列长度：" + Db4PlayerService.this.queue.size(), new Object[0]);
+            LoggerUtils.info("玩家数据持久化消耗毫秒：" + stopWatch.getTime());
+            LoggerUtils.info("玩家数据持久化队列长度：" + Db4PlayerService.this.queue.size());
           } 
         } catch (Exception e) {
           Db4PlayerService.this.logger.error("存档异常角色编号：{}，SID：{}", entity.getRoleId(), entity.getSid());
@@ -94,7 +94,7 @@ public class Db4PlayerService {
     this.run.getAndSet(false);
     while (!this.queue.isEmpty())
       saveAllBeforeShutDown(); 
-    LoggerUtils.error("[db4Player] 执行全部命令后关闭", new Object[0]);
+    LoggerUtils.error("[db4Player] 执行全部命令后关闭");
   }
   
   private void saveAllBeforeShutDown() {
