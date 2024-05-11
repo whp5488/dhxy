@@ -1,267 +1,268 @@
+
 package com.kitty.system.game.equip.domain;
 
-import com.kitty.common.db.BaseEntity;
 import com.kitty.common.db.Db4EquipService;
-import com.kitty.system.game.vo.FiedEquip;
 import java.util.ArrayList;
-import java.util.List;
 import org.nutz.dao.entity.annotation.ColDefine;
-import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Default;
+import com.kitty.system.game.vo.FiedEquip;
+import java.util.List;
+import org.nutz.dao.entity.annotation.Comment;
+import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
+import com.kitty.common.db.BaseEntity;
 
 @Table("equip")
-public class WearEquip extends BaseEntity<Long> {
-  @Id(auto = false)
-  private Long id;
-  
-  @Column("r_id")
-  private long rId;
-  
-  @Column("name")
-  private String name;
-  
-  @Column("bd")
-  private int bd;
-  
-  @Column("type")
-  private int type;
-  
-  @Column("pos")
-  private int pos;
-  
-  @Column("position")
-  private int position;
-  
-  public void setId(Long id) {
-    this.id = id;
-  }
-  
-  public void setRId(long rId) {
-    this.rId = rId;
-  }
-  
-  public void setName(String name) {
-    this.name = name;
-  }
-  
-  public void setBd(int bd) {
-    this.bd = bd;
-  }
-  
-  public void setType(int type) {
-    this.type = type;
-  }
-  
-  public void setPos(int pos) {
-    this.pos = pos;
-  }
-  
-  public void setPosition(int position) {
-    this.position = position;
-  }
-  
-  public void setRefining(double refining) {
-    this.refining = refining;
-  }
-  
-  public void setProductOrder(byte productOrder) {
-    this.productOrder = productOrder;
-  }
-  
-  public void setField(List<FiedEquip> field) {
-    this.field = field;
-  }
-  
-  public void setArtifice(List<FiedEquip> artifice) {
-    this.artifice = artifice;
-  }
-  
-  public void setArtificeGeneralHistory(List<FiedEquip> artificeGeneralHistory) {
-    this.artificeGeneralHistory = artificeGeneralHistory;
-  }
-  
-  public void setArtificeHighHistory(List<List<FiedEquip>> artificeHighHistory) {
-    this.artificeHighHistory = artificeHighHistory;
-  }
-  
-  public void setArtificeSuperHistory(List<List<FiedEquip>> artificeSuperHistory) {
-    this.artificeSuperHistory = artificeSuperHistory;
-  }
-  
-  public void setRedoGeneralHistory(List<FiedEquip> redoGeneralHistory) {
-    this.redoGeneralHistory = redoGeneralHistory;
-  }
-  
-  public void setRedoHighHistory(List<List<FiedEquip>> redoHighHistory) {
-    this.redoHighHistory = redoHighHistory;
-  }
-  
-  public void setRedoSuperHistory(List<List<FiedEquip>> redoSuperHistory) {
-    this.redoSuperHistory = redoSuperHistory;
-  }
-  
-  public void setPurifyGeneralHistory(List<FiedEquip> purifyGeneralHistory) {
-    this.purifyGeneralHistory = purifyGeneralHistory;
-  }
-  
-  public void setPurifyHighHistory(List<List<FiedEquip>> purifyHighHistory) {
-    this.purifyHighHistory = purifyHighHistory;
-  }
-  
-  public void setPurifySuperHistory(List<List<FiedEquip>> purifySuperHistory) {
-    this.purifySuperHistory = purifySuperHistory;
-  }
-  
-  public String toString() {
-    return "WearEquip(id=" + getId() + ", rId=" + getRId() + ", name=" + getName() + ", bd=" + getBd() + ", type=" + getType() + ", pos=" + getPos() + ", position=" + getPosition() + ", refining=" + getRefining() + ", productOrder=" + getProductOrder() + ", field=" + getField() + ", artifice=" + getArtifice() + ", artificeGeneralHistory=" + getArtificeGeneralHistory() + ", artificeHighHistory=" + getArtificeHighHistory() + ", artificeSuperHistory=" + getArtificeSuperHistory() + ", redoGeneralHistory=" + getRedoGeneralHistory() + ", redoHighHistory=" + getRedoHighHistory() + ", redoSuperHistory=" + getRedoSuperHistory() + ", purifyGeneralHistory=" + getPurifyGeneralHistory() + ", purifyHighHistory=" + getPurifyHighHistory() + ", purifySuperHistory=" + getPurifySuperHistory() + ")";
-  }
-  
-  public Long getId() {
-    return this.id;
-  }
-  
-  public long getRId() {
-    return this.rId;
-  }
-  
-  public String getName() {
-    return this.name;
-  }
-  
-  public int getBd() {
-    return this.bd;
-  }
-  
-  public int getType() {
-    return this.type;
-  }
-  
-  public int getPos() {
-    return this.pos;
-  }
-  
-  public int getPosition() {
-    return this.position;
-  }
-  
-  @Column("refining")
-  private double refining = 0.0D;
-  
-  public double getRefining() {
-    return this.refining;
-  }
-  
-  @Comment("品阶：配饰独有")
-  @Column("product_order")
-  private byte productOrder = 0;
-  
-  public byte getProductOrder() {
-    return this.productOrder;
-  }
-  
-  @Column("field")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<FiedEquip> field = new ArrayList<>();
-  
-  public List<FiedEquip> getField() {
-    return this.field;
-  }
-  
-  @Column("artifice")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<FiedEquip> artifice = new ArrayList<>();
-  
-  public List<FiedEquip> getArtifice() {
-    return this.artifice;
-  }
-  
-  @Column("artifice_general_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<FiedEquip> artificeGeneralHistory = new ArrayList<>();
-  
-  public List<FiedEquip> getArtificeGeneralHistory() {
-    return this.artificeGeneralHistory;
-  }
-  
-  @Column("artifice_high_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<List<FiedEquip>> artificeHighHistory = new ArrayList<>();
-  
-  public List<List<FiedEquip>> getArtificeHighHistory() {
-    return this.artificeHighHistory;
-  }
-  
-  @Column("artifice_super_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<List<FiedEquip>> artificeSuperHistory = new ArrayList<>();
-  
-  public List<List<FiedEquip>> getArtificeSuperHistory() {
-    return this.artificeSuperHistory;
-  }
-  
-  @Column("redo_general_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<FiedEquip> redoGeneralHistory = new ArrayList<>();
-  
-  public List<FiedEquip> getRedoGeneralHistory() {
-    return this.redoGeneralHistory;
-  }
-  
-  @Column("redo_high_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<List<FiedEquip>> redoHighHistory = new ArrayList<>();
-  
-  public List<List<FiedEquip>> getRedoHighHistory() {
-    return this.redoHighHistory;
-  }
-  
-  @Column("redo_super_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<List<FiedEquip>> redoSuperHistory = new ArrayList<>();
-  
-  public List<List<FiedEquip>> getRedoSuperHistory() {
-    return this.redoSuperHistory;
-  }
-  
-  @Column("purify_general_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<FiedEquip> purifyGeneralHistory = new ArrayList<>();
-  
-  public List<FiedEquip> getPurifyGeneralHistory() {
-    return this.purifyGeneralHistory;
-  }
-  
-  @Column("purify_high_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<List<FiedEquip>> purifyHighHistory = new ArrayList<>();
-  
-  public List<List<FiedEquip>> getPurifyHighHistory() {
-    return this.purifyHighHistory;
-  }
-  
-  @Column("purify_super_history")
-  @Default("[]")
-  @ColDefine(customType = "longtext")
-  private List<List<FiedEquip>> purifySuperHistory = new ArrayList<>();
-  
-  public List<List<FiedEquip>> getPurifySuperHistory() {
-    return this.purifySuperHistory;
-  }
-  
-  public void save() {
-    Db4EquipService.getInstance().add2Queue(this);
-  }
+public class WearEquip extends BaseEntity<Long>
+{
+    @Id(auto = false)
+    private Long id;
+    @Column("r_id")
+    private long rId;
+    @Column("name")
+    private String name;
+    @Column("bd")
+    private int bd;
+    @Column("type")
+    private int type;
+    @Column("pos")
+    private int pos;
+    @Column("position")
+    private int position;
+    @Column("refining")
+    private double refining;
+    @Comment("品阶：配饰独有")
+    @Column("product_order")
+    private byte productOrder;
+    @Column("field")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<FiedEquip> field;
+    @Column("artifice")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<FiedEquip> artifice;
+    @Column("artifice_general_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<FiedEquip> artificeGeneralHistory;
+    @Column("artifice_high_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<List<FiedEquip>> artificeHighHistory;
+    @Column("artifice_super_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<List<FiedEquip>> artificeSuperHistory;
+    @Column("redo_general_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<FiedEquip> redoGeneralHistory;
+    @Column("redo_high_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<List<FiedEquip>> redoHighHistory;
+    @Column("redo_super_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<List<FiedEquip>> redoSuperHistory;
+    @Column("purify_general_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<FiedEquip> purifyGeneralHistory;
+    @Column("purify_high_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<List<FiedEquip>> purifyHighHistory;
+    @Column("purify_super_history")
+    @Default("[]")
+    @ColDefine(customType = "longtext")
+    private List<List<FiedEquip>> purifySuperHistory;
+    
+    public WearEquip() {
+        this.refining = 0.0;
+        this.productOrder = 0;
+        this.field = new ArrayList<FiedEquip>();
+        this.artifice = new ArrayList<FiedEquip>();
+        this.artificeGeneralHistory = new ArrayList<FiedEquip>();
+        this.artificeHighHistory = new ArrayList<List<FiedEquip>>();
+        this.artificeSuperHistory = new ArrayList<List<FiedEquip>>();
+        this.redoGeneralHistory = new ArrayList<FiedEquip>();
+        this.redoHighHistory = new ArrayList<List<FiedEquip>>();
+        this.redoSuperHistory = new ArrayList<List<FiedEquip>>();
+        this.purifyGeneralHistory = new ArrayList<FiedEquip>();
+        this.purifyHighHistory = new ArrayList<List<FiedEquip>>();
+        this.purifySuperHistory = new ArrayList<List<FiedEquip>>();
+    }
+    
+    public void save() {
+        Db4EquipService.getInstance().add2Queue(this);
+    }
+    
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+    
+    public long getRId() {
+        return this.rId;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public int getBd() {
+        return this.bd;
+    }
+    
+    public int getType() {
+        return this.type;
+    }
+    
+    public int getPos() {
+        return this.pos;
+    }
+    
+    public int getPosition() {
+        return this.position;
+    }
+    
+    public double getRefining() {
+        return this.refining;
+    }
+    
+    public byte getProductOrder() {
+        return this.productOrder;
+    }
+    
+    public List<FiedEquip> getField() {
+        return this.field;
+    }
+    
+    public List<FiedEquip> getArtifice() {
+        return this.artifice;
+    }
+    
+    public List<FiedEquip> getArtificeGeneralHistory() {
+        return this.artificeGeneralHistory;
+    }
+    
+    public List<List<FiedEquip>> getArtificeHighHistory() {
+        return this.artificeHighHistory;
+    }
+    
+    public List<List<FiedEquip>> getArtificeSuperHistory() {
+        return this.artificeSuperHistory;
+    }
+    
+    public List<FiedEquip> getRedoGeneralHistory() {
+        return this.redoGeneralHistory;
+    }
+    
+    public List<List<FiedEquip>> getRedoHighHistory() {
+        return this.redoHighHistory;
+    }
+    
+    public List<List<FiedEquip>> getRedoSuperHistory() {
+        return this.redoSuperHistory;
+    }
+    
+    public List<FiedEquip> getPurifyGeneralHistory() {
+        return this.purifyGeneralHistory;
+    }
+    
+    public List<List<FiedEquip>> getPurifyHighHistory() {
+        return this.purifyHighHistory;
+    }
+    
+    public List<List<FiedEquip>> getPurifySuperHistory() {
+        return this.purifySuperHistory;
+    }
+    
+    public void setId(final Long id) {
+        this.id = id;
+    }
+    
+    public void setRId(final long rId) {
+        this.rId = rId;
+    }
+    
+    public void setName(final String name) {
+        this.name = name;
+    }
+    
+    public void setBd(final int bd) {
+        this.bd = bd;
+    }
+    
+    public void setType(final int type) {
+        this.type = type;
+    }
+    
+    public void setPos(final int pos) {
+        this.pos = pos;
+    }
+    
+    public void setPosition(final int position) {
+        this.position = position;
+    }
+    
+    public void setRefining(final double refining) {
+        this.refining = refining;
+    }
+    
+    public void setProductOrder(final byte productOrder) {
+        this.productOrder = productOrder;
+    }
+    
+    public void setField(final List<FiedEquip> field) {
+        this.field = field;
+    }
+    
+    public void setArtifice(final List<FiedEquip> artifice) {
+        this.artifice = artifice;
+    }
+    
+    public void setArtificeGeneralHistory(final List<FiedEquip> artificeGeneralHistory) {
+        this.artificeGeneralHistory = artificeGeneralHistory;
+    }
+    
+    public void setArtificeHighHistory(final List<List<FiedEquip>> artificeHighHistory) {
+        this.artificeHighHistory = artificeHighHistory;
+    }
+    
+    public void setArtificeSuperHistory(final List<List<FiedEquip>> artificeSuperHistory) {
+        this.artificeSuperHistory = artificeSuperHistory;
+    }
+    
+    public void setRedoGeneralHistory(final List<FiedEquip> redoGeneralHistory) {
+        this.redoGeneralHistory = redoGeneralHistory;
+    }
+    
+    public void setRedoHighHistory(final List<List<FiedEquip>> redoHighHistory) {
+        this.redoHighHistory = redoHighHistory;
+    }
+    
+    public void setRedoSuperHistory(final List<List<FiedEquip>> redoSuperHistory) {
+        this.redoSuperHistory = redoSuperHistory;
+    }
+    
+    public void setPurifyGeneralHistory(final List<FiedEquip> purifyGeneralHistory) {
+        this.purifyGeneralHistory = purifyGeneralHistory;
+    }
+    
+    public void setPurifyHighHistory(final List<List<FiedEquip>> purifyHighHistory) {
+        this.purifyHighHistory = purifyHighHistory;
+    }
+    
+    public void setPurifySuperHistory(final List<List<FiedEquip>> purifySuperHistory) {
+        this.purifySuperHistory = purifySuperHistory;
+    }
+    
+    @Override
+    public String toString() {
+        return "WearEquip(id=" + this.getId() + ", rId=" + this.getRId() + ", name=" + this.getName() + ", bd=" + this.getBd() + ", type=" + this.getType() + ", pos=" + this.getPos() + ", position=" + this.getPosition() + ", refining=" + this.getRefining() + ", productOrder=" + this.getProductOrder() + ", field=" + this.getField() + ", artifice=" + this.getArtifice() + ", artificeGeneralHistory=" + this.getArtificeGeneralHistory() + ", artificeHighHistory=" + this.getArtificeHighHistory() + ", artificeSuperHistory=" + this.getArtificeSuperHistory() + ", redoGeneralHistory=" + this.getRedoGeneralHistory() + ", redoHighHistory=" + this.getRedoHighHistory() + ", redoSuperHistory=" + this.getRedoSuperHistory() + ", purifyGeneralHistory=" + this.getPurifyGeneralHistory() + ", purifyHighHistory=" + this.getPurifyHighHistory() + ", purifySuperHistory=" + this.getPurifySuperHistory() + ")";
+    }
 }

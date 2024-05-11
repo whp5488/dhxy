@@ -1,51 +1,101 @@
+
 package com.kitty.system.game.tianfu.pojo;
 
-import com.kitty.mina.cache.DataCache;
+import java.util.Map;
 import com.kitty.system.game.fightnew.book.tianfu.utils.TianFuUtils;
+import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.tianfu.domain.RoleDayInCe;
 import com.kitty.system.game.tianfu.domain.RoleTianFu;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.util.Map;
-
-@Setter
-@Getter
-public class RoleTianFuClient {
-  private String id;
-  
-  private int typeId;
-  
-  private byte grade;
-  
-  private byte usePos;
-  
-  private int bd;
-  
-  private short count;
-  
-  private int storePos;
-
-  public RoleTianFuClient() {}
-
-  public RoleTianFuClient(RoleTianFu roleTianFu) {
-    this.id = String.valueOf(roleTianFu.getId());
-    if (roleTianFu.getToIdentifyCeSerial() != 1) {
-      this.typeId = roleTianFu.getToIdentifyCeSerial();
-    } else {
-      this.typeId = roleTianFu.getTianFuSerial();
-    } 
-    this.grade = roleTianFu.getLevel();
-    Map<Long, String> tianFuGridMap = TianFuUtils.getTianFuGridMap((RoleDayInCe)DataCache.ROLE_DAY_IN_CE.get(Long.valueOf(roleTianFu.getRoleId())));
-    String tianFuName = tianFuGridMap.get(roleTianFu.getId());
-    Byte tianFuClientName = (Byte)TianFuUtils.server2clientGridMap.get(tianFuName);
-    if (tianFuClientName != null && tianFuClientName.byteValue() > 0) {
-      this.usePos = tianFuClientName.byteValue();
-    } else {
-      this.usePos = 0;
-    } 
-    this.bd = roleTianFu.getBd();
-    this.count = roleTianFu.getCount();
-    this.storePos = roleTianFu.getStorePos();
-  }
+public class RoleTianFuClient
+{
+    private String id;
+    private int typeId;
+    private byte grade;
+    private byte usePos;
+    private int bd;
+    private short count;
+    private int storePos;
+    
+    public RoleTianFuClient(final RoleTianFu roleTianFu) {
+        this.id = String.valueOf(roleTianFu.getId());
+        if (roleTianFu.getToIdentifyCeSerial() != 1) {
+            this.typeId = roleTianFu.getToIdentifyCeSerial();
+        }
+        else {
+            this.typeId = roleTianFu.getTianFuSerial();
+        }
+        this.grade = roleTianFu.getLevel();
+        final Map<Long, String> tianFuGridMap = TianFuUtils.getTianFuGridMap(DataCache.ROLE_DAY_IN_CE.get(roleTianFu.getRoleId()));
+        final String tianFuName = tianFuGridMap.get(roleTianFu.getId());
+        final Byte tianFuClientName = TianFuUtils.server2clientGridMap.get(tianFuName);
+        if (tianFuClientName != null && tianFuClientName > 0) {
+            this.usePos = tianFuClientName;
+        }
+        else {
+            this.usePos = 0;
+        }
+        this.bd = roleTianFu.getBd();
+        this.count = roleTianFu.getCount();
+        this.storePos = roleTianFu.getStorePos();
+    }
+    
+    public String getId() {
+        return this.id;
+    }
+    
+    public int getTypeId() {
+        return this.typeId;
+    }
+    
+    public byte getGrade() {
+        return this.grade;
+    }
+    
+    public byte getUsePos() {
+        return this.usePos;
+    }
+    
+    public int getBd() {
+        return this.bd;
+    }
+    
+    public short getCount() {
+        return this.count;
+    }
+    
+    public int getStorePos() {
+        return this.storePos;
+    }
+    
+    public void setId(final String id) {
+        this.id = id;
+    }
+    
+    public void setTypeId(final int typeId) {
+        this.typeId = typeId;
+    }
+    
+    public void setGrade(final byte grade) {
+        this.grade = grade;
+    }
+    
+    public void setUsePos(final byte usePos) {
+        this.usePos = usePos;
+    }
+    
+    public void setBd(final int bd) {
+        this.bd = bd;
+    }
+    
+    public void setCount(final short count) {
+        this.count = count;
+    }
+    
+    public void setStorePos(final int storePos) {
+        this.storePos = storePos;
+    }
+    
+    public RoleTianFuClient() {
+    }
 }

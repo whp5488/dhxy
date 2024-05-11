@@ -1,429 +1,219 @@
+
 package com.kitty.system.game.fightnew.book.horse;
 
-public interface HorseSkillConst {
-  public static final int HORSESKILL_61001 = 61001;
-  
-  public static final int HORSESKILL_61002 = 61002;
-  
-  public static final int HORSESKILL_61003 = 61003;
-  
-  public static final int HORSESKILL_61004 = 61004;
-  
-  public static final int HORSESKILL_61005 = 61005;
-  
-  public static final int HORSESKILL_61006 = 61006;
-  
-  public static final int HORSESKILL_61007 = 61007;
-  
-  public static final int HORSESKILL_61008 = 61008;
-  
-  public static final int HORSESKILL_61009 = 61009;
-  
-  public static final int HORSESKILL_61010 = 61010;
-  
-  public static final int HORSESKILL_61011 = 61011;
-  
-  public static final int HORSESKILL_61012 = 61012;
-  
-  public static final int HORSESKILL_61013 = 61013;
-  
-  public static final int HORSESKILL_61014 = 61014;
-  
-  public static final int HORSESKILL_61015 = 61015;
-  
-  public static final int HORSESKILL_61016 = 61016;
-  
-  public static final int HORSESKILL_61017 = 61017;
-  
-  public static final int HORSESKILL_61018 = 61018;
-  
-  public static final int HORSESKILL_61019 = 61019;
-  
-  public static final int HORSESKILL_61020 = 61020;
-  
-  public static final int HORSESKILL_61021 = 61021;
-  
-  public static final int HORSESKILL_61022 = 61022;
-  
-  public static final int HORSESKILL_61023 = 61023;
-  
-  public static final int HORSESKILL_61024 = 61024;
-  
-  public static final int HORSESKILL_61025 = 61025;
-  
-  public static final int HORSESKILL_61201 = 61201;
-  
-  public static final int HORSESKILL_61202 = 61202;
-  
-  public static final int HORSESKILL_61203 = 61203;
-  
-  public static final int HORSESKILL_61204 = 61204;
-  
-  public static final int HORSESKILL_61205 = 61205;
-  
-  public static final int HORSESKILL_61206 = 61206;
-  
-  public static final int HORSESKILL_61207 = 61207;
-  
-  public static final int HORSESKILL_61208 = 61208;
-  
-  public static final int HORSESKILL_61209 = 61209;
-  
-  public static final int HORSESKILL_61210 = 61210;
-  
-  public static final int HORSESKILL_61211 = 61211;
-  
-  public static final int HORSESKILL_61212 = 61212;
-  
-  public static final int HORSESKILL_61213 = 61213;
-  
-  public static final int HORSESKILL_61214 = 61214;
-  
-  public static final int HORSESKILL_61215 = 61215;
-  
-  public static final int HORSESKILL_61216 = 61216;
-  
-  public static final int HORSESKILL_61217 = 61217;
-  
-  public static final int HORSESKILL_61218 = 61218;
-  
-  public static final int HORSESKILL_61219 = 61219;
-  
-  public static final int HORSESKILL_61220 = 61220;
-  
-  public static final int HORSESKILL_61221 = 61221;
-  
-  public static final int HORSESKILL_61222 = 61222;
-  
-  public static final int HORSESKILL_61223 = 61223;
-  
-  public static final int HORSESKILL_61224 = 61224;
-  
-  public static final int HORSESKILL_61225 = 61225;
-  
-  public static final int HORSESKILL_61101 = 61101;
-  
-  public static final int HORSESKILL_61102 = 61102;
-  
-  public static final int HORSESKILL_61103 = 61103;
-  
-  public static final int HORSESKILL_61104 = 61104;
-  
-  public static final int HORSESKILL_61105 = 61105;
-  
-  public static final int HORSESKILL_61106 = 61106;
-  
-  public static final int HORSESKILL_61107 = 61107;
-  
-  public static final int HORSESKILL_61108 = 61108;
-  
-  public static final int HORSESKILL_61109 = 61109;
-  
-  public static final int HORSESKILL_61110 = 61110;
-  
-  public static final int HORSESKILL_61111 = 61111;
-  
-  public static final int HORSESKILL_61112 = 61112;
-  
-  public static final int HORSESKILL_61113 = 61113;
-  
-  public static final int HORSESKILL_61114 = 61114;
-  
-  public static final int HORSESKILL_61115 = 61115;
-  
-  public static final int HORSESKILL_61116 = 61116;
-  
-  public static final int HORSESKILL_61117 = 61117;
-  
-  public static final int HORSESKILL_61118 = 61118;
-  
-  public static final int HORSESKILL_61119 = 61119;
-  
-  public static final int HORSESKILL_61120 = 61120;
-  
-  public static final int HORSESKILL_61121 = 61121;
-  
-  public static final int HORSESKILL_61122 = 61122;
-  
-  public static final int HORSESKILL_61123 = 61123;
-  
-  public static final int HORSESKILL_61124 = 61124;
-  
-  public static final int HORSESKILL_61125 = 61125;
-  
-  public static final int HORSESKILL_62001 = 62001;
-  
-  public static final int HORSESKILL_62002 = 62002;
-  
-  public static final int HORSESKILL_62003 = 62003;
-  
-  public static final int HORSESKILL_62004 = 62004;
-  
-  public static final int HORSESKILL_62005 = 62005;
-  
-  public static final int HORSESKILL_62006 = 62006;
-  
-  public static final int HORSESKILL_62007 = 62007;
-  
-  public static final int HORSESKILL_62008 = 62008;
-  
-  public static final int HORSESKILL_62009 = 62009;
-  
-  public static final int HORSESKILL_62010 = 62010;
-  
-  public static final int HORSESKILL_62011 = 62011;
-  
-  public static final int HORSESKILL_62012 = 62012;
-  
-  public static final int HORSESKILL_62013 = 62013;
-  
-  public static final int HORSESKILL_62014 = 62014;
-  
-  public static final int HORSESKILL_62015 = 62015;
-  
-  public static final int HORSESKILL_62016 = 62016;
-  
-  public static final int HORSESKILL_62017 = 62017;
-  
-  public static final int HORSESKILL_62018 = 62018;
-  
-  public static final int HORSESKILL_62019 = 62019;
-  
-  public static final int HORSESKILL_62020 = 62020;
-  
-  public static final int HORSESKILL_62021 = 62021;
-  
-  public static final int HORSESKILL_62022 = 62022;
-  
-  public static final int HORSESKILL_62023 = 62023;
-  
-  public static final int HORSESKILL_62401 = 62401;
-  
-  public static final int HORSESKILL_62402 = 62402;
-  
-  public static final int HORSESKILL_62403 = 62403;
-  
-  public static final int HORSESKILL_62404 = 62404;
-  
-  public static final int HORSESKILL_62405 = 62405;
-  
-  public static final int HORSESKILL_62406 = 62406;
-  
-  public static final int HORSESKILL_62407 = 62407;
-  
-  public static final int HORSESKILL_62408 = 62408;
-  
-  public static final int HORSESKILL_62409 = 62409;
-  
-  public static final int HORSESKILL_62410 = 62410;
-  
-  public static final int HORSESKILL_62411 = 62411;
-  
-  public static final int HORSESKILL_62412 = 62412;
-  
-  public static final int HORSESKILL_62413 = 62413;
-  
-  public static final int HORSESKILL_62414 = 62414;
-  
-  public static final int HORSESKILL_62415 = 62415;
-  
-  public static final int HORSESKILL_62416 = 62416;
-  
-  public static final int HORSESKILL_62417 = 62417;
-  
-  public static final int HORSESKILL_62418 = 62418;
-  
-  public static final int HORSESKILL_62419 = 62419;
-  
-  public static final int HORSESKILL_62420 = 62420;
-  
-  public static final int HORSESKILL_62421 = 62421;
-  
-  public static final int HORSESKILL_62422 = 62422;
-  
-  public static final int HORSESKILL_62423 = 62423;
-  
-  public static final int HORSESKILL_62101 = 62101;
-  
-  public static final int HORSESKILL_62102 = 62102;
-  
-  public static final int HORSESKILL_62103 = 62103;
-  
-  public static final int HORSESKILL_62104 = 62104;
-  
-  public static final int HORSESKILL_62105 = 62105;
-  
-  public static final int HORSESKILL_62106 = 62106;
-  
-  public static final int HORSESKILL_62107 = 62107;
-  
-  public static final int HORSESKILL_62108 = 62108;
-  
-  public static final int HORSESKILL_62109 = 62109;
-  
-  public static final int HORSESKILL_62110 = 62110;
-  
-  public static final int HORSESKILL_62111 = 62111;
-  
-  public static final int HORSESKILL_62112 = 62112;
-  
-  public static final int HORSESKILL_62113 = 62113;
-  
-  public static final int HORSESKILL_62114 = 62114;
-  
-  public static final int HORSESKILL_62115 = 62115;
-  
-  public static final int HORSESKILL_62116 = 62116;
-  
-  public static final int HORSESKILL_62117 = 62117;
-  
-  public static final int HORSESKILL_62118 = 62118;
-  
-  public static final int HORSESKILL_62119 = 62119;
-  
-  public static final int HORSESKILL_62120 = 62120;
-  
-  public static final int HORSESKILL_62121 = 62121;
-  
-  public static final int HORSESKILL_62122 = 62122;
-  
-  public static final int HORSESKILL_62123 = 62123;
-  
-  public static final int HORSESKILL_63001 = 63001;
-  
-  public static final int HORSESKILL_63002 = 63002;
-  
-  public static final int HORSESKILL_63003 = 63003;
-  
-  public static final int HORSESKILL_63004 = 63004;
-  
-  public static final int HORSESKILL_63005 = 63005;
-  
-  public static final int HORSESKILL_63006 = 63006;
-  
-  public static final int HORSESKILL_63007 = 63007;
-  
-  public static final int HORSESKILL_63008 = 63008;
-  
-  public static final int HORSESKILL_63009 = 63009;
-  
-  public static final int HORSESKILL_63010 = 63010;
-  
-  public static final int HORSESKILL_63011 = 63011;
-  
-  public static final int HORSESKILL_63012 = 63012;
-  
-  public static final int HORSESKILL_63013 = 63013;
-  
-  public static final int HORSESKILL_63014 = 63014;
-  
-  public static final int HORSESKILL_63015 = 63015;
-  
-  public static final int HORSESKILL_63016 = 63016;
-  
-  public static final int HORSESKILL_63017 = 63017;
-  
-  public static final int HORSESKILL_63018 = 63018;
-  
-  public static final int HORSESKILL_63019 = 63019;
-  
-  public static final int HORSESKILL_63020 = 63020;
-  
-  public static final int HORSESKILL_63201 = 63201;
-  
-  public static final int HORSESKILL_63202 = 63202;
-  
-  public static final int HORSESKILL_63203 = 63203;
-  
-  public static final int HORSESKILL_63204 = 63204;
-  
-  public static final int HORSESKILL_63205 = 63205;
-  
-  public static final int HORSESKILL_63206 = 63206;
-  
-  public static final int HORSESKILL_63207 = 63207;
-  
-  public static final int HORSESKILL_63208 = 63208;
-  
-  public static final int HORSESKILL_63209 = 63209;
-  
-  public static final int HORSESKILL_63210 = 63210;
-  
-  public static final int HORSESKILL_63211 = 63211;
-  
-  public static final int HORSESKILL_63212 = 63212;
-  
-  public static final int HORSESKILL_63213 = 63213;
-  
-  public static final int HORSESKILL_63214 = 63214;
-  
-  public static final int HORSESKILL_63215 = 63215;
-  
-  public static final int HORSESKILL_63216 = 63216;
-  
-  public static final int HORSESKILL_63217 = 63217;
-  
-  public static final int HORSESKILL_63218 = 63218;
-  
-  public static final int HORSESKILL_63219 = 63219;
-  
-  public static final int HORSESKILL_63220 = 63220;
-  
-  public static final int HORSESKILL_63101 = 63101;
-  
-  public static final int HORSESKILL_63102 = 63102;
-  
-  public static final int HORSESKILL_63103 = 63103;
-  
-  public static final int HORSESKILL_63104 = 63104;
-  
-  public static final int HORSESKILL_63105 = 63105;
-  
-  public static final int HORSESKILL_63106 = 63106;
-  
-  public static final int HORSESKILL_63107 = 63107;
-  
-  public static final int HORSESKILL_63108 = 63108;
-  
-  public static final int HORSESKILL_63109 = 63109;
-  
-  public static final int HORSESKILL_63110 = 63110;
-  
-  public static final int HORSESKILL_63111 = 63111;
-  
-  public static final int HORSESKILL_63112 = 63112;
-  
-  public static final int HORSESKILL_63113 = 63113;
-  
-  public static final int HORSESKILL_63114 = 63114;
-  
-  public static final int HORSESKILL_63115 = 63115;
-  
-  public static final int HORSESKILL_63116 = 63116;
-  
-  public static final int HORSESKILL_63117 = 63117;
-  
-  public static final int HORSESKILL_63118 = 63118;
-  
-  public static final int HORSESKILL_63119 = 63119;
-  
-  public static final int HORSESKILL_63120 = 63120;
-  
-  public static final int HORSESKILL_64001 = 64001;
-  
-  public static final int HORSESKILL_64002 = 64002;
-  
-  public static final int HORSESKILL_64003 = 64003;
-  
-  public static final int HORSESKILL_64301 = 64301;
-  
-  public static final int HORSESKILL_64302 = 64302;
-  
-  public static final int HORSESKILL_64303 = 64303;
-  
-  public static final int HORSESKILL_64101 = 64101;
-  
-  public static final int HORSESKILL_64102 = 64102;
-  
-  public static final int HORSESKILL_64103 = 64103;
+public interface HorseSkillConst
+{
+    public static final int HORSESKILL_61001 = 61001;
+    public static final int HORSESKILL_61002 = 61002;
+    public static final int HORSESKILL_61003 = 61003;
+    public static final int HORSESKILL_61004 = 61004;
+    public static final int HORSESKILL_61005 = 61005;
+    public static final int HORSESKILL_61006 = 61006;
+    public static final int HORSESKILL_61007 = 61007;
+    public static final int HORSESKILL_61008 = 61008;
+    public static final int HORSESKILL_61009 = 61009;
+    public static final int HORSESKILL_61010 = 61010;
+    public static final int HORSESKILL_61011 = 61011;
+    public static final int HORSESKILL_61012 = 61012;
+    public static final int HORSESKILL_61013 = 61013;
+    public static final int HORSESKILL_61014 = 61014;
+    public static final int HORSESKILL_61015 = 61015;
+    public static final int HORSESKILL_61016 = 61016;
+    public static final int HORSESKILL_61017 = 61017;
+    public static final int HORSESKILL_61018 = 61018;
+    public static final int HORSESKILL_61019 = 61019;
+    public static final int HORSESKILL_61020 = 61020;
+    public static final int HORSESKILL_61021 = 61021;
+    public static final int HORSESKILL_61022 = 61022;
+    public static final int HORSESKILL_61023 = 61023;
+    public static final int HORSESKILL_61024 = 61024;
+    public static final int HORSESKILL_61025 = 61025;
+    public static final int HORSESKILL_61201 = 61201;
+    public static final int HORSESKILL_61202 = 61202;
+    public static final int HORSESKILL_61203 = 61203;
+    public static final int HORSESKILL_61204 = 61204;
+    public static final int HORSESKILL_61205 = 61205;
+    public static final int HORSESKILL_61206 = 61206;
+    public static final int HORSESKILL_61207 = 61207;
+    public static final int HORSESKILL_61208 = 61208;
+    public static final int HORSESKILL_61209 = 61209;
+    public static final int HORSESKILL_61210 = 61210;
+    public static final int HORSESKILL_61211 = 61211;
+    public static final int HORSESKILL_61212 = 61212;
+    public static final int HORSESKILL_61213 = 61213;
+    public static final int HORSESKILL_61214 = 61214;
+    public static final int HORSESKILL_61215 = 61215;
+    public static final int HORSESKILL_61216 = 61216;
+    public static final int HORSESKILL_61217 = 61217;
+    public static final int HORSESKILL_61218 = 61218;
+    public static final int HORSESKILL_61219 = 61219;
+    public static final int HORSESKILL_61220 = 61220;
+    public static final int HORSESKILL_61221 = 61221;
+    public static final int HORSESKILL_61222 = 61222;
+    public static final int HORSESKILL_61223 = 61223;
+    public static final int HORSESKILL_61224 = 61224;
+    public static final int HORSESKILL_61225 = 61225;
+    public static final int HORSESKILL_61101 = 61101;
+    public static final int HORSESKILL_61102 = 61102;
+    public static final int HORSESKILL_61103 = 61103;
+    public static final int HORSESKILL_61104 = 61104;
+    public static final int HORSESKILL_61105 = 61105;
+    public static final int HORSESKILL_61106 = 61106;
+    public static final int HORSESKILL_61107 = 61107;
+    public static final int HORSESKILL_61108 = 61108;
+    public static final int HORSESKILL_61109 = 61109;
+    public static final int HORSESKILL_61110 = 61110;
+    public static final int HORSESKILL_61111 = 61111;
+    public static final int HORSESKILL_61112 = 61112;
+    public static final int HORSESKILL_61113 = 61113;
+    public static final int HORSESKILL_61114 = 61114;
+    public static final int HORSESKILL_61115 = 61115;
+    public static final int HORSESKILL_61116 = 61116;
+    public static final int HORSESKILL_61117 = 61117;
+    public static final int HORSESKILL_61118 = 61118;
+    public static final int HORSESKILL_61119 = 61119;
+    public static final int HORSESKILL_61120 = 61120;
+    public static final int HORSESKILL_61121 = 61121;
+    public static final int HORSESKILL_61122 = 61122;
+    public static final int HORSESKILL_61123 = 61123;
+    public static final int HORSESKILL_61124 = 61124;
+    public static final int HORSESKILL_61125 = 61125;
+    public static final int HORSESKILL_62001 = 62001;
+    public static final int HORSESKILL_62002 = 62002;
+    public static final int HORSESKILL_62003 = 62003;
+    public static final int HORSESKILL_62004 = 62004;
+    public static final int HORSESKILL_62005 = 62005;
+    public static final int HORSESKILL_62006 = 62006;
+    public static final int HORSESKILL_62007 = 62007;
+    public static final int HORSESKILL_62008 = 62008;
+    public static final int HORSESKILL_62009 = 62009;
+    public static final int HORSESKILL_62010 = 62010;
+    public static final int HORSESKILL_62011 = 62011;
+    public static final int HORSESKILL_62012 = 62012;
+    public static final int HORSESKILL_62013 = 62013;
+    public static final int HORSESKILL_62014 = 62014;
+    public static final int HORSESKILL_62015 = 62015;
+    public static final int HORSESKILL_62016 = 62016;
+    public static final int HORSESKILL_62017 = 62017;
+    public static final int HORSESKILL_62018 = 62018;
+    public static final int HORSESKILL_62019 = 62019;
+    public static final int HORSESKILL_62020 = 62020;
+    public static final int HORSESKILL_62021 = 62021;
+    public static final int HORSESKILL_62022 = 62022;
+    public static final int HORSESKILL_62023 = 62023;
+    public static final int HORSESKILL_62401 = 62401;
+    public static final int HORSESKILL_62402 = 62402;
+    public static final int HORSESKILL_62403 = 62403;
+    public static final int HORSESKILL_62404 = 62404;
+    public static final int HORSESKILL_62405 = 62405;
+    public static final int HORSESKILL_62406 = 62406;
+    public static final int HORSESKILL_62407 = 62407;
+    public static final int HORSESKILL_62408 = 62408;
+    public static final int HORSESKILL_62409 = 62409;
+    public static final int HORSESKILL_62410 = 62410;
+    public static final int HORSESKILL_62411 = 62411;
+    public static final int HORSESKILL_62412 = 62412;
+    public static final int HORSESKILL_62413 = 62413;
+    public static final int HORSESKILL_62414 = 62414;
+    public static final int HORSESKILL_62415 = 62415;
+    public static final int HORSESKILL_62416 = 62416;
+    public static final int HORSESKILL_62417 = 62417;
+    public static final int HORSESKILL_62418 = 62418;
+    public static final int HORSESKILL_62419 = 62419;
+    public static final int HORSESKILL_62420 = 62420;
+    public static final int HORSESKILL_62421 = 62421;
+    public static final int HORSESKILL_62422 = 62422;
+    public static final int HORSESKILL_62423 = 62423;
+    public static final int HORSESKILL_62101 = 62101;
+    public static final int HORSESKILL_62102 = 62102;
+    public static final int HORSESKILL_62103 = 62103;
+    public static final int HORSESKILL_62104 = 62104;
+    public static final int HORSESKILL_62105 = 62105;
+    public static final int HORSESKILL_62106 = 62106;
+    public static final int HORSESKILL_62107 = 62107;
+    public static final int HORSESKILL_62108 = 62108;
+    public static final int HORSESKILL_62109 = 62109;
+    public static final int HORSESKILL_62110 = 62110;
+    public static final int HORSESKILL_62111 = 62111;
+    public static final int HORSESKILL_62112 = 62112;
+    public static final int HORSESKILL_62113 = 62113;
+    public static final int HORSESKILL_62114 = 62114;
+    public static final int HORSESKILL_62115 = 62115;
+    public static final int HORSESKILL_62116 = 62116;
+    public static final int HORSESKILL_62117 = 62117;
+    public static final int HORSESKILL_62118 = 62118;
+    public static final int HORSESKILL_62119 = 62119;
+    public static final int HORSESKILL_62120 = 62120;
+    public static final int HORSESKILL_62121 = 62121;
+    public static final int HORSESKILL_62122 = 62122;
+    public static final int HORSESKILL_62123 = 62123;
+    public static final int HORSESKILL_63001 = 63001;
+    public static final int HORSESKILL_63002 = 63002;
+    public static final int HORSESKILL_63003 = 63003;
+    public static final int HORSESKILL_63004 = 63004;
+    public static final int HORSESKILL_63005 = 63005;
+    public static final int HORSESKILL_63006 = 63006;
+    public static final int HORSESKILL_63007 = 63007;
+    public static final int HORSESKILL_63008 = 63008;
+    public static final int HORSESKILL_63009 = 63009;
+    public static final int HORSESKILL_63010 = 63010;
+    public static final int HORSESKILL_63011 = 63011;
+    public static final int HORSESKILL_63012 = 63012;
+    public static final int HORSESKILL_63013 = 63013;
+    public static final int HORSESKILL_63014 = 63014;
+    public static final int HORSESKILL_63015 = 63015;
+    public static final int HORSESKILL_63016 = 63016;
+    public static final int HORSESKILL_63017 = 63017;
+    public static final int HORSESKILL_63018 = 63018;
+    public static final int HORSESKILL_63019 = 63019;
+    public static final int HORSESKILL_63020 = 63020;
+    public static final int HORSESKILL_63201 = 63201;
+    public static final int HORSESKILL_63202 = 63202;
+    public static final int HORSESKILL_63203 = 63203;
+    public static final int HORSESKILL_63204 = 63204;
+    public static final int HORSESKILL_63205 = 63205;
+    public static final int HORSESKILL_63206 = 63206;
+    public static final int HORSESKILL_63207 = 63207;
+    public static final int HORSESKILL_63208 = 63208;
+    public static final int HORSESKILL_63209 = 63209;
+    public static final int HORSESKILL_63210 = 63210;
+    public static final int HORSESKILL_63211 = 63211;
+    public static final int HORSESKILL_63212 = 63212;
+    public static final int HORSESKILL_63213 = 63213;
+    public static final int HORSESKILL_63214 = 63214;
+    public static final int HORSESKILL_63215 = 63215;
+    public static final int HORSESKILL_63216 = 63216;
+    public static final int HORSESKILL_63217 = 63217;
+    public static final int HORSESKILL_63218 = 63218;
+    public static final int HORSESKILL_63219 = 63219;
+    public static final int HORSESKILL_63220 = 63220;
+    public static final int HORSESKILL_63101 = 63101;
+    public static final int HORSESKILL_63102 = 63102;
+    public static final int HORSESKILL_63103 = 63103;
+    public static final int HORSESKILL_63104 = 63104;
+    public static final int HORSESKILL_63105 = 63105;
+    public static final int HORSESKILL_63106 = 63106;
+    public static final int HORSESKILL_63107 = 63107;
+    public static final int HORSESKILL_63108 = 63108;
+    public static final int HORSESKILL_63109 = 63109;
+    public static final int HORSESKILL_63110 = 63110;
+    public static final int HORSESKILL_63111 = 63111;
+    public static final int HORSESKILL_63112 = 63112;
+    public static final int HORSESKILL_63113 = 63113;
+    public static final int HORSESKILL_63114 = 63114;
+    public static final int HORSESKILL_63115 = 63115;
+    public static final int HORSESKILL_63116 = 63116;
+    public static final int HORSESKILL_63117 = 63117;
+    public static final int HORSESKILL_63118 = 63118;
+    public static final int HORSESKILL_63119 = 63119;
+    public static final int HORSESKILL_63120 = 63120;
+    public static final int HORSESKILL_64001 = 64001;
+    public static final int HORSESKILL_64002 = 64002;
+    public static final int HORSESKILL_64003 = 64003;
+    public static final int HORSESKILL_64301 = 64301;
+    public static final int HORSESKILL_64302 = 64302;
+    public static final int HORSESKILL_64303 = 64303;
+    public static final int HORSESKILL_64101 = 64101;
+    public static final int HORSESKILL_64102 = 64102;
+    public static final int HORSESKILL_64103 = 64103;
 }

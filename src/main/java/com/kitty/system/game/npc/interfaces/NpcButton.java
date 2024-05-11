@@ -1,149 +1,79 @@
+
 package com.kitty.system.game.npc.interfaces;
 
-public interface NpcButton {
-  public static final String GUARD = "guard";
-  
-  public static final String SHOP_BUY_NPC_PET = "buy_npc_pet";
-  
-  public static final String SHOP_BUY_NPC_DRUG = "buy_npc_drug";
-  
-  public static final String SHOP_BUY_NPC_EQUIP = "buy_npc_equip";
-  
-  public static final String SHOP_BUY_NPC_GROCERY = "buy_npc_grocery";
-  
-  public static final String SHOP_BUY_NPC_GUO = "buy_npc_guo";
-  
-  public static final String SHOP_BUY_NPC_BRAC = "buy_npc_brac";
-  
-  public static final String SHOP_BUY_NPC_NAO = "buy_npc_nao";
-  
-  public static final String SHOP_BUY_NPC_DI = "buy_npc_di";
-  
-  public static final String SHOP_BUY_NPC_ARENA = "buy_npc_arena";
-  
-  public static final String SHOP_BUY_NPC_LONG = "buy_npc_long";
-  
-  public static final String SHOP_BUY_NPC_NICE = "buy_npc_nice";
-  
-  public static final String SHOP_BUY_NPC_FEATS = "buy_npc_feats";
-  
-  public static final String ACCEPT_SCHOOL_TASK = "school_task";
-  
-  public static final String TREASURE_MAP_TASK = "cbt_task";
-  
-  public static final String PARTY_TASK = "party_task";
-  
-  public static final String LOOP_TASK = "loop_task";
-  
-  public static final String TOWER_DUGEON = "tower_copy";
-  
-  public static final String TOWER_OFFICER = "threats_tower";
-  
-  public static final String LOOK_FOR_DUGEON = "look_for_copy";
-  
-  public static final String LOOK_FOR_OFFICER = "threats_look_for";
-  
-  public static final String FIVE_TASK = "five_task";
-  
-  public static final String CATCHES_GHOSTS = "zg_task";
-  
-  public static final String CATCHES_GHOSTS_OFFICER = "threats_zg";
-  
-  public static final String GODS_COURT = "txy_task";
-  
-  public static final String GODS_COURT_OFFICER = "threats_txy";
-  
-  public static final String CRUSADE_RENEGADE = "pz_task";
-  
-  public static final String CRUSADE_RENEGADE_OFFICER = "threats_pz";
-  
-  public static final String XM_DUGEON = "xm_copy";
-  
-  public static final String XM_OFFICER = "threats_xm";
-  
-  public static final String THREATS_PARTY_BANDIT_OFFICER = "threats_p_bandit";
-  
-  public static final String THREATS_STAR_OFFICER = "threats_star";
-  
-  public static final String THREATS_BOOS_OFFICER = "threats_boos";
-  
-  public static final String THREATS_NIAN_OFFICER = "threats_ns";
-  
-  public static final String THREATS_HR_OFFICER = "threats_har";
-  
-  public static final String SEAL_DEMON_OFFICER = "threats_seal";
-  
-  public static final String THREE_SCOPE_OFFICER = "threats_scope";
-  
-  public static final String REQ_QUESTION_DLS = "req_dls";
-  
-  public static final String GET_QUESTION_DLS = "get_dls";
-  
-  public static final String REQ_QUESTION_XS = "req_xs";
-  
-  public static final String GET_QUESTION_XS = "get_xs";
-  
-  public static final String REQ_QUESTION_SS = "req_ss";
-  
-  public static final String GET_QUESTION_SS = "get_ss";
-  
-  public static final String REQ_QUESTION_DS = "req_ds";
-  
-  public static final String REQ_ENTER_DS = "enter_ds";
-  
-  public static final String REQ_KJ_RANK = "kj_rank";
-  
-  public static final String CARNIVAL_TASK = "carnival_task";
-  
-  public static final String DRAGON_TASK = "duanwu_task";
-  
-  public static final String MO_DUNGEON_F_C = "m_f_c";
-  
-  public static final String MO_DUNGEON_F_Z = "m_f_z";
-  
-  public static final String MO_OFFICER_1700001 = "threats_mo_1700001";
-  
-  public static final String MO_OFFICER_C_170002 = "threats_mo_c_170002";
-  
-  public static final String MO_OFFICER_Z_170003 = "threats_mo_z_170003";
-  
-  public static final String ENTER_AT = "enter_at";
-  
-  public static final String RUNS_AT = "runs_at";
-  
-  public static final String ENTER_CA = "enter_ca";
-  
-  public static final String RUNS_CA = "runs_ca";
-  
-  public static final String ENTER_LU = "enter_lu";
-  
-  public static final String RUNS_LU = "runs_lu";
-  
-  public static final String ENTER_GANG_WARS = "enter_gang_wars";
-  
-  public static final String RUNS_GANG_WARS = "runs_gang_wars";
-  
-  public static final String TO_FIGHT_WARS = "to_fight_wars";
-  
-  public static final String TO_HOME_WARS = "to_home_wars";
-  
-  public static final String ACTIVATE_CANNON = "activate_cannon";
-  
-  public static final String BREAK_OFF_CANNON = "break_off_cannon";
-  
-  public static final String ATK_GATE = "atk_cannon";
-  
-  public static final String OFF_GATE = "off_cannon";
-  
-  public static final String BREAK_OFF_GATE = "break_off_gate";
-  
-  public static final String HG_FIGHT = "hg_yz";
-  
-  public static final String RUNS_PRISON = "runs_prison";
-  
-  public static final String VIEW_PRISONER = "view_prison";
-  
-  public static final String FIVE_GUESS = "five_guess";
-  
-  public static final String[] buttons = new String[] { "buy_npc_guo", "buy_npc_brac", "buy_npc_nao", "buy_npc_di", "buy_npc_arena", "buy_npc_long", "buy_npc_nice", "buy_npc_feats" };
+public interface NpcButton
+{
+    public static final String GUARD = "guard";
+    public static final String SHOP_BUY_NPC_PET = "buy_npc_pet";
+    public static final String SHOP_BUY_NPC_DRUG = "buy_npc_drug";
+    public static final String SHOP_BUY_NPC_EQUIP = "buy_npc_equip";
+    public static final String SHOP_BUY_NPC_GROCERY = "buy_npc_grocery";
+    public static final String SHOP_BUY_NPC_GUO = "buy_npc_guo";
+    public static final String SHOP_BUY_NPC_BRAC = "buy_npc_brac";
+    public static final String SHOP_BUY_NPC_NAO = "buy_npc_nao";
+    public static final String SHOP_BUY_NPC_DI = "buy_npc_di";
+    public static final String SHOP_BUY_NPC_ARENA = "buy_npc_arena";
+    public static final String SHOP_BUY_NPC_LONG = "buy_npc_long";
+    public static final String SHOP_BUY_NPC_NICE = "buy_npc_nice";
+    public static final String SHOP_BUY_NPC_FEATS = "buy_npc_feats";
+    public static final String ACCEPT_SCHOOL_TASK = "school_task";
+    public static final String TREASURE_MAP_TASK = "cbt_task";
+    public static final String PARTY_TASK = "party_task";
+    public static final String LOOP_TASK = "loop_task";
+    public static final String TOWER_DUGEON = "tower_copy";
+    public static final String TOWER_OFFICER = "threats_tower";
+    public static final String LOOK_FOR_DUGEON = "look_for_copy";
+    public static final String LOOK_FOR_OFFICER = "threats_look_for";
+    public static final String FIVE_TASK = "five_task";
+    public static final String CATCHES_GHOSTS = "zg_task";
+    public static final String CATCHES_GHOSTS_OFFICER = "threats_zg";
+    public static final String GODS_COURT = "txy_task";
+    public static final String GODS_COURT_OFFICER = "threats_txy";
+    public static final String CRUSADE_RENEGADE = "pz_task";
+    public static final String CRUSADE_RENEGADE_OFFICER = "threats_pz";
+    public static final String XM_DUGEON = "xm_copy";
+    public static final String XM_OFFICER = "threats_xm";
+    public static final String THREATS_PARTY_BANDIT_OFFICER = "threats_p_bandit";
+    public static final String THREATS_STAR_OFFICER = "threats_star";
+    public static final String THREATS_BOOS_OFFICER = "threats_boos";
+    public static final String THREATS_NIAN_OFFICER = "threats_ns";
+    public static final String THREATS_HR_OFFICER = "threats_har";
+    public static final String SEAL_DEMON_OFFICER = "threats_seal";
+    public static final String THREE_SCOPE_OFFICER = "threats_scope";
+    public static final String REQ_QUESTION_DLS = "req_dls";
+    public static final String GET_QUESTION_DLS = "get_dls";
+    public static final String REQ_QUESTION_XS = "req_xs";
+    public static final String GET_QUESTION_XS = "get_xs";
+    public static final String REQ_QUESTION_SS = "req_ss";
+    public static final String GET_QUESTION_SS = "get_ss";
+    public static final String REQ_QUESTION_DS = "req_ds";
+    public static final String REQ_ENTER_DS = "enter_ds";
+    public static final String REQ_KJ_RANK = "kj_rank";
+    public static final String CARNIVAL_TASK = "carnival_task";
+    public static final String DRAGON_TASK = "duanwu_task";
+    public static final String MO_DUNGEON_F_C = "m_f_c";
+    public static final String MO_DUNGEON_F_Z = "m_f_z";
+    public static final String MO_OFFICER_1700001 = "threats_mo_1700001";
+    public static final String MO_OFFICER_C_170002 = "threats_mo_c_170002";
+    public static final String MO_OFFICER_Z_170003 = "threats_mo_z_170003";
+    public static final String ENTER_AT = "enter_at";
+    public static final String RUNS_AT = "runs_at";
+    public static final String ENTER_CA = "enter_ca";
+    public static final String RUNS_CA = "runs_ca";
+    public static final String ENTER_LU = "enter_lu";
+    public static final String RUNS_LU = "runs_lu";
+    public static final String ENTER_GANG_WARS = "enter_gang_wars";
+    public static final String RUNS_GANG_WARS = "runs_gang_wars";
+    public static final String TO_FIGHT_WARS = "to_fight_wars";
+    public static final String TO_HOME_WARS = "to_home_wars";
+    public static final String ACTIVATE_CANNON = "activate_cannon";
+    public static final String BREAK_OFF_CANNON = "break_off_cannon";
+    public static final String ATK_GATE = "atk_cannon";
+    public static final String OFF_GATE = "off_cannon";
+    public static final String BREAK_OFF_GATE = "break_off_gate";
+    public static final String HG_FIGHT = "hg_yz";
+    public static final String RUNS_PRISON = "runs_prison";
+    public static final String VIEW_PRISONER = "view_prison";
+    public static final String FIVE_GUESS = "five_guess";
+    public static final String[] buttons = { "buy_npc_guo", "buy_npc_brac", "buy_npc_nao", "buy_npc_di", "buy_npc_arena", "buy_npc_long", "buy_npc_nice", "buy_npc_feats" };
 }

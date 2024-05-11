@@ -1,230 +1,402 @@
+
 package com.kitty.system.game.party.message;
 
+import java.util.ArrayList;
+import com.kitty.system.common.enter.FiedValue;
+import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import com.kitty.system.common.enter.FiedValue;
-import java.util.ArrayList;
-import java.util.List;
 
 @MessageMeta(module = 61601)
-public class RespOpenParty extends Message {
-  private int serial;
-  
-  private int createTime;
-  
-  private byte level;
-  
-  private short count;
-  
-  private short onlineMember;
-  
-  private String name;
-  
-  private String notice;
-  
-  private String aim;
-  
-  private int joinTime;
-  
-  private short active;
-  
-  private String capital;
-  
-  private String cntech;
-  
-  private byte consent;
-  
-  private short consentLevel;
-  
-  private byte refuse;
-  
-  private short refuseLevel;
-  
-  public void setSerial(int serial) {
-    this.serial = serial;
-  }
-  
-  public void setCreateTime(int createTime) {
-    this.createTime = createTime;
-  }
-  
-  public void setLevel(byte level) {
-    this.level = level;
-  }
-  
-  public void setCount(short count) {
-    this.count = count;
-  }
-  
-  public void setOnlineMember(short onlineMember) {
-    this.onlineMember = onlineMember;
-  }
-  
-  public void setName(String name) {
-    this.name = name;
-  }
-  
-  public void setNotice(String notice) {
-    this.notice = notice;
-  }
-  
-  public void setAim(String aim) {
-    this.aim = aim;
-  }
-  
-  public void setJoinTime(int joinTime) {
-    this.joinTime = joinTime;
-  }
-  
-  public void setActive(short active) {
-    this.active = active;
-  }
-  
-  public void setCapital(String capital) {
-    this.capital = capital;
-  }
-  
-  public void setCntech(String cntech) {
-    this.cntech = cntech;
-  }
-  
-  public void setConsent(byte consent) {
-    this.consent = consent;
-  }
-  
-  public void setConsentLevel(short consentLevel) {
-    this.consentLevel = consentLevel;
-  }
-  
-  public void setRefuse(byte refuse) {
-    this.refuse = refuse;
-  }
-  
-  public void setRefuseLevel(short refuseLevel) {
-    this.refuseLevel = refuseLevel;
-  }
-  
-  public void setJob(byte job) {
-    this.job = job;
-  }
-  
-  public void setSum(short sum) {
-    this.sum = sum;
-  }
-  
-  public void setWin(short win) {
-    this.win = win;
-  }
-  
-  public void setLose(short lose) {
-    this.lose = lose;
-  }
-  
-  public void setStandings(short standings) {
-    this.standings = standings;
-  }
-  
-  public void setMaster(List<FiedValue> master) {
-    this.master = master;
-  }
-  
-  public int getSerial() {
-    return this.serial;
-  }
-  
-  public int getCreateTime() {
-    return this.createTime;
-  }
-  
-  public byte getLevel() {
-    return this.level;
-  }
-  
-  public short getCount() {
-    return this.count;
-  }
-  
-  public short getOnlineMember() {
-    return this.onlineMember;
-  }
-  
-  public String getName() {
-    return this.name;
-  }
-  
-  public String getNotice() {
-    return this.notice;
-  }
-  
-  public String getAim() {
-    return this.aim;
-  }
-  
-  public int getJoinTime() {
-    return this.joinTime;
-  }
-  
-  public short getActive() {
-    return this.active;
-  }
-  
-  public String getCapital() {
-    return this.capital;
-  }
-  
-  public String getCntech() {
-    return this.cntech;
-  }
-  
-  public byte getConsent() {
-    return this.consent;
-  }
-  
-  public short getConsentLevel() {
-    return this.consentLevel;
-  }
-  
-  public byte getRefuse() {
-    return this.refuse;
-  }
-  
-  public short getRefuseLevel() {
-    return this.refuseLevel;
-  }
-  
-  private byte job = 8;
-  
-  public byte getJob() {
-    return this.job;
-  }
-  
-  private short sum = 0;
-  
-  public short getSum() {
-    return this.sum;
-  }
-  
-  private short win = 0;
-  
-  public short getWin() {
-    return this.win;
-  }
-  
-  private short lose = 0;
-  
-  public short getLose() {
-    return this.lose;
-  }
-  
-  private short standings = 0;
-  
-  public short getStandings() {
-    return this.standings;
-  }
-  
-  private List<FiedValue> master = new ArrayList<>();
-  
-  public List<FiedValue> getMaster() {
-    return this.master;
-  }
+public class RespOpenParty extends Message
+{
+    private int serial;
+    private int createTime;
+    private byte level;
+    private short count;
+    private short onlineMember;
+    private String name;
+    private String notice;
+    private String aim;
+    private int joinTime;
+    private short active;
+    private String capital;
+    private String cntech;
+    private byte consent;
+    private short consentLevel;
+    private byte refuse;
+    private short refuseLevel;
+    private byte job;
+    private short sum;
+    private short win;
+    private short lose;
+    private short standings;
+    private List<FiedValue> master;
+    
+    public RespOpenParty() {
+        this.job = 8;
+        this.sum = 0;
+        this.win = 0;
+        this.lose = 0;
+        this.standings = 0;
+        this.master = new ArrayList<FiedValue>();
+    }
+    
+    public int getSerial() {
+        return this.serial;
+    }
+    
+    public int getCreateTime() {
+        return this.createTime;
+    }
+    
+    public byte getLevel() {
+        return this.level;
+    }
+    
+    public short getCount() {
+        return this.count;
+    }
+    
+    public short getOnlineMember() {
+        return this.onlineMember;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public String getNotice() {
+        return this.notice;
+    }
+    
+    public String getAim() {
+        return this.aim;
+    }
+    
+    public int getJoinTime() {
+        return this.joinTime;
+    }
+    
+    public short getActive() {
+        return this.active;
+    }
+    
+    public String getCapital() {
+        return this.capital;
+    }
+    
+    public String getCntech() {
+        return this.cntech;
+    }
+    
+    public byte getConsent() {
+        return this.consent;
+    }
+    
+    public short getConsentLevel() {
+        return this.consentLevel;
+    }
+    
+    public byte getRefuse() {
+        return this.refuse;
+    }
+    
+    public short getRefuseLevel() {
+        return this.refuseLevel;
+    }
+    
+    public byte getJob() {
+        return this.job;
+    }
+    
+    public short getSum() {
+        return this.sum;
+    }
+    
+    public short getWin() {
+        return this.win;
+    }
+    
+    public short getLose() {
+        return this.lose;
+    }
+    
+    public short getStandings() {
+        return this.standings;
+    }
+    
+    public List<FiedValue> getMaster() {
+        return this.master;
+    }
+    
+    public void setSerial(final int serial) {
+        this.serial = serial;
+    }
+    
+    public void setCreateTime(final int createTime) {
+        this.createTime = createTime;
+    }
+    
+    public void setLevel(final byte level) {
+        this.level = level;
+    }
+    
+    public void setCount(final short count) {
+        this.count = count;
+    }
+    
+    public void setOnlineMember(final short onlineMember) {
+        this.onlineMember = onlineMember;
+    }
+    
+    public void setName(final String name) {
+        this.name = name;
+    }
+    
+    public void setNotice(final String notice) {
+        this.notice = notice;
+    }
+    
+    public void setAim(final String aim) {
+        this.aim = aim;
+    }
+    
+    public void setJoinTime(final int joinTime) {
+        this.joinTime = joinTime;
+    }
+    
+    public void setActive(final short active) {
+        this.active = active;
+    }
+    
+    public void setCapital(final String capital) {
+        this.capital = capital;
+    }
+    
+    public void setCntech(final String cntech) {
+        this.cntech = cntech;
+    }
+    
+    public void setConsent(final byte consent) {
+        this.consent = consent;
+    }
+    
+    public void setConsentLevel(final short consentLevel) {
+        this.consentLevel = consentLevel;
+    }
+    
+    public void setRefuse(final byte refuse) {
+        this.refuse = refuse;
+    }
+    
+    public void setRefuseLevel(final short refuseLevel) {
+        this.refuseLevel = refuseLevel;
+    }
+    
+    public void setJob(final byte job) {
+        this.job = job;
+    }
+    
+    public void setSum(final short sum) {
+        this.sum = sum;
+    }
+    
+    public void setWin(final short win) {
+        this.win = win;
+    }
+    
+    public void setLose(final short lose) {
+        this.lose = lose;
+    }
+    
+    public void setStandings(final short standings) {
+        this.standings = standings;
+    }
+    
+    public void setMaster(final List<FiedValue> master) {
+        this.master = master;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RespOpenParty)) {
+            return false;
+        }
+        final RespOpenParty other = (RespOpenParty)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getSerial() != other.getSerial()) {
+            return false;
+        }
+        if (this.getCreateTime() != other.getCreateTime()) {
+            return false;
+        }
+        if (this.getLevel() != other.getLevel()) {
+            return false;
+        }
+        if (this.getCount() != other.getCount()) {
+            return false;
+        }
+        if (this.getOnlineMember() != other.getOnlineMember()) {
+            return false;
+        }
+        final Object this$name = this.getName();
+        final Object other$name = other.getName();
+        Label_0130: {
+            if (this$name == null) {
+                if (other$name == null) {
+                    break Label_0130;
+                }
+            }
+            else if (this$name.equals(other$name)) {
+                break Label_0130;
+            }
+            return false;
+        }
+        final Object this$notice = this.getNotice();
+        final Object other$notice = other.getNotice();
+        Label_0167: {
+            if (this$notice == null) {
+                if (other$notice == null) {
+                    break Label_0167;
+                }
+            }
+            else if (this$notice.equals(other$notice)) {
+                break Label_0167;
+            }
+            return false;
+        }
+        final Object this$aim = this.getAim();
+        final Object other$aim = other.getAim();
+        Label_0204: {
+            if (this$aim == null) {
+                if (other$aim == null) {
+                    break Label_0204;
+                }
+            }
+            else if (this$aim.equals(other$aim)) {
+                break Label_0204;
+            }
+            return false;
+        }
+        if (this.getJoinTime() != other.getJoinTime()) {
+            return false;
+        }
+        if (this.getActive() != other.getActive()) {
+            return false;
+        }
+        final Object this$capital = this.getCapital();
+        final Object other$capital = other.getCapital();
+        Label_0267: {
+            if (this$capital == null) {
+                if (other$capital == null) {
+                    break Label_0267;
+                }
+            }
+            else if (this$capital.equals(other$capital)) {
+                break Label_0267;
+            }
+            return false;
+        }
+        final Object this$cntech = this.getCntech();
+        final Object other$cntech = other.getCntech();
+        Label_0304: {
+            if (this$cntech == null) {
+                if (other$cntech == null) {
+                    break Label_0304;
+                }
+            }
+            else if (this$cntech.equals(other$cntech)) {
+                break Label_0304;
+            }
+            return false;
+        }
+        if (this.getConsent() != other.getConsent()) {
+            return false;
+        }
+        if (this.getConsentLevel() != other.getConsentLevel()) {
+            return false;
+        }
+        if (this.getRefuse() != other.getRefuse()) {
+            return false;
+        }
+        if (this.getRefuseLevel() != other.getRefuseLevel()) {
+            return false;
+        }
+        if (this.getJob() != other.getJob()) {
+            return false;
+        }
+        if (this.getSum() != other.getSum()) {
+            return false;
+        }
+        if (this.getWin() != other.getWin()) {
+            return false;
+        }
+        if (this.getLose() != other.getLose()) {
+            return false;
+        }
+        if (this.getStandings() != other.getStandings()) {
+            return false;
+        }
+        final Object this$master = this.getMaster();
+        final Object other$master = other.getMaster();
+        if (this$master == null) {
+            if (other$master == null) {
+                return true;
+            }
+        }
+        else if (this$master.equals(other$master)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof RespOpenParty;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getSerial();
+        result = result * 59 + this.getCreateTime();
+        result = result * 59 + this.getLevel();
+        result = result * 59 + this.getCount();
+        result = result * 59 + this.getOnlineMember();
+        final Object $name = this.getName();
+        result = result * 59 + (($name == null) ? 43 : $name.hashCode());
+        final Object $notice = this.getNotice();
+        result = result * 59 + (($notice == null) ? 43 : $notice.hashCode());
+        final Object $aim = this.getAim();
+        result = result * 59 + (($aim == null) ? 43 : $aim.hashCode());
+        result = result * 59 + this.getJoinTime();
+        result = result * 59 + this.getActive();
+        final Object $capital = this.getCapital();
+        result = result * 59 + (($capital == null) ? 43 : $capital.hashCode());
+        final Object $cntech = this.getCntech();
+        result = result * 59 + (($cntech == null) ? 43 : $cntech.hashCode());
+        result = result * 59 + this.getConsent();
+        result = result * 59 + this.getConsentLevel();
+        result = result * 59 + this.getRefuse();
+        result = result * 59 + this.getRefuseLevel();
+        result = result * 59 + this.getJob();
+        result = result * 59 + this.getSum();
+        result = result * 59 + this.getWin();
+        result = result * 59 + this.getLose();
+        result = result * 59 + this.getStandings();
+        final Object $master = this.getMaster();
+        result = result * 59 + (($master == null) ? 43 : $master.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "RespOpenParty(serial=" + this.getSerial() + ", createTime=" + this.getCreateTime() + ", level=" + this.getLevel() + ", count=" + this.getCount() + ", onlineMember=" + this.getOnlineMember() + ", name=" + this.getName() + ", notice=" + this.getNotice() + ", aim=" + this.getAim() + ", joinTime=" + this.getJoinTime() + ", active=" + this.getActive() + ", capital=" + this.getCapital() + ", cntech=" + this.getCntech() + ", consent=" + this.getConsent() + ", consentLevel=" + this.getConsentLevel() + ", refuse=" + this.getRefuse() + ", refuseLevel=" + this.getRefuseLevel() + ", job=" + this.getJob() + ", sum=" + this.getSum() + ", win=" + this.getWin() + ", lose=" + this.getLose() + ", standings=" + this.getStandings() + ", master=" + this.getMaster() + ")";
+    }
 }

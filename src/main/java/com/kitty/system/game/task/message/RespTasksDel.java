@@ -1,16 +1,62 @@
+
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
 @MessageMeta(module = 61554)
-public class RespTasksDel extends Message {
-  private int serial;
-
-  private byte type = 1;
-
+public class RespTasksDel extends Message
+{
+    private int serial;
+    private byte type;
+    
+    public RespTasksDel() {
+        this.type = 1;
+    }
+    
+    public int getSerial() {
+        return this.serial;
+    }
+    
+    public byte getType() {
+        return this.type;
+    }
+    
+    public void setSerial(final int serial) {
+        this.serial = serial;
+    }
+    
+    public void setType(final byte type) {
+        this.type = type;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RespTasksDel)) {
+            return false;
+        }
+        final RespTasksDel other = (RespTasksDel)o;
+        return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getType() == other.getType();
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof RespTasksDel;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getSerial();
+        result = result * 59 + this.getType();
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "RespTasksDel(serial=" + this.getSerial() + ", type=" + this.getType() + ")";
+    }
 }

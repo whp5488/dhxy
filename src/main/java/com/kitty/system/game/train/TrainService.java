@@ -1,3 +1,6 @@
+
 package com.kitty.system.game.train;
 
-public class TrainService {}
+public class TrainService
+{
+}

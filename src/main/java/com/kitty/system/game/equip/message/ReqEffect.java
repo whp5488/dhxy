@@ -1,12 +1,36 @@
+
 package com.kitty.system.game.equip.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
 @MessageMeta(module = 41491)
-public class ReqEffect extends Message {
+public class ReqEffect extends Message
+{
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ReqEffect)) {
+            return false;
+        }
+        final ReqEffect other = (ReqEffect)o;
+        return other.canEqual(this);
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof ReqEffect;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int result = 1;
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "ReqEffect()";
+    }
 }

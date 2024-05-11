@@ -1,26 +1,117 @@
+
 package com.kitty.system.game.general.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
 @MessageMeta(module = 8852)
-public class ReqSetRecommendAttrib extends Message {
-  private int id;
-
-  private int gg = 0;
-
-  private int lx = 0;
-
-  private int ll = 0;
-
-  private int mj = 0;
-
-  private int type = 0;
-
-  private int status = 0;
-
+public class ReqSetRecommendAttrib extends Message
+{
+    private int id;
+    private int gg;
+    private int lx;
+    private int ll;
+    private int mj;
+    private int type;
+    private int status;
+    
+    public ReqSetRecommendAttrib() {
+        this.gg = 0;
+        this.lx = 0;
+        this.ll = 0;
+        this.mj = 0;
+        this.type = 0;
+        this.status = 0;
+    }
+    
+    public int getId() {
+        return this.id;
+    }
+    
+    public int getGg() {
+        return this.gg;
+    }
+    
+    public int getLx() {
+        return this.lx;
+    }
+    
+    public int getLl() {
+        return this.ll;
+    }
+    
+    public int getMj() {
+        return this.mj;
+    }
+    
+    public int getType() {
+        return this.type;
+    }
+    
+    public int getStatus() {
+        return this.status;
+    }
+    
+    public void setId(final int id) {
+        this.id = id;
+    }
+    
+    public void setGg(final int gg) {
+        this.gg = gg;
+    }
+    
+    public void setLx(final int lx) {
+        this.lx = lx;
+    }
+    
+    public void setLl(final int ll) {
+        this.ll = ll;
+    }
+    
+    public void setMj(final int mj) {
+        this.mj = mj;
+    }
+    
+    public void setType(final int type) {
+        this.type = type;
+    }
+    
+    public void setStatus(final int status) {
+        this.status = status;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ReqSetRecommendAttrib)) {
+            return false;
+        }
+        final ReqSetRecommendAttrib other = (ReqSetRecommendAttrib)o;
+        return other.canEqual(this) && this.getId() == other.getId() && this.getGg() == other.getGg() && this.getLx() == other.getLx() && this.getLl() == other.getLl() && this.getMj() == other.getMj() && this.getType() == other.getType() && this.getStatus() == other.getStatus();
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof ReqSetRecommendAttrib;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getId();
+        result = result * 59 + this.getGg();
+        result = result * 59 + this.getLx();
+        result = result * 59 + this.getLl();
+        result = result * 59 + this.getMj();
+        result = result * 59 + this.getType();
+        result = result * 59 + this.getStatus();
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "ReqSetRecommendAttrib(id=" + this.getId() + ", gg=" + this.getGg() + ", lx=" + this.getLx() + ", ll=" + this.getLl() + ", mj=" + this.getMj() + ", type=" + this.getType() + ", status=" + this.getStatus() + ")";
+    }
 }

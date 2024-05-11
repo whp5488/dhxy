@@ -1,32 +1,38 @@
+
 package com.kitty.system.game.card.pool;
 
-import com.kitty.common.utils.spring.SpringUtils;
-import com.kitty.system.init.domain.SysDataCard;
-import com.kitty.system.init.domain.SysDataCardFiveExercise;
-import com.kitty.system.init.service.InitService;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.Comparator;
+import com.kitty.common.utils.spring.SpringUtils;
+import com.kitty.system.init.service.InitService;
+import java.util.List;
+import com.kitty.system.init.domain.SysDataCardFiveExercise;
+import com.kitty.system.init.domain.SysDataCard;
+import java.util.Map;
 
-public class CardDataPool {
-  public static Map<Integer, SysDataCard> cardMap = new HashMap<>();
-  
-  public static Map<Integer, SysDataCardFiveExercise> cardFiveExerciseMap = new HashMap<>();
-  
-  public static int cardFiveExerciseMaxGrade = 100;
-  
-  public static List<Integer> cardFiveExerciseItem = Arrays.asList(new Integer[] { Integer.valueOf(75032), Integer.valueOf(75033), Integer.valueOf(75034), Integer.valueOf(75035), Integer.valueOf(75036), Integer.valueOf(75037), Integer.valueOf(75038), Integer.valueOf(75039), Integer.valueOf(75040), Integer.valueOf(75041) });
-  
-  public static void load() {
-    InitService initService = (InitService)SpringUtils.getBean(InitService.class);
-    cardMap = initService.initCard();
-    cardFiveExerciseMap = initService.initCardFiveExercise();
-    if (cardFiveExerciseMap.size() > 0) {
-      Set<Integer> set = cardFiveExerciseMap.keySet();
-      int max = ((Integer)set.stream().max(Integer::compare).get()).intValue();
-      cardFiveExerciseMaxGrade = max;
-    } 
-  }
+public class CardDataPool
+{
+    public static Map<Integer, SysDataCard> cardMap;
+    public static Map<Integer, SysDataCardFiveExercise> cardFiveExerciseMap;
+    public static int cardFiveExerciseMaxGrade;
+    public static List<Integer> cardFiveExerciseItem;
+    
+    public static void load() {
+        final InitService initService = SpringUtils.getBean(InitService.class);
+        CardDataPool.cardMap = initService.initCard();
+        CardDataPool.cardFiveExerciseMap = initService.initCardFiveExercise();
+        if (CardDataPool.cardFiveExerciseMap.size() > 0) {
+            final Set<Integer> set = CardDataPool.cardFiveExerciseMap.keySet();
+            final int max = CardDataPool.cardFiveExerciseMaxGrade = set.stream().max(Integer::compare).get();
+        }
+    }
+    
+    static {
+        CardDataPool.cardMap = new HashMap<Integer, SysDataCard>();
+        CardDataPool.cardFiveExerciseMap = new HashMap<Integer, SysDataCardFiveExercise>();
+        CardDataPool.cardFiveExerciseMaxGrade = 100;
+        CardDataPool.cardFiveExerciseItem = Arrays.asList(75032, 75033, 75034, 75035, 75036, 75037, 75038, 75039, 75040, 75041);
+    }
 }

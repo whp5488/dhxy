@@ -1,13 +1,48 @@
+
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import lombok.Getter;
-import lombok.Setter;
 
-@Setter
-@Getter
 @MessageMeta(module = 6888)
-public class ReqWorship extends Message {
-  private int npcId;
+public class ReqWorship extends Message
+{
+    private int npcId;
+    
+    public int getNpcId() {
+        return this.npcId;
+    }
+    
+    public void setNpcId(final int npcId) {
+        this.npcId = npcId;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ReqWorship)) {
+            return false;
+        }
+        final ReqWorship other = (ReqWorship)o;
+        return other.canEqual(this) && this.getNpcId() == other.getNpcId();
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof ReqWorship;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getNpcId();
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "ReqWorship(npcId=" + this.getNpcId() + ")";
+    }
 }

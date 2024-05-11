@@ -1,29 +1,81 @@
+
 package com.kitty.system.game.onlinemall.message;
 
-import com.kitty.mina.annotation.MessageMeta;
-import com.kitty.mina.message.Message;
 import com.kitty.system.game.onlinemall.domain.OnlineMallInfo;
 import java.util.List;
+import com.kitty.mina.annotation.MessageMeta;
+import com.kitty.mina.message.Message;
 
 @MessageMeta(module = 65499)
-public class RespOnlineMall extends Message {
-  public void setType(int type) {
-    this.type = type;
-  }
-  
-  public void setList(List<OnlineMallInfo> list) {
-    this.list = list;
-  }
-  
-  private int type = 0;
-  
-  private List<OnlineMallInfo> list;
-  
-  public int getType() {
-    return this.type;
-  }
-  
-  public List<OnlineMallInfo> getList() {
-    return this.list;
-  }
+public class RespOnlineMall extends Message
+{
+    private int type;
+    private List<OnlineMallInfo> list;
+    
+    public RespOnlineMall() {
+        this.type = 0;
+    }
+    
+    public int getType() {
+        return this.type;
+    }
+    
+    public List<OnlineMallInfo> getList() {
+        return this.list;
+    }
+    
+    public void setType(final int type) {
+        this.type = type;
+    }
+    
+    public void setList(final List<OnlineMallInfo> list) {
+        this.list = list;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RespOnlineMall)) {
+            return false;
+        }
+        final RespOnlineMall other = (RespOnlineMall)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getType() != other.getType()) {
+            return false;
+        }
+        final Object this$list = this.getList();
+        final Object other$list = other.getList();
+        if (this$list == null) {
+            if (other$list == null) {
+                return true;
+            }
+        }
+        else if (this$list.equals(other$list)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof RespOnlineMall;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getType();
+        final Object $list = this.getList();
+        result = result * 59 + (($list == null) ? 43 : $list.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "RespOnlineMall(type=" + this.getType() + ", list=" + this.getList() + ")";
+    }
 }

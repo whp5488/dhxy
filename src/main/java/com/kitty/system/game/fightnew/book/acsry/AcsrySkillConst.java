@@ -1,256 +1,134 @@
+
 package com.kitty.system.game.fightnew.book.acsry;
 
 import java.util.Arrays;
 import java.util.List;
 
-public interface AcsrySkillConst {
-  public static final int ACSRYSKILL_71101 = 71101;
-  
-  public static final int ACSRYSKILL_71201 = 71201;
-  
-  public static final int ACSRYSKILL_71211 = 71211;
-  
-  public static final int ACSRYSKILL_71301 = 71301;
-  
-  public static final int ACSRYSKILL_71311 = 71311;
-  
-  public static final int ACSRYSKILL_71321 = 71321;
-  
-  public static final int ACSRYSKILL_71331 = 71331;
-  
-  public static final int ACSRYSKILL_71341 = 71341;
-  
-  public static final int ACSRYSKILL_71351 = 71351;
-  
-  public static final int ACSRYSKILL_71361 = 71361;
-  
-  public static final int ACSRYSKILL_72101 = 72101;
-  
-  public static final int ACSRYSKILL_72201 = 72201;
-  
-  public static final int ACSRYSKILL_72301 = 72301;
-  
-  public static final int ACSRYSKILL_72311 = 72311;
-  
-  public static final int ACSRYSKILL_72321 = 72321;
-  
-  public static final int ACSRYSKILL_73101 = 73101;
-  
-  public static final int ACSRYSKILL_73201 = 73201;
-  
-  public static final int ACSRYSKILL_73211 = 73211;
-  
-  public static final int ACSRYSKILL_73301 = 73301;
-  
-  public static final int ACSRYSKILL_73311 = 73311;
-  
-  public static final int ACSRYSKILL_73321 = 73321;
-  
-  public static final int ACSRYSKILL_73331 = 73331;
-  
-  public static final int ACSRYSKILL_73341 = 73341;
-  
-  public static final int ACSRYSKILL_74101 = 74101;
-  
-  public static final int ACSRYSKILL_74201 = 74201;
-  
-  public static final int ACSRYSKILL_74301 = 74301;
-  
-  public static final int ACSRYSKILL_74311 = 74311;
-  
-  public static final int ACSRYSKILL_74321 = 74321;
-  
-  public static final int ACSRYSKILL_74331 = 74331;
-  
-  public static final int ACSRYSKILL_75101 = 75101;
-  
-  public static final int ACSRYSKILL_75111 = 75111;
-  
-  public static final int ACSRYSKILL_75121 = 75121;
-  
-  public static final int ACSRYSKILL_75201 = 75201;
-  
-  public static final int ACSRYSKILL_75301 = 75301;
-  
-  public static final int ACSRYSKILL_76101 = 76101;
-  
-  public static final int ACSRYSKILL_76201 = 76201;
-  
-  public static final int ACSRYSKILL_76301 = 76301;
-  
-  public static final int ACSRYSKILL_76311 = 76311;
-  
-  public static final int ACSRYSKILL_76321 = 76321;
-  
-  public static final int ACSRYSKILL_71102 = 71102;
-  
-  public static final int ACSRYSKILL_71202 = 71202;
-  
-  public static final int ACSRYSKILL_71212 = 71212;
-  
-  public static final int ACSRYSKILL_71302 = 71302;
-  
-  public static final int ACSRYSKILL_71312 = 71312;
-  
-  public static final int ACSRYSKILL_71322 = 71322;
-  
-  public static final int ACSRYSKILL_71332 = 71332;
-  
-  public static final int ACSRYSKILL_71342 = 71342;
-  
-  public static final int ACSRYSKILL_71352 = 71352;
-  
-  public static final int ACSRYSKILL_71362 = 71362;
-  
-  public static final int ACSRYSKILL_72102 = 72102;
-  
-  public static final int ACSRYSKILL_72202 = 72202;
-  
-  public static final int ACSRYSKILL_72302 = 72302;
-  
-  public static final int ACSRYSKILL_72312 = 72312;
-  
-  public static final int ACSRYSKILL_72322 = 72322;
-  
-  public static final int ACSRYSKILL_73102 = 73102;
-  
-  public static final int ACSRYSKILL_73202 = 73202;
-  
-  public static final int ACSRYSKILL_73212 = 73212;
-  
-  public static final int ACSRYSKILL_73302 = 73302;
-  
-  public static final int ACSRYSKILL_73312 = 73312;
-  
-  public static final int ACSRYSKILL_73322 = 73322;
-  
-  public static final int ACSRYSKILL_73332 = 73332;
-  
-  public static final int ACSRYSKILL_73343 = 73343;
-  
-  public static final int ACSRYSKILL_74102 = 74102;
-  
-  public static final int ACSRYSKILL_74202 = 74202;
-  
-  public static final int ACSRYSKILL_74302 = 74302;
-  
-  public static final int ACSRYSKILL_74312 = 74312;
-  
-  public static final int ACSRYSKILL_74322 = 74322;
-  
-  public static final int ACSRYSKILL_74332 = 74332;
-  
-  public static final int ACSRYSKILL_75202 = 75202;
-  
-  public static final int ACSRYSKILL_75102 = 75102;
-  
-  public static final int ACSRYSKILL_75112 = 75112;
-  
-  public static final int ACSRYSKILL_75122 = 75122;
-  
-  public static final int ACSRYSKILL_75302 = 75302;
-  
-  public static final int ACSRYSKILL_76102 = 76102;
-  
-  public static final int ACSRYSKILL_76202 = 76202;
-  
-  public static final int ACSRYSKILL_76302 = 76302;
-  
-  public static final int ACSRYSKILL_76312 = 76312;
-  
-  public static final int ACSRYSKILL_76322 = 76322;
-  
-  public static final int ACSRYSKILL_71103 = 71103;
-  
-  public static final int ACSRYSKILL_71203 = 71203;
-  
-  public static final int ACSRYSKILL_71213 = 71213;
-  
-  public static final int ACSRYSKILL_71303 = 71303;
-  
-  public static final int ACSRYSKILL_71313 = 71313;
-  
-  public static final int ACSRYSKILL_71323 = 71323;
-  
-  public static final int ACSRYSKILL_71333 = 71333;
-  
-  public static final int ACSRYSKILL_71343 = 71343;
-  
-  public static final int ACSRYSKILL_71353 = 71353;
-  
-  public static final int ACSRYSKILL_71363 = 71363;
-  
-  public static final int ACSRYSKILL_72103 = 72103;
-  
-  public static final int ACSRYSKILL_72203 = 72203;
-  
-  public static final int ACSRYSKILL_72303 = 72303;
-  
-  public static final int ACSRYSKILL_72313 = 72313;
-  
-  public static final int ACSRYSKILL_72323 = 72323;
-  
-  public static final int ACSRYSKILL_73103 = 73103;
-  
-  public static final int ACSRYSKILL_73203 = 73203;
-  
-  public static final int ACSRYSKILL_73213 = 73213;
-  
-  public static final int ACSRYSKILL_73303 = 73303;
-  
-  public static final int ACSRYSKILL_73313 = 73313;
-  
-  public static final int ACSRYSKILL_73323 = 73323;
-  
-  public static final int ACSRYSKILL_73333 = 73333;
-  
-  public static final int ACSRYSKILL_73342 = 73342;
-  
-  public static final int ACSRYSKILL_74103 = 74103;
-  
-  public static final int ACSRYSKILL_74203 = 74203;
-  
-  public static final int ACSRYSKILL_74303 = 74303;
-  
-  public static final int ACSRYSKILL_74313 = 74313;
-  
-  public static final int ACSRYSKILL_74323 = 74323;
-  
-  public static final int ACSRYSKILL_74333 = 74333;
-  
-  public static final int ACSRYSKILL_75103 = 75103;
-  
-  public static final int ACSRYSKILL_75113 = 75113;
-  
-  public static final int ACSRYSKILL_75123 = 75123;
-  
-  public static final int ACSRYSKILL_75203 = 75203;
-  
-  public static final int ACSRYSKILL_75303 = 75303;
-  
-  public static final int ACSRYSKILL_76103 = 76103;
-  
-  public static final int ACSRYSKILL_76203 = 76203;
-  
-  public static final int ACSRYSKILL_76303 = 76303;
-  
-  public static final int ACSRYSKILL_76313 = 76313;
-  
-  public static final int ACSRYSKILL_76323 = 76323;
-  
-  static List<Integer> getAttackEndEffector() {
-    return Arrays.asList(new Integer[] { 
-          Integer.valueOf(73103), Integer.valueOf(76302), Integer.valueOf(71302), Integer.valueOf(73342), Integer.valueOf(76303), Integer.valueOf(71303), Integer.valueOf(71343), 
-          Integer.valueOf(76312), Integer.valueOf(75122), Integer.valueOf(71312), 
-          Integer.valueOf(73333), Integer.valueOf(76313), Integer.valueOf(76202), Integer.valueOf(74313), Integer.valueOf(71313), 
-          Integer.valueOf(71353), Integer.valueOf(76322), Integer.valueOf(76203), Integer.valueOf(74322), Integer.valueOf(74203), 
-          Integer.valueOf(73322), Integer.valueOf(76323), Integer.valueOf(74333), 
-          Integer.valueOf(74323), Integer.valueOf(73323), Integer.valueOf(74202), Integer.valueOf(71212), Integer.valueOf(73343), Integer.valueOf(76102), Integer.valueOf(73332), 
-          Integer.valueOf(73102), 
-          Integer.valueOf(71213), Integer.valueOf(76103) });
-  }
-  
-  static List<Integer> getAttackEndTarget() {
-    return Arrays.asList(new Integer[] { Integer.valueOf(75302), Integer.valueOf(75303), Integer.valueOf(71363) });
-  }
+public interface AcsrySkillConst
+{
+    public static final int ACSRYSKILL_71101 = 71101;
+    public static final int ACSRYSKILL_71201 = 71201;
+    public static final int ACSRYSKILL_71211 = 71211;
+    public static final int ACSRYSKILL_71301 = 71301;
+    public static final int ACSRYSKILL_71311 = 71311;
+    public static final int ACSRYSKILL_71321 = 71321;
+    public static final int ACSRYSKILL_71331 = 71331;
+    public static final int ACSRYSKILL_71341 = 71341;
+    public static final int ACSRYSKILL_71351 = 71351;
+    public static final int ACSRYSKILL_71361 = 71361;
+    public static final int ACSRYSKILL_72101 = 72101;
+    public static final int ACSRYSKILL_72201 = 72201;
+    public static final int ACSRYSKILL_72301 = 72301;
+    public static final int ACSRYSKILL_72311 = 72311;
+    public static final int ACSRYSKILL_72321 = 72321;
+    public static final int ACSRYSKILL_73101 = 73101;
+    public static final int ACSRYSKILL_73201 = 73201;
+    public static final int ACSRYSKILL_73211 = 73211;
+    public static final int ACSRYSKILL_73301 = 73301;
+    public static final int ACSRYSKILL_73311 = 73311;
+    public static final int ACSRYSKILL_73321 = 73321;
+    public static final int ACSRYSKILL_73331 = 73331;
+    public static final int ACSRYSKILL_73341 = 73341;
+    public static final int ACSRYSKILL_74101 = 74101;
+    public static final int ACSRYSKILL_74201 = 74201;
+    public static final int ACSRYSKILL_74301 = 74301;
+    public static final int ACSRYSKILL_74311 = 74311;
+    public static final int ACSRYSKILL_74321 = 74321;
+    public static final int ACSRYSKILL_74331 = 74331;
+    public static final int ACSRYSKILL_75101 = 75101;
+    public static final int ACSRYSKILL_75111 = 75111;
+    public static final int ACSRYSKILL_75121 = 75121;
+    public static final int ACSRYSKILL_75201 = 75201;
+    public static final int ACSRYSKILL_75301 = 75301;
+    public static final int ACSRYSKILL_76101 = 76101;
+    public static final int ACSRYSKILL_76201 = 76201;
+    public static final int ACSRYSKILL_76301 = 76301;
+    public static final int ACSRYSKILL_76311 = 76311;
+    public static final int ACSRYSKILL_76321 = 76321;
+    public static final int ACSRYSKILL_71102 = 71102;
+    public static final int ACSRYSKILL_71202 = 71202;
+    public static final int ACSRYSKILL_71212 = 71212;
+    public static final int ACSRYSKILL_71302 = 71302;
+    public static final int ACSRYSKILL_71312 = 71312;
+    public static final int ACSRYSKILL_71322 = 71322;
+    public static final int ACSRYSKILL_71332 = 71332;
+    public static final int ACSRYSKILL_71342 = 71342;
+    public static final int ACSRYSKILL_71352 = 71352;
+    public static final int ACSRYSKILL_71362 = 71362;
+    public static final int ACSRYSKILL_72102 = 72102;
+    public static final int ACSRYSKILL_72202 = 72202;
+    public static final int ACSRYSKILL_72302 = 72302;
+    public static final int ACSRYSKILL_72312 = 72312;
+    public static final int ACSRYSKILL_72322 = 72322;
+    public static final int ACSRYSKILL_73102 = 73102;
+    public static final int ACSRYSKILL_73202 = 73202;
+    public static final int ACSRYSKILL_73212 = 73212;
+    public static final int ACSRYSKILL_73302 = 73302;
+    public static final int ACSRYSKILL_73312 = 73312;
+    public static final int ACSRYSKILL_73322 = 73322;
+    public static final int ACSRYSKILL_73332 = 73332;
+    public static final int ACSRYSKILL_73343 = 73343;
+    public static final int ACSRYSKILL_74102 = 74102;
+    public static final int ACSRYSKILL_74202 = 74202;
+    public static final int ACSRYSKILL_74302 = 74302;
+    public static final int ACSRYSKILL_74312 = 74312;
+    public static final int ACSRYSKILL_74322 = 74322;
+    public static final int ACSRYSKILL_74332 = 74332;
+    public static final int ACSRYSKILL_75202 = 75202;
+    public static final int ACSRYSKILL_75102 = 75102;
+    public static final int ACSRYSKILL_75112 = 75112;
+    public static final int ACSRYSKILL_75122 = 75122;
+    public static final int ACSRYSKILL_75302 = 75302;
+    public static final int ACSRYSKILL_76102 = 76102;
+    public static final int ACSRYSKILL_76202 = 76202;
+    public static final int ACSRYSKILL_76302 = 76302;
+    public static final int ACSRYSKILL_76312 = 76312;
+    public static final int ACSRYSKILL_76322 = 76322;
+    public static final int ACSRYSKILL_71103 = 71103;
+    public static final int ACSRYSKILL_71203 = 71203;
+    public static final int ACSRYSKILL_71213 = 71213;
+    public static final int ACSRYSKILL_71303 = 71303;
+    public static final int ACSRYSKILL_71313 = 71313;
+    public static final int ACSRYSKILL_71323 = 71323;
+    public static final int ACSRYSKILL_71333 = 71333;
+    public static final int ACSRYSKILL_71343 = 71343;
+    public static final int ACSRYSKILL_71353 = 71353;
+    public static final int ACSRYSKILL_71363 = 71363;
+    public static final int ACSRYSKILL_72103 = 72103;
+    public static final int ACSRYSKILL_72203 = 72203;
+    public static final int ACSRYSKILL_72303 = 72303;
+    public static final int ACSRYSKILL_72313 = 72313;
+    public static final int ACSRYSKILL_72323 = 72323;
+    public static final int ACSRYSKILL_73103 = 73103;
+    public static final int ACSRYSKILL_73203 = 73203;
+    public static final int ACSRYSKILL_73213 = 73213;
+    public static final int ACSRYSKILL_73303 = 73303;
+    public static final int ACSRYSKILL_73313 = 73313;
+    public static final int ACSRYSKILL_73323 = 73323;
+    public static final int ACSRYSKILL_73333 = 73333;
+    public static final int ACSRYSKILL_73342 = 73342;
+    public static final int ACSRYSKILL_74103 = 74103;
+    public static final int ACSRYSKILL_74203 = 74203;
+    public static final int ACSRYSKILL_74303 = 74303;
+    public static final int ACSRYSKILL_74313 = 74313;
+    public static final int ACSRYSKILL_74323 = 74323;
+    public static final int ACSRYSKILL_74333 = 74333;
+    public static final int ACSRYSKILL_75103 = 75103;
+    public static final int ACSRYSKILL_75113 = 75113;
+    public static final int ACSRYSKILL_75123 = 75123;
+    public static final int ACSRYSKILL_75203 = 75203;
+    public static final int ACSRYSKILL_75303 = 75303;
+    public static final int ACSRYSKILL_76103 = 76103;
+    public static final int ACSRYSKILL_76203 = 76203;
+    public static final int ACSRYSKILL_76303 = 76303;
+    public static final int ACSRYSKILL_76313 = 76313;
+    public static final int ACSRYSKILL_76323 = 76323;
+    
+    static List<Integer> getAttackEndEffector() {
+        return Arrays.asList(73103, 76302, 71302, 73342, 76303, 71303, 71343, 76312, 75122, 71312, 73333, 76313, 76202, 74313, 71313, 71353, 76322, 76203, 74322, 74203, 73322, 76323, 74333, 74323, 73323, 74202, 71212, 73343, 76102, 73332, 73102, 71213, 76103);
+    }
+    
+    static List<Integer> getAttackEndTarget() {
+        return Arrays.asList(75302, 75303, 71363);
+    }
 }

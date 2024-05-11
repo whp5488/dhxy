@@ -1,5 +1,7 @@
+
 package com.kitty.system.game.config;
 
-public interface Reloadable {
-  void reload();
+public interface Reloadable
+{
+    void reload();
 }

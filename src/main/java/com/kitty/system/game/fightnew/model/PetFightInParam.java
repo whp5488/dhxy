@@ -1,34 +1,36 @@
+
 package com.kitty.system.game.fightnew.model;
 
 import com.kitty.system.game.fightnew.utils.FightOtherUtil;
 import com.kitty.system.game.pet.domain.Pet;
-import java.io.Serializable;
 import java.util.List;
+import java.io.Serializable;
 
-public class PetFightInParam implements Serializable {
-  private int petId;
-  
-  private List<Integer> skillIds;
-  
-  public void setPetId(int petId) {
-    this.petId = petId;
-  }
-  
-  public void setSkillIds(List<Integer> skillIds) {
-    this.skillIds = skillIds;
-  }
-  
-  public int getPetId() {
-    return this.petId;
-  }
-  
-  public List<Integer> getSkillIds() {
-    return this.skillIds;
-  }
-  
-  public void addSkillIds(Pet pet) {
-    List<Integer> skillIds = FightOtherUtil.addSkillIds(pet);
-    if (skillIds.size() > 0)
-      this.skillIds = skillIds; 
-  }
+public class PetFightInParam implements Serializable
+{
+    private int petId;
+    private List<Integer> skillIds;
+    
+    public void addSkillIds(final Pet pet) {
+        final List<Integer> skillIds = FightOtherUtil.addSkillIds(pet);
+        if (skillIds.size() > 0) {
+            this.skillIds = skillIds;
+        }
+    }
+    
+    public void setPetId(final int petId) {
+        this.petId = petId;
+    }
+    
+    public void setSkillIds(final List<Integer> skillIds) {
+        this.skillIds = skillIds;
+    }
+    
+    public int getPetId() {
+        return this.petId;
+    }
+    
+    public List<Integer> getSkillIds() {
+        return this.skillIds;
+    }
 }

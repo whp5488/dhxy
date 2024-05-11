@@ -1,3 +1,5 @@
+
 package com.kitty.common.thread;
 
-public @interface ThreadSafe {}
+public @interface ThreadSafe {
+}

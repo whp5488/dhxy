@@ -1,23 +1,65 @@
-package com.kitty.system.game.welfare.message.vo;
 
-import lombok.Getter;
-import lombok.Setter;
+package com.kitty.system.game.welfare.message.vo;
 
 import java.beans.ConstructorProperties;
 
-@Setter
-@Getter
-public class LuckDrawInfo {
-  private int serial;
-  
-  private int num;
-  
-  public LuckDrawInfo() {}
-  
-  @ConstructorProperties({"serial", "num"})
-  public LuckDrawInfo(int serial, int num) {
-    this.serial = serial;
-    this.num = num;
-  }
-
+public class LuckDrawInfo
+{
+    private int serial;
+    private int num;
+    
+    public int getSerial() {
+        return this.serial;
+    }
+    
+    public int getNum() {
+        return this.num;
+    }
+    
+    public void setSerial(final int serial) {
+        this.serial = serial;
+    }
+    
+    public void setNum(final int num) {
+        this.num = num;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LuckDrawInfo)) {
+            return false;
+        }
+        final LuckDrawInfo other = (LuckDrawInfo)o;
+        return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getNum() == other.getNum();
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof LuckDrawInfo;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getSerial();
+        result = result * 59 + this.getNum();
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "LuckDrawInfo(serial=" + this.getSerial() + ", num=" + this.getNum() + ")";
+    }
+    
+    public LuckDrawInfo() {
+    }
+    
+    @ConstructorProperties({ "serial", "num" })
+    public LuckDrawInfo(final int serial, final int num) {
+        this.serial = serial;
+        this.num = num;
+    }
 }

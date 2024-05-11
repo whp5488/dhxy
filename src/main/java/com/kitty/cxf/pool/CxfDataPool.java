@@ -1,9 +1,15 @@
+
 package com.kitty.cxf.pool;
 
-public class CxfDataPool {
-  public static int ID = 0;
-  
-  public static void load(int id) {
-    ID = id;
-  }
+public class CxfDataPool
+{
+    public static int ID;
+    
+    public static void load(final int id) {
+        CxfDataPool.ID = id;
+    }
+    
+    static {
+        CxfDataPool.ID = 0;
+    }
 }

@@ -1,187 +1,98 @@
+
 package com.kitty.system.game.i18n.service;
 
-public interface I18nId {
-  public static final int PMT_100 = 100;
-  
-  public static final int PMT_101 = 101;
-  
-  public static final int PMT_102 = 102;
-  
-  public static final int PMT_103 = 103;
-  
-  public static final int PMT_104 = 104;
-  
-  public static final int PMT_205 = 205;
-  
-  public static final int PMT_211 = 211;
-  
-  public static final int PMT_212 = 212;
-  
-  public static final int PMT_213 = 213;
-  
-  public static final int PMT_214 = 214;
-  
-  public static final int PMT_301 = 301;
-  
-  public static final int PMT_302 = 302;
-  
-  public static final int PMT_303 = 303;
-  
-  public static final int PMT_304 = 304;
-  
-  public static final int PMT_305 = 305;
-  
-  public static final int PMT_306 = 306;
-  
-  public static final int PMT_307 = 307;
-  
-  public static final int PMT_308 = 308;
-  
-  public static final int PMT_309 = 309;
-  
-  public static final int PMT_310 = 310;
-  
-  public static final int PMT_311 = 311;
-  
-  public static final int PMT_312 = 312;
-  
-  public static final int PMT_313 = 313;
-  
-  public static final int PMT_314 = 314;
-  
-  public static final int PMT_315 = 315;
-  
-  public static final int PMT_316 = 316;
-  
-  public static final int PMT_317 = 317;
-  
-  public static final int PMT_318 = 318;
-  
-  public static final int PMT_319 = 319;
-  
-  public static final int PMT_321 = 321;
-  
-  public static final int PMT_322 = 322;
-  
-  public static final int PMT_326 = 326;
-  
-  public static final int PMT_327 = 327;
-  
-  public static final int PMT_328 = 328;
-  
-  public static final int PMT_330 = 330;
-  
-  public static final int PMT_331 = 331;
-  
-  public static final int PMT_335 = 335;
-  
-  public static final int PMT_336 = 336;
-  
-  public static final int PMT_337 = 337;
-  
-  public static final int PMT_338 = 338;
-  
-  public static final int PMT_339 = 339;
-  
-  public static final int PMT_340 = 340;
-  
-  public static final int PMT_341 = 341;
-  
-  public static final int PMT_342 = 342;
-  
-  public static final int PMT_345 = 345;
-  
-  public static final int PMT_346 = 346;
-  
-  public static final int PMT_347 = 347;
-  
-  public static final int PMT_348 = 348;
-  
-  public static final int PMT_349 = 349;
-  
-  public static final int PMT_350 = 350;
-  
-  public static final int PMT_351 = 351;
-  
-  public static final int PMT_353 = 353;
-  
-  public static final int PMT_357 = 357;
-  
-  public static final int PMT_358 = 358;
-  
-  public static final int PMT_361 = 361;
-  
-  public static final int PMT_362 = 362;
-  
-  public static final int PMT_368 = 368;
-  
-  public static final int PMT_369 = 369;
-  
-  public static final int PMT_370 = 370;
-  
-  public static final int PMT_372 = 372;
-  
-  public static final int PMT_373 = 373;
-  
-  public static final int PMT_385 = 385;
-  
-  public static final int PMT_386 = 386;
-  
-  public static final int PMT_390 = 390;
-  
-  public static final int PMT_391 = 391;
-  
-  public static final int PMT_393 = 393;
-  
-  public static final int PMT_394 = 394;
-  
-  public static final int PMT_397 = 397;
-  
-  public static final int PMT_403 = 403;
-  
-  public static final int PMT_501 = 501;
-  
-  public static final int PMT_600 = 600;
-  
-  public static final int PMT_700 = 700;
-  
-  public static final int PMT_701 = 701;
-  
-  public static final int PMT_702 = 702;
-  
-  public static final int PMT_703 = 703;
-  
-  public static final int PMT_800 = 800;
-  
-  public static final int PMT_900 = 900;
-  
-  public static final int PMT_901 = 901;
-  
-  public static final int PMT_1101 = 1101;
-  
-  public static final int PMT_1105 = 1105;
-  
-  public static final int PMT_1107 = 1107;
-  
-  public static final int PMT_1108 = 1108;
-  
-  public static final int PMT_1113 = 1113;
-  
-  public static final int PMT_1119 = 1119;
-  
-  public static final int PMT_1500 = 1500;
-  
-  public static final int PMT_1501 = 1501;
-  
-  public static final int PMT_1506 = 1506;
-  
-  public static final int PMT_1507 = 1507;
-  
-  public static final int PMT_1510 = 1510;
-  
-  public static final int PMT_1523 = 1523;
-  
-  public static final int PMT_1533 = 1533;
-  
-  public static final int PMT_1536 = 1536;
+public interface I18nId
+{
+    public static final int PMT_100 = 100;
+    public static final int PMT_101 = 101;
+    public static final int PMT_102 = 102;
+    public static final int PMT_103 = 103;
+    public static final int PMT_104 = 104;
+    public static final int PMT_205 = 205;
+    public static final int PMT_211 = 211;
+    public static final int PMT_212 = 212;
+    public static final int PMT_213 = 213;
+    public static final int PMT_214 = 214;
+    public static final int PMT_301 = 301;
+    public static final int PMT_302 = 302;
+    public static final int PMT_303 = 303;
+    public static final int PMT_304 = 304;
+    public static final int PMT_305 = 305;
+    public static final int PMT_306 = 306;
+    public static final int PMT_307 = 307;
+    public static final int PMT_308 = 308;
+    public static final int PMT_309 = 309;
+    public static final int PMT_310 = 310;
+    public static final int PMT_311 = 311;
+    public static final int PMT_312 = 312;
+    public static final int PMT_313 = 313;
+    public static final int PMT_314 = 314;
+    public static final int PMT_315 = 315;
+    public static final int PMT_316 = 316;
+    public static final int PMT_317 = 317;
+    public static final int PMT_318 = 318;
+    public static final int PMT_319 = 319;
+    public static final int PMT_321 = 321;
+    public static final int PMT_322 = 322;
+    public static final int PMT_326 = 326;
+    public static final int PMT_327 = 327;
+    public static final int PMT_328 = 328;
+    public static final int PMT_330 = 330;
+    public static final int PMT_331 = 331;
+    public static final int PMT_335 = 335;
+    public static final int PMT_336 = 336;
+    public static final int PMT_337 = 337;
+    public static final int PMT_338 = 338;
+    public static final int PMT_339 = 339;
+    public static final int PMT_340 = 340;
+    public static final int PMT_341 = 341;
+    public static final int PMT_342 = 342;
+    public static final int PMT_345 = 345;
+    public static final int PMT_346 = 346;
+    public static final int PMT_347 = 347;
+    public static final int PMT_348 = 348;
+    public static final int PMT_349 = 349;
+    public static final int PMT_350 = 350;
+    public static final int PMT_351 = 351;
+    public static final int PMT_353 = 353;
+    public static final int PMT_357 = 357;
+    public static final int PMT_358 = 358;
+    public static final int PMT_361 = 361;
+    public static final int PMT_362 = 362;
+    public static final int PMT_368 = 368;
+    public static final int PMT_369 = 369;
+    public static final int PMT_370 = 370;
+    public static final int PMT_372 = 372;
+    public static final int PMT_373 = 373;
+    public static final int PMT_385 = 385;
+    public static final int PMT_386 = 386;
+    public static final int PMT_390 = 390;
+    public static final int PMT_391 = 391;
+    public static final int PMT_393 = 393;
+    public static final int PMT_394 = 394;
+    public static final int PMT_397 = 397;
+    public static final int PMT_403 = 403;
+    public static final int PMT_501 = 501;
+    public static final int PMT_600 = 600;
+    public static final int PMT_700 = 700;
+    public static final int PMT_701 = 701;
+    public static final int PMT_702 = 702;
+    public static final int PMT_703 = 703;
+    public static final int PMT_800 = 800;
+    public static final int PMT_900 = 900;
+    public static final int PMT_901 = 901;
+    public static final int PMT_1101 = 1101;
+    public static final int PMT_1105 = 1105;
+    public static final int PMT_1107 = 1107;
+    public static final int PMT_1108 = 1108;
+    public static final int PMT_1113 = 1113;
+    public static final int PMT_1119 = 1119;
+    public static final int PMT_1500 = 1500;
+    public static final int PMT_1501 = 1501;
+    public static final int PMT_1506 = 1506;
+    public static final int PMT_1507 = 1507;
+    public static final int PMT_1510 = 1510;
+    public static final int PMT_1523 = 1523;
+    public static final int PMT_1533 = 1533;
+    public static final int PMT_1536 = 1536;
 }

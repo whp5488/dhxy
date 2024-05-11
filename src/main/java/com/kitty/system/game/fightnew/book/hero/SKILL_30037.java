@@ -1,64 +1,72 @@
+
 package com.kitty.system.game.fightnew.book.hero;
 
+import com.kitty.system.enums.war.wardef.LOGIC;
+import com.kitty.system.game.skill.domain.RoleSkill;
 import com.kitty.common.utils.BigDecimalUtil;
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
-import com.kitty.system.enums.war.wardef.LOGIC;
-import com.kitty.system.game.fightnew.FightObject;
-import com.kitty.system.game.fightnew.bean.Fight;
-import com.kitty.system.game.fightnew.book.SkillProcessor;
-import com.kitty.system.game.fightnew.book.vo.Addition;
-import com.kitty.system.game.fightnew.book.vo.Effect;
-import com.kitty.system.game.skill.domain.RoleSkill;
 import com.kitty.system.game.skill.pool.SkillDataPool;
 import com.kitty.system.init.domain.SysSkill;
+import com.kitty.system.game.fightnew.book.vo.Effect;
+import com.kitty.system.game.fightnew.FightObject;
+import com.kitty.system.game.fightnew.bean.Fight;
 import org.nutz.lang.util.NutMap;
+import com.kitty.system.game.fightnew.book.vo.Addition;
+import com.kitty.system.game.fightnew.book.SkillProcessor;
 
-public class SKILL_30037 extends SkillProcessor {
-  public NutMap addition(Addition addition, Object... args) {
-    return null;
-  }
-  
-  public NutMap passive(Fight fight, FightObject effector, Object... args) {
-    return null;
-  }
-  
-  public int targetCount(Fight fight, FightObject effector, Object... args) {
-    return 1;
-  }
-  
-  public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
-    RoleSkill skill = effector.getSkillBy(Integer.valueOf(30037));
-    if (skill != null) {
-      Effect e = new Effect();
-      SysSkill skill1 = (SysSkill)SkillDataPool.skillMap.get(Integer.valueOf(30037));
-      if (!target.isFrozen()) {
-        int maxLife = target.getMaxLife();
-        double[] power = skill1.getPower();
-        int baseLife = (int)power[0] + skill.getProficient().intValue() * 14 / 5;
-        double addPct = power[1] + power[2] * skill.getProficient().intValue() / 25000.0D;
-        double propertyAdd = effector.getPropertyMap().getDouble(String.valueOf(PRO_DICT_TYPE.RISE_ZY.getDist()), 0.0D);
-        if (propertyAdd != 0.0D)
-          addPct += propertyAdd; 
-        int perLife = (int)(BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(addPct)) * maxLife);
-        int time = time(effector, skill);
-        target.getStatusSubMap().setv(String.valueOf(1022) + "value", Integer.valueOf(baseLife + perLife));
-        e.setTime(time);
-        e.setType(1022);
-      } 
-      return e;
-    } 
-    return null;
-  }
-  
-  public int costMana(RoleSkill skill, Object... args) {
-    return BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(25.0D * (Math.pow(skill.getProficient().intValue(), 0.77D) * 5.0D / 100.0D + 1.0D) * 1.0D));
-  }
-  
-  public int time(FightObject effector, RoleSkill skill) {
-    int time = 2;
-    if (effector.getLogic() != LOGIC.LOGICTYPE_MONSTER.getValue() && 
-      skill != null)
-      time += BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(Math.pow(skill.getProficient().intValue(), 0.35D) * 5.0D / 100.0D)); 
-    return time;
-  }
+public class SKILL_30037 extends SkillProcessor
+{
+    @Override
+    public NutMap addition(final Addition addition, final Object... args) {
+        return null;
+    }
+    
+    @Override
+    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+        return null;
+    }
+    
+    @Override
+    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+        return 1;
+    }
+    
+    @Override
+    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+        final RoleSkill skill = effector.getSkillBy(30037);
+        if (skill != null) {
+            final Effect e = new Effect();
+            final SysSkill skill2 = SkillDataPool.skillMap.get(30037);
+            if (!target.isFrozen()) {
+                final int maxLife = target.getMaxLife();
+                final double[] power = skill2.getPower();
+                final int baseLife = (int)power[0] + skill.getProficient() * 14 / 5;
+                double addPct = power[1] + power[2] * skill.getProficient() / 25000.0;
+                final double propertyAdd = effector.getPropertyMap().getDouble(String.valueOf(PRO_DICT_TYPE.RISE_ZY.getDist()), 0.0);
+                if (propertyAdd != 0.0) {
+                    addPct += propertyAdd;
+                }
+                final int perLife = (int)(BigDecimalUtil.decimalScaleObjectDown(3, addPct) * maxLife);
+                final int time = this.time(effector, skill);
+                target.getStatusSubMap().setv(String.valueOf(1022) + "value", (Object)(baseLife + perLife));
+                e.setTime(time);
+                e.setType(1022);
+            }
+            return e;
+        }
+        return null;
+    }
+    
+    @Override
+    public int costMana(final RoleSkill skill, final Object... args) {
+        return BigDecimalUtil.decimalScaleIntegerDown(0, 25.0 * (Math.pow(skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0) * 1.0);
+    }
+    
+    public int time(final FightObject effector, final RoleSkill skill) {
+        int time = 2;
+        if (effector.getLogic() != LOGIC.LOGICTYPE_MONSTER.getValue() && skill != null) {
+            time += BigDecimalUtil.decimalScaleIntegerDown(0, Math.pow(skill.getProficient(), 0.35) * 5.0 / 100.0);
+        }
+        return time;
+    }
 }

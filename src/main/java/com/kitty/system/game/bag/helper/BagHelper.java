@@ -1,39 +1,41 @@
+
 package com.kitty.system.game.bag.helper;
 
 import com.kitty.common.utils.spring.SpringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum BagHelper {
-  INSTANCE;
-  
-  private static final Map<Integer, BagHandler> handlers;
-  
-  static {
-    handlers = new HashMap<>();
-    INSTANCE.init(Integer.valueOf(1), (BagHandler)SpringUtils.getBean("GemFit", GemFitHandler.class));
-    INSTANCE.init(Integer.valueOf(2), (BagHandler)SpringUtils.getBean("GemDetach", GemDetachHandler.class));
-    INSTANCE.init(Integer.valueOf(3), (BagHandler)SpringUtils.getBean("GemCurdle", GemCurdleHandler.class));
-    INSTANCE.init(Integer.valueOf(4), (BagHandler)SpringUtils.getBean("SkillBook", SkillBookHandler.class));
-    INSTANCE.init(Integer.valueOf(5), (BagHandler)SpringUtils.getBean("FiveElements", FiveElementsHandler.class));
-    INSTANCE.init(Integer.valueOf(6), (BagHandler)SpringUtils.getBean("SketchBook", SketchBookHandler.class));
-    INSTANCE.init(Integer.valueOf(7), (BagHandler)SpringUtils.getBean("Potholing", PotholingHandler.class));
-    INSTANCE.init(Integer.valueOf(8), (BagHandler)SpringUtils.getBean("CardCurdle", CardCurdleHandler.class));
-    INSTANCE.init(Integer.valueOf(9), (BagHandler)SpringUtils.getBean("CardDetach", CardDetachHandler.class));
-    INSTANCE.init(Integer.valueOf(100), (BagHandler)SpringUtils.getBean("SplitItem", SplitItemHandler.class));
-    INSTANCE.init(Integer.valueOf(10001), (BagHandler)SpringUtils.getBean("Nwcprophecy", NwcprophecyHandler.class));
-    INSTANCE.init(Integer.valueOf(10), (BagHandler)SpringUtils.getBean("TreasureStoneChange", TreasureStoneChangeHandler.class));
-    INSTANCE.init(Integer.valueOf(11), (BagHandler)SpringUtils.getBean("TreasureStoneCompose", TreasureStoneComposeHandler.class));
-    INSTANCE.init(Integer.valueOf(13), (BagHandler)SpringUtils.getBean("RarePotholing", RarePotholingHandler.class));
-    INSTANCE.init(Integer.valueOf(14), (BagHandler)SpringUtils.getBean("ZhenLuComposeInfo", ZhenLuComposeInfoHandler.class));
-    INSTANCE.init(Integer.valueOf(15), (BagHandler)SpringUtils.getBean("ZhenLuCase", ZhenLuCaseHandler.class));
-  }
-  
-  public void init(Integer type, BagHandler bagHandler) {
-    handlers.put(type, bagHandler);
-  }
-  
-  public BagHandler getHandler(Integer type) {
-    return handlers.get(type);
-  }
+public enum BagHelper
+{
+    INSTANCE;
+    
+    private static final Map<Integer, BagHandler> handlers;
+    
+    public void init(final Integer type, final BagHandler bagHandler) {
+        BagHelper.handlers.put(type, bagHandler);
+    }
+    
+    public BagHandler getHandler(final Integer type) {
+        return BagHelper.handlers.get(type);
+    }
+    
+    static {
+        handlers = new HashMap<Integer, BagHandler>();
+        BagHelper.INSTANCE.init(1, SpringUtils.getBean("GemFit", GemFitHandler.class));
+        BagHelper.INSTANCE.init(2, SpringUtils.getBean("GemDetach", GemDetachHandler.class));
+        BagHelper.INSTANCE.init(3, SpringUtils.getBean("GemCurdle", GemCurdleHandler.class));
+        BagHelper.INSTANCE.init(4, SpringUtils.getBean("SkillBook", SkillBookHandler.class));
+        BagHelper.INSTANCE.init(5, SpringUtils.getBean("FiveElements", FiveElementsHandler.class));
+        BagHelper.INSTANCE.init(6, SpringUtils.getBean("SketchBook", SketchBookHandler.class));
+        BagHelper.INSTANCE.init(7, SpringUtils.getBean("Potholing", PotholingHandler.class));
+        BagHelper.INSTANCE.init(8, SpringUtils.getBean("CardCurdle", CardCurdleHandler.class));
+        BagHelper.INSTANCE.init(9, SpringUtils.getBean("CardDetach", CardDetachHandler.class));
+        BagHelper.INSTANCE.init(100, SpringUtils.getBean("SplitItem", SplitItemHandler.class));
+        BagHelper.INSTANCE.init(10001, SpringUtils.getBean("Nwcprophecy", NwcprophecyHandler.class));
+        BagHelper.INSTANCE.init(10, SpringUtils.getBean("TreasureStoneChange", TreasureStoneChangeHandler.class));
+        BagHelper.INSTANCE.init(11, SpringUtils.getBean("TreasureStoneCompose", TreasureStoneComposeHandler.class));
+        BagHelper.INSTANCE.init(13, SpringUtils.getBean("RarePotholing", RarePotholingHandler.class));
+        BagHelper.INSTANCE.init(14, SpringUtils.getBean("ZhenLuComposeInfo", ZhenLuComposeInfoHandler.class));
+        BagHelper.INSTANCE.init(15, SpringUtils.getBean("ZhenLuCase", ZhenLuCaseHandler.class));
+    }
 }

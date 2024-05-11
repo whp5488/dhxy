@@ -1,21 +1,41 @@
-package com.kitty.system.game.role.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
+package com.kitty.system.game.role.domain;
 
 import java.io.Serializable;
 
-@Setter
-@Getter
-public class RoleOfflineNotice implements Serializable {
-
-  private int state = 0;
-
-  @Value("${game.aloneOfflineTime}")
-  private int aloneOfflineTime = 1200000;
-
-  @Value("${game.teamOfflineTime}")
-  private int teamOfflineTime = 2400000;
-
+public class RoleOfflineNotice implements Serializable
+{
+    private int state;
+    private int aloneOfflineTime;
+    private int teamOfflineTime;
+    
+    public RoleOfflineNotice() {
+        this.state = 0;
+        this.aloneOfflineTime = 14400000;
+        this.teamOfflineTime = 28800000;
+    }
+    
+    public void setState(final int state) {
+        this.state = state;
+    }
+    
+    public void setAloneOfflineTime(final int aloneOfflineTime) {
+        this.aloneOfflineTime = aloneOfflineTime;
+    }
+    
+    public void setTeamOfflineTime(final int teamOfflineTime) {
+        this.teamOfflineTime = teamOfflineTime;
+    }
+    
+    public int getState() {
+        return this.state;
+    }
+    
+    public int getAloneOfflineTime() {
+        return this.aloneOfflineTime;
+    }
+    
+    public int getTeamOfflineTime() {
+        return this.teamOfflineTime;
+    }
 }

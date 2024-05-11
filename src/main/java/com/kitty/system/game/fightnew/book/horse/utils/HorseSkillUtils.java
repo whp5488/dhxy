@@ -1,290 +1,340 @@
+
 package com.kitty.system.game.fightnew.book.horse.utils;
 
-import com.kitty.common.utils.spring.SpringUtils;
-import com.kitty.listener.BaseGameEvent;
-import com.kitty.listener.EventDispatcher;
-import com.kitty.listener.EventType;
-import com.kitty.listener.event.ranking.PetChangeEvent;
-import com.kitty.mina.cache.DataCache;
-import com.kitty.system.enums.war.itempro.def.HORSE_SKILL_TRIGGER_DICT;
-import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
 import com.kitty.system.enums.war.warskill.skilldef.PETSKILLATTR;
+import com.kitty.system.game.fightnew.model.ActionDetailParam;
+import com.kitty.system.game.fightnew.bean.PetFightObject;
+import com.kitty.system.game.skill.domain.RoleSkill;
 import com.kitty.system.game.fightnew.FightObject;
 import com.kitty.system.game.fightnew.bean.Fight;
-import com.kitty.system.game.fightnew.bean.PetFightObject;
+import com.kitty.system.init.domain.HorseSkill;
+import java.util.Collection;
+import com.kitty.system.enums.war.itempro.def.HORSE_SKILL_TRIGGER_DICT;
+import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
+import java.util.HashSet;
+import org.nutz.lang.util.NutMap;
 import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 import com.kitty.system.game.fightnew.book.horse.vo.HorseSkillParam;
-import com.kitty.system.game.fightnew.model.ActionDetailParam;
-import com.kitty.system.game.horse.domain.Horse;
 import com.kitty.system.game.horse.pool.HorseDataPool;
-import com.kitty.system.game.pet.domain.Pet;
-import com.kitty.system.game.pet.service.PetService;
-import com.kitty.system.game.role.domain.Role;
-import com.kitty.system.game.skill.domain.RoleSkill;
-import com.kitty.system.init.domain.HorseSkill;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Map;
 import java.util.Set;
-import org.nutz.lang.util.NutMap;
+import java.util.Iterator;
+import com.kitty.listener.BaseGameEvent;
+import com.kitty.listener.event.ranking.PetChangeEvent;
+import com.kitty.listener.EventType;
+import com.kitty.listener.EventDispatcher;
+import com.kitty.common.utils.spring.SpringUtils;
+import com.kitty.system.game.pet.service.PetService;
+import java.util.IdentityHashMap;
+import com.kitty.mina.cache.DataCache;
+import com.kitty.system.game.horse.domain.Horse;
+import java.util.Map;
+import com.kitty.system.game.pet.domain.Pet;
+import com.kitty.system.game.role.domain.Role;
 
-public class HorseSkillUtils {
-  public static void studyFinish(Role role, long horseId, Pet pet) {
-    if (role == null)
-      return; 
-    Map<Long, Horse> horseMap = (Map<Long, Horse>)DataCache.HORSE_MAP.get(role.getId());
-    if (horseMap == null || horseMap.size() <= 0)
-      return; 
-    Horse horse = horseMap.get(Long.valueOf(horseId));
-    if (horse == null)
-      return; 
-    IdentityHashMap<Integer, Long> skill = horse.getSkill();
-    if (skill == null || skill.size() <= 0)
-      return; 
-    if (pet == null) {
-      excuteAll(role, horseId);
-    } else {
-      excuteOne(role.getId().longValue(), horseId, pet);
-    } 
-  }
-  
-  private static void excuteOne(long id, long horseId, Pet pet) {
-    if (pet.getHorse() == horseId)
-      ((PetService)SpringUtils.getBean(PetService.class)).calculateBase(id, pet); 
-  }
-  
-  private static void excuteAll(Role role, long horseId) {
-    PetService petService = (PetService)SpringUtils.getBean(PetService.class);
-    Map<Integer, Pet> petMap = petService.selectPet(role);
-    if (petMap != null && petMap.size() > 0)
-      for (Pet pet : petMap.values()) {
+public class HorseSkillUtils
+{
+    public static void studyFinish(final Role role, final long horseId, final Pet pet) {
+        if (role == null) {
+            return;
+        }
+        final Map<Long, Horse> horseMap = DataCache.HORSE_MAP.get(role.getId());
+        if (horseMap == null || horseMap.size() <= 0) {
+            return;
+        }
+        final Horse horse = horseMap.get(horseId);
+        if (horse == null) {
+            return;
+        }
+        final IdentityHashMap<Integer, Long> skill = horse.getSkill();
+        if (skill == null || skill.size() <= 0) {
+            return;
+        }
+        if (pet == null) {
+            excuteAll(role, horseId);
+        }
+        else {
+            excuteOne(role.getId(), horseId, pet);
+        }
+    }
+    
+    private static void excuteOne(final long id, final long horseId, final Pet pet) {
         if (pet.getHorse() == horseId) {
-          petService.calculateBase(role.getId().longValue(), pet);
-          EventDispatcher.getInstance().fireEvent((BaseGameEvent)new PetChangeEvent(EventType.PET_CHANGE, pet, petService.getPetEffective(role.getId().longValue(), pet)));
-        } 
-      }  
-  }
-  
-  public static int getHorseSkillProperty(Pet pet, int propertyDist, String horseSkillTriggerType) {
-    if (pet.getHorse() == 0L)
-      return 0; 
-    Role role = SpringUtils.getRoleService().getPlayer(pet.getRoleId().intValue());
-    if (role == null)
-      return 0; 
-    Map<Long, Horse> roleHorseMap = (Map<Long, Horse>)DataCache.HORSE_MAP.get(role.getId());
-    if (roleHorseMap == null)
-      return 0; 
-    Horse horse = roleHorseMap.get(Long.valueOf(pet.getHorse()));
-    if (horse == null)
-      return 0; 
-    IdentityHashMap<Integer, Long> skillMap = horse.getSkill();
-    if (skillMap == null || skillMap.size() <= 0)
-      return 0; 
-    Set<Integer> serialSet = (Set<Integer>)HorseDataPool.horseSkillSerialType.get(horseSkillTriggerType);
-    int addProperty = 0;
-    for (Map.Entry<Integer, Long> entry : skillMap.entrySet()) {
-      Integer key = entry.getKey();
-      if (!serialSet.contains(key))
-        continue; 
-      HorseSkillParam horseSkillParam = new HorseSkillParam(key.intValue(), ((Long)entry.getValue()).longValue(), horse.getGrowUp(), horse.getLevel());
-      HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(key);
-      if (processor == null)
-        continue; 
-      NutMap nutMap = processor.studyExcute(pet, horseSkillParam, new Object[0]);
-      if (nutMap != null && nutMap.size() > 0 && 
-        nutMap.getInt(String.valueOf(propertyDist), 0) != 0)
-        addProperty += nutMap.getInt(String.valueOf(propertyDist), 0); 
-    } 
-    return addProperty;
-  }
-  
-  public static double getHorseSkillPropertyPct(Pet pet, int propertyPctDist, String horseSkillTriggerType) {
-    if (pet.getHorse() == 0L)
-      return 0.0D; 
-    Role role = SpringUtils.getRoleService().getOnlinePlayer(pet.getRoleId().intValue());
-    if (role == null)
-      return 0.0D; 
-    Map<Long, Horse> roleHorseMap = (Map<Long, Horse>)DataCache.HORSE_MAP.get(role.getId());
-    if (roleHorseMap == null)
-      return 0.0D; 
-    Horse horse = roleHorseMap.get(Long.valueOf(pet.getHorse()));
-    if (horse == null)
-      return 0.0D; 
-    IdentityHashMap<Integer, Long> skillMap = horse.getSkill();
-    if (skillMap == null || skillMap.size() <= 0)
-      return 0.0D; 
-    Set<Integer> serialSet = (Set<Integer>)HorseDataPool.horseSkillSerialType.get(horseSkillTriggerType);
-    Set<Integer> others = new HashSet<>();
-    if (PRO_DICT_TYPE.SPEED_PCT.getDist() == propertyPctDist)
-      for (Map.Entry<String, Set<Integer>> entry : (Iterable<Map.Entry<String, Set<Integer>>>)HorseDataPool.horseSkillSerialType.entrySet()) {
-        if (horseSkillTriggerType.equals(entry.getKey()) || HORSE_SKILL_TRIGGER_DICT.STUDY_FINISH_LAST.getValue().equals(entry.getKey()))
-          continue; 
-        others.addAll(entry.getValue());
-      }  
-    double addProperty = 0.0D;
-    for (Map.Entry<Integer, Long> entry : skillMap.entrySet()) {
-      Integer key = entry.getKey();
-      if (!serialSet.contains(key) && !others.contains(key))
-        continue; 
-      addProperty += excuteSkill(pet, horse, propertyPctDist, key, entry.getValue());
-    } 
-    return addProperty;
-  }
-  
-  private static double excuteSkill(Pet pet, Horse horse, int propertyPctDist, Integer key, Long value) {
-    HorseSkillParam horseSkillParam = new HorseSkillParam(key.intValue(), value.longValue(), horse.getGrowUp(), horse.getLevel());
-    HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(key);
-    if (processor == null)
-      return 0.0D; 
-    double addProperty = 0.0D;
-    NutMap nutMap = processor.studyExcute(pet, horseSkillParam, new Object[0]);
-    if (nutMap != null && nutMap.size() > 0 && 
-      nutMap.getDouble(String.valueOf(propertyPctDist), 0.0D) != 0.0D)
-      addProperty += nutMap.getDouble(String.valueOf(propertyPctDist)); 
-    return addProperty;
-  }
-  
-  public static void countHorseSkillGain(NutMap propertyMap, Map<Integer, HorseSkillParam> horseSkillParamMap) {
-    if (horseSkillParamMap == null || horseSkillParamMap.size() <= 0)
-      return; 
-    for (HorseSkillParam horseSkillParam : horseSkillParamMap.values()) {
-      HorseSkill horseSkill = (HorseSkill)HorseDataPool.horseSkillMap.get(Integer.valueOf(horseSkillParam.getSerial()));
-      if (horseSkill == null || !horseSkill.isFightInitializeLoad())
-        continue; 
-      HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(Integer.valueOf(horseSkillParam.getSerial()));
-      if (processor == null)
-        continue; 
-      NutMap nutMap = processor.addition(horseSkillParam, new Object[0]);
-      if (nutMap != null && nutMap.size() > 0)
-        for (Map.Entry<String, Object> entry : (Iterable<Map.Entry<String, Object>>)nutMap.entrySet()) {
-          String key = entry.getKey();
-          propertyMap.setv(key, Double.valueOf(propertyMap.getDouble(key, 0.0D) + nutMap.getDouble(key, 0.0D)));
-        }  
-    } 
-  }
-  
-  public static void beforeMagicHurt(Fight fight, FightObject effector, RoleSkill skill) {
-    if (!effector.isPet())
-      return; 
-    Set<Integer> serialSet = (Set<Integer>)HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.BEFORE_MAGIC_HURT.getValue());
-    Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)effector).getHorseSkillMap();
-    for (HorseSkillParam horseSkillParam : horseSkillMap.values()) {
-      if (serialSet.contains(Integer.valueOf(horseSkillParam.getSerial()))) {
-        HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(Integer.valueOf(horseSkillParam.getSerial()));
-        if (processor == null)
-          continue; 
-        processor.passive(fight, (PetFightObject)effector, null, new Object[] { skill });
-      } 
-    } 
-  }
-  
-  public static void targetHits(Fight fight, FightObject effector, FightObject target, ActionDetailParam actionDetailParam) {
-    if (effector.isPet()) {
-      Set<Integer> serialSet = (Set<Integer>)HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.TARGET_HITS.getValue());
-      Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)effector).getHorseSkillMap();
-      for (HorseSkillParam horseSkillParam : horseSkillMap.values()) {
-        if (serialSet.contains(Integer.valueOf(horseSkillParam.getSerial()))) {
-          HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(Integer.valueOf(horseSkillParam.getSerial()));
-          if (processor == null)
-            continue; 
-          processor.attackOver(fight, (PetFightObject)effector, target, actionDetailParam, new Object[0]);
-        } 
-      } 
-    } else if (target.isPet()) {
-      Set<Integer> serialSet = (Set<Integer>)HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.BY_TARGET_HITS.getValue());
-      Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)target).getHorseSkillMap();
-      for (HorseSkillParam horseSkillParam : horseSkillMap.values()) {
-        if (serialSet.contains(Integer.valueOf(horseSkillParam.getSerial()))) {
-          HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(Integer.valueOf(horseSkillParam.getSerial()));
-          if (processor == null)
-            continue; 
-          processor.attackOver(fight, (PetFightObject)target, effector, actionDetailParam, new Object[0]);
-        } 
-      } 
-    } 
-  }
-  
-  public static int reduceHurt(Fight fight, FightObject effector, FightObject target, int hurt, boolean isFury, RoleSkill skill) {
-    if (skill == null) {
-      skill = new RoleSkill();
-      skill.setType(Integer.valueOf(PETSKILLATTR.PETSKILLATTR_WULI.getValue()));
-      skill.setSkillId(Integer.valueOf(0));
-    } 
-    int alertHurt = 0;
-    if (effector.isPet()) {
-      Set<Integer> serialSet = (Set<Integer>)HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.REDUCE_HURT.getValue());
-      Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)effector).getHorseSkillMap();
-      for (HorseSkillParam horseSkillParam : horseSkillMap.values()) {
-        if (serialSet.contains(Integer.valueOf(horseSkillParam.getSerial()))) {
-          HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(Integer.valueOf(horseSkillParam.getSerial()));
-          if (processor == null)
-            continue; 
-          NutMap map = processor.passive(fight, (PetFightObject)effector, target, new Object[] { Integer.valueOf(hurt), Boolean.valueOf(isFury), skill });
-          if (map != null)
-            alertHurt += map.getInt("alterHurt", 0); 
-        } 
-      } 
-    } else if (target.isPet()) {
-      Set<Integer> serialSet = (Set<Integer>)HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.REDUCE_HURT_TARGET.getValue());
-      Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)target).getHorseSkillMap();
-      for (HorseSkillParam horseSkillParam : horseSkillMap.values()) {
-        if (serialSet.contains(Integer.valueOf(horseSkillParam.getSerial()))) {
-          HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(Integer.valueOf(horseSkillParam.getSerial()));
-          if (processor == null)
-            continue; 
-          NutMap map = processor.passive(fight, (PetFightObject)target, effector, new Object[] { Integer.valueOf(hurt), Boolean.valueOf(isFury), skill });
-          if (map != null)
-            alertHurt += map.getInt("alterHurt", 0); 
-        } 
-      } 
-    } 
-    return alertHurt;
-  }
-  
-  public static double getPercent(HorseSkillParam horseSkillParam) {
-    double a = horseSkillParam.getGrowUp() / 1000.0D / 1.325D;
-    double b = -0.0067D * Math.pow(horseSkillParam.getLevel(), 2.0D) + 2.06D * horseSkillParam.getLevel();
-    double c = -0.0067D * Math.pow(horseSkillParam.getProficient(), 2.0D) / 1000.0D + 2.06D * horseSkillParam.getProficient();
-    double value = a * (0.6D * b / 130.0D + c / 325000.0D + 0.1D) * 0.6D;
-    return value;
-  }
-  
-  public static double getPercentMiddle(HorseSkillParam horseSkillParam) {
-    double a = horseSkillParam.getGrowUp() / 1000.0D / 1.325D;
-    double b = -0.0067D * Math.pow(horseSkillParam.getLevel(), 2.0D) + 2.06D * horseSkillParam.getLevel();
-    double c = -0.0067D * Math.pow(horseSkillParam.getProficient(), 2.0D) / 1000.0D + 2.06D * horseSkillParam.getProficient();
-    double value = a * (0.6D * b / 130.0D + c / 325000.0D + 0.1D) * 0.8D;
-    return value;
-  }
-  
-  public static double getPercentSenior(HorseSkillParam horseSkillParam) {
-    double a = horseSkillParam.getGrowUp() / 1000.0D / 1.325D;
-    double b = -0.0067D * Math.pow(horseSkillParam.getLevel(), 2.0D) + 2.06D * horseSkillParam.getLevel();
-    double c = -0.0067D * Math.pow(horseSkillParam.getProficient(), 2.0D) / 1000.0D + 2.06D * horseSkillParam.getProficient();
-    double value = a * (0.6D * b / 130.0D + c / 325000.0D + 0.1D);
-    return value;
-  }
-  
-  public static double getPercentBeforeMagic(HorseSkillParam horseSkillParam) {
-    double percent = (Math.floor((horseSkillParam.getGrowUp() + 10000.0D) / 11265.0D) * (-0.5D * horseSkillParam.getGrowUp() + 632.5D) + horseSkillParam.getGrowUp()) / 1000.0D / 1.325D * (0.6D * (-0.0067D * Math.pow(Math.floor((horseSkillParam.getLevel() + 1000.0D) / 1080.0D) * (-0.5D * horseSkillParam.getLevel() + 40.0D) + horseSkillParam.getLevel(), 2.0D) + 2.06D * (Math.floor((horseSkillParam.getLevel() + 1000.0D) / 1080.0D) * (-0.5D * horseSkillParam.getLevel() + 40.0D) + horseSkillParam.getLevel())) / 130.0D + (-0.0067D * Math.pow(Math.floor((horseSkillParam.getProficient() + 1000000.0D) / 1080000.0D) * (-0.5D * horseSkillParam.getProficient() + 40000.0D) + horseSkillParam.getProficient(), 2.0D) / 1000.0D + 2.06D * (Math.floor((horseSkillParam.getProficient() + 1000000.0D) / 1080000.0D) * (-0.5D * horseSkillParam.getProficient() + 40000.0D) + horseSkillParam.getProficient())) / 325000.0D + 0.1D) * 0.6D;
-    return percent;
-  }
-  
-  public static double getPercentBeforeMagicMiddle(HorseSkillParam horseSkillParam) {
-    double percent = (Math.floor((horseSkillParam.getGrowUp() + 10000.0D) / 11265.0D) * (-0.5D * horseSkillParam.getGrowUp() + 632.5D) + horseSkillParam.getGrowUp()) / 1000.0D / 1.325D * (0.6D * (-0.0067D * Math.pow(Math.floor((horseSkillParam.getLevel() + 1000.0D) / 1080.0D) * (-0.5D * horseSkillParam.getLevel() + 40.0D) + horseSkillParam.getLevel(), 2.0D) + 2.06D * (Math.floor((horseSkillParam.getLevel() + 1000.0D) / 1080.0D) * (-0.5D * horseSkillParam.getLevel() + 40.0D) + horseSkillParam.getLevel())) / 130.0D + (-0.0067D * Math.pow(Math.floor((horseSkillParam.getProficient() + 1000000.0D) / 1080000.0D) * (-0.5D * horseSkillParam.getProficient() + 40000.0D) + horseSkillParam.getProficient(), 2.0D) / 1000.0D + 2.06D * (Math.floor((horseSkillParam.getProficient() + 1000000.0D) / 1080000.0D) * (-0.5D * horseSkillParam.getProficient() + 40000.0D) + horseSkillParam.getProficient())) / 325000.0D + 0.1D) * 0.8D;
-    return percent;
-  }
-  
-  public static double getPercentBeforeMagicSenior(HorseSkillParam horseSkillParam) {
-    double percent = (Math.floor((horseSkillParam.getGrowUp() + 10000.0D) / 11265.0D) * (-0.5D * horseSkillParam.getGrowUp() + 632.5D) + horseSkillParam.getGrowUp()) / 1000.0D / 1.325D * (0.6D * (-0.0067D * Math.pow(Math.floor((horseSkillParam.getLevel() + 1000.0D) / 1080.0D) * (-0.5D * horseSkillParam.getLevel() + 40.0D) + horseSkillParam.getLevel(), 2.0D) + 2.06D * (Math.floor((horseSkillParam.getLevel() + 1000.0D) / 1080.0D) * (-0.5D * horseSkillParam.getLevel() + 40.0D) + horseSkillParam.getLevel())) / 130.0D + (-0.0067D * Math.pow(Math.floor((horseSkillParam.getProficient() + 1000000.0D) / 1080000.0D) * (-0.5D * horseSkillParam.getProficient() + 40000.0D) + horseSkillParam.getProficient(), 2.0D) / 1000.0D + 2.06D * (Math.floor((horseSkillParam.getProficient() + 1000000.0D) / 1080000.0D) * (-0.5D * horseSkillParam.getProficient() + 40000.0D) + horseSkillParam.getProficient())) / 325000.0D + 0.1D);
-    return percent;
-  }
-  
-  public static double getMathRoundPercent(double src) {
-    long round = Math.round(src * 100.0D);
-    double value = round / 100.0D;
-    return value;
-  }
-  
-  public static void main(String[] args) {}
+            SpringUtils.getBean(PetService.class).calculateBase(id, pet);
+        }
+    }
+    
+    private static void excuteAll(final Role role, final long horseId) {
+        final PetService petService = SpringUtils.getBean(PetService.class);
+        final Map<Integer, Pet> petMap = petService.selectPet(role);
+        if (petMap != null && petMap.size() > 0) {
+            for (final Pet pet : petMap.values()) {
+                if (pet.getHorse() == horseId) {
+                    petService.calculateBase(role.getId(), pet);
+                    EventDispatcher.getInstance().fireEvent(new PetChangeEvent(EventType.PET_CHANGE, pet, petService.getPetEffective(role.getId(), pet)));
+                }
+            }
+        }
+    }
+    
+    public static int getHorseSkillProperty(final Pet pet, final int propertyDist, final String horseSkillTriggerType) {
+        if (pet.getHorse() == 0L) {
+            return 0;
+        }
+        final Role role = SpringUtils.getRoleService().getPlayer(pet.getRoleId());
+        if (role == null) {
+            return 0;
+        }
+        final Map<Long, Horse> roleHorseMap = DataCache.HORSE_MAP.get(role.getId());
+        if (roleHorseMap == null) {
+            return 0;
+        }
+        final Horse horse = roleHorseMap.get(pet.getHorse());
+        if (horse == null) {
+            return 0;
+        }
+        final IdentityHashMap<Integer, Long> skillMap = horse.getSkill();
+        if (skillMap == null || skillMap.size() <= 0) {
+            return 0;
+        }
+        final Set<Integer> serialSet = HorseDataPool.horseSkillSerialType.get(horseSkillTriggerType);
+        int addProperty = 0;
+        for (final Map.Entry<Integer, Long> entry : skillMap.entrySet()) {
+            final Integer key = entry.getKey();
+            if (!serialSet.contains(key)) {
+                continue;
+            }
+            final HorseSkillParam horseSkillParam = new HorseSkillParam(key, entry.getValue(), horse.getGrowUp(), horse.getLevel());
+            final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(key);
+            if (processor == null) {
+                continue;
+            }
+            final NutMap nutMap = processor.studyExcute(pet, horseSkillParam, new Object[0]);
+            if (nutMap == null || nutMap.size() <= 0 || nutMap.getInt(String.valueOf(propertyDist), 0) == 0) {
+                continue;
+            }
+            addProperty += nutMap.getInt(String.valueOf(propertyDist), 0);
+        }
+        return addProperty;
+    }
+    
+    public static double getHorseSkillPropertyPct(final Pet pet, final int propertyPctDist, final String horseSkillTriggerType) {
+        if (pet.getHorse() == 0L) {
+            return 0.0;
+        }
+        final Role role = SpringUtils.getRoleService().getOnlinePlayer(pet.getRoleId());
+        if (role == null) {
+            return 0.0;
+        }
+        final Map<Long, Horse> roleHorseMap = DataCache.HORSE_MAP.get(role.getId());
+        if (roleHorseMap == null) {
+            return 0.0;
+        }
+        final Horse horse = roleHorseMap.get(pet.getHorse());
+        if (horse == null) {
+            return 0.0;
+        }
+        final IdentityHashMap<Integer, Long> skillMap = horse.getSkill();
+        if (skillMap == null || skillMap.size() <= 0) {
+            return 0.0;
+        }
+        final Set<Integer> serialSet = HorseDataPool.horseSkillSerialType.get(horseSkillTriggerType);
+        final Set<Integer> others = new HashSet<Integer>();
+        if (PRO_DICT_TYPE.SPEED_PCT.getDist() == propertyPctDist) {
+            for (final Map.Entry<String, Set<Integer>> entry : HorseDataPool.horseSkillSerialType.entrySet()) {
+                if (!horseSkillTriggerType.equals(entry.getKey())) {
+                    if (HORSE_SKILL_TRIGGER_DICT.STUDY_FINISH_LAST.getValue().equals(entry.getKey())) {
+                        continue;
+                    }
+                    others.addAll(entry.getValue());
+                }
+            }
+        }
+        double addProperty = 0.0;
+        for (final Map.Entry<Integer, Long> entry2 : skillMap.entrySet()) {
+            final Integer key = entry2.getKey();
+            if (!serialSet.contains(key) && !others.contains(key)) {
+                continue;
+            }
+            addProperty += excuteSkill(pet, horse, propertyPctDist, key, entry2.getValue());
+        }
+        return addProperty;
+    }
+    
+    private static double excuteSkill(final Pet pet, final Horse horse, final int propertyPctDist, final Integer key, final Long value) {
+        final HorseSkillParam horseSkillParam = new HorseSkillParam(key, value, horse.getGrowUp(), horse.getLevel());
+        final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(key);
+        if (processor == null) {
+            return 0.0;
+        }
+        double addProperty = 0.0;
+        final NutMap nutMap = processor.studyExcute(pet, horseSkillParam, new Object[0]);
+        if (nutMap != null && nutMap.size() > 0 && nutMap.getDouble(String.valueOf(propertyPctDist), 0.0) != 0.0) {
+            addProperty += nutMap.getDouble(String.valueOf(propertyPctDist));
+        }
+        return addProperty;
+    }
+    
+    public static void countHorseSkillGain(final NutMap propertyMap, final Map<Integer, HorseSkillParam> horseSkillParamMap) {
+        if (horseSkillParamMap == null || horseSkillParamMap.size() <= 0) {
+            return;
+        }
+        for (final HorseSkillParam horseSkillParam : horseSkillParamMap.values()) {
+            final HorseSkill horseSkill = HorseDataPool.horseSkillMap.get(horseSkillParam.getSerial());
+            if (horseSkill != null) {
+                if (!horseSkill.isFightInitializeLoad()) {
+                    continue;
+                }
+                final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(horseSkillParam.getSerial());
+                if (processor == null) {
+                    continue;
+                }
+                final NutMap nutMap = processor.addition(horseSkillParam, new Object[0]);
+                if (nutMap == null || nutMap.size() <= 0) {
+                    continue;
+                }
+                for (final Map.Entry<String, Object> entry : nutMap.entrySet()) {
+                    final String key = entry.getKey();
+                    propertyMap.setv(key, (Object)(propertyMap.getDouble(key, 0.0) + nutMap.getDouble(key, 0.0)));
+                }
+            }
+        }
+    }
+    
+    public static void beforeMagicHurt(final Fight fight, final FightObject effector, final RoleSkill skill) {
+        if (!effector.isPet()) {
+            return;
+        }
+        final Set<Integer> serialSet = HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.BEFORE_MAGIC_HURT.getValue());
+        final Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)effector).getHorseSkillMap();
+        for (final HorseSkillParam horseSkillParam : horseSkillMap.values()) {
+            if (serialSet.contains(horseSkillParam.getSerial())) {
+                final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(horseSkillParam.getSerial());
+                if (processor == null) {
+                    continue;
+                }
+                processor.passive(fight, (PetFightObject)effector, null, skill);
+            }
+        }
+    }
+    
+    public static void targetHits(final Fight fight, final FightObject effector, final FightObject target, final ActionDetailParam actionDetailParam) {
+        if (effector.isPet()) {
+            final Set<Integer> serialSet = HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.TARGET_HITS.getValue());
+            final Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)effector).getHorseSkillMap();
+            for (final HorseSkillParam horseSkillParam : horseSkillMap.values()) {
+                if (serialSet.contains(horseSkillParam.getSerial())) {
+                    final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(horseSkillParam.getSerial());
+                    if (processor == null) {
+                        continue;
+                    }
+                    processor.attackOver(fight, (PetFightObject)effector, target, actionDetailParam, new Object[0]);
+                }
+            }
+        }
+        else if (target.isPet()) {
+            final Set<Integer> serialSet = HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.BY_TARGET_HITS.getValue());
+            final Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)target).getHorseSkillMap();
+            for (final HorseSkillParam horseSkillParam : horseSkillMap.values()) {
+                if (serialSet.contains(horseSkillParam.getSerial())) {
+                    final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(horseSkillParam.getSerial());
+                    if (processor == null) {
+                        continue;
+                    }
+                    processor.attackOver(fight, (PetFightObject)target, effector, actionDetailParam, new Object[0]);
+                }
+            }
+        }
+    }
+    
+    public static int reduceHurt(final Fight fight, final FightObject effector, final FightObject target, final int hurt, final boolean isFury, RoleSkill skill) {
+        if (skill == null) {
+            skill = new RoleSkill();
+            skill.setType(PETSKILLATTR.PETSKILLATTR_WULI.getValue());
+            skill.setSkillId(0);
+        }
+        int alertHurt = 0;
+        if (effector.isPet()) {
+            final Set<Integer> serialSet = HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.REDUCE_HURT.getValue());
+            final Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)effector).getHorseSkillMap();
+            for (final HorseSkillParam horseSkillParam : horseSkillMap.values()) {
+                if (serialSet.contains(horseSkillParam.getSerial())) {
+                    final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(horseSkillParam.getSerial());
+                    if (processor == null) {
+                        continue;
+                    }
+                    final NutMap map = processor.passive(fight, (PetFightObject)effector, target, hurt, isFury, skill);
+                    if (map == null) {
+                        continue;
+                    }
+                    alertHurt += map.getInt("alterHurt", 0);
+                }
+            }
+        }
+        else if (target.isPet()) {
+            final Set<Integer> serialSet = HorseDataPool.horseSkillSerialType.get(HORSE_SKILL_TRIGGER_DICT.REDUCE_HURT_TARGET.getValue());
+            final Map<Integer, HorseSkillParam> horseSkillMap = ((PetFightObject)target).getHorseSkillMap();
+            for (final HorseSkillParam horseSkillParam : horseSkillMap.values()) {
+                if (serialSet.contains(horseSkillParam.getSerial())) {
+                    final HorseSkillProcessor processor = HorseSkillProcessor.queryProcessor(horseSkillParam.getSerial());
+                    if (processor == null) {
+                        continue;
+                    }
+                    final NutMap map = processor.passive(fight, (PetFightObject)target, effector, hurt, isFury, skill);
+                    if (map == null) {
+                        continue;
+                    }
+                    alertHurt += map.getInt("alterHurt", 0);
+                }
+            }
+        }
+        return alertHurt;
+    }
+    
+    public static double getPercent(final HorseSkillParam horseSkillParam) {
+        final double a = horseSkillParam.getGrowUp() / 1000.0 / 1.325;
+        final double b = -0.0067 * Math.pow(horseSkillParam.getLevel(), 2.0) + 2.06 * horseSkillParam.getLevel();
+        final double c = -0.0067 * Math.pow((double)horseSkillParam.getProficient(), 2.0) / 1000.0 + 2.06 * horseSkillParam.getProficient();
+        final double value = a * (0.6 * b / 130.0 + c / 325000.0 + 0.1) * 0.6;
+        return value;
+    }
+    
+    public static double getPercentMiddle(final HorseSkillParam horseSkillParam) {
+        final double a = horseSkillParam.getGrowUp() / 1000.0 / 1.325;
+        final double b = -0.0067 * Math.pow(horseSkillParam.getLevel(), 2.0) + 2.06 * horseSkillParam.getLevel();
+        final double c = -0.0067 * Math.pow((double)horseSkillParam.getProficient(), 2.0) / 1000.0 + 2.06 * horseSkillParam.getProficient();
+        final double value = a * (0.6 * b / 130.0 + c / 325000.0 + 0.1) * 0.8;
+        return value;
+    }
+    
+    public static double getPercentSenior(final HorseSkillParam horseSkillParam) {
+        final double a = horseSkillParam.getGrowUp() / 1000.0 / 1.325;
+        final double b = -0.0067 * Math.pow(horseSkillParam.getLevel(), 2.0) + 2.06 * horseSkillParam.getLevel();
+        final double c = -0.0067 * Math.pow((double)horseSkillParam.getProficient(), 2.0) / 1000.0 + 2.06 * horseSkillParam.getProficient();
+        final double value = a * (0.6 * b / 130.0 + c / 325000.0 + 0.1);
+        return value;
+    }
+    
+    public static double getPercentBeforeMagic(final HorseSkillParam horseSkillParam) {
+        final double percent = (Math.floor((horseSkillParam.getGrowUp() + 10000.0) / 11265.0) * (-0.5 * horseSkillParam.getGrowUp() + 632.5) + horseSkillParam.getGrowUp()) / 1000.0 / 1.325 * (0.6 * (-0.0067 * Math.pow(Math.floor((horseSkillParam.getLevel() + 1000.0) / 1080.0) * (-0.5 * horseSkillParam.getLevel() + 40.0) + horseSkillParam.getLevel(), 2.0) + 2.06 * (Math.floor((horseSkillParam.getLevel() + 1000.0) / 1080.0) * (-0.5 * horseSkillParam.getLevel() + 40.0) + horseSkillParam.getLevel())) / 130.0 + (-0.0067 * Math.pow(Math.floor((horseSkillParam.getProficient() + 1000000.0) / 1080000.0) * (-0.5 * horseSkillParam.getProficient() + 40000.0) + horseSkillParam.getProficient(), 2.0) / 1000.0 + 2.06 * (Math.floor((horseSkillParam.getProficient() + 1000000.0) / 1080000.0) * (-0.5 * horseSkillParam.getProficient() + 40000.0) + horseSkillParam.getProficient())) / 325000.0 + 0.1) * 0.6;
+        return percent;
+    }
+    
+    public static double getPercentBeforeMagicMiddle(final HorseSkillParam horseSkillParam) {
+        final double percent = (Math.floor((horseSkillParam.getGrowUp() + 10000.0) / 11265.0) * (-0.5 * horseSkillParam.getGrowUp() + 632.5) + horseSkillParam.getGrowUp()) / 1000.0 / 1.325 * (0.6 * (-0.0067 * Math.pow(Math.floor((horseSkillParam.getLevel() + 1000.0) / 1080.0) * (-0.5 * horseSkillParam.getLevel() + 40.0) + horseSkillParam.getLevel(), 2.0) + 2.06 * (Math.floor((horseSkillParam.getLevel() + 1000.0) / 1080.0) * (-0.5 * horseSkillParam.getLevel() + 40.0) + horseSkillParam.getLevel())) / 130.0 + (-0.0067 * Math.pow(Math.floor((horseSkillParam.getProficient() + 1000000.0) / 1080000.0) * (-0.5 * horseSkillParam.getProficient() + 40000.0) + horseSkillParam.getProficient(), 2.0) / 1000.0 + 2.06 * (Math.floor((horseSkillParam.getProficient() + 1000000.0) / 1080000.0) * (-0.5 * horseSkillParam.getProficient() + 40000.0) + horseSkillParam.getProficient())) / 325000.0 + 0.1) * 0.8;
+        return percent;
+    }
+    
+    public static double getPercentBeforeMagicSenior(final HorseSkillParam horseSkillParam) {
+        final double percent = (Math.floor((horseSkillParam.getGrowUp() + 10000.0) / 11265.0) * (-0.5 * horseSkillParam.getGrowUp() + 632.5) + horseSkillParam.getGrowUp()) / 1000.0 / 1.325 * (0.6 * (-0.0067 * Math.pow(Math.floor((horseSkillParam.getLevel() + 1000.0) / 1080.0) * (-0.5 * horseSkillParam.getLevel() + 40.0) + horseSkillParam.getLevel(), 2.0) + 2.06 * (Math.floor((horseSkillParam.getLevel() + 1000.0) / 1080.0) * (-0.5 * horseSkillParam.getLevel() + 40.0) + horseSkillParam.getLevel())) / 130.0 + (-0.0067 * Math.pow(Math.floor((horseSkillParam.getProficient() + 1000000.0) / 1080000.0) * (-0.5 * horseSkillParam.getProficient() + 40000.0) + horseSkillParam.getProficient(), 2.0) / 1000.0 + 2.06 * (Math.floor((horseSkillParam.getProficient() + 1000000.0) / 1080000.0) * (-0.5 * horseSkillParam.getProficient() + 40000.0) + horseSkillParam.getProficient())) / 325000.0 + 0.1);
+        return percent;
+    }
+    
+    public static double getMathRoundPercent(final double src) {
+        final long round = Math.round(src * 100.0);
+        final double value = round / 100.0;
+        return value;
+    }
+    
+    public static void main(final String[] args) {
+    }
 }

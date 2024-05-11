@@ -1,90 +1,97 @@
+
 package com.kitty.system.game.equip.make;
 
-import com.kitty.system.common.data.DataGlobalFunc;
-import com.kitty.system.enums.war.itempro.def.ITEMLARGETYPE;
-import com.kitty.system.game.bag.domain.BagEquip;
-import com.kitty.system.game.equip.pool.EquipDataPool;
-import com.kitty.system.game.vo.FiedEquip;
-import com.kitty.system.init.domain.SysMagicalBieEq;
-import com.kitty.system.init.domain.SysNewBieEq;
-import com.kitty.system.init.domain.SysSeniorBieEq;
 import com.kitty.system.init.domain.SysSinBieEq;
+import com.kitty.system.init.domain.SysMagicalBieEq;
 import java.util.List;
+import com.kitty.system.game.vo.FiedEquip;
+import com.kitty.system.init.domain.SysSeniorBieEq;
+import com.kitty.system.game.equip.pool.EquipDataPool;
+import com.kitty.system.init.domain.SysNewBieEq;
+import com.kitty.system.enums.war.itempro.def.ITEMLARGETYPE;
+import com.kitty.system.common.data.DataGlobalFunc;
+import com.kitty.system.game.bag.domain.BagEquip;
 
-public class EquipManage {
-  public static BagEquip createEquip(Integer serial) {
-    Integer type = DataGlobalFunc.GetItemTypeByItemTypeId(serial);
-    BagEquip equip = null;
-    if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue()) {
-      equip = createNormalEquip(serial);
-    } else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue()) {
-      equip = createSeniorEquip(serial);
-    } else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue()) {
-      equip = createMagicalEquip(serial);
-    } else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue()) {
-      equip = createFairyEquip(serial);
-    } 
-    return equip;
-  }
-  
-  public static BagEquip createNormalEquip(Integer serial) {
-    SysNewBieEq bieEq = (SysNewBieEq)EquipDataPool.newBieEq.get(serial);
-    if (bieEq != null)
-      return createBeiEquip(bieEq.getSerial(), bieEq.getPos(), bieEq.getMaxEndure(), bieEq.getBaseScore(), bieEq.getBaseAttr(), bieEq.getName()); 
-    return null;
-  }
-  
-  public static BagEquip createSeniorEquip(Integer serial) {
-    SysSeniorBieEq bieEq = (SysSeniorBieEq)EquipDataPool.seniorBieEq.get(serial);
-    if (bieEq != null) {
-      BagEquip equip = new BagEquip();
-      equip.setPosition(bieEq.getPos());
-      List<FiedEquip> field = MakeAttribute.createHighBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bieEq.getAttrFactor(), 0);
-      equip.setType(serial);
-      equip.setName(bieEq.getName());
-      equip.setField(field);
-      Integer score = MakeAttribute.calEquipScore(equip);
-      field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
-      equip.setField(field);
-      return equip;
-    } 
-    return null;
-  }
-  
-  public static BagEquip createMagicalEquip(Integer serial) {
-    SysMagicalBieEq bieEq = (SysMagicalBieEq)EquipDataPool.magicalBieEq.get(serial);
-    if (bieEq != null) {
-      BagEquip equip = new BagEquip();
-      equip.setPosition(bieEq.getPos());
-      List<FiedEquip> field = MakeAttribute.createBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bieEq.getRndRange(), 0);
-      equip.setType(serial);
-      equip.setName(bieEq.getName());
-      equip.setField(field);
-      Integer score = MakeAttribute.calEquipScore(equip);
-      field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
-      equip.setField(field);
-      return equip;
-    } 
-    return null;
-  }
-  
-  public static BagEquip createFairyEquip(Integer serial) {
-    SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(serial);
-    if (bieEq != null)
-      return createBeiEquip(bieEq.getSerial(), bieEq.getPos(), bieEq.getMaxEndure(), bieEq.getBaseScore(), bieEq.getBaseAttr(), bieEq.getName()); 
-    return null;
-  }
-  
-  public static BagEquip createBeiEquip(int serial, int pos, int maxEndure, int baseScore, String baseAttr, String name) {
-    BagEquip equip = new BagEquip();
-    equip.setPosition(pos);
-    List<FiedEquip> field = MakeAttribute.createBaseBieEq(baseAttr, maxEndure, serial, 0, 0, 0.0D);
-    equip.setType(serial);
-    equip.setName(name);
-    equip.setField(field);
-    Integer score = MakeAttribute.calEquipScore(equip);
-    field.add(new FiedEquip(6679, score + baseScore));
-    equip.setField(field);
-    return equip;
-  }
+public class EquipManage
+{
+    public static BagEquip createEquip(final Integer serial) {
+        final Integer type = DataGlobalFunc.GetItemTypeByItemTypeId(serial);
+        BagEquip equip = null;
+        if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue()) {
+            equip = createNormalEquip(serial);
+        }
+        else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue()) {
+            equip = createSeniorEquip(serial);
+        }
+        else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue()) {
+            equip = createMagicalEquip(serial);
+        }
+        else if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue()) {
+            equip = createFairyEquip(serial);
+        }
+        return equip;
+    }
+    
+    public static BagEquip createNormalEquip(final Integer serial) {
+        final SysNewBieEq bieEq = EquipDataPool.newBieEq.get(serial);
+        if (bieEq != null) {
+            return createBeiEquip(bieEq.getSerial(), bieEq.getPos(), bieEq.getMaxEndure(), bieEq.getBaseScore(), bieEq.getBaseAttr(), bieEq.getName());
+        }
+        return null;
+    }
+    
+    public static BagEquip createSeniorEquip(final Integer serial) {
+        final SysSeniorBieEq bieEq = EquipDataPool.seniorBieEq.get(serial);
+        if (bieEq != null) {
+            final BagEquip equip = new BagEquip();
+            equip.setPosition(bieEq.getPos());
+            final List<FiedEquip> field = MakeAttribute.createHighBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bieEq.getAttrFactor(), 0);
+            equip.setType(serial);
+            equip.setName(bieEq.getName());
+            equip.setField(field);
+            final Integer score = MakeAttribute.calEquipScore(equip);
+            field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
+            equip.setField(field);
+            return equip;
+        }
+        return null;
+    }
+    
+    public static BagEquip createMagicalEquip(final Integer serial) {
+        final SysMagicalBieEq bieEq = EquipDataPool.magicalBieEq.get(serial);
+        if (bieEq != null) {
+            final BagEquip equip = new BagEquip();
+            equip.setPosition(bieEq.getPos());
+            final List<FiedEquip> field = MakeAttribute.createBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), bieEq.getRndRange(), 0);
+            equip.setType(serial);
+            equip.setName(bieEq.getName());
+            equip.setField(field);
+            final Integer score = MakeAttribute.calEquipScore(equip);
+            field.add(new FiedEquip(6679, score + bieEq.getBaseScore()));
+            equip.setField(field);
+            return equip;
+        }
+        return null;
+    }
+    
+    public static BagEquip createFairyEquip(final Integer serial) {
+        final SysSinBieEq bieEq = EquipDataPool.sinBieEq.get(serial);
+        if (bieEq != null) {
+            return createBeiEquip(bieEq.getSerial(), bieEq.getPos(), bieEq.getMaxEndure(), bieEq.getBaseScore(), bieEq.getBaseAttr(), bieEq.getName());
+        }
+        return null;
+    }
+    
+    public static BagEquip createBeiEquip(final int serial, final int pos, final int maxEndure, final int baseScore, final String baseAttr, final String name) {
+        final BagEquip equip = new BagEquip();
+        equip.setPosition(pos);
+        final List<FiedEquip> field = MakeAttribute.createBaseBieEq(baseAttr, maxEndure, serial, 0, 0, 0.0);
+        equip.setType(serial);
+        equip.setName(name);
+        equip.setField(field);
+        final Integer score = MakeAttribute.calEquipScore(equip);
+        field.add(new FiedEquip(6679, score + baseScore));
+        equip.setField(field);
+        return equip;
+    }
 }

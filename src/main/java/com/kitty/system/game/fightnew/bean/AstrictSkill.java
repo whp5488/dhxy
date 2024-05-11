@@ -1,45 +1,104 @@
+
 package com.kitty.system.game.fightnew.bean;
 
 import java.util.HashMap;
 
-public class AstrictSkill {
-  private boolean isASide;
-  
-  private int round;
-  
-  public void setASide(boolean isASide) {
-    this.isASide = isASide;
-  }
-  
-  public void setRound(int round) {
-    this.round = round;
-  }
-  
-  public void setTime(int time) {
-    this.time = time;
-  }
-  
-  public void setSkillMap(HashMap<Integer, Integer> skillMap) {
-    this.skillMap = skillMap;
-  }
-
-  public boolean isASide() {
-    return this.isASide;
-  }
-  
-  public int getRound() {
-    return this.round;
-  }
-  
-  private int time = 1;
-  
-  public int getTime() {
-    return this.time;
-  }
-  
-  private HashMap<Integer, Integer> skillMap = new HashMap<>();
-  
-  public HashMap<Integer, Integer> getSkillMap() {
-    return this.skillMap;
-  }
+public class AstrictSkill
+{
+    private boolean isASide;
+    private int round;
+    private int time;
+    private HashMap<Integer, Integer> skillMap;
+    
+    public AstrictSkill() {
+        this.time = 1;
+        this.skillMap = new HashMap<Integer, Integer>();
+    }
+    
+    public boolean isASide() {
+        return this.isASide;
+    }
+    
+    public int getRound() {
+        return this.round;
+    }
+    
+    public int getTime() {
+        return this.time;
+    }
+    
+    public HashMap<Integer, Integer> getSkillMap() {
+        return this.skillMap;
+    }
+    
+    public void setASide(final boolean isASide) {
+        this.isASide = isASide;
+    }
+    
+    public void setRound(final int round) {
+        this.round = round;
+    }
+    
+    public void setTime(final int time) {
+        this.time = time;
+    }
+    
+    public void setSkillMap(final HashMap<Integer, Integer> skillMap) {
+        this.skillMap = skillMap;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AstrictSkill)) {
+            return false;
+        }
+        final AstrictSkill other = (AstrictSkill)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.isASide() != other.isASide()) {
+            return false;
+        }
+        if (this.getRound() != other.getRound()) {
+            return false;
+        }
+        if (this.getTime() != other.getTime()) {
+            return false;
+        }
+        final Object this$skillMap = this.getSkillMap();
+        final Object other$skillMap = other.getSkillMap();
+        if (this$skillMap == null) {
+            if (other$skillMap == null) {
+                return true;
+            }
+        }
+        else if (this$skillMap.equals(other$skillMap)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof AstrictSkill;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + (this.isASide() ? 79 : 97);
+        result = result * 59 + this.getRound();
+        result = result * 59 + this.getTime();
+        final Object $skillMap = this.getSkillMap();
+        result = result * 59 + (($skillMap == null) ? 43 : $skillMap.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "AstrictSkill(isASide=" + this.isASide() + ", round=" + this.getRound() + ", time=" + this.getTime() + ", skillMap=" + this.getSkillMap() + ")";
+    }
 }

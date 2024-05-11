@@ -1,42 +1,47 @@
+
 package com.kitty.system.game.fightnew.book.awaken.roundstart;
 
-import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
-import com.kitty.system.game.fightnew.FightObject;
-import com.kitty.system.game.fightnew.bean.Fight;
-import com.kitty.system.game.fightnew.bean.PetFightObject;
-import com.kitty.system.game.fightnew.book.acsrypet.utils.AcsryPetSkillUtil;
-import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
-import com.kitty.system.game.fightnew.imbue.utils.ImbueUtil;
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.system.game.role.domain.Role;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import com.kitty.system.game.fightnew.imbue.utils.ImbueUtil;
+import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
+import com.kitty.system.game.fightnew.book.acsrypet.utils.AcsryPetSkillUtil;
+import com.kitty.system.game.fightnew.FightObject;
+import java.util.Arrays;
+import com.kitty.system.game.fightnew.bean.PetFightObject;
+import com.kitty.system.game.fightnew.bean.Fight;
+import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
-public class AWAKENSKILL_31301 extends AwakenSkillProcessor {
-  public void roundStart(Fight fight, PetFightObject petFightObject, Object... args) {
-    List<Integer> icons = Arrays.asList(new Integer[] { Integer.valueOf(6050), Integer.valueOf(6049), Integer.valueOf(6047), Integer.valueOf(6051) });
-    List<FightObject> mySide = fight.getMySide(petFightObject.getId().intValue());
-    boolean flag = false;
-    for (FightObject fightObject : mySide) {
-      if (icons.contains(Integer.valueOf(fightObject.getIcon()))) {
-        flag = true;
-        break;
-      } 
-    } 
-    if (flag) {
-      Role role = petFightObject.getRole();
-      Pet pet = petFightObject.getPet();
-      byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
-      if (suitLevParam > 0) {
-        double percent = getPercent((short)suitLevParam);
-        if (pet.getAwaken() > 0)
-          percent += getPercent(pet.getAwaken()); 
-        ImbueUtil.addRound(petFightObject.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.RISE_H.getDist()), 1, percent);
-      } 
-    } 
-  }
-  
-  private double getPercent(short param) {
-    return (15 * param) / 20.0D / 100.0D;
-  }
+public class AWAKENSKILL_31301 extends AwakenSkillProcessor
+{
+    @Override
+    public void roundStart(final Fight fight, final PetFightObject petFightObject, final Object... args) {
+        final List<Integer> icons = Arrays.asList(6050, 6049, 6047, 6051);
+        final List<FightObject> mySide = fight.getMySide(petFightObject.getId());
+        boolean flag = false;
+        for (final FightObject fightObject : mySide) {
+            if (icons.contains(fightObject.getIcon())) {
+                flag = true;
+                break;
+            }
+        }
+        if (flag) {
+            final Role role = petFightObject.getRole();
+            final Pet pet = petFightObject.getPet();
+            final byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
+            if (suitLevParam > 0) {
+                double percent = this.getPercent(suitLevParam);
+                if (pet.getAwaken() > 0) {
+                    percent += this.getPercent(pet.getAwaken());
+                }
+                ImbueUtil.addRound(petFightObject.getImbueMap(), PRO_DICT_TYPE.RISE_H.getDist(), 1, percent);
+            }
+        }
+    }
+    
+    private double getPercent(final short param) {
+        return 15 * param / 20.0 / 100.0;
+    }
 }

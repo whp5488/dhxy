@@ -1,20 +1,22 @@
+
 package com.kitty.common.utils;
 
 import java.util.ArrayList;
 
-public class PositionUtils {
-  public static final ArrayList<Short> positions = new ArrayList<>();
-  
-  static {
-    positions.add(Short.valueOf((short)3));
-    positions.add(Short.valueOf((short)2));
-    positions.add(Short.valueOf((short)4));
-    positions.add(Short.valueOf((short)1));
-    positions.add(Short.valueOf((short)5));
-    positions.add(Short.valueOf((short)8));
-    positions.add(Short.valueOf((short)7));
-    positions.add(Short.valueOf((short)9));
-    positions.add(Short.valueOf((short)6));
-    positions.add(Short.valueOf((short)10));
-  }
+public class PositionUtils
+{
+    public static final ArrayList<Short> positions;
+    
+    static {
+        (positions = new ArrayList<>()).add((short) 3);
+        PositionUtils.positions.add((short)2);
+        PositionUtils.positions.add((short)4);
+        PositionUtils.positions.add((short)1);
+        PositionUtils.positions.add((short)5);
+        PositionUtils.positions.add((short)8);
+        PositionUtils.positions.add((short)7);
+        PositionUtils.positions.add((short)9);
+        PositionUtils.positions.add((short)6);
+        PositionUtils.positions.add((short)10);
+    }
 }

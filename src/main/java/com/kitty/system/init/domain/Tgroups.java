@@ -1,18 +1,30 @@
+
 package com.kitty.system.init.domain;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
 
-@Setter
-@Getter
 @Table("t_groups")
-public class Tgroups {
-  @Column("skid")
-  private String skid;
-  
-  @Column("groups_name")
-  private String groupsName;
-
+public class Tgroups
+{
+    @Column("skid")
+    private String skid;
+    @Column("groups_name")
+    private String groupsName;
+    
+    public void setSkid(final String skid) {
+        this.skid = skid;
+    }
+    
+    public void setGroupsName(final String groupsName) {
+        this.groupsName = groupsName;
+    }
+    
+    public String getSkid() {
+        return this.skid;
+    }
+    
+    public String getGroupsName() {
+        return this.groupsName;
+    }
 }

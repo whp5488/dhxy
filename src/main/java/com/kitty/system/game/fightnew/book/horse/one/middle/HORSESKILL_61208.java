@@ -1,43 +1,51 @@
+
 package com.kitty.system.game.fightnew.book.horse.one.middle;
 
-import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
-import com.kitty.system.game.fightnew.FightObject;
-import com.kitty.system.game.fightnew.bean.Fight;
-import com.kitty.system.game.fightnew.bean.PetFightObject;
-import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
-import com.kitty.system.game.fightnew.book.horse.utils.HorseSkillUtils;
-import com.kitty.system.game.fightnew.book.horse.vo.HorseSkillParam;
 import com.kitty.system.game.pet.domain.Pet;
+import com.kitty.system.game.fightnew.FightObject;
+import com.kitty.system.game.fightnew.bean.PetFightObject;
+import com.kitty.system.game.fightnew.bean.Fight;
+import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
+import com.kitty.system.game.fightnew.book.horse.utils.HorseSkillUtils;
 import org.nutz.lang.util.NutMap;
+import com.kitty.system.game.fightnew.book.horse.vo.HorseSkillParam;
+import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
-public class HORSESKILL_61208 extends HorseSkillProcessor {
-  public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
-    double percenta = (15.0D * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1D) / 100.0D;
-    percenta = HorseSkillUtils.getMathRoundPercent(percenta);
-    NutMap map = NutMap.NEW();
-    if (percenta != 0.0D)
-      map.setv(String.valueOf(PRO_DICT_TYPE.COMBO_RATIO.getDist()), Double.valueOf(percenta)); 
-    int add = (int)(3.2D * horseSkillParam.getGrowUp() / 1000.0D / 1.325D * (0.6D * (-0.0067D * Math.pow(horseSkillParam.getLevel(), 2.0D) + 2.06D * horseSkillParam.getLevel()) / 130.0D + (-0.0067D * Math.pow(horseSkillParam.getProficient(), 2.0D) / 1000.0D + 2.06D * horseSkillParam.getProficient()) / 325000.0D + 0.1D) + 1.0D);
-    if (add > 0)
-      map.setv(String.valueOf(PRO_DICT_TYPE.COMBO_NUM.getDist()), Integer.valueOf(add)); 
-    if (map.size() <= 0)
-      return map; 
-    return null;
-  }
-  
-  public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
-    return null;
-  }
-  
-  public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
-    double percent = HorseSkillUtils.getPercentMiddle(horseSkillParam);
-    double percentb = (10.0D * percent + 0.1D) / 100.0D;
-    percentb = HorseSkillUtils.getMathRoundPercent(percentb);
-    if (percentb != 0.0D) {
-      NutMap map = NutMap.NEW();
-      map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), Double.valueOf(percentb));
-      return map;
-    } 
-    return null;
-  }
+public class HORSESKILL_61208 extends HorseSkillProcessor
+{
+    @Override
+    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+        double percenta = (15.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) / 100.0;
+        percenta = HorseSkillUtils.getMathRoundPercent(percenta);
+        final NutMap map = NutMap.NEW();
+        if (percenta != 0.0) {
+            map.setv(String.valueOf(PRO_DICT_TYPE.COMBO_RATIO.getDist()), (Object)percenta);
+        }
+        final int add = (int)(3.2 * (horseSkillParam.getGrowUp() / 1000.0 / 1.325 * (0.6 * (-0.0067 * Math.pow(horseSkillParam.getLevel(), 2.0) + 2.06 * horseSkillParam.getLevel()) / 130.0 + (-0.0067 * Math.pow((double)horseSkillParam.getProficient(), 2.0) / 1000.0 + 2.06 * horseSkillParam.getProficient()) / 325000.0 + 0.1)) + 1.0);
+        if (add > 0) {
+            map.setv(String.valueOf(PRO_DICT_TYPE.COMBO_NUM.getDist()), (Object)add);
+        }
+        if (map.size() <= 0) {
+            return map;
+        }
+        return null;
+    }
+    
+    @Override
+    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+        return null;
+    }
+    
+    @Override
+    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
+        final double percent = HorseSkillUtils.getPercentMiddle(horseSkillParam);
+        double percentb = (10.0 * percent + 0.1) / 100.0;
+        percentb = HorseSkillUtils.getMathRoundPercent(percentb);
+        if (percentb != 0.0) {
+            final NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), (Object)percentb);
+            return map;
+        }
+        return null;
+    }
 }

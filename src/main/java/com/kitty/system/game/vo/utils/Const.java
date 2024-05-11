@@ -1,597 +1,316 @@
+
 package com.kitty.system.game.vo.utils;
 
 import com.google.common.collect.ImmutableMap;
 import com.kitty.system.enums.common.ACC_GRADE;
-import com.kitty.system.enums.task.TaskType;
-import com.kitty.system.enums.war.wardef.FIGHT_TYPE;
 import java.util.ArrayList;
+import com.kitty.system.enums.war.wardef.FIGHT_TYPE;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
+import com.kitty.system.enums.task.TaskType;
+import java.util.List;
 
-public interface Const {
-  public static final boolean FIGHT_RECORD_STATE = false;
-  
-  public static final int FIGHT_PARAM_MAX = 10000;
-  
-  public static final long MOUSE_CARTOON = 200L;
-  
-  public static final long MOUSE_CLICKER = 250L;
-  
-  public static final long DAY = 365L;
-  
-  public static final int SMS_MINUTE = 60;
-  
-  public static final byte not = 0;
-  
-  public static final byte are = 1;
-  
-  public static final byte rest = 2;
-  
-  public static final String round = "round";
-  
-  public static final String value = "value";
-  
-  public static final String BRODCAST_MSG_TYPE_ROLE = "role";
-  
-  public static final int index_role_data = 0;
-  
-  public static final String country = "country";
-  
-  public static final String province = "province";
-  
-  public static final String hall = "hall";
-  
-  public static final String market = "market";
-  
-  public static final String countdown = "_countdown_";
-  
-  public static final String sessionTeam = "team:";
-  
-  public static final String chatSpeed = "chatSpeed";
-  
-  public static final String GOLD = "_gold";
-  
-  public static final String CASH = "_cash";
-  
-  public static final String DAY_AWARD = "_award";
-  
-  public static final String sid = "_sid";
-  
-  public static final String temporary = "temporary";
-  
-  public static final String sms = "_sms";
-  
-  public static final String tips = "#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#";
-  
-  public static final String tips_pet = "#<MM:%d,M:2,MP:%d,MT:%d,CP:%d,%s>[%s]#";
-  
-  public static final int off = 0;
-  
-  public static final int on = 1;
-  
-  public static final short fail = 0;
-  
-  public static final short succeed = 1;
-  
-  public static final byte increase = 1;
-  
-  public static final byte consume = 2;
-  
-  public static final byte byte_type = 1;
-  
-  public static final byte short_type = 2;
-  
-  public static final byte int_type = 3;
-  
-  public static final byte string_type = 4;
-  
-  public static final byte double_type = 5;
-  
-  public static final byte boolean_type = 6;
-  
-  public static final byte obj_type = 7;
-  
-  public static final int limit_exp = 1500000000;
-  
-  public static final int max_partner_grade = 3250;
-  
-  public static final int min_mana_reserve = 250000;
-  
-  public static final int min_life_reserve = 250000;
-  
-  public static final int bn = 6670;
-  
-  public static final int dur = 6672;
-  
-  public static final int score = 6679;
-  
-  public static final int serial = 6680;
-  
-  public static final int refining = 6681;
-  
-  public static final int online = 1;
-  
-  public static final int trust = 2;
-  
-  public static final long off_line = 1800L;
-  
-  public static final long team_request = 600L;
-  
-  public static final long temporary_time = 54000L;
-  
-  public static final int HEART_CHECK_MINUTE_COUNT = 1;
-  
-  public static final int HEART_COUNT_PER_MINUTE_UNLAW = 9;
-  
-  public static final int HEART_COUNT_SINGLE_UNLAW = 10;
-  
-  public static final long EXPIRE_TIME = 120000L;
-  
-  public static final int SAFE_PASSWORD_WAIT_RESET_DAY = 7;
-  
-  public static final int RESET_HOUR = 5;
-  
-  public static final int RESET_QUOTA_LIMIT = 2;
-  
-  public static final Integer BUYBACK_TYPE_PET = Integer.valueOf(1);
-  
-  public static final Integer BUYBACK_TYPE_EQUIPMENT = Integer.valueOf(2);
-  
-  public static final String CLIENT_ACTIVE = "1";
-  
-  public static final String CLIENT_SILENT = "2";
-  
-  public static final String CLIENT_INACTIVE = "3";
-  
-  public static final Integer INT_LIMIT = Integer.valueOf(2000000000);
-  
-  public static final Integer RESTYPE_GOLD = Integer.valueOf(1);
-  
-  public static final Integer RESTYPE_SILVER = Integer.valueOf(2);
-  
-  public static final Integer RESTYPE_COIN = Integer.valueOf(3);
-  
-  public static final Integer RES_TYPE_EXP = Integer.valueOf(4);
-  
-  public static final Integer RESTYPE_GUO = Integer.valueOf(5);
-  
-  public static final Integer RESTYPE_BRAC = Integer.valueOf(6);
-  
-  public static final Integer RESTYPE_NAO = Integer.valueOf(7);
-  
-  public static final Integer RESTYPE_DI = Integer.valueOf(8);
-  
-  public static final Integer RESTYPE_ARENA = Integer.valueOf(9);
-  
-  public static final Integer RESTYPE_LONG = Integer.valueOf(10);
-  
-  public static final Integer RESTYPE_NICE = Integer.valueOf(11);
-  
-  public static final Integer RES_TYPE_EXP_PET = Integer.valueOf(12);
-  
-  public static final Integer RESTYPE_TRIBUTE = Integer.valueOf(13);
-  
-  public static final Integer RES_TYPE_FEATS = Integer.valueOf(14);
-  
-  public static final Integer RES_TYPE_CHARGE_SCORE = Integer.valueOf(15);
-  
-  public static final Integer RES_TYPE_BOUND_GOLD = Integer.valueOf(16);
-  
-  public static final Integer RES_TYPE_ACHIEVEMENT = Integer.valueOf(17);
-  
-  public static final List<Integer> currency = Arrays.asList(new Integer[] { Integer.valueOf(RESTYPE_GOLD.intValue() + 1000), Integer.valueOf(RESTYPE_SILVER.intValue() + 1000), Integer.valueOf(RESTYPE_COIN.intValue() + 1000) });
-  
-  public static final long PRISON_RELEASE_MONEY = 10000L;
-  
-  public static final int astrict = 1;
-  
-  public static final int eiky = 2;
-  
-  public static final int exoteric = 0;
-  
-  public static final List<Integer> treasureMap = Arrays.asList(new Integer[] { Integer.valueOf(90032), Integer.valueOf(90033), Integer.valueOf(90061) });
-  
-  public static final String map = "map";
-  
-  public static final String x = "x";
-  
-  public static final String y = "y";
-  
-  public static final String move = "move_";
-  
-  public static final List<Integer> treasureScene = Arrays.asList(new Integer[] { Integer.valueOf(1000), Integer.valueOf(1009), Integer.valueOf(1018) });
-  
-  public static final Integer BAG_POS_MIN = Integer.valueOf(35);
-  
-  public static final Integer STORE_POS_MIN = Integer.valueOf(50);
-  
-  public static final Integer PET_EQUIP_BAG_POS_MIN = Integer.valueOf(75);
-  
-  public static final Integer BAG_POS = Integer.valueOf(5);
-  
-  public static final Integer BUY_PET_GRID = Integer.valueOf(23);
-  
-  public static final Long[] ADD_PET_LIMIT_COST = new Long[] { 
-      Long.valueOf(100000L), Long.valueOf(300000L), Long.valueOf(1000000L), Long.valueOf(5000000L), Long.valueOf(10000000L), Long.valueOf(20000000L), Long.valueOf(50000000L), Long.valueOf(100000000L), Long.valueOf(200000000L), Long.valueOf(200000000L), 
-      Long.valueOf(200000000L), Long.valueOf(200000000L), Long.valueOf(200000000L), Long.valueOf(200000000L), Long.valueOf(200000000L), Long.valueOf(200000000L), Long.valueOf(500000000L), Long.valueOf(1000000000L), Long.valueOf(5000000000L), Long.valueOf(10000000000L), 
-      Long.valueOf(20000000000L), Long.valueOf(40000000000L), Long.valueOf(80000000000L) };
-  
-  public static final Integer[] NORMAL_PET_REFINE_CONSUME = new Integer[] { Integer.valueOf(1), Integer.valueOf(4), Integer.valueOf(18) };
-  
-  public static final Integer[] PROTECT_PET_REFINE_CONSUME = new Integer[] { Integer.valueOf(3), Integer.valueOf(14), Integer.valueOf(54) };
-  
-  public static final Integer[] SPECIAL_PET_REFINE_CONSUME = new Integer[] { Integer.valueOf(5), Integer.valueOf(23), Integer.valueOf(90) };
-  
-  public static final Integer[] NIUBI_PET_REFINE_CONSUME = new Integer[] { Integer.valueOf(10), Integer.valueOf(47), Integer.valueOf(180) };
-  
-  public static final Integer[] TOP_PET_REFINE_CONSUME = new Integer[] { Integer.valueOf(20), Integer.valueOf(95), Integer.valueOf(360) };
-  
-  public static final long PET_FLY_3_SILVER = 5000000L;
-  
-  public static final double[] PET_FLY = new double[] { 0.0D, 0.1D, 0.15D, 0.15D };
-  
-  public static final int PET_FLY_3 = 60;
-  
-  public static final int pet_way_war = 1;
-  
-  public static final int pet_way_animal = 2;
-  
-  public static final int pet_way_book = 3;
-  
-  public static final Double[] grand_t_range = new Double[] { Double.valueOf(1.0D), Double.valueOf(1.0625D), Double.valueOf(1.125D), Double.valueOf(1.1875D), Double.valueOf(1.25D) };
-  
-  public static final Integer EMPTY_SKILLPOS = Integer.valueOf(0);
-  
-  public static final Integer FENYIN_SKILLPOS = Integer.valueOf(-1);
-  
-  public static final Integer LOCK_SKILLPOS = Integer.valueOf(-2);
-  
-  public static final Integer[] TOP_PET_INIT_SKILLS = new Integer[] { 
-      EMPTY_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, 
-      FENYIN_SKILLPOS, FENYIN_SKILLPOS };
-  
-  public static final Integer[] NIUBI_PET_INIT_SKILLS = new Integer[] { EMPTY_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS };
-  
-  public static final Integer[] VERY_PET_INIT_SKILLS = new Integer[] { EMPTY_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS };
-  
-  public static final Integer[] NIUBI_PET_INIT_SPECIAL_SKILLS = new Integer[] { LOCK_SKILLPOS };
-  
-  public static final Integer[] PROTECT_PET_INIT_SKILLS = new Integer[] { EMPTY_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS };
-  
-  public static final Integer[] NORMAL_PET_INIT_SKILLS = new Integer[] { EMPTY_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS, FENYIN_SKILLPOS };
-  
-  public static final Integer normal = Integer.valueOf(50);
-  
-  public static final Integer senior = Integer.valueOf(100);
-  
-  public static final Integer supreme = Integer.valueOf(300);
-  
-  public static final Integer soul = Integer.valueOf(400);
-  
-  public static final Integer special = Integer.valueOf(500);
-  
-  public static final Integer born = Integer.valueOf(100);
-  
-  public static final int step_monomer = 4;
-  
-  public static final int step_group = 5;
-  
-  public static final int grade_normal = 1;
-  
-  public static final double grade_normal_score = 75.0D;
-  
-  public static final int grade_so = 2;
-  
-  public static final double grade_so_score = 86.0D;
-  
-  public static final int grade_fine = 3;
-  
-  public static final double grade_fine_score = 98.0D;
-  
-  public static final int grade_superb = 4;
-  
-  public static final int fight_close = 5;
-  
-  public static final int close_die = 25;
-  
-  public static final int close_dan_limit = 100000;
-  
-  public static final String close_dan_dist = "close_dan";
-  
-  public static final int close_fight_limit = 200000;
-  
-  public static final String close_fight_dist = "close_fight";
-  
-  public static final int close_level = 15;
-  
-  public static final int close_ceiling = 2000000000;
-  
-  public static final short domesticate_week = 30;
-  
-  public static final int domesticate_minute_up = 3;
-  
-  public static final int pet_domesticate_time = 60;
-  
-  public static final double pet_domesticate = 10000.0D;
-  
-  public static final int horse_domesticate_time = 15;
-  
-  public static final double horse_domesticate = 16000.0D;
-  
-  public static final Integer skillExp = Integer.valueOf(100);
-  
-  public static final Integer maxSkillExp = Integer.valueOf(25000);
-  
-  public static final Double skillCostMoney = Double.valueOf(1.0E8D);
-  
-  public static final int dragon_morph_cd = 4;
-  
-  public static final int dragon_morph_last = 2;
-  
-  public static final int MONSTER = 50000;
-  
-  public static final String NOT_LEADER = "既然是集体行动，还是老老实实听从队长的指挥啦。";
-  
-  public static final double hit_rate = 0.8D;
-  
-  public static final int combo_num = 3;
-  
-  public static final int fight_delay = 30000;
-  
-  public static final int WILD_MONSTER_MIN_LEVEL = 33;
-  
-  public static final int FORCEPK_MIN_LEVEL = 50;
-  
-  public static final int MONSTER_PERIMETER = 10;
-  
-  public static final int pve = 0;
-  
-  public static final int pvp = 1;
-  
-  public static final int fight_life = 1;
-  
-  public static final int fight_mana = 2;
-  
-  public static final int fight_atk = 3;
-  
-  public static final int fight_speed = 4;
-  
-  public static final String hurt = "hurt";
-  
-  public static final List<Integer> not_partner = Arrays.asList(new Integer[] { Integer.valueOf(FIGHT_TYPE.STAR.getValue()), Integer.valueOf(FIGHT_TYPE.NIAN.getValue()), Integer.valueOf(FIGHT_TYPE.BURNING_HOT.getValue()), Integer.valueOf(FIGHT_TYPE.PARTY_BANDIT.getValue()) });
-  
-  public static final List<Integer> not_flee = Arrays.asList(new Integer[] { Integer.valueOf(FIGHT_TYPE.FORCE_PK.getValue()), Integer.valueOf(FIGHT_TYPE.AT_WILL_PK.getValue()), Integer.valueOf(FIGHT_TYPE.WATER_PK.getValue()), Integer.valueOf(FIGHT_TYPE.GANG_WARS.getValue()), Integer.valueOf(FIGHT_TYPE.HG_FIGHT.getValue()) });
-  
-  public static final List<Integer> not_fight_spectator = Arrays.asList(new Integer[] { Integer.valueOf(FIGHT_TYPE.AT_WILL_PK.getValue()), Integer.valueOf(FIGHT_TYPE.WATER_PK.getValue()), Integer.valueOf(FIGHT_TYPE.GANG_WARS.getValue()) });
-  
-  public static final List<Integer> vanish = Arrays.asList(new Integer[] { Integer.valueOf(FIGHT_TYPE.STAR.getValue()), Integer.valueOf(FIGHT_TYPE.SEAL_DEMON.getValue()), Integer.valueOf(FIGHT_TYPE.THREE_SCOPE.getValue()) });
-  
-  public static final byte star_18 = 1;
-  
-  public static final String else_auto_fight = "else_auto_fight";
-  
-  public static final String else_db_speed_show = "else_db_speed_show";
-  
-  public static final int INFINITE_ROUND = -2;
-  
-  public static final int MOVE_ADDITION = 30;
-  
-  public static final String AFTER_ROUND = "after_round";
-  
-  public static final String GT_LIFE = "gt_life";
-  
-  public static final String GT_MANA = "gt_mana";
-  
-  public static final String GE_MANA = "ge_mana";
-  
-  public static final String GT_MAX_LIFE = "gt_max_life";
-  
-  public static final String GT_MAX_MANA = "gt_max_mana";
-  
-  public static final short BALLOT_TYPE_UN_OP = 0;
-  
-  public static final short BALLOT_TYPE_AGREE = 1;
-  
-  public static final short BALLOT_TYPE_DISAGREE = 2;
-  
-  public static final int PARTY_EMISSARY_NPC_ID = 90999;
-  
-  public static final int JOB_EXPEL = -2;
-  
-  public static final int GANG_WARS_MAP_ID = 3001;
-  
-  public static final int PARTY_MAP_ID_1 = 3002;
-  
-  public static final int PARTY_MAP_ID_2 = 3021;
-  
-  public static final int PARTY_MAP_ID_3 = 3022;
-  
-  public static final short NOTIFICATION_PARTY_REQUEST = 2;
-  
-  public static final int PARTY_CREATE_MIN_LEVEL = 30;
-  
-  public static final int PARTY_CREATE_NEED_GOLD = 20;
-  
-  public static final short LOG_MAX_COUNT = 50;
-  
-  public static final byte PARTY_PERMISSION_BZ = 1;
-  
-  public static final byte PARTY_PERMISSION_FBZ = 2;
-  
-  public static final byte PARTY_PERMISSION_L_HF = 3;
-  
-  public static final byte PARTY_PERMISSION_R_HF = 4;
-  
-  public static final byte PARTY_PERMISSION_ZL = 5;
-  
-  public static final byte PARTY_PERMISSION_TZ = 6;
-  
-  public static final byte PARTY_PERMISSION_TT = 7;
-  
-  public static final byte PARTY_PERMISSION_YQ = 8;
-  
-  public static final String PARTY_JOB_BANG_ZHU = "帮主";
-  
-  public static final String PARTY_JOB_FU_BANG_ZHU = "副帮主";
-  
-  public static final String PARTY_JOB_L_HF = "左护法";
-  
-  public static final String PARTY_JOB_R_HF = "右护法";
-  
-  public static final String PARTY_JOB_ZL = "长老";
-  
-  public static final String PARTY_JOB_TZ = "堂主";
-  
-  public static final String PARTY_JOB_TT = "团长";
-  
-  public static final String PARTY_JOB_BANG_YQ = "帮众";
-  
-  public static final byte PARTY_JOB_ID_BANG_ZHU = 70;
-  
-  public static final byte PARTY_JOB_ID_FU_BANG_ZHU = 60;
-  
-  public static final byte PARTY_JOB_ID_L_HF = 50;
-  
-  public static final byte PARTY_JOB_ID_R_HF = 40;
-  
-  public static final byte PARTY_JOB_ID_ZL = 30;
-  
-  public static final byte PARTY_JOB_ID_TZ = 20;
-  
-  public static final byte PARTY_JOB_ID_TT = 15;
-  
-  public static final byte PARTY_JOB_ID_BANG_YQ = 10;
-  
-  public static final int PARTY_JOB_ID_BANG_ZHU_TITLE = 300001;
-  
-  public static final int PARTY_JOB_ID_FU_BANG_ZHU_TITLE = 300002;
-  
-  public static final int PARTY_JOB_ID_L_HF_TITLE = 300003;
-  
-  public static final int PARTY_JOB_ID_R_HF_TITLE = 300004;
-  
-  public static final int PARTY_JOB_ID_ZL_TITLE = 300005;
-  
-  public static final int PARTY_JOB_ID_TZ_TITLE = 300006;
-  
-  public static final int PARTY_JOB_ID_TT_TITLE = 300010;
-  
-  public static final int PARTY_JOB_ID_BANG_YQ_TITLE = 300007;
-  
-  public static final List<Integer> PARTY_TITLE_LIST = Arrays.asList(new Integer[] { Integer.valueOf(300001), Integer.valueOf(300002), Integer.valueOf(300003), Integer.valueOf(300004), Integer.valueOf(300005), Integer.valueOf(300006), Integer.valueOf(300010), Integer.valueOf(300007) });
-  
-  public static final List<String> MANAGER_JOBS = Arrays.asList(new String[] { "帮主", "副帮主", "左护法", "右护法", "长老", "堂主", "团长", "帮众" });
-  
-  public static final int fightType_petFly = 25;
-  
-  public static final int min_rei = 1;
-  
-  public static final int max_rei = 3;
-  
-  public static final int hero_relive = 10;
-  
-  public static final int hero_race = 300;
-  
-  public static final int[] pet_relive = new int[] { 50000, 200000, 500000 };
-  
-  public static final int[] rest_attribute = new int[] { 75111, 90014, 90015, 90016, 90017 };
-  
-  public static final byte INSTRUCTION_LEVEL_UP = 1;
-  
-  public static final byte INSTRUCTION_TASK_END = 2;
-  
-  public static final byte INSTRUCTION_TALK_END = 3;
-  
-  public static final int FIRST_MAIN_TASK_ID = 100001;
-  
-  public static final byte TASK_BEGIN = 0;
-  
-  public static final byte TASK_END = 1;
-  
-  public static final int DELAY_TIME_AFTER_GIVEUP_SCHOOL = 300000;
-  
-  public static final int TASK_BOUT = 10;
-  
-  public static final List<TaskType> TEAM_ACCEPT = Arrays.asList(new TaskType[] { TaskType.TOWER, TaskType.LOOK_FOR, TaskType.CATCHES_GHOSTS, TaskType.GODS_COURT, TaskType.MWK_FRONT, TaskType.CRUSADE_RENEGADE, TaskType.XM });
-  
-  public static final List<TaskType> taskTypeList = Arrays.asList(new TaskType[] { TaskType.TREASURE_MAP, TaskType.SCHOOL, TaskType.PARTY, TaskType.LOOP, TaskType.FIVE, TaskType.CATCHES_GHOSTS, TaskType.GODS_COURT, TaskType.XM, TaskType.CARNIVAL });
-  
-  public static final List<Integer> DUGEON_DYT_MAP = Arrays.asList(new Integer[] { Integer.valueOf(1111), Integer.valueOf(1112), Integer.valueOf(1113), Integer.valueOf(1114), Integer.valueOf(1115), Integer.valueOf(1116), Integer.valueOf(1117) });
-  
-  public static final List<Integer> DUGEON_LOOK_FOR_MAP = Arrays.asList(new Integer[] { Integer.valueOf(5001) });
-  
-  public static final List<Integer> DUGEON_XM_MAP = Arrays.asList(new Integer[] { Integer.valueOf(8001), Integer.valueOf(8002), Integer.valueOf(8003), Integer.valueOf(8004) });
-  
-  public static final String MO_RESET = "星期六";
-  
-  public static final long RES_TYPE_NICE_LIMIT = 300L;
-  
-  public static final String ADD_TO_TARGET = "add_to_target";
-  
-  public static final int PRISON_MAP = 1201;
-  
-  public static final int CA_MAP = 3005;
-  
-  public static final String NOT_CHECK_CHANGE_MAP = "not_check_change_map";
-  
-  public static final List<Integer> poss = new ArrayList<Integer>() {
-    
+public interface Const
+{
+    public static final boolean FIGHT_RECORD_STATE = false;
+    public static final int FIGHT_PARAM_MAX = 10000;
+    public static final long MOUSE_CARTOON = 200L;
+    public static final long MOUSE_CLICKER = 250L;
+    public static final long DAY = 365L;
+    public static final int SMS_MINUTE = 60;
+    public static final byte not = 0;
+    public static final byte are = 1;
+    public static final byte rest = 2;
+    public static final String round = "round";
+    public static final String value = "value";
+    public static final String BRODCAST_MSG_TYPE_ROLE = "role";
+    public static final int index_role_data = 0;
+    public static final String country = "country";
+    public static final String province = "province";
+    public static final String hall = "hall";
+    public static final String market = "market";
+    public static final String countdown = "_countdown_";
+    public static final String sessionTeam = "team:";
+    public static final String chatSpeed = "chatSpeed";
+    public static final String GOLD = "_gold";
+    public static final String CASH = "_cash";
+    public static final String DAY_AWARD = "_award";
+    public static final String sid = "_sid";
+    public static final String temporary = "temporary";
+    public static final String sms = "_sms";
+    public static final String tips = "#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#";
+    public static final String tips_pet = "#<MM:%d,M:2,MP:%d,MT:%d,CP:%d,%s>[%s]#";
+    public static final int off = 0;
+    public static final int on = 1;
+    public static final short fail = 0;
+    public static final short succeed = 1;
+    public static final byte increase = 1;
+    public static final byte consume = 2;
+    public static final byte byte_type = 1;
+    public static final byte short_type = 2;
+    public static final byte int_type = 3;
+    public static final byte string_type = 4;
+    public static final byte double_type = 5;
+    public static final byte boolean_type = 6;
+    public static final byte obj_type = 7;
+    public static final int limit_exp = 1500000000;
+    public static final int max_partner_grade = 3250;
+    public static final int min_mana_reserve = 250000;
+    public static final int min_life_reserve = 250000;
+    public static final int bn = 6670;
+    public static final int dur = 6672;
+    public static final int score = 6679;
+    public static final int serial = 6680;
+    public static final int refining = 6681;
+    public static final int online = 1;
+    public static final int trust = 2;
+    public static final long off_line = 1800L;
+    public static final long team_request = 600L;
+    public static final long temporary_time = 54000L;
+    public static final int HEART_CHECK_MINUTE_COUNT = 1;
+    public static final int HEART_COUNT_PER_MINUTE_UNLAW = 9;
+    public static final int HEART_COUNT_SINGLE_UNLAW = 10;
+    public static final long EXPIRE_TIME = 120000L;
+    public static final int SAFE_PASSWORD_WAIT_RESET_DAY = 7;
+    public static final int RESET_HOUR = 5;
+    public static final int RESET_QUOTA_LIMIT = 2;
+    public static final Integer BUYBACK_TYPE_PET = 1;
+    public static final Integer BUYBACK_TYPE_EQUIPMENT = 2;
+    public static final String CLIENT_ACTIVE = "1";
+    public static final String CLIENT_SILENT = "2";
+    public static final String CLIENT_INACTIVE = "3";
+    public static final Integer INT_LIMIT = 2000000000;
+    public static final Integer RESTYPE_GOLD = 1;
+    public static final Integer RESTYPE_SILVER = 2;
+    public static final Integer RESTYPE_COIN = 3;
+    public static final Integer RES_TYPE_EXP = 4;
+    public static final Integer RESTYPE_GUO = 5;
+    public static final Integer RESTYPE_BRAC = 6;
+    public static final Integer RESTYPE_NAO = 7;
+    public static final Integer RESTYPE_DI = 8;
+    public static final Integer RESTYPE_ARENA = 9;
+    public static final Integer RESTYPE_LONG = 10;
+    public static final Integer RESTYPE_NICE = 11;
+    public static final Integer RES_TYPE_EXP_PET = 12;
+    public static final Integer RESTYPE_TRIBUTE = 13;
+    public static final Integer RES_TYPE_FEATS = 14;
+    public static final Integer RES_TYPE_CHARGE_SCORE = 15;
+    public static final Integer RES_TYPE_BOUND_GOLD = 16;
+    public static final Integer RES_TYPE_ACHIEVEMENT = 17;
+    public static final List<Integer> currency = Arrays.asList(Const.RESTYPE_GOLD + 1000, Const.RESTYPE_SILVER + 1000, Const.RESTYPE_COIN + 1000);
+    public static final long PRISON_RELEASE_MONEY = 10000L;
+    public static final int astrict = 1;
+    public static final int eiky = 2;
+    public static final int exoteric = 0;
+    public static final List<Integer> treasureMap = Arrays.asList(90032, 90033, 90061);
+    public static final String map = "map";
+    public static final String x = "x";
+    public static final String y = "y";
+    public static final String move = "move_";
+    public static final List<Integer> treasureScene = Arrays.asList(1000, 1009, 1018);
+    public static final Integer BAG_POS_MIN = 35;
+    public static final Integer STORE_POS_MIN = 50;
+    public static final Integer PET_EQUIP_BAG_POS_MIN = 75;
+    public static final Integer BAG_POS = 5;
+    public static final Integer BUY_PET_GRID = 23;
+    public static final Long[] ADD_PET_LIMIT_COST = { 100000L, 300000L, 1000000L, 5000000L, 10000000L, 20000000L, 50000000L, 100000000L, 200000000L, 200000000L, 200000000L, 200000000L, 200000000L, 200000000L, 200000000L, 200000000L, 500000000L, 1000000000L, 5000000000L, 10000000000L, 20000000000L, 40000000000L, 80000000000L };
+    public static final Integer[] NORMAL_PET_REFINE_CONSUME = { 1, 4, 18 };
+    public static final Integer[] PROTECT_PET_REFINE_CONSUME = { 3, 14, 54 };
+    public static final Integer[] SPECIAL_PET_REFINE_CONSUME = { 5, 23, 90 };
+    public static final Integer[] NIUBI_PET_REFINE_CONSUME = { 10, 47, 180 };
+    public static final Integer[] TOP_PET_REFINE_CONSUME = { 20, 95, 360 };
+    public static final long PET_FLY_3_SILVER = 5000000L;
+    public static final double[] PET_FLY = { 0.0, 0.1, 0.15, 0.15 };
+    public static final int PET_FLY_3 = 60;
+    public static final int pet_way_war = 1;
+    public static final int pet_way_animal = 2;
+    public static final int pet_way_book = 3;
+    public static final Double[] grand_t_range = { 1.0, 1.0625, 1.125, 1.1875, 1.25 };
+    public static final Integer EMPTY_SKILLPOS = 0;
+    public static final Integer FENYIN_SKILLPOS = -1;
+    public static final Integer LOCK_SKILLPOS = -2;
+    public static final Integer[] TOP_PET_INIT_SKILLS = { Const.EMPTY_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS };
+    public static final Integer[] NIUBI_PET_INIT_SKILLS = { Const.EMPTY_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS };
+    public static final Integer[] VERY_PET_INIT_SKILLS = { Const.EMPTY_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS };
+    public static final Integer[] NIUBI_PET_INIT_SPECIAL_SKILLS = { Const.LOCK_SKILLPOS };
+    public static final Integer[] PROTECT_PET_INIT_SKILLS = { Const.EMPTY_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS };
+    public static final Integer[] NORMAL_PET_INIT_SKILLS = { Const.EMPTY_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS, Const.FENYIN_SKILLPOS };
+    public static final Integer normal = 50;
+    public static final Integer senior = 100;
+    public static final Integer supreme = 300;
+    public static final Integer soul = 400;
+    public static final Integer special = 500;
+    public static final Integer born = 100;
+    public static final int step_monomer = 4;
+    public static final int step_group = 5;
+    public static final int grade_normal = 1;
+    public static final double grade_normal_score = 75.0;
+    public static final int grade_so = 2;
+    public static final double grade_so_score = 86.0;
+    public static final int grade_fine = 3;
+    public static final double grade_fine_score = 98.0;
+    public static final int grade_superb = 4;
+    public static final int fight_close = 5;
+    public static final int close_die = 25;
+    public static final int close_dan_limit = 100000;
+    public static final String close_dan_dist = "close_dan";
+    public static final int close_fight_limit = 200000;
+    public static final String close_fight_dist = "close_fight";
+    public static final int close_level = 15;
+    public static final int close_ceiling = 2000000000;
+    public static final short domesticate_week = 30;
+    public static final int domesticate_minute_up = 3;
+    public static final int pet_domesticate_time = 60;
+    public static final double pet_domesticate = 10000.0;
+    public static final int horse_domesticate_time = 15;
+    public static final double horse_domesticate = 16000.0;
+    public static final Integer skillExp = 100;
+    public static final Integer maxSkillExp = 25000;
+    public static final Double skillCostMoney = 1.0E8;
+    public static final int dragon_morph_cd = 4;
+    public static final int dragon_morph_last = 2;
+    public static final int MONSTER = 50000;
+    public static final String NOT_LEADER = "既然是集体行动，还是老老实实听从队长的指挥啦。";
+    public static final double hit_rate = 0.8;
+    public static final int combo_num = 3;
+    public static final int fight_delay = 30000;
+    public static final int WILD_MONSTER_MIN_LEVEL = 33;
+    public static final int FORCEPK_MIN_LEVEL = 50;
+    public static final int MONSTER_PERIMETER = 10;
+    public static final int pve = 0;
+    public static final int pvp = 1;
+    public static final int fight_life = 1;
+    public static final int fight_mana = 2;
+    public static final int fight_atk = 3;
+    public static final int fight_speed = 4;
+    public static final String hurt = "hurt";
+    public static final List<Integer> not_partner = Arrays.asList(FIGHT_TYPE.STAR.getValue(), FIGHT_TYPE.NIAN.getValue(), FIGHT_TYPE.BURNING_HOT.getValue(), FIGHT_TYPE.PARTY_BANDIT.getValue());
+    public static final List<Integer> not_flee = Arrays.asList(FIGHT_TYPE.FORCE_PK.getValue(), FIGHT_TYPE.AT_WILL_PK.getValue(), FIGHT_TYPE.WATER_PK.getValue(), FIGHT_TYPE.GANG_WARS.getValue(), FIGHT_TYPE.HG_FIGHT.getValue());
+    public static final List<Integer> not_fight_spectator = Arrays.asList(FIGHT_TYPE.AT_WILL_PK.getValue(), FIGHT_TYPE.WATER_PK.getValue(), FIGHT_TYPE.GANG_WARS.getValue());
+    public static final List<Integer> vanish = Arrays.asList(FIGHT_TYPE.STAR.getValue(), FIGHT_TYPE.SEAL_DEMON.getValue(), FIGHT_TYPE.THREE_SCOPE.getValue());
+    public static final byte star_18 = 1;
+    public static final String else_auto_fight = "else_auto_fight";
+    public static final String else_db_speed_show = "else_db_speed_show";
+    public static final int INFINITE_ROUND = -2;
+    public static final int MOVE_ADDITION = 30;
+    public static final String AFTER_ROUND = "after_round";
+    public static final String GT_LIFE = "gt_life";
+    public static final String GT_MANA = "gt_mana";
+    public static final String GE_MANA = "ge_mana";
+    public static final String GT_MAX_LIFE = "gt_max_life";
+    public static final String GT_MAX_MANA = "gt_max_mana";
+    public static final short BALLOT_TYPE_UN_OP = 0;
+    public static final short BALLOT_TYPE_AGREE = 1;
+    public static final short BALLOT_TYPE_DISAGREE = 2;
+    public static final int PARTY_EMISSARY_NPC_ID = 90999;
+    public static final int JOB_EXPEL = -2;
+    public static final int GANG_WARS_MAP_ID = 3001;
+    public static final int PARTY_MAP_ID_1 = 3002;
+    public static final int PARTY_MAP_ID_2 = 3021;
+    public static final int PARTY_MAP_ID_3 = 3022;
+    public static final short NOTIFICATION_PARTY_REQUEST = 2;
+    public static final int PARTY_CREATE_MIN_LEVEL = 30;
+    public static final int PARTY_CREATE_NEED_GOLD = 20;
+    public static final short LOG_MAX_COUNT = 50;
+    public static final byte PARTY_PERMISSION_BZ = 1;
+    public static final byte PARTY_PERMISSION_FBZ = 2;
+    public static final byte PARTY_PERMISSION_L_HF = 3;
+    public static final byte PARTY_PERMISSION_R_HF = 4;
+    public static final byte PARTY_PERMISSION_ZL = 5;
+    public static final byte PARTY_PERMISSION_TZ = 6;
+    public static final byte PARTY_PERMISSION_TT = 7;
+    public static final byte PARTY_PERMISSION_YQ = 8;
+    public static final String PARTY_JOB_BANG_ZHU = "帮主";
+    public static final String PARTY_JOB_FU_BANG_ZHU = "副帮主";
+    public static final String PARTY_JOB_L_HF = "左护法";
+    public static final String PARTY_JOB_R_HF = "右护法";
+    public static final String PARTY_JOB_ZL = "长老";
+    public static final String PARTY_JOB_TZ = "堂主";
+    public static final String PARTY_JOB_TT = "团长";
+    public static final String PARTY_JOB_BANG_YQ = "帮众";
+    public static final byte PARTY_JOB_ID_BANG_ZHU = 70;
+    public static final byte PARTY_JOB_ID_FU_BANG_ZHU = 60;
+    public static final byte PARTY_JOB_ID_L_HF = 50;
+    public static final byte PARTY_JOB_ID_R_HF = 40;
+    public static final byte PARTY_JOB_ID_ZL = 30;
+    public static final byte PARTY_JOB_ID_TZ = 20;
+    public static final byte PARTY_JOB_ID_TT = 15;
+    public static final byte PARTY_JOB_ID_BANG_YQ = 10;
+    public static final int PARTY_JOB_ID_BANG_ZHU_TITLE = 300001;
+    public static final int PARTY_JOB_ID_FU_BANG_ZHU_TITLE = 300002;
+    public static final int PARTY_JOB_ID_L_HF_TITLE = 300003;
+    public static final int PARTY_JOB_ID_R_HF_TITLE = 300004;
+    public static final int PARTY_JOB_ID_ZL_TITLE = 300005;
+    public static final int PARTY_JOB_ID_TZ_TITLE = 300006;
+    public static final int PARTY_JOB_ID_TT_TITLE = 300010;
+    public static final int PARTY_JOB_ID_BANG_YQ_TITLE = 300007;
+    public static final List<Integer> PARTY_TITLE_LIST = Arrays.asList(300001, 300002, 300003, 300004, 300005, 300006, 300010, 300007);
+    public static final List<String> MANAGER_JOBS = Arrays.asList("帮主", "副帮主", "左护法", "右护法", "长老", "堂主", "团长", "帮众");
+    public static final int fightType_petFly = 25;
+    public static final int min_rei = 1;
+    public static final int max_rei = 3;
+    public static final int hero_relive = 10;
+    public static final int hero_race = 300;
+    public static final int[] pet_relive = { 50000, 200000, 500000, 2500000 };
+    public static final int[] rest_attribute = { 75111, 90014, 90015, 90016, 90017 };
+    public static final byte INSTRUCTION_LEVEL_UP = 1;
+    public static final byte INSTRUCTION_TASK_END = 2;
+    public static final byte INSTRUCTION_TALK_END = 3;
+    public static final int FIRST_MAIN_TASK_ID = 100001;
+    public static final byte TASK_BEGIN = 0;
+    public static final byte TASK_END = 1;
+    public static final int DELAY_TIME_AFTER_GIVEUP_SCHOOL = 300000;
+    public static final int TASK_BOUT = 10;
+    public static final List<TaskType> TEAM_ACCEPT = Arrays.asList(TaskType.TOWER, TaskType.LOOK_FOR, TaskType.CATCHES_GHOSTS, TaskType.GODS_COURT, TaskType.MWK_FRONT, TaskType.CRUSADE_RENEGADE, TaskType.XM);
+    public static final List<TaskType> taskTypeList = Arrays.asList(TaskType.TREASURE_MAP, TaskType.SCHOOL, TaskType.PARTY, TaskType.LOOP, TaskType.FIVE, TaskType.CATCHES_GHOSTS, TaskType.GODS_COURT, TaskType.XM, TaskType.CARNIVAL);
+    public static final List<Integer> DUGEON_DYT_MAP = Arrays.asList(1111, 1112, 1113, 1114, 1115, 1116, 1117);
+    public static final List<Integer> DUGEON_LOOK_FOR_MAP = Arrays.asList(5001);
+    public static final List<Integer> DUGEON_XM_MAP = Arrays.asList(8001, 8002, 8003, 8004);
+    public static final String MO_RESET = "星期六";
+    public static final long RES_TYPE_NICE_LIMIT = 300L;
+    public static final String ADD_TO_TARGET = "add_to_target";
+    public static final int PRISON_MAP = 1201;
+    public static final int CA_MAP = 3005;
+    public static final String NOT_CHECK_CHANGE_MAP = "not_check_change_map";
+    public static final List<Integer> poss = new ArrayList<Integer>() {
+        {
+            this.add(10001);
+            this.add(10002);
+            this.add(10003);
+            this.add(10004);
+            this.add(10005);
+            this.add(10101);
+            this.add(10102);
+            this.add(10103);
+            this.add(10104);
+            this.add(10105);
+        }
     };
-  
-  public static final int CA_SESSION = 3;
-  
-  public static final int WATER_SESSION = 3;
-  
-  public static final int COMPENSATE_SCORE = 50;
-  
-  public static final String WATER_SCORE = "_SCORE";
-  
-  public static final String WATER_FEATS = "_FEATS";
-  
-  public static final String WATER_MOTTO = "水陆战神很忙，此处什么都没有留下……";
-  
-  public static final List<String> WATER_MIRRIR_POS = Arrays.asList(new String[] { "20,50", "5,42", "13,33", "29,35", "35,45" });
-  
-  public static final String INCENSE_EXPIRE_TIME = "incenseExpireTime";
-  
-  public static final int WIN_ADD_RED_HOUR = 8;
-  
-  public static final int INCENSE_CODE = 90005;
-  
-  public static final int THYME_CODE = 90006;
-  
-  public static final int KILLING_INCENSE_CODE = 90007;
-  
-  public static final String GATTACA = "gattaca";
-  
-  public static final String LOAD_OBJ = "loadObj";
-  
-  public static final String DRIVER_BEASTS = "driveBeasts";
-  
-  public static final long INIT_GOLD = 0L;
-  
-  public static final String SUIT_DICT = "suit";
-  
-  public static final int SUIT_ON_STAR = 8;
-  
-  public static final int SUIT_LIMIT = 12;
-  
-  public static final int SUIT_SWITCHOVER_NUM = 5;
-  
-  public static final List<Integer> SUIT_REPAIR = Arrays.asList(new Integer[] { 
-        Integer.valueOf(0), Integer.valueOf(1000), Integer.valueOf(1600), Integer.valueOf(2000), Integer.valueOf(2400), Integer.valueOf(2600), Integer.valueOf(2800), Integer.valueOf(3200), Integer.valueOf(3500), Integer.valueOf(4000), 
-        Integer.valueOf(5000), Integer.valueOf(6000) });
-  
-  public static final String target = "target";
-  
-  public static final boolean isClosed = false;
-  
-  public static final List<Integer> CHART_LIMIT = Arrays.asList(new Integer[0]);
-  
-  public static final String CLOAKING_SKILL = "cloakingSkill";
-  
-  public static final short POSITION_NUM = 2;
-  
-  public static final Map<Byte, Long> PET_ACSRY_REPAIR_COST = (Map<Byte, Long>)ImmutableMap.of(Byte.valueOf(ACC_GRADE.PLAY_WITH.getValue()), Long.valueOf(300000L), Byte.valueOf(ACC_GRADE.RESERVE.getValue()), Long.valueOf(3000000L), Byte.valueOf(ACC_GRADE.PRICELESS.getValue()), Long.valueOf(30000000L));
+    public static final int CA_SESSION = 3;
+    public static final int WATER_SESSION = 3;
+    public static final int COMPENSATE_SCORE = 50;
+    public static final String WATER_SCORE = "_SCORE";
+    public static final String WATER_FEATS = "_FEATS";
+    public static final String WATER_MOTTO = "水陆战神很忙，此处什么都没有留下……";
+    public static final List<String> WATER_MIRRIR_POS = Arrays.asList("20,50", "5,42", "13,33", "29,35", "35,45");
+    public static final String INCENSE_EXPIRE_TIME = "incenseExpireTime";
+    public static final int WIN_ADD_RED_HOUR = 8;
+    public static final int INCENSE_CODE = 90005;
+    public static final int THYME_CODE = 90006;
+    public static final int KILLING_INCENSE_CODE = 90007;
+    public static final String GATTACA = "gattaca";
+    public static final String LOAD_OBJ = "loadObj";
+    public static final String DRIVER_BEASTS = "driveBeasts";
+    public static final long INIT_GOLD = 0L;
+    public static final String SUIT_DICT = "suit";
+    public static final int SUIT_ON_STAR = 8;
+    public static final int SUIT_LIMIT = 12;
+    public static final int SUIT_SWITCHOVER_NUM = 5;
+    public static final List<Integer> SUIT_REPAIR = Arrays.asList(0, 1000, 1600, 2000, 2400, 2600, 2800, 3200, 3500, 4000, 5000, 6000);
+    public static final String target = "target";
+    public static final boolean isClosed = false;
+    public static final List<Integer> CHART_LIMIT = Arrays.asList(new Integer[0]);
+    public static final String CLOAKING_SKILL = "cloakingSkill";
+    public static final short POSITION_NUM = 2;
+    public static final Map<Byte, Long> PET_ACSRY_REPAIR_COST = ImmutableMap.of(ACC_GRADE.PLAY_WITH.getValue(), 300000L, ACC_GRADE.RESERVE.getValue(), 3000000L, ACC_GRADE.PRICELESS.getValue(), 30000000L);
 }

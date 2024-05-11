@@ -1,43 +1,95 @@
+
 package com.kitty.system.game.market.message.vo;
 
 import java.io.Serializable;
 
-public class HorseSkillCard implements Serializable {
-  private int growUp;
-  
-  private short level;
-  
-  private String skill;
-  
-  public void setGrowUp(int growUp) {
-    this.growUp = growUp;
-  }
-  
-  public void setLevel(short level) {
-    this.level = level;
-  }
-  
-  public void setSkill(String skill) {
-    this.skill = skill;
-  }
-  
-  public int getGrowUp() {
-    return this.growUp;
-  }
-  
-  public short getLevel() {
-    return this.level;
-  }
-  
-  public String getSkill() {
-    return this.skill;
-  }
-  
-  public HorseSkillCard() {}
-  
-  public HorseSkillCard(int growUp, short level, String skill) {
-    this.growUp = growUp;
-    this.level = level;
-    this.skill = skill;
-  }
+public class HorseSkillCard implements Serializable
+{
+    private int growUp;
+    private short level;
+    private String skill;
+    
+    public HorseSkillCard() {
+    }
+    
+    public HorseSkillCard(final int growUp, final short level, final String skill) {
+        this.growUp = growUp;
+        this.level = level;
+        this.skill = skill;
+    }
+    
+    public int getGrowUp() {
+        return this.growUp;
+    }
+    
+    public short getLevel() {
+        return this.level;
+    }
+    
+    public String getSkill() {
+        return this.skill;
+    }
+    
+    public void setGrowUp(final int growUp) {
+        this.growUp = growUp;
+    }
+    
+    public void setLevel(final short level) {
+        this.level = level;
+    }
+    
+    public void setSkill(final String skill) {
+        this.skill = skill;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HorseSkillCard)) {
+            return false;
+        }
+        final HorseSkillCard other = (HorseSkillCard)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getGrowUp() != other.getGrowUp()) {
+            return false;
+        }
+        if (this.getLevel() != other.getLevel()) {
+            return false;
+        }
+        final Object this$skill = this.getSkill();
+        final Object other$skill = other.getSkill();
+        if (this$skill == null) {
+            if (other$skill == null) {
+                return true;
+            }
+        }
+        else if (this$skill.equals(other$skill)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof HorseSkillCard;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getGrowUp();
+        result = result * 59 + this.getLevel();
+        final Object $skill = this.getSkill();
+        result = result * 59 + (($skill == null) ? 43 : $skill.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "HorseSkillCard(growUp=" + this.getGrowUp() + ", level=" + this.getLevel() + ", skill=" + this.getSkill() + ")";
+    }
 }

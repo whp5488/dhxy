@@ -1,18 +1,21 @@
+
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
-import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
-import com.kitty.system.game.role.domain.Role;
 import org.nutz.lang.util.NutMap;
+import com.kitty.system.game.role.domain.Role;
+import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
-public class ACSRYSKILL_71352 extends AcsrySkillProcessor {
-  public NutMap addition(Role role, Object... args) {
-    double percent = (role.getGg().intValue() / 300) * 0.01D;
-    if (percent > 0.0D) {
-      NutMap map = NutMap.NEW();
-      map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HS.getDist()), Double.valueOf(percent));
-      return map;
-    } 
-    return null;
-  }
+public class ACSRYSKILL_71352 extends AcsrySkillProcessor
+{
+    @Override
+    public NutMap addition(final Role role, final Object... args) {
+        final double percent = role.getGg() / 300 * 0.01;
+        if (percent > 0.0) {
+            final NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HS.getDist()), (Object)percent);
+            return map;
+        }
+        return null;
+    }
 }

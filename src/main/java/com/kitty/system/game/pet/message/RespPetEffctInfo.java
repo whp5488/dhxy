@@ -1,31 +1,123 @@
+
 package com.kitty.system.game.pet.message;
 
+import java.beans.ConstructorProperties;
+import com.kitty.system.game.pet.domain.vo.PetSkill;
+import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import com.kitty.system.game.pet.domain.vo.PetSkill;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.beans.ConstructorProperties;
-import java.util.List;
-
-@Setter
-@Getter
 @MessageMeta(module = 12025)
-public class RespPetEffctInfo extends Message {
-  private Integer roleId;
-  
-  private Integer petId;
-  
-  private List<PetSkill> list;
-  
-  @ConstructorProperties({"roleId", "petId", "list"})
-  public RespPetEffctInfo(Integer roleId, Integer petId, List<PetSkill> list) {
-    this.roleId = roleId;
-    this.petId = petId;
-    this.list = list;
-  }
-  
-  public RespPetEffctInfo() {}
-
+public class RespPetEffctInfo extends Message
+{
+    private Integer roleId;
+    private Integer petId;
+    private List<PetSkill> list;
+    
+    public Integer getRoleId() {
+        return this.roleId;
+    }
+    
+    public Integer getPetId() {
+        return this.petId;
+    }
+    
+    public List<PetSkill> getList() {
+        return this.list;
+    }
+    
+    public void setRoleId(final Integer roleId) {
+        this.roleId = roleId;
+    }
+    
+    public void setPetId(final Integer petId) {
+        this.petId = petId;
+    }
+    
+    public void setList(final List<PetSkill> list) {
+        this.list = list;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RespPetEffctInfo)) {
+            return false;
+        }
+        final RespPetEffctInfo other = (RespPetEffctInfo)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        final Object this$roleId = this.getRoleId();
+        final Object other$roleId = other.getRoleId();
+        Label_0065: {
+            if (this$roleId == null) {
+                if (other$roleId == null) {
+                    break Label_0065;
+                }
+            }
+            else if (this$roleId.equals(other$roleId)) {
+                break Label_0065;
+            }
+            return false;
+        }
+        final Object this$petId = this.getPetId();
+        final Object other$petId = other.getPetId();
+        Label_0102: {
+            if (this$petId == null) {
+                if (other$petId == null) {
+                    break Label_0102;
+                }
+            }
+            else if (this$petId.equals(other$petId)) {
+                break Label_0102;
+            }
+            return false;
+        }
+        final Object this$list = this.getList();
+        final Object other$list = other.getList();
+        if (this$list == null) {
+            if (other$list == null) {
+                return true;
+            }
+        }
+        else if (this$list.equals(other$list)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof RespPetEffctInfo;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        final Object $roleId = this.getRoleId();
+        result = result * 59 + (($roleId == null) ? 43 : $roleId.hashCode());
+        final Object $petId = this.getPetId();
+        result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
+        final Object $list = this.getList();
+        result = result * 59 + (($list == null) ? 43 : $list.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "RespPetEffctInfo(roleId=" + this.getRoleId() + ", petId=" + this.getPetId() + ", list=" + this.getList() + ")";
+    }
+    
+    @ConstructorProperties({ "roleId", "petId", "list" })
+    public RespPetEffctInfo(final Integer roleId, final Integer petId, final List<PetSkill> list) {
+        this.roleId = roleId;
+        this.petId = petId;
+        this.list = list;
+    }
+    
+    public RespPetEffctInfo() {
+    }
 }

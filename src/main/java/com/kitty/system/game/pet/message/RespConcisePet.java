@@ -1,29 +1,87 @@
+
 package com.kitty.system.game.pet.message;
 
+import java.beans.ConstructorProperties;
+import com.kitty.system.game.pet.domain.PetBase;
+import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import com.kitty.system.game.pet.domain.PetBase;
-import lombok.Getter;
-import lombok.Setter;
 
-import java.beans.ConstructorProperties;
-import java.util.List;
-
-@Setter
-@Getter
 @MessageMeta(module = 41154)
-public class RespConcisePet extends Message {
-  private int petId;
-  
-  private List<PetBase> list;
-  
-  
-  @ConstructorProperties({"petId", "list"})
-  public RespConcisePet(int petId, List<PetBase> list) {
-    this.petId = petId;
-    this.list = list;
-  }
-  
-  public RespConcisePet() {}
-
+public class RespConcisePet extends Message
+{
+    private int petId;
+    private List<PetBase> list;
+    
+    public int getPetId() {
+        return this.petId;
+    }
+    
+    public List<PetBase> getList() {
+        return this.list;
+    }
+    
+    public void setPetId(final int petId) {
+        this.petId = petId;
+    }
+    
+    public void setList(final List<PetBase> list) {
+        this.list = list;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RespConcisePet)) {
+            return false;
+        }
+        final RespConcisePet other = (RespConcisePet)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getPetId() != other.getPetId()) {
+            return false;
+        }
+        final Object this$list = this.getList();
+        final Object other$list = other.getList();
+        if (this$list == null) {
+            if (other$list == null) {
+                return true;
+            }
+        }
+        else if (this$list.equals(other$list)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof RespConcisePet;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getPetId();
+        final Object $list = this.getList();
+        result = result * 59 + (($list == null) ? 43 : $list.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "RespConcisePet(petId=" + this.getPetId() + ", list=" + this.getList() + ")";
+    }
+    
+    @ConstructorProperties({ "petId", "list" })
+    public RespConcisePet(final int petId, final List<PetBase> list) {
+        this.petId = petId;
+        this.list = list;
+    }
+    
+    public RespConcisePet() {
+    }
 }

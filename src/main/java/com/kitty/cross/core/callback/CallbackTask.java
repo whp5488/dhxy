@@ -1,54 +1,58 @@
+
 package com.kitty.cross.core.callback;
 
-import com.kitty.common.utils.spring.SpringUtils;
+import java.util.concurrent.locks.Condition;
 import com.kitty.cross.core.client.C2SSessionPoolFactory;
+import java.util.concurrent.TimeUnit;
+import com.kitty.common.utils.spring.SpringUtils;
+import java.util.concurrent.locks.ReentrantLock;
 import com.kitty.cross.core.client.CCSession;
 import com.kitty.mina.message.Message;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 
-public class CallbackTask implements Callable<Message> {
-  private CCSession session;
-  
-  private Message request;
-  
-  public static CallbackTask valueOf(CCSession session, Message message) {
-    CallbackTask task = new CallbackTask();
-    task.request = message;
-    task.session = session;
-    return task;
-  }
-  
-  public Message call() throws Exception {
-    try {
-      CReqCallBack reqCallBack = (CReqCallBack)this.request;
-      int index = CallBack.nextMsgId();
-      reqCallBack.setIndex(index);
-      reqCallBack.serialize();
-      this.session.sendMessage(reqCallBack);
-      ReentrantLock lock = new ReentrantLock();
-      Condition condition = lock.newCondition();
-      long maxTimeOut = 5000L;
-      long startTime = System.currentTimeMillis();
-      CallBackService callBackService = SpringUtils.getCallBackService();
-      while (System.currentTimeMillis() - startTime <= maxTimeOut) {
-        CallBack c = callBackService.removeCallBack(index);
-        if (c != null)
-          return c.getData(); 
-        lock.lockInterruptibly();
+public class CallbackTask implements Callable<Message>
+{
+    private CCSession session;
+    private Message request;
+    
+    public static CallbackTask valueOf(final CCSession session, final Message message) {
+        final CallbackTask task = new CallbackTask();
+        task.request = message;
+        task.session = session;
+        return task;
+    }
+    
+    @Override
+    public Message call() throws Exception {
         try {
-          condition.await(10L, TimeUnit.MILLISECONDS);
-        } catch (Exception exception) {
-        
-        } finally {
-          lock.unlock();
-        } 
-      } 
-    } finally {
-      ((C2SSessionPoolFactory)SpringUtils.getBean(C2SSessionPoolFactory.class)).returnSession(this.session);
-    } 
-    return null;
-  }
+            final CReqCallBack reqCallBack = (CReqCallBack)this.request;
+            final int index = CallBack.nextMsgId();
+            reqCallBack.setIndex(index);
+            reqCallBack.serialize();
+            this.session.sendMessage(reqCallBack);
+            final ReentrantLock lock = new ReentrantLock();
+            final Condition condition = lock.newCondition();
+            final long maxTimeOut = 5000L;
+            final long startTime = System.currentTimeMillis();
+            final CallBackService callBackService = SpringUtils.getCallBackService();
+            while (System.currentTimeMillis() - startTime <= maxTimeOut) {
+                final CallBack c = callBackService.removeCallBack(index);
+                if (c != null) {
+                    return c.getData();
+                }
+                lock.lockInterruptibly();
+                try {
+                    condition.await(10L, TimeUnit.MILLISECONDS);
+                }
+                catch (final Exception ex) {}
+                finally {
+                    lock.unlock();
+                }
+            }
+        }
+        finally {
+            SpringUtils.getBean(C2SSessionPoolFactory.class).returnSession(this.session);
+        }
+        return null;
+    }
 }

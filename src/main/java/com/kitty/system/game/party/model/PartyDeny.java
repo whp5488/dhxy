@@ -1,20 +1,54 @@
-package com.kitty.system.game.party.model;
 
-import lombok.Getter;
-import lombok.Setter;
+package com.kitty.system.game.party.model;
 
 import java.beans.ConstructorProperties;
 
-@Setter
-@Getter
-public class PartyDeny {
-  private int endTime;
-  
-  public PartyDeny() {}
-  
-  @ConstructorProperties({"endTime"})
-  public PartyDeny(int endTime) {
-    this.endTime = endTime;
-  }
-
+public class PartyDeny
+{
+    private int endTime;
+    
+    public int getEndTime() {
+        return this.endTime;
+    }
+    
+    public void setEndTime(final int endTime) {
+        this.endTime = endTime;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PartyDeny)) {
+            return false;
+        }
+        final PartyDeny other = (PartyDeny)o;
+        return other.canEqual(this) && this.getEndTime() == other.getEndTime();
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof PartyDeny;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getEndTime();
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "PartyDeny(endTime=" + this.getEndTime() + ")";
+    }
+    
+    public PartyDeny() {
+    }
+    
+    @ConstructorProperties({ "endTime" })
+    public PartyDeny(final int endTime) {
+        this.endTime = endTime;
+    }
 }

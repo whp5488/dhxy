@@ -1,56 +1,61 @@
+
 package com.kitty.system.game.fightnew.book.pet.talent;
 
-import com.kitty.common.utils.BigDecimalUtil;
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
+import com.kitty.system.game.skill.domain.RoleSkill;
+import com.kitty.common.utils.BigDecimalUtil;
+import com.kitty.system.game.fightnew.book.pet.utils.PetSkillEffectorUtil;
+import com.kitty.system.game.fightnew.spectator.pool.FightParamPool;
+import com.kitty.system.game.fightnew.book.vo.Effect;
+import com.kitty.system.game.fightnew.utils.SkillAi;
 import com.kitty.system.game.fightnew.FightObject;
 import com.kitty.system.game.fightnew.bean.Fight;
-import com.kitty.system.game.fightnew.book.SkillProcessor;
-import com.kitty.system.game.fightnew.book.pet.utils.PetSkillEffectorUtil;
-import com.kitty.system.game.fightnew.book.vo.Addition;
-import com.kitty.system.game.fightnew.book.vo.Effect;
-import com.kitty.system.game.fightnew.spectator.pool.FightParamPool;
-import com.kitty.system.game.fightnew.utils.SkillAi;
-import com.kitty.system.game.skill.domain.RoleSkill;
 import org.nutz.lang.util.NutMap;
+import com.kitty.system.game.fightnew.book.vo.Addition;
+import com.kitty.system.game.fightnew.book.SkillProcessor;
 
-public class SKILL_83009 extends SkillProcessor {
-  public NutMap addition(Addition addition, Object... args) {
-    return null;
-  }
-  
-  public NutMap passive(Fight fight, FightObject effector, Object... args) {
-    return null;
-  }
-  
-  public int targetCount(Fight fight, FightObject effector, Object... args) {
-    double percent = 0.5D;
-    int targetCount = 1;
-    do {
-      targetCount++;
-    } while (SkillAi.canAffectOnPro(percent) && targetCount < 3);
-    return targetCount;
-  }
-  
-  public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
-    RoleSkill skill = effector.getSkillBy(Integer.valueOf(83009));
-    Effect e = new Effect();
-    if (skill != null) {
-      SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId().intValue(), 83009);
-      int level = effector.getLevel();
-      if (level <= 0)
-        level = 1; 
-      double hurt = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(0), Double.valueOf((80 * level) + (effector.getMaxMana() / 100 * 6) * (effector.getRelive() * 0.6D + 1.0D) * 
-            PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())));
-      int harm = PetSkillEffectorUtil.wuXingWaterCount(fight, effector, target, hurt);
-      e.setType(100000);
-      e.setHurt(harm);
-      skillRecord.setT(target.getId().intValue());
-    } 
-    return e;
-  }
-  
-  public int costMana(RoleSkill skill, Object... args) {
-    int level = PetSkillEffectorUtil.getExcuteLevel(args);
-    return level * 32;
-  }
+public class SKILL_83009 extends SkillProcessor
+{
+    @Override
+    public NutMap addition(final Addition addition, final Object... args) {
+        return null;
+    }
+    
+    @Override
+    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+        return null;
+    }
+    
+    @Override
+    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+        final double percent = 0.5;
+        int targetCount = 1;
+        while (SkillAi.canAffectOnPro(percent) && ++targetCount < 3) {}
+        return targetCount;
+    }
+    
+    @Override
+    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+        final RoleSkill skill = effector.getSkillBy(83009);
+        final Effect e = new Effect();
+        if (skill != null) {
+            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 83009);
+            int level = effector.getLevel();
+            if (level <= 0) {
+                level = 1;
+            }
+            final double hurt = BigDecimalUtil.decimalScaleObjectDown(0, 80 * level + effector.getMaxMana() / 100 * 6 * (effector.getRelive() * 0.6 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose()));
+            final int harm = PetSkillEffectorUtil.wuXingWaterCount(fight, effector, target, hurt);
+            e.setType(100000);
+            e.setHurt(harm);
+            skillRecord.setT(target.getId());
+        }
+        return e;
+    }
+    
+    @Override
+    public int costMana(final RoleSkill skill, final Object... args) {
+        final int level = PetSkillEffectorUtil.getExcuteLevel(args);
+        return level * 32;
+    }
 }

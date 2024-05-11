@@ -1,19 +1,32 @@
+
 package com.kitty.system.game.player.bean;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter
-@Getter
-public class PkRecord {
-  private long id;
-  
-  private int time;
-
-  public PkRecord() {}
-  
-  public PkRecord(long id, int time) {
-    this.id = id;
-    this.time = time;
-  }
+public class PkRecord
+{
+    private long id;
+    private int time;
+    
+    public PkRecord() {
+    }
+    
+    public PkRecord(final long id, final int time) {
+        this.id = id;
+        this.time = time;
+    }
+    
+    public long getId() {
+        return this.id;
+    }
+    
+    public int getTime() {
+        return this.time;
+    }
+    
+    public void setId(final long id) {
+        this.id = id;
+    }
+    
+    public void setTime(final int time) {
+        this.time = time;
+    }
 }

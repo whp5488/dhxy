@@ -1,58 +1,94 @@
+
 package com.kitty.system.game.activity.message;
 
+import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import java.beans.ConstructorProperties;
 
 @MessageMeta(module = 49168)
-public class RespGangWarsGateLife extends Message {
-  public void setSideLife(short sideLife) {
-    this.sideLife = sideLife;
-  }
-  
-  public void setEnemyLife(short enemyLife) {
-    this.enemyLife = enemyLife;
-  }
-  
-  public void setType(byte type) {
-    this.type = type;
-  }
-  
-  public void setStance(byte stance) {
-    this.stance = stance;
-  }
-  
-  @ConstructorProperties({"sideLife", "enemyLife", "type", "stance"})
-  public RespGangWarsGateLife(short sideLife, short enemyLife, byte type, byte stance) {
-    this.sideLife = sideLife;
-    this.enemyLife = enemyLife;
-    this.type = type;
-    this.stance = stance;
-  }
-  
-  private short sideLife = 0;
-  
-  public short getSideLife() {
-    return this.sideLife;
-  }
-  
-  private short enemyLife = 0;
-  
-  private byte type;
-  
-  private byte stance;
-  
-  public short getEnemyLife() {
-    return this.enemyLife;
-  }
-  
-  public byte getType() {
-    return this.type;
-  }
-  
-  public byte getStance() {
-    return this.stance;
-  }
-  
-  public RespGangWarsGateLife() {}
+public class RespGangWarsGateLife extends Message
+{
+    private short sideLife;
+    private short enemyLife;
+    private byte type;
+    private byte stance;
+    
+    public short getSideLife() {
+        return this.sideLife;
+    }
+    
+    public short getEnemyLife() {
+        return this.enemyLife;
+    }
+    
+    public byte getType() {
+        return this.type;
+    }
+    
+    public byte getStance() {
+        return this.stance;
+    }
+    
+    public void setSideLife(final short sideLife) {
+        this.sideLife = sideLife;
+    }
+    
+    public void setEnemyLife(final short enemyLife) {
+        this.enemyLife = enemyLife;
+    }
+    
+    public void setType(final byte type) {
+        this.type = type;
+    }
+    
+    public void setStance(final byte stance) {
+        this.stance = stance;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RespGangWarsGateLife)) {
+            return false;
+        }
+        final RespGangWarsGateLife other = (RespGangWarsGateLife)o;
+        return other.canEqual(this) && this.getSideLife() == other.getSideLife() && this.getEnemyLife() == other.getEnemyLife() && this.getType() == other.getType() && this.getStance() == other.getStance();
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof RespGangWarsGateLife;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getSideLife();
+        result = result * 59 + this.getEnemyLife();
+        result = result * 59 + this.getType();
+        result = result * 59 + this.getStance();
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "RespGangWarsGateLife(sideLife=" + this.getSideLife() + ", enemyLife=" + this.getEnemyLife() + ", type=" + this.getType() + ", stance=" + this.getStance() + ")";
+    }
+    
+    @ConstructorProperties({ "sideLife", "enemyLife", "type", "stance" })
+    public RespGangWarsGateLife(final short sideLife, final short enemyLife, final byte type, final byte stance) {
+        this.sideLife = 0;
+        this.enemyLife = 0;
+        this.sideLife = sideLife;
+        this.enemyLife = enemyLife;
+        this.type = type;
+        this.stance = stance;
+    }
+    
+    public RespGangWarsGateLife() {
+        this.sideLife = 0;
+        this.enemyLife = 0;
+    }
 }

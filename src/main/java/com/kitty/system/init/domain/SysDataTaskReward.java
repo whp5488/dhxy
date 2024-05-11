@@ -1,28 +1,106 @@
+
 package com.kitty.system.init.domain;
 
-import com.kitty.system.init.domain.vo.Param;
-import java.io.Serializable;
-import java.util.List;
-
-import lombok.Getter;
-import lombok.Setter;
 import org.nutz.dao.entity.annotation.ColDefine;
-import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Default;
+import com.kitty.system.init.domain.vo.Param;
+import java.util.List;
+import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
+import java.io.Serializable;
 
-@Setter
-@Getter
 @Table("data_task_reward")
-public class SysDataTaskReward implements Serializable {
-  @Column("serial")
-  private String serial;
-  
-  @Column("rewards")
-  @Default("[]")
-  @ColDefine(customType = "text")
-  private List<Param> rewards;
-  
-  @Column("type")
-  private int type;
+public class SysDataTaskReward implements Serializable
+{
+    @Column("serial")
+    private String serial;
+    @Column("rewards")
+    @Default("[]")
+    @ColDefine(customType = "text")
+    private List<Param> rewards;
+    @Column("type")
+    private int type;
+    
+    public String getSerial() {
+        return this.serial;
+    }
+    
+    public List<Param> getRewards() {
+        return this.rewards;
+    }
+    
+    public int getType() {
+        return this.type;
+    }
+    
+    public void setSerial(final String serial) {
+        this.serial = serial;
+    }
+    
+    public void setRewards(final List<Param> rewards) {
+        this.rewards = rewards;
+    }
+    
+    public void setType(final int type) {
+        this.type = type;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SysDataTaskReward)) {
+            return false;
+        }
+        final SysDataTaskReward other = (SysDataTaskReward)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        final Object this$serial = this.getSerial();
+        final Object other$serial = other.getSerial();
+        Label_0065: {
+            if (this$serial == null) {
+                if (other$serial == null) {
+                    break Label_0065;
+                }
+            }
+            else if (this$serial.equals(other$serial)) {
+                break Label_0065;
+            }
+            return false;
+        }
+        final Object this$rewards = this.getRewards();
+        final Object other$rewards = other.getRewards();
+        if (this$rewards == null) {
+            if (other$rewards == null) {
+                return this.getType() == other.getType();
+            }
+        }
+        else if (this$rewards.equals(other$rewards)) {
+            return this.getType() == other.getType();
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof SysDataTaskReward;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        final Object $serial = this.getSerial();
+        result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
+        final Object $rewards = this.getRewards();
+        result = result * 59 + (($rewards == null) ? 43 : $rewards.hashCode());
+        result = result * 59 + this.getType();
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "SysDataTaskReward(serial=" + this.getSerial() + ", rewards=" + this.getRewards() + ", type=" + this.getType() + ")";
+    }
 }

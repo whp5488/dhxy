@@ -1,38 +1,38 @@
+
 package com.kitty.system.game.pet.message;
 
+import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import java.util.List;
 
 @MessageMeta(module = 4251)
-public class ReqAddAssistSuit extends Message {
-  private Integer serial;
-  
-  private String name;
-  
-  private List<Integer> petIds;
-  
-  public Integer getSerial() {
-    return this.serial;
-  }
-  
-  public void setSerial(Integer serial) {
-    this.serial = serial;
-  }
-  
-  public String getName() {
-    return this.name;
-  }
-  
-  public void setName(String name) {
-    this.name = name;
-  }
-  
-  public List<Integer> getPetIds() {
-    return this.petIds;
-  }
-  
-  public void setPetIds(List<Integer> petIds) {
-    this.petIds = petIds;
-  }
+public class ReqAddAssistSuit extends Message
+{
+    private Integer serial;
+    private String name;
+    private List<Integer> petIds;
+    
+    public Integer getSerial() {
+        return this.serial;
+    }
+    
+    public void setSerial(final Integer serial) {
+        this.serial = serial;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(final String name) {
+        this.name = name;
+    }
+    
+    public List<Integer> getPetIds() {
+        return this.petIds;
+    }
+    
+    public void setPetIds(final List<Integer> petIds) {
+        this.petIds = petIds;
+    }
 }

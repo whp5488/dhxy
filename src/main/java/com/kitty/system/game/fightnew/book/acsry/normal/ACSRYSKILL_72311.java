@@ -1,23 +1,26 @@
+
 package com.kitty.system.game.fightnew.book.acsry.normal;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
-import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
-import com.kitty.system.game.role.domain.Role;
 import org.nutz.lang.util.NutMap;
+import com.kitty.system.game.role.domain.Role;
+import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
-public class ACSRYSKILL_72311 extends AcsrySkillProcessor {
-  public NutMap addition(Role role, Object... args) {
-    double percent = 0.1D;
-    NutMap map = NutMap.NEW();
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_F.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_L.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_S.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_H.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_GH.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_QHS.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_PJ.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_ZJ.getDist()), Double.valueOf(percent));
-    map.setv(String.valueOf(PRO_DICT_TYPE.RISE_ZY.getDist()), Double.valueOf(percent));
-    return map;
-  }
+public class ACSRYSKILL_72311 extends AcsrySkillProcessor
+{
+    @Override
+    public NutMap addition(final Role role, final Object... args) {
+        final double percent = 0.1;
+        final NutMap map = NutMap.NEW();
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_F.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_L.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_S.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_H.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_GH.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_QHS.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_PJ.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_ZJ.getDist()), (Object)percent);
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_ZY.getDist()), (Object)percent);
+        return map;
+    }
 }

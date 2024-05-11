@@ -1,70 +1,150 @@
+
 package com.kitty.system.game.fightnew.book.vo;
 
-import com.kitty.system.game.skill.domain.RoleSkill;
 import java.beans.ConstructorProperties;
 import java.util.ArrayList;
-import java.util.List;
 import org.nutz.lang.util.NutMap;
+import com.kitty.system.game.skill.domain.RoleSkill;
+import java.util.List;
 
-public class Addition {
-  public void setLv(int lv) {
-    this.lv = lv;
-  }
-  
-  public void setRei(int rei) {
-    this.rei = rei;
-  }
-  
-  public void setExperience(long experience) {
-    this.experience = experience;
-  }
-  
-  public void setSkills(List<RoleSkill> skills) {
-    this.skills = skills;
-  }
-  
-  public void setPropertyMap(NutMap propertyMap) {
-    this.propertyMap = propertyMap;
-  }
-  
-  @ConstructorProperties({"lv", "rei", "experience", "skills", "propertyMap"})
-  public Addition(int lv, int rei, long experience, List<RoleSkill> skills, NutMap propertyMap) {
-    this.lv = lv;
-    this.rei = rei;
-    this.experience = experience;
-    this.skills = skills;
-    this.propertyMap = propertyMap;
-  }
-  
-  private int lv = 0;
-  
-  public int getLv() {
-    return this.lv;
-  }
-  
-  private int rei = 0;
-  
-  public int getRei() {
-    return this.rei;
-  }
-  
-  private long experience = 0L;
-  
-  public long getExperience() {
-    return this.experience;
-  }
-  
-  private List<RoleSkill> skills = new ArrayList<>();
-  
-  public List<RoleSkill> getSkills() {
-    return this.skills;
-  }
-  
-  protected NutMap propertyMap = new NutMap();
-  
-  public NutMap getPropertyMap() {
-    return this.propertyMap;
-  }
-  
-  public Addition() {}
+public class Addition
+{
+    private int lv;
+    private int rei;
+    private long experience;
+    private List<RoleSkill> skills;
+    protected NutMap propertyMap;
+    
+    public int getLv() {
+        return this.lv;
+    }
+    
+    public int getRei() {
+        return this.rei;
+    }
+    
+    public long getExperience() {
+        return this.experience;
+    }
+    
+    public List<RoleSkill> getSkills() {
+        return this.skills;
+    }
+    
+    public NutMap getPropertyMap() {
+        return this.propertyMap;
+    }
+    
+    public void setLv(final int lv) {
+        this.lv = lv;
+    }
+    
+    public void setRei(final int rei) {
+        this.rei = rei;
+    }
+    
+    public void setExperience(final long experience) {
+        this.experience = experience;
+    }
+    
+    public void setSkills(final List<RoleSkill> skills) {
+        this.skills = skills;
+    }
+    
+    public void setPropertyMap(final NutMap propertyMap) {
+        this.propertyMap = propertyMap;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Addition)) {
+            return false;
+        }
+        final Addition other = (Addition)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getLv() != other.getLv()) {
+            return false;
+        }
+        if (this.getRei() != other.getRei()) {
+            return false;
+        }
+        if (this.getExperience() != other.getExperience()) {
+            return false;
+        }
+        final Object this$skills = this.getSkills();
+        final Object other$skills = other.getSkills();
+        Label_0105: {
+            if (this$skills == null) {
+                if (other$skills == null) {
+                    break Label_0105;
+                }
+            }
+            else if (this$skills.equals(other$skills)) {
+                break Label_0105;
+            }
+            return false;
+        }
+        final Object this$propertyMap = this.getPropertyMap();
+        final Object other$propertyMap = other.getPropertyMap();
+        if (this$propertyMap == null) {
+            if (other$propertyMap == null) {
+                return true;
+            }
+        }
+        else if (this$propertyMap.equals(other$propertyMap)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof Addition;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getLv();
+        result = result * 59 + this.getRei();
+        final long $experience = this.getExperience();
+        result = result * 59 + (int)($experience >>> 32 ^ $experience);
+        final Object $skills = this.getSkills();
+        result = result * 59 + (($skills == null) ? 43 : $skills.hashCode());
+        final Object $propertyMap = this.getPropertyMap();
+        result = result * 59 + (($propertyMap == null) ? 43 : $propertyMap.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "Addition(lv=" + this.getLv() + ", rei=" + this.getRei() + ", experience=" + this.getExperience() + ", skills=" + this.getSkills() + ", propertyMap=" + this.getPropertyMap() + ")";
+    }
+    
+    @ConstructorProperties({ "lv", "rei", "experience", "skills", "propertyMap" })
+    public Addition(final int lv, final int rei, final long experience, final List<RoleSkill> skills, final NutMap propertyMap) {
+        this.lv = 0;
+        this.rei = 0;
+        this.experience = 0L;
+        this.skills = new ArrayList<RoleSkill>();
+        this.propertyMap = new NutMap();
+        this.lv = lv;
+        this.rei = rei;
+        this.experience = experience;
+        this.skills = skills;
+        this.propertyMap = propertyMap;
+    }
+    
+    public Addition() {
+        this.lv = 0;
+        this.rei = 0;
+        this.experience = 0L;
+        this.skills = new ArrayList<RoleSkill>();
+        this.propertyMap = new NutMap();
+    }
 }

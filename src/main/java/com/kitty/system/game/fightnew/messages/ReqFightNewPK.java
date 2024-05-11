@@ -1,25 +1,28 @@
+
 package com.kitty.system.game.fightnew.messages;
 
+import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
-import java.beans.ConstructorProperties;
 
 @MessageMeta(module = 4113)
-public class ReqFightNewPK extends Message {
-  private int roleId;
-  
-  public void setRoleId(int roleId) {
-    this.roleId = roleId;
-  }
-  
-  @ConstructorProperties({"roleId"})
-  public ReqFightNewPK(int roleId) {
-    this.roleId = roleId;
-  }
-  
-  public ReqFightNewPK() {}
-  
-  public int getRoleId() {
-    return this.roleId;
-  }
+public class ReqFightNewPK extends Message
+{
+    private int roleId;
+    
+    public int getRoleId() {
+        return this.roleId;
+    }
+    
+    public void setRoleId(final int roleId) {
+        this.roleId = roleId;
+    }
+    
+    @ConstructorProperties({ "roleId" })
+    public ReqFightNewPK(final int roleId) {
+        this.roleId = roleId;
+    }
+    
+    public ReqFightNewPK() {
+    }
 }

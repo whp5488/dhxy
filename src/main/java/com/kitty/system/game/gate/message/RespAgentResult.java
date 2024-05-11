@@ -1,70 +1,92 @@
+
 package com.kitty.system.game.gate.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
 @MessageMeta(module = 13143)
-public class RespAgentResult extends Message {
-  private int auth_key;
-  
-  public void setAuth_key(int auth_key) {
-    this.auth_key = auth_key;
-  }
-  
-  public void setResult(int result) {
-    this.result = result;
-  }
-  
-  public void setMsg(String msg) {
-    this.msg = msg;
-  }
-  
-  public boolean equals(Object o) {
-    if (o == this)
-      return true; 
-    if (!(o instanceof RespAgentResult))
-      return false; 
-    RespAgentResult other = (RespAgentResult)o;
-    if (!other.canEqual(this))
-      return false; 
-    if (getAuth_key() != other.getAuth_key())
-      return false; 
-    if (getResult() != other.getResult())
-      return false; 
-    Object this$msg = getMsg(), other$msg = other.getMsg();
-    return !((this$msg == null) ? (other$msg != null) : !this$msg.equals(other$msg));
-  }
-  
-  protected boolean canEqual(Object other) {
-    return other instanceof RespAgentResult;
-  }
-  
-  public int hashCode() {
-    int PRIME = 59;
-    result = 1;
-    result = result * 59 + getAuth_key();
-    result = result * 59 + getResult();
-    Object $msg = getMsg();
-    return result * 59 + (($msg == null) ? 43 : $msg.hashCode());
-  }
-  
-  public String toString() {
-    return "RespAgentResult(auth_key=" + getAuth_key() + ", result=" + getResult() + ", msg=" + getMsg() + ")";
-  }
-  
-  public int getAuth_key() {
-    return this.auth_key;
-  }
-  
-  private int result = 1;
-  
-  private String msg;
-  
-  public int getResult() {
-    return this.result;
-  }
-  
-  public String getMsg() {
-    return this.msg;
-  }
+public class RespAgentResult extends Message
+{
+    private int auth_key;
+    private int result;
+    private String msg;
+    
+    public RespAgentResult() {
+        this.result = 1;
+    }
+    
+    public int getAuth_key() {
+        return this.auth_key;
+    }
+    
+    public int getResult() {
+        return this.result;
+    }
+    
+    public String getMsg() {
+        return this.msg;
+    }
+    
+    public void setAuth_key(final int auth_key) {
+        this.auth_key = auth_key;
+    }
+    
+    public void setResult(final int result) {
+        this.result = result;
+    }
+    
+    public void setMsg(final String msg) {
+        this.msg = msg;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RespAgentResult)) {
+            return false;
+        }
+        final RespAgentResult other = (RespAgentResult)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getAuth_key() != other.getAuth_key()) {
+            return false;
+        }
+        if (this.getResult() != other.getResult()) {
+            return false;
+        }
+        final Object this$msg = this.getMsg();
+        final Object other$msg = other.getMsg();
+        if (this$msg == null) {
+            if (other$msg == null) {
+                return true;
+            }
+        }
+        else if (this$msg.equals(other$msg)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof RespAgentResult;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getAuth_key();
+        result = result * 59 + this.getResult();
+        final Object $msg = this.getMsg();
+        result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "RespAgentResult(auth_key=" + this.getAuth_key() + ", result=" + this.getResult() + ", msg=" + this.getMsg() + ")";
+    }
 }

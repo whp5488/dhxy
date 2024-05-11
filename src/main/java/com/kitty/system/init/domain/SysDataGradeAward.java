@@ -1,29 +1,86 @@
+
 package com.kitty.system.init.domain;
 
+import org.nutz.dao.entity.annotation.Default;
 import com.kitty.system.init.domain.vo.Param;
-import java.io.Serializable;
 import java.util.List;
-
-import lombok.Getter;
-import lombok.Setter;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
-import org.nutz.dao.entity.annotation.Default;
 import org.nutz.dao.entity.annotation.Table;
+import java.io.Serializable;
 
-@Setter
-@Getter
 @Table("data_grade_award")
-public class SysDataGradeAward implements Serializable {
-  private static final long serialVersionUID = 1L;
-  
-  @Comment("等级")
-  @Column("grade")
-  private int grade;
-  
-  @Comment("奖励")
-  @Column("award")
-  @Default("[]")
-  private List<Param> award;
-
+public class SysDataGradeAward implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @Comment("等级")
+    @Column("grade")
+    private int grade;
+    @Comment("奖励")
+    @Column("award")
+    @Default("[]")
+    private List<Param> award;
+    
+    public int getGrade() {
+        return this.grade;
+    }
+    
+    public List<Param> getAward() {
+        return this.award;
+    }
+    
+    public void setGrade(final int grade) {
+        this.grade = grade;
+    }
+    
+    public void setAward(final List<Param> award) {
+        this.award = award;
+    }
+    
+    @Override
+    public boolean equals(final Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SysDataGradeAward)) {
+            return false;
+        }
+        final SysDataGradeAward other = (SysDataGradeAward)o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getGrade() != other.getGrade()) {
+            return false;
+        }
+        final Object this$award = this.getAward();
+        final Object other$award = other.getAward();
+        if (this$award == null) {
+            if (other$award == null) {
+                return true;
+            }
+        }
+        else if (this$award.equals(other$award)) {
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean canEqual(final Object other) {
+        return other instanceof SysDataGradeAward;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int PRIME = 59;
+        int result = 1;
+        result = result * 59 + this.getGrade();
+        final Object $award = this.getAward();
+        result = result * 59 + (($award == null) ? 43 : $award.hashCode());
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        return "SysDataGradeAward(grade=" + this.getGrade() + ", award=" + this.getAward() + ")";
+    }
 }

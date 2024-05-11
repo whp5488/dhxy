@@ -1,428 +1,222 @@
+
 package com.kitty.system.game.fightnew.book.definition;
 
 import java.util.Arrays;
 import java.util.List;
 
-public interface SkillConst {
-  public static final int SKILL_30001 = 30001;
-  
-  public static final int SKILL_30002 = 30002;
-  
-  public static final int SKILL_30003 = 30003;
-  
-  public static final int SKILL_30004 = 30004;
-  
-  public static final int SKILL_30005 = 30005;
-  
-  public static final int SKILL_30006 = 30006;
-  
-  public static final int SKILL_30007 = 30007;
-  
-  public static final int SKILL_30008 = 30008;
-  
-  public static final int SKILL_30009 = 30009;
-  
-  public static final int SKILL_30010 = 30010;
-  
-  public static final int SKILL_30011 = 30011;
-  
-  public static final int SKILL_30012 = 30012;
-  
-  public static final int SKILL_30013 = 30013;
-  
-  public static final int SKILL_30014 = 30014;
-  
-  public static final int SKILL_30015 = 30015;
-  
-  public static final int SKILL_30016 = 30016;
-  
-  public static final int SKILL_30017 = 30017;
-  
-  public static final int SKILL_30018 = 30018;
-  
-  public static final int SKILL_30019 = 30019;
-  
-  public static final int SKILL_30020 = 30020;
-  
-  public static final int SKILL_30021 = 30021;
-  
-  public static final int SKILL_30022 = 30022;
-  
-  public static final int SKILL_30023 = 30023;
-  
-  public static final int SKILL_30024 = 30024;
-  
-  public static final int SKILL_30025 = 30025;
-  
-  public static final int SKILL_30026 = 30026;
-  
-  public static final int SKILL_30027 = 30027;
-  
-  public static final int SKILL_30028 = 30028;
-  
-  public static final int SKILL_30029 = 30029;
-  
-  public static final int SKILL_30030 = 30030;
-  
-  public static final int SKILL_30031 = 30031;
-  
-  public static final int SKILL_30032 = 30032;
-  
-  public static final int SKILL_30033 = 30033;
-  
-  public static final int SKILL_30034 = 30034;
-  
-  public static final int SKILL_30035 = 30035;
-  
-  public static final int SKILL_30036 = 30036;
-  
-  public static final int SKILL_30037 = 30037;
-  
-  public static final int SKILL_30038 = 30038;
-  
-  public static final int SKILL_30039 = 30039;
-  
-  public static final int SKILL_30040 = 30040;
-  
-  public static final int SKILL_30041 = 30041;
-  
-  public static final int SKILL_39006 = 39006;
-  
-  public static final int SKILL_83001 = 83001;
-  
-  public static final int SKILL_83002 = 83002;
-  
-  public static final int SKILL_83003 = 83003;
-  
-  public static final int SKILL_83004 = 83004;
-  
-  public static final int SKILL_83005 = 83005;
-  
-  public static final int SKILL_83006 = 83006;
-  
-  public static final int SKILL_83007 = 83007;
-  
-  public static final int SKILL_83008 = 83008;
-  
-  public static final int SKILL_83009 = 83009;
-  
-  public static final int SKILL_83010 = 83010;
-  
-  public static final int SKILL_83011 = 83011;
-  
-  public static final int SKILL_83012 = 83012;
-  
-  public static final int SKILL_83013 = 83013;
-  
-  public static final int SKILL_83014 = 83014;
-  
-  public static final int SKILL_83015 = 83015;
-  
-  public static final int SKILL_83016 = 83016;
-  
-  public static final int SKILL_83017 = 83017;
-  
-  public static final int SKILL_83018 = 83018;
-  
-  public static final int SKILL_83019 = 83019;
-  
-  public static final int SKILL_83020 = 83020;
-  
-  public static final int SKILL_83021 = 83021;
-  
-  public static final int SKILL_83022 = 83022;
-  
-  public static final int SKILL_83023 = 83023;
-  
-  public static final int SKILL_83024 = 83024;
-  
-  public static final int SKILL_83025 = 83025;
-  
-  public static final int SKILL_83026 = 83026;
-  
-  public static final int SKILL_83027 = 83027;
-  
-  public static final int SKILL_83028 = 83028;
-  
-  public static final int SKILL_83029 = 83029;
-  
-  public static final int SKILL_83030 = 83030;
-  
-  public static final int SKILL_83031 = 83031;
-  
-  public static final int SKILL_830311 = 830311;
-  
-  public static final int SKILL_830312 = 830312;
-  
-  public static final int SKILL_830313 = 830313;
-  
-  public static final int SKILL_830314 = 830314;
-  
-  public static final int SKILL_83032 = 83032;
-  
-  public static final int SKILL_83033 = 83033;
-  
-  public static final int SKILL_83034 = 83034;
-  
-  public static final int SKILL_830341 = 830341;
-  
-  public static final int SKILL_830342 = 830342;
-  
-  public static final int SKILL_830343 = 830343;
-  
-  public static final int SKILL_830344 = 830344;
-  
-  public static final int SKILL_830345 = 830345;
-  
-  public static final int SKILL_83035 = 83035;
-  
-  public static final int SKILL_83036 = 83036;
-  
-  public static final int SKILL_83037 = 83037;
-  
-  public static final int SKILL_83038 = 83038;
-  
-  public static final int SKILL_83039 = 83039;
-  
-  public static final int SKILL_83040 = 83040;
-  
-  public static final int SKILL_80001 = 80001;
-  
-  public static final int SKILL_80002 = 80002;
-  
-  public static final int SKILL_80003 = 80003;
-  
-  public static final int SKILL_80004 = 80004;
-  
-  public static final int SKILL_80005 = 80005;
-  
-  public static final int SKILL_80006 = 80006;
-  
-  public static final int SKILL_80007 = 80007;
-  
-  public static final int SKILL_80008 = 80008;
-  
-  public static final int SKILL_80009 = 80009;
-  
-  public static final int SKILL_80010 = 80010;
-  
-  public static final int SKILL_80011 = 80011;
-  
-  public static final int SKILL_80012 = 80012;
-  
-  public static final int SKILL_80013 = 80013;
-  
-  public static final int SKILL_80014 = 80014;
-  
-  public static final int SKILL_80015 = 80015;
-  
-  public static final int SKILL_80016 = 80016;
-  
-  public static final int SKILL_80017 = 80017;
-  
-  public static final int SKILL_80018 = 80018;
-  
-  public static final int SKILL_80019 = 80019;
-  
-  public static final int SKILL_80020 = 80020;
-  
-  public static final int SKILL_80021 = 80021;
-  
-  public static final int SKILL_80022 = 80022;
-  
-  public static final int SKILL_80023 = 80023;
-  
-  public static final int SKILL_80024 = 80024;
-  
-  public static final int SKILL_80025 = 80025;
-  
-  public static final int SKILL_80026 = 80026;
-  
-  public static final int SKILL_80027 = 80027;
-  
-  public static final int SKILL_80028 = 80028;
-  
-  public static final int SKILL_80029 = 80029;
-  
-  public static final int SKILL_81001 = 81001;
-  
-  public static final int SKILL_81002 = 81002;
-  
-  public static final int SKILL_81003 = 81003;
-  
-  public static final int SKILL_81004 = 81004;
-  
-  public static final int SKILL_81005 = 81005;
-  
-  public static final int SKILL_81006 = 81006;
-  
-  public static final int SKILL_81007 = 81007;
-  
-  public static final int SKILL_81008 = 81008;
-  
-  public static final int SKILL_81009 = 81009;
-  
-  public static final int SKILL_81010 = 81010;
-  
-  public static final int SKILL_81011 = 81011;
-  
-  public static final int SKILL_81012 = 81012;
-  
-  public static final int SKILL_81013 = 81013;
-  
-  public static final int SKILL_81014 = 81014;
-  
-  public static final int SKILL_81015 = 81015;
-  
-  public static final int SKILL_81016 = 81016;
-  
-  public static final int SKILL_81017 = 81017;
-  
-  public static final int SKILL_81018 = 81018;
-  
-  public static final int SKILL_81019 = 81019;
-  
-  public static final int SKILL_81020 = 81020;
-  
-  public static final int SKILL_81021 = 81021;
-  
-  public static final int SKILL_81022 = 81022;
-  
-  public static final int SKILL_81023 = 81023;
-  
-  public static final int SKILL_81024 = 81024;
-  
-  public static final int SKILL_81025 = 81025;
-  
-  public static final int SKILL_81026 = 81026;
-  
-  public static final int SKILL_81027 = 81027;
-  
-  public static final int SKILL_81028 = 81028;
-  
-  public static final int SKILL_81029 = 81029;
-  
-  public static final int SKILL_81030 = 81030;
-  
-  public static final int SKILL_81031 = 81031;
-  
-  public static final int SKILL_81032 = 81032;
-  
-  public static final int SKILL_81033 = 81033;
-  
-  public static final int SKILL_81034 = 81034;
-  
-  public static final int SKILL_81035 = 81035;
-  
-  public static final int SKILL_81036 = 81036;
-  
-  public static final int SKILL_81037 = 81037;
-  
-  public static final int SKILL_81038 = 81038;
-  
-  public static final int SKILL_81039 = 81039;
-  
-  public static final int SKILL_81040 = 81040;
-  
-  public static final int SKILL_81041 = 81041;
-  
-  public static final int SKILL_81042 = 81042;
-  
-  public static final int SKILL_81043 = 81043;
-  
-  public static final int SKILL_81044 = 81044;
-  
-  public static final int SKILL_81045 = 81045;
-  
-  public static final int SKILL_81046 = 81046;
-  
-  public static final int SKILL_81047 = 81047;
-  
-  public static final int SKILL_81048 = 81048;
-  
-  public static final int SKILL_81049 = 81049;
-  
-  public static final int SKILL_81050 = 81050;
-  
-  public static final int SKILL_81051 = 81051;
-  
-  public static final int SKILL_81052 = 81052;
-  
-  public static final int SKILL_81053 = 81053;
-  
-  public static final int SKILL_81054 = 81054;
-  
-  public static final int SKILL_81055 = 81055;
-  
-  public static final int SKILL_81056 = 81056;
-  
-  public static final int SKILL_81057 = 81057;
-  
-  public static final int SKILL_81058 = 81058;
-  
-  public static final int SKILL_81059 = 81059;
-  
-  public static final int SKILL_81060 = 81060;
-  
-  public static final int SKILL_81061 = 81061;
-  
-  public static final int SKILL_82001 = 82001;
-  
-  public static final int SKILL_82002 = 82002;
-  
-  public static final int SKILL_82003 = 82003;
-  
-  public static final int SKILL_82004 = 82004;
-  
-  public static final int SKILL_82005 = 82005;
-  
-  public static final int SKILL_82006 = 82006;
-  
-  public static final int SKILL_82007 = 82007;
-  
-  public static final int SKILL_82008 = 82008;
-  
-  public static final int SKILL_82009 = 82009;
-  
-  public static final int SKILL_82010 = 82010;
-  
-  public static final int SKILL_82011 = 82011;
-  
-  public static final int SKILL_82012 = 82012;
-  
-  public static final int SKILL_82013 = 82013;
-  
-  public static final int SKILL_82014 = 82014;
-  
-  public static final int SKILL_82015 = 82015;
-  
-  public static final int SKILL_82016 = 82016;
-  
-  public static final int SKILL_84001 = 84001;
-  
-  public static final int SKILL_84002 = 84002;
-  
-  public static final int SKILL_84003 = 84003;
-  
-  public static final int SKILL_84004 = 84004;
-  
-  public static final int SKILL_84005 = 84005;
-  
-  public static final int SKILL_84006 = 84006;
-  
-  public static final int[] course = new int[] { 80002, 81048, 80029, 81047 };
-  
-  public static final int[] beforeActionSkillPVP = new int[] { 81018, 81019, 82005, 82007, 82008, 82009, 82011, 84004, 84005, 81028 };
-  
-  public static final int[] beforeActionSkillNPVP = new int[] { 82005, 82007 };
-  
-  public static final int[][] skillStatus = new int[][] { { 81018, 2012 }, { 81019, 2011 }, { 81028, 2038 }, { 82005, 2042 }, { 82007, 2103 }, { 82008, 2041 }, { 82009, 2043 }, { 82011, 2104 }, { 84004, 2046 }, { 84005, 2045 } };
-  
-  public static final Integer[] beforeActionSkillOnlyOnce = new Integer[] { Integer.valueOf(82009), Integer.valueOf(82011), Integer.valueOf(81028) };
-  
-  public static final List<Integer> assistSkills = Arrays.asList(new Integer[] { Integer.valueOf(80001), Integer.valueOf(81020) });
-  
-  static List<Integer> getPetBeSkills() {
-    return Arrays.asList(new Integer[] { Integer.valueOf(83040) });
-  }
+public interface SkillConst
+{
+    public static final int SKILL_30001 = 30001;
+    public static final int SKILL_30002 = 30002;
+    public static final int SKILL_30003 = 30003;
+    public static final int SKILL_30004 = 30004;
+    public static final int SKILL_30005 = 30005;
+    public static final int SKILL_30006 = 30006;
+    public static final int SKILL_30007 = 30007;
+    public static final int SKILL_30008 = 30008;
+    public static final int SKILL_30009 = 30009;
+    public static final int SKILL_30010 = 30010;
+    public static final int SKILL_30011 = 30011;
+    public static final int SKILL_30012 = 30012;
+    public static final int SKILL_30013 = 30013;
+    public static final int SKILL_30014 = 30014;
+    public static final int SKILL_30015 = 30015;
+    public static final int SKILL_30016 = 30016;
+    public static final int SKILL_30017 = 30017;
+    public static final int SKILL_30018 = 30018;
+    public static final int SKILL_30019 = 30019;
+    public static final int SKILL_30020 = 30020;
+    public static final int SKILL_30021 = 30021;
+    public static final int SKILL_30022 = 30022;
+    public static final int SKILL_30023 = 30023;
+    public static final int SKILL_30024 = 30024;
+    public static final int SKILL_30025 = 30025;
+    public static final int SKILL_30026 = 30026;
+    public static final int SKILL_30027 = 30027;
+    public static final int SKILL_30028 = 30028;
+    public static final int SKILL_30029 = 30029;
+    public static final int SKILL_30030 = 30030;
+    public static final int SKILL_30031 = 30031;
+    public static final int SKILL_30032 = 30032;
+    public static final int SKILL_30033 = 30033;
+    public static final int SKILL_30034 = 30034;
+    public static final int SKILL_30035 = 30035;
+    public static final int SKILL_30036 = 30036;
+    public static final int SKILL_30037 = 30037;
+    public static final int SKILL_30038 = 30038;
+    public static final int SKILL_30039 = 30039;
+    public static final int SKILL_30040 = 30040;
+    public static final int SKILL_30041 = 30041;
+    public static final int SKILL_39006 = 39006;
+    public static final int SKILL_83001 = 83001;
+    public static final int SKILL_83002 = 83002;
+    public static final int SKILL_83003 = 83003;
+    public static final int SKILL_83004 = 83004;
+    public static final int SKILL_83005 = 83005;
+    public static final int SKILL_83006 = 83006;
+    public static final int SKILL_83007 = 83007;
+    public static final int SKILL_83008 = 83008;
+    public static final int SKILL_83009 = 83009;
+    public static final int SKILL_83010 = 83010;
+    public static final int SKILL_83011 = 83011;
+    public static final int SKILL_83012 = 83012;
+    public static final int SKILL_83013 = 83013;
+    public static final int SKILL_83014 = 83014;
+    public static final int SKILL_83015 = 83015;
+    public static final int SKILL_83016 = 83016;
+    public static final int SKILL_83017 = 83017;
+    public static final int SKILL_83018 = 83018;
+    public static final int SKILL_83019 = 83019;
+    public static final int SKILL_83020 = 83020;
+    public static final int SKILL_83021 = 83021;
+    public static final int SKILL_83022 = 83022;
+    public static final int SKILL_83023 = 83023;
+    public static final int SKILL_83024 = 83024;
+    public static final int SKILL_83025 = 83025;
+    public static final int SKILL_83026 = 83026;
+    public static final int SKILL_83027 = 83027;
+    public static final int SKILL_83028 = 83028;
+    public static final int SKILL_83029 = 83029;
+    public static final int SKILL_83030 = 83030;
+    public static final int SKILL_83031 = 83031;
+    public static final int SKILL_830311 = 830311;
+    public static final int SKILL_830312 = 830312;
+    public static final int SKILL_830313 = 830313;
+    public static final int SKILL_830314 = 830314;
+    public static final int SKILL_83032 = 83032;
+    public static final int SKILL_83033 = 83033;
+    public static final int SKILL_83034 = 83034;
+    public static final int SKILL_830341 = 830341;
+    public static final int SKILL_830342 = 830342;
+    public static final int SKILL_830343 = 830343;
+    public static final int SKILL_830344 = 830344;
+    public static final int SKILL_830345 = 830345;
+    public static final int SKILL_83035 = 83035;
+    public static final int SKILL_83036 = 83036;
+    public static final int SKILL_83037 = 83037;
+    public static final int SKILL_83038 = 83038;
+    public static final int SKILL_83039 = 83039;
+    public static final int SKILL_83040 = 83040;
+    public static final int SKILL_80001 = 80001;
+    public static final int SKILL_80002 = 80002;
+    public static final int SKILL_80003 = 80003;
+    public static final int SKILL_80004 = 80004;
+    public static final int SKILL_80005 = 80005;
+    public static final int SKILL_80006 = 80006;
+    public static final int SKILL_80007 = 80007;
+    public static final int SKILL_80008 = 80008;
+    public static final int SKILL_80009 = 80009;
+    public static final int SKILL_80010 = 80010;
+    public static final int SKILL_80011 = 80011;
+    public static final int SKILL_80012 = 80012;
+    public static final int SKILL_80013 = 80013;
+    public static final int SKILL_80014 = 80014;
+    public static final int SKILL_80015 = 80015;
+    public static final int SKILL_80016 = 80016;
+    public static final int SKILL_80017 = 80017;
+    public static final int SKILL_80018 = 80018;
+    public static final int SKILL_80019 = 80019;
+    public static final int SKILL_80020 = 80020;
+    public static final int SKILL_80021 = 80021;
+    public static final int SKILL_80022 = 80022;
+    public static final int SKILL_80023 = 80023;
+    public static final int SKILL_80024 = 80024;
+    public static final int SKILL_80025 = 80025;
+    public static final int SKILL_80026 = 80026;
+    public static final int SKILL_80027 = 80027;
+    public static final int SKILL_80028 = 80028;
+    public static final int SKILL_80029 = 80029;
+    public static final int SKILL_81001 = 81001;
+    public static final int SKILL_81002 = 81002;
+    public static final int SKILL_81003 = 81003;
+    public static final int SKILL_81004 = 81004;
+    public static final int SKILL_81005 = 81005;
+    public static final int SKILL_81006 = 81006;
+    public static final int SKILL_81007 = 81007;
+    public static final int SKILL_81008 = 81008;
+    public static final int SKILL_81009 = 81009;
+    public static final int SKILL_81010 = 81010;
+    public static final int SKILL_81011 = 81011;
+    public static final int SKILL_81012 = 81012;
+    public static final int SKILL_81013 = 81013;
+    public static final int SKILL_81014 = 81014;
+    public static final int SKILL_81015 = 81015;
+    public static final int SKILL_81016 = 81016;
+    public static final int SKILL_81017 = 81017;
+    public static final int SKILL_81018 = 81018;
+    public static final int SKILL_81019 = 81019;
+    public static final int SKILL_81020 = 81020;
+    public static final int SKILL_81021 = 81021;
+    public static final int SKILL_81022 = 81022;
+    public static final int SKILL_81023 = 81023;
+    public static final int SKILL_81024 = 81024;
+    public static final int SKILL_81025 = 81025;
+    public static final int SKILL_81026 = 81026;
+    public static final int SKILL_81027 = 81027;
+    public static final int SKILL_81028 = 81028;
+    public static final int SKILL_81029 = 81029;
+    public static final int SKILL_81030 = 81030;
+    public static final int SKILL_81031 = 81031;
+    public static final int SKILL_81032 = 81032;
+    public static final int SKILL_81033 = 81033;
+    public static final int SKILL_81034 = 81034;
+    public static final int SKILL_81035 = 81035;
+    public static final int SKILL_81036 = 81036;
+    public static final int SKILL_81037 = 81037;
+    public static final int SKILL_81038 = 81038;
+    public static final int SKILL_81039 = 81039;
+    public static final int SKILL_81040 = 81040;
+    public static final int SKILL_81041 = 81041;
+    public static final int SKILL_81042 = 81042;
+    public static final int SKILL_81043 = 81043;
+    public static final int SKILL_81044 = 81044;
+    public static final int SKILL_81045 = 81045;
+    public static final int SKILL_81046 = 81046;
+    public static final int SKILL_81047 = 81047;
+    public static final int SKILL_81048 = 81048;
+    public static final int SKILL_81049 = 81049;
+    public static final int SKILL_81050 = 81050;
+    public static final int SKILL_81051 = 81051;
+    public static final int SKILL_81052 = 81052;
+    public static final int SKILL_81053 = 81053;
+    public static final int SKILL_81054 = 81054;
+    public static final int SKILL_81055 = 81055;
+    public static final int SKILL_81056 = 81056;
+    public static final int SKILL_81057 = 81057;
+    public static final int SKILL_81058 = 81058;
+    public static final int SKILL_81059 = 81059;
+    public static final int SKILL_81060 = 81060;
+    public static final int SKILL_81061 = 81061;
+    public static final int SKILL_82001 = 82001;
+    public static final int SKILL_82002 = 82002;
+    public static final int SKILL_82003 = 82003;
+    public static final int SKILL_82004 = 82004;
+    public static final int SKILL_82005 = 82005;
+    public static final int SKILL_82006 = 82006;
+    public static final int SKILL_82007 = 82007;
+    public static final int SKILL_82008 = 82008;
+    public static final int SKILL_82009 = 82009;
+    public static final int SKILL_82010 = 82010;
+    public static final int SKILL_82011 = 82011;
+    public static final int SKILL_82012 = 82012;
+    public static final int SKILL_82013 = 82013;
+    public static final int SKILL_82014 = 82014;
+    public static final int SKILL_82015 = 82015;
+    public static final int SKILL_82016 = 82016;
+    public static final int SKILL_84001 = 84001;
+    public static final int SKILL_84002 = 84002;
+    public static final int SKILL_84003 = 84003;
+    public static final int SKILL_84004 = 84004;
+    public static final int SKILL_84005 = 84005;
+    public static final int SKILL_84006 = 84006;
+    public static final int[] course = { 80002, 81048, 80029, 81047 };
+    public static final int[] beforeActionSkillPVP = { 81018, 81019, 82005, 82007, 82008, 82009, 82011, 84004, 84005, 81028 };
+    public static final int[] beforeActionSkillNPVP = { 82005, 82007 };
+    public static final int[][] skillStatus = { { 81018, 2012 }, { 81019, 2011 }, { 81028, 2038 }, { 82005, 2042 }, { 82007, 2103 }, { 82008, 2041 }, { 82009, 2043 }, { 82011, 2104 }, { 84004, 2046 }, { 84005, 2045 } };
+    public static final Integer[] beforeActionSkillOnlyOnce = { 82009, 82011, 81028 };
+    public static final List<Integer> assistSkills = Arrays.asList(80001, 81020);
+
+    static List<Integer> getPetBeSkills() {
+        return Arrays.asList(83040);
+    }
 }
