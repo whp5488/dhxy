@@ -124,13 +124,13 @@ public class PartyService
         final List<Party> list = dao.query(Party.class, Cnd.NEW());
         for (final Party party : list) {
             party.doAfterInit();
-            final List<PartyMember> members = dao.query(PartyMember.class, Cnd.where("serial", "=", (Object)party.getSerial()).groupBy(new String[] { "role_id" }).desc("join_time"));
+            final List<PartyMember> members = dao.query(PartyMember.class, Cnd.where("serial", "=", party.getSerial()).groupBy(new String[] { "role_id" }).desc("join_time"));
             for (final PartyMember member : members) {
                 party.getMembers().put(member.getRoleId(), member);
             }
-            final List<PartyWarsRecord> warsRecordList = dao.query(PartyWarsRecord.class, Cnd.where("serial", "=", (Object)party.getSerial()));
+            final List<PartyWarsRecord> warsRecordList = dao.query(PartyWarsRecord.class, Cnd.where("serial", "=", party.getSerial()));
             party.getWarsRecordList().addAll(warsRecordList);
-            final List<PartyLog> partyLogs = dao.query(PartyLog.class, Cnd.where("serial", "=", (Object)party.getSerial()));
+            final List<PartyLog> partyLogs = dao.query(PartyLog.class, Cnd.where("serial", "=", party.getSerial()));
             party.setLogs(partyLogs);
             partyMap.put(party.getSerial(), party);
             name2Ids.put(party.getName(), party.getSerial());

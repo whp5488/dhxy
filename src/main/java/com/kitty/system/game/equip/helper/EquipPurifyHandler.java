@@ -73,7 +73,7 @@ public class EquipPurifyHandler extends UpgradeHandler
         double refining = equip.getRefining();
 
         for (int i = 0; i < count; ++i) {
-            refining = this.getRefining(refining, pj);
+            refining = this.getRefining(refining);
 
             final double max = (0.005 * refining <= 0.0) ? 0.005 : (0.005 * refining + 1.0);
             final double odds = RandomUtil.getRandomDouble(0.005, (max > 0.05) ? 0.05 : max);
@@ -94,7 +94,7 @@ public class EquipPurifyHandler extends UpgradeHandler
         return null;
     }
     
-    public double getRefining(double refining, int pj) {
+    public double getRefining(double refining) {
         final int round = RandomUtil.round(1, 100);
         if (round > 60) {
             ++refining;

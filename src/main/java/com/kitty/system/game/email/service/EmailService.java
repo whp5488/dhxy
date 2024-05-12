@@ -444,14 +444,14 @@ public class EmailService
         List<Email> emails = DataCache.ROLE_EMAIL.get(role.getId());
         final long currTime = new Date().getTime();
         if (emails == null) {
-            emails = this.dao.query(Email.class, Cnd.where("recipient", "=", (Object)role.getId()).and("expiration_time", ">", (Object)currTime).desc("create_time"));
+            emails = this.dao.query(Email.class, Cnd.where("recipient", "=", role.getId()).and("expiration_time", ">", (Object)currTime).desc("create_time"));
             if (emails == null) {
                 emails = new ArrayList<Email>();
             }
             else {
                 for (final Email email : emails) {
                     if (email.getAccessory() == 1) {
-                        final List<EmailAccessory> emailsAccessorys = this.dao.query(EmailAccessory.class, Cnd.where("email_id", "=", (Object)email.getId()));
+                        final List<EmailAccessory> emailsAccessorys = this.dao.query(EmailAccessory.class, Cnd.where("email_id", "=", email.getId()));
                         if (emailsAccessorys == null || emailsAccessorys.size() <= 0) {
                             continue;
                         }

@@ -582,7 +582,7 @@ public class WelfareService
             return strings;
         }
         strings = new ArrayList<String>();
-        final List<GiftBagRecord> list = this.dao.query(GiftBagRecord.class, Cnd.where("r_id", "=", (Object)role.getId()));
+        final List<GiftBagRecord> list = this.dao.query(GiftBagRecord.class, Cnd.where("r_id", "=", role.getId()));
         for (final GiftBagRecord record : list) {
             strings.add(record.getName());
         }
@@ -737,7 +737,7 @@ public class WelfareService
     public FiveGuess getFiveGuessInfo(final Role role) {
         FiveGuess fiveGuess = DataCache.FIVE_GUESS_MAP.get(role.getId());
         if (fiveGuess == null) {
-            fiveGuess = (FiveGuess)this.dao.fetch(FiveGuess.class, Cnd.where("r_id", "=", (Object)role.getId()));
+            fiveGuess = (FiveGuess)this.dao.fetch(FiveGuess.class, Cnd.where("r_id", "=", role.getId()));
             if (fiveGuess == null) {
                 fiveGuess = new FiveGuess(this.worker.nextId(), role.getId());
                 fiveGuess.save();

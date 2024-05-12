@@ -163,7 +163,7 @@ public class PlayerService
         PlayerRoles playerRoles = this.redisService.get(sid + "_sid", PlayerRoles.class);
         if (playerRoles == null) {
             playerRoles = new PlayerRoles();
-            final List<Role> roles = this.dao.query(Role.class, Cnd.where("s_id", "=", (Object)sid));
+            final List<Role> roles = this.dao.query(Role.class, Cnd.where("s_id", "=", sid));
             for (final Role role : roles) {
                 playerRoles.getList().add(role.getId());
             }
@@ -175,7 +175,7 @@ public class PlayerService
     public List<PlayerProfile> getPlayersBy(final String sid) {
         final List<PlayerProfile> list = new ArrayList<PlayerProfile>();
         final PlayerProfile playerProfile = this.redisService.get(sid, PlayerProfile.class);
-        final List<Role> roles = this.dao.query(Role.class, Cnd.where("s_id", "=", (Object)sid));
+        final List<Role> roles = this.dao.query(Role.class, Cnd.where("s_id", "=", sid));
         for (final Role role : roles) {
             list.add(new PlayerProfile(role));
         }

@@ -173,7 +173,7 @@ public class RoleTianFuService
     public List<RoleTianFu> getDataByRoleId(final Long roleId) {
         List<RoleTianFu> roleTianFus = DataCache.ROLE_TIAN_FU.get(roleId);
         if (roleTianFus == null) {
-            roleTianFus = this.dao.query(RoleTianFu.class, Cnd.where("role_id", "=", (Object)roleId));
+            roleTianFus = this.dao.query(RoleTianFu.class, Cnd.where("role_id", "=", roleId));
             roleTianFus = Collections.synchronizedList(roleTianFus);
             if (roleTianFus == null) {
                 roleTianFus = Collections.synchronizedList(new ArrayList<RoleTianFu>());

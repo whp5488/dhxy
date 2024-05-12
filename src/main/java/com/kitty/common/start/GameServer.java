@@ -65,22 +65,22 @@ public class GameServer implements CommandLineRunner
         MessageFactory.INSTANCE.initMessagePool("com.kitty");
         TaskHandlerContext.INSTANCE.initialize();
         IoBuffer.setUseDirectBuffer(false);
-        IoBuffer.setAllocator((IoBufferAllocator)new SimpleBufferAllocator());
+        IoBuffer.setAllocator(new SimpleBufferAllocator());
         final Executor executor = Executors.newCachedThreadPool(new NamedThreadFactory("SOCKET-IO-PROCESSOR"));
         int coreSize = Runtime.getRuntime().availableProcessors();
         if (coreSize > 16) {
             coreSize = 16;
         }
-        final SimpleIoProcessorPool<NioSession> processor = (SimpleIoProcessorPool<NioSession>)new SimpleIoProcessorPool(NioProcessor.class, executor, coreSize, null);
-        (GameServer.acceptor = (SocketAcceptor)new NioSocketAcceptor((IoProcessor)processor)).setReuseAddress(true);
-        GameServer.acceptor.getSessionConfig().setAll((IoSessionConfig)this.getSessionConfig());
+        final SimpleIoProcessorPool<NioSession> processor = new SimpleIoProcessorPool<>(NioProcessor.class, executor, coreSize, null);
+        (GameServer.acceptor = new NioSocketAcceptor(processor)).setReuseAddress(true);
+        GameServer.acceptor.getSessionConfig().setAll(this.getSessionConfig());
         final DefaultIoFilterChainBuilder filterChain = GameServer.acceptor.getFilterChain();
-        filterChain.addLast("codec", (IoFilter)new ProtocolCodecFilter((ProtocolCodecFactory)SerializerHelper.getInstance().getCodecFactory()));
-        filterChain.addLast("moduleEntrance", (IoFilter)new ModuleEntranceFilter());
-        filterChain.addLast("msgTrace", (IoFilter)new MessageTraceFilter());
-        filterChain.addLast("chat", (IoFilter)new ChatMessageFilter());
-        filterChain.addLast("heartBeat", (IoFilter)new HeartbeatFilter());
-        GameServer.acceptor.setHandler((IoHandler)new ServerSocketIoHandler(MessageDispatcher.getInstance()));
+        filterChain.addLast("codec", new ProtocolCodecFilter(SerializerHelper.getInstance().getCodecFactory()));
+        filterChain.addLast("moduleEntrance", new ModuleEntranceFilter());
+        filterChain.addLast("msgTrace", new MessageTraceFilter());
+        filterChain.addLast("chat", new ChatMessageFilter());
+        filterChain.addLast("heartBeat", new HeartbeatFilter());
+        GameServer.acceptor.setHandler(new ServerSocketIoHandler(MessageDispatcher.getInstance()));
         GameServer.acceptor.setBacklog(10000);
         try {
             GameServer.acceptor.setDefaultLocalAddress(new InetSocketAddress(this.serverService.getPort()));

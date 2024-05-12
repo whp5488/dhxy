@@ -70,7 +70,7 @@ public class CardService extends EchoHandler
     public CardExercise getCardExercise(final Role role) {
         final CardExercise cardExercise = DataCache.CARD_EXERCISE_MAP.get(role.getId());
         if (cardExercise == null) {
-            CardExercise fetch = (CardExercise)this.dao.fetch(CardExercise.class, Cnd.where("r_id", "=", (Object)role.getId()));
+            CardExercise fetch = (CardExercise)this.dao.fetch(CardExercise.class, Cnd.where("r_id", "=", role.getId()));
             if (fetch == null) {
                 fetch = new CardExercise(this.worker.nextId(), role.getId());
                 fetch.save();
@@ -85,7 +85,7 @@ public class CardService extends EchoHandler
     public Map<Long, CardChange> getCard(final Role role) {
         final Map<Long, CardChange> cardChangeMap = DataCache.CUTTING_FERRULE_MAP.get(role.getId());
         if (cardChangeMap == null) {
-            final List<CardChange> list = this.dao.query(CardChange.class, Cnd.where("r_id", "=", (Object)role.getId()));
+            final List<CardChange> list = this.dao.query(CardChange.class, Cnd.where("r_id", "=", role.getId()));
             final Map<Long, CardChange> map = list.stream().collect(Collectors.toMap(CardChange::getId, CardChange -> CardChange));
             DataCache.CUTTING_FERRULE_MAP.put(role.getId(), map);
             return map;

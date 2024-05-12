@@ -54,7 +54,7 @@ public class Db4DelService
     }
     
     public void delToDb(final BaseEntity entity) {
-        this.dao.delete((Object)entity);
+        this.dao.delete(entity);
     }
     
     private class Worker implements Runnable

@@ -70,7 +70,7 @@ public class DbTianFuService
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<BaseEntity> it = (Iterator<BaseEntity>)this.queue.iterator();
+            final Iterator<BaseEntity> it = this.queue.iterator();
             while (it.hasNext()) {
                 final BaseEntity obj = it.next();
                 it.remove();

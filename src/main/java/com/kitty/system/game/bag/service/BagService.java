@@ -145,7 +145,7 @@ public class BagService
     public Map<Long, BagGoods> getBagGoods(final Role role) {
         final Map<Long, BagGoods> bagGoodsMap = BagCache.BAG_GOODS_MAP.get(role.getId());
         if (bagGoodsMap == null) {
-            final List<BagGoods> list = this.dao.query(BagGoods.class, Cnd.where("r_id", "=", (Object)role.getId()));
+            final List<BagGoods> list = this.dao.query(BagGoods.class, Cnd.where("r_id", "=", role.getId()));
             final Map<Long, BagGoods> map = list.stream().collect(Collectors.toMap(BagGoods::getId, BagGoods -> BagGoods));
             BagCache.BAG_GOODS_MAP.put(role.getId(), map);
             return map;
@@ -156,7 +156,7 @@ public class BagService
     public Map<Long, PetEquip> getPetBagEquip(final long id) {
         final Map<Long, PetEquip> bagGoodsMap = PetCache.PET_EQUIP_MAP.get(id);
         if (bagGoodsMap == null) {
-            final List<PetEquip> list = this.dao.query(PetEquip.class, Cnd.where("r_id", "=", (Object)id));
+            final List<PetEquip> list = this.dao.query(PetEquip.class, Cnd.where("r_id", "=", id));
             final Map<Long, PetEquip> map = list.stream().collect(Collectors.toMap(PetEquip::getId, PetEquip -> PetEquip));
             PetCache.PET_EQUIP_MAP.put(id, map);
             return map;
@@ -175,7 +175,7 @@ public class BagService
     public Map<Long, BagEquip> getBagEquip(final Role role) {
         final Map<Long, BagEquip> bagGoodsMap = BagCache.BAG_EQUIP_MAP.get(role.getId());
         if (bagGoodsMap == null) {
-            final List<BagEquip> list = this.dao.query(BagEquip.class, Cnd.where("r_id", "=", (Object)role.getId()));
+            final List<BagEquip> list = this.dao.query(BagEquip.class, Cnd.where("r_id", "=", role.getId()));
             list.forEach(equip -> equip.doAfterInit());
             final Map<Long, BagEquip> map = list.stream().collect(Collectors.toMap(BagEquip::getId, BagEquip -> BagEquip));
             BagCache.BAG_EQUIP_MAP.put(role.getId(), map);

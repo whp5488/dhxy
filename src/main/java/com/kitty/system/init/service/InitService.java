@@ -752,7 +752,7 @@ public class InitService
     
     @TargetDataSource(name = "se")
     public List<SysDataTaskParty> initTaskParty() {
-        return this.dao.query(SysDataTaskParty.class, Cnd.where("is_load", "=", (Object)1));
+        return this.dao.query(SysDataTaskParty.class, Cnd.where("is_load", "=", 1));
     }
     
     @TargetDataSource(name = "se")

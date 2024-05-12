@@ -212,7 +212,7 @@ public class RoleDayInCeService
     public RoleDayInCe getDataForRoleId(final Long roleId) {
         RoleDayInCe roleDayInCe = DataCache.ROLE_DAY_IN_CE.get(roleId);
         if (roleDayInCe == null) {
-            final List<RoleDayInCe> roleDayInCes = this.dao.query(RoleDayInCe.class, Cnd.where("role_id", "=", (Object)roleId));
+            final List<RoleDayInCe> roleDayInCes = this.dao.query(RoleDayInCe.class, Cnd.where("role_id", "=", roleId));
             if (roleDayInCes.size() <= 0) {
                 roleDayInCe = new RoleDayInCe();
                 roleDayInCe.setId(IdGenerator.getNextId());

@@ -23,7 +23,7 @@ public class IdentityService
     private AtomicInteger defaultFactory;
     
     public IdentityService() {
-        this.map = new HashMap<Integer, IdentityEnt>();
+        this.map = new HashMap<>();
         this.defaultFactory = new AtomicInteger(1);
     }
     
@@ -31,7 +31,7 @@ public class IdentityService
         for (final IdentityType kind : IdentityType.values()) {
             final int type1 = kind.getType();
             if (kind.isSave()) {
-                IdentityEnt ent = (IdentityEnt)this.dao.fetch(IdentityEnt.class, Cnd.where("type", "=", (Object)type1));
+                IdentityEnt ent = (IdentityEnt)this.dao.fetch(IdentityEnt.class, Cnd.where("type", "=", type1));
                 if (ent == null) {
                     final int initSeed = this.createInitSeed(kind);
                     if (initSeed > 0) {

@@ -53,7 +53,7 @@ public class DbCardExerciseService
     private void saveToDb(final CardExercise entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
-            this.dao.delete((Object)entity);
+            this.dao.delete(entity);
         }
         else {
             this.dao.insertOrUpdate((Object)entity);

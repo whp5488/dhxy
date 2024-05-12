@@ -16,8 +16,8 @@ public enum MessageFactory
     private Map<Class<?>, String> clazz2Id;
     
     private MessageFactory() {
-        this.id2Clazz = new HashMap<String, Class<?>>();
-        this.clazz2Id = new HashMap<Class<?>, String>();
+        this.id2Clazz = new HashMap<>();
+        this.clazz2Id = new HashMap<>();
     }
     
     public void initMessagePool(final String scanPath) {

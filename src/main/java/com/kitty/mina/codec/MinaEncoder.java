@@ -18,13 +18,13 @@ public class MinaEncoder implements ProtocolEncoder
     }
     
     public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out) throws Exception {
-        CodecContext context = (CodecContext)session.getAttribute((Object)SessionProperties.CODEC_CONTEXT);
+        CodecContext context = (CodecContext)session.getAttribute(SessionProperties.CODEC_CONTEXT);
         if (context == null) {
             context = new CodecContext();
-            session.setAttribute((Object)SessionProperties.CODEC_CONTEXT, (Object)context);
+            session.setAttribute(SessionProperties.CODEC_CONTEXT, context);
         }
         final IoBuffer buffer = writeMessage((Message)message);
-        out.write((Object)buffer);
+        out.write(buffer);
     }
     
     public static IoBuffer writeMessage(final Message message) {

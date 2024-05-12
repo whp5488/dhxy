@@ -54,7 +54,7 @@ public class BossService
             role.setCanFight(false);
         }
         if (SpringUtils.getTeamService().isInTeamAndNotLeader(role)) {
-            this.logger.warn("{}({})不是队长触发战斗", (Object)role.getRoleId(), (Object)role.getName());
+            this.logger.warn("{}({})不是队长触发战斗", role.getRoleId(), role.getName());
             return null;
         }
         final int type = bossFightParam.getFightType();

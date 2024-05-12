@@ -60,12 +60,12 @@ public class Db4EmailService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[Db4Email] 执行全部命令后关闭", new Object[0]);
+        LoggerUtils.error("[Db4Email] 执行全部命令后关闭");
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<BaseEntity> it = (Iterator<BaseEntity>)this.queue.iterator();
+            final Iterator<BaseEntity> it = this.queue.iterator();
             while (it.hasNext()) {
                 final BaseEntity next = it.next();
                 it.remove();

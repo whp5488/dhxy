@@ -24,7 +24,7 @@ public class RedisSerializer
             }
             else {
                 try {
-                    bytes = JSONObject.toJSONString((Object)t).getBytes("utf-8");
+                    bytes = JSONObject.toJSONString(t).getBytes("utf-8");
                 }
                 catch (final IOException e) {
                     e.printStackTrace();
@@ -33,7 +33,7 @@ public class RedisSerializer
         }
         catch (final Exception e2) {
             e2.printStackTrace();
-            RedisSerializer.log.error("序列化失败 " + e2.getMessage(), (Throwable)e2);
+            RedisSerializer.log.error("序列化失败 " + e2.getMessage(), e2);
         }
         return bytes;
     }
@@ -62,7 +62,7 @@ public class RedisSerializer
                     return (T)JSONObject.parseObject(new String(bytes, "utf-8"), (Class)clazz);
                 }
                 catch (final Exception e) {
-                    RedisSerializer.log.error("反序列化失败 " + e.getMessage(), (Throwable)e);
+                    RedisSerializer.log.error("反序列化失败 " + e.getMessage(), e);
                 }
             }
         }

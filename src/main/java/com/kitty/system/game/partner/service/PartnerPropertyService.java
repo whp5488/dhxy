@@ -16,7 +16,7 @@ public class PartnerPropertyService
     private Dao dao;
     
     public SysPartnerProperty getPartnerPropertyBySerialLevel(final int partnerSerial, final int partnerLevel) {
-        final List<SysPartnerProperty> sysPartnerPropertys = this.dao.query(SysPartnerProperty.class, Cnd.where("partner_serial", "=", (Object)partnerSerial).and("level", "=", (Object)partnerLevel));
+        final List<SysPartnerProperty> sysPartnerPropertys = this.dao.query(SysPartnerProperty.class, Cnd.where("partner_serial", "=", partnerSerial).and("level", "=", partnerLevel));
         if (sysPartnerPropertys.size() > 0) {
             return sysPartnerPropertys.get(0);
         }

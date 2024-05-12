@@ -18,7 +18,7 @@ public class VisiableThreadPoolTaskExecutor extends ThreadPoolTaskExecutor
         if (null == threadPoolExecutor) {
             return;
         }
-        VisiableThreadPoolTaskExecutor.logger.info("{}, {},taskCount [{}], completedTaskCount [{}], activeCount [{}], queueSize [{}]", new Object[] { this.getThreadNamePrefix(), prefix, threadPoolExecutor.getTaskCount(), threadPoolExecutor.getCompletedTaskCount(), threadPoolExecutor.getActiveCount(), threadPoolExecutor.getQueue().size() });
+        VisiableThreadPoolTaskExecutor.logger.info("{}, {},taskCount [{}], completedTaskCount [{}], activeCount [{}], queueSize [{}]", this.getThreadNamePrefix(), prefix, threadPoolExecutor.getTaskCount(), threadPoolExecutor.getCompletedTaskCount(), threadPoolExecutor.getActiveCount(), threadPoolExecutor.getQueue().size());
     }
     
     public void execute(final Runnable task) {
@@ -38,17 +38,17 @@ public class VisiableThreadPoolTaskExecutor extends ThreadPoolTaskExecutor
     
     public <T> Future<T> submit(final Callable<T> task) {
         this.showThreadPoolInfo("2. do submit");
-        return super.submit((Callable)task);
+        return super.submit(task);
     }
     
     public ListenableFuture<?> submitListenable(final Runnable task) {
         this.showThreadPoolInfo("1. do submitListenable");
-        return (ListenableFuture<?>)super.submitListenable(task);
+        return super.submitListenable(task);
     }
     
     public <T> ListenableFuture<T> submitListenable(final Callable<T> task) {
         this.showThreadPoolInfo("2. do submitListenable");
-        return (ListenableFuture<T>)super.submitListenable((Callable)task);
+        return super.submitListenable(task);
     }
     
     static {

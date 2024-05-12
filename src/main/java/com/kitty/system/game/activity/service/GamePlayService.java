@@ -22,7 +22,7 @@ public class GamePlayService
     public Map<Long, WeekTreasure> getWeekTreasure(final long id) {
         Map<Long, WeekTreasure> map = DataCache.WEEK_TREASURE.get(id);
         if (map == null) {
-            final List<WeekTreasure> list = this.dao.query(WeekTreasure.class, Cnd.where("r_id", "=", (Object)id));
+            final List<WeekTreasure> list = this.dao.query(WeekTreasure.class, Cnd.where("r_id", "=", id));
             map = list.stream().collect(Collectors.toMap(WeekTreasure::getId, WeekTreasure -> WeekTreasure));
             DataCache.WEEK_TREASURE.put(id, map);
             return map;

@@ -534,7 +534,7 @@ public class RoleService
         else if (LOGIC.HORSE.getValue() == logic) {
             type = "坐骑";
         }
-        if (Strings.isEmpty((CharSequence)name)) {
+        if (Strings.isEmpty(name)) {
             MessagePusher.pushMessage(session, new RespMsg(String.format("请输入正确的%s名。", type)));
             return false;
         }
@@ -591,10 +591,10 @@ public class RoleService
         SessionManager.INSTANCE.registerSession(role.getRoleId(), session);
         this.addOnline(role);
         this.removeOffline(role);
-        session.setAttribute((Object)SessionProperties.CLIENT_STATUS, (Object)"1");
-        session.setAttribute((Object)SessionProperties.PLAYER_ID, (Object)role.getRoleId());
-        session.setAttribute((Object)SessionProperties.PLAYER_UID, (Object)role.getId());
-        session.setAttribute((Object)SessionProperties.PLAYER_NAME, (Object)role.getName());
+        session.setAttribute(SessionProperties.CLIENT_STATUS, "1");
+        session.setAttribute(SessionProperties.PLAYER_ID, role.getRoleId());
+        session.setAttribute(SessionProperties.PLAYER_UID, role.getId());
+        session.setAttribute(SessionProperties.PLAYER_NAME, role.getName());
         role.setDistributeKey(SessionManager.INSTANCE.getNextDistributeKey());
         role.setState(1);
         final RespRoleAlreadyLogin respRoleAlreadyLogin = new RespRoleAlreadyLogin();
@@ -664,7 +664,7 @@ public class RoleService
                 this.storeService.refreshStoreEquip(role, equip);
             }
             else {
-                this.logger.error("加载仓库装备异常数据 = {}", (Object)equip);
+                this.logger.error("加载仓库装备异常数据 = {}", equip);
                 itStoreEquips.remove();
             }
         }
@@ -808,9 +808,9 @@ public class RoleService
         final List<FiedValue> list = new ArrayList<FiedValue>();
         if (role.getMasquerade() > 0 && role.getCardExpireTime() > currTime) {
             final NutMap nutMap = new NutMap();
-            nutMap.setv("serial", (Object)role.getMasquerade());
-            nutMap.setv("expire", (Object)role.getCardExpireTime());
-            list.add(new FiedValue("card", (byte)4, JsonUtils.map2String((Map<?, ?>)nutMap)));
+            nutMap.setv("serial", role.getMasquerade());
+            nutMap.setv("expire", role.getCardExpireTime());
+            list.add(new FiedValue("card", (byte)4, JsonUtils.map2String(nutMap)));
         }
         final PkInfoBox box = role.getPkInfoBox();
         if (box.getIncense() > 0 && box.getIncense() > currTime) {
@@ -989,7 +989,7 @@ public class RoleService
             return false;
         }
         if (num < 0L) {
-            this.logger.error("增加货币负数，角色 = {}, 方法 = {}，货币类型 = {}，数量 = {}", new Object[] { role.getName(), cause, type, num });
+            this.logger.error("增加货币负数，角色 = {}, 方法 = {}，货币类型 = {}，数量 = {}", role.getName(), cause, type, num);
             return false;
         }
         final Long add_to = num;
@@ -1201,7 +1201,7 @@ public class RoleService
         }
         SpringUtils.getBean(SkillService.class).loadRoleSkill(role);
         this.equipService.checkEquipValid(role);
-        role.getExtendBox().setAutoFightSet(new HashMap<String, Object>());
+        role.getExtendBox().setAutoFightSet(new HashMap<>());
         ceService.chageRace(role);
         role.save();
         EventDispatcher.getInstance().fireEvent(new com.kitty.listener.event.RoleChangeEvent(EventType.ROLE_CHANGE, role, null, null, type));
@@ -1275,7 +1275,7 @@ public class RoleService
     }
     
     public Map<Integer, Integer> changeSkillProficient(final Map<Integer, RoleSkill> map, final Map<Integer, SysSkill> data_skill) {
-        final Map<Integer, Integer> hashMap = new HashMap<Integer, Integer>();
+        final Map<Integer, Integer> hashMap = new HashMap<>();
         for (final Integer key : map.keySet()) {
             final RoleSkill roleSkill = map.get(key);
             final SysSkill sysSkill = data_skill.get(roleSkill.getSkillId());
@@ -1292,8 +1292,8 @@ public class RoleService
                 MessagePusher.pushMessage(role, new RespMsg("您背包中没有回梦丹"));
                 return;
             }
-            final NutMap map = (NutMap)Json.fromJson(NutMap.class, (CharSequence)string);
-            final Map<Integer, Integer> correction = new HashMap<Integer, Integer>();
+            final NutMap map = Json.fromJson(NutMap.class, string);
+            final Map<Integer, Integer> correction = new HashMap<>();
             for (final String key : map.keySet()) {
                 final int rei = Integer.valueOf(key);
                 if (rei <= role.getRelive()) {
@@ -1429,7 +1429,7 @@ public class RoleService
                 final Integer restorePorCount2 = FormulaHero.restorePorCount(pet.getRebirth(), pet.getPetLv(), LOGIC.LOGICTYPE_PET.getValue());
                 if (count > pet.getFpoint() || pet.getGg() - pet.getPetLv() + pet.getMj() - pet.getPetLv() + pet.getLl() - pet.getPetLv() + pet.getLx() - pet.getPetLv() + count > restorePorCount2) {
                     msg = "加点失败";
-                    this.logger.error("角色:[{}],角色id:[{}],宠物Id:[{}],加点超出:[{}],未分配点:[{}]", new Object[] { role.getName(), role.getRoleId(), pet.getId(), count, pet.getFpoint() });
+                    this.logger.error("角色:[{}],角色id:[{}],宠物Id:[{}],加点超出:[{}],未分配点:[{}]", role.getName(), role.getRoleId(), pet.getId(), count, pet.getFpoint());
                 }
                 else {
                     if (assignAttrib.getGg() > 0) {
@@ -1640,7 +1640,7 @@ public class RoleService
             }
         }
         catch (final Exception e) {
-            this.logger.error("战斗中设置自动战斗错误=让目标防御={}", Lang.getStackTrace((Throwable)e));
+            this.logger.error("战斗中设置自动战斗错误=让目标防御={}", Lang.getStackTrace(e));
             final ReqFightHandle reqFightHandle2 = new ReqFightHandle();
             reqFightHandle2.setRound(fight.getRound());
             reqFightHandle2.setAutoFight(1);
@@ -1705,7 +1705,7 @@ public class RoleService
                 }
             }
             if (silver < 0L) {
-                this.logger.error("染色货币数量负数{}", (Object)silver);
+                this.logger.error("染色货币数量负数{}", silver);
                 return;
             }
             if (silver > 0L && role.getSilver() <= silver) {
@@ -2037,7 +2037,7 @@ public class RoleService
     
     public boolean deductCurrency(final Role role, final Integer type, final long num, final String string) {
         if (num <= 0L && string != null) {
-            this.logger.error("扣除货币负数，角色 = {}, 方法 = {}，货币类型 = {}，数量 = {}", new Object[] { role.getName(), string, type, num });
+            this.logger.error("扣除货币负数，角色 = {}, 方法 = {}，货币类型 = {}，数量 = {}", role.getName(), string, type, num);
             return false;
         }
         long residue = 0L;
@@ -2284,7 +2284,7 @@ public class RoleService
     
     public void checkWeeklyReset(final Role role) {
         if (!this.isCanWeeklyReset(role)) {
-            this.logger.info("不能进行每周重置，角色ID: {}, 上一次重置时间戳：{}", (Object)role.getRoleId(), (Object)role.getWeeklyResetTime());
+            this.logger.info("不能进行每周重置，角色ID: {}, 上一次重置时间戳：{}", role.getRoleId(), role.getWeeklyResetTime());
             return;
         }
         this.doWeeklyReset(role);
@@ -2312,11 +2312,11 @@ public class RoleService
     }
     
     public void doWeeklyReset(final Role role) {
-        this.logger.warn("玩家{}进行每周重置，上一重置时间为{}", (Object)role.getRoleId(), (Object)role.getWeeklyResetTime());
+        this.logger.warn("玩家{}进行每周重置，上一重置时间为{}", role.getRoleId(), role.getWeeklyResetTime());
         role.getTaskProgress().setLoop(1);
         role.setWeeklyResetTime(System.currentTimeMillis());
-        role.getPkInfoBox().setKillRoles(new HashMap<Long, PkRecord>());
-        role.getPkInfoBox().setBeKillRoles(new HashMap<Long, PkRecord>());
+        role.getPkInfoBox().setKillRoles(new HashMap<>());
+        role.getPkInfoBox().setBeKillRoles(new HashMap<>());
         role.save();
         this.petService.doWeeklyReset(role);
     }

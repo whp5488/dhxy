@@ -11,6 +11,6 @@ public class SupportConfiration
 {
     @Bean({ "gameConversion" })
     public ConversionService createConversionService() {
-        return (ConversionService)new DefaultConversionService();
+        return new DefaultConversionService();
     }
 }

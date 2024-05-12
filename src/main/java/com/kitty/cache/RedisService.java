@@ -41,7 +41,7 @@ public class RedisService
     }
     
     public void sendChannelMessage(final String channel, final Serializable message) {
-        this.redisTemplate.convertAndSend(channel, (Object)message);
+        this.redisTemplate.convertAndSend(channel, message);
     }
     
     public Boolean exists(final Serializable key) {

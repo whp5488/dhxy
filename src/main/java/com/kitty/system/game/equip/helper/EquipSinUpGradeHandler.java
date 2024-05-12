@@ -46,7 +46,7 @@ public class EquipSinUpGradeHandler extends UpgradeHandler
         final Long aux_id_two = Long.valueOf(split[2]);
         final EquipInfo equipInfo = this.getEquip(role, 1, id);
         if (equipInfo.getTips() != null) {
-            this.logger.error("角色编号：{}，仙器升阶：获取物品所在位置为 = {}，获取物品ID = {}", new Object[] { role.getRoleId(), pos, id });
+            this.logger.error("角色编号：{}，仙器升阶：获取物品所在位置为 = {}，获取物品ID = {}", role.getRoleId(), pos, id);
             return equipInfo.getTips();
         }
         final BagEquip equip = equipInfo.getEquip();
@@ -61,7 +61,7 @@ public class EquipSinUpGradeHandler extends UpgradeHandler
         if (role.getRelive() < needRei) {
             return MessageFormat.format("等级升到{0}级才能升级该装备", ((needRei > 0) ? msg : "") + needGrade);
         }
-        if (role.getLevel() < needGrade) {
+        if (role.getRelive() < needRei && role.getLevel() < needGrade) {
             return MessageFormat.format("等级升到{0}级才能升级该装备", ((needRei > 0) ? msg : "") + needGrade);
         }
         if (sysSinBieEq.getNextSerial() <= 0) {
@@ -145,7 +145,7 @@ public class EquipSinUpGradeHandler extends UpgradeHandler
                 }
                 final boolean b = this.bagService.deleteRoleEquip(role, auxEquipTwo, "升阶扣除材料装备");
                 if (!b) {
-                    this.logger.error("删除材料二时，玩家编号 = {}，玩家名称：{}，升阶扣除道具失败，可能使用非法操作", (Object)role.getRoleId(), (Object)role.getName());
+                    this.logger.error("删除材料二时，玩家编号 = {}，玩家名称：{}，升阶扣除道具失败，可能使用非法操作", role.getRoleId(), role.getName());
                     return false;
                 }
             }
@@ -155,12 +155,12 @@ public class EquipSinUpGradeHandler extends UpgradeHandler
             }
             boolean b2 = this.bagService.deleteRoleEquip(role, auxEquip, "升阶扣除材料装备-");
             if (!b2) {
-                this.logger.error("删除材料一， 时玩家编号 = {}，玩家名称：{}，升阶扣除道具失败，可能使用非法操作", (Object)role.getRoleId(), (Object)role.getName());
+                this.logger.error("删除材料一， 时玩家编号 = {}，玩家名称：{}，升阶扣除道具失败，可能使用非法操作", role.getRoleId(), role.getName());
                 return false;
             }
             b2 = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, silver, "EquipSinUpGrade");
             if (!b2) {
-                this.logger.error("扣除银币时，玩家编号 = {}，玩家名称：{}，升阶扣除道具失败，可能使用非法操作", (Object)role.getRoleId(), (Object)role.getName());
+                this.logger.error("扣除银币时，玩家编号 = {}，玩家名称：{}，升阶扣除道具失败，可能使用非法操作", role.getRoleId(), role.getName());
                 return false;
             }
             return true;

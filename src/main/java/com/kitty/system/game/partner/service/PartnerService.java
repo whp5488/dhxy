@@ -63,7 +63,7 @@ public class PartnerService
     private RoleService roleService;
     
     public Map<Integer, Partner> selectPartner(final Role role) {
-        final List<Partner> list = this.dao.query(Partner.class, Cnd.where("is_del", "!=", (Object)"-1").and("role_id", "=", (Object)role.getRoleId()));
+        final List<Partner> list = this.dao.query(Partner.class, Cnd.where("is_del", "!=", (Object)"-1").and("role_id", "=", role.getRoleId()));
         return list.stream().collect(Collectors.toMap(Partner::getPartnerId, Partner -> Partner));
     }
     

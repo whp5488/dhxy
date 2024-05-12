@@ -57,7 +57,7 @@ public class SuitService
     public Map<Long, Suit> getSuit(final long id) {
         Map<Long, Suit> suitMap = DataCache.SUIT_MAP.get(id);
         if (suitMap == null) {
-            final List<Suit> list = this.dao.query(Suit.class, Cnd.where("r_id", "=", (Object)id));
+            final List<Suit> list = this.dao.query(Suit.class, Cnd.where("r_id", "=", id));
             suitMap = list.stream().collect(Collectors.toMap(Suit::getId, Suit -> Suit));
             DataCache.SUIT_MAP.put(id, suitMap);
             return suitMap;

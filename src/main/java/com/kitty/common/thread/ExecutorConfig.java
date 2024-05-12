@@ -26,9 +26,9 @@ public class ExecutorConfig
         executor.setQueueCapacity(99999);
         executor.setKeepAliveSeconds(60);
         executor.setThreadNamePrefix("async-springboot-thread-");
-        executor.setRejectedExecutionHandler((RejectedExecutionHandler)new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();
-        return (Executor)executor;
+        return executor;
     }
     
     static {

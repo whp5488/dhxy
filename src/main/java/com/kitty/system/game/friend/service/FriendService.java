@@ -81,10 +81,10 @@ public class FriendService
     }
     
     public void loadPal(final Role role) {
-        final List<PalFriendGroup> friendGroupList = this.dao.query(PalFriendGroup.class, Cnd.where("r_id", "=", (Object)role.getId()));
+        final List<PalFriendGroup> friendGroupList = this.dao.query(PalFriendGroup.class, Cnd.where("r_id", "=", role.getId()));
         final Map<Long, PalFriendGroup> friendGroupMap = friendGroupList.stream().collect(Collectors.toMap(PalFriendGroup::getId, PalFriendGroup -> PalFriendGroup));
         role.setFriendGroupMap(friendGroupMap);
-        final List<PalFriend> palFriendList = this.dao.query(PalFriend.class, Cnd.where("r_id", "=", (Object)role.getId()));
+        final List<PalFriend> palFriendList = this.dao.query(PalFriend.class, Cnd.where("r_id", "=", role.getId()));
         final Map<Long, PalFriend> palFriendMap = new HashMap<Long, PalFriend>();
         for (final PalFriend palFriend : palFriendList) {
             final PalFriend friend = palFriendMap.get(palFriend.getPalId());
@@ -97,7 +97,7 @@ public class FriendService
             }
         }
         role.setFriendMap(palFriendMap);
-        final List<PalNotify> palNotifyList = this.dao.query(PalNotify.class, Cnd.where("att", "=", (Object)role.getId()));
+        final List<PalNotify> palNotifyList = this.dao.query(PalNotify.class, Cnd.where("att", "=", role.getId()));
         final Map<Long, PalNotify> palNotifyMap = palNotifyList.stream().collect(Collectors.toMap(PalNotify::getId, PalNotify -> PalNotify));
         role.setPalNotifyMap(palNotifyMap);
     }

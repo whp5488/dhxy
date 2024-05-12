@@ -490,7 +490,7 @@ public class StoreService
     public Map<Long, StoreEquip> getStoreEquip(final Role role) {
         final Map<Long, StoreEquip> storeGoodsMap = BagCache.STORE_EQUIP_MAP.get(role.getId());
         if (storeGoodsMap == null) {
-            final List<StoreEquip> list = this.dao.query(StoreEquip.class, Cnd.where("r_id", "=", (Object)role.getId()));
+            final List<StoreEquip> list = this.dao.query(StoreEquip.class, Cnd.where("r_id", "=", role.getId()));
             list.forEach(equip -> equip.doAfterInit());
             final Map<Long, StoreEquip> map = list.stream().collect(Collectors.toMap(StoreEquip::getId, StoreEquip -> StoreEquip));
             BagCache.STORE_EQUIP_MAP.put(role.getId(), map);
@@ -502,7 +502,7 @@ public class StoreService
     public Map<Long, StoreGoods> getStoreGoods(final Role role) {
         final Map<Long, StoreGoods> storeGoodsMap = BagCache.STORE_GOODS_MAP.get(role.getId());
         if (storeGoodsMap == null) {
-            final List<StoreGoods> list = this.dao.query(StoreGoods.class, Cnd.where("r_id", "=", (Object)role.getId()));
+            final List<StoreGoods> list = this.dao.query(StoreGoods.class, Cnd.where("r_id", "=", role.getId()));
             final Map<Long, StoreGoods> map = list.stream().collect(Collectors.toMap(StoreGoods::getId, StoreGoods -> StoreGoods));
             BagCache.STORE_GOODS_MAP.put(role.getId(), map);
             return map;

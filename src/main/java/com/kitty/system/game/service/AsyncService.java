@@ -163,7 +163,7 @@ public class AsyncService
     @Async("asyncServiceExecutor")
     public void awardWaterSeason() {
         final int map = 1000;
-        final List<Mirror> mirrors = this.dao.query(Mirror.class, Cnd.where("type", "=", (Object)3003));
+        final List<Mirror> mirrors = this.dao.query(Mirror.class, Cnd.where("type", "=", 3003));
         Set<Long> set = DataCache.MIRROR_MAP_NPC.get(map);
         if (set == null) {
             set = new HashSet<Long>();

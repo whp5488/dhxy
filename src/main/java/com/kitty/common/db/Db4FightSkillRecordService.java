@@ -54,7 +54,7 @@ public class Db4FightSkillRecordService
     
     private void saveToDb(final FightSkillRecord record) {
         record.doBeforeSave();
-        this.mongoTemplate.insert((Object)record);
+        this.mongoTemplate.insert(record);
     }
     
     @PreDestroy

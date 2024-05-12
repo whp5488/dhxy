@@ -57,7 +57,7 @@ public class Db4PetService
     private void saveToDb(final Pet entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
-            this.dao.delete((Object)entity);
+            this.dao.delete(entity);
         }
         else {
             this.dao.insertOrUpdate((Object)entity);

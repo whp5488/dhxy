@@ -237,7 +237,7 @@ public class PetService
                 if (petBase == null) {
                     this.logger.error("初始化宠物基础属性为空");
                 }
-                final List<PetEquip> list = new ArrayList<PetEquip>();
+                final List<PetEquip> list = new ArrayList<>();
                 pet.setPetBase(petBase);
                 final int life = CountUtils.countPetLife(pet, list);
                 pet.setCurrLife(life);
@@ -257,7 +257,7 @@ public class PetService
             return null;
         }
         catch (final Exception e) {
-            this.logger.error("增加宠物异常：玩家 = {}，添加宠物 = {}，宠物信息{}", new Object[] { role.getRoleId(), cause, pet.toString() });
+            this.logger.error("增加宠物异常：玩家 = {}，添加宠物 = {}，宠物信息{}", role.getRoleId(), cause, pet);
             e.printStackTrace();
             return null;
         }
@@ -569,7 +569,7 @@ public class PetService
         MessagePusher.pushMessage(role, effctInfo);
         final RespFightMsgDlg respFightMsgDlg = new RespFightMsgDlg();
         respFightMsgDlg.setId(pet.getPetId());
-        respFightMsgDlg.setMsg(Json.toJson((Object)pet.getMsgMap()));
+        respFightMsgDlg.setMsg(Json.toJson(pet.getMsgMap()));
         MessagePusher.pushMessage(role, respFightMsgDlg);
         this.sendPetCorrection(role, pet);
         this.sendPetPanels(role, pet);
@@ -808,7 +808,7 @@ public class PetService
         Map<Integer, Pet> map = PetCache.PET_MAP.get(role.getId());
         if (map == null) {
             map = new HashMap<Integer, Pet>();
-            final List<Pet> list = this.dao.query(Pet.class, (org.nutz.dao.Condition)Cnd.where("role_id", "=", (Object)role.getRoleId()));
+            final List<Pet> list = this.dao.query(Pet.class, Cnd.where("role_id", "=", role.getRoleId()));
             for (final Pet pet : list) {
                 pet.doAfterInit();
                 map.put(pet.getPetId(), pet);
@@ -1174,7 +1174,7 @@ public class PetService
     
     public void petHf(final Pet pet, final List<FiedValue> list) {
         if (pet.getBrandNew().size() > 0) {
-            final String brandNew = Joiner.on(",").skipNulls().join((Iterable)pet.getBrandNew().keySet());
+            final String brandNew = Joiner.on(",").skipNulls().join(pet.getBrandNew().keySet());
             list.add(new FiedValue("list_hf", (byte)4, brandNew));
             short useHf = 0;
             for (final Integer key : pet.getBrandNew().keySet()) {

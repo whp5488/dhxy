@@ -693,7 +693,7 @@ public class GeneralService extends EchoHandler
     }
     
     public void loadDomesticate(final Role role) {
-        final List<Domesticate> list = this.dao.query(Domesticate.class, Cnd.where("r_id", "=", (Object)role.getId()));
+        final List<Domesticate> list = this.dao.query(Domesticate.class, Cnd.where("r_id", "=", role.getId()));
         if (list != null && list.size() > 0) {
             DataCache.DOMESTICATE_MAP.put(role.getId(), list);
         }

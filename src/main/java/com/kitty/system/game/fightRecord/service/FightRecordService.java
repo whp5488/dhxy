@@ -136,7 +136,7 @@ public class FightRecordService
     }
     
     public FightSkillRecord testGetFightSkillRecord(final long recordId) {
-        final FightSkillRecord fightSkillRecord = (FightSkillRecord)this.dao.fetch(FightSkillRecord.class, Cnd.where("id", "=", (Object)recordId));
+        final FightSkillRecord fightSkillRecord = (FightSkillRecord)this.dao.fetch(FightSkillRecord.class, Cnd.where("id", "=", recordId));
         return fightSkillRecord;
     }
     

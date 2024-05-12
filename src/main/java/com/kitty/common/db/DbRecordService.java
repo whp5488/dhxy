@@ -64,12 +64,12 @@ public class DbRecordService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[DbRecord] 执行全部命令后关闭", new Object[0]);
+        LoggerUtils.error("[DbRecord] 执行全部命令后关闭");
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<BaseEntity> it = (Iterator<BaseEntity>)this.queue.iterator();
+            final Iterator<BaseEntity> it = this.queue.iterator();
             while (it.hasNext()) {
                 final BaseEntity obj = it.next();
                 it.remove();

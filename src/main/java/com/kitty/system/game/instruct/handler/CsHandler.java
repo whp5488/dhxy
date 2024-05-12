@@ -212,7 +212,7 @@ public class CsHandler implements NcFather
             final Dao dao = SpringUtils.getDao();
             final List<Role> roles = SpringUtils.getBean(InitService.class).getRoles();
             for (final Role player : roles) {
-                final Role mySqlRole = (Role)dao.fetch(Role.class, Cnd.where("id", "=", (Object)player.getId()));
+                final Role mySqlRole = (Role)dao.fetch(Role.class, Cnd.where("id", "=", player.getId()));
                 final Role redisRole = redisService.get(String.valueOf(player.getId()), Role.class);
                 this.comparison(mySqlRole, redisRole);
             }

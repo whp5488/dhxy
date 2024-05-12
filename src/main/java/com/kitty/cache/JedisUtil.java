@@ -51,10 +51,10 @@ public class JedisUtil
         jedisPoolConfig.setMinIdle(1);
         jedisPoolConfig.setMaxTotal(3000);
         if (JedisUtil.redisPassword != null && JedisUtil.redisPassword.length() > 1) {
-            JedisUtil.jedisPool = new JedisPool((GenericObjectPoolConfig)jedisPoolConfig, JedisUtil.redisHost, JedisUtil.redisPort, JedisUtil.redisTimeout, JedisUtil.redisPassword);
+            JedisUtil.jedisPool = new JedisPool(jedisPoolConfig, JedisUtil.redisHost, JedisUtil.redisPort, JedisUtil.redisTimeout, JedisUtil.redisPassword);
         }
         else {
-            JedisUtil.jedisPool = new JedisPool((GenericObjectPoolConfig)jedisPoolConfig, JedisUtil.redisHost, JedisUtil.redisPort);
+            JedisUtil.jedisPool = new JedisPool(jedisPoolConfig, JedisUtil.redisHost, JedisUtil.redisPort);
         }
     }
     

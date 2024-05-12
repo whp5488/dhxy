@@ -245,7 +245,7 @@ public class HgFightHandler extends ActivityHandler
                     objects.addAll(receiver.getMap().keySet());
                 }
                 else {
-                    this.logger.error("进入应战界面，获取被挑战者信息错误：{}", (Object)hg.toString());
+                    this.logger.error("进入应战界面，获取被挑战者信息错误：{}", hg);
                 }
             }
             else {
@@ -266,7 +266,7 @@ public class HgFightHandler extends ActivityHandler
                     objects.addAll(initiator.getMap().keySet());
                 }
                 else {
-                    this.logger.error("进入应战界面，获取挑战者信息错误：{}", (Object)hg.toString());
+                    this.logger.error("进入应战界面，获取挑战者信息错误：{}", hg);
                 }
             }
             if (id > 0L) {

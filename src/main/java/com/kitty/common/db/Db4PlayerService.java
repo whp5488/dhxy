@@ -61,7 +61,7 @@ public class Db4PlayerService
     private void saveToDb(final Role entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
-            this.dao.delete((Object)entity);
+            this.dao.delete(entity);
         }
         else {
             this.dao.insertOrUpdate((Object)entity);

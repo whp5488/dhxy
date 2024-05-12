@@ -57,7 +57,7 @@ public class HouseService
     public List<House> getHouse(final long id) {
         List<House> houses = DataCache.HOUSE_MAP.get(id);
         if (houses == null) {
-            houses = Collections.synchronizedList((List<House>)this.dao.query(House.class, Cnd.where("r_id", "=", (Object)id)));
+            houses = Collections.synchronizedList((List<House>)this.dao.query(House.class, Cnd.where("r_id", "=", id)));
             DataCache.HOUSE_MAP.put(id, houses);
             return houses;
         }
