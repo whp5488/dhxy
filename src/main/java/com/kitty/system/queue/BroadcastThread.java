@@ -19,7 +19,7 @@ public class BroadcastThread
     private final AtomicBoolean run;
     
     public BroadcastThread() {
-        this.queue = new BlockingUniqueQueue<RespChat>();
+        this.queue = new BlockingUniqueQueue<>();
         this.run = new AtomicBoolean(true);
     }
     

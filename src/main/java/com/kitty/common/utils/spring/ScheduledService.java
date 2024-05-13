@@ -56,7 +56,7 @@ public class ScheduledService
         stopWatch.start();
         SpringUtils.getPartyService().resetPartyTask();
         stopWatch.stop();
-        this.logger.warn("5点重置帮派任务，用时{}毫秒", (Object)stopWatch.getTime());
+        this.logger.warn("5点重置帮派任务，用时{}毫秒", stopWatch.getTime());
     }
     
     @Scheduled(cron = "0 59 23 * * ?")
@@ -65,7 +65,7 @@ public class ScheduledService
         stopWatch.start();
         SpringUtils.getPartyService().updateActivation();
         stopWatch.stop();
-        this.logger.warn("23点59分更新帮派活跃度，用时{}毫秒", (Object)stopWatch.getTime());
+        this.logger.warn("23点59分更新帮派活跃度，用时{}毫秒", stopWatch.getTime());
     }
     
     @Scheduled(cron = "0 0 5 * * ?")
@@ -73,7 +73,7 @@ public class ScheduledService
         final StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         stopWatch.stop();
-        this.logger.warn("5点重置服务器等级，用时{}毫秒", (Object)stopWatch.getTime());
+        this.logger.warn("5点重置服务器等级，用时{}毫秒", stopWatch.getTime());
     }
     
     @Scheduled(cron = "0 0 5 * * ?")
@@ -81,7 +81,7 @@ public class ScheduledService
         final StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         stopWatch.stop();
-        this.logger.warn("5点清理交易记录，用时{}毫秒", (Object)stopWatch.getTime());
+        this.logger.warn("5点清理交易记录，用时{}毫秒", stopWatch.getTime());
     }
     
     @Scheduled(cron = "0 0 5 * * ?")
@@ -93,7 +93,7 @@ public class ScheduledService
             ThreadLocalUtil.addLocalTask(role, () -> this.roleService.doDailyFiveReset(role, true));
         }
         stopWatch.stop();
-        this.logger.warn("5点重置玩家数据，用时{}毫秒", (Object)stopWatch.getTime());
+        this.logger.warn("5点重置玩家数据，用时{}毫秒", stopWatch.getTime());
     }
     
     @Scheduled(cron = "0 0/5 * * * ?")
@@ -105,22 +105,22 @@ public class ScheduledService
     public void delFight() {
         final Logger logger = LoggerFunction.FIGHT.getLogger();
         final int before = FightExecutorNewService.FIGHTS.size();
-        final ConcurrentHashMap<Integer, Fight> map = new ConcurrentHashMap<Integer, Fight>(FightExecutorNewService.FIGHTS);
+        final ConcurrentHashMap<Integer, Fight> map = new ConcurrentHashMap<>(FightExecutorNewService.FIGHTS);
         final long now = System.currentTimeMillis();
         for (final Map.Entry<Integer, Fight> entry : map.entrySet()) {
             final Fight fight = entry.getValue();
             if (fight.getCreateTime() + 3600000L < now) {
-                logger.error("超过一小时删除战场，删除的战场id={}", (Object)fight.getId());
+                logger.error("超过一小时删除战场，删除的战场id={}", fight.getId());
                 for (final FightObject fightObject : fight.getAllFightObjects()) {
                     this.fightNewService.quiteFight(fight, fightObject, false);
-                    logger.error("超过一小时删除战场时，清除的角色id={}", (Object)fightObject.getId());
+                    logger.error("超过一小时删除战场时，清除的角色id={}", fightObject.getId());
                 }
                 this.fightNewService.clearFight(fight);
             }
         }
         final int end = FightExecutorNewService.FIGHTS.size();
         if (end != before) {
-            logger.error("每五分钟检查一次战场，当前战场数量={}, 删除后数量={}", (Object)before, (Object)end);
+            logger.error("每五分钟检查一次战场，当前战场数量={}, 删除后数量={}", before, end);
         }
     }
     

