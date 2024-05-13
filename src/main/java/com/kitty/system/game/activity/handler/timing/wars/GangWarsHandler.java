@@ -159,32 +159,32 @@ public class GangWarsHandler extends ActivityHandler
         calendar.setTime(this.objData.getStartTime().getTime());
         calendar.add(11, -1);
         final long initialDelay = this.objData.getStartTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加定时检测的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加定时检测的定时任务==={}", initialDelay);
         try {
             if (this.scheduledFuture != null) {
                 this.scheduledFuture.cancel(false);
             }
         }
         catch (final Exception e) {
-            this.logger.error("定时器关闭==", (Throwable)e);
+            this.logger.error("定时器关闭==", e);
         }
     }
     
     private void addStartJob() {
         final long initialDelay = this.objData.getStartTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加帮派大战开始的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加帮派大战开始的定时任务==={}", initialDelay);
         SchedulerManager.getInstance().schedule(() -> SpringUtils.getBean(GangWarsPkHandler.class).start(), initialDelay);
     }
     
     private void addEndJob() {
         final long initialDelay = this.objData.getEndTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加帮派大战结束的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加帮派大战结束的定时任务==={}", initialDelay);
         SchedulerManager.getInstance().schedule(() -> this.end(), initialDelay);
     }
     
     private void addBroadcastJob() {
         final long initialDelay = this.objData.getSignUpTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加帮派大战播报的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加帮派大战播报的定时任务==={}", initialDelay);
         SchedulerManager.getInstance().schedule(() -> this.broadcast(), initialDelay);
     }
     
@@ -365,8 +365,8 @@ public class GangWarsHandler extends ActivityHandler
         enemyParty.getWarsRecordList().add(enemyRecord);
         enemyRecord.save();
         final Integer visible = sideParty.getSerial();
-        this.objData.getPkData().put(sideParty.getSerial(), new HashMap<Long, GangWarsPkData>(sideParty.getMembers().size()));
-        this.objData.getPkData().put(enemyParty.getSerial(), new HashMap<Long, GangWarsPkData>(enemyParty.getMembers().size()));
+        this.objData.getPkData().put(sideParty.getSerial(), new HashMap<>(sideParty.getMembers().size()));
+        this.objData.getPkData().put(enemyParty.getSerial(), new HashMap<>(enemyParty.getMembers().size()));
         this.objData.getWarsMap().put(sideParty.getSerial(), new GangWarsInfo((byte)0, visible, bye, enemyParty.getSerial()));
         this.objData.getWarsMap().put(enemyParty.getSerial(), new GangWarsInfo((byte)1, visible, bye, sideParty.getSerial()));
     }

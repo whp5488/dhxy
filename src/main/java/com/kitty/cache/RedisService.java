@@ -1,25 +1,18 @@
 
 package com.kitty.cache;
 
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.data.redis.connection.RedisZSetCommands;
-import java.util.LinkedHashMap;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.Set;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisZSetCommands;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import javax.annotation.Resource;
-import java.io.Serializable;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.io.Serializable;
+import java.util.*;
 
 @Component
 public class RedisService
@@ -34,7 +27,7 @@ public class RedisService
         final LettuceConnectionFactory connectionFactory = (LettuceConnectionFactory)this.redisTemplate.getConnectionFactory();
         if (connectionFactory != null && index != connectionFactory.getDatabase()) {
             connectionFactory.setDatabase((int)index);
-            this.redisTemplate.setConnectionFactory((RedisConnectionFactory)connectionFactory);
+            this.redisTemplate.setConnectionFactory(connectionFactory);
             connectionFactory.setShareNativeConnection(false);
             connectionFactory.afterPropertiesSet();
         }

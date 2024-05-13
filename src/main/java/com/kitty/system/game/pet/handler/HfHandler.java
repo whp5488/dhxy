@@ -42,7 +42,7 @@ public class HfHandler extends FeedPetHandler
         }
         pet.getBrandNew().put(item.getValue(), (byte)1);
         pet.save();
-        final List<FiedValue> list = new ArrayList<FiedValue>();
+        final List<FiedValue> list = new ArrayList<>();
         this.petService.petHf(pet, list);
         final RespUpdate respUpdate = new RespUpdate();
         respUpdate.setId(pet.getPetId());

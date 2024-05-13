@@ -99,14 +99,14 @@ public class PetFightObject extends FightObject
                     break;
                 }
             }
-            this.getColorMap().setv("currHut", (Object)currentColor);
+            this.getColorMap().setv("currHut", currentColor);
         }
         final byte acc = SpringUtils.getPetService().isOrnament(this.getRole().getId(), PetDataPool.petMap.get(this.pet.getPetType()), this.pet);
-        this.getColorMap().setv("acc", (Object)acc);
+        this.getColorMap().setv("acc", acc);
         if (this.pet.getAccColor() != null && this.pet.getAccColor().size() > 0) {
             for (final Byte key : this.pet.getAccColor().keySet()) {
                 if (this.pet.getAccColor().get(key) == 1) {
-                    this.getColorMap().setv("currAccHut", (Object)key);
+                    this.getColorMap().setv("currAccHut", key);
                     break;
                 }
             }
@@ -114,7 +114,7 @@ public class PetFightObject extends FightObject
         if (this.pet.getAccColorTwo() != null && this.pet.getAccColorTwo().size() > 0) {
             for (final Byte key : this.pet.getAccColorTwo().keySet()) {
                 if (this.pet.getAccColorTwo().get(key) == 1) {
-                    this.getColorMap().setv("currAccHut2", (Object)key);
+                    this.getColorMap().setv("currAccHut2", key);
                     break;
                 }
             }
@@ -122,7 +122,7 @@ public class PetFightObject extends FightObject
         if (this.pet.getBrandNew() != null && this.pet.getBrandNew().size() > 0) {
             for (final Integer key2 : this.pet.getBrandNew().keySet()) {
                 if (this.pet.getBrandNew().get(key2) == 1) {
-                    this.getColorMap().setv("hf", (Object)key2);
+                    this.getColorMap().setv("hf", key2);
                     break;
                 }
             }
@@ -247,8 +247,8 @@ public class PetFightObject extends FightObject
     }
     
     static {
-        (publicAutoSet = NutMap.NEW()).setv("type", (Object)1);
-        PetFightObject.publicAutoSet.setv("action", (Object)1);
-        PetFightObject.publicAutoSet.setv("list", (Object)new ArrayList());
+        (publicAutoSet = NutMap.NEW()).setv("type", 1);
+        PetFightObject.publicAutoSet.setv("action", 1);
+        PetFightObject.publicAutoSet.setv("list", new ArrayList<>());
     }
 }

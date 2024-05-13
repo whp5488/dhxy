@@ -1,22 +1,21 @@
 
 package com.kitty.system.game.instruct.handler;
 
-import com.kitty.mina.message.Message;
+import com.kitty.common.start.ServerService;
+import com.kitty.common.utils.RandomUtil;
+import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespNotifyMiscEx;
 import com.kitty.system.game.bag.service.BagService;
-import com.kitty.system.init.pool.ItemDataPool;
-import com.kitty.system.init.domain.SysDataAcsryEgg;
-import com.kitty.common.utils.RandomUtil;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import com.kitty.system.game.equip.pool.EquipDataPool;
-import com.kitty.system.init.domain.SysDataAcsry;
-import java.util.List;
-import com.kitty.common.utils.spring.SpringUtils;
-import com.kitty.common.start.ServerService;
-import com.kitty.system.game.role.domain.Role;
 import com.kitty.system.game.instruct.inter.NcFather;
+import com.kitty.system.game.role.domain.Role;
+import com.kitty.system.init.domain.SysDataAcsry;
+import com.kitty.system.init.domain.SysDataAcsryEgg;
+import com.kitty.system.init.pool.ItemDataPool;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SuitHandler implements NcFather
 {

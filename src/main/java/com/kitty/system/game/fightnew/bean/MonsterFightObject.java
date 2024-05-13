@@ -56,8 +56,8 @@ public class MonsterFightObject extends FightObject
             this.setGem(monsterPeripheral.getGemNum());
             if (monsterPeripheral.getColor() == 1) {
                 final NutMap map = new NutMap();
-                map.setv("a", (Object)RandomUtil.round(0, 10));
-                map.setv("b", (Object)RandomUtil.round(0, 10));
+                map.setv("a", RandomUtil.round(0, 10));
+                map.setv("b", RandomUtil.round(0, 10));
                 this.setColor(map.toString());
             }
         }
@@ -89,9 +89,9 @@ public class MonsterFightObject extends FightObject
     
     public NutMap proFieldValues(final SysDataMonster monster) {
         final NutMap nutMap = new NutMap();
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_J.getDist()), (Object)monster.getWxJin());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_M.getDist()), (Object)monster.getWxMu());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_S.getDist()), (Object)monster.getWxShui());
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_J.getDist()), monster.getWxJin());
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_M.getDist()), monster.getWxMu());
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_S.getDist()), monster.getWxShui());
         nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_H.getDist()), (Object)monster.getWxHuo());
         nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_T.getDist()), (Object)monster.getWxTu());
         nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KJ.getDist()), (Object)monster.getConGold());

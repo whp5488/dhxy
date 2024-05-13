@@ -101,7 +101,7 @@ public class CaPkHandler extends ActivityHandler
         catch (final Exception e) {
             this.end();
             e.printStackTrace();
-            this.logger.error("决战长安PK阶段开始错误：{}", (Object)e.getMessage());
+            this.logger.error("决战长安PK阶段开始错误：{}", e.getMessage());
         }
     }
     
@@ -257,7 +257,7 @@ public class CaPkHandler extends ActivityHandler
                 }
                 final int index = caPkDataList.indexOf(datum);
                 if (index + 1 >= caPkDataList.size()) {
-                    datum.getFight().add(new CaFight(-1, new ArrayList<Long>(), (byte)0, this.session));
+                    datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte)0, this.session));
                     break;
                 }
                 final CaPkData caPkData = caPkDataList.get(index + 1);
@@ -401,14 +401,14 @@ public class CaPkHandler extends ActivityHandler
                 pkDataA.updateTeamMember((byte)1);
             }
             else {
-                this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", (Object)teamA.getId());
+                this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", teamA.getId());
             }
             if (pkDataB != null) {
                 pkDataB.setTime(0);
                 pkDataB.updateTeamMember((byte)1);
             }
             else {
-                this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", (Object)teamB.getId());
+                this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", teamB.getId());
             }
         }
     }

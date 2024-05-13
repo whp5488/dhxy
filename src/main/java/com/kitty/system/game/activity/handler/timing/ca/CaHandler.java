@@ -178,7 +178,7 @@ public class CaHandler extends ActivityHandler
             event.save();
         }
         else {
-            eventSet = (CaEventSet)Json.fromJson(CaEventSet.class, (CharSequence)event.getPara());
+            eventSet = Json.fromJson(CaEventSet.class, event.getPara());
         }
         if (this.round + 1 > eventSet.getMax()) {
             SpringUtils.getBean(AsyncService.class).clearCaTitle();
@@ -198,7 +198,7 @@ public class CaHandler extends ActivityHandler
         }
         SpringUtils.getBean(AsyncService.class).syncCaRan();
         final Event event = ActivityDataPool.eventMap.get(3002);
-        final CaEventSet eventSet = (CaEventSet)Json.fromJson(CaEventSet.class, (CharSequence)event.getPara());
+        final CaEventSet eventSet = Json.fromJson(CaEventSet.class, event.getPara());
         int round = eventSet.getRound() + 1;
         if (round > eventSet.getMax()) {
             round = 1;
@@ -297,7 +297,7 @@ public class CaHandler extends ActivityHandler
         if (team != null) {
             final List<Integer> memberGrade = this.teamService.getMemberGrade(this.roleService.getPlayer(team.getLeaderUid()));
             if (memberGrade == null || memberGrade.size() <= 0) {
-                this.logger.error("决战长安进入地图获取队伍最大等级出错：{}", (Object)memberGrade);
+                this.logger.error("决战长安进入地图获取队伍最大等级出错：{}", memberGrade);
                 return;
             }
             final Integer max = Collections.max((Collection<? extends Integer>)memberGrade);
@@ -329,7 +329,7 @@ public class CaHandler extends ActivityHandler
         }
         final List<Integer> memberGrade = this.teamService.getMemberGrade(this.roleService.getPlayer(team.getLeaderUid()));
         if (memberGrade == null || memberGrade.size() <= 0) {
-            this.logger.error("决战长安进入地图获取队伍最大等级出错：{}", (Object)memberGrade);
+            this.logger.error("决战长安进入地图获取队伍最大等级出错：{}", memberGrade);
             return;
         }
         short sumScore = 0;
@@ -359,7 +359,7 @@ public class CaHandler extends ActivityHandler
     }
     
     public List<MemberInfo> fightMember(final List<Long> members, final long leader) {
-        final List<MemberInfo> list = new ArrayList<MemberInfo>(5);
+        final List<MemberInfo> list = new ArrayList<>(5);
         final Role role = this.roleService.getPlayer(leader);
         if (role != null) {
             this.setRankRecord(list, role);

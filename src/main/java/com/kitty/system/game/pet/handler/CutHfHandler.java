@@ -8,6 +8,8 @@ import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.enter.message.RespUpdate;
 import com.kitty.system.common.enter.FiedValue;
 import java.util.ArrayList;
+import java.util.Map;
+
 import com.kitty.system.game.role.domain.Role;
 import com.kitty.system.game.pet.domain.Pet;
 import org.springframework.stereotype.Component;
@@ -19,11 +21,11 @@ public class CutHfHandler extends FeedPetHandler
     
     @Override
     public String acceptFeed(final Pet pet, final Role role, final Integer param, final String type, final int count, final Object... args) {
-        if (param > 0 && !pet.getBrandNew().keySet().contains(param)) {
+        if (param > 0 && !pet.getBrandNew().containsKey(param)) {
             return null;
         }
         for (final Integer key : pet.getBrandNew().keySet()) {
-            if (pet.getBrandNew().get(key).equals(1)) {
+            if (pet.getBrandNew().get(key).equals((byte)1)) {
                 pet.getBrandNew().put(key, (byte)0);
             }
         }
@@ -31,7 +33,7 @@ public class CutHfHandler extends FeedPetHandler
             pet.getBrandNew().put(param, (byte)1);
         }
         pet.save();
-        final List<FiedValue> list = new ArrayList<FiedValue>();
+        final List<FiedValue> list = new ArrayList<>();
         this.petService.petHf(pet, list);
         final RespUpdate respUpdate = new RespUpdate();
         respUpdate.setId(pet.getPetId());

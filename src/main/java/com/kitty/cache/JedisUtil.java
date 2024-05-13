@@ -1,14 +1,13 @@
 
 package com.kitty.cache;
 
-import java.util.Iterator;
-import java.util.Set;
-import redis.clients.jedis.Jedis;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import redis.clients.jedis.JedisPoolConfig;
 import org.springframework.beans.factory.annotation.Value;
-import redis.clients.jedis.JedisPool;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
+import java.util.Set;
 
 @Component
 public class JedisUtil

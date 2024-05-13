@@ -26,7 +26,7 @@ public class DynamicDataSourceContextHolder
     }
     
     static {
-        contextHolder = new ThreadLocal<String>();
-        DynamicDataSourceContextHolder.dataSourceIds = new ArrayList<String>();
+        contextHolder = new ThreadLocal<>();
+        DynamicDataSourceContextHolder.dataSourceIds = new ArrayList<>();
     }
 }

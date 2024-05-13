@@ -440,8 +440,8 @@ public class Fight
                 this.setRoundType(1);
             }
             catch (final Exception e) {
-                LoggerFunction.FIGHT.getLogger().error(e.getMessage(), (Throwable)e);
-                LoggerFunction.TASK.getLogger().error(e.getMessage(), (Throwable)e);
+                LoggerFunction.FIGHT.getLogger().error(e.getMessage(), e);
+                LoggerFunction.TASK.getLogger().error(e.getMessage(), e);
             }
             return;
         });

@@ -24,7 +24,7 @@ public class InstructService
     HashMap<String, NcFather> instruct;
     
     public InstructService() {
-        this.instruct = new HashMap<String, NcFather>();
+        this.instruct = new HashMap<>();
     }
     
     public void init() {

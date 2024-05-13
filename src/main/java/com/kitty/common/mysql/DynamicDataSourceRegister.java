@@ -34,8 +34,8 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
     private Map<String, DataSource> customDataSources;
     
     public DynamicDataSourceRegister() {
-        this.conversionService = (ConversionService)new DefaultConversionService();
-        this.customDataSources = new HashMap<String, DataSource>();
+        this.conversionService = new DefaultConversionService();
+        this.customDataSources = new HashMap<>();
     }
     
     public void registerBeanDefinitions(final AnnotationMetadata importingClassMetadata, final BeanDefinitionRegistry registry) {
@@ -48,9 +48,9 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
         beanDefinition.setBeanClass(DynamicDataSource.class);
         beanDefinition.setSynthetic(true);
         final MutablePropertyValues mpv = beanDefinition.getPropertyValues();
-        mpv.addPropertyValue("defaultTargetDataSource", (Object)this.defaultDataSource);
-        mpv.addPropertyValue("targetDataSources", (Object)targetDataSources);
-        registry.registerBeanDefinition("dataSource", (BeanDefinition)beanDefinition);
+        mpv.addPropertyValue("defaultTargetDataSource", this.defaultDataSource);
+        mpv.addPropertyValue("targetDataSources", targetDataSources);
+        registry.registerBeanDefinition("dataSource", beanDefinition);
         DynamicDataSourceRegister.logger.info("Dynamic DataSource Registry");
     }
     
@@ -70,7 +70,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
         druidDataSource.setPassword(password);
         druidDataSource.setInitialSize(initialSize);
         druidDataSource.setMaxActive(maxActive);
-        druidDataSource.setMaxWait((long)maxWait);
+        druidDataSource.setMaxWait(maxWait);
         druidDataSource.setUseUnfairLock(UseUnfairLock);
         druidDataSource.setPoolPreparedStatements(false);
         try {
@@ -88,7 +88,7 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
     }
     
     private void initDefaultDataSource(final Environment env) {
-        final RelaxedPropertyResolver propertyResolver = new RelaxedPropertyResolver((PropertyResolver)env, "spring.datasource.");
+        final RelaxedPropertyResolver propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
         final Map<String, Object> dsMap = new HashMap<String, Object>();
         dsMap.put("type", propertyResolver.getProperty("type"));
         dsMap.put("driver-class-name", propertyResolver.getProperty("driver-class-name"));
@@ -104,27 +104,27 @@ public class DynamicDataSourceRegister implements ImportBeanDefinitionRegistrar,
     }
     
     private void dataBinder(final DataSource dataSource, final Environment env) {
-        final RelaxedDataBinder dataBinder = new RelaxedDataBinder((Object)dataSource);
+        final RelaxedDataBinder dataBinder = new RelaxedDataBinder(dataSource);
         dataBinder.setConversionService(this.conversionService);
         dataBinder.setIgnoreNestedProperties(false);
         dataBinder.setIgnoreInvalidFields(false);
         dataBinder.setIgnoreUnknownFields(true);
         if (this.dataSourcePropertyValues == null) {
-            final Map<String, Object> rpr = new RelaxedPropertyResolver((PropertyResolver)env, "spring.datasource").getSubProperties(".");
+            final Map<String, Object> rpr = new RelaxedPropertyResolver(env, "spring.datasource").getSubProperties(".");
             final Map<String, Object> values = new HashMap<String, Object>(rpr);
             values.remove("type");
             values.remove("driver-class-name");
             values.remove("url");
             values.remove("username");
             values.remove("password");
-            this.dataSourcePropertyValues = (PropertyValues)new MutablePropertyValues((Map)values);
+            this.dataSourcePropertyValues = new MutablePropertyValues(values);
         }
         dataBinder.bind(this.dataSourcePropertyValues);
     }
     
     private void initCustomDataSources(final Environment env) {
-        final RelaxedPropertyResolver propertyResolver = new RelaxedPropertyResolver((PropertyResolver)env, "custom.datasource.");
-        final RelaxedPropertyResolver propertyResolver2 = new RelaxedPropertyResolver((PropertyResolver)env, "spring.datasource.");
+        final RelaxedPropertyResolver propertyResolver = new RelaxedPropertyResolver(env, "custom.datasource.");
+        final RelaxedPropertyResolver propertyResolver2 = new RelaxedPropertyResolver(env, "spring.datasource.");
         final String dsPrefixs = propertyResolver.getProperty("names");
         for (final String dsPrefix : dsPrefixs.split(",")) {
             final Map<String, Object> dsMap = new HashMap<String, Object>();

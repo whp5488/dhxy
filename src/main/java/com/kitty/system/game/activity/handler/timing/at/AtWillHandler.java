@@ -132,33 +132,33 @@ public class AtWillHandler extends ActivityHandler
         calendar.setTime(this.atWillData.getStartTime().getTime());
         calendar.add(11, -1);
         final long initialDelay = this.atWillData.getStartTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加定时检测的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加定时检测的定时任务==={}", initialDelay);
         try {
             if (this.scheduledFuture != null) {
                 this.scheduledFuture.cancel(false);
             }
         }
         catch (final Exception e) {
-            this.logger.error("定时器关闭==", (Throwable)e);
+            this.logger.error("定时器关闭==", e);
         }
         this.scheduledFuture = SchedulerManager.getInstance().scheduleAtFixedRate(() -> this.checkInterval(), initialDelay, 60000L);
     }
     
     private void addStartJob() {
         final long initialDelay = this.atWillData.getStartTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加英雄争霸赛开始的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加英雄争霸赛开始的定时任务==={}", initialDelay);
         SchedulerManager.getInstance().schedule(() -> SpringUtils.getBean(AtWillPkHandler.class).start(), initialDelay);
     }
     
     private void addNoticeJob() {
         final long initialDelay = this.atWillData.getSignUpTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加英雄争霸赛报名通知的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加英雄争霸赛报名通知的定时任务==={}", initialDelay);
         SchedulerManager.getInstance().schedule(() -> this.notice(), initialDelay);
     }
     
     private void addEndJob() {
         final long initialDelay = this.atWillData.getEndTime().getTimeInMillis() - System.currentTimeMillis();
-        this.logger.error("添加英雄争霸赛结束的定时任务==={}", (Object)initialDelay);
+        this.logger.error("添加英雄争霸赛结束的定时任务==={}", initialDelay);
         SchedulerManager.getInstance().schedule(() -> this.end(), initialDelay);
     }
     
@@ -498,7 +498,7 @@ public class AtWillHandler extends ActivityHandler
             final Date parse = TimeUtil.parse(temporalAdjusters, "yyyy-MM-dd HH:mm:ss");
             final int time = Math.toIntExact((parse.getTime() - 1200000L) / 1000L);
             final List<Param> params = this.atWillSet.getAward().get(rank);
-            final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+            final Map<Integer, Integer> map = new HashMap<>();
             String msg = "";
             if (params != null) {
                 for (final Param param : params) {

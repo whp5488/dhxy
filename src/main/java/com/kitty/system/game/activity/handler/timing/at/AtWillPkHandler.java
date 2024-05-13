@@ -94,7 +94,7 @@ public class AtWillPkHandler extends ActivityHandler
         catch (final Exception e) {
             this.end();
             e.printStackTrace();
-            this.logger.error("英雄争霸赛PK阶段开始错误：{}", (Object)e.getMessage());
+            this.logger.error("英雄争霸赛PK阶段开始错误：{}", e.getMessage());
         }
     }
     
@@ -142,7 +142,7 @@ public class AtWillPkHandler extends ActivityHandler
             return;
         }
         try {
-            this.logger.info("英雄争霸赛pk匹配，当前剩余队伍数量 = {}", (Object)this.sceneTeamCount(atWillData));
+            this.logger.info("英雄争霸赛pk匹配，当前剩余队伍数量 = {}", this.sceneTeamCount(atWillData));
             if (this.isCanEnd()) {
                 this.logger.info("英雄争霸赛pk结束");
                 this.end();
@@ -190,7 +190,7 @@ public class AtWillPkHandler extends ActivityHandler
             final List<AtWillPkData> list = atWillData.getPkDataList().stream().filter(e -> e.getPkValue() > 0 && e.getScore() > 0).sorted(Comparator.comparing(AtWillPkData::getPkValue).reversed()).collect(Collectors.toList());
             final List<AtWillPkData> topList = new ArrayList<AtWillPkData>(3);
             if (list.size() > 0) {
-                this.logger.error("当前在场的成员：{}", (Object)list);
+                this.logger.error("当前在场的成员：{}", list);
                 for (final AtWillPkData willPkData : list) {
                     topList.add(willPkData);
                 }
@@ -208,7 +208,7 @@ public class AtWillPkHandler extends ActivityHandler
                 this.showGlory(topList.get(0));
             }
             this.grant(topList);
-            this.logger.info("英雄争霸赛结束时，队伍前三名=={}", (Object)((topList != null) ? JsonUtils.object2String(topList) : ""));
+            this.logger.info("英雄争霸赛结束时，队伍前三名=={}", (topList != null) ? JsonUtils.object2String(topList) : "");
             for (final AtWillPkData atWillPkData : atWillData.getPkDataList()) {
                 final Team team = SpringUtils.getTeamService().getTeamByTeamId(atWillPkData.getTeamId());
                 if (team == null) {
@@ -379,14 +379,14 @@ public class AtWillPkHandler extends ActivityHandler
                     atWillPkData.updateTeamMember(team, (byte)1);
                 }
                 else {
-                    this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", (Object)team.getId());
+                    this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", team.getId());
                 }
                 atWillPkData = atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == pkTeam.getId()).findFirst().orElse(null);
                 if (atWillPkData != null) {
                     atWillPkData.updateTeamMember(pkTeam, (byte)1);
                 }
                 else {
-                    this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", (Object)team.getId());
+                    this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", team.getId());
                 }
             }
         }
@@ -431,7 +431,7 @@ public class AtWillPkHandler extends ActivityHandler
             if (allList.size() <= 2) {
                 final int index = new Random().nextInt(result.size());
                 final Team last = result.get(index);
-                this.logger.info("连续匹配同一个队伍=={}=={}", (Object)last.getId(), (Object)team.getId());
+                this.logger.info("连续匹配同一个队伍=={}=={}", last.getId(), team.getId());
                 return last;
             }
             final ArrayList<Team> arrayList = new ArrayList<Team>();
@@ -442,7 +442,7 @@ public class AtWillPkHandler extends ActivityHandler
                 arrayList.add(tempTeam2);
             }
             if (arrayList.size() <= 0) {
-                this.logger.info("没有匹配到队伍=={}", (Object)team.getId());
+                this.logger.info("没有匹配到队伍=={}", team.getId());
                 return null;
             }
             if (arrayList.size() > 3) {
@@ -453,7 +453,7 @@ public class AtWillPkHandler extends ActivityHandler
             }
             final int index2 = new Random().nextInt(result.size());
             final Team last2 = result.get(index2);
-            this.logger.info("不连续匹配同一个队伍=={}=={}", (Object)last2.getId(), (Object)team.getId());
+            this.logger.info("不连续匹配同一个队伍=={}=={}", last2.getId(), team.getId());
             return last2;
         }
         catch (final Exception e) {
