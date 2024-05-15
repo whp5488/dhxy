@@ -58,7 +58,7 @@ public class ReflectUtils
             result = (E)field.get(obj);
         }
         catch (final IllegalAccessException e) {
-            ReflectUtils.logger.error("不可能抛出的异常{}", (Object)e.getMessage());
+            ReflectUtils.logger.error("不可能抛出的异常{}", e.getMessage());
         }
         return result;
     }
@@ -73,7 +73,7 @@ public class ReflectUtils
             field.set(obj, value);
         }
         catch (final IllegalAccessException e) {
-            ReflectUtils.logger.error("不可能抛出的异常: {}", (Object)e.getMessage());
+            ReflectUtils.logger.error("不可能抛出的异常: {}", e.getMessage());
         }
     }
     
@@ -107,7 +107,7 @@ public class ReflectUtils
                 if (args[i] != null && !args[i].getClass().equals(cs[i])) {
                     if (cs[i] == String.class) {
                         args[i] = Convert.toStr(args[i]);
-                        if (StringUtils.endsWith((CharSequence)args[i], (CharSequence)".0")) {
+                        if (StringUtils.endsWith((CharSequence)args[i], ".0")) {
                             args[i] = StringUtils.substringBefore((String)args[i], ".0");
                         }
                     }
@@ -148,7 +148,7 @@ public class ReflectUtils
         if (obj == null) {
             return null;
         }
-        Validate.notBlank((CharSequence)fieldName, "fieldName can't be blank", new Object[0]);
+        Validate.notBlank((CharSequence)fieldName, "fieldName can't be blank");
         Class<?> superClass = obj.getClass();
         while (superClass != Object.class) {
             try {
@@ -168,7 +168,7 @@ public class ReflectUtils
         if (obj == null) {
             return null;
         }
-        Validate.notBlank((CharSequence)methodName, "methodName can't be blank", new Object[0]);
+        Validate.notBlank((CharSequence)methodName, "methodName can't be blank");
         Class<?> searchType = obj.getClass();
         while (searchType != Object.class) {
             try {
@@ -188,7 +188,7 @@ public class ReflectUtils
         if (obj == null) {
             return null;
         }
-        Validate.notBlank((CharSequence)methodName, "methodName can't be blank", new Object[0]);
+        Validate.notBlank((CharSequence)methodName, "methodName can't be blank");
         for (Class<?> searchType = obj.getClass(); searchType != Object.class; searchType = searchType.getSuperclass()) {
             final Method[] declaredMethods;
             final Method[] methods = declaredMethods = searchType.getDeclaredMethods();

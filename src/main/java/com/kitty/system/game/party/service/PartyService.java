@@ -196,15 +196,15 @@ public class PartyService
             return false;
         }
         if (this.isHaveParty(role)) {
-            MessagePusher.notify2Player(role, 302, new Object[0]);
+            MessagePusher.notify2Player(role, 302);
             return false;
         }
         if (role.getLevel() < 30) {
-            MessagePusher.notify2Player(role, 303, new Object[0]);
+            MessagePusher.notify2Player(role, 303);
             return false;
         }
         if (role.getGold() < 20L) {
-            MessagePusher.notify2Player(role, 403, new Object[0]);
+            MessagePusher.notify2Player(role, 403);
             return false;
         }
         return true;
@@ -642,11 +642,11 @@ public class PartyService
             return;
         }
         if (this.isHaveParty(role)) {
-            MessagePusher.notify2Player(role, 304, new Object[0]);
+            MessagePusher.notify2Player(role, 304);
             return;
         }
         if (this.isPartyFull(party)) {
-            MessagePusher.notify2Player(role, 305, new Object[0]);
+            MessagePusher.notify2Player(role, 305);
             return;
         }
         final int curve = role.getRelive() * 1000 + role.getLevel();
@@ -808,10 +808,10 @@ public class PartyService
                 }
                 final RoleView reqRoleView = new RoleView(player);
                 if (this.isHaveParty(reqRoleView.getRole())) {
-                    MessagePusher.notify2Player(role, 306, new Object[0]);
+                    MessagePusher.notify2Player(role, 306);
                 }
                 else if (!reqRoleView.isOnline() && PartyDataPool.offlineRoleParty.getOrDefault(reqJoinMember.getId(), 0) > 0) {
-                    MessagePusher.notify2Player(role, 306, new Object[0]);
+                    MessagePusher.notify2Player(role, 306);
                 }
                 else {
                     this.addPartyMember(party, reqRoleView, (byte)10);
@@ -1170,7 +1170,7 @@ public class PartyService
                 if (reqJoin != null) {
                     final Role sessionRole = SpringUtils.getRoleService().getOnlinePlayer(reqJoinAs.getId());
                     if (sessionRole != null) {
-                        MessagePusher.notify2Player(sessionRole, 307, new Object[0]);
+                        MessagePusher.notify2Player(sessionRole, 307);
                     }
                 }
                 reqJoin.remove(tempName);
@@ -1193,7 +1193,7 @@ public class PartyService
         final byte nextLevel = (byte)(party.getLevel() + 1);
         final Integer capital = PartyDataPool.partyUpgrades.get(nextLevel);
         if (capital == null) {
-            MessagePusher.notify2Player(role, 372, new Object[0]);
+            MessagePusher.notify2Player(role, 372);
             return;
         }
         if (party.getCapital() < capital) {
@@ -1214,7 +1214,7 @@ public class PartyService
             return;
         }
         if (!this.isPartyLeader(role)) {
-            MessagePusher.notify2Player(role, 345, new Object[0]);
+            MessagePusher.notify2Player(role, 345);
             return;
         }
         if (this.checkNotice(role, notice)) {
@@ -1227,12 +1227,12 @@ public class PartyService
             party.save();
         }
         this.getRespOpenPatry(party, role);
-        MessagePusher.notify2Player(role, 358, new Object[0]);
+        MessagePusher.notify2Player(role, 358);
     }
     
     public boolean checkNotice(final Role role, final String notice) {
         if (notice.length() > 2048) {
-            MessagePusher.notify2Player(role, 362, new Object[0]);
+            MessagePusher.notify2Player(role, 362);
             return false;
         }
         final List<String> set = WordDisposePool.checkDirtyWords(notice);
@@ -1260,15 +1260,15 @@ public class PartyService
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308, new Object[0]);
+            MessagePusher.notify2Player(role, 308);
             return;
         }
         if (!this.isKickPermission(role)) {
-            MessagePusher.notify2Player(role, 309, new Object[0]);
+            MessagePusher.notify2Player(role, 309);
             return;
         }
         if (this.isPermissionHigher(party, role.getRoleId(), id)) {
-            MessagePusher.notify2Player(role, 310, new Object[0]);
+            MessagePusher.notify2Player(role, 310);
             return;
         }
         this.doKickOut(role, party, id);
@@ -1402,11 +1402,11 @@ public class PartyService
         }
         final Party party = this.getParty(role.getFaction());
         if (party == null) {
-            MessagePusher.notify2Player(role, 319, new Object[0]);
+            MessagePusher.notify2Player(role, 319);
             return;
         }
         if (!this.isAgreeOrDenyApply(role)) {
-            MessagePusher.notify2Player(role, 345, new Object[0]);
+            MessagePusher.notify2Player(role, 345);
             return;
         }
         party.setConsent(reqPartyRejectLevel.getConsent());
@@ -1424,7 +1424,7 @@ public class PartyService
         }
         final Party party = this.getParty(role.getFaction());
         if (party == null) {
-            MessagePusher.notify2Player(role, 319, new Object[0]);
+            MessagePusher.notify2Player(role, 319);
             return;
         }
         final GangWarsData objData = SpringUtils.getBean(GangWarsHandler.class).getObjData();
@@ -1521,15 +1521,15 @@ public class PartyService
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308, new Object[0]);
+            MessagePusher.notify2Player(role, 308);
             return;
         }
         if (!this.isDenyPermission(role)) {
-            MessagePusher.notify2Player(role, 335, new Object[0]);
+            MessagePusher.notify2Player(role, 335);
             return;
         }
         if (this.isPermissionHigher(party, role.getRoleId(), id)) {
-            MessagePusher.notify2Player(role, 336, new Object[0]);
+            MessagePusher.notify2Player(role, 336);
             return;
         }
         final int endTime = (int)((System.currentTimeMillis() + hours * 3600000L) / 1000L);
@@ -1575,20 +1575,20 @@ public class PartyService
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308, new Object[0]);
+            MessagePusher.notify2Player(role, 308);
             return;
         }
         if (!this.isChangeJobPermission(role)) {
-            MessagePusher.notify2Player(role, 326, new Object[0]);
+            MessagePusher.notify2Player(role, 326);
             return;
         }
         if (this.isPermissionHigher(party, role.getRoleId(), id)) {
-            MessagePusher.notify2Player(role, 327, new Object[0]);
+            MessagePusher.notify2Player(role, 327);
             return;
         }
         final Byte jobId = PartyDataPool.partyCareer.get(career);
         if (this.isExistPermission(party, jobId)) {
-            MessagePusher.notify2Player(role, 397, new Object[0]);
+            MessagePusher.notify2Player(role, 397);
             return;
         }
         final String jobName = PartyDataPool.jobId2Names.get(jobId);
@@ -1636,7 +1636,7 @@ public class PartyService
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308, new Object[0]);
+            MessagePusher.notify2Player(role, 308);
             return;
         }
         if (!this.isDenyPermission(role)) {
@@ -1698,11 +1698,11 @@ public class PartyService
         }
         final Party party = this.getParty(role.getFaction());
         if (party == null) {
-            MessagePusher.notify2Player(role, 319, new Object[0]);
+            MessagePusher.notify2Player(role, 319);
             return;
         }
         if (!this.isPartyLeader(role)) {
-            MessagePusher.notify2Player(role, 345, new Object[0]);
+            MessagePusher.notify2Player(role, 345);
             return;
         }
         final boolean check = this.checkPartyName(role, name);
@@ -1739,19 +1739,19 @@ public class PartyService
     
     private boolean checkPartyName(final Role role, final String name) {
         if (StringUtils.isBlank((CharSequence)name)) {
-            MessagePusher.notify2Player(role, 348, new Object[0]);
+            MessagePusher.notify2Player(role, 348);
             return false;
         }
         if (name.length() < 2) {
-            MessagePusher.notify2Player(role, 346, new Object[0]);
+            MessagePusher.notify2Player(role, 346);
             return false;
         }
         if (name.length() > 6) {
-            MessagePusher.notify2Player(role, 347, new Object[0]);
+            MessagePusher.notify2Player(role, 347);
             return false;
         }
         if (this.isPartyNameExist(name)) {
-            MessagePusher.notify2Player(role, 301, new Object[0]);
+            MessagePusher.notify2Player(role, 301);
             return false;
         }
         final List<String> set = WordDisposePool.checkDirtyWords(name);
@@ -2084,7 +2084,7 @@ public class PartyService
                         final Map<Integer, PartyMember> members = p.getMembers();
                         value.setSerial(p.getSerial());
                         value.setJob((byte)10);
-                        value.setPartyTaskList(new ArrayList<PartyTask>());
+                        value.setPartyTaskList(new ArrayList<>());
                         value.setJoinTime(joinTime);
                         value.save();
                         members.put(value.getRoleId(), value);
@@ -2105,7 +2105,7 @@ public class PartyService
             PartyDataPool.partyMap.remove(party2.getSerial());
         }
         stopWatch.stop();
-        this.logger.error("合并帮派，耗時{}毫秒", (Object)stopWatch.getTime());
+        this.logger.error("合并帮派，耗時{}毫秒", stopWatch.getTime());
     }
     
     public void clearParty(final Role role) {

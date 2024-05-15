@@ -85,7 +85,7 @@ public class PetTriggerPassiveSkill
                 }
                 for (final SysPetSkill petSkill : heroFallDownSkills) {
                     final SkillProcessor processor = SkillProcessor.queryProcessor(petSkill.getSerial());
-                    processor.passive(fight, petObject, new Object[0]);
+                    processor.passive(fight, petObject);
                     flag = true;
                 }
             }
@@ -345,7 +345,7 @@ public class PetTriggerPassiveSkill
         if (81031 == status) {
             final SkillProcessor skillProcessor = SkillProcessor.queryProcessor(81031);
             if (skillProcessor != null) {
-                skillProcessor.statusClear(fight, fightObject, status, new Object[0]);
+                skillProcessor.statusClear(fight, fightObject, status);
             }
         }
     }

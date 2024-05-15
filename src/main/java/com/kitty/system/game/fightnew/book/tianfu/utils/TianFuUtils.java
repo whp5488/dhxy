@@ -477,10 +477,10 @@ public class TianFuUtils implements Serializable
             final TianFuProcessor tianFuProcessor = TianFuProcessor.queryGainProcessor(roleTianFu.getTianFuSerial());
             if (tianFuProcessor != null) {
                 final TianFuAddition tianFuAddition = new TianFuAddition(roleDayInCe.getLevel(), roleTianFu.getLevel());
-                final NutMap nutMap = tianFuProcessor.addition(tianFuAddition, new Object[0]);
+                final NutMap nutMap = tianFuProcessor.addition(tianFuAddition);
                 if (nutMap != null) {
                     for (final String key : nutMap.keySet()) {
-                        map.setv(key, (Object)(map.getDouble(key) + nutMap.getDouble(key)));
+                        map.setv(key, map.getDouble(key) + nutMap.getDouble(key));
                     }
                 }
             }
@@ -492,10 +492,10 @@ public class TianFuUtils implements Serializable
             final TianFuProcessor tianFuProcessor = TianFuProcessor.queryGainProcessor(roleTianFu.getTianFuSerial());
             if (tianFuProcessor != null) {
                 final TianFuAddition tianFuAddition = new TianFuAddition(roleDayInCe.getLevel(), roleTianFu.getLevel());
-                final NutMap nutMap = tianFuProcessor.otherAddition(pet, tianFuAddition, new Object[0]);
+                final NutMap nutMap = tianFuProcessor.otherAddition(pet, tianFuAddition);
                 if (nutMap != null) {
                     for (final String key : nutMap.keySet()) {
-                        map.setv(key, (Object)(map.getDouble(key) + nutMap.getDouble(key)));
+                        map.setv(key, map.getDouble(key) + nutMap.getDouble(key));
                     }
                 }
             }
@@ -529,12 +529,12 @@ public class TianFuUtils implements Serializable
             final TianFuProcessor tianFuProcessor = TianFuProcessor.queryGainProcessor(roleTianFu.getTianFuSerial());
             if (tianFuProcessor != null) {
                 final TianFuAddition tianFuAddition = new TianFuAddition(roleDayInCe.getLevel(), roleTianFu.getLevel());
-                final NutMap nutMap = tianFuProcessor.wearInstantlyTakeEffect(role, pet, tianFuAddition, new Object[0]);
+                final NutMap nutMap = tianFuProcessor.wearInstantlyTakeEffect(role, pet, tianFuAddition);
                 if (nutMap == null) {
                     continue;
                 }
                 for (final String key : nutMap.keySet()) {
-                    map.setv(key, (Object)(map.getDouble(key) + nutMap.getDouble(key)));
+                    map.setv(key, map.getDouble(key) + nutMap.getDouble(key));
                 }
             }
         }

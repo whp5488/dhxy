@@ -262,11 +262,11 @@ public class QuestionService
         final String key = "hall:" + role.getRoleId() + "_" + submitQuestionHall.getSerial() + "_" + KejuTaskHandler.hallNum;
         final RecordHallQuestion question = this.redisService.get(key, RecordHallQuestion.class);
         if (question == null) {
-            this.logger.error("玩家{}殿试提交答题找不到缓存题：{}，次数{}", new Object[] { role.getName(), submitQuestionHall.getSerial(), KejuTaskHandler.hallNum });
+            this.logger.error("玩家{}殿试提交答题找不到缓存题：{}，次数{}", role.getName(), submitQuestionHall.getSerial(), KejuTaskHandler.hallNum);
             return;
         }
         if (current - question.getS() > 30) {
-            this.logger.error("玩家{}殿试提交答题超时缓存题：{}，次数{}", new Object[] { role.getName(), submitQuestionHall.getSerial(), KejuTaskHandler.hallNum });
+            this.logger.error("玩家{}殿试提交答题超时缓存题：{}，次数{}", role.getName(), submitQuestionHall.getSerial(), KejuTaskHandler.hallNum);
             return;
         }
         if (question.getQ() != submitQuestionHall.getSerial()) {

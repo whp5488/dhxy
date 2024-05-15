@@ -63,7 +63,7 @@ public class RecordThread
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Record] 执行全部命令后关闭", new Object[0]);
+        LoggerUtils.error("[db4Record] 执行全部命令后关闭");
     }
     
     private void saveAllBeforeShutDown() {

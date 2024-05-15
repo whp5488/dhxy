@@ -188,13 +188,13 @@ public abstract class FightActivityHandler extends ActivityHandler
         }
         catch (final Exception e) {
             e.printStackTrace();
-            LoggerUtils.error(role.getId() + "|" + this.getClass().getSimpleName() + "|" + fightEndEvent.getStatus(), new Object[0]);
+            LoggerUtils.error(role.getId() + "|" + this.getClass().getSimpleName() + "|" + fightEndEvent.getStatus());
             final Npc npc = this.getBossNpc(fightEndEvent.getNpcId());
             if (npc != null) {
                 this.setNotInFight(npc);
             }
             else {
-                this.logger.error("战斗结束异常，获取战斗Npc数据为空，战斗类型：{}，NPC-ID：{}", (Object)fightEndEvent.getFightType(), (Object)fightEndEvent.getNpcId());
+                this.logger.error("战斗结束异常，获取战斗Npc数据为空，战斗类型：{}，NPC-ID：{}", fightEndEvent.getFightType(), fightEndEvent.getNpcId());
             }
         }
     }

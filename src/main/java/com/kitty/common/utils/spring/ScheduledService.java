@@ -150,6 +150,14 @@ public class ScheduledService
         SpringUtils.getBean(GangWarsHandler.class).notifyAt((byte)1);
         SpringUtils.getBean(CaHandler.class).notifyAt();
     }
+
+    @Scheduled(cron = "0 32 6 * * ?")
+    public void notifyAt2() {
+        //SpringUtils.getBean(WaterHandler.class).notifyAt();
+        //SpringUtils.getBean(AtWillHandler.class).notifyAt();
+        //SpringUtils.getBean(GangWarsHandler.class).notifyAt((byte)1);
+        SpringUtils.getBean(CaHandler.class).notifyAt();
+    }
     
     @Scheduled(cron = "0 50 21 * * ?")
     public void kjQuestion() {

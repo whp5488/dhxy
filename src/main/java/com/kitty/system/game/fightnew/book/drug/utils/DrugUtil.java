@@ -17,7 +17,7 @@ public class DrugUtil
         ActionParamUtils.clearStatus(fight, effector, target, 5, drugId, 2, clearList);
         final SkillProcessor skillProcessor = SkillProcessor.queryProcessor(81031);
         if (skillProcessor != null) {
-            skillProcessor.statusClear(fight, target, 1011, new Object[0]);
+            skillProcessor.statusClear(fight, target, 1011);
         }
     }
 }

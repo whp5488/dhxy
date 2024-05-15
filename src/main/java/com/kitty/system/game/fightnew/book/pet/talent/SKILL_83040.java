@@ -77,7 +77,7 @@ public class SKILL_83040 extends SkillProcessor
                 if (zlList != null && zlList.size() > 0) {
                     Collections.sort(zlList);
                     final FightObject firstZl = zlList.get(0);
-                    this.passive(fight, firstZl, new Object[0]);
+                    this.passive(fight, firstZl);
                 }
             }
         }

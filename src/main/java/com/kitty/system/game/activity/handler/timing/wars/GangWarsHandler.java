@@ -527,7 +527,10 @@ public class GangWarsHandler extends ActivityHandler
             this.award(player2, level, sideWarsInfo.getCombatResults(), num);
         }
     }
-    
+
+    /**
+     * 帮战奖励
+     */
     public void award(final Role role, final byte level, final byte combatResults, final int num) {
         if (role != null) {
             this.roleService.addExp(role, calculate(role.getLevel(), role.getRelive(), level, num, ItemClassify.HERO_EXP, combatResults), "帮战奖励", true);
@@ -588,7 +591,7 @@ public class GangWarsHandler extends ActivityHandler
             return "";
         }
         if (DataGlobalFunc.needGradeJudge(0, this.objSet.getMinLevel(), role.getRelive(), role.getLevel(), "") != null) {
-            return String.format("等级达到&d级方可参加帮派大战。", this.objSet.getMinLevel());
+            return String.format("等级达到%d级方可参加帮派大战。", this.objSet.getMinLevel());
         }
         final Team team = this.teamService.getTeam(role.getRoleId());
         if (team != null) {

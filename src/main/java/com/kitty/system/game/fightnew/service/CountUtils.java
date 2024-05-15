@@ -470,12 +470,12 @@ public class CountUtils
             if (processor == null) {
                 continue;
             }
-            final NutMap nutMap = processor.addition(addition, new Object[0]);
+            final NutMap nutMap = processor.addition(addition);
             if (nutMap == null) {
                 continue;
             }
             for (final String key : nutMap.keySet()) {
-                map.setv(key, (Object)(map.getDouble(key) + nutMap.getDouble(key)));
+                map.setv(key, map.getDouble(key) + nutMap.getDouble(key));
             }
         }
         return map;

@@ -74,7 +74,8 @@ public class CrusadeRenegadeTaskHandler extends TaskHandler
     
     private boolean canAcceptTask(final Role role) {
         if (!this.teamService.isInTeam(role) || this.teamService.getTeamCount(role) < 3) {
-            MessagePusher.pushMessage(role, new RespMsg(String.format("讨伐叛贼之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#", 3)));
+            MessagePusher.pushMessage(role, new RespMsg(String.format("收复修罗之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#", 3)));
+            //MessagePusher.pushMessage(role, new RespMsg(String.format("讨伐叛贼之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#", 3)));
             return false;
         }
         return this.canTeamGrade(role, 2, 120, "%s尚浅，请提升至%s之后再来报效天庭吧#<E:17>#") && !this.isAcceptedSchoolTask(role) && !this.isWaitGiveUpCD(role);

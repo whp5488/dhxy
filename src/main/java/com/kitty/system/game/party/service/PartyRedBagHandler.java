@@ -57,12 +57,12 @@ public class PartyRedBagHandler
     public void sendRedBag(final Role role, final short gold, final short num, final String msg, final String format) {
         final Party party = this.partyService.getParty(role);
         if (party == null) {
-            MessagePusher.notify2Player(role, 319, new Object[0]);
+            MessagePusher.notify2Player(role, 319);
             return;
         }
         synchronized (party) {
             final String check = this.checkSendRedBag(role, gold, num);
-            if (StringUtils.isNotEmpty((CharSequence)check)) {
+            if (StringUtils.isNotEmpty(check)) {
                 MessagePusher.pushMessage(role, new RespMsg(check));
                 return;
             }
@@ -75,7 +75,7 @@ public class PartyRedBagHandler
             this.sendPartyChat(role, formatMsg, true);
             final RespPartyRedBagList respPartyRedBagList = this.getRespPartyRedBagList(role);
             MessagePusher.pushMessage(role, respPartyRedBagList);
-            MessagePusher.notify2Player(role, 390, new Object[0]);
+            MessagePusher.notify2Player(role, 390);
         }
     }
     
@@ -108,7 +108,7 @@ public class PartyRedBagHandler
         }
         final PartyRedBag partyRedBag = new PartyRedBag(role.getRoleId(), role.getName(), gold, num, msg);
         if (party.getRedBagList() == null) {
-            party.setRedBagList(new ArrayList<PartyRedBag>());
+            party.setRedBagList(new ArrayList<>());
         }
         party.getRedBagList().add(0, partyRedBag);
         final int size = party.getRedBagList().size();
@@ -145,7 +145,7 @@ public class PartyRedBagHandler
         respChat.setMsg(msg);
         respChat.setList(isRoleSend ? FieldUtils.getChatList(role) : new ArrayList<FiedValue>());
         respChat.setRoleName(isRoleSend ? role.getName() : null);
-        respChat.setRoleId(isRoleSend ? ((int)role.getRoleId()) : 0);
+        respChat.setRoleId(isRoleSend ? role.getRoleId() : 0);
         respChat.setTime((int)(System.currentTimeMillis() / 1000L));
         respChat.setType(5);
         SenderUtils.pushPartyChatMessage(role.getFaction(), respChat);
@@ -227,7 +227,7 @@ public class PartyRedBagHandler
     public void fetchRedBag(final Role role, final long redBagGid) {
         final Party party = this.partyService.getParty(role);
         if (party == null) {
-            MessagePusher.notify2Player(role, 393, new Object[0]);
+            MessagePusher.notify2Player(role, 393);
             return;
         }
         synchronized (party) {

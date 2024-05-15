@@ -123,34 +123,34 @@ public class Fight
         this.astrictSkillMap = new HashMap<Boolean, AstrictSkill>();
         this.beforeActionMap = new HashMap<Boolean, BeforeActionSkill>();
         this.reduceRatioMap = new HashMap<Boolean, Map<Integer, Integer>>();
-        this.ObjectAttributeMap = new HashMap<Boolean, Map<Integer, Double>>();
+        this.ObjectAttributeMap = new HashMap<>();
         this.monsterAstrict = NutMap.NEW();
         this.fightInParams = Collections.synchronizedList(new ArrayList<RespFightInParam>());
         this.actionParam = new ActionParam();
-        this.respRoundStartParamMap = new HashMap<Integer, RespRoundStartParam>();
+        this.respRoundStartParamMap = new HashMap<>();
         this.isCompleted = new HashSet<Integer>();
         this.fleeList = new ArrayList<Integer>();
-        this.fightActors = new HashMap<Integer, FightObject>();
-        this.deadPetIds = new HashSet<Integer>();
+        this.fightActors = new HashMap<>();
+        this.deadPetIds = new HashSet<>();
         this.fightType = 0;
         this.rewardType = -1;
-        this.fightId_timer_host = new HashMap<Integer, ScheduledFuture<?>>();
-        this.roundFinish_timer_player = new HashMap<Integer, ScheduledFuture<?>>();
-        this.fightId_timer_pet = new HashMap<Integer, ScheduledFuture<?>>();
-        this.animationPlayMap = new HashMap<Integer, AnimationPlayParam>();
+        this.fightId_timer_host = new HashMap<>();
+        this.roundFinish_timer_player = new HashMap<>();
+        this.fightId_timer_pet = new HashMap<>();
+        this.animationPlayMap = new HashMap<>();
         this.fightNewService = SpringUtils.getBean(FightNewService.class);
         this.watchFightOnOff = false;
-        this.spectatorObjectMap = new ConcurrentHashMap<Long, SpectatorObject>();
+        this.spectatorObjectMap = new ConcurrentHashMap<>();
         this.fightOverReason = 0;
         this.winSide = 0;
-        this.exitRoles = new HashMap<Boolean, Set<FieldValue>>();
+        this.exitRoles = new HashMap<>();
         this.id = Fight.idFactory.getAndIncrement();
         this.createTime = System.currentTimeMillis();
         this.type = type;
     }
     
     public ArrayList<FightObject> getAllFightObjects() {
-        final ArrayList<FightObject> container = new ArrayList<FightObject>();
+        final ArrayList<FightObject> container = new ArrayList<>();
         for (final FightObject object : this.listA) {
             if (object != null) {
                 container.add(object);
@@ -173,7 +173,7 @@ public class Fight
     }
     
     public ArrayList<FightObject> getSideAllFightObjects(final boolean isASide) {
-        final ArrayList<FightObject> container = new ArrayList<FightObject>();
+        final ArrayList<FightObject> container = new ArrayList<>();
         if (isASide) {
             container.addAll(this.listA);
         }
@@ -330,6 +330,7 @@ public class Fight
         for (final FightObject fightObject : this.getListB()) {
             if (fightObject.getId() == addObject.getHostId()) {
                 this.getListB().add(addObject);
+                return;
             }
         }
     }
@@ -339,7 +340,7 @@ public class Fight
             if (this.getData() == null) {
                 this.setData(NutMap.NEW());
             }
-            this.getData().setv("fight_result_fail", (Object)true);
+            this.getData().setv("fight_result_fail", true);
         }
         this.removeFightObject(this.getListA(), fightObject);
         this.removeFightObject(this.getListB(), fightObject);
@@ -523,7 +524,7 @@ public class Fight
                     if (skillProcessor == null) {
                         continue;
                     }
-                    skillProcessor.death(this, fightObject, fightObject, new Object[0]);
+                    skillProcessor.death(this, fightObject, fightObject);
                 }
             }
         }

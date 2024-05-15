@@ -243,7 +243,7 @@ public class SkillAction
     
     public void dragonMorph() {
         this.effector.setMorph(0);
-        this.processor.effect(this.fight, this.effector, null, new Object[0]);
+        this.processor.effect(this.fight, this.effector, null);
     }
     
     public ActionDetailParam fetchActionDetail() {

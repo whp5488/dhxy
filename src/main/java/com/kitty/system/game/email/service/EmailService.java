@@ -397,7 +397,7 @@ public class EmailService
     
     public void deleteEmail(final Role role, final Long emailId) {
         if (emailId == 1L) {
-            final List<Email> emails = (List<Email>)DataCache.ROLE_EMAIL.get(role.getId()).stream().filter(email -> !email.isDelete()).collect(Collectors.toList());
+            final List<Email> emails = DataCache.ROLE_EMAIL.get(role.getId()).stream().filter(email -> !email.isDelete()).collect(Collectors.toList());
             if (emails == null || emails.size() <= 0) {
                 return;
             }
@@ -444,7 +444,7 @@ public class EmailService
         List<Email> emails = DataCache.ROLE_EMAIL.get(role.getId());
         final long currTime = new Date().getTime();
         if (emails == null) {
-            emails = this.dao.query(Email.class, Cnd.where("recipient", "=", role.getId()).and("expiration_time", ">", (Object)currTime).desc("create_time"));
+            emails = this.dao.query(Email.class, Cnd.where("recipient", "=", role.getId()).and("expiration_time", ">", currTime).desc("create_time"));
             if (emails == null) {
                 emails = new ArrayList<Email>();
             }

@@ -155,7 +155,8 @@ public class LoopTaskHandler extends TaskHandler
         final int doStep = this.activityService.getFinishCount(role, ActivityType.LOOP, 1);
         if (taskSet.getTaskReward() != null) {
             this.roleService.addCurrency(role, Const.RESTYPE_COIN, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_COIN), "任务奖励", true, false);
-            this.roleService.addCurrency(role, Const.RESTYPE_SILVER, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_SILVER), "任务奖励", true, false);
+            // 这里银币改成了仙玉
+            this.roleService.addCurrency(role, Const.RESTYPE_GOLD, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_GOLD), "任务奖励", true, false);
         }
         if (doStep < ActivityType.LOOP.getTotalCount()) {
             this.acceptTask(role);
@@ -173,6 +174,9 @@ public class LoopTaskHandler extends TaskHandler
         final double fold = ActivityType.LOOP.getFold();
         double exp = 0.0;
         if (type == Const.RESTYPE_SILVER) {
+            exp = 30000.0 + Math.floor((cnt - 1) / 10.0) * 2760.0 + (cnt - Math.floor((cnt - 1) / 10.0) * 10.0 - 1.0) * 4166.0;
+        }
+        else if (type == Const.RESTYPE_GOLD) {
             exp = 30000.0 + Math.floor((cnt - 1) / 10.0) * 2760.0 + (cnt - Math.floor((cnt - 1) / 10.0) * 10.0 - 1.0) * 4166.0;
         }
         else if (type == Const.RESTYPE_COIN) {

@@ -108,7 +108,7 @@ public class HorseSkillUtils
             if (processor == null) {
                 continue;
             }
-            final NutMap nutMap = processor.studyExcute(pet, horseSkillParam, new Object[0]);
+            final NutMap nutMap = processor.studyExcute(pet, horseSkillParam);
             if (nutMap == null || nutMap.size() <= 0 || nutMap.getInt(String.valueOf(propertyDist), 0) == 0) {
                 continue;
             }
@@ -167,7 +167,7 @@ public class HorseSkillUtils
             return 0.0;
         }
         double addProperty = 0.0;
-        final NutMap nutMap = processor.studyExcute(pet, horseSkillParam, new Object[0]);
+        final NutMap nutMap = processor.studyExcute(pet, horseSkillParam);
         if (nutMap != null && nutMap.size() > 0 && nutMap.getDouble(String.valueOf(propertyPctDist), 0.0) != 0.0) {
             addProperty += nutMap.getDouble(String.valueOf(propertyPctDist));
         }
@@ -188,7 +188,7 @@ public class HorseSkillUtils
                 if (processor == null) {
                     continue;
                 }
-                final NutMap nutMap = processor.addition(horseSkillParam, new Object[0]);
+                final NutMap nutMap = processor.addition(horseSkillParam);
                 if (nutMap == null || nutMap.size() <= 0) {
                     continue;
                 }
@@ -227,7 +227,7 @@ public class HorseSkillUtils
                     if (processor == null) {
                         continue;
                     }
-                    processor.attackOver(fight, (PetFightObject)effector, target, actionDetailParam, new Object[0]);
+                    processor.attackOver(fight, (PetFightObject)effector, target, actionDetailParam);
                 }
             }
         }
@@ -240,7 +240,7 @@ public class HorseSkillUtils
                     if (processor == null) {
                         continue;
                     }
-                    processor.attackOver(fight, (PetFightObject)target, effector, actionDetailParam, new Object[0]);
+                    processor.attackOver(fight, (PetFightObject)target, effector, actionDetailParam);
                 }
             }
         }

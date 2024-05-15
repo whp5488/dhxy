@@ -128,7 +128,7 @@ public class PkService extends ActivityHandler
             final SysMapInfo mapInfo = this.mapService.getMap(role.getPos().getMapId());
             if (role.getLastDead() > 0 && box.getConceal() <= 0 && !box.isRedName() && mapInfo.getIsWanted() != 1) {
                 box.setConceal((int)((System.currentTimeMillis() + 60000L) / 1000L));
-                MessagePusher.notify2Player(role, 1107, new Object[0]);
+                MessagePusher.notify2Player(role, 1107);
                 role.save();
             }
             box.setRedName(true);
@@ -331,7 +331,7 @@ public class PkService extends ActivityHandler
     
     public void npcButton(final Role role, final String msg, final Npc npc) {
         if (SpringUtils.getBean(PkService.class).isInPrisonTime(role)) {
-            MessagePusher.notify2Player(role, 1113, new Object[0]);
+            MessagePusher.notify2Player(role, 1113);
             return;
         }
         final ReqTelePort reqTelePort = new ReqTelePort();

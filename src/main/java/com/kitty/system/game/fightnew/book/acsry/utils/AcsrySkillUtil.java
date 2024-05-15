@@ -41,7 +41,7 @@ public class AcsrySkillUtil
                 for (final Integer acsrySerial : acsrySkillList) {
                     if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_ROUND_START.getValue()).contains(acsrySerial)) {
                         final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                        processor.passive(fight, playerFightObject, new Object[0]);
+                        processor.passive(fight, playerFightObject);
                     }
                 }
             }
@@ -50,7 +50,7 @@ public class AcsrySkillUtil
         if (skillSerials != null && skillSerials.size() > 0) {
             for (final Integer skillSerial : skillSerials) {
                 final AcsrySkillProcessor processor2 = AcsrySkillProcessor.queryProcessor(skillSerial);
-                processor2.passive(fight, fightObject, new Object[0]);
+                processor2.passive(fight, fightObject);
             }
         }
     }
@@ -65,7 +65,7 @@ public class AcsrySkillUtil
             for (final Integer acsrySerial : acsrySkillList) {
                 if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.ROUND_END.getValue()).contains(acsrySerial)) {
                     final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                    processor.passive(fight, playerFightObject, new Object[0]);
+                    processor.passive(fight, playerFightObject);
                 }
             }
         }
@@ -101,7 +101,7 @@ public class AcsrySkillUtil
                 }
             }
         }
-        final String string = effecter.getStatusMap().getString("1008perpetrator", (String)null);
+        final String string = effecter.getStatusMap().getString("1008perpetrator", null);
         if (string != null) {
             if (!string.contains(String.valueOf(73323))) {
                 if (!string.contains(String.valueOf(73322))) {
@@ -185,7 +185,7 @@ public class AcsrySkillUtil
                 }
             }
         }
-        final String string = effecter.getStatusMap().getString("1008perpetrator", (String)null);
+        final String string = effecter.getStatusMap().getString("1008perpetrator", null);
         Label_0315: {
             if (string != null) {
                 if (!string.contains(String.valueOf(73323))) {
@@ -206,7 +206,7 @@ public class AcsrySkillUtil
                 }
             }
         }
-        final String str = effecter.getOtherMap().getString("skillRound", (String)null);
+        final String str = effecter.getOtherMap().getString("skillRound", null);
         if (str != null) {
             if (!str.contains(String.valueOf(73332))) {
                 if (!str.contains(String.valueOf(73333))) {
@@ -239,7 +239,7 @@ public class AcsrySkillUtil
                 for (final Integer skillSerial : acsrySkillList) {
                     if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.AFTER_INPUT_INSTRUCT.getValue()).contains(skillSerial)) {
                         final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(skillSerial);
-                        processor.afterPrintCommand(fight, fightObject, new Object[0]);
+                        processor.afterPrintCommand(fight, fightObject);
                     }
                 }
             }
@@ -397,7 +397,7 @@ public class AcsrySkillUtil
                     if (processor == null) {
                         continue;
                     }
-                    final NutMap map = processor.additionWear(role, new Object[0]);
+                    final NutMap map = processor.additionWear(role);
                     if (map == null) {
                         continue;
                     }
@@ -421,7 +421,7 @@ public class AcsrySkillUtil
                     if (processor == null) {
                         continue;
                     }
-                    processor.beforePhysicalAttack(fight, effecter, target, new Object[0]);
+                    processor.beforePhysicalAttack(fight, effecter, target);
                 }
             }
         }

@@ -93,7 +93,7 @@ public class PetPassiveSkillUtil
                         final SysPetSkill petSkill = petSkillMapForN.get(roleSkill.getSkillId());
                         if (petSkill != null && (isPvp == 1 || petSkill.getIsPvp() == isPvp)) {
                             skillProcessor = SkillProcessor.queryProcessor(petSkill.getSerial());
-                            skillProcessor.passive(fight, effector, new Object[0]);
+                            skillProcessor.passive(fight, effector);
                         }
                     }
                 }
@@ -102,7 +102,7 @@ public class PetPassiveSkillUtil
                     if (petSkillList2 != null) {
                         for (final SysPetSkill petSkill3 : petSkillList2) {
                             skillProcessor = SkillProcessor.queryProcessor(petSkill3.getSerial());
-                            skillProcessor.passive(fight, effector, new Object[0]);
+                            skillProcessor.passive(fight, effector);
                         }
                     }
                 }
@@ -171,7 +171,7 @@ public class PetPassiveSkillUtil
                 for (final RoleSkill roleSkill : petRoleSkill) {
                     if (entry.getKey().equals(roleSkill.getSkillId())) {
                         final SkillProcessor passiveSkillProcessor = SkillProcessor.queryProcessor(roleSkill.getSkillId());
-                        passiveSkillProcessor.passive(fight, petObject, new Object[0]);
+                        passiveSkillProcessor.passive(fight, petObject);
                         break;
                     }
                 }
@@ -429,7 +429,7 @@ public class PetPassiveSkillUtil
                 final SysPetSkill petSkill = resourceMap.get(roleSkill.getSkillId());
                 if (petSkill != null && (isPvp == 1 || petSkill.getIsPvp() == isPvp)) {
                     final SkillProcessor passiveSkillProcessor = SkillProcessor.queryProcessor(petSkill.getSerial());
-                    passiveSkillProcessor.normalAttack(fight, obj, attacker, actionDetailParam, new Object[0]);
+                    passiveSkillProcessor.normalAttack(fight, obj, attacker, actionDetailParam);
                 }
             }
         }
@@ -464,7 +464,7 @@ public class PetPassiveSkillUtil
                 for (final Map.Entry<Integer, List<Integer>> entry2 : beforeActionSkillM.getRoleSkillMap().entrySet()) {
                     if (entry2.getValue().contains(entry.getKey())) {
                         final SkillProcessor passiveSkillProcessor = SkillProcessor.queryProcessor(entry.getValue().getSerial());
-                        passiveSkillProcessor.effect(fight, fight.queryFightObject(entry2.getKey()), attacker, attackerProcessor.costMana(skill, new Object[0]));
+                        passiveSkillProcessor.effect(fight, fight.queryFightObject(entry2.getKey()), attacker, attackerProcessor.costMana(skill));
                         flag = true;
                         break;
                     }
@@ -480,7 +480,7 @@ public class PetPassiveSkillUtil
             for (final Map.Entry<Integer, List<Integer>> entry2 : beforeActionSkillT.getRoleSkillMap().entrySet()) {
                 if (entry2.getValue().contains(entry.getKey())) {
                     final SkillProcessor passiveSkillProcessor = SkillProcessor.queryProcessor(entry.getValue().getSerial());
-                    passiveSkillProcessor.effect(fight, fight.queryFightObject(entry2.getKey()), attacker, attackerProcessor.costMana(skill, new Object[0]));
+                    passiveSkillProcessor.effect(fight, fight.queryFightObject(entry2.getKey()), attacker, attackerProcessor.costMana(skill));
                     break;
                 }
             }
@@ -497,7 +497,7 @@ public class PetPassiveSkillUtil
                 final SysPetSkill petSkill = resourceMap.get(roleSkill.getSkillId());
                 if (petSkill != null && (isPvp == 1 || petSkill.getIsPvp() == isPvp)) {
                     final SkillProcessor passiveSkillProcessor = SkillProcessor.queryProcessor(petSkill.getSerial());
-                    effect = passiveSkillProcessor.effect(fight, obj, attacker, attackerProcessor.costMana(skill, new Object[0]), petSkill);
+                    effect = passiveSkillProcessor.effect(fight, obj, attacker, attackerProcessor.costMana(skill), petSkill);
                 }
             }
         }
@@ -509,7 +509,7 @@ public class PetPassiveSkillUtil
         if (beforeActionSkill == null || !beforeActionSkill.isPassiveAction()) {
             return false;
         }
-        final boolean returnFlag = excuteEnemyMagic(fight, attacker, beforeActionSkill, PetTriggerPassiveSkill.data_pet_skill_maps.get(PET_PASSIVE_SKILL_TRIGGER_DICT.ENEMY_FIRST_MAGIC.getValue()), attackerProcessor.costMana(skill, new Object[0]));
+        final boolean returnFlag = excuteEnemyMagic(fight, attacker, beforeActionSkill, PetTriggerPassiveSkill.data_pet_skill_maps.get(PET_PASSIVE_SKILL_TRIGGER_DICT.ENEMY_FIRST_MAGIC.getValue()), attackerProcessor.costMana(skill));
         return returnFlag;
     }
     
@@ -546,7 +546,7 @@ public class PetPassiveSkillUtil
                     if (statusMap.get("1999record") != null) {
                         recordValue = statusMap.getInt("1999record") + 1;
                     }
-                    statusMap.put("1999record", (Object)recordValue);
+                    statusMap.put("1999record", recordValue);
                     break;
                 }
             }
@@ -669,7 +669,7 @@ public class PetPassiveSkillUtil
                 final Integer key = entry.getKey();
                 if (skillIds.contains(key)) {
                     final SkillProcessor skillProcessor = SkillProcessor.queryProcessor(key);
-                    final NutMap passive = skillProcessor.passive(fight, attacker, new Object[0]);
+                    final NutMap passive = skillProcessor.passive(fight, attacker);
                     isRevive = passive.getBoolean("successful");
                 }
             }
@@ -752,7 +752,7 @@ public class PetPassiveSkillUtil
                 for (final SysPetSkill petSkill : petSkillList) {
                     if (isTriggerGFF(petSkill, actionDetailParam.getSkillSerial())) {
                         skillProcessor = SkillProcessor.queryProcessor(petSkill.getSerial());
-                        skillProcessor.normalAttack(fight, effector, target, actionDetailParam, new Object[0]);
+                        skillProcessor.normalAttack(fight, effector, target, actionDetailParam);
                     }
                 }
             }
@@ -763,7 +763,7 @@ public class PetPassiveSkillUtil
         try {
             final SkillProcessor skillProcessor = SkillProcessor.queryProcessor(81057);
             if (skillProcessor != null) {
-                final NutMap passive = skillProcessor.passive(fight, effector, new Object[0]);
+                final NutMap passive = skillProcessor.passive(fight, effector);
                 final int num = passive.getInt("num");
                 return num;
             }

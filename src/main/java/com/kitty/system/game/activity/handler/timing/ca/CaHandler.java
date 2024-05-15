@@ -713,7 +713,7 @@ public class CaHandler extends ActivityHandler
             eventSet = new CaEventSet();
         }
         else {
-            eventSet = (CaEventSet)Json.fromJson(CaEventSet.class, event.getPara());
+            eventSet = Json.fromJson(CaEventSet.class, event.getPara());
         }
         this.round = eventSet.getRound();
         this.prepareOnce();
@@ -733,7 +733,7 @@ public class CaHandler extends ActivityHandler
             eventSet = new CaEventSet();
         }
         else {
-            eventSet = (CaEventSet)Json.fromJson(CaEventSet.class, (CharSequence)event.getPara());
+            eventSet = Json.fromJson(CaEventSet.class, event.getPara());
         }
         this.round = eventSet.getRound();
         this.caData = new CaData();

@@ -15,8 +15,8 @@ public class ObjectUtil
             fieldName = fieldName.toLowerCase();
             final String firstLetter = fieldName.substring(0, 1).toUpperCase();
             final String getter = "get" + firstLetter + fieldName.substring(1);
-            final Method method = o.getClass().getMethod(getter, (Class<?>[])new Class[0]);
-            final Object value = method.invoke(o, new Object[0]);
+            final Method method = o.getClass().getMethod(getter);
+            final Object value = method.invoke(o);
             return value;
         }
         catch (final Exception e) {

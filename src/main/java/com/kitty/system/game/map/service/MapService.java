@@ -488,11 +488,11 @@ public class MapService
         }
         if (role.getPos().getMapId().equals(1201)) {
             if (SpringUtils.getBean(PkService.class).isInPrisonTime(role)) {
-                MessagePusher.notify2Player(role, 1113, new Object[0]);
+                MessagePusher.notify2Player(role, 1113);
                 return false;
             }
             if (param == null || !"runs_prison".equals(param)) {
-                MessagePusher.notify2Player(role, 1101, new Object[0]);
+                MessagePusher.notify2Player(role, 1101);
                 return false;
             }
         }
@@ -501,7 +501,7 @@ public class MapService
             if (team != null && !team.isLeader(role.getRoleId())) {
                 this.teamService.leaveTemp(role, true);
             }
-            MessagePusher.notify2Player(role, 1108, new Object[0]);
+            MessagePusher.notify2Player(role, 1108);
             return false;
         }
         return true;

@@ -129,7 +129,7 @@ public class GangWarsPkHandler extends ActivityHandler
         }
         catch (final Exception e) {
             e.printStackTrace();
-            this.logger.error("帮战PK阶段开始错误：{}", (Object)e.getMessage());
+            this.logger.error("帮战PK阶段开始错误：{}", e.getMessage());
         }
     }
     
@@ -171,7 +171,7 @@ public class GangWarsPkHandler extends ActivityHandler
             }
             stance = Byte.valueOf(string);
             if (stance < 0 || stance > 1) {
-                this.logger.error("玩家：{}，攻击城门立场错误{}", (Object)role.getRoleId(), (Object)string);
+                this.logger.error("玩家：{}，攻击城门立场错误{}", role.getRoleId(), string);
                 return;
             }
             if (warsInfo.getStance() == stance) {

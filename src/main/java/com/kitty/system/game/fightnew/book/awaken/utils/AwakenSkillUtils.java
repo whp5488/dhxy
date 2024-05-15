@@ -42,7 +42,7 @@ public class AwakenSkillUtils
                     if (jxSkill != null && AwakenSkillConst.getRoundStartSkills().contains(jxSkill)) {
                         final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                         if (awakenSkillProcessor != null) {
-                            awakenSkillProcessor.roundStart(fight, petFightObject, new Object[0]);
+                            awakenSkillProcessor.roundStart(fight, petFightObject);
                         }
                     }
                 }
@@ -81,7 +81,7 @@ public class AwakenSkillUtils
                 if (jxSkill != null && AwakenSkillConst.getAdditionSkills().contains(jxSkill)) {
                     final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                     if (awakenSkillProcessor != null) {
-                        final NutMap nutMap = awakenSkillProcessor.additionSuit(role, pet, new Object[0]);
+                        final NutMap nutMap = awakenSkillProcessor.additionSuit(role, pet);
                         return nutMap;
                     }
                 }
@@ -99,7 +99,7 @@ public class AwakenSkillUtils
                 if (jxSkill != null && AwakenSkillConst.getAdditionSkills().contains(jxSkill)) {
                     final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                     if (awakenSkillProcessor != null && pet.getAwaken() > 0) {
-                        final NutMap nutMap = awakenSkillProcessor.additionAwaken(role, pet, new Object[0]);
+                        final NutMap nutMap = awakenSkillProcessor.additionAwaken(role, pet);
                         return nutMap;
                     }
                 }
@@ -136,7 +136,7 @@ public class AwakenSkillUtils
             }
             final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(skillSerial);
             if (awakenSkillProcessor != null) {
-                final NutMap nutMap = awakenSkillProcessor.skillIntensify(fight, (PetFightObject)effector, new Object[0]);
+                final NutMap nutMap = awakenSkillProcessor.skillIntensify(fight, (PetFightObject)effector);
                 if (nutMap != null) {
                     final double value = nutMap.getDouble("percent");
                     if (value != 0.0) {
@@ -188,7 +188,7 @@ public class AwakenSkillUtils
         if (jxSkill != null && AwakenSkillConst.getBeforePhysicalAttackSkills().contains(jxSkill)) {
             final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.beforePhysicalAttack(fight, effector, new Object[0]);
+                awakenSkillProcessor.beforePhysicalAttack(fight, effector);
             }
         }
     }
@@ -208,7 +208,7 @@ public class AwakenSkillUtils
         if (jxSkill != null && AwakenSkillConst.getBeforeDoActionSkills().contains(jxSkill)) {
             final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.beforeDoAction(fight, effector, new Object[0]);
+                awakenSkillProcessor.beforeDoAction(fight, effector);
             }
         }
         AWAKENSKILL_31516.clearStatus(fight, effector);
@@ -219,7 +219,7 @@ public class AwakenSkillUtils
         if (jxSkill != null && AwakenSkillConst.getReviveSkills().contains(jxSkill)) {
             final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                final NutMap map = awakenSkillProcessor.revive(fight, effector, new Object[0]);
+                final NutMap map = awakenSkillProcessor.revive(fight, effector);
                 if (map != null && map.getBoolean("successful", false)) {
                     return true;
                 }
@@ -243,9 +243,9 @@ public class AwakenSkillUtils
                 if (jxSkill != null && AwakenSkillConst.getIsGuardSkills().contains(jxSkill)) {
                     final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                     if (awakenSkillProcessor != null) {
-                        final double percent = awakenSkillProcessor.isGuard(fight, petFightObject, new Object[0]);
+                        final double percent = awakenSkillProcessor.isGuard(fight, petFightObject);
                         if (percent > 0.0) {
-                            return NutMap.NEW().setv("percent", (Object)percent).setv("petFightObjectId", (Object)petFightObject.getId());
+                            return NutMap.NEW().setv("percent", percent).setv("petFightObjectId", petFightObject.getId());
                         }
                     }
                 }
@@ -272,7 +272,7 @@ public class AwakenSkillUtils
         if (jxSkill != null && jxSkill != null && AwakenSkillConst.getEnteringSideSkills().contains(jxSkill)) {
             final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.enteringSide(fight, fightObject, new Object[0]);
+                awakenSkillProcessor.enteringSide(fight, fightObject);
             }
         }
     }
@@ -295,7 +295,7 @@ public class AwakenSkillUtils
         if (jxSkill != null && AwakenSkillConst.getEnterFightSkills().contains(jxSkill)) {
             final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.enterFight(fight, fightObject, new Object[0]);
+                awakenSkillProcessor.enterFight(fight, fightObject);
             }
         }
     }
@@ -305,7 +305,7 @@ public class AwakenSkillUtils
         if (jxSkill != null && AwakenSkillConst.getExitSideSkills().contains(jxSkill)) {
             final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.exitSide(fight, fightObject, new Object[0]);
+                awakenSkillProcessor.exitSide(fight, fightObject);
             }
         }
     }

@@ -17,7 +17,7 @@ public class StatusForSkillDispose
     public void disposePositiveStatus(final FightObject target, final int status, final boolean isClear) {
         try {
             final Class<?> classType = this.getClass();
-            final Object obj = classType.getConstructor((Class<?>[])new Class[0]).newInstance(new Object[0]);
+            final Object obj = classType.getConstructor(new Class[0]).newInstance();
             if (isClear) {
                 final Method clearMethod = classType.getDeclaredMethod("clear" + status, FightObject.class);
                 clearMethod.invoke(obj, target);
@@ -129,9 +129,9 @@ public class StatusForSkillDispose
     
     private void clear2010(final FightObject target) {
         target.removeStatus(2010);
-        target.getStatusMap().remove((Object)"2010skill");
-        target.getStatusMap().remove((Object)"2010percent");
-        target.getStatusMap().remove((Object)"2010reducePercent");
+        target.getStatusMap().remove("2010skill");
+        target.getStatusMap().remove("2010percent");
+        target.getStatusMap().remove("2010reducePercent");
     }
     
     private void clear2031(final FightObject target) {

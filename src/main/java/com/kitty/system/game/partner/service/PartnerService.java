@@ -462,8 +462,8 @@ public class PartnerService
             MessagePusher.pushMessage(role, new RespMsg("很抱歉，该功能暂未开放。"));
             return;
         }
-        final String msg = handler.acceptFeed(partner, role, param, type, new Object[0]);
-        if (!Strings.isEmpty((CharSequence)msg)) {
+        final String msg = handler.acceptFeed(partner, role, param, type);
+        if (!Strings.isEmpty(msg)) {
             MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), msg, false));
         }
     }

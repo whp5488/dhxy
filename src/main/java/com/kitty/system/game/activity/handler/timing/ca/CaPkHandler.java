@@ -224,7 +224,7 @@ public class CaPkHandler extends ActivityHandler
     
     public void grouping() {
         final CaData obj = this.caHandler.getCaData();
-        final Map<Integer, List<CaPkData>> map = new HashMap<Integer, List<CaPkData>>();
+        final Map<Integer, List<CaPkData>> map = new HashMap<>();
         for (final CaPkData caPkData : obj.getPkDataList()) {
             final Team team = this.teamService.getTeamByTeamId(caPkData.getTeamId());
             if (team == null) {
@@ -239,7 +239,7 @@ public class CaPkHandler extends ActivityHandler
             }
             List<CaPkData> list = map.get(caPkData.getGroup());
             if (list == null) {
-                list = new ArrayList<CaPkData>();
+                list = new ArrayList<>();
             }
             list.add(caPkData);
             map.put(caPkData.getGroup(), list);
@@ -267,7 +267,7 @@ public class CaPkHandler extends ActivityHandler
                     caPkData.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte)0, this.session));
                 }
                 else {
-                    final List<CaPkData> resList = new ArrayList<CaPkData>();
+                    final List<CaPkData> resList = new ArrayList<>();
                     int i = index;
                     boolean flag = true;
                     while (flag) {
@@ -299,7 +299,7 @@ public class CaPkHandler extends ActivityHandler
                         data.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte)0, this.session));
                     }
                     else {
-                        datum.getFight().add(new CaFight(-1, new ArrayList<Long>(), (byte)0, this.session));
+                        datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte)0, this.session));
                     }
                 }
             }
@@ -310,11 +310,12 @@ public class CaPkHandler extends ActivityHandler
         try {
             final CaData obj = this.caHandler.getCaData();
             final List<CaPkData> objPkDataList = obj.getPkDataList();
-            final Map<Integer, Integer> map = new HashMap<Integer, Integer>(objPkDataList.size());
+            final Map<Integer, Integer> map = new HashMap<>(objPkDataList.size());
             for (final CaPkData data : objPkDataList) {
                 if (map.get(data.getTeamId()) == null) {
                     final CaFight fight = EventsUtils.getMinNotFight(data);
                     final Team teamA = this.teamService.getTeamByTeamId(data.getTeamId());
+
                     if (fight.getTeamId() == -1) {
                         final FightInfo fightInfo = new FightInfo();
                         fightInfo.setItselfLeader(teamA.getLeaderUid());
@@ -356,7 +357,7 @@ public class CaPkHandler extends ActivityHandler
                         final Team team = CaPkHandler.this.teamService.getTeamByTeamId(caPkData.getTeamId());
                         if (team != null) {
                             final Role player = CaPkHandler.this.roleService.getPlayer(team.getLeaderUid());
-                            if (!CaPkHandler.this.caHandler.isInMap(player) || !CaPkHandler.this.fightNewService.isInFight(CaPkHandler.this.roleService.getPlayer(team.getLeaderUid()))) {
+                            if (!CaPkHandler.this.caHandler.isInMap(player) || !CaPkHandler.this.fightNewService.isInFight(player)) {
                                 continue;
                             }
                             final Fight fight = CaPkHandler.this.fightNewService.getFightByRoleId(player.getRoleId());
@@ -395,6 +396,14 @@ public class CaPkHandler extends ActivityHandler
                 this.jumpWin(pkDataA, EventsUtils.getMinNotFight(pkDataA));
                 return;
             }
+
+            // 匹配双方一组还在战斗中
+            boolean playerAisInFight = CaPkHandler.this.fightNewService.isInFight(playerA);
+            boolean playerBisInFight = CaPkHandler.this.fightNewService.isInFight(playerB);
+            if (playerAisInFight || playerBisInFight) {
+                return;
+            }
+
             this.doStartFight(teamA, teamB);
             if (pkDataA != null) {
                 pkDataA.setTime(0);

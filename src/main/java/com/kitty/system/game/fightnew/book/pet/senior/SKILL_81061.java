@@ -36,7 +36,7 @@ public class SKILL_81061 extends SkillProcessor
             final SysPetSkill sysPetSkill = PetSkillEffectorUtil.initiativeQueryCover(petSkill, skills, sysPetSkillMap);
             if (sysPetSkill != null && 81061 != sysPetSkill.getSerial()) {
                 final SkillProcessor processor = SkillProcessor.queryProcessor(sysPetSkill.getSerial());
-                processor.passive(fight, effector, new Object[0]);
+                processor.passive(fight, effector);
                 return null;
             }
         }

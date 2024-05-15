@@ -948,7 +948,7 @@ public class TeamService
                 return;
             }
             if (SpringUtils.getBean(PkService.class).isInPrisonTime(role)) {
-                MessagePusher.notify2Player(role, 1113, new Object[0]);
+                MessagePusher.notify2Player(role, 1113);
                 return;
             }
             if (!this.isRequestJoinTeam(role, team)) {

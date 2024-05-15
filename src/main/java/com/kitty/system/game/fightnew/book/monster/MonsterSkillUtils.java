@@ -44,7 +44,7 @@ public class MonsterSkillUtils
                     if (monsterSkillProcessor == null) {
                         continue;
                     }
-                    monsterSkillProcessor.beforeAttack(fight, effector, new Object[0]);
+                    monsterSkillProcessor.beforeAttack(fight, effector);
                 }
             }
         }

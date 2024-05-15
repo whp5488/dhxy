@@ -46,7 +46,7 @@ public class PassiveSkillUtils
     
     public static void selfSellEnd(final Fight fight, final FightObject fightObject) {
         try {
-            PetTriggerPassiveSkill.excutePassiveSkill(fight, fightObject, PET_PASSIVE_SKILL_TRIGGER_DICT.SELF_SELL_END.getValue(), new Object[0]);
+            PetTriggerPassiveSkill.excutePassiveSkill(fight, fightObject, PET_PASSIVE_SKILL_TRIGGER_DICT.SELF_SELL_END.getValue());
         }
         catch (final Exception e) {
             e.printStackTrace();

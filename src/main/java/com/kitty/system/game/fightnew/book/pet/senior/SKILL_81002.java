@@ -91,7 +91,7 @@ public class SKILL_81002 extends SkillProcessor
                 PetPassiveSkillUtil.passivePhysics(fight, effector, newTarget, battleUnit, actionDetailParam, 81002);
                 skillRecord.setT(newTarget.getId());
                 if (newTarget.isFallDown()) {
-                    this.normalAttack(fight, effector, newTarget, actionDetailParam, new Object[0]);
+                    this.normalAttack(fight, effector, newTarget, actionDetailParam);
                 }
             }
         }

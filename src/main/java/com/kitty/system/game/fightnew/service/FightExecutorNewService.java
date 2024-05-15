@@ -24,7 +24,7 @@ public class FightExecutorNewService
     private volatile boolean run;
     
     public FightExecutorNewService() {
-        this.workerPool = new ArrayList<TaskWorker>();
+        this.workerPool = new ArrayList<>();
         this.run = true;
     }
     
@@ -49,9 +49,9 @@ public class FightExecutorNewService
     }
     
     static {
-        FIGHT_ROOMS = new ConcurrentHashMap<Integer, Integer>();
-        FIGHTS = new ConcurrentHashMap<Integer, Fight>();
-        PETID_ROLEID = new ConcurrentHashMap<Integer, Integer>();
+        FIGHT_ROOMS = new ConcurrentHashMap<>();
+        FIGHTS = new ConcurrentHashMap<>();
+        PETID_ROLEID = new ConcurrentHashMap<>();
     }
     
     private class TaskWorker implements Runnable

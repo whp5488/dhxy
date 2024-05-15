@@ -61,7 +61,7 @@ public class TianFuSkillUtils
                 if (processor == null) {
                     continue;
                 }
-                processor.passive(fight, effector, null, new Object[0]);
+                processor.passive(fight, effector, null);
             }
         }
     }
@@ -274,7 +274,7 @@ public class TianFuSkillUtils
                 if (processor == null) {
                     continue;
                 }
-                processor.passive(fight, effector, target, new Object[0]);
+                processor.passive(fight, effector, target);
             }
         }
     }
@@ -301,7 +301,7 @@ public class TianFuSkillUtils
                 if (processor == null) {
                     continue;
                 }
-                processor.passive(fight, effector, null, new Object[0]);
+                processor.passive(fight, effector, null);
             }
         }
     }
@@ -361,7 +361,7 @@ public class TianFuSkillUtils
                 if (processor == null) {
                     continue;
                 }
-                processor.passive(fight, effector, null, new Object[0]);
+                processor.passive(fight, effector, null);
             }
         }
     }
@@ -382,10 +382,10 @@ public class TianFuSkillUtils
                 if (processor == null) {
                     continue;
                 }
-                processor.attackOver(fight, effector, target, actionDetailParam, new Object[0]);
+                processor.attackOver(fight, effector, target, actionDetailParam);
             }
             final TianFuProcessor processor = TianFuProcessor.queryProcessor(323503);
-            processor.passive(fight, effector, target, new Object[0]);
+            processor.passive(fight, effector, target);
         }
     }
     
@@ -476,7 +476,7 @@ public class TianFuSkillUtils
                 if (processor == null) {
                     continue;
                 }
-                final List<FiedValue> fiedValues = processor.passiveFied(fight, effector, target, new Object[0]);
+                final List<FiedValue> fiedValues = processor.passiveFied(fight, effector, target);
                 if (fiedValues == null || fiedValues.size() <= 0) {
                     continue;
                 }

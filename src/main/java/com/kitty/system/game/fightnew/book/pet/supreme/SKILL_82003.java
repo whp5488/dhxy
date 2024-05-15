@@ -118,7 +118,7 @@ public class SKILL_82003 extends SkillProcessor
         final AstrictSkill astrictSkill = fight.getAstrictSkillMap().get(!effector.isASide());
         if (beforeActionSkillCounter != null && beforeActionSkillCounter.getSkills().contains(82007) && astrictSkill == null) {
             final SkillProcessor processor = SkillProcessor.queryProcessor(82007);
-            processor.passive(fight, effector, new Object[0]);
+            processor.passive(fight, effector);
         }
         return null;
     }

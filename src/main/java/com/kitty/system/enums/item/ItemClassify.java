@@ -32,7 +32,7 @@ public enum ItemClassify
     }
     
     public static List<Integer> getValue() {
-        final List<Integer> objects = new ArrayList<Integer>();
+        final List<Integer> objects = new ArrayList<>();
         for (final ItemClassify itemClassify : values()) {
             objects.add(itemClassify.id);
         }

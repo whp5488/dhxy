@@ -34,7 +34,7 @@ public class AWAKENSKILL_31510 extends AwakenSkillProcessor
             if (status <= 0) {
                 return;
             }
-            final NutMap map = this.skillIntensify(fight, (PetFightObject)effector, new Object[0]);
+            final NutMap map = this.skillIntensify(fight, (PetFightObject)effector);
             if (map == null) {
                 return;
             }
