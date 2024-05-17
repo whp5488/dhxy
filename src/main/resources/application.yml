@@ -58,6 +58,8 @@ send:
   sendIp: 127.0.0.1
   # 网关服务端口
   sendPort: 85
+  sendName: 4kED4EItrU
+  sendPwd: 4kED4EItrU
 
 #短信服务Redis
 sms:

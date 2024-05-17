@@ -174,7 +174,7 @@ public class TeamPkFight extends Fight
     
     static {
         (TeamPkFight.publicAutoSet = NutMap.NEW()).setv("type", 0);
-        TeamPkFight.publicAutoSet.setv("action", (Object)1);
+        TeamPkFight.publicAutoSet.setv("action", 1);
         TeamPkFight.publicAutoSet.setv("skillId", 0);
     }
 }

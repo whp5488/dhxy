@@ -65,7 +65,7 @@ public class GateController
                 respOtherLogin.setResult(0);
                 MessagePusher.pushMessage(session, respOtherLogin);
                 ModuleCounterFilter.banIp(session);
-                this.logger.error("没有账号=={}", (Object)request.getAccountId());
+                this.logger.error("没有账号=={}", request.getAccountId());
                 session.closeNow();
                 return;
             }
@@ -74,7 +74,7 @@ public class GateController
                 session.closeNow();
                 return;
             }
-            session.setAttribute((Object)SessionProperties.ACCOUNT_SID, (Object)sid);
+            session.setAttribute(SessionProperties.ACCOUNT_SID, sid);
             final RespStartLogin respStartLogin = new RespStartLogin();
             respStartLogin.setCookie("4526387");
             respStartLogin.setType("normal");

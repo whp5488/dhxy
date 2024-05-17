@@ -155,8 +155,7 @@ public class LoopTaskHandler extends TaskHandler
         final int doStep = this.activityService.getFinishCount(role, ActivityType.LOOP, 1);
         if (taskSet.getTaskReward() != null) {
             this.roleService.addCurrency(role, Const.RESTYPE_COIN, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_COIN), "任务奖励", true, false);
-            // 这里银币改成了仙玉
-            this.roleService.addCurrency(role, Const.RESTYPE_GOLD, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_GOLD), "任务奖励", true, false);
+            this.roleService.addCurrency(role, Const.RESTYPE_SILVER, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_SILVER), "任务奖励", true, false);
         }
         if (doStep < ActivityType.LOOP.getTotalCount()) {
             this.acceptTask(role);

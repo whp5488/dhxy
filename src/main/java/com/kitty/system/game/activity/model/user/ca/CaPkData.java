@@ -28,7 +28,7 @@ public class CaPkData implements Serializable
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<CaFight>(3);
+        this.fight = new ArrayList<>(3);
     }
     
     public CaPkData(final Team team, final short pkValue) {
@@ -36,7 +36,7 @@ public class CaPkData implements Serializable
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<CaFight>(3);
+        this.fight = new ArrayList<>(3);
         this.teamId = team.getId();
         this.pkValue = pkValue;
         this.members = this.getMembers(team);
@@ -73,7 +73,7 @@ public class CaPkData implements Serializable
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<CaFight>(3);
+        this.fight = new ArrayList<>(3);
         this.teamId = teamId;
         this.pkValue = pkValue;
         this.memberGrade = memberGrade;
@@ -85,7 +85,7 @@ public class CaPkData implements Serializable
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<CaFight>(3);
+        this.fight = new ArrayList<>(3);
         this.group = group;
         this.teamId = teamId;
     }

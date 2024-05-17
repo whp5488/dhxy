@@ -1,6 +1,7 @@
 
 package com.kitty.common.utils.spring;
 
+import com.kitty.common.start.ServerService;
 import com.kitty.system.game.fightRecord.service.FightRecordService;
 import com.kitty.system.game.task.service.handler.activity.KejuTaskHandler;
 import com.kitty.system.game.activity.handler.timing.ca.CaHandler;
@@ -151,11 +152,15 @@ public class ScheduledService
         SpringUtils.getBean(CaHandler.class).notifyAt();
     }
 
-    @Scheduled(cron = "0 32 6 * * ?")
-    public void notifyAt2() {
-        //SpringUtils.getBean(WaterHandler.class).notifyAt();
-        //SpringUtils.getBean(AtWillHandler.class).notifyAt();
-        //SpringUtils.getBean(GangWarsHandler.class).notifyAt((byte)1);
+    /**
+     * 测试PK
+     */
+    @Scheduled(cron = "0 29 5 * * ?")
+    public void notifyAtTest() {
+        if (SpringUtils.getBean(ServerService.class).getType() == 1) {
+            return;
+        }
+        // 长安pk
         SpringUtils.getBean(CaHandler.class).notifyAt();
     }
     

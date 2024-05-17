@@ -99,7 +99,7 @@ public class WaterPkHandler extends ActivityHandler
         catch (final Exception e) {
             this.end();
             e.printStackTrace();
-            this.logger.error("水陆大会PK阶段开始错误：{}", (Object)e.getMessage());
+            this.logger.error("水陆大会PK阶段开始错误：{}", e.getMessage());
         }
     }
     
@@ -189,13 +189,13 @@ public class WaterPkHandler extends ActivityHandler
     
     public void grouping() {
         short rank = 1;
-        LinkedHashMap<Integer, WaterPkData> map = new LinkedHashMap<Integer, WaterPkData>(4);
+        LinkedHashMap<Integer, WaterPkData> map = new LinkedHashMap<>(4);
         final List<WaterPkData> pkDataList = this.waterHandler.getWaterData().getPkDataList();
         for (int i = 0; i < pkDataList.size(); ++i) {
             map.put(i, pkDataList.get(i));
             if (map.size() >= 4) {
                 grouping(pkDataList, map, rank);
-                map = new LinkedHashMap<Integer, WaterPkData>(4);
+                map = new LinkedHashMap<>(4);
                 ++rank;
             }
         }
@@ -356,14 +356,14 @@ public class WaterPkHandler extends ActivityHandler
                 pkDataA.updateTeamMember((byte)1);
             }
             else {
-                this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", (Object)teamA.getId());
+                this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", teamA.getId());
             }
             if (pkDataB != null) {
                 pkDataB.setTime(0);
                 pkDataB.updateTeamMember((byte)1);
             }
             else {
-                this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", (Object)teamB.getId());
+                this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", teamB.getId());
             }
         }
     }

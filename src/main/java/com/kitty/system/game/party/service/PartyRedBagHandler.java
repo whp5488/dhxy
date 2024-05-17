@@ -238,7 +238,7 @@ public class PartyRedBagHandler
                 return;
             }
             final String check = this.checkFetchRedBag(role, partyRedBag);
-            if (StringUtils.isNotEmpty((CharSequence)check)) {
+            if (StringUtils.isNotEmpty(check)) {
                 MessagePusher.pushMessage(role, new RespMsg(check));
                 return;
             }

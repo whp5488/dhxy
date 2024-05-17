@@ -3,6 +3,7 @@ package com.kitty.system.game.activity.handler.timing.ca;
 
 import com.kitty.system.enums.war.wardef.WarMaxRound;
 import com.kitty.common.utils.BigDecimalUtil;
+import com.kitty.system.game.activity.model.user.lu.vo.WaterFight;
 import com.kitty.system.game.pet.service.PetService;
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.common.utils.spring.SpringUtils;
@@ -69,7 +70,13 @@ public class CaPkHandler extends ActivityHandler
     int period;
     private static final int MAX_ROUND;
     private static final String FINISH_TIPS = "今晚的决战长安已结束，各位可以离场，下次决战长安再战吧！#<E:90>#";
-    
+
+    // 最大匹配次数
+    private static int MAX_MATCH_ROUND = 9;
+
+    // 是否团队没有在战斗中
+    private static boolean IS_TEAM_FIGHT = false;
+
     public CaPkHandler() {
         this.session = 1;
         this.period = 2;
@@ -106,7 +113,7 @@ public class CaPkHandler extends ActivityHandler
     }
     
     public void withdraw() {
-        final List<Integer> clearTeamList = new ArrayList<Integer>();
+        final List<Integer> clearTeamList = new ArrayList<>();
         final CaSet set = this.caHandler.getCaSet();
         List<CaPkData> list = this.caHandler.getCaData().getPkDataList();
         for (final CaPkData data : list) {
@@ -223,13 +230,26 @@ public class CaPkHandler extends ActivityHandler
     }
     
     public void grouping() {
+
+        // 有队伍在战斗中
+        if (CaPkHandler.IS_TEAM_FIGHT) {
+            return;
+        }
+
         final CaData obj = this.caHandler.getCaData();
         final Map<Integer, List<CaPkData>> map = new HashMap<>();
         for (final CaPkData caPkData : obj.getPkDataList()) {
+
+            // 每一组只打三场
+            if (caPkData.getPkValue() - 1 == 0) {
+                continue;
+            }
+
             final Team team = this.teamService.getTeamByTeamId(caPkData.getTeamId());
             if (team == null) {
                 continue;
             }
+
             final Role player = this.roleService.getPlayer(team.getLeaderUid());
             if (player == null) {
                 continue;
@@ -257,24 +277,22 @@ public class CaPkHandler extends ActivityHandler
                 }
                 final int index = caPkDataList.indexOf(datum);
                 if (index + 1 >= caPkDataList.size()) {
-                    datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte)0, this.session));
+                    datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte) 0, this.session));
                     break;
                 }
                 final CaPkData caPkData = caPkDataList.get(index + 1);
                 CaFight caFight = datum.getFight().stream().filter(e -> e.getTeamId() == caPkData.getTeamId()).findFirst().orElse(null);
                 if (caFight == null) {
-                    datum.getFight().add(new CaFight(caPkData.getTeamId(), caPkData.getMembers(), (byte)0, this.session));
-                    caPkData.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte)0, this.session));
-                }
-                else {
+                    datum.getFight().add(new CaFight(caPkData.getTeamId(), caPkData.getMembers(), (byte) 0, this.session));
+                    caPkData.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte) 0, this.session));
+                } else {
                     final List<CaPkData> resList = new ArrayList<>();
                     int i = index;
                     boolean flag = true;
                     while (flag) {
                         if (++i >= caPkDataList.size()) {
                             flag = false;
-                        }
-                        else {
+                        } else {
                             final CaPkData pkData = caPkDataList.get(i);
                             if (pkData.getFight().size() >= this.session) {
                                 continue;
@@ -282,11 +300,10 @@ public class CaPkHandler extends ActivityHandler
                             final int teamId = pkData.getTeamId();
                             caFight = datum.getFight().stream().filter(e -> e.getTeamId() == teamId).findFirst().orElse(null);
                             if (caFight == null) {
-                                datum.getFight().add(new CaFight(caPkData.getTeamId(), caPkData.getMembers(), (byte)0, this.session));
-                                caPkData.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte)0, this.session));
+                                datum.getFight().add(new CaFight(caPkData.getTeamId(), caPkData.getMembers(), (byte) 0, this.session));
+                                caPkData.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte) 0, this.session));
                                 flag = false;
-                            }
-                            else {
+                            } else {
                                 resList.add(pkData);
                             }
                         }
@@ -294,12 +311,11 @@ public class CaPkHandler extends ActivityHandler
                     if (datum.getFight().size() < this.session && resList.size() > 0) {
                         CaPkData data = resList.get(RandomUtil.round(0, resList.size() - 1));
                         final int temId = data.getTeamId();
-                        datum.getFight().add(new CaFight(data.getTeamId(), data.getMembers(), (byte)0, this.session));
+                        datum.getFight().add(new CaFight(data.getTeamId(), data.getMembers(), (byte) 0, this.session));
                         data = caPkDataList.stream().filter(e -> e.getTeamId() == temId).findFirst().orElse(null);
-                        data.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte)0, this.session));
-                    }
-                    else {
-                        datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte)0, this.session));
+                        data.getFight().add(new CaFight(datum.getTeamId(), datum.getMembers(), (byte) 0, this.session));
+                    } else {
+                        datum.getFight().add(new CaFight(-1, new ArrayList<>(), (byte) 0, this.session));
                     }
                 }
             }
@@ -311,25 +327,29 @@ public class CaPkHandler extends ActivityHandler
             final CaData obj = this.caHandler.getCaData();
             final List<CaPkData> objPkDataList = obj.getPkDataList();
             final Map<Integer, Integer> map = new HashMap<>(objPkDataList.size());
-            for (final CaPkData data : objPkDataList) {
-                if (map.get(data.getTeamId()) == null) {
-                    final CaFight fight = EventsUtils.getMinNotFight(data);
-                    final Team teamA = this.teamService.getTeamByTeamId(data.getTeamId());
 
-                    if (fight.getTeamId() == -1) {
-                        final FightInfo fightInfo = new FightInfo();
-                        fightInfo.setItselfLeader(teamA.getLeaderUid());
-                        fightInfo.setItself(data.getMembers());
-                        this.doFightEnd((byte)1, fightInfo, data);
-                    }
-                    else {
-                        if (fight == null) {
-                            continue;
+            if (!CaPkHandler.IS_TEAM_FIGHT) {
+                this.session++;
+                for (final CaPkData data : objPkDataList) {
+                    if (map.get(data.getTeamId()) == null) {
+                        final CaFight fight = EventsUtils.getMinNotFight(data);
+                        final Team teamA = this.teamService.getTeamByTeamId(data.getTeamId());
+
+                        if (fight.getTeamId() == -1) {
+                            final FightInfo fightInfo = new FightInfo();
+                            fightInfo.setItselfLeader(teamA.getLeaderUid());
+                            fightInfo.setItself(data.getMembers());
+                            this.doFightEnd((byte)1, fightInfo, data);
                         }
-                        final Team teamB = this.teamService.getTeamByTeamId(fight.getTeamId());
-                        this.match(teamA, teamB);
-                        map.put(teamA.getId(), teamB.getId());
-                        map.put(teamB.getId(), teamA.getId());
+                        else {
+                            if (fight == null) {
+                                continue;
+                            }
+                            final Team teamB = this.teamService.getTeamByTeamId(fight.getTeamId());
+                            this.match(teamA, teamB);
+                            map.put(teamA.getId(), teamB.getId());
+                            map.put(teamB.getId(), teamA.getId());
+                        }
                     }
                 }
             }
@@ -342,18 +362,30 @@ public class CaPkHandler extends ActivityHandler
     }
     
     public void needOver() {
-        ++this.session;
-        if (this.session > 3) {
+
+        CaPkHandler.MAX_MATCH_ROUND++;
+        // 每两分钟匹配一次，一共匹配9次
+        if (CaPkHandler.MAX_MATCH_ROUND > 9) {
             this.caHandler.needTime = 0L;
             return;
         }
+
         SchedulerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 try {
                     final CaData obj = CaPkHandler.this.caHandler.getCaData();
                     final List<CaPkData> objPkDataList = obj.getPkDataList();
+                    // 初始化战斗队伍数量
+                    CaPkHandler.IS_TEAM_FIGHT = false;
                     for (final CaPkData caPkData : objPkDataList) {
+
+                        // 判断是否还在战斗中
+                        if (caPkData.getState() == 1) {
+                            CaPkHandler.IS_TEAM_FIGHT = true;
+                            break;
+                        }
+
                         final Team team = CaPkHandler.this.teamService.getTeamByTeamId(caPkData.getTeamId());
                         if (team != null) {
                             final Role player = CaPkHandler.this.roleService.getPlayer(team.getLeaderUid());
@@ -394,13 +426,6 @@ public class CaPkHandler extends ActivityHandler
             }
             if (!inMapB) {
                 this.jumpWin(pkDataA, EventsUtils.getMinNotFight(pkDataA));
-                return;
-            }
-
-            // 匹配双方一组还在战斗中
-            boolean playerAisInFight = CaPkHandler.this.fightNewService.isInFight(playerA);
-            boolean playerBisInFight = CaPkHandler.this.fightNewService.isInFight(playerB);
-            if (playerAisInFight || playerBisInFight) {
                 return;
             }
 

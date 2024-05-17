@@ -26,13 +26,13 @@ public class CaSet
         this.minTeamMemberCount = 3;
         this.signUpTime = "19:40:00";
         this.startTime = "20:00:00";
-        this.dayOfWeek = new ArrayList<String>();
+        this.dayOfWeek = new ArrayList<>();
         this.winScore = 200;
         this.failScore = -50;
         this.sustain = 90;
         this.pkValue = 3;
         this.period = 5;
-        this.award = new HashMap<Byte, List<Param>>();
+        this.award = new HashMap<>();
     }
     
     public void setMinLevel(final int minLevel) {

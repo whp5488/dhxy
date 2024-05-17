@@ -265,7 +265,7 @@ public class PlayerFightObject extends FightObject
     static {
         log = LoggerFactory.getLogger(PlayerFightObject.class);
         (publicAutoSet = NutMap.NEW()).setv("type", 0);
-        PlayerFightObject.publicAutoSet.setv("action", (Object)1);
+        PlayerFightObject.publicAutoSet.setv("action", 1);
         PlayerFightObject.publicAutoSet.setv("skillId", 0);
         PlayerFightObject.publicAutoSet.setv("born", 0);
     }

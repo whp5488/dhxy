@@ -28,8 +28,8 @@ public class SKILL_81001 extends SkillProcessor
             final double percent = BigDecimalUtil.decimalScaleObjectDown(3, (0.1 + 1.5 * (effector.getRelive() * 0.5 + 1.0) * (Math.pow(effector.getLevel(), 0.5) / 10.0 + Math.pow((double)effector.getClose(), 0.16666666666666666) * 10.0 / (100 + effector.getRelive() * 20))) / 100.0);
             if (SkillAi.canAffectOnPro(percent)) {
                 final int round = 3;
-                effector.getStatusMap().setv(String.valueOf(1011), (Object)round);
-                effector.getStatusMap().setv("1011value", (Object)99);
+                effector.getStatusMap().setv(String.valueOf(1011), round);
+                effector.getStatusMap().setv("1011value", 99);
                 ActionParamUtils.addStatus(fight, effector, effector, 7, 81001, 2, 1011, round);
                 skillRecord.setT(effector.getId());
             }

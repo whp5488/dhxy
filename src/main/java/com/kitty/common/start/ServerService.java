@@ -4,6 +4,8 @@ package com.kitty.common.start;
 import java.util.concurrent.Executors;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
+
+import com.kitty.common.utils.spring.SpringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +37,23 @@ public class ServerService
     private int open;
     @Value("${login_server_url}")
     private String loginServerUrl;
+
     private String userName;
+
     private String passWord;
+
     @Value("${send.sendIp}")
     private String sendIp;
+
     @Value("${send.sendPort}")
     private int sendPort;
+
+    @Value("${send.sendName}")
     private String sendName;
+
+    @Value("${send.sendPwd}")
     private String sendPwd;
+
     ScheduledExecutorService scheduledExecutorService;
     
     public void init(final Map<String, String> map, final Map<String, String> map_) {
@@ -73,10 +84,13 @@ public class ServerService
     public ServerService() {
         this.state = 1;
         this.open = 1;
-        this.userName = "4kED4EItrU";
-        this.passWord = "4kED4EItrU";
-        this.sendName = "4kED4EItrU";
-        this.sendPwd = "4kED4EItrU";
+
+        //this.userName = "4kED4EItrU";
+        //this.passWord = "4kED4EItrU";
+       // this.sendName = "4kED4EItrU";
+        //this.sendPwd = "4kED4EItrU";
+        System.out.println(this.sendName);
+        System.out.println(this.sendPwd);
     }
     
     public String getUrl() {

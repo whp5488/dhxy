@@ -83,7 +83,7 @@ public abstract class FightActivityHandler extends ActivityHandler
             if (positions != null) {
                 if (list.size() == positions.size()) {
                     positions.clear();
-                    this.logger.error("{}位置已经使用完，位置总数量为:{}。开始重置!!", (Object)mapId, (Object)list.size());
+                    this.logger.error("{}位置已经使用完，位置总数量为:{}。开始重置!!", mapId, (Object)list.size());
                 }
                 list.removeAll(positions);
             }
