@@ -24,9 +24,9 @@ public class RoleTask implements Serializable
     private ConcurrentHashMap<Integer, Long> giveUpTimes;
     
     public RoleTask() {
-        this.acceptedTasks = new ConcurrentHashMap<Integer, Byte>();
-        this.doingTask = new ConcurrentHashMap<Integer, DoingTask>();
-        this.giveUpTimes = new ConcurrentHashMap<Integer, Long>();
+        this.acceptedTasks = new ConcurrentHashMap<>();
+        this.doingTask = new ConcurrentHashMap<>();
+        this.giveUpTimes = new ConcurrentHashMap<>();
     }
     
     public void acceptTask(final int taskId, final String para, final int expire) {
@@ -115,8 +115,8 @@ public class RoleTask implements Serializable
     
     @JsonIgnore
     public List<Integer> getAcceptedTaskList() {
-        final List<Integer> list = new ArrayList<Integer>(this.acceptedTasks.size());
-        list.addAll((Collection<? extends Integer>)this.acceptedTasks.keySet());
+        final List<Integer> list = new ArrayList<>(this.acceptedTasks.size());
+        list.addAll(this.acceptedTasks.keySet());
         return list;
     }
     

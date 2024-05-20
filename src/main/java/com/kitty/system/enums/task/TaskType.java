@@ -15,10 +15,12 @@ public enum TaskType
     QUESTION_DLS(10), 
     CARNIVAL(11), 
     DRAGON(12), 
-    CRUSADE_RENEGADE(13), 
-    XM(14), 
-    KJ(15), 
-    LOOP(20), 
+    CRUSADE_RENEGADE(13),
+    XM(14),
+    KJ(15),
+    LOOP(20),
+    XL(30),
+    CM(40),
     MWK_FRONT(2001);
     
     private int id;

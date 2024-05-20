@@ -7,7 +7,7 @@ import java.util.List;
 public enum Plug
 {
     TREASURE_MAP(2000, "plug_treasure", "挖宝"), 
-    TREASURE_MAP_BUY(2001, (String)null, (String)null);
+    TREASURE_MAP_BUY(2001, null, null);
     
     private int serial;
     private String dict;

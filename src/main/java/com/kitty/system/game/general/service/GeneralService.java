@@ -1,6 +1,7 @@
 
 package com.kitty.system.game.general.service;
 
+import com.kitty.system.game.task.service.handler.dungeon.DungeonCmHandler;
 import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
 import com.kitty.system.common.data.DataGlobalFunc;
@@ -125,6 +126,9 @@ public class GeneralService extends EchoHandler
                     final Integer integer = Integer.valueOf(notify.getStatus());
                     if (integer.equals(TaskType.MWK_FRONT.getId())) {
                         SpringUtils.getBean(DungeonMwkFront.class).leave(role);
+                    }
+                    if (integer.equals(TaskType.CM.getId())) {
+                        SpringUtils.getBean(DungeonCmHandler.class).leave(role);
                     }
                     if (integer.equals(TaskType.XM.getId())) {
                         SpringUtils.getBean(DungeonXmHandler.class).leave(role);
@@ -309,6 +313,9 @@ public class GeneralService extends EchoHandler
                     if (leaderRole != null && leaderRole.getConfirm().getConfirmType() == ConfirmType.CREATE_DUNGEON_MWK_F) {
                         SpringUtils.getBean(DungeonMwkFront.class).createBurgeonBallotAgree(role);
                     }
+                    if (leaderRole != null && leaderRole.getConfirm().getConfirmType() == ConfirmType.CREATE_DUNGEON_CM_F) {
+                        SpringUtils.getBean(DungeonCmHandler.class).createBurgeonBallotAgree(role);
+                    }
                     break;
                 }
                 break;
@@ -319,6 +326,9 @@ public class GeneralService extends EchoHandler
                     final Role leaderRole = SpringUtils.getRoleService().getPlayer(team.getLeaderUid());
                     if (leaderRole != null && leaderRole.getConfirm().getConfirmType() == ConfirmType.CREATE_DUNGEON_MWK_F) {
                         SpringUtils.getBean(DungeonMwkFront.class).createBurgeonBallotDisagree(role);
+                    }
+                    if (leaderRole != null && leaderRole.getConfirm().getConfirmType() == ConfirmType.CREATE_DUNGEON_CM_F) {
+                        SpringUtils.getBean(DungeonCmHandler.class).createBurgeonBallotDisagree(role);
                     }
                     break;
                 }
@@ -440,7 +450,7 @@ public class GeneralService extends EchoHandler
                 break;
             }
             default: {
-                this.logger.error("未处理NOTIFY功能==CODE:{}", (Object)generalType);
+                this.logger.error("未处理NOTIFY功能==CODE:{}", generalType);
                 break;
             }
         }

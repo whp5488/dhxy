@@ -87,7 +87,7 @@ public class FightMirrorService
             return null;
         }
         if (SpringUtils.getTeamService().isInTeamAndNotLeader(role)) {
-            this.logger.warn("{}({})不是队长触发战斗", (Object)role.getId(), (Object)role.getName());
+            this.logger.warn("{}({})不是队长触发战斗", role.getId(), role.getName());
             return null;
         }
         synchronized (role.getCanFight()) {

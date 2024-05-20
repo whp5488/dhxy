@@ -21,7 +21,7 @@ public enum ActivityType
     STAR_OFFICER("10012", "星官", 20, (byte)0, Arrays.asList(new String[0]), 5.0), 
     WORLD_BOOS_OFFICER("10013", "世界BOOS", 99999, (byte)0, Arrays.asList(new String[0]), 5.0), 
     GODS_COURT_TASK("10014", "天庭降妖", 20, (byte)0, Arrays.asList(new String[0]), 5.0), 
-    NIAN_OFFICER("10015", "年兽", 50, (byte)0, Arrays.asList(new String[0]), 5.0), 
+    NIAN_OFFICER("10015", "年兽", 50, (byte)0, Arrays.asList(new String[0]), 5.0),
     BURNING_HOT("10016", "红孩儿", 50, (byte)0, Arrays.asList(new String[0]), 5.0), 
     LOOP("10019", "200环任务", 200, (byte)0, Arrays.asList(new String[0]), 0.0), 
     PK_CONTEST("10020", "pk大赛", 0, (byte)1, Arrays.asList(new String[0]), 0.0), 
@@ -29,7 +29,9 @@ public enum ActivityType
     MWK_FRONT("10022", "魔王窟前殿", 2, (byte)0, Arrays.asList(new String[0]), 2.0), 
     DRAGON("10053", "端午", 80, (byte)0, Arrays.asList(new String[0]), 2.0), 
     CRUSADE_RENEGADE("10054", "讨伐叛贼", 60, (byte)0, Arrays.asList(new String[0]), 0.0), 
-    XM_DUGEON("10055", "心魔", 17, (byte)0, Arrays.asList("2", "4", "6"), 4.0), 
+    XM_DUGEON("10055", "心魔", 17, (byte)0, Arrays.asList("2", "4", "6"), 4.0),
+    XL_TASK("10056", "收复修罗", 120, (byte)0, Arrays.asList(new String[0]), 0.0),
+    CM_TASK("10057", "地宫除魔", 2, (byte)0, Arrays.asList(new String[0]), 0.0),
     FACTION_BANDIT("9998", "帮派强盗", 2, (byte)1, Arrays.asList(new String[0]), 0.0), 
     STORY_LINE_TASK("9999", "剧情任务", 0, (byte)1, Arrays.asList(new String[0]), 0.0);
     
@@ -50,7 +52,7 @@ public enum ActivityType
     }
     
     public static List<ActivityType> getActivityLiveness() {
-        final List<ActivityType> list = new ArrayList<ActivityType>();
+        final List<ActivityType> list = new ArrayList<>();
         for (final ActivityType value : values()) {
             if (value.getIs() == 0) {
                 list.add(value);
@@ -60,7 +62,7 @@ public enum ActivityType
     }
     
     public static List<ActivityType> getActivity() {
-        final List<ActivityType> list = new ArrayList<ActivityType>();
+        final List<ActivityType> list = new ArrayList<>();
         for (final ActivityType value : values()) {
             list.add(value);
         }

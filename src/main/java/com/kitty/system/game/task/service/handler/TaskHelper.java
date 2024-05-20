@@ -2,6 +2,7 @@
 package com.kitty.system.game.task.service.handler;
 
 import com.kitty.system.game.task.service.handler.activity.KejuTaskHandler;
+import com.kitty.system.game.task.service.handler.dungeon.DungeonCmHandler;
 import com.kitty.system.game.task.service.handler.dungeon.DungeonMwkFront;
 import com.kitty.system.game.task.service.handler.dungeon.DungeonXmHandler;
 import com.kitty.common.utils.spring.SpringUtils;
@@ -28,7 +29,7 @@ public enum TaskHelper
     }
     
     static {
-        handlers = new HashMap<TaskType, TaskHandler>();
+        handlers = new HashMap<>();
         TaskHelper.INSTANCE.init(TaskType.MAIN_LINE, SpringUtils.getBean(MainTaskHandler.class));
         TaskHelper.INSTANCE.init(TaskType.SCHOOL, SpringUtils.getBean(SchoolTaskHandler.class));
         TaskHelper.INSTANCE.init(TaskType.TREASURE_MAP, SpringUtils.getBean(TreasureMapHandler.class));
@@ -42,8 +43,10 @@ public enum TaskHelper
         TaskHelper.INSTANCE.init(TaskType.GODS_COURT, SpringUtils.getBean(GodsCourtTaskHandler.class));
         TaskHelper.INSTANCE.init(TaskType.CARNIVAL, SpringUtils.getBean(CarnivalTaskHandler.class));
         TaskHelper.INSTANCE.init(TaskType.CRUSADE_RENEGADE, SpringUtils.getBean(CrusadeRenegadeTaskHandler.class));
+        TaskHelper.INSTANCE.init(TaskType.XL, SpringUtils.getBean(ConquerAsuraTaskHandler.class));
         TaskHelper.INSTANCE.init(TaskType.DRAGON, SpringUtils.getBean(DragonTaskHandler.class));
         TaskHelper.INSTANCE.init(TaskType.MWK_FRONT, SpringUtils.getBean(DungeonMwkFront.class));
+        TaskHelper.INSTANCE.init(TaskType.CM, SpringUtils.getBean(DungeonCmHandler.class));
         TaskHelper.INSTANCE.init(TaskType.KJ, SpringUtils.getBean(KejuTaskHandler.class));
     }
 }

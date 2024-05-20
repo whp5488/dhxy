@@ -32,7 +32,7 @@ public class MessageTask extends AbstractDistributeTask
         }
         catch (final Throwable e) {
             e.printStackTrace();
-            MessageTask.logger.error("message task execute failed=协议=={}，异常={}", (Object)this.message.getModule(), (Object)this.message);
+            MessageTask.logger.error("message task execute failed=协议=={}，异常={}", this.message.getModule(), this.message);
         }
     }
     

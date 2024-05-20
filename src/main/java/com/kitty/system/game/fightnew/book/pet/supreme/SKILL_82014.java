@@ -55,7 +55,7 @@ public class SKILL_82014 extends SkillProcessor
     
     @Override
     public boolean excuteSkillCool(final Fight fight, final FightObject effector, final Object... args) {
-        effector.getSkillCoolMap().setv(String.valueOf(82014), (Object)WarMaxRound.WAR_MAX_ROUND.getValue());
+        effector.getSkillCoolMap().setv(String.valueOf(82014), WarMaxRound.WAR_MAX_ROUND.getValue());
         return true;
     }
     
@@ -73,7 +73,7 @@ public class SKILL_82014 extends SkillProcessor
             targetSides.add(firstTarget);
         }
         if (targetSides != null && targetSides.size() > 0) {
-            final List<Integer> targetIds = new ArrayList<Integer>();
+            final List<Integer> targetIds = new ArrayList<>();
             for (final FightObject target : targetSides) {
                 if (target.getStatusList(StatusConst.getPositiveStatus()) != null) {
                     targetIds.add(target.getId());

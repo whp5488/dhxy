@@ -2,6 +2,7 @@
 package com.kitty.system.game.task.service;
 
 import com.kitty.system.game.task.message.RespTasks;
+import com.kitty.system.game.task.service.handler.ConquerAsuraTaskHandler;
 import com.kitty.system.init.domain.SysDataTaskCondition;
 import com.kitty.system.game.enter.message.ReqTelePort;
 import com.kitty.common.model.Pos;
@@ -290,7 +291,7 @@ public class TaskService
     
     public void pushTasksOnLogin(final Role role) {
         if (role.getTask() == null) {
-            this.logger.error("上线加载任务异常：玩家 = {}，任务数据 = {}", (Object)role.getRoleId(), (Object)role.getTask());
+            this.logger.error("上线加载任务异常：玩家 = {}，任务数据 = {}", role.getRoleId(), (Object)role.getTask());
             role.setTask(new RoleTask());
         }
         final List<Integer> acceptedTaskList = role.getTask().getAcceptedTaskList();
@@ -430,7 +431,7 @@ public class TaskService
                 final SysWarRole warRole = FightDataPool.data_war_role.get(taskFight.getTarNpcData());
                 if (warRole != null) {
                     final List<SysDataMonster> list = SpringUtils.getBean(MonsterService.class).getMonsters(FightDataPool.data_monster, warRole);
-                    if (CollectionUtils.isEmpty((Collection)list)) {
+                    if (CollectionUtils.isEmpty(list)) {
                         return;
                     }
                     final Integer max = Collections.max((Collection<? extends Integer>)this.teamService.getMemberLevel(role));
@@ -438,6 +439,17 @@ public class TaskService
                         for (int i = 0; i < list.size(); ++i) {
                             final SysDataMonster monster = list.get(i);
                             final int monsterSerial = CrusadeRenegadeTaskHandler.getMonster(max, monster.getSerial());
+                            if (!monster.getSerial().equals(monsterSerial)) {
+                                final SysDataMonster dataMonster = FightDataPool.data_monster.get(serial);
+                                if (dataMonster != null) {
+                                    list.set(i, dataMonster);
+                                }
+                            }
+                        }
+                    } else if (taskSet.getTaskType().equals(TaskType.XL)) {
+                        for (int i = 0; i < list.size(); ++i) {
+                            final SysDataMonster monster = list.get(i);
+                            final int monsterSerial = ConquerAsuraTaskHandler.getMonster(max, monster.getSerial());
                             if (!monster.getSerial().equals(monsterSerial)) {
                                 final SysDataMonster dataMonster = FightDataPool.data_monster.get(serial);
                                 if (dataMonster != null) {
@@ -480,7 +492,7 @@ public class TaskService
         }
         catch (final Exception e) {
             e.printStackTrace();
-            this.logger.error("任务获取战斗异常：{}", (Object)e.getMessage());
+            this.logger.error("任务获取战斗异常：{}", e.getMessage());
         }
     }
     
@@ -714,7 +726,7 @@ public class TaskService
                     for (final Param param : taskCondition.getNeedCounter()) {
                         final Map<Integer, Integer> changeCounter = doingTask.getChangeCounter();
                         if (changeCounter == null) {
-                            this.logger.error("检查任务计数错误：{}", (Object)taskCondition.getNeedCounter());
+                            this.logger.error("检查任务计数错误：{}", taskCondition.getNeedCounter());
                             return false;
                         }
                         final Integer num = changeCounter.get(param.getK());

@@ -2,6 +2,8 @@
 package com.kitty.system.game.team.service;
 
 import java.util.Optional;
+
+import com.kitty.system.game.task.service.handler.dungeon.DungeonCmHandler;
 import com.kitty.system.game.team.message.RespSmartTeamMemerList;
 import com.kitty.system.game.team.message.RespTeamList;
 import com.kitty.system.game.team.domain.vo.SmartTeamMember;
@@ -827,6 +829,9 @@ public class TeamService
         if (!SpringUtils.getBean(DungeonMwkFront.class).isAcceptJoinTeam(role, roleId)) {
             return false;
         }
+        if (!SpringUtils.getBean(DungeonCmHandler.class).isAcceptJoinTeam(role, roleId)) {
+            return false;
+        }
         if (!SpringUtils.getBean(AtWillHandler.class).isAcceptJoinTeam(role, roleId)) {
             return false;
         }
@@ -904,7 +909,17 @@ public class TeamService
     }
     
     public boolean isBackToTeam(final Team team, final Role role) {
-        return SpringUtils.getBean(TowerTaskHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(LookForTaskHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(DungeonXmHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(DungeonMwkFront.class).isBackToTeam(team, role) && SpringUtils.getBean(AtWillHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(CaHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(WaterHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(GangWarsHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(HgFightHandler.class).isBackToTeam(team, role) && SpringUtils.getBean(KejuTaskHandler.class).isBackToTeam(team, role);
+        return SpringUtils.getBean(TowerTaskHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(LookForTaskHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(DungeonXmHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(DungeonMwkFront.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(DungeonCmHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(AtWillHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(CaHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(WaterHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(GangWarsHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(HgFightHandler.class).isBackToTeam(team, role)
+                && SpringUtils.getBean(KejuTaskHandler.class).isBackToTeam(team, role);
     }
     
     private void newMemberJoinTeam(final Team team, final Role leader, final Role role, final String opType) {
@@ -1109,6 +1124,9 @@ public class TeamService
             return false;
         }
         if (!SpringUtils.getBean(DungeonMwkFront.class).isInviteJoinTeam(role, roleId)) {
+            return false;
+        }
+        if (!SpringUtils.getBean(DungeonCmHandler.class).isInviteJoinTeam(role, roleId)) {
             return false;
         }
         if (!SpringUtils.getBean(AtWillHandler.class).isInviteJoinTeam(role, roleId)) {

@@ -26,7 +26,7 @@ public enum TaskHandlerContext
     
     private TaskHandlerContext() {
         this.CORE_SIZE = Runtime.getRuntime().availableProcessors();
-        this.workerPool = new ArrayList<TaskWorker>();
+        this.workerPool = new ArrayList<>();
         this.run = new AtomicBoolean(true);
     }
     
@@ -74,7 +74,7 @@ public enum TaskHandlerContext
         private BlockingQueue<AbstractDistributeTask> taskQueue;
         
         TaskWorker(final int index) {
-            this.taskQueue = new LinkedBlockingQueue<AbstractDistributeTask>();
+            this.taskQueue = new LinkedBlockingQueue<>();
             this.id = index;
         }
         

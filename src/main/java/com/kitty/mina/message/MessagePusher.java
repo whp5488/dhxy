@@ -37,7 +37,7 @@ public class MessagePusher
         if (session == null || message == null || session.isClosing()) {
             return;
         }
-        session.write((Object)message);
+        session.write(message);
     }
     
     public static void notify2Player(final IoSession session, final int i18nId, final Object... args) {

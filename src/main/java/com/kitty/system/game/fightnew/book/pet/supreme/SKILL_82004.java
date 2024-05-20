@@ -51,7 +51,7 @@ public class SKILL_82004 extends SkillProcessor
     
     @Override
     public boolean excuteSkillCool(final Fight fight, final FightObject effector, final Object... args) {
-        effector.getSkillCoolMap().setv(String.valueOf(82004), (Object)5);
+        effector.getSkillCoolMap().setv(String.valueOf(82004), 5);
         return true;
     }
     

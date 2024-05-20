@@ -165,8 +165,8 @@ public class MapService
     }
     
     public void initMapInfo(final List<SysMapInfo> maps) {
-        final Map<Integer, SysMapInfo> id2GameMaps = new HashMap<Integer, SysMapInfo>(maps.size());
-        final Map<String, Integer> mapName2Id = new HashMap<String, Integer>(maps.size());
+        final Map<Integer, SysMapInfo> id2GameMaps = new HashMap<>(maps.size());
+        final Map<String, Integer> mapName2Id = new HashMap<>(maps.size());
         for (final SysMapInfo mapInfo : maps) {
             id2GameMaps.put(mapInfo.getMapSerial(), mapInfo);
             mapName2Id.put(mapInfo.getName(), mapInfo.getId());

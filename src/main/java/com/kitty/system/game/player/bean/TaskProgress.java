@@ -26,7 +26,7 @@ public class TaskProgress implements Serializable
         }
         this.liveness = 0.0f;
         this.everyDayUpperLimit = NutConcurrentMap.NEW();
-        this.livenessRewardFetchStatus = new ConcurrentHashMap<Integer, Boolean>();
+        this.livenessRewardFetchStatus = new ConcurrentHashMap<>();
         this.finish();
         this.recharge();
     }
@@ -38,9 +38,11 @@ public class TaskProgress implements Serializable
     public void finish() {
         final String when = TimeUtil.when();
         final int moFrontCount = this.finishRecord.getInt(ActivityType.MWK_FRONT.getActivityId(), 0);
+        final int cmFrontCount = this.finishRecord.getInt(ActivityType.CM_TASK.getActivityId(), 0);
         this.finishRecord = NutConcurrentMap.NEW();
         if (!"星期六".equals(when)) {
             this.finishRecord.setv(ActivityType.MWK_FRONT.getActivityId(), moFrontCount);
+            this.finishRecord.setv(ActivityType.CM_TASK.getActivityId(), cmFrontCount);
         }
     }
     
@@ -52,7 +54,7 @@ public class TaskProgress implements Serializable
         this.everyDayUpperLimit = new NutConcurrentMap();
         this.everyDayRecharge = new NutConcurrentMap();
         this.liveness = 0.0f;
-        this.livenessRewardFetchStatus = new ConcurrentHashMap<Integer, Boolean>();
+        this.livenessRewardFetchStatus = new ConcurrentHashMap<>();
     }
     
     public int getLoop() {

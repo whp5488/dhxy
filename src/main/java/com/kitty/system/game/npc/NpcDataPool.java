@@ -4,23 +4,12 @@ package com.kitty.system.game.npc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.kitty.system.game.pk.service.PkService;
+import com.kitty.system.game.task.service.handler.*;
+import com.kitty.system.game.task.service.handler.dungeon.DungeonCmHandler;
 import com.kitty.system.game.welfare.service.WelfareService;
 import com.kitty.system.game.npc.service.NpcService;
-import com.kitty.system.game.task.service.handler.SchoolTaskHandler;
-import com.kitty.system.game.task.service.handler.TreasureMapHandler;
-import com.kitty.system.game.task.service.handler.PartyTaskHandler;
-import com.kitty.system.game.task.service.handler.CarnivalTaskHandler;
-import com.kitty.system.game.task.service.handler.DragonTaskHandler;
-import com.kitty.system.game.task.service.handler.LoopTaskHandler;
 import com.kitty.system.game.task.service.handler.dungeon.DungeonXmHandler;
-import com.kitty.system.game.task.service.handler.TowerTaskHandler;
-import com.kitty.system.game.task.service.handler.LookForTaskHandler;
-import com.kitty.system.game.task.service.handler.FiveTaskHandler;
-import com.kitty.system.game.task.service.handler.CatchesGhostsTaskHandler;
-import com.kitty.system.game.task.service.handler.GodsCourtTaskHandler;
 import com.kitty.system.enums.task.TaskType;
-import com.kitty.system.game.task.service.handler.TaskHelper;
-import com.kitty.system.game.task.service.handler.CrusadeRenegadeTaskHandler;
 import com.kitty.system.game.activity.handler.time.MonsterNianHandler;
 import com.kitty.system.game.activity.handler.time.BurningHotHandler;
 import com.kitty.system.game.task.service.QuestionService;
@@ -97,12 +86,12 @@ public class NpcDataPool
     }
     
     static {
-        NpcDataPool.npcButtonHandlers = new HashMap<String, Consumer<NpcButtonParam>>();
-        NpcDataPool.npcButtonPrefixHandlers = new HashMap<String, Consumer<NpcButtonParam>>();
-        NpcDataPool.npcContentHandlers = new HashMap<Integer, Consumer<NpcContentParam>>();
-        NpcDataPool.spetialButtons = new HashMap<Integer, List<Function<Role, List<UnifiedValue>>>>();
-        NpcDataPool.itemButtons = new ArrayList<String>();
-        NpcDataPool.data_npc_type_info = new HashMap<Integer, SysNpcTypeInfo>();
+        NpcDataPool.npcButtonHandlers = new HashMap<>();
+        NpcDataPool.npcButtonPrefixHandlers = new HashMap<>();
+        NpcDataPool.npcContentHandlers = new HashMap<>();
+        NpcDataPool.spetialButtons = new HashMap<>();
+        NpcDataPool.itemButtons = new ArrayList<>();
+        NpcDataPool.data_npc_type_info = new HashMap<>();
         NpcDataPool.npcButtonHandlers.put("runs_prison", npcButtonParam -> SpringUtils.getBean(PkService.class).npcButton(npcButtonParam.getRole(), npcButtonParam.getMsg(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("view_prison", npcButtonParam -> SpringUtils.getBean(PkService.class).viewPrisoner(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("five_guess", npcButtonParam -> SpringUtils.getBean(WelfareService.class).npcButton(npcButtonParam.getRole(), npcButtonParam.getMsg(), npcButtonParam.getNpc()));
@@ -126,17 +115,28 @@ public class NpcDataPool
         NpcDataPool.npcButtonHandlers.put("loop_task", npcButtonParam -> ((LoopTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.LOOP)).acceptLoopTask(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("tower_copy", npcButtonParam -> ((TowerTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.TOWER)).createTowerDugeon(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("look_for_copy", npcButtonParam -> ((LookForTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.LOOK_FOR)).createLookForDugeon(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("xm_copy", npcButtonParam -> ((DungeonXmHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.XM)).createXmDugeon(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("threats_xm", npcButtonParam -> ((DungeonXmHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.XM)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("threats_tower", npcButtonParam -> ((TowerTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.TOWER)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("threats_look_for", npcButtonParam -> ((LookForTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.LOOK_FOR)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("five_task", npcButtonParam -> ((FiveTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.FIVE)).acceptFiveTask(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("zg_task", npcButtonParam -> ((CatchesGhostsTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.CATCHES_GHOSTS)).acceptCatchesGhostsTask(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("threats_zg", npcButtonParam -> ((CatchesGhostsTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.CATCHES_GHOSTS)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("txy_task", npcButtonParam -> ((GodsCourtTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.GODS_COURT)).acceptGodsCourtTask(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("threats_txy", npcButtonParam -> ((GodsCourtTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.GODS_COURT)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
+        // 收复修罗
+        NpcDataPool.npcButtonHandlers.put("xl_task", npcButtonParam -> ((ConquerAsuraTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.XL)).acceptTask(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+        NpcDataPool.npcButtonHandlers.put("threats_xl", npcButtonParam -> ((ConquerAsuraTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.XL)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("pz_task", npcButtonParam -> ((CrusadeRenegadeTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.CRUSADE_RENEGADE)).acceptTask(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("threats_pz", npcButtonParam -> ((CrusadeRenegadeTaskHandler)TaskHelper.INSTANCE.getTaskHandler(TaskType.CRUSADE_RENEGADE)).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("threats_p_bandit", npcButtonParam -> SpringUtils.getBean(PartyBanditHandler.class).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("threats_star", npcButtonParam -> SpringUtils.getBean(StarOfficerHandler.class).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("threats_boos", npcButtonParam -> SpringUtils.getBean(WorldBoosHandler.class).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc()));
@@ -153,16 +153,24 @@ public class NpcDataPool
         NpcDataPool.npcButtonHandlers.put("req_ds", npcButtonParam -> SpringUtils.getBean(KejuTaskHandler.class).reqQuestionDs(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("enter_ds", npcButtonParam -> SpringUtils.getBean(KejuTaskHandler.class).enter(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("kj_rank", npcButtonParam -> SpringUtils.getBean(KejuTaskHandler.class).reqKjRank(npcButtonParam.getRole(), npcButtonParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("m_f_c", npcButtonParam -> SpringUtils.getBean(DungeonMwkFront.class).chooseEnterDungeon(npcButtonParam.getRole(), npcButtonParam.getNpc(), "m_f_c"));
         NpcDataPool.npcButtonHandlers.put("m_f_z", npcButtonParam -> SpringUtils.getBean(DungeonMwkFront.class).chooseEnterDungeon(npcButtonParam.getRole(), npcButtonParam.getNpc(), "m_f_z"));
+
         NpcDataPool.npcButtonHandlers.put("threats_mo_1700001", npcButtonParam -> SpringUtils.getBean(DungeonMwkFront.class).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc(), null));
         NpcDataPool.npcButtonHandlers.put("threats_mo_c_170002", npcButtonParam -> SpringUtils.getBean(DungeonMwkFront.class).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc(), "threats_mo_c_170002"));
         NpcDataPool.npcButtonHandlers.put("threats_mo_z_170003", npcButtonParam -> SpringUtils.getBean(DungeonMwkFront.class).startFight(npcButtonParam.getRole(), npcButtonParam.getNpc(), "threats_mo_z_170003"));
+
+        // 地宫除魔
+        NpcDataPool.npcButtonHandlers.put("d_f_c", npcButtonParam -> SpringUtils.getBean(DungeonCmHandler.class).chooseEnterDungeon(npcButtonParam.getRole(), npcButtonParam.getNpc(), "d_f_c"));
+        NpcDataPool.npcButtonHandlers.put("d_f_z", npcButtonParam -> SpringUtils.getBean(DungeonCmHandler.class).chooseEnterDungeon(npcButtonParam.getRole(), npcButtonParam.getNpc(), "d_f_z"));
+
         NpcDataPool.npcContentHandlers.put(24, npcContentParam -> SpringUtils.getBean(PartyBanditHandler.class).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
         NpcDataPool.npcContentHandlers.put(20, npcContentParam -> SpringUtils.getBean(StarOfficerHandler.class).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
         NpcDataPool.npcContentHandlers.put(21, npcContentParam -> SpringUtils.getBean(SealDemonHandler.class).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
         NpcDataPool.npcContentHandlers.put(22, npcContentParam -> SpringUtils.getBean(ThreeScopeHandler.class).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
         NpcDataPool.npcContentHandlers.put(23, npcContentParam -> SpringUtils.getBean(WorldBoosHandler.class).sendNpcContent(npcContentParam.getRole(), npcContentParam.getNpc()));
+
         NpcDataPool.npcButtonHandlers.put("enter_at", npcButtonParam -> SpringUtils.getBean(AtWillHandler.class).enterMap(npcButtonParam.getRole(), npcButtonParam.getNpc()));
         NpcDataPool.npcButtonHandlers.put("runs_at", npcButtonParam -> SpringUtils.getBean(AtWillHandler.class).leave(npcButtonParam.getRole()));
         NpcDataPool.npcButtonHandlers.put("enter_ca", npcButtonParam -> SpringUtils.getBean(CaHandler.class).enterMap(npcButtonParam.getRole(), npcButtonParam.getNpc()));

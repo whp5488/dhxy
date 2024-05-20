@@ -1,6 +1,7 @@
 
 package com.kitty.system.game.map.pool;
 
+import com.kitty.system.game.task.service.handler.dungeon.DungeonCmHandler;
 import com.kitty.system.game.task.service.handler.dungeon.DungeonMwkFront;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class MapDataPool
                 if (split.length < 2) {
                     continue;
                 }
-                final List<Integer> list = new ArrayList<Integer>();
+                final List<Integer> list = new ArrayList<>();
                 for (int i = Integer.valueOf(split[0]); i <= Integer.valueOf(split[1]); ++i) {
                     list.add(i);
                 }
@@ -58,8 +59,8 @@ public class MapDataPool
     }
     
     public static void initTrasfer(final List<SysMapTeleporter> list) {
-        final Map<Integer, HashSet<Integer>> mapId2Trasfer = new HashMap<Integer, HashSet<Integer>>();
-        final Map<Integer, SysMapTeleporter> trasferId2TrasferMap = new HashMap<Integer, SysMapTeleporter>(list.size());
+        final Map<Integer, HashSet<Integer>> mapId2Trasfer = new HashMap<>();
+        final Map<Integer, SysMapTeleporter> trasferId2TrasferMap = new HashMap<>(list.size());
         for (final SysMapTeleporter transfer : list) {
             trasferId2TrasferMap.put(transfer.getId(), transfer);
             final Set<Integer> idSet = mapId2Trasfer.computeIfAbsent(transfer.getFromMapSerial(), k -> new HashSet());
@@ -70,13 +71,14 @@ public class MapDataPool
     }
     
     static {
-        MapDataPool.guaJiMap = new HashMap<Integer, SysGuajiMap>();
-        MapDataPool.mapInfoMap = new HashMap<Integer, SysMapInfo>();
-        MapDataPool.levelScopeMap = new HashMap<Integer, List<Integer>>();
-        MapDataPool.MAP_KEY_GENERATE = new ConcurrentHashMap<Integer, Function<Role, Serializable>>();
-        MapDataPool.NOT_CHANGE_MAPS = new HashSet<Integer>();
-        (MapDataPool.polarMaps = new HashSet<Integer>()).add(0);
+        MapDataPool.guaJiMap = new HashMap<>();
+        MapDataPool.mapInfoMap = new HashMap<>();
+        MapDataPool.levelScopeMap = new HashMap<>();
+        MapDataPool.MAP_KEY_GENERATE = new ConcurrentHashMap<>();
+        MapDataPool.NOT_CHANGE_MAPS = new HashSet<>();
+        (MapDataPool.polarMaps = new HashSet<>()).add(0);
         MapDataPool.NOT_CHANGE_MAPS.add(DungeonMwkFront.DUNGEON_ENTER_MAP);
+        MapDataPool.NOT_CHANGE_MAPS.add(DungeonCmHandler.DUNGEON_ENTER_MAP);
         MapDataPool.NOT_CHANGE_MAPS.add(3003);
         MapDataPool.NOT_CHANGE_MAPS.add(3001);
         MapDataPool.NOT_CHANGE_MAPS.add(3005);

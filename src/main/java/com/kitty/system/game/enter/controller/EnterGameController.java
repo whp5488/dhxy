@@ -118,7 +118,7 @@ public class EnterGameController
                 }
             }
             else {
-                this.logger.error("获取不到锁, 登录=UID:{}", (Object)role.getId());
+                this.logger.error("获取不到锁, 登录=UID:{}", role.getId());
             }
         }
         catch (final Exception e) {

@@ -95,7 +95,7 @@ public class DungeonMwkFront extends TaskHandler
     
     @PostConstruct
     public void init() {
-        MapDataPool.MAP_KEY_GENERATE.put(Integer.valueOf(DungeonMwkFront.DUNGEON_ENTER_MAP), role -> DataCache.ROLE_DUNGEON.getOrDefault(role.getId(), 0L));
+        MapDataPool.MAP_KEY_GENERATE.put(DungeonMwkFront.DUNGEON_ENTER_MAP, role -> DataCache.ROLE_DUNGEON.getOrDefault(role.getId(), 0L));
     }
     
     public String getDifficulty(final String type) {
@@ -286,7 +286,7 @@ public class DungeonMwkFront extends TaskHandler
                 }
             }
             if (buffer.length() > 1) {
-                this.teamService.memberHandle(team, memberRole -> this.npcService.sendNpcContent(memberRole, npc, "", buffer.toString() + "没有确定，无法开始" + "魔王窟前殿"));
+                this.teamService.memberHandle(team, memberRole -> this.npcService.sendNpcContent(memberRole, npc, "", buffer + "没有确定，无法开始" + "魔王窟前殿"));
             }
         }
     }

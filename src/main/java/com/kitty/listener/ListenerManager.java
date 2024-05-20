@@ -38,7 +38,7 @@ public enum ListenerManager
         try {
             final Method method = this.map.get(this.getKey(handler, event.getEventType()));
             ReflectionUtils.makeAccessible(method);
-            ReflectionUtils.invokeMethod(method, handler, new Object[] { event });
+            ReflectionUtils.invokeMethod(method, handler, event);
         }
         catch (final Exception e) {
             LoggerUtils.error("监听器执行异常,handler[{}] event[{}] error{}", handler.getClass().getSimpleName(), event.getEventType(), e);

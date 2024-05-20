@@ -18,7 +18,7 @@
 
     <properties>
         <!-- 文件的主页路径 -->
-        <env.LEARN_HOME>./target/oss</env.LEARN_HOME>
+        <env.LEARN_HOME>./target</env.LEARN_HOME>
         <!--依赖输出目录-->
         <output.dependence.file.path>lib/</output.dependence.file.path>
         <!--jar输出目录-->
@@ -178,12 +178,46 @@
             <artifactId>gson</artifactId>
             <version>2.8.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>4.3.18.RELEASE</version>
+        </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
-
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.6.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>proguard</goal></goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}.jar</outjar>
+                    <obfuscate>false</obfuscate>
+                    <proguardInclude>${project.basedir}/proguard.cfg</proguardInclude>
+                    <libs>
+                        <!-- Include main JAVA library required.-->
+                        <lib>${java.home}/lib/rt.jar</lib>
+                        <!-- Include crypto JAVA library if necessary.-->
+                        <lib>${java.home}/lib/jce.jar</lib>
+                    </libs>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.proguard</groupId>
+                        <artifactId>proguard-base</artifactId>
+                        <version>6.2.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

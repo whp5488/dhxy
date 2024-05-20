@@ -9,5 +9,6 @@ public enum ConfirmType
     REQUEST_TEAM_LEADER, 
     COUNTRY, 
     CREATE_PARTY, 
-    CREATE_DUNGEON_MWK_F;
+    CREATE_DUNGEON_MWK_F,
+    CREATE_DUNGEON_CM_F;
 }

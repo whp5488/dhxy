@@ -8,8 +8,9 @@ import com.kitty.common.utils.CalculateUtils;
 import com.kitty.system.game.vo.Npc;
 import com.kitty.mina.cache.DataCache;
 import com.kitty.common.utils.bean.BeanUtils;
-import java.util.Iterator;
+
 import java.util.ArrayList;
+
 import com.kitty.system.init.service.InitService;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.init.domain.SysProvinceQuestion;
@@ -94,6 +95,7 @@ public class TaskDataPool
     public static List<SysDataSealDemon> sealDemonList;
     public static List<SysDataThreeScopeDemon> threeScopeDemonList;
     public static List<SysDataTaskCrusadeRenegade> crusadeRenegadeList;
+    public static List<SysDataTaskCrusadeRenegade> conquerAsuraList;
     public static Map<Integer, Question> questionMap;
     public static Map<Integer, SysCountryQuestion> countryQuestion;
     public static Map<Integer, SysHallQuestion> hallQuestion;
@@ -145,7 +147,7 @@ public class TaskDataPool
         for (final SysDataTaskMoAward award : awardList) {
             List<SysDataTaskMoAward> list = TaskDataPool.moAwardMap.get(award.getDungeon());
             if (list == null) {
-                list = new ArrayList<SysDataTaskMoAward>();
+                list = new ArrayList<>();
                 TaskDataPool.moAwardMap.put(award.getDungeon(), list);
             }
             list.add(award);
@@ -387,6 +389,11 @@ public class TaskDataPool
                 BeanUtils.copyBeanProp(renegade, object);
                 TaskDataPool.crusadeRenegadeList.add(renegade);
                 flag = true;
+            } else if (TaskType.XL.equals(object.getTaskType())) {
+                final SysDataTaskCrusadeRenegade renegade = new SysDataTaskCrusadeRenegade();
+                BeanUtils.copyBeanProp(renegade, object);
+                TaskDataPool.conquerAsuraList.add(renegade);
+                flag = true;
             }
             if (flag) {
                 final TaskSet taskSet = new TaskSet();
@@ -395,7 +402,7 @@ public class TaskDataPool
             }
         }
     }
-    
+
     public static void initCountryQuestion(final InitService initService) {
         TaskDataPool.countryQuestion = initService.initCountryQuestionLib();
         for (final Integer key : TaskDataPool.countryQuestion.keySet()) {
@@ -476,8 +483,9 @@ public class TaskDataPool
         TaskDataPool.starOfficerList = new ArrayList<SysDataStarOfficer>();
         TaskDataPool.worldBoosList = new ArrayList<SysDataWorldBoos>();
         TaskDataPool.sealDemonList = new ArrayList<SysDataSealDemon>();
-        TaskDataPool.threeScopeDemonList = new ArrayList<SysDataThreeScopeDemon>();
-        TaskDataPool.crusadeRenegadeList = new ArrayList<SysDataTaskCrusadeRenegade>();
+        TaskDataPool.threeScopeDemonList = new ArrayList<>();
+        TaskDataPool.crusadeRenegadeList = new ArrayList<>();
+        TaskDataPool.conquerAsuraList = new ArrayList<>();
         TaskDataPool.questionMap = new HashMap<Integer, Question>();
         TaskDataPool.countryQuestion = new HashMap<Integer, SysCountryQuestion>();
         TaskDataPool.hallQuestion = new HashMap<Integer, SysHallQuestion>();

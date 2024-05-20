@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import com.kitty.common.core.SchedulerManager;
 import com.kitty.mina.task.TaskHandlerContext;
 import com.kitty.mina.session.SessionManager;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.Bean;
 import com.kitty.common.thread.IdWorker;
 import com.kitty.logs.LoggerUtils;
@@ -38,6 +41,13 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 public class GameServerStartup extends SpringBootServletInitializer
 {
     private static Logger logger;
+
+    public static class CustomGenerator implements BeanNameGenerator {
+        @Override
+        public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
+            return definition.getBeanClassName();
+        }
+    }
     
     protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
         return application.sources(GameServerStartup.class);
@@ -49,6 +59,7 @@ public class GameServerStartup extends SpringBootServletInitializer
         try {
             final SpringApplicationBuilder applicationBuilder = new SpringApplicationBuilder(GameServerStartup.class);
             applicationBuilder.bannerMode(Banner.Mode.OFF);
+            applicationBuilder.beanNameGenerator(new CustomGenerator());
             applicationBuilder.run(args);
             SpringUtils.getIdentityService().init();
             SpringUtils.getBean(PlayerService.class).loadAllPlayerProfiles();

@@ -85,12 +85,10 @@ public class ServerService
         this.state = 1;
         this.open = 1;
 
-        //this.userName = "4kED4EItrU";
-        //this.passWord = "4kED4EItrU";
-       // this.sendName = "4kED4EItrU";
-        //this.sendPwd = "4kED4EItrU";
-        System.out.println(this.sendName);
-        System.out.println(this.sendPwd);
+        this.userName = "4kED4EItrU";
+        this.passWord = "4kED4EItrU";
+        this.sendName = "4kED4EItrU";
+        this.sendPwd = "4kED4EItrU";
     }
     
     public String getUrl() {

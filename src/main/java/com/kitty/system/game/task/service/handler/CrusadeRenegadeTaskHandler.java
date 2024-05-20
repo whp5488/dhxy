@@ -34,12 +34,11 @@ import org.springframework.stereotype.Component;
 public class CrusadeRenegadeTaskHandler extends TaskHandler
 {
     private static final String TASK_DIST = "TFPZ";
-    private static final int MIN_TEAM_COUNT = 3;
+    private static final int MIN_TEAM_COUNT = 1;
     private static final int NEED_RELIVE = 2;
     private static final int NEED_LEVEL = 120;
     private static final String NEED_LEVEL_NOT = "%s尚浅，请提升至%s之后再来报效天庭吧#<E:17>#";
-    private static final String TEAM_NOT = "收复修罗之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#";
-    //private static final String TEAM_NOT = "讨伐叛贼之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#";
+    private static final String TEAM_NOT = "讨伐叛贼之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#";
     private static final String TEAM_FIGHT_NOT = "想与我一战,至少要有%d位像你一样强壮的家伙，快去组几个人来吧!#<E:18>#";
     
     @Override
@@ -73,9 +72,8 @@ public class CrusadeRenegadeTaskHandler extends TaskHandler
     }
     
     private boolean canAcceptTask(final Role role) {
-        if (!this.teamService.isInTeam(role) || this.teamService.getTeamCount(role) < 3) {
-            MessagePusher.pushMessage(role, new RespMsg(String.format("收复修罗之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#", 3)));
-            //MessagePusher.pushMessage(role, new RespMsg(String.format("讨伐叛贼之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#", 3)));
+        if (!this.teamService.isInTeam(role) || this.teamService.getTeamCount(role) < MIN_TEAM_COUNT) {
+            MessagePusher.pushMessage(role, new RespMsg(String.format("讨伐叛贼之行无比险恶，请务必组齐至少%d位大侠应战#<E:51>#", MIN_TEAM_COUNT)));
             return false;
         }
         return this.canTeamGrade(role, 2, 120, "%s尚浅，请提升至%s之后再来报效天庭吧#<E:17>#") && !this.isAcceptedSchoolTask(role) && !this.isWaitGiveUpCD(role);
@@ -92,7 +90,7 @@ public class CrusadeRenegadeTaskHandler extends TaskHandler
     }
     
     public void startFight(final Role role, final Npc npc) {
-        this.startFight(role, this.getTaskType(), npc, 3, 2, 120, "想与我一战,至少要有%d位像你一样强壮的家伙，快去组几个人来吧!#<E:18>#", "%s尚浅，请提升至%s之后再来报效天庭吧#<E:17>#");
+        this.startFight(role, this.getTaskType(), npc, MIN_TEAM_COUNT, 2, 120, "想与我一战,至少要有%d位像你一样强壮的家伙，快去组几个人来吧!#<E:18>#", "%s尚浅，请提升至%s之后再来报效天庭吧#<E:17>#");
     }
     
     private void addActivity(final Role role) {

@@ -261,7 +261,7 @@ public interface Const
     public static final byte TASK_END = 1;
     public static final int DELAY_TIME_AFTER_GIVEUP_SCHOOL = 300000;
     public static final int TASK_BOUT = 10;
-    public static final List<TaskType> TEAM_ACCEPT = Arrays.asList(TaskType.TOWER, TaskType.LOOK_FOR, TaskType.CATCHES_GHOSTS, TaskType.GODS_COURT, TaskType.MWK_FRONT, TaskType.CRUSADE_RENEGADE, TaskType.XM);
+    public static final List<TaskType> TEAM_ACCEPT = Arrays.asList(TaskType.TOWER, TaskType.LOOK_FOR, TaskType.CATCHES_GHOSTS, TaskType.GODS_COURT, TaskType.MWK_FRONT, TaskType.CM, TaskType.CRUSADE_RENEGADE, TaskType.XL, TaskType.XM);
     public static final List<TaskType> taskTypeList = Arrays.asList(TaskType.TREASURE_MAP, TaskType.SCHOOL, TaskType.PARTY, TaskType.LOOP, TaskType.FIVE, TaskType.CATCHES_GHOSTS, TaskType.GODS_COURT, TaskType.XM, TaskType.CARNIVAL);
     public static final List<Integer> DUGEON_DYT_MAP = Arrays.asList(1111, 1112, 1113, 1114, 1115, 1116, 1117);
     public static final List<Integer> DUGEON_LOOK_FOR_MAP = Arrays.asList(5001);
