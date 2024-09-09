@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -22,11 +21,11 @@ public class RespStartLogin extends Message
         return this.type;
     }
     
-    public void setType(final String type) {
+    public void setType(String type) {
         this.type = type;
     }
     
-    public void setCookie(final String cookie) {
+    public void setCookie(String cookie) {
         this.cookie = cookie;
     }
 }

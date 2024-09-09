@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.general.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -88,7 +87,7 @@ public class ReqSetRecommendAttrib extends Message
         if (!(o instanceof ReqSetRecommendAttrib)) {
             return false;
         }
-        final ReqSetRecommendAttrib other = (ReqSetRecommendAttrib)o;
+        ReqSetRecommendAttrib other = (ReqSetRecommendAttrib)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getGg() == other.getGg() && this.getLx() == other.getLx() && this.getLl() == other.getLl() && this.getMj() == other.getMj() && this.getType() == other.getType() && this.getStatus() == other.getStatus();
     }
     
@@ -98,7 +97,7 @@ public class ReqSetRecommendAttrib extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getGg();

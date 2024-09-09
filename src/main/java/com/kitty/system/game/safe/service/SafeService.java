@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.safe.service;
 
 import com.kitty.common.utils.TimeUtil;
@@ -9,7 +8,6 @@ import com.kitty.system.game.npc.service.NpcService;
 import com.kitty.system.game.safe.message.ReqUnlock;
 import com.kitty.system.game.role.domain.Role;
 import com.kitty.system.game.safe.util.SafeUtil;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import org.nutz.lang.Strings;
@@ -35,15 +33,15 @@ public class SafeService
     
     public SafeService() {
         this.logger = LoggerFactory.getLogger(SafeService.class);
-        this.errorRecords = new ConcurrentHashMap<Long, ErrorRecord>();
+        this.errorRecords = new ConcurrentHashMap();
     }
     
-    public void setSafePassword(final IoSession session, final ReqSetSafePassword reqSetSafePassword) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void setSafePassword(IoSession session, ReqSetSafePassword reqSetSafePassword) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        if (!Strings.isEmpty((CharSequence)role.getSafePwd())) {
+        if (!Strings.isEmpty(role.getSafePwd())) {
             return;
         }
         role.setSafePwd(reqSetSafePassword.getPassword());
@@ -51,30 +49,32 @@ public class SafeService
         MessagePusher.pushMessage(session, new RespMsg("安全锁密码设置成功。"));
         role.setUnlock(true);
         MessagePusher.pushMessage(session, SafeUtil.getLockStatus(role));
+        return;
     }
     
-    public void openSafeDlg(final IoSession session) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void openSafeDlg(IoSession session) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        if (Strings.isEmpty((CharSequence)role.getSafePwd())) {
+        if (Strings.isEmpty(role.getSafePwd())) {
             MessagePusher.pushMessage(session, new RespMsg("你当前没有设置安全锁密码，请先设置安全锁密码"));
             return;
         }
         role.setUnlock(false);
         MessagePusher.pushMessage(session, SafeUtil.getLockStatus(role));
         MessagePusher.pushMessage(session, new RespMsg("安全锁上锁成功"));
+        return;
     }
     
-    public void unlock(final IoSession session, final ReqUnlock reqUnlock) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void unlock(IoSession session, ReqUnlock reqUnlock) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final long now = System.currentTimeMillis();
-        final long roleUid = role.getId();
-        final int total = this.getErrorNum(role);
+        long now = System.currentTimeMillis();
+        long roleUid = (long)role.getId();
+        int total = this.getErrorNum(role);
         if (total >= 5) {
             MessagePusher.pushMessage(session, new RespMsg("错误次数太多"));
             return;
@@ -83,18 +83,19 @@ public class SafeService
             role.setUnlock(true);
             MessagePusher.pushMessage(session, new RespMsg("安全锁密码验证成功。"));
             MessagePusher.pushMessage(session, SafeUtil.getLockStatus(role));
-            SpringUtils.getBean(NpcService.class).closeDlg(role, "safeLock");
+            ((NpcService)SpringUtils.getBean(NpcService.class)).closeDlg(role, "safeLock");
         }
         else {
-            this.errorRecords.putIfAbsent(roleUid, new ErrorRecord());
-            this.errorRecords.get(roleUid).addErrorCount();
-            this.errorRecords.get(roleUid).setLastErrorTime(now);
-            MessagePusher.pushMessage(session, new RespMsg(String.format("密码不正确，今天您还有剩余%d次机会。(每天五点重置次数)", 5 - total)));
+            this.errorRecords.putIfAbsent(Long.valueOf(roleUid), new ErrorRecord());
+            ((ErrorRecord)this.errorRecords.get(Long.valueOf(roleUid))).addErrorCount();
+            ((ErrorRecord)this.errorRecords.get(Long.valueOf(roleUid))).setLastErrorTime(now);
+            MessagePusher.pushMessage(session, new RespMsg(String.format("密码不正确，今天您还有剩余%d次机会。(每天五点重置次数)", Integer.valueOf(5 - total))));
         }
+        return;
     }
     
-    public void modifyPassword(final IoSession session, final ReqModifyPassword reqModifyPassword) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void modifyPassword(IoSession session, ReqModifyPassword reqModifyPassword) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
@@ -106,10 +107,11 @@ public class SafeService
         else {
             MessagePusher.pushMessage(session, new RespMsg("原始安全锁密码错误。"));
         }
+        return;
     }
     
-    public void reqReset(final Role role, final byte type) {
-        if (Strings.isEmpty((CharSequence)role.getSafePwd())) {
+    public void reqReset(Role role, byte type) {
+        if (Strings.isEmpty(role.getSafePwd())) {
             MessagePusher.pushMessage(role, new RespMsg("你当前没有设置安全锁密码，请先设置安全锁密码。"));
             return;
         }
@@ -119,9 +121,10 @@ public class SafeService
             MessagePusher.pushMessage(role, new RespMsg("时间解锁审查开始"));
         }
         MessagePusher.pushMessage(role, SafeUtil.getLockStatus(role));
+        return;
     }
     
-    public void cancelReset(final Role role) {
+    public void cancelReset(Role role) {
         if (role.getSafeResetStartTime() <= 0) {
             MessagePusher.pushMessage(role, new RespMsg("当前没有申请安全锁强制解除。"));
             return;
@@ -129,38 +132,40 @@ public class SafeService
         role.setSafeResetStartTime(0);
         role.save();
         MessagePusher.pushMessage(role, SafeUtil.getLockStatus(role));
+        return;
     }
     
-    public void checkSafePasswordReset(final Role role) {
+    public void checkSafePasswordReset(Role role) {
         if (role == null) {
             return;
         }
         this.errorRecords.remove(role.getId());
-        final int endTime = SafeUtil.getSafePasswordResetEndTime(role.getSafeResetStartTime());
+        int endTime = SafeUtil.getSafePasswordResetEndTime(role.getSafeResetStartTime());
         if (endTime <= 0) {
             return;
         }
-        final long now = System.currentTimeMillis();
-        if (now / 1000L >= endTime) {
-            this.logger.warn("{}({})进行安全锁重置，重置时间为:{}", new Object[] { role.getId(), role.getName(), TimeUtil.formatDate(new Date(endTime * 1000L), "yyyy-MM-dd HH:mm:ss") });
+        long now = System.currentTimeMillis();
+        if (now / 1000L >= (long)endTime) {
+            this.logger.warn("{}({})进行安全锁重置，重置时间为:{}", new Object[] { role.getId(), role.getName(), TimeUtil.formatDate(new Date((long)endTime * 1000L), "yyyy-MM-dd HH:mm:ss") });
             role.setSafeResetStartTime(0);
             role.setSafePwd(null);
             role.save();
             MessagePusher.pushMessage(role, SafeUtil.getLockStatus(role));
         }
+        return;
     }
     
-    public int getErrorNum(final Role role) {
+    public int getErrorNum(Role role) {
         int total = 0;
-        final long roleUid = role.getId();
-        final long now = System.currentTimeMillis();
-        if (this.errorRecords.containsKey(roleUid)) {
-            final long lastErrorTime = this.errorRecords.get(roleUid).getLastErrorTime();
+        long roleUid = (long)role.getId();
+        long now = System.currentTimeMillis();
+        if (this.errorRecords.containsKey(Long.valueOf(roleUid))) {
+            long lastErrorTime = ((ErrorRecord)this.errorRecords.get(Long.valueOf(roleUid))).getLastErrorTime();
             if (now - lastErrorTime > 86400000L) {
-                this.errorRecords.remove(roleUid);
+                this.errorRecords.remove(Long.valueOf(roleUid));
             }
             else {
-                total = this.errorRecords.get(roleUid).getErrorSum();
+                total = ((ErrorRecord)this.errorRecords.get(Long.valueOf(roleUid))).getErrorSum();
             }
         }
         return total;

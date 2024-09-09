@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.onlinemall.message;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class RespTreasureStoneCompose extends Message
     private List<FieldProp> list;
     
     public RespTreasureStoneCompose() {
-        this.list = new ArrayList<FieldProp>();
+        this.list = new ArrayList<>();
     }
     
     public int getSerial() {
@@ -50,37 +49,21 @@ public class RespTreasureStoneCompose extends Message
         if (!(o instanceof RespTreasureStoneCompose)) {
             return false;
         }
-        final RespTreasureStoneCompose other = (RespTreasureStoneCompose)o;
+        RespTreasureStoneCompose other = (RespTreasureStoneCompose)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0078: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0078;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -89,12 +72,12 @@ public class RespTreasureStoneCompose extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

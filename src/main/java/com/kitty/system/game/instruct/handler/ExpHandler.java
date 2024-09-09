@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.instruct.handler;
 
 import java.util.Map;
@@ -11,18 +10,22 @@ import com.kitty.system.game.instruct.inter.NcFather;
 
 public class ExpHandler implements NcFather
 {
+    public ExpHandler() {
+    }
+    
     @Override
-    public void handle(final Role role, final String content) {
-        if (SpringUtils.getBean(ServerService.class).getType() == 1) {
+    public void handle(Role role, String content) {
+        if (((ServerService)SpringUtils.getBean(ServerService.class)).getType() == 1) {
             return;
         }
-        final Long num = Long.valueOf(content);
-        SpringUtils.getRoleService().addExp(role, num, "", true);
-        final Integer combatPet = role.getExtendBox().getCombatPet();
-        if (combatPet > 0) {
-            final Map<Integer, Pet> map = SpringUtils.getPetService().selectPet(role);
-            final Pet pet = map.get(combatPet);
-            SpringUtils.getBean(PetService.class).addExp(role, pet, num, true);
+        Long num = Long.valueOf(content);
+        SpringUtils.getRoleService().addExp(role, (long)num, "", true);
+        Integer combatPet = role.getExtendBox().getCombatPet();
+        if ((int)combatPet > 0) {
+            Map<Integer, Pet> map = SpringUtils.getPetService().selectPet(role);
+            Pet pet = (Pet)map.get(combatPet);
+            ((PetService)SpringUtils.getBean(PetService.class)).addExp(role, pet, (long)num, true);
         }
+        return;
     }
 }

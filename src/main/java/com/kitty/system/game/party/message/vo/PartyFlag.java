@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.party.message.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class PartyFlag implements Serializable
@@ -33,7 +31,7 @@ public class PartyFlag implements Serializable
         if (!(o instanceof PartyFlag)) {
             return false;
         }
-        final PartyFlag other = (PartyFlag)o;
+        PartyFlag other = (PartyFlag)o;
         return other.canEqual(this) && this.getIndex() == other.getIndex() && this.getState() == other.getState();
     }
     
@@ -43,7 +41,7 @@ public class PartyFlag implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getIndex();
         result = result * 59 + this.getState();
@@ -52,13 +50,12 @@ public class PartyFlag implements Serializable
     
     @Override
     public String toString() {
-        return "PartyFlag(index=" + this.getIndex() + ", state=" + this.getState() + ")";
+        return "PartyFlag(index=" + (int)this.getIndex() + ", state=" + (int)this.getState() + ")";
     }
     
     public PartyFlag() {
     }
     
-    @ConstructorProperties({ "index", "state" })
     public PartyFlag(final short index, final byte state) {
         this.index = index;
         this.state = state;

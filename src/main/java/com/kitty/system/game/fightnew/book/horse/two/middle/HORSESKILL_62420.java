@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.two.middle;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -17,59 +16,64 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_62420 extends HorseSkillProcessor
 {
+    public HORSESKILL_62420() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         double percentc = (7.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) / 100.0;
         percentc = HorseSkillUtils.getMathRoundPercent(percentc);
         if (percentc > 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), (Object)percentc);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), Double.valueOf(percentc));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill skill = (RoleSkill)args[2];
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
+        RoleSkill skill = (RoleSkill)args[2];
         if (skill == null) {
             return null;
         }
-        if (PETSKILLATTR.PETSKILLATTR_FIRE.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_WIND.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_THUNDER.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_WATER.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_TM.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_FG.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_QM.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_XL.getValue() != skill.getType() && PETSKILLATTR.PETSKILLATTR_AIHAO.getValue() != skill.getType()) {
-            return null;
-        }
-        final HorseSkillParam horseSkillParam = effector.getHorseSkillMap().get(62420);
-        if (horseSkillParam == null) {
-            return null;
-        }
-        final Integer hurt = (Integer)args[0];
-        if (hurt == null) {
-            return null;
-        }
-        double percenta = (50.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) * 10.0;
-        double percentb = (100.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) * 10.0;
-        percenta = HorseSkillUtils.getMathRoundPercent(percenta);
-        percentb = HorseSkillUtils.getMathRoundPercent(percentb);
-        final double count = percenta + percentb;
-        final Random random = new Random();
-        final int i = random.nextInt((int)count);
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 62420);
-        skillRecord.setT(effector.getId());
-        if (i >= percenta) {
-            final double percent_b = percentb / 1000.0;
-            final NutMap map = NutMap.NEW();
-            final int alterHurt = (int)(hurt * percent_b);
-            map.setv("alterHurt", (Object)alterHurt);
+        if (PETSKILLATTR.PETSKILLATTR_FIRE.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_WIND.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_THUNDER.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_WATER.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_TM.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_FG.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_QM.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_XL.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_AIHAO.getValue() == (int)skill.getType()) {
+            HorseSkillParam horseSkillParam = (HorseSkillParam)effector.getHorseSkillMap().get(Integer.valueOf(62420));
+            if (horseSkillParam == null) {
+                return null;
+            }
+            Integer hurt = (Integer)args[0];
+            if (hurt == null) {
+                return null;
+            }
+            double percenta = (50.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) * 10.0;
+            double percentb = (100.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) * 10.0;
+            percenta = HorseSkillUtils.getMathRoundPercent(percenta);
+            percentb = HorseSkillUtils.getMathRoundPercent(percentb);
+            double count = percenta + percentb;
+            Random random = new Random();
+            int i = random.nextInt((int)count);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 62420);
+            skillRecord.setT((long)(int)effector.getId());
+            if ((double)i >= percenta) {
+                double percent_b = percentb / 1000.0;
+                NutMap map = NutMap.NEW();
+                int alterHurt = (int)((double)(int)hurt * percent_b);
+                map.setv("alterHurt", Integer.valueOf(alterHurt));
+                return map;
+            }
+            double percent_a = percenta / 1000.0;
+            NutMap map = NutMap.NEW();
+            int alterHurt = (int)((double)(int)hurt * percent_a);
+            map.setv("alterHurt", Integer.valueOf(-alterHurt));
             return map;
         }
-        final double percent_a = percenta / 1000.0;
-        final NutMap map = NutMap.NEW();
-        final int alterHurt = (int)(hurt * percent_a);
-        map.setv("alterHurt", (Object)(-alterHurt));
-        return map;
+        else {
+            return null;
+        }
     }
 }

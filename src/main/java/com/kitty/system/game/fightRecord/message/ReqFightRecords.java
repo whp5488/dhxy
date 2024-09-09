@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightRecord.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqFightRecords extends Message
 {
     private byte type;
     private String objId;
+    
+    public ReqFightRecords() {
+    }
     
     public byte getType() {
         return this.type;

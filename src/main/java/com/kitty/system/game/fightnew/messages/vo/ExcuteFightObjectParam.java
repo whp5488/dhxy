@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages.vo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.common.enter.FiedValue;
 import java.util.List;
 import java.io.Serializable;
@@ -45,7 +43,6 @@ public class ExcuteFightObjectParam implements Serializable
         return this.fiedValues;
     }
     
-    @ConstructorProperties({ "damageType", "statusList", "clearStatus", "fiedValues" })
     public ExcuteFightObjectParam(final List<Integer> damageType, final List<Integer> statusList, final List<Integer> clearStatus, final List<FiedValue> fiedValues) {
         this.damageType = damageType;
         this.statusList = statusList;

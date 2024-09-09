@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.domain.vo;
 
 import java.util.List;
@@ -10,11 +9,14 @@ public class SuitParam implements Serializable
     private String name;
     private List<Integer> petIds;
     
+    public SuitParam() {
+    }
+    
     public Integer getSerial() {
         return this.serial;
     }
     
-    public void setSerial(final Integer serial) {
+    public void setSerial(Integer serial) {
         this.serial = serial;
     }
     
@@ -22,7 +24,7 @@ public class SuitParam implements Serializable
         return this.name;
     }
     
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -30,22 +32,22 @@ public class SuitParam implements Serializable
         return this.petIds;
     }
     
-    public void setPetIds(final List<Integer> petIds) {
+    public void setPetIds(List<Integer> petIds) {
         this.petIds = petIds;
     }
     
     @Override
     public int hashCode() {
         int result = 1;
-        final int prime = 31;
-        result = this.serial * prime;
+        int prime = 31;
+        result = (int)this.serial * prime;
         return result;
     }
     
     @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof SuitParam) {
-            final SuitParam suitParam = (SuitParam)obj;
+    public boolean equals(Object obj) {
+        if ((obj instanceof SuitParam)) {
+            SuitParam suitParam = (SuitParam)obj;
             return this.serial.equals(suitParam.getSerial());
         }
         return false;

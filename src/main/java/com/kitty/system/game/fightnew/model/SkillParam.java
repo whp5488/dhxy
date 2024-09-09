@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.model;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class SkillParam implements Serializable
@@ -25,7 +23,6 @@ public class SkillParam implements Serializable
         return this.proficient;
     }
     
-    @ConstructorProperties({ "skillId", "proficient" })
     public SkillParam(final int skillId, final int proficient) {
         this.skillId = skillId;
         this.proficient = proficient;

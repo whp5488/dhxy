@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.general.facade;
 
 import com.kitty.system.game.general.message.ReqDomesticate;
@@ -25,8 +24,8 @@ public class GeneralController
     }
     
     @RequestMapping
-    public void generalNotify(final IoSession session, final ReqGeneralNotify notify) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void generalNotify(IoSession session, ReqGeneralNotify notify) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
@@ -34,8 +33,8 @@ public class GeneralController
     }
     
     @RequestMapping
-    public void domesticate(final IoSession session, final ReqDomesticate reqDomesticate) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void domesticate(IoSession session, ReqDomesticate reqDomesticate) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }

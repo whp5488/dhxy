@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import java.util.ArrayList;
@@ -21,9 +20,9 @@ public class RespPartyRole extends Message
     public RespPartyRole() {
         this.weaponIcon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
     
     public int getRoleId() {
@@ -90,7 +89,7 @@ public class RespPartyRole extends Message
         if (!(o instanceof RespPartyRole)) {
             return false;
         }
-        final RespPartyRole other = (RespPartyRole)o;
+        RespPartyRole other = (RespPartyRole)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -103,43 +102,19 @@ public class RespPartyRole extends Message
         if (this.getGem() != other.getGem()) {
             return false;
         }
-        final Object this$light_effect = this.getLight_effect();
-        final Object other$light_effect = other.getLight_effect();
-        Label_0104: {
-            if (this$light_effect == null) {
-                if (other$light_effect == null) {
-                    break Label_0104;
-                }
-            }
-            else if (this$light_effect.equals(other$light_effect)) {
-                break Label_0104;
-            }
+        Object this$light_effect = this.getLight_effect();
+        Object other$light_effect = other.getLight_effect();
+        if (!((this$light_effect != null) ? this$light_effect.equals(other$light_effect) : (other$light_effect == null))) {
             return false;
         }
-        final Object this$special_icon = this.getSpecial_icon();
-        final Object other$special_icon = other.getSpecial_icon();
-        Label_0141: {
-            if (this$special_icon == null) {
-                if (other$special_icon == null) {
-                    break Label_0141;
-                }
-            }
-            else if (this$special_icon.equals(other$special_icon)) {
-                break Label_0141;
-            }
+        Object this$special_icon = this.getSpecial_icon();
+        Object other$special_icon = other.getSpecial_icon();
+        if (!((this$special_icon != null) ? this$special_icon.equals(other$special_icon) : (other$special_icon == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return this.getState() == other.getState();
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return this.getState() == other.getState();
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return ((this$list != null) ? this$list.equals(other$list) : (other$list == null)) && this.getState() == other.getState();
     }
     
     protected boolean canEqual(final Object other) {
@@ -148,16 +123,16 @@ public class RespPartyRole extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         result = result * 59 + this.getWeaponIcon();
         result = result * 59 + this.getGem();
-        final Object $light_effect = this.getLight_effect();
+        Object $light_effect = this.getLight_effect();
         result = result * 59 + (($light_effect == null) ? 43 : $light_effect.hashCode());
-        final Object $special_icon = this.getSpecial_icon();
+        Object $special_icon = this.getSpecial_icon();
         result = result * 59 + (($special_icon == null) ? 43 : $special_icon.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getState();
         return result;
@@ -165,6 +140,6 @@ public class RespPartyRole extends Message
     
     @Override
     public String toString() {
-        return "RespPartyRole(roleId=" + this.getRoleId() + ", weaponIcon=" + this.getWeaponIcon() + ", gem=" + this.getGem() + ", light_effect=" + this.getLight_effect() + ", special_icon=" + this.getSpecial_icon() + ", list=" + this.getList() + ", state=" + this.getState() + ")";
+        return "RespPartyRole(roleId=" + this.getRoleId() + ", weaponIcon=" + this.getWeaponIcon() + ", gem=" + this.getGem() + ", light_effect=" + this.getLight_effect() + ", special_icon=" + this.getSpecial_icon() + ", list=" + this.getList() + ", state=" + (int)this.getState() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import org.nutz.lang.util.NutMap;
@@ -13,39 +12,43 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_73333 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_73333() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
-        if (SKILLATTR.SKILLATTR_ZHEN.getValue() == skill.getType() && effecter.isPlayer()) {
-            target.getOtherMap().setv("skillRound", (Object)("73333_" + effecter.getId() + "_" + fight.getRound()));
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 73333);
-            skillRecord.setT(target.getId());
+        if (SKILLATTR.SKILLATTR_ZHEN.getValue() == (int)skill.getType() && effecter.isPlayer()) {
+            target.getOtherMap().setv("skillRound", "73333_" + effecter.getId() + "_" + fight.getRound());
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 73333);
+            skillRecord.setT((long)(int)target.getId());
         }
+        return;
     }
     
     @Override
-    public NutMap executeReduceHp(final Fight fight, final FightObject effecter, final FightObject target, final Object... args) {
+    public NutMap executeReduceHp(Fight fight, FightObject effecter, FightObject target, Object... args) {
         RoleSkill skill = null;
         int hurt = 0;
         try {
             skill = (RoleSkill)args[0];
             hurt = (int)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return null;
         }
         if (skill == null) {
@@ -55,30 +58,30 @@ public class ACSRYSKILL_73333 extends AcsrySkillProcessor
             return null;
         }
         if (this.checkExcute(skill)) {
-            final Object obj = effecter.getOtherMap().get("skillRound", null);
+            Object obj = effecter.getOtherMap().get("skillRound", null);
             if (obj != null) {
-                final String str = obj.toString();
-                final String[] splits = str.split("_");
+                String str = obj.toString();
+                String[] splits = str.split("_");
                 if (splits.length >= 3) {
-                    final String roundStr = splits[2];
-                    final String objIdStr = splits[1];
-                    final String skillIdStr = splits[0];
+                    String roundStr = splits[2];
+                    String objIdStr = splits[1];
+                    String skillIdStr = splits[0];
                     if (roundStr.matches("^[0-9]+$") && objIdStr.matches("^[0-9]+$") && skillIdStr.matches("^[0-9]+$")) {
-                        final int round = Integer.parseInt(roundStr);
-                        final int objId = Integer.parseInt(objIdStr);
-                        final int skillId = Integer.parseInt(skillIdStr);
+                        int round = Integer.parseInt(roundStr);
+                        int objId = Integer.parseInt(objIdStr);
+                        int skillId = Integer.parseInt(skillIdStr);
                         if (round == fight.getRound() && 73333 == skillId) {
-                            final FightObject fightObject = fight.queryFightObject(objId);
+                            FightObject fightObject = fight.queryFightObject(Integer.valueOf(objId));
                             if (fightObject != null) {
                                 double property = 0.15;
-                                property += fightObject.getRole().getMj() / 100 * 0.01;
+                                property += (double)((int)fightObject.getRole().getMj() / 100) * 0.01;
                                 if (property > 0.3) {
                                     property = 0.3;
                                 }
-                                final int changeHurt = (int)(hurt * property);
-                                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 73333);
-                                skillRecord.setT(effecter.getId());
-                                return NutMap.NEW().setv("changeHurt", (Object)(-changeHurt));
+                                int changeHurt = (int)((double)hurt * property);
+                                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 73333);
+                                skillRecord.setT((long)(int)effecter.getId());
+                                return NutMap.NEW().setv("changeHurt", Integer.valueOf(-changeHurt));
                             }
                         }
                     }
@@ -88,7 +91,7 @@ public class ACSRYSKILL_73333 extends AcsrySkillProcessor
         return null;
     }
     
-    private boolean checkExcute(final RoleSkill skill) {
-        return SKILLATTR.SKILLATTR_FIRE.getValue() == skill.getType() || SKILLATTR.SKILLATTR_WIND.getValue() == skill.getType() || SKILLATTR.SKILLATTR_THUNDER.getValue() == skill.getType() || SKILLATTR.SKILLATTR_WATER.getValue() == skill.getType() || (SKILLATTR.SKILLATTR_HENGSAO.getValue() == skill.getType() || SKILLATTR.SKILLATTR_POJIA.getValue() == skill.getType() || SKILLATTR.SKILLATTR_ZHENJI.getValue() == skill.getType()) || SKILLATTR.SKILLATTR_WULI.getValue() == skill.getType() || SKILLATTR.SKILLATTR_AIHAO.getValue() == skill.getType() || SKILLATTR.SKILLATTR_XIXUE.getValue() == skill.getType() || SKILLATTR.SKILLATTR_POISON.getValue() == skill.getType() || SKILLATTR.SKILLATTR_ZHEN.getValue() == skill.getType();
+    private boolean checkExcute(RoleSkill skill) {
+        return SKILLATTR.SKILLATTR_FIRE.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_WIND.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_THUNDER.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_WATER.getValue() == (int)skill.getType() || (SKILLATTR.SKILLATTR_HENGSAO.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_POJIA.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_ZHENJI.getValue() == (int)skill.getType()) || SKILLATTR.SKILLATTR_WULI.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_AIHAO.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_XIXUE.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_POISON.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_ZHEN.getValue() == (int)skill.getType();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.service;
 
 import com.kitty.system.game.vo.FiedEquip;
@@ -13,7 +12,6 @@ import com.kitty.listener.event.RoleAspectChangeEvent;
 import com.kitty.system.common.message.RespHint;
 import com.kitty.system.game.equip.message.vo.EffectInfo;
 import com.kitty.system.game.equip.message.RespEffect;
-import com.kitty.listener.BaseGameEvent;
 import com.kitty.listener.event.ChangeEquipEvent;
 import com.kitty.listener.EventDispatcher;
 import com.kitty.system.game.equip.helper.UpgradeHandler;
@@ -22,21 +20,20 @@ import com.kitty.system.game.equip.helper.UpgradeHelper;
 import com.kitty.system.game.safe.util.SafeUtil;
 import java.util.ConcurrentModificationException;
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
-import com.kitty.system.init.domain.SysDataAcsry;
-import com.kitty.system.init.domain.SysSinBieEq;
-import com.kitty.system.init.domain.SysMagicalBieEq;
-import com.kitty.system.init.domain.SysSeniorBieEq;
-import com.kitty.system.game.equip.pool.EquipDataPool;
 import com.kitty.system.init.domain.SysNewBieEq;
+import com.kitty.system.init.domain.SysSeniorBieEq;
+import com.kitty.system.init.domain.SysMagicalBieEq;
+import com.kitty.system.init.domain.SysSinBieEq;
+import com.kitty.system.game.equip.pool.EquipDataPool;
+import com.kitty.system.init.domain.SysDataAcsry;
 import com.kitty.system.enums.war.itempro.def.ITEMLARGETYPE;
 import com.kitty.system.game.equip.domain.vo.EquipAlike;
 import com.kitty.system.game.equip.utils.EquipUtils;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.common.data.DataGlobalFunc;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import com.kitty.common.utils.bean.BeanUtils;
 import com.kitty.system.common.message.RespNotifyMiscEx;
+import com.kitty.common.utils.bean.BeanUtils;
 import com.kitty.system.game.fightnew.service.CountUtils;
 import com.kitty.system.game.team.domain.Team;
 import com.kitty.system.enums.common.ADORN;
@@ -46,7 +43,6 @@ import com.kitty.system.init.pool.ItemDataPool;
 import com.kitty.system.game.equip.domain.Effect;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
 import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.bag.message.RespFlyPetEqInfo;
@@ -56,7 +52,6 @@ import java.util.Iterator;
 import java.util.Map;
 import com.kitty.system.game.equip.domain.PetEquip;
 import java.util.List;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.equip.domain.EquipEasy;
 import com.kitty.system.game.bag.message.RespFlyInfo;
@@ -101,48 +96,48 @@ public class EquipService
     }
     
     @EventHandler({ EventType.LOGIN })
-    public void handleLoginEvent(final LoginEvent loginEvent) {
-        final Role role = loginEvent.getRole();
+    public void handleLoginEvent(LoginEvent loginEvent) {
+        Role role = loginEvent.getRole();
         this.loadRoleEquip(role);
     }
     
-    private void loadRoleEquip(final Role role) {
+    private void loadRoleEquip(Role role) {
         this.refreshRoleEquip(role);
     }
     
-    public void refreshRoleEquip(final Role role) {
-        final List<WearEquip> wearEquips = this.selectWearEquip(role);
+    public void refreshRoleEquip(Role role) {
+        List<WearEquip> wearEquips = this.selectWearEquip(role);
         for (int i = 0; i < wearEquips.size(); ++i) {
-            final WearEquip wearEquip = wearEquips.get(i);
-            final RespFlyInfo info = new RespFlyInfo();
-            info.setEquip(new EquipEasy(wearEquip, role.getRoleId()));
+            WearEquip wearEquip = (WearEquip)wearEquips.get(i);
+            RespFlyInfo info = new RespFlyInfo();
+            info.setEquip(new EquipEasy(wearEquip, (int)role.getRoleId()));
             MessagePusher.pushMessage(role, info);
         }
     }
     
-    public void refreshPetEquip(final Role role) {
-        final Map<Long, PetEquip> petBagEquip = this.bagService.getPetBagEquip(role.getId());
-        for (final Long key : petBagEquip.keySet()) {
-            this.refreshPetEquip(role, petBagEquip.get(key));
+    public void refreshPetEquip(Role role) {
+        Map<Long, PetEquip> petBagEquip = this.bagService.getPetBagEquip((long)role.getId());
+        for (Long key : petBagEquip.keySet()) {
+            this.refreshPetEquip(role, (PetEquip)petBagEquip.get(key));
         }
     }
     
-    public void refreshPetEquip(final Role role, final PetEquip petEquip) {
+    public void refreshPetEquip(Role role, PetEquip petEquip) {
         if (role != null && petEquip != null) {
-            final PetEquipEasy petEquipEasy = new PetEquipEasy(petEquip);
-            final Map<Integer, Pet> petMap = this.petService.selectPet(role);
+            PetEquipEasy petEquipEasy = new PetEquipEasy(petEquip);
+            Map<Integer, Pet> petMap = this.petService.selectPet(role);
             if (petEquip.getPId() > 0L) {
-                final Pet pet = petMap.values().stream().filter(e -> e.getId().equals(petEquip.getPId())).findFirst().orElse(null);
+                Pet pet = (Pet)petMap.values().stream().filter(e -> e.getId().equals(Long.valueOf(petEquip.getPId()))).findFirst().orElse(null);
                 if (pet != null) {
                     petEquipEasy.setPetId(String.valueOf(pet.getPetId()));
                 }
             }
-            MessagePusher.pushMessage(role.getId(), new RespFlyPetEqInfo(petEquipEasy));
+            MessagePusher.pushMessage((long)role.getId(), new RespFlyPetEqInfo(petEquipEasy));
         }
     }
     
-    public List<WearEquip> selectWearEquip(final Role role) {
-        final List<WearEquip> equips = DataCache.EQUIP_MAP.get(role.getId());
+    public List<WearEquip> selectWearEquip(Role role) {
+        List<WearEquip> equips = (List)DataCache.EQUIP_MAP.get(role.getId());
         if (equips == null) {
             List<WearEquip> wearEquips = Collections.synchronizedList(this.dao.query(WearEquip.class, Cnd.where("r_id", "=", role.getId())));
             if (wearEquips == null) {
@@ -152,83 +147,93 @@ public class EquipService
             DataCache.EQUIP_MAP.put(role.getId(), wearEquips);
             return wearEquips;
         }
-        return equips;
+        else {
+            return equips;
+        }
     }
     
-    public List<Effect> selectEffect(final Role role) {
-        List<Effect> effects = DataCache.EFFECT_MAP.get(role.getId());
+    public List<Effect> selectEffect(Role role) {
+        List<Effect> effects = (List)DataCache.EFFECT_MAP.get(role.getId());
         if (effects == null) {
             effects = this.dao.query(Effect.class, Cnd.where("r_id", "=", role.getId()));
             if (effects == null) {
-                effects = new ArrayList<Effect>();
+                effects = new ArrayList<>();
             }
             else {
-                final Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
-                for (final Effect effect : effects) {
-                    final SysEffect sysEffect = effectMap.get(effect.getSerial());
+                Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
+                for (Effect effect : effects) {
+                    SysEffect sysEffect = (SysEffect)effectMap.get(Integer.valueOf(effect.getSerial()));
                     if (sysEffect != null) {
                         effect.setPart(sysEffect.getPart());
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
             DataCache.EFFECT_MAP.put(role.getId(), effects);
             return effects;
         }
-        return effects;
+        else {
+            return effects;
+        }
     }
     
-    public void handleOnEquip(final Role role, final BagEquip equip) {
+    public void handleOnEquip(Role role, BagEquip equip) {
         this.countEquipBaseAddition(role);
         if (equip.getId() == null) {
             return;
         }
-        final RespFlyInfo info = new RespFlyInfo();
-        info.setEquip(new EquipEasy(equip, role.getRoleId()));
+        RespFlyInfo info = new RespFlyInfo();
+        info.setEquip(new EquipEasy(equip, (int)role.getRoleId()));
         MessagePusher.pushMessage(role, info);
         if (equip.getPosition() == ADORN.WEAPON.getValue()) {
-            final Team team = this.teamService.getTeam(role.getRoleId());
+            Team team = this.teamService.getTeam((int)role.getRoleId());
             if (team != null) {
                 this.teamService.updateTeamList(role);
             }
         }
+        return;
     }
     
-    public void countEquipBaseAddition(final Role role) {
-        final int life = CountUtils.countLife(role);
-        final int mana = CountUtils.countMana(role);
-        if (role.getCurrLife().equals(role.getMaxLife()) || role.getCurrLife() >= life) {
-            role.setCurrLife(life);
+    public void countEquipBaseAddition(Role role) {
+        int life = CountUtils.countLife(role);
+        int mana = CountUtils.countMana(role);
+        if (role.getCurrLife().equals(role.getMaxLife()) || (int)role.getCurrLife() >= life) {
+            role.setCurrLife(Integer.valueOf(life));
         }
-        if (role.getCurrMana().equals(role.getMaxMana()) || role.getCurrMana() >= mana) {
-            role.setCurrMana(mana);
+        if (role.getCurrMana().equals(role.getMaxMana()) || (int)role.getCurrMana() >= mana) {
+            role.setCurrMana(Integer.valueOf(mana));
         }
-        role.setMaxLife(life);
-        role.setMaxMana(mana);
+        role.setMaxLife(Integer.valueOf(life));
+        role.setMaxMana(Integer.valueOf(mana));
         this.roleService.refreshRoleInfo(role, false);
     }
     
-    public void unEquip(final Role role, final long id, final boolean is) {
-        final List<WearEquip> equips = this.selectWearEquip(role);
-        final WearEquip wearEquip = equips.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);
+    public void unEquip(Role role, long id, boolean is) {
+        List<WearEquip> equips = this.selectWearEquip(role);
+        WearEquip wearEquip = (WearEquip)equips.stream().filter(e -> e.getId().equals(Long.valueOf(id))).findFirst().orElse(null);
         if (wearEquip != null) {
-            final int pos = this.bagService.getPos(role, false);
+            int pos = this.bagService.getPos(role, false);
             if (pos <= 0) {
                 MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), "背包已满，无法卸下装备", false));
                 return;
             }
-            final BagEquip equip = new BagEquip();
+            BagEquip equip = new BagEquip();
             BeanUtils.copyBeanProp(equip, wearEquip);
             equip.setPos(pos);
             this.bagService.addEquip(role, equip, false, "卸下装备");
             wearEquip.setDelete(true);
             wearEquip.save();
-            final List<WearEquip> wearEquips = this.selectWearEquip(role);
-            for (int i = 0; i < wearEquips.size(); ++i) {
-                WearEquip e = wearEquips.get(i);
+            List<WearEquip> wearEquips = this.selectWearEquip(role);
+            int i = 0;
+            while (i < wearEquips.size()) {
+            	WearEquip e = (WearEquip)wearEquips.get(i);
                 if (e.getId().equals(wearEquip.getId())) {
                     wearEquips.remove(i);
                     break;
                 }
+                ++i;
             }
             if (equip.getPosition() == 1) {
                 role.setWeaponIcon(0);
@@ -236,32 +241,32 @@ public class EquipService
             this.changeEquip(role, equip, wearEquip, is);
             this.broadcastService.sendUpdateAppear(role);
             role.save();
-            MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), String.format("脱下装备#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", equip.getType(), equip.getType(), equip.getType(), equip.getName()), false));
+            MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), String.format("脱下装备#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", Integer.valueOf(equip.getType()), Integer.valueOf(equip.getType()), Integer.valueOf(equip.getType()), equip.getName()), false));
         }
         else {
-            this.logger.error("未找到要卸下的装备,角色编号{}，装备编号{}", role.getRoleId(), id);
+            this.logger.error("未找到要卸下的装备,角色编号{}，装备编号{}", role.getRoleId(), Long.valueOf(id));
         }
     }
     
-    public void wearEquip(final Role role, final Long id, final boolean is) {
-        final Map<Long, BagEquip> bagEquipMap = this.bagService.getBagEquip(role);
-        final BagEquip equip = bagEquipMap.get(id);
+    public void wearEquip(Role role, Long id, boolean is) {
+        Map<Long, BagEquip> bagEquipMap = this.bagService.getBagEquip(role);
+        BagEquip equip = (BagEquip)bagEquipMap.get(id);
         if (equip != null && equip.getId() != null) {
-            final String tips = this.wearEquipCheck(role, equip, true);
+            String tips = this.wearEquipCheck(role, equip, true);
             if (tips == null) {
-                final WearEquip wearEquip = this.getWearEquip(role, equip.getPosition());
+                WearEquip wearEquip = this.getWearEquip(role, equip.getPosition());
                 if (wearEquip != null && wearEquip.getId() != null) {
                     boolean flag = true;
                     if (wearEquip.getPosition() == ADORN.RING.getValue()) {
-                        final List<WearEquip> wearEquips = this.selectWearEquip(role);
-                        final List<WearEquip> list = wearEquips.stream().filter(e -> e.getPosition() == ADORN.RING.getValue()).collect(Collectors.toList());
+                        List<WearEquip> wearEquips = this.selectWearEquip(role);
+                        List<WearEquip> list = (List)wearEquips.stream().filter(e -> e.getPosition() == ADORN.RING.getValue()).collect(Collectors.toList());
                         if (list.size() < 2) {
                             this.deleteWearEquip(equip, bagEquipMap);
                             flag = false;
                         }
                     }
                     if (flag) {
-                        final BagEquip eq = new BagEquip();
+                        BagEquip eq = new BagEquip();
                         BeanUtils.copyBeanProp(eq, wearEquip);
                         this.switchoverEquipGem(role, equip, wearEquip);
                         eq.setPos(equip.getPos());
@@ -271,30 +276,32 @@ public class EquipService
                         bagEquipMap.remove(equip.getId());
                         wearEquip.setDelete(true);
                         wearEquip.save();
-                        final List<WearEquip> wearEquips2 = this.selectWearEquip(role);
-                        for (int i = 0; i < wearEquips2.size(); ++i) {
-                            final WearEquip e = wearEquips2.get(i);
+                        List<WearEquip> wearEquips2 = this.selectWearEquip(role);
+                        int i = 0;
+                        while (i < wearEquips2.size()) {
+                            WearEquip e = (WearEquip)wearEquips2.get(i);
                             if (e.getId().equals(wearEquip.getId())) {
                                 wearEquips2.remove(i);
                                 break;
                             }
+                            ++i;
                         }
                     }
                 }
                 else {
                     this.deleteWearEquip(equip, bagEquipMap);
                 }
-                final WearEquip wear = new WearEquip();
+                WearEquip wear = new WearEquip();
                 equip.setPos(-1);
                 BeanUtils.copyBeanProp(wear, equip);
                 wear.setDelete(false);
-                final List<WearEquip> wearEquips = this.selectWearEquip(role);
+                List<WearEquip> wearEquips = this.selectWearEquip(role);
                 wearEquips.add(wear);
                 wear.save();
                 if (equip.getPosition() == 1) {
                     role.setWeaponIcon(equip.getType());
                 }
-                MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), String.format("穿上装备#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", equip.getType(), equip.getType(), equip.getType(), equip.getName()), false));
+                MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), String.format("穿上装备#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", Integer.valueOf(equip.getType()), Integer.valueOf(equip.getType()), Integer.valueOf(equip.getType()), equip.getName()), false));
                 this.changeEquip(role, equip, wear, is);
                 role.save();
             }
@@ -304,16 +311,16 @@ public class EquipService
         }
     }
     
-    public void switchoverEquipGem(final Role role, final BagEquip bagEquip, final WearEquip wearEquip) {
-        final int gemNumBag = DataGlobalFunc.getGemNum(bagEquip);
+    public void switchoverEquipGem(Role role, BagEquip bagEquip, WearEquip wearEquip) {
+        int gemNumBag = DataGlobalFunc.getGemNum(bagEquip);
         if (gemNumBag > 0) {
             return;
         }
-        final int gemNumWear = DataGlobalFunc.getGemNum(wearEquip);
+        int gemNumWear = DataGlobalFunc.getGemNum(wearEquip);
         if (gemNumBag >= gemNumWear) {
             return;
         }
-        final EquipAlike equipData = DataGlobalFunc.getEquipData(bagEquip.getType());
+        EquipAlike equipData = DataGlobalFunc.getEquipData(Integer.valueOf(bagEquip.getType()));
         if (equipData == null) {
             return;
         }
@@ -321,22 +328,22 @@ public class EquipService
             return;
         }
         int gemNum = gemNumWear;
-        final int maxEmbedGemCnt = equipData.getMaxEmbedGemCnt();
-        final int residue = maxEmbedGemCnt - gemNumWear;
+        int maxEmbedGemCnt = equipData.getMaxEmbedGemCnt();
+        int residue = maxEmbedGemCnt - gemNumWear;
         if (residue < 0) {
-            final Map<Integer, Integer> deductGem = DataGlobalFunc.getCalculateGem(equipData.getPos(), maxEmbedGemCnt);
-            final Map<Integer, Integer> calculateGem = DataGlobalFunc.getCalculateGem(equipData.getPos(), gemNumWear);
-            for (final Integer key : deductGem.keySet()) {
-                Integer num = calculateGem.get(key);
+            Map<Integer, Integer> deductGem = DataGlobalFunc.getCalculateGem(equipData.getPos(), maxEmbedGemCnt);
+            Map<Integer, Integer> calculateGem = DataGlobalFunc.getCalculateGem(equipData.getPos(), gemNumWear);
+            for (Integer key : deductGem.keySet()) {
+                Integer num = (Integer)calculateGem.get(key);
                 if (num == null) {
                     continue;
                 }
-                num -= deductGem.get(key);
-                if (num <= 0) {
+                num = Integer.valueOf((int)num - (int)deductGem.get(key));
+                if ((int)num <= 0) {
                     calculateGem.remove(key);
                 }
                 else {
-                    final boolean checkPos = this.bagService.checkPos(role, key, num);
+                    boolean checkPos = this.bagService.checkPos(role, (int)key, (int)num);
                     if (!checkPos) {
                         MessagePusher.pushMessage(role, new RespMsg("由于#<R>包裹空间不足#，#<R>不能#帮您自动转移宝石。请及时#<R>消理包裹#"));
                         return;
@@ -344,8 +351,8 @@ public class EquipService
                     calculateGem.put(key, num);
                 }
             }
-            for (final Integer key : calculateGem.keySet()) {
-                this.bagService.addGoods(role, key, calculateGem.get(key), 0, true, false, "切换装备宝石");
+            for (Integer key : calculateGem.keySet()) {
+                this.bagService.addGoods(role, (int)key, (int)calculateGem.get(key), 0, true, false, "切换装备宝石");
             }
             gemNum = maxEmbedGemCnt;
             if (calculateGem.size() > 0) {
@@ -356,102 +363,101 @@ public class EquipService
             MessagePusher.pushMessage(role, new RespMsg("已自动帮您转移宝石"));
         }
         wearEquip.getField().forEach(e -> {
-            if (e.getType().equals(6670)) {
-                e.setValue(0);
+            if (e.getType().equals(Integer.valueOf(6670))) {
+                e.setValue(Integer.valueOf(0));
                 return;
             }
-            else {
-                return;
-            }
+            return;
         });
-        final BagEquip eq = new BagEquip();
+        BagEquip eq = new BagEquip();
         BeanUtils.copyBeanProp(eq, wearEquip);
-        final BagEquip equip = EquipUtils.gemChange(DataGlobalFunc.getEquipData(wearEquip.getType()), eq);
+        BagEquip equip = EquipUtils.gemChange(DataGlobalFunc.getEquipData(Integer.valueOf(wearEquip.getType())), eq);
         BeanUtils.copyBeanProp(wearEquip, equip);
-        final int finalGemNum = gemNum;
+        int finalGemNum = gemNum;
         bagEquip.getField().forEach(e -> {
-            if (e.getType().equals(6670)) {
-                e.setValue(finalGemNum);
+            if (e.getType().equals(Integer.valueOf(6670))) {
+                e.setValue(Integer.valueOf(finalGemNum));
                 return;
             }
-            else {
-                return;
-            }
+            return;
         });
         EquipUtils.gemChange(equipData, bagEquip);
+        return;
     }
     
-    public void deleteWearEquip(final BagEquip equip, final Map<Long, BagEquip> bagEquipMap) {
+    public void deleteWearEquip(BagEquip equip, Map<Long, BagEquip> bagEquipMap) {
         equip.setDelete(true);
         equip.save();
         bagEquipMap.remove(equip.getId());
     }
     
-    public WearEquip getWearEquip(final Role role, final int pos) {
-        final List<WearEquip> wearEquips = this.selectWearEquip(role);
-        for (int i = 0; i < wearEquips.size(); ++i) {
-            final WearEquip wearEquip = wearEquips.get(i);
+    public WearEquip getWearEquip(Role role, int pos) {
+        List<WearEquip> wearEquips = this.selectWearEquip(role);
+        int i = 0;
+        while (i < wearEquips.size()) {
+            WearEquip wearEquip = (WearEquip)wearEquips.get(i);
             if (wearEquip.getPosition() == pos) {
                 return wearEquip;
             }
+            ++i;
         }
         return null;
     }
     
-    public String wearEquipCheck(final Role role, final BagEquip equip, final boolean isHint) {
+    public String wearEquipCheck(Role role, BagEquip equip, boolean isHint) {
         if (equip == null) {
             return "穿戴条件不匹配";
         }
-        final Integer type = DataGlobalFunc.GetItemTypeByItemTypeId(equip.getType());
-        if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue()) {
-            final SysNewBieEq bieEq = EquipDataPool.newBieEq.get(equip.getType());
-            return this.wearEquipCheckLimit(role, equip, bieEq.getOwnerRole(), bieEq.getSex(), bieEq.getNeedGg(), bieEq.getNeedLx(), bieEq.getNeedLl(), bieEq.getNeedMj(), bieEq.getNeedRei(), bieEq.getNeedGrade(), isHint);
+        Integer type = DataGlobalFunc.GetItemTypeByItemTypeId(Integer.valueOf(equip.getType()));
+        if ((int)type == ITEMLARGETYPE.ITEM_LARGE_TYPE_EQPT.getValue()) {
+            SysNewBieEq bieEq4 = (SysNewBieEq)EquipDataPool.newBieEq.get(Integer.valueOf(equip.getType()));
+            return this.wearEquipCheckLimit(role, equip, bieEq4.getOwnerRole(), Integer.valueOf(bieEq4.getSex()), Integer.valueOf(bieEq4.getNeedGg()), Integer.valueOf(bieEq4.getNeedLx()), Integer.valueOf(bieEq4.getNeedLl()), Integer.valueOf(bieEq4.getNeedMj()), Integer.valueOf(bieEq4.getNeedRei()), Integer.valueOf(bieEq4.getNeedGrade()), isHint);
         }
-        if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue()) {
-            final SysSeniorBieEq bieEq2 = EquipDataPool.seniorBieEq.get(equip.getType());
-            return this.wearEquipCheckLimit(role, equip, bieEq2.getOwnerRole(), bieEq2.getSex(), bieEq2.getNeedGg(), bieEq2.getNeedLx(), bieEq2.getNeedLl(), bieEq2.getNeedMj(), bieEq2.getNeedRei(), bieEq2.getNeedGrade(), isHint);
+        if ((int)type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SENIOREQPT.getValue()) {
+            SysSeniorBieEq bieEq3 = (SysSeniorBieEq)EquipDataPool.seniorBieEq.get(Integer.valueOf(equip.getType()));
+            return this.wearEquipCheckLimit(role, equip, bieEq3.getOwnerRole(), Integer.valueOf(bieEq3.getSex()), Integer.valueOf(bieEq3.getNeedGg()), Integer.valueOf(bieEq3.getNeedLx()), Integer.valueOf(bieEq3.getNeedLl()), Integer.valueOf(bieEq3.getNeedMj()), Integer.valueOf(bieEq3.getNeedRei()), Integer.valueOf(bieEq3.getNeedGrade()), isHint);
         }
-        if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue()) {
-            final SysMagicalBieEq bieEq3 = EquipDataPool.magicalBieEq.get(equip.getType());
-            return this.wearEquipCheckLimit(role, equip, bieEq3.getOwnerRole(), bieEq3.getSex(), bieEq3.getNeedGg(), bieEq3.getNeedLx(), bieEq3.getNeedLl(), bieEq3.getNeedMj(), bieEq3.getNeedRei(), bieEq3.getNeedGrade(), isHint);
+        if ((int)type == ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue()) {
+            SysMagicalBieEq bieEq2 = (SysMagicalBieEq)EquipDataPool.magicalBieEq.get(Integer.valueOf(equip.getType()));
+            return this.wearEquipCheckLimit(role, equip, bieEq2.getOwnerRole(), Integer.valueOf(bieEq2.getSex()), Integer.valueOf(bieEq2.getNeedGg()), Integer.valueOf(bieEq2.getNeedLx()), Integer.valueOf(bieEq2.getNeedLl()), Integer.valueOf(bieEq2.getNeedMj()), Integer.valueOf(bieEq2.getNeedRei()), Integer.valueOf(bieEq2.getNeedGrade()), isHint);
         }
-        if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue()) {
-            final SysSinBieEq bieEq4 = EquipDataPool.sinBieEq.get(equip.getType());
-            return this.wearEquipCheckLimit(role, equip, bieEq4.getOwnerRole(), bieEq4.getSex(), bieEq4.getNeedGg(), bieEq4.getNeedLx(), bieEq4.getNeedLl(), bieEq4.getNeedMj(), bieEq4.getNeedRei(), bieEq4.getNeedGrade(), isHint);
+        if ((int)type == ITEMLARGETYPE.ITEM_LARGE_TYPE_XIANQI.getValue()) {
+            SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(Integer.valueOf(equip.getType()));
+            return this.wearEquipCheckLimit(role, equip, bieEq.getOwnerRole(), Integer.valueOf(bieEq.getSex()), Integer.valueOf(bieEq.getNeedGg()), Integer.valueOf(bieEq.getNeedLx()), Integer.valueOf(bieEq.getNeedLl()), Integer.valueOf(bieEq.getNeedMj()), Integer.valueOf(bieEq.getNeedRei()), Integer.valueOf(bieEq.getNeedGrade()), isHint);
         }
-        if (type == ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY.getValue()) {
-            final SysDataAcsry acsry = EquipDataPool.acsryMap.get(equip.getType());
-            return this.wearEquipCheckLimit(role, equip, acsry.getOwnerRole(), acsry.getSex(), acsry.getNeedGg(), acsry.getNeedLx(), acsry.getNeedLl(), acsry.getNeedMj(), acsry.getNeedRei(), acsry.getNeedGrade(), isHint);
+        if ((int)type == ITEMLARGETYPE.ITEM_LARGE_TYPE_ACSRY.getValue()) {
+            SysDataAcsry acsry = (SysDataAcsry)EquipDataPool.acsryMap.get(Integer.valueOf(equip.getType()));
+            return this.wearEquipCheckLimit(role, equip, acsry.getOwnerRole(), Integer.valueOf(acsry.getSex()), Integer.valueOf(acsry.getNeedGg()), Integer.valueOf(acsry.getNeedLx()), Integer.valueOf(acsry.getNeedLl()), Integer.valueOf(acsry.getNeedMj()), Integer.valueOf(acsry.getNeedRei()), Integer.valueOf(acsry.getNeedGrade()), isHint);
         }
         MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), "穿戴条件不匹配", false));
         return "穿戴条件不匹配";
     }
     
-    public String wearEquipCheckLimit(final Role role, final BagEquip equip, final List<Integer> ownerRole, final Integer sex, final Integer gg, final Integer lx, final Integer ll, final Integer mj, final Integer relive, final Integer level, final boolean isHint) {
+    public String wearEquipCheckLimit(Role role, BagEquip equip, List<Integer> ownerRole, Integer sex, Integer gg, Integer lx, Integer ll, Integer mj, Integer relive, Integer level, boolean isHint) {
         String msg = null;
-        if (!ownerRole.contains(0) && !ownerRole.contains(role.getSerial()) && !ownerRole.contains(role.getRace())) {
+        if (!ownerRole.contains(Integer.valueOf(0)) && !ownerRole.contains(role.getSerial()) && !ownerRole.contains(role.getRace())) {
             msg = "种族不匹配";
         }
-        if (sex != 0 && !sex.equals(role.getSex())) {
+        if ((int)sex != 0 && !sex.equals(role.getSex())) {
             msg = "性别不匹配";
         }
-        if (role.getGg() + CountUtils.countExtraPro(role, PRO_DICT_TYPE.GG.getDist(), equip.getId()) < gg) {
+        if ((double)(int)role.getGg() + CountUtils.countExtraPro(role, Integer.valueOf(PRO_DICT_TYPE.GG.getDist()), equip.getId()) < (double)(int)gg) {
             msg = "你的#<R>根骨属性#不足#<R>" + gg + "#";
         }
-        if (role.getLx() + CountUtils.countExtraPro(role, PRO_DICT_TYPE.LX.getDist(), equip.getId()) < lx) {
+        if ((double)(int)role.getLx() + CountUtils.countExtraPro(role, Integer.valueOf(PRO_DICT_TYPE.LX.getDist()), equip.getId()) < (double)(int)lx) {
             msg = "你的#<R>灵性属性#不足#<R>" + lx + "#";
         }
-        if (role.getLl() + CountUtils.countExtraPro(role, PRO_DICT_TYPE.LL.getDist(), equip.getId()) < ll) {
+        if ((double)(int)role.getLl() + CountUtils.countExtraPro(role, Integer.valueOf(PRO_DICT_TYPE.LL.getDist()), equip.getId()) < (double)(int)ll) {
             msg = "你的#<R>力量属性#不足#<R>" + ll + "#";
         }
-        if (role.getMj() + CountUtils.countExtraPro(role, PRO_DICT_TYPE.MJ.getDist(), equip.getId()) < mj) {
+        if ((double)(int)role.getMj() + CountUtils.countExtraPro(role, Integer.valueOf(PRO_DICT_TYPE.MJ.getDist()), equip.getId()) < (double)(int)mj) {
             msg = "你的#<R>敏捷属性#不足#<R>" + mj + "#";
         }
-        final int need = relive * 1000 + level;
-        final int curve = role.getRelive() * 1000 + role.getLevel();
+        int need = (int)relive * 1000 + (int)level;
+        int curve = (int)role.getRelive() * 1000 + (int)role.getLevel();
         if (curve < need) {
             msg = "你的#<R>角色等级#不足";
-            if (relive > 0) {
+            if ((int)relive > 0) {
                 msg = msg + "#<R>" + relive + "转" + level + "级#";
             }
             else {
@@ -460,59 +466,62 @@ public class EquipService
         }
         if (isHint) {
             MessagePusher.pushMessage(role, new RespNotifyMiscEx(msg));
+            return msg;
         }
         return msg;
     }
     
-    public BagEquip addEquip(final Role role, final BagEquip equip, final int pos, final int bd, final String cause) {
+    public BagEquip addEquip(Role role, BagEquip equip, int pos, int bd, String cause) {
         if (equip != null) {
             equip.setBd(bd);
             equip.setPos(pos);
-            equip.setRId(role.getId());
-            equip.setId(this.worker.nextId());
+            equip.setRId((long)role.getId());
+            equip.setId(Long.valueOf(this.worker.nextId()));
             this.bagService.addEquip(role, equip, true, cause);
             return equip;
         }
         return null;
     }
     
-    public List<WearEquip> getEquipValid(final Role role, final boolean is) {
-        final List<WearEquip> list = new ArrayList<WearEquip>();
+    public List<WearEquip> getEquipValid(Role role, boolean is) {
+        List<WearEquip> list = new ArrayList<>();
         try {
-            final List<WearEquip> wearEquips = this.selectWearEquip(role);
-            for (final WearEquip wearEquip : wearEquips) {
-                final BagEquip equip = new BagEquip();
+            List<WearEquip> wearEquips = this.selectWearEquip(role);
+            for (WearEquip wearEquip : wearEquips) {
+                BagEquip equip = new BagEquip();
                 BeanUtils.copyBeanProp(equip, wearEquip);
-                final int valid = this.checkEquipValid(role, equip, is);
+                int valid = this.checkEquipValid(role, equip, is);
                 if (valid <= 0) {
                     continue;
                 }
                 list.add(wearEquip);
             }
         }
-        catch (final ConcurrentModificationException ex) {}
+        catch (ConcurrentModificationException ex) {}
         return list;
     }
     
-    public int checkEquipValid(final Role role, final BagEquip equip, final boolean is) {
-        final String tips = this.wearEquipCheck(role, equip, false);
+    public int checkEquipValid(Role role, BagEquip equip, boolean is) {
+        String tips = this.wearEquipCheck(role, equip, false);
         if (tips != null) {
             if (is) {
-                MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), String.format(tips + ", #<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#失效了", equip.getType(), equip.getType(), equip.getType(), equip.getName()), false));
+                MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), String.format(tips + ", #<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#失效了", Integer.valueOf(equip.getType()), Integer.valueOf(equip.getType()), Integer.valueOf(equip.getType()), equip.getName()), false));
             }
             return 0;
         }
-        if (equip.getPosition() == ADORN.WEAPON.getValue()) {
-            role.setWeaponIcon(equip.getType());
+        else {
+            if (equip.getPosition() == ADORN.WEAPON.getValue()) {
+                role.setWeaponIcon(equip.getType());
+            }
+            return 1;
         }
-        return 1;
     }
     
-    public void checkEquipValid(final Role role) {
-        final List<WearEquip> wearEquips = this.selectWearEquip(role);
+    public void checkEquipValid(Role role) {
+        List<WearEquip> wearEquips = this.selectWearEquip(role);
         for (int i = 0; i < wearEquips.size(); ++i) {
-            final WearEquip wearEquip = wearEquips.get(i);
-            final BagEquip equip = new BagEquip();
+            WearEquip wearEquip = (WearEquip)wearEquips.get(i);
+            BagEquip equip = new BagEquip();
             BeanUtils.copyBeanProp(equip, wearEquip);
             wearEquips.set(i, wearEquip);
             wearEquip.save();
@@ -521,14 +530,14 @@ public class EquipService
         }
     }
     
-    public void upgradeEquip(final Role role, final int pos, final int type, final String param, final int operationType, final boolean flag, final String cause) {
+    public void upgradeEquip(Role role, int pos, int type, String param, int operationType, boolean flag, String cause) {
         if (type != 11 && !SafeUtil.isUnlock(role)) {
             return;
         }
-        final UpgradeHandler handler = UpgradeHelper.INSTANCE.getHandler(type);
+        UpgradeHandler handler = UpgradeHelper.INSTANCE.getHandler(Integer.valueOf(type));
         if (handler != null) {
-            final String message = handler.acceptUpgrade(role, pos, operationType, param, cause);
-            if (!Strings.isEmpty((CharSequence)message) && message != null) {
+            String message = handler.acceptUpgrade(role, Integer.valueOf(pos), Integer.valueOf(operationType), param, cause);
+            if (!Strings.isEmpty(message) && message != null) {
                 MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), message, false));
             }
             else {
@@ -538,9 +547,10 @@ public class EquipService
         else {
             MessagePusher.pushMessage(role, new RespMsg("很抱歉，该功能暂未开放。"));
         }
+        return;
     }
     
-    public void changeEquip(final Role role, final BagEquip equip, final WearEquip wearEquip, final boolean is) {
+    public void changeEquip(Role role, BagEquip equip, WearEquip wearEquip, boolean is) {
         if (equip != null) {
             this.handleOnEquip(role, equip);
             this.broadcastService.handleOnEquip(role, equip);
@@ -550,52 +560,58 @@ public class EquipService
         }
     }
     
-    public void addEffect(final Role role, final int serial, final int bd) {
-        final SysEffect sysEffect = ItemDataPool.effectMap.get(serial);
+    public void addEffect(Role role, int serial, int bd) {
+        SysEffect sysEffect = (SysEffect)ItemDataPool.effectMap.get(Integer.valueOf(serial));
         if (sysEffect == null) {
             return;
         }
-        final List<Effect> effects = this.selectEffect(role);
-        final Effect effect = new Effect(this.worker.nextId(), role.getId(), serial, (byte)0, bd, sysEffect.getPart());
+        List<Effect> effects = this.selectEffect(role);
+        Effect effect = new Effect(Long.valueOf(this.worker.nextId()), (long)role.getId(), serial, (byte)0, bd, sysEffect.getPart());
         effects.add(effect);
         effect.save();
+        return;
     }
     
-    public void getEffect(final Role role) {
-        final List<Effect> effects = this.selectEffect(role);
-        final int time = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final RespEffect respEffect = new RespEffect();
-        for (final Effect effect : effects) {
+    public void getEffect(Role role) {
+        List<Effect> effects = this.selectEffect(role);
+        int time = new Long(System.currentTimeMillis() / 1000L).intValue();
+        RespEffect respEffect = new RespEffect();
+        for (Effect effect : effects) {
             if (effect.getTime() < time) {
                 respEffect.getList().add(new EffectInfo(effect.getSerial(), effect.getState(), effect.getTime()));
+            }
+            else {
+                continue;
             }
         }
         MessagePusher.pushMessage(role, respEffect);
     }
     
-    public List<Integer> getWearEffect(final Role role) {
-        final List<Integer> list = new ArrayList<Integer>();
-        final List<Effect> effects = this.selectEffect(role);
-        final List<Effect> collect = effects.stream().filter(e -> e.getState() == 1).collect(Collectors.toList());
-        for (final Effect effect : collect) {
-            list.add(effect.getSerial());
+    public List<Integer> getWearEffect(Role role) {
+        List<Integer> list = new ArrayList<>();
+        List<Effect> effects = this.selectEffect(role);
+        List<Effect> collect = (List)effects.stream().filter(e -> e.getState() == 1).collect(Collectors.toList());
+        for (Effect effect : collect) {
+            list.add(Integer.valueOf(effect.getSerial()));
         }
         return list;
     }
     
-    public void wearEffect(final Role role, final int serial) {
-        final Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
-        final SysEffect effect = effectMap.get(serial);
+    public void wearEffect(Role role, int serial) {
+        Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
+        SysEffect effect = (SysEffect)effectMap.get(Integer.valueOf(serial));
         if (effect == null) {
             return;
         }
-        final List<Effect> effects = this.selectEffect(role);
-        final Effect orElse = effects.stream().filter(e -> e.getSerial() == serial).findFirst().orElse(null);
+        List<Effect> effects = this.selectEffect(role);
+        Effect orElse = (Effect)effects.stream().filter(e -> e.getSerial() == serial).findFirst().orElse(null);
         if (orElse == null) {
             return;
         }
-        final List<Effect> collect = effects.stream().filter(e -> e.getState() == 1 && e.getPart() == effect.getPart()).collect(Collectors.toList());
-        for (Effect e : collect) {
+        List<Effect> collect = (List)effects.stream().filter(e -> e.getState() == 1 && e.getPart() == effect.getPart()).collect(Collectors.toList());
+        Iterator<Effect> iterator = collect.iterator();
+        while (iterator.hasNext()) {
+        	Effect e = (Effect)iterator.next();
             e.setState((byte)0);
             e.save();
         }
@@ -604,16 +620,17 @@ public class EquipService
         MessagePusher.pushMessage(role, new RespHint(26, (short)1));
         this.broadcastService.sendUpdateAppear(role);
         EventDispatcher.getInstance().fireEvent(new RoleAspectChangeEvent(EventType.ROLE_ASPECT_CHANGE, role));
+        return;
     }
     
-    public void unEffect(final Role role, final int serial) {
-        final Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
-        final SysEffect effect = effectMap.get(serial);
+    public void unEffect(Role role, int serial) {
+        Map<Integer, SysEffect> effectMap = ItemDataPool.effectMap;
+        SysEffect effect = (SysEffect)effectMap.get(Integer.valueOf(serial));
         if (effect == null) {
             return;
         }
-        final List<Effect> effects = this.selectEffect(role);
-        final Effect orElse = effects.stream().filter(e -> e.getSerial() == serial).findFirst().orElse(null);
+        List<Effect> effects = this.selectEffect(role);
+        Effect orElse = (Effect)effects.stream().filter(e -> e.getSerial() == serial).findFirst().orElse(null);
         if (orElse == null) {
             return;
         }
@@ -622,113 +639,117 @@ public class EquipService
         MessagePusher.pushMessage(role, new RespHint(27, (short)1));
         this.broadcastService.sendUpdateAppear(role);
         EventDispatcher.getInstance().fireEvent(new RoleAspectChangeEvent(EventType.ROLE_ASPECT_CHANGE, role));
+        return;
     }
     
-    public void wearEquip(final Role role, final ReqPetEquip reqPetEquip) {
-        final boolean clicker = this.roleService.mouserClicker(role, "eq", 250L);
+    public void wearEquip(Role role, ReqPetEquip reqPetEquip) {
+        boolean clicker = this.roleService.mouserClicker(role, "eq", 250L);
         if (!clicker) {
             return;
         }
         if (!NumberUtil.isNumber(reqPetEquip.getId()) || !NumberUtil.isNumber(reqPetEquip.getEId())) {
             return;
         }
-        final int petId = Integer.valueOf(reqPetEquip.getId());
-        final long eId = Long.valueOf(reqPetEquip.getEId());
-        final Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
+        int petId = (int)Integer.valueOf(reqPetEquip.getId());
+        long eId = (long)Long.valueOf(reqPetEquip.getEId());
+        Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip((long)role.getId());
         if (petEquipMap == null || petEquipMap.size() <= 0) {
             return;
         }
-        final PetEquip equip = petEquipMap.values().stream().filter(e -> e.getId().equals(eId)).findFirst().orElse(null);
+        PetEquip equip = (PetEquip)petEquipMap.values().stream().filter(e -> e.getId().equals(Long.valueOf(eId))).findFirst().orElse(null);
         if (equip != null && equip.getId() != null && equip.getPId() <= 0L) {
-            final Pet pet = this.petService.selectPet(role).get(petId);
+            Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(petId));
             if (pet == null) {
                 return;
             }
-            final SysPetAcsry sysPetAcsry = EquipDataPool.petAcsryMap.get(equip.getSerial());
-            if (pet.getRebirth() * 1000 + pet.getPetLv() >= sysPetAcsry.getNeedRei() * 1000 + sysPetAcsry.getNeedGrade()) {
-                final PetEquip wearEquip = petEquipMap.values().stream().filter(e -> e.getPosition() == sysPetAcsry.getPos() && pet.getId().equals(e.getPId())).findFirst().orElse(null);
+            SysPetAcsry sysPetAcsry = (SysPetAcsry)EquipDataPool.petAcsryMap.get(Integer.valueOf(equip.getSerial()));
+            if ((int)pet.getRebirth() * 1000 + (int)pet.getPetLv() >= sysPetAcsry.getNeedRei() * 1000 + sysPetAcsry.getNeedGrade()) {
+                PetEquip wearEquip = (PetEquip)petEquipMap.values().stream().filter(e -> e.getPosition() == sysPetAcsry.getPos() && pet.getId().equals(Long.valueOf(e.getPId()))).findFirst().orElse(null);
                 if (wearEquip != null) {
                     wearEquip.setPId(0L);
-                    final int positionNum = wearEquip.getPositionNum() - 1;
+                    int positionNum = wearEquip.getPositionNum() - 1;
                     wearEquip.setPositionNum((short)((positionNum < 0) ? 0 : positionNum));
                     wearEquip.save();
                     this.refreshPetEquip(role, wearEquip);
                 }
-                equip.setPId(pet.getId());
+                equip.setPId((long)pet.getId());
                 equip.save();
                 this.refreshPetEquip(role, equip);
-                this.petService.calculateBase(role.getId(), pet);
-                this.petService.getArenaScore(role.getId(), pet);
+                this.petService.calculateBase((long)role.getId(), pet);
+                this.petService.getArenaScore((long)role.getId(), pet);
                 this.petService.sendPetPanels(role, pet);
                 pet.save();
             }
             else {
-                final String tips = String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", sysPetAcsry.getSerial(), 0, 0, sysPetAcsry.getSerial(), sysPetAcsry.getSerial(), sysPetAcsry.getName());
-                final String msg = String.format("%s需要召唤兽达到#<R>%s转%d级#之后才可装备", tips, sysPetAcsry.getNeedRei(), sysPetAcsry.getNeedGrade());
+                String tips = String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", Integer.valueOf(sysPetAcsry.getSerial()), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(sysPetAcsry.getSerial()), Integer.valueOf(sysPetAcsry.getSerial()), sysPetAcsry.getName());
+                String msg = String.format("%s需要召唤兽达到#<R>%s转%d级#之后才可装备", tips, Integer.valueOf(sysPetAcsry.getNeedRei()), Integer.valueOf(sysPetAcsry.getNeedGrade()));
                 MessagePusher.pushMessage(role, new RespMsg(msg));
             }
         }
+        return;
     }
     
-    public void unEquip(final Role role, final ReqUnPetEquip reqUnPetEquip) {
-        final int petId = Integer.valueOf(reqUnPetEquip.getId());
-        final Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
+    public void unEquip(Role role, ReqUnPetEquip reqUnPetEquip) {
+        int petId = (int)Integer.valueOf(reqUnPetEquip.getId());
+        Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip((long)role.getId());
         if (petEquipMap == null || petEquipMap.size() <= 0) {
             return;
         }
-        final Pet pet = this.petService.selectPet(role).get(petId);
+        Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(petId));
         if (pet == null) {
             return;
         }
-        final PetEquip equip = petEquipMap.values().stream().filter(e -> e.getPosition() == reqUnPetEquip.getPosition() && pet.getId().equals(e.getPId())).findFirst().orElse(null);
+        PetEquip equip = (PetEquip)petEquipMap.values().stream().filter(e -> e.getPosition() == reqUnPetEquip.getPosition() && pet.getId().equals(Long.valueOf(e.getPId()))).findFirst().orElse(null);
         if (equip != null && equip.getId() != null) {
-            final int pos = this.bagService.getPos(role, true);
+            int pos = this.bagService.getPos(role, true);
             if (pos <= 0) {
                 MessagePusher.pushMessage(role, new RespMsg("物品栏空间不足"));
                 return;
             }
             equip.setPId(0L);
-            final int positionNum = equip.getPositionNum() - 1;
+            int positionNum = equip.getPositionNum() - 1;
             equip.setPositionNum((short)((positionNum < 0) ? 0 : positionNum));
             equip.save();
             this.refreshPetEquip(role, equip);
-            this.petService.calculateBase(role.getId(), pet);
-            this.petService.getArenaScore(role.getId(), pet);
+            this.petService.calculateBase((long)role.getId(), pet);
+            this.petService.getArenaScore((long)role.getId(), pet);
             this.petService.sendPetPanels(role, pet);
             pet.save();
         }
+        return;
     }
     
-    public void repairPetAcsry(final Role role, final ReqRepairPetAcsry repairPetAcsry) {
-        final Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
+    public void repairPetAcsry(Role role, ReqRepairPetAcsry repairPetAcsry) {
+        Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip((long)role.getId());
         if (petEquipMap == null || petEquipMap.size() <= 0 || !NumberUtil.isNumber(repairPetAcsry.getId())) {
             return;
         }
-        final Long id = Long.valueOf(repairPetAcsry.getId());
-        final PetEquip equip = petEquipMap.get(id);
+        Long id = Long.valueOf(repairPetAcsry.getId());
+        PetEquip equip = (PetEquip)petEquipMap.get(id);
         if (equip == null || equip.getId() == null || equip.getPositionNum() >= 2) {
             return;
         }
-        final int num = (repairPetAcsry.getNum() > 2) ? 2 : repairPetAcsry.getNum();
-        final Long price = Const.PET_ACSRY_REPAIR_COST.get(equip.getProductOrder());
-        if (this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, price * num, "宠物佩饰修复")) {
-            final int positionNum = (equip.getPositionNum() <= 0) ? 0 : equip.getPositionNum();
+        int num = (repairPetAcsry.getNum() > 2) ? 2 : repairPetAcsry.getNum();
+        Long price = (Long)Const.PET_ACSRY_REPAIR_COST.get(Byte.valueOf(equip.getProductOrder()));
+        if (this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, (long)price * (long)num, "宠物佩饰修复")) {
+            int positionNum = (equip.getPositionNum() <= 0) ? 0 : equip.getPositionNum();
             equip.setPositionNum((short)((positionNum + num > 2) ? 2 : (positionNum + num)));
             equip.save();
             this.refreshPetEquip(role, equip);
         }
+        return;
     }
     
-    public void petAcsryLock(final Role role, final ReqPetAcsryLock petAcsryLock) {
+    public void petAcsryLock(Role role, ReqPetAcsryLock petAcsryLock) {
         if (petAcsryLock.getLock() < 0 || petAcsryLock.getLock() > 1) {
             return;
         }
-        final Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip(role.getId());
+        Map<Long, PetEquip> petEquipMap = this.bagService.getPetBagEquip((long)role.getId());
         if (petEquipMap == null || petEquipMap.size() <= 0 || !NumberUtil.isNumber(petAcsryLock.getId())) {
             return;
         }
-        final Long id = Long.valueOf(petAcsryLock.getId());
-        final PetEquip equip = petEquipMap.get(id);
+        Long id = Long.valueOf(petAcsryLock.getId());
+        PetEquip equip = (PetEquip)petEquipMap.get(id);
         if (equip == null || equip.getId() == null) {
             return;
         }
@@ -738,5 +759,6 @@ public class EquipService
         equip.setLock(petAcsryLock.getLock());
         equip.save();
         this.refreshPetEquip(role, equip);
+        return;
     }
 }

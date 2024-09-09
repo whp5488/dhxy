@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.bean;
 
 import java.util.regex.Matcher;
@@ -13,21 +12,23 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
     private static final Pattern GET_PATTERN;
     private static final Pattern SET_PATTERN;
     
-    public static void copyBeanProp(final Object dest, final Object src) {
+    public BeanUtils() {
+    }
+    
+    public static void copyBeanProp(Object dest, Object src) {
         try {
             copyProperties(src, dest);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public static List<Method> getSetterMethods(final Object obj) {
-        final List<Method> setterMethods = new ArrayList<Method>();
-        final Method[] methods2;
-        final Method[] methods = methods2 = obj.getClass().getMethods();
-        for (final Method method : methods2) {
-            final Matcher m = BeanUtils.SET_PATTERN.matcher(method.getName());
+    public static List<Method> getSetterMethods(Object obj) {
+        List<Method> setterMethods = new ArrayList<>();
+        Method[] methods;
+        for (Method method : methods = obj.getClass().getMethods()) {
+            Matcher m = BeanUtils.SET_PATTERN.matcher(method.getName());
             if (m.matches() && method.getParameterTypes().length == 1) {
                 setterMethods.add(method);
             }
@@ -35,12 +36,11 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
         return setterMethods;
     }
     
-    public static List<Method> getGetterMethods(final Object obj) {
-        final List<Method> getterMethods = new ArrayList<Method>();
-        final Method[] methods2;
-        final Method[] methods = methods2 = obj.getClass().getMethods();
-        for (final Method method : methods2) {
-            final Matcher m = BeanUtils.GET_PATTERN.matcher(method.getName());
+    public static List<Method> getGetterMethods(Object obj) {
+        List<Method> getterMethods = new ArrayList<>();
+        Method[] methods;
+        for (Method method : methods = obj.getClass().getMethods()) {
+            Matcher m = BeanUtils.GET_PATTERN.matcher(method.getName());
             if (m.matches() && method.getParameterTypes().length == 0) {
                 getterMethods.add(method);
             }
@@ -48,7 +48,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
         return getterMethods;
     }
     
-    public static boolean isMethodPropEquals(final String m1, final String m2) {
+    public static boolean isMethodPropEquals(String m1, String m2) {
         return m1.substring(3).equals(m2.substring(3));
     }
     

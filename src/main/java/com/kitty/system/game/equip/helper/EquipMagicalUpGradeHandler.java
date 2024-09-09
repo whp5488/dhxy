@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.helper;
 
 import com.kitty.system.game.fightnew.utils.SkillAi;
@@ -15,7 +14,6 @@ import com.kitty.system.game.vo.FiedEquip;
 import java.util.Map;
 import com.kitty.system.game.bag.domain.BagEquip;
 import com.kitty.system.game.equip.helper.vo.EquipInfo;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespHint;
 import com.kitty.system.init.domain.SysMagicalBieEq;
@@ -37,27 +35,30 @@ public class EquipMagicalUpGradeHandler extends UpgradeHandler
     public static final int[] SILVER;
     public static final String BUGLE = "#<B>{0}#紧张得闭上了眼，只觉得风雷奔涌，霸气横流。睁开眼，何大雷已经送上#<G>{1}级神兵#{2}!";
     
+    public EquipMagicalUpGradeHandler() {
+    }
+    
     @Override
-    public String acceptUpgrade(final Role role, final Integer pos, final Integer type, final String param, final String cause) {
-        final String[] split = param.split("-");
+    public String acceptUpgrade(Role role, Integer pos, Integer type, String param, String cause) {
+        String[] split = param.split("-");
         if (split.length < 2) {
             return "请先选择一种低级神兵作为材料";
         }
-        final Long id = Long.valueOf(split[0]);
-        final Long aux_id = Long.valueOf(split[1]);
-        final EquipInfo equipInfo = this.getEquip(role, 1, id);
+        Long id = Long.valueOf(split[0]);
+        Long aux_id = Long.valueOf(split[1]);
+        EquipInfo equipInfo = this.getEquip(role, 1, id);
         if (equipInfo.getTips() != null) {
-            this.logger.error("神兵升阶：获取物品ID = {}", (Object)id);
+            this.logger.error("神兵升阶：获取物品ID = {}", id);
             return equipInfo.getTips();
         }
-        final BagEquip equip = equipInfo.getEquip();
-        final Map<Integer, SysMagicalBieEq> magicalBieEq = EquipDataPool.magicalBieEq;
-        final SysMagicalBieEq bieEq = magicalBieEq.get(equip.getType());
+        BagEquip equip = equipInfo.getEquip();
+        Map<Integer, SysMagicalBieEq> magicalBieEq = EquipDataPool.magicalBieEq;
+        SysMagicalBieEq bieEq = magicalBieEq.get(equip.getType());
         if (this.getPj(bieEq.getSerial()) <= 1) {
-            final boolean deduct = this.deduct(role, this.getPj(bieEq.getSerial()), this.getPj(bieEq.getSerial()), type);
-            if (deduct) {
-                final boolean flag = rate(this.getPj(bieEq.getSerial()), type, 0);
-                if (flag) {
+            boolean deduct2 = this.deduct(role, this.getPj(bieEq.getSerial()), this.getPj(bieEq.getSerial()), (int)type);
+            if (deduct2) {
+                boolean flag2 = rate(this.getPj(bieEq.getSerial()), (int)type, 0);
+                if (flag2) {
                     this.succeed(role, magicalBieEq, equip);
                 }
                 else {
@@ -66,16 +67,16 @@ public class EquipMagicalUpGradeHandler extends UpgradeHandler
             }
         }
         else {
-            final BagEquip auxEquip = this.getEquip(role, 1, aux_id).getEquip();
+            BagEquip auxEquip = this.getEquip(role, 1, aux_id).getEquip();
             if (auxEquip == null) {
                 return "请先选择一种低级神兵作为材料";
             }
             if (equip != null && auxEquip != null) {
-                final SysMagicalBieEq auxBieEq = magicalBieEq.get(auxEquip.getType());
-                final boolean deduct2 = this.deduct(role, this.getPj(bieEq.getSerial()), this.getPj(auxBieEq.getSerial()), type);
-                if (deduct2) {
-                    final boolean flag2 = rate(this.getPj(bieEq.getSerial()), type, this.getPj(auxBieEq.getSerial()));
-                    if (flag2) {
+                SysMagicalBieEq auxBieEq = magicalBieEq.get(auxEquip.getType());
+                boolean deduct = this.deduct(role, this.getPj(bieEq.getSerial()), this.getPj(auxBieEq.getSerial()), type);
+                if (deduct) {
+                    boolean flag = rate(this.getPj(bieEq.getSerial()), type, this.getPj(auxBieEq.getSerial()));
+                    if (flag) {
                         this.bagService.deleteRoleEquip(role, auxEquip, "升阶成功删除材料装备");
                         this.succeed(role, magicalBieEq, equip);
                     }
@@ -88,44 +89,44 @@ public class EquipMagicalUpGradeHandler extends UpgradeHandler
         return null;
     }
     
-    public void succeed(final Role role, final Map<Integer, SysMagicalBieEq> magicalBieEq, final BagEquip equip) {
+    public void succeed(Role role, Map<Integer, SysMagicalBieEq> magicalBieEq, BagEquip equip) {
         int bn = 0;
-        final Optional<FiedEquip> first = equip.getField().stream().filter(e -> e.getType().equals(6670)).findFirst();
+        Optional<FiedEquip> first = equip.getField().stream().filter(e -> e.getType().equals(6670)).findFirst();
         if (first.isPresent()) {
-            final FiedEquip fiedEquip = first.get();
+            FiedEquip fiedEquip = first.get();
             bn = fiedEquip.getValue();
         }
         BagEquip newEq = new BagEquip();
         BeanUtils.copyBeanProp(newEq, equip);
-        final SysMagicalBieEq sysMagicalBieEq = magicalBieEq.get(equip.getType() + 100000);
-        final List<FiedEquip> field = MakeAttribute.createBaseBieEq(sysMagicalBieEq.getBaseAttr(), sysMagicalBieEq.getMaxEndure(), sysMagicalBieEq.getSerial(), sysMagicalBieEq.getRndRange(), bn);
+        SysMagicalBieEq sysMagicalBieEq = magicalBieEq.get(equip.getType() + 100000);
+        List<FiedEquip> field = MakeAttribute.createBaseBieEq(sysMagicalBieEq.getBaseAttr(), sysMagicalBieEq.getMaxEndure(), sysMagicalBieEq.getSerial(), sysMagicalBieEq.getRndRange(), bn);
         newEq = this.clearHistory(newEq);
         newEq.setField(field);
         newEq.setType(sysMagicalBieEq.getSerial());
         newEq.setName(sysMagicalBieEq.getName());
         newEq.setField(field);
-        final Integer score = MakeAttribute.calEquipScore(newEq);
+        Integer score = MakeAttribute.calEquipScore(newEq);
         field.add(new FiedEquip(6679, score + sysMagicalBieEq.getBaseScore()));
         newEq.setField(field);
         this.refresh(role, newEq, equip.getPos(), equip.getId(), true);
         MessagePusher.pushMessage(role, new RespHint(2, (short)1));
         this.animation(role, equip, newEq, ITEMLARGETYPE.ITEM_LARGE_TYPE_SHENBING.getValue());
-        final int pj = this.getPj(sysMagicalBieEq.getSerial());
-        MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), MessageFormat.format("升级成功，你得到了一件{0}级{1}", pj, sysMagicalBieEq.getName()), false));
+        int pj = this.getPj(sysMagicalBieEq.getSerial());
+        MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), MessageFormat.format("升级成功，你得到了一件{0}级{1}", Integer.valueOf(pj), sysMagicalBieEq.getName()), false));
         if (pj >= 3) {
-            this.chatService.sendLaba(MessageFormat.format("#<B>{0}#紧张得闭上了眼，只觉得风雷奔涌，霸气横流。睁开眼，何大雷已经送上#<G>{1}级神兵#{2}!", role.getName(), pj, String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", newEq.getType(), newEq.getId(), role.getRoleId(), newEq.getType(), newEq.getType(), newEq.getName())));
+            this.chatService.sendLaba(MessageFormat.format("#<B>{0}#紧张得闭上了眼，只觉得风雷奔涌，霸气横流。睁开眼，何大雷已经送上#<G>{1}级神兵#{2}!", role.getName(), Integer.valueOf(pj), String.format("#<II%d>##<MI:%d,M:1,MP:%d,MT:%d,CI:%d>[%s]#", Integer.valueOf(newEq.getType()), newEq.getId(), role.getRoleId(), Integer.valueOf(newEq.getType()), Integer.valueOf(newEq.getType()), newEq.getName())));
         }
         role.save();
     }
     
-    public void failure(final Role role, final BagEquip equip, final int grade) {
+    public void failure(Role role, BagEquip equip, int grade) {
         MessagePusher.pushMessage(role, new RespHint(2, (short)0));
         this.bagService.deleteRoleEquip(role, equip, "升阶失败删除材料装备");
-        final int num = RandomUtil.round(1, (grade > 3) ? 3 : grade);
+        int num = RandomUtil.round(1, (grade > 3) ? 3 : grade);
         try {
             Thread.sleep(1500L);
         }
-        catch (final InterruptedException e) {
+        catch (InterruptedException e) {
             e.printStackTrace();
         }
         this.bagService.addGoods(role, 75042, num, 0, true, true, "神兵升阶");
@@ -133,24 +134,24 @@ public class EquipMagicalUpGradeHandler extends UpgradeHandler
         role.save();
     }
     
-    public boolean deduct(final Role role, final int grade, final int pj, final int type) {
-        final int silver = EquipMagicalUpGradeHandler.SILVER[grade - 1];
+    public boolean deduct(Role role, int grade, int pj, int type) {
+        int silver = EquipMagicalUpGradeHandler.SILVER[grade - 1];
         if (!this.roleService.checkCurrency(role, Const.RESTYPE_SILVER, silver)) {
             return false;
         }
         if (type > 0) {
-            final int num = grade * pj;
-            final Integer numOne = this.bagService.getBagGoods(role, 75047, num);
-            final Integer numTwo = this.bagService.getBagGoods(role, 75030, num);
+            int num = grade * pj;
+            Integer numOne = this.bagService.getBagGoods(role, 75047, num);
+            Integer numTwo = this.bagService.getBagGoods(role, 75030, num);
             if (numOne != null || numTwo != null) {
                 MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), "请先选择一种低级神兵作为材料", false));
                 return false;
             }
-            final Integer integer = this.bagService.consumeBagGoods(role, 75047, num, true, true, "神兵升阶");
+            Integer integer = this.bagService.consumeBagGoods(role, 75047, num, true, true, "神兵升阶");
             if (integer != null) {
                 return false;
             }
-            final Integer integer2 = this.bagService.consumeBagGoods(role, 75030, num, true, true, "神兵升阶");
+            Integer integer2 = this.bagService.consumeBagGoods(role, 75030, num, true, true, "神兵升阶");
             if (integer2 != null) {
                 return false;
             }
@@ -159,12 +160,12 @@ public class EquipMagicalUpGradeHandler extends UpgradeHandler
         return true;
     }
     
-    public static boolean rate(final int grade, final int prop, final int helpLevel) {
+    public static boolean rate(int grade, int prop, int helpLevel) {
         double rate = EquipMagicalUpGradeHandler.ODDS[grade - 1];
         if (prop > 0) {
             rate += 0.01;
         }
-        rate += helpLevel * 0.01;
+        rate += (double)helpLevel * 0.01;
         return SkillAi.canAffectOnPro(rate);
     }
     

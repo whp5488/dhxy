@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.interfaces;
 
 public interface NpcButton

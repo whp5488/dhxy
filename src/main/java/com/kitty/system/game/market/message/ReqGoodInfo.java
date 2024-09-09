@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqGoodInfo extends Message
 {
     private short serial;
     private String id;
+    
+    public ReqGoodInfo() {
+    }
     
     public void setSerial(final short serial) {
         this.serial = serial;

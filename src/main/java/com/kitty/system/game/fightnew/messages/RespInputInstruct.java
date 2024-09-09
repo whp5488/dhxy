@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -54,7 +52,6 @@ public class RespInputInstruct extends Message
         return this.sandClock;
     }
     
-    @ConstructorProperties({ "attaId", "targetId", "action", "skillId", "sandClock" })
     public RespInputInstruct(final int attaId, final int targetId, final int action, final int skillId, final int sandClock) {
         this.attaId = attaId;
         this.targetId = targetId;

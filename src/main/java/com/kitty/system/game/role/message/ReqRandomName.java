@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class ReqRandomName extends Message
 {
     private Integer gender;
     
+    public ReqRandomName() {
+    }
+    
     public Integer getSex() {
         return this.gender;
     }
     
-    public void setSex(final Integer sex) {
+    public void setSex(Integer sex) {
         this.gender = sex;
     }
 }

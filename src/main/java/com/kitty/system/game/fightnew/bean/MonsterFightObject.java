@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import java.util.Optional;
@@ -9,7 +8,6 @@ import com.kitty.common.utils.RandomUtil;
 import org.nutz.lang.util.NutMap;
 import com.kitty.system.game.fightnew.pool.FightDataPool;
 import com.kitty.system.init.domain.SysDataMonsterPeripheral;
-import com.kitty.system.init.domain.vo.SkillParameter;
 import com.kitty.system.game.fightnew.utils.SkillFunc;
 import com.kitty.system.enums.war.wardef.LOGIC;
 import com.kitty.system.common.data.DataGlobalFunc;
@@ -23,21 +21,22 @@ public class MonsterFightObject extends FightObject
     private Integer selectMonsterSerial;
     private int monsterType;
     
-    public MonsterFightObject(final SysDataMonster monster, final Integer pos, final int monsterId) {
-        this.selectMonsterSerial = 0;
+    public MonsterFightObject(SysDataMonster monster, Integer pos, int monsterId) {
+        this.selectMonsterSerial = Integer.valueOf(0);
         this.loadPeripheral(monster);
-        final int life = monster.getHp();
-        final int mana = monster.getMp();
-        final int speed = monster.getSp();
-        final int power = monster.getAp();
-        this.setId(monsterId);
+        int life = (int)Integer.valueOf((int)monster.getHp());
+        int mana = (int)Integer.valueOf((int)monster.getMp());
+        int speed = (int)Integer.valueOf((int)monster.getSp());
+        int power = (int)Integer.valueOf((int)monster.getAp());
+        this.setId(Integer.valueOf(monsterId));
         this.setHostId(monsterId);
         this.setName(DataGlobalFunc.dynamicName(monster.getName()));
-        this.setLevel(monster.getGrade() % 1000);
+        this.setRelive((int)monster.getGrade() / 1000);
+        this.setLevel((int)monster.getGrade() % 1000);
         this.setLogic(LOGIC.LOGICTYPE_MONSTER.getValue());
-        this.setSerial(monster.getSerial());
-        this.setPos(pos);
-        this.setIcon(monster.getShape());
+        this.setSerial((int)monster.getSerial());
+        this.setPos((int)pos);
+        this.setIcon((int)monster.getShape());
         this.setSpeed(speed);
         this.setPhyPower(power);
         this.setMaxLife(life);
@@ -49,26 +48,26 @@ public class MonsterFightObject extends FightObject
         this.setMonsterType(monster.getMonsterType());
     }
     
-    public void loadPeripheral(final SysDataMonster monster) {
-        final SysDataMonsterPeripheral monsterPeripheral = FightDataPool.monsterPeripheralMap.get(monster.getSerial());
+    public void loadPeripheral(SysDataMonster monster) {
+        SysDataMonsterPeripheral monsterPeripheral = (SysDataMonsterPeripheral)FightDataPool.monsterPeripheralMap.get(monster.getSerial());
         if (monsterPeripheral != null) {
             this.setWeaponId(monsterPeripheral.getWeaponId());
             this.setGem(monsterPeripheral.getGemNum());
             if (monsterPeripheral.getColor() == 1) {
-                final NutMap map = new NutMap();
-                map.setv("a", RandomUtil.round(0, 10));
-                map.setv("b", RandomUtil.round(0, 10));
+                NutMap map = new NutMap();
+                map.setv("a", Integer.valueOf(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(10))));
+                map.setv("b", Integer.valueOf(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(10))));
                 this.setColor(map.toString());
             }
         }
     }
     
-    public MonsterFightObject(final FightObject petObject, final int objId, final int serial, final int monsterType) {
-        this.selectMonsterSerial = 0;
+    public MonsterFightObject(FightObject petObject, int objId, int serial, int monsterType) {
+        this.selectMonsterSerial = Integer.valueOf(0);
         this.setWeaponId(petObject.getWeaponId());
         this.setGem(petObject.getGem());
         this.setColor(petObject.getColor());
-        this.setId(objId);
+        this.setId(Integer.valueOf(objId));
         this.setHostId(0);
         this.setName(petObject.getName());
         this.setLevel(petObject.getLevel());
@@ -87,95 +86,95 @@ public class MonsterFightObject extends FightObject
         this.setMonsterType(monsterType);
     }
     
-    public NutMap proFieldValues(final SysDataMonster monster) {
-        final NutMap nutMap = new NutMap();
+    public NutMap proFieldValues(SysDataMonster monster) {
+        NutMap nutMap = new NutMap();
         nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_J.getDist()), monster.getWxJin());
         nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_M.getDist()), monster.getWxMu());
         nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_S.getDist()), monster.getWxShui());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_H.getDist()), (Object)monster.getWxHuo());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_T.getDist()), (Object)monster.getWxTu());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KJ.getDist()), (Object)monster.getConGold());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KM.getDist()), (Object)monster.getConWood());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KS.getDist()), (Object)monster.getConWater());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KH.getDist()), (Object)monster.getConFire());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KT.getDist()), (Object)monster.getConSoil());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.WL_XS.getDist()), (Object)monster.getPdeFend());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.CONQUER_EXTENT.getDist()), (Object)monster.getPPofang());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.CONQUER_RATIO.getDist()), (Object)monster.getPPofangPro());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.SHOCK_EXTENT.getDist()), (Object)monster.getPFanZhen());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.SHOCK_RATIO.getDist()), (Object)monster.getPFanZhenPro());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), (Object)monster.getPKuangBao());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.MISS_RATIO.getDist()), (Object)monster.getPLjPro());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.COMBO_NUM.getDist()), (Object)monster.getPLjTimes());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.COMBO_RATIO.getDist()), (Object)monster.getPLjPro());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()), (Object)monster.getPAcc());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.MISS_RATIO.getDist()), (Object)monster.getPSbl());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.S_KB_RATIO.getDist()), (Object)monster.getShuiOdd());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.H_KB_RATIO.getDist()), (Object)monster.getHuoOdd());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.F_KB_RATIO.getDist()), (Object)monster.getFengOdd());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.L_KB_RATIO.getDist()), (Object)monster.getLeiOdd());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.GH_KB_RATIO.getDist()), (Object)monster.getGuiHuoOdd());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.SS_KB_RATIO.getDist()), (Object)monster.getSanShiOdd());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_S.getDist()), (Object)monster.getRainEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_H.getDist()), (Object)monster.getFireEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_F.getDist()), (Object)monster.getWindEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_L.getDist()), (Object)monster.getThunderEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_SS.getDist()), (Object)monster.getSanshiEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_PJ.getDist()), (Object)monster.getBreakEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ATTACK.getDist()), (Object)monster.getAdAtkEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_DEF.getDist()), (Object)monster.getAdDefEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_SPEED.getDist()), (Object)monster.getAdSpdEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_QHS.getDist()), (Object)monster.getSweepEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ZJ.getDist()), (Object)monster.getThudEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_HL.getDist()), (Object)monster.getDisorderEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_FY.getDist()), (Object)monster.getSealEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_D.getDist()), (Object)monster.getPoisonEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_HS.getDist()), (Object)monster.getSleepEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_YW.getDist()), (Object)monster.getForgetEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_MH.getDist()), (Object)monster.getCharmEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ZY.getDist()), (Object)monster.getCureEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ZS.getDist()), (Object)monster.getShockEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_GH.getDist()), (Object)monster.getGfireEhan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_S.getDist()), (Object)monster.getKShui());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_H.getDist()), (Object)monster.getKHuo());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_F.getDist()), (Object)monster.getKFeng());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_L.getDist()), (Object)monster.getKLei());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_HL.getDist()), (Object)monster.getKHunLuan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_FY.getDist()), (Object)monster.getKFengYin());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_HS.getDist()), (Object)monster.getKHunShui());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_YW.getDist()), (Object)monster.getKYiWang());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_DU.getDist()), (Object)monster.getKZhongDu());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_ZS.getDist()), (Object)monster.getKZhenShe());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_GH.getDist()), (Object)monster.getKGuiHuo());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_SS.getDist()), (Object)monster.getKSanShi());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_MH.getDist()), (Object)monster.getKShuaiRuo());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), (Object)monster.getFkShui());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), (Object)monster.getFkHuo());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), (Object)monster.getFkFeng());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), (Object)monster.getFkLei());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_D.getDist()), (Object)monster.getFkZhongDu());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_HL.getDist()), (Object)monster.getFkHunLuan());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_ZS.getDist()), (Object)monster.getFkZhenShe());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), (Object)monster.getFkGuiHuo());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_SS.getDist()), (Object)monster.getFkSanShi());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_FY.getDist()), (Object)monster.getFkFengYin());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_YW.getDist()), (Object)monster.getFkYiWang());
-        nutMap.put(String.valueOf(PRO_DICT_TYPE.SH_DK.getDist()), (Object)monster.getFPdeFend());
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_H.getDist()), monster.getWxHuo());
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.WX_T.getDist()), monster.getWxTu());
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KJ.getDist()), Double.valueOf(monster.getConGold()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KM.getDist()), Double.valueOf(monster.getConWood()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KS.getDist()), Double.valueOf(monster.getConWater()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KH.getDist()), Double.valueOf(monster.getConFire()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.Q_KT.getDist()), Double.valueOf(monster.getConSoil()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.WL_XS.getDist()), Double.valueOf(monster.getPdeFend()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.CONQUER_EXTENT.getDist()), Double.valueOf(monster.getPPofang()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.CONQUER_RATIO.getDist()), Double.valueOf(monster.getPPofangPro()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.SHOCK_EXTENT.getDist()), Double.valueOf(monster.getPFanZhen()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.SHOCK_RATIO.getDist()), Double.valueOf(monster.getPFanZhenPro()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), Double.valueOf(monster.getPKuangBao()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.MISS_RATIO.getDist()), Double.valueOf(monster.getPLjPro()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.COMBO_NUM.getDist()), monster.getPLjTimes());
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.COMBO_RATIO.getDist()), Double.valueOf(monster.getPLjPro()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()), Double.valueOf(monster.getPAcc()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.MISS_RATIO.getDist()), Double.valueOf(monster.getPSbl()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.S_KB_RATIO.getDist()), Double.valueOf(monster.getShuiOdd()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.H_KB_RATIO.getDist()), Double.valueOf(monster.getHuoOdd()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.F_KB_RATIO.getDist()), Double.valueOf(monster.getFengOdd()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.L_KB_RATIO.getDist()), Double.valueOf(monster.getLeiOdd()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.GH_KB_RATIO.getDist()), Double.valueOf(monster.getGuiHuoOdd()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.SS_KB_RATIO.getDist()), Double.valueOf(monster.getSanShiOdd()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_S.getDist()), Double.valueOf(monster.getRainEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_H.getDist()), Double.valueOf(monster.getFireEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_F.getDist()), Double.valueOf(monster.getWindEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_L.getDist()), Double.valueOf(monster.getThunderEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_SS.getDist()), Double.valueOf(monster.getSanshiEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_PJ.getDist()), Double.valueOf(monster.getBreakEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ATTACK.getDist()), Double.valueOf(monster.getAdAtkEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_DEF.getDist()), Double.valueOf(monster.getAdDefEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_SPEED.getDist()), Double.valueOf(monster.getAdSpdEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_QHS.getDist()), Double.valueOf(monster.getSweepEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ZJ.getDist()), Double.valueOf(monster.getThudEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_HL.getDist()), Double.valueOf(monster.getDisorderEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_FY.getDist()), Double.valueOf(monster.getSealEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_D.getDist()), Double.valueOf(monster.getPoisonEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_HS.getDist()), Double.valueOf(monster.getSleepEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_YW.getDist()), Double.valueOf(monster.getForgetEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_MH.getDist()), Double.valueOf(monster.getCharmEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ZY.getDist()), Double.valueOf(monster.getCureEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_ZS.getDist()), Double.valueOf(monster.getShockEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.RISE_GH.getDist()), Double.valueOf(monster.getGfireEhan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_S.getDist()), Double.valueOf(monster.getKShui()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_H.getDist()), Double.valueOf(monster.getKHuo()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_F.getDist()), Double.valueOf(monster.getKFeng()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_L.getDist()), Double.valueOf(monster.getKLei()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_HL.getDist()), Double.valueOf(monster.getKHunLuan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_FY.getDist()), Double.valueOf(monster.getKFengYin()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_HS.getDist()), Double.valueOf(monster.getKHunShui()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_YW.getDist()), Double.valueOf(monster.getKYiWang()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_DU.getDist()), Double.valueOf(monster.getKZhongDu()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_ZS.getDist()), Double.valueOf(monster.getKZhenShe()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_GH.getDist()), Double.valueOf(monster.getKGuiHuo()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_SS.getDist()), Double.valueOf(monster.getKSanShi()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.K_MH.getDist()), Double.valueOf(monster.getKShuaiRuo()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), Double.valueOf(monster.getFkShui()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), Double.valueOf(monster.getFkHuo()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), Double.valueOf(monster.getFkFeng()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), Double.valueOf(monster.getFkLei()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_D.getDist()), Double.valueOf(monster.getFkZhongDu()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_HL.getDist()), Double.valueOf(monster.getFkHunLuan()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_ZS.getDist()), Double.valueOf(monster.getFkZhenShe()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), Double.valueOf(monster.getFkGuiHuo()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_SS.getDist()), Double.valueOf(monster.getFkSanShi()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_FY.getDist()), Double.valueOf(monster.getFkFengYin()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.OMIT_K_YW.getDist()), Double.valueOf(monster.getFkYiWang()));
+        nutMap.put(String.valueOf(PRO_DICT_TYPE.SH_DK.getDist()), Double.valueOf(monster.getFPdeFend()));
         return nutMap;
     }
     
     @Override
-    public RoleSkill getSkillBy(final Integer skillId) {
+    public RoleSkill getSkillBy(Integer skillId) {
         if (String.valueOf(skillId).length() == 6) {
-            final String hostSkillId = String.valueOf(skillId).substring(0, 5);
-            final Optional<RoleSkill> optional = this.getSkillIds().stream().filter(skill -> skill.getSkillId().equals(Integer.parseInt(hostSkillId))).findFirst();
+            String hostSkillId = String.valueOf(skillId).substring(0, 5);
+            Optional<RoleSkill> optional = this.getSkillIds().stream().filter(skill -> skill.getSkillId().equals(Integer.valueOf(Integer.parseInt(hostSkillId)))).findFirst();
             if (optional.isPresent()) {
-                return FightUtils.getPetRoleSkill(skillId);
+                return FightUtils.getPetRoleSkill((int)skillId);
             }
         }
-        final Optional<RoleSkill> optional2 = this.getSkillIds().stream().filter(skill -> skill.getSkillId().equals(skillId)).findFirst();
+        Optional<RoleSkill> optional2 = this.getSkillIds().stream().filter(skill -> skill.getSkillId().equals(skillId)).findFirst();
         if (optional2.isPresent()) {
-            return optional2.get();
+            return (RoleSkill)optional2.get();
         }
         return null;
     }
@@ -189,7 +188,7 @@ public class MonsterFightObject extends FightObject
         return this.predictTargetList;
     }
     
-    public void setPredictTargetList(final List<FightObject> predictTargetList) {
+    public void setPredictTargetList(List<FightObject> predictTargetList) {
         this.predictTargetList = predictTargetList;
     }
     
@@ -197,7 +196,7 @@ public class MonsterFightObject extends FightObject
         return this.selectMonsterSerial;
     }
     
-    public void setSelectMonsterSerial(final Integer selectMonsterSerial) {
+    public void setSelectMonsterSerial(Integer selectMonsterSerial) {
         this.selectMonsterSerial = selectMonsterSerial;
     }
     
@@ -205,7 +204,7 @@ public class MonsterFightObject extends FightObject
         return this.monsterType;
     }
     
-    public void setMonsterType(final int monsterType) {
+    public void setMonsterType(int monsterType) {
         this.monsterType = monsterType;
     }
 }

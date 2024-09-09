@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqEmailDetail extends Message
 {
     private byte isSystem;
     private String emailId;
+    
+    public ReqEmailDetail() {
+    }
     
     public byte getIsSystem() {
         return this.isSystem;

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.market.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -39,7 +37,6 @@ public class RespMarketSearchItem extends Message
     public RespMarketSearchItem() {
     }
     
-    @ConstructorProperties({ "serial", "price", "minimum" })
     public RespMarketSearchItem(final int serial, final String price, final String minimum) {
         this.serial = serial;
         this.price = price;

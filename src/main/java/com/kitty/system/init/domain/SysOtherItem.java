@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -64,6 +63,9 @@ public class SysOtherItem
     @Column("param")
     @ColDefine(customType = "text")
     private String param;
+    
+    public SysOtherItem() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -225,255 +227,103 @@ public class SysOtherItem
         if (!(o instanceof SysOtherItem)) {
             return false;
         }
-        final SysOtherItem other = (SysOtherItem)o;
+        SysOtherItem other = (SysOtherItem)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$price = this.getPrice();
-        final Object other$price = other.getPrice();
-        Label_0176: {
-            if (this$price == null) {
-                if (other$price == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$price.equals(other$price)) {
-                break Label_0176;
-            }
+        Object this$price = this.getPrice();
+        Object other$price = other.getPrice();
+        if (!((this$price != null) ? this$price.equals(other$price) : (other$price == null))) {
             return false;
         }
-        final Object this$reprice = this.getReprice();
-        final Object other$reprice = other.getReprice();
-        Label_0213: {
-            if (this$reprice == null) {
-                if (other$reprice == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$reprice.equals(other$reprice)) {
-                break Label_0213;
-            }
+        Object this$reprice = this.getReprice();
+        Object other$reprice = other.getReprice();
+        if (!((this$reprice != null) ? this$reprice.equals(other$reprice) : (other$reprice == null))) {
             return false;
         }
-        final Object this$shape = this.getShape();
-        final Object other$shape = other.getShape();
-        Label_0250: {
-            if (this$shape == null) {
-                if (other$shape == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$shape.equals(other$shape)) {
-                break Label_0250;
-            }
+        Object this$shape = this.getShape();
+        Object other$shape = other.getShape();
+        if (!((this$shape != null) ? this$shape.equals(other$shape) : (other$shape == null))) {
             return false;
         }
-        final Object this$costType = this.getCostType();
-        final Object other$costType = other.getCostType();
-        Label_0287: {
-            if (this$costType == null) {
-                if (other$costType == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$costType.equals(other$costType)) {
-                break Label_0287;
-            }
+        Object this$costType = this.getCostType();
+        Object other$costType = other.getCostType();
+        if (!((this$costType != null) ? this$costType.equals(other$costType) : (other$costType == null))) {
             return false;
         }
-        final Object this$canMerge = this.getCanMerge();
-        final Object other$canMerge = other.getCanMerge();
-        Label_0324: {
-            if (this$canMerge == null) {
-                if (other$canMerge == null) {
-                    break Label_0324;
-                }
-            }
-            else if (this$canMerge.equals(other$canMerge)) {
-                break Label_0324;
-            }
+        Object this$canMerge = this.getCanMerge();
+        Object other$canMerge = other.getCanMerge();
+        if (!((this$canMerge != null) ? this$canMerge.equals(other$canMerge) : (other$canMerge == null))) {
             return false;
         }
-        final Object this$batches = this.getBatches();
-        final Object other$batches = other.getBatches();
-        Label_0361: {
-            if (this$batches == null) {
-                if (other$batches == null) {
-                    break Label_0361;
-                }
-            }
-            else if (this$batches.equals(other$batches)) {
-                break Label_0361;
-            }
+        Object this$batches = this.getBatches();
+        Object other$batches = other.getBatches();
+        if (!((this$batches != null) ? this$batches.equals(other$batches) : (other$batches == null))) {
             return false;
         }
-        final Object this$tips = this.getTips();
-        final Object other$tips = other.getTips();
-        Label_0398: {
-            if (this$tips == null) {
-                if (other$tips == null) {
-                    break Label_0398;
-                }
-            }
-            else if (this$tips.equals(other$tips)) {
-                break Label_0398;
-            }
+        Object this$tips = this.getTips();
+        Object other$tips = other.getTips();
+        if (!((this$tips != null) ? this$tips.equals(other$tips) : (other$tips == null))) {
             return false;
         }
-        final Object this$value = this.getValue();
-        final Object other$value = other.getValue();
-        Label_0435: {
-            if (this$value == null) {
-                if (other$value == null) {
-                    break Label_0435;
-                }
-            }
-            else if (this$value.equals(other$value)) {
-                break Label_0435;
-            }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (!((this$value != null) ? this$value.equals(other$value) : (other$value == null))) {
             return false;
         }
-        final Object this$itemPJ = this.getItemPJ();
-        final Object other$itemPJ = other.getItemPJ();
-        Label_0472: {
-            if (this$itemPJ == null) {
-                if (other$itemPJ == null) {
-                    break Label_0472;
-                }
-            }
-            else if (this$itemPJ.equals(other$itemPJ)) {
-                break Label_0472;
-            }
+        Object this$itemPJ = this.getItemPJ();
+        Object other$itemPJ = other.getItemPJ();
+        if (!((this$itemPJ != null) ? this$itemPJ.equals(other$itemPJ) : (other$itemPJ == null))) {
             return false;
         }
-        final Object this$useCntLimit = this.getUseCntLimit();
-        final Object other$useCntLimit = other.getUseCntLimit();
-        Label_0509: {
-            if (this$useCntLimit == null) {
-                if (other$useCntLimit == null) {
-                    break Label_0509;
-                }
-            }
-            else if (this$useCntLimit.equals(other$useCntLimit)) {
-                break Label_0509;
-            }
+        Object this$useCntLimit = this.getUseCntLimit();
+        Object other$useCntLimit = other.getUseCntLimit();
+        if (!((this$useCntLimit != null) ? this$useCntLimit.equals(other$useCntLimit) : (other$useCntLimit == null))) {
             return false;
         }
-        final Object this$needZs = this.getNeedZs();
-        final Object other$needZs = other.getNeedZs();
-        Label_0546: {
-            if (this$needZs == null) {
-                if (other$needZs == null) {
-                    break Label_0546;
-                }
-            }
-            else if (this$needZs.equals(other$needZs)) {
-                break Label_0546;
-            }
+        Object this$needZs = this.getNeedZs();
+        Object other$needZs = other.getNeedZs();
+        if (!((this$needZs != null) ? this$needZs.equals(other$needZs) : (other$needZs == null))) {
             return false;
         }
-        final Object this$needLv = this.getNeedLv();
-        final Object other$needLv = other.getNeedLv();
-        Label_0583: {
-            if (this$needLv == null) {
-                if (other$needLv == null) {
-                    break Label_0583;
-                }
-            }
-            else if (this$needLv.equals(other$needLv)) {
-                break Label_0583;
-            }
+        Object this$needLv = this.getNeedLv();
+        Object other$needLv = other.getNeedLv();
+        if (!((this$needLv != null) ? this$needLv.equals(other$needLv) : (other$needLv == null))) {
             return false;
         }
-        final Object this$isOpen = this.getIsOpen();
-        final Object other$isOpen = other.getIsOpen();
-        Label_0620: {
-            if (this$isOpen == null) {
-                if (other$isOpen == null) {
-                    break Label_0620;
-                }
-            }
-            else if (this$isOpen.equals(other$isOpen)) {
-                break Label_0620;
-            }
+        Object this$isOpen = this.getIsOpen();
+        Object other$isOpen = other.getIsOpen();
+        if (!((this$isOpen != null) ? this$isOpen.equals(other$isOpen) : (other$isOpen == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0657: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0657;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0657;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0694: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0694;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0694;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
-        final Object this$param = this.getParam();
-        final Object other$param = other.getParam();
-        if (this$param == null) {
-            if (other$param == null) {
-                return true;
-            }
-        }
-        else if (this$param.equals(other$param)) {
-            return true;
-        }
-        return false;
+        Object this$param = this.getParam();
+        Object other$param = other.getParam();
+        return (this$param != null) ? this$param.equals(other$param) : (other$param == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -482,45 +332,45 @@ public class SysOtherItem
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $price = this.getPrice();
+        Object $price = this.getPrice();
         result = result * 59 + (($price == null) ? 43 : $price.hashCode());
-        final Object $reprice = this.getReprice();
+        Object $reprice = this.getReprice();
         result = result * 59 + (($reprice == null) ? 43 : $reprice.hashCode());
-        final Object $shape = this.getShape();
+        Object $shape = this.getShape();
         result = result * 59 + (($shape == null) ? 43 : $shape.hashCode());
-        final Object $costType = this.getCostType();
+        Object $costType = this.getCostType();
         result = result * 59 + (($costType == null) ? 43 : $costType.hashCode());
-        final Object $canMerge = this.getCanMerge();
+        Object $canMerge = this.getCanMerge();
         result = result * 59 + (($canMerge == null) ? 43 : $canMerge.hashCode());
-        final Object $batches = this.getBatches();
+        Object $batches = this.getBatches();
         result = result * 59 + (($batches == null) ? 43 : $batches.hashCode());
-        final Object $tips = this.getTips();
+        Object $tips = this.getTips();
         result = result * 59 + (($tips == null) ? 43 : $tips.hashCode());
-        final Object $value = this.getValue();
+        Object $value = this.getValue();
         result = result * 59 + (($value == null) ? 43 : $value.hashCode());
-        final Object $itemPJ = this.getItemPJ();
+        Object $itemPJ = this.getItemPJ();
         result = result * 59 + (($itemPJ == null) ? 43 : $itemPJ.hashCode());
-        final Object $useCntLimit = this.getUseCntLimit();
+        Object $useCntLimit = this.getUseCntLimit();
         result = result * 59 + (($useCntLimit == null) ? 43 : $useCntLimit.hashCode());
-        final Object $needZs = this.getNeedZs();
+        Object $needZs = this.getNeedZs();
         result = result * 59 + (($needZs == null) ? 43 : $needZs.hashCode());
-        final Object $needLv = this.getNeedLv();
+        Object $needLv = this.getNeedLv();
         result = result * 59 + (($needLv == null) ? 43 : $needLv.hashCode());
-        final Object $isOpen = this.getIsOpen();
+        Object $isOpen = this.getIsOpen();
         result = result * 59 + (($isOpen == null) ? 43 : $isOpen.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
-        final Object $param = this.getParam();
+        Object $param = this.getParam();
         result = result * 59 + (($param == null) ? 43 : $param.hashCode());
         return result;
     }

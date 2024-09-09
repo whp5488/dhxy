@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -32,7 +31,7 @@ public class Db4EquipService
     
     public Db4EquipService() {
         this.logger = LoggerFactory.getLogger(Db4EquipService.class);
-        this.queue = new BlockingUniqueQueue<WearEquip>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -42,11 +41,11 @@ public class Db4EquipService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-equip-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-equip-save-service").newThread(new Db4EquipService.Worker()).start();
         Db4EquipService.instance = this;
     }
     
-    public void add2Queue(final WearEquip entity) {
+    public void add2Queue(WearEquip entity) {
         this.queue.add(entity);
     }
     
@@ -54,13 +53,13 @@ public class Db4EquipService
         return this.queue.size();
     }
     
-    private void saveToDb(final WearEquip entity) {
+    private void saveToDb(WearEquip entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -70,14 +69,14 @@ public class Db4EquipService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Equip] 执行全部命令后关闭");
+        LoggerUtils.error("[db4Equip] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<WearEquip> it = this.queue.iterator();
+            Iterator<WearEquip> it = this.queue.iterator();
             while (it.hasNext()) {
-                final WearEquip pet = it.next();
+                WearEquip pet = (WearEquip)it.next();
                 it.remove();
                 this.saveToDb(pet);
             }
@@ -91,18 +90,20 @@ public class Db4EquipService
             while (Db4EquipService.this.run.get()) {
                 WearEquip entity = null;
                 try {
-                    entity = Db4EquipService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (WearEquip)Db4EquipService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     Db4EquipService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("装备数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("装备数据持久化队列长度：" + Db4EquipService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("装备数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("装备数据持久化队列长度：" + Db4EquipService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     Db4EquipService.this.logger.error("装备存档异常", e);
                     e.printStackTrace();
                 }

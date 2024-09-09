@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.pet.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -62,53 +60,29 @@ public class RespPetCorrection extends Message
         if (!(o instanceof RespPetCorrection)) {
             return false;
         }
-        final RespPetCorrection other = (RespPetCorrection)o;
+        RespPetCorrection other = (RespPetCorrection)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$petId = this.getPetId();
-        final Object other$petId = other.getPetId();
-        Label_0065: {
-            if (this$petId == null) {
-                if (other$petId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$petId.equals(other$petId)) {
-                break Label_0065;
-            }
+        Object this$petId = this.getPetId();
+        Object other$petId = other.getPetId();
+        if (!((this$petId != null) ? this$petId.equals(other$petId) : (other$petId == null))) {
             return false;
         }
         if (this.getLevel() != other.getLevel()) {
             return false;
         }
-        final Object this$exp = this.getExp();
-        final Object other$exp = other.getExp();
-        Label_0115: {
-            if (this$exp == null) {
-                if (other$exp == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$exp.equals(other$exp)) {
-                break Label_0115;
-            }
+        Object this$exp = this.getExp();
+        Object other$exp = other.getExp();
+        if (!((this$exp != null) ? this$exp.equals(other$exp) : (other$exp == null))) {
             return false;
         }
         if (this.getPoints() != other.getPoints()) {
             return false;
         }
-        final Object this$nutMap = this.getNutMap();
-        final Object other$nutMap = other.getNutMap();
-        if (this$nutMap == null) {
-            if (other$nutMap == null) {
-                return true;
-            }
-        }
-        else if (this$nutMap.equals(other$nutMap)) {
-            return true;
-        }
-        return false;
+        Object this$nutMap = this.getNutMap();
+        Object other$nutMap = other.getNutMap();
+        return (this$nutMap != null) ? this$nutMap.equals(other$nutMap) : (other$nutMap == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -117,15 +91,15 @@ public class RespPetCorrection extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $petId = this.getPetId();
+        Object $petId = this.getPetId();
         result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
         result = result * 59 + this.getLevel();
-        final Object $exp = this.getExp();
+        Object $exp = this.getExp();
         result = result * 59 + (($exp == null) ? 43 : $exp.hashCode());
         result = result * 59 + this.getPoints();
-        final Object $nutMap = this.getNutMap();
+        Object $nutMap = this.getNutMap();
         result = result * 59 + (($nutMap == null) ? 43 : $nutMap.hashCode());
         return result;
     }
@@ -135,7 +109,6 @@ public class RespPetCorrection extends Message
         return "RespPetCorrection(petId=" + this.getPetId() + ", level=" + this.getLevel() + ", exp=" + this.getExp() + ", points=" + this.getPoints() + ", nutMap=" + this.getNutMap() + ")";
     }
     
-    @ConstructorProperties({ "petId", "level", "exp", "points", "nutMap" })
     public RespPetCorrection(final Integer petId, final int level, final String exp, final int points, final String nutMap) {
         this.level = 0;
         this.exp = "0";

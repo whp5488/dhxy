@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.card.domain;
 
 import com.kitty.common.db.DbCardChangeService;
@@ -32,10 +31,10 @@ public class CardChange extends BaseEntity<Long>
     
     @Override
     public Long getId() {
-        return this.id;
+        return Long.valueOf(this.id);
     }
     
-    public void setId(final long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
@@ -43,7 +42,7 @@ public class CardChange extends BaseEntity<Long>
         return this.rId;
     }
     
-    public void setrId(final long rId) {
+    public void setrId(long rId) {
         this.rId = rId;
     }
     
@@ -51,7 +50,7 @@ public class CardChange extends BaseEntity<Long>
         return this.serial;
     }
     
-    public void setSerial(final int serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
@@ -59,7 +58,7 @@ public class CardChange extends BaseEntity<Long>
         return this.rests;
     }
     
-    public void setRests(final NutMap rests) {
+    public void setRests(NutMap rests) {
         this.rests = rests;
     }
     

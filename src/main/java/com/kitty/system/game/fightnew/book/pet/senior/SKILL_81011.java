@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import com.kitty.system.game.fightnew.book.pet.utils.PetTriggerPassiveSkill;
@@ -26,67 +25,67 @@ public class SKILL_81011 extends SkillProcessor
     }
     
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81011);
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81011);
         int lastHurt = 0;
-        final double percent = BigDecimalUtil.decimalScaleObjectDown(8, (15.1 + 3.0 * (effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-        final int hurt = (int)(this.reduce * percent);
+        double percent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(8), Double.valueOf((15.1 + 3.0 * ((double)effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+        int hurt = (int)((double)this.reduce * percent);
         if (!target.isFrozen()) {
             lastHurt = PetSkillEffectorUtil.computeTMFGQMXLHurt(effector, target, hurt, 81011);
-            final double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
-            lastHurt += (int)(lastHurt * weak);
-            skillRecord.setT(target.getId());
+            double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
+            lastHurt = (int)((double)lastHurt + (double)lastHurt * weak);
+            skillRecord.setT((long)(int)target.getId());
         }
-        final Effect effect = new Effect(100000, 0);
-        final List<FiedValue> list = effect.getOrCreateList();
-        list.add(new FiedValue("mana", (byte)3, lastHurt));
+        Effect effect = new Effect(100000, 0);
+        List<FiedValue> list = effect.getOrCreateList();
+        list.add(new FiedValue("mana", (byte)3, Integer.valueOf(lastHurt)));
         return effect;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     
     @Override
-    public int costLife(final FightObject effector) {
+    public int costLife(FightObject effector) {
         if (effector.getCurrLife() >= 10000) {
-            final int hp = BigDecimalUtil.decimalScaleIntegerDown(0, effector.getCurrLife() * 0.95);
+            int hp = BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf((double)effector.getCurrLife() * 0.95));
             return this.reduce = hp;
         }
         return 10000;
     }
     
     @Override
-    public List<Integer> getTargetIds(final Fight fight, final FightObject effector) {
-        final List<Integer> list = PetTriggerPassiveSkill.getTMTargetIds(fight, effector, 81011);
+    public List<Integer> getTargetIds(Fight fight, FightObject effector) {
+        List<Integer> list = PetTriggerPassiveSkill.getTMTargetIds(fight, effector, 81011);
         return list;
     }
     
     @Override
-    public void changeVariate(final Object... args) {
+    public void changeVariate(Object... args) {
         if (args != null && args.length > 0) {
-            final Object arg = args[0];
+            Object arg = args[0];
             try {
-                final int value = Integer.parseInt(String.valueOf(arg));
+                int value = Integer.parseInt(String.valueOf(arg));
                 this.reduce = value;
             }
-            catch (final Exception e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.horse.message.vo;
 
 import java.util.Iterator;
@@ -28,7 +27,7 @@ public class Mount
         this.state = 0;
     }
     
-    public Mount(final Horse horse) {
+    public Mount(Horse horse) {
         this.growthDan = 0;
         this.score = 0;
         this.state = 0;
@@ -43,8 +42,8 @@ public class Mount
         this.exp = String.valueOf(horse.getExp());
         this.score = horse.getScore();
         this.state = horse.getState();
-        final List<FiedValue> list = new ArrayList<FiedValue>();
-        for (final Integer key : horse.getSkill().keySet()) {
+        List<FiedValue> list = new ArrayList<>();
+        for (Integer key : horse.getSkill().keySet()) {
             list.add(new FiedValue(String.valueOf(key), (byte)4, String.valueOf(horse.getSkill().get(key))));
         }
         this.skill = list;
@@ -154,37 +153,21 @@ public class Mount
         if (!(o instanceof Mount)) {
             return false;
         }
-        final Mount other = (Mount)o;
+        Mount other = (Mount)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0115: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0115;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getLevel() != other.getLevel()) {
@@ -202,17 +185,9 @@ public class Mount
         if (this.getVit() != other.getVit()) {
             return false;
         }
-        final Object this$exp = this.getExp();
-        final Object other$exp = other.getExp();
-        Label_0217: {
-            if (this$exp == null) {
-                if (other$exp == null) {
-                    break Label_0217;
-                }
-            }
-            else if (this$exp.equals(other$exp)) {
-                break Label_0217;
-            }
+        Object this$exp = this.getExp();
+        Object other$exp = other.getExp();
+        if (!((this$exp != null) ? this$exp.equals(other$exp) : (other$exp == null))) {
             return false;
         }
         if (this.getScore() != other.getScore()) {
@@ -221,17 +196,9 @@ public class Mount
         if (this.getState() != other.getState()) {
             return false;
         }
-        final Object this$skill = this.getSkill();
-        final Object other$skill = other.getSkill();
-        if (this$skill == null) {
-            if (other$skill == null) {
-                return true;
-            }
-        }
-        else if (this$skill.equals(other$skill)) {
-            return true;
-        }
-        return false;
+        Object this$skill = this.getSkill();
+        Object other$skill = other.getSkill();
+        return (this$skill != null) ? this$skill.equals(other$skill) : (other$skill == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -240,29 +207,29 @@ public class Mount
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getMoveSp();
         result = result * 59 + this.getGrowUp();
         result = result * 59 + this.getGrowthDan();
         result = result * 59 + this.getVit();
-        final Object $exp = this.getExp();
+        Object $exp = this.getExp();
         result = result * 59 + (($exp == null) ? 43 : $exp.hashCode());
         result = result * 59 + this.getScore();
         result = result * 59 + this.getState();
-        final Object $skill = this.getSkill();
+        Object $skill = this.getSkill();
         result = result * 59 + (($skill == null) ? 43 : $skill.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "Mount(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", level=" + this.getLevel() + ", moveSp=" + this.getMoveSp() + ", growUp=" + this.getGrowUp() + ", growthDan=" + this.getGrowthDan() + ", vit=" + this.getVit() + ", exp=" + this.getExp() + ", score=" + this.getScore() + ", state=" + this.getState() + ", skill=" + this.getSkill() + ")";
+        return "Mount(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", level=" + (int)this.getLevel() + ", moveSp=" + this.getMoveSp() + ", growUp=" + this.getGrowUp() + ", growthDan=" + (int)this.getGrowthDan() + ", vit=" + this.getVit() + ", exp=" + this.getExp() + ", score=" + this.getScore() + ", state=" + (int)this.getState() + ", skill=" + this.getSkill() + ")";
     }
 }

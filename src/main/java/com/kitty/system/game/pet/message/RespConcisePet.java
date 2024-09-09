@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.pet.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.pet.domain.PetBase;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -37,24 +35,16 @@ public class RespConcisePet extends Message
         if (!(o instanceof RespConcisePet)) {
             return false;
         }
-        final RespConcisePet other = (RespConcisePet)o;
+        RespConcisePet other = (RespConcisePet)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getPetId() != other.getPetId()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -63,10 +53,10 @@ public class RespConcisePet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetId();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
@@ -76,7 +66,6 @@ public class RespConcisePet extends Message
         return "RespConcisePet(petId=" + this.getPetId() + ", list=" + this.getList() + ")";
     }
     
-    @ConstructorProperties({ "petId", "list" })
     public RespConcisePet(final int petId, final List<PetBase> list) {
         this.petId = petId;
         this.list = list;

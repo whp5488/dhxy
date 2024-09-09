@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.loadobj;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -19,36 +18,39 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_322303 extends TianFuProcessor
 {
+    public FU_322303() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public List<FiedValue> passiveFied(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public List<FiedValue> passiveFied(Fight fight, FightObject effector, FightObject target, Object... args) {
         DayInCeFight dayInCeFight;
         if (target.isPet()) {
-            final FightObject host = fight.queryFightObject(target.getHostId());
+            FightObject host = fight.queryFightObject(Integer.valueOf(target.getHostId()));
             dayInCeFight = ((PlayerFightObject)host).getDayInCeFight();
         }
         else {
             dayInCeFight = ((PlayerFightObject)target).getDayInCeFight();
         }
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322303);
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322303);
         if (tianFuObject == null) {
             return null;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 322303);
-        final double percenta = 1.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-        final boolean flag = SkillAi.canAffectOnPro(percenta);
-        final List<FiedValue> list = new ArrayList<FiedValue>();
-        list.add(new FiedValue("addTarget", (byte)6, flag));
-        skillRecord.setT(effector.getId());
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 322303);
+        double percenta = 1.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+        boolean flag = SkillAi.canAffectOnPro(percenta);
+        List<FiedValue> list = new ArrayList<>();
+        list.add(new FiedValue("addTarget", (byte)6, Boolean.valueOf(flag)));
+        skillRecord.setT((long)(int)effector.getId());
         return list;
     }
 }

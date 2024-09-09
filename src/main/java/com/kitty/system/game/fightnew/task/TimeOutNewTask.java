@@ -1,8 +1,6 @@
-
 package com.kitty.system.game.fightnew.task;
 
 import java.util.Iterator;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import java.util.Collections;
 import com.kitty.system.common.enter.FiedValue;
@@ -20,44 +18,50 @@ public class TimeOutNewTask implements FightingTask
     private final Logger logger;
     private int fightId;
     
-    public TimeOutNewTask(final int fightId) {
+    public TimeOutNewTask(int fightId) {
         this.logger = LoggerFunction.FIGHT.getLogger();
         this.fightId = fightId;
     }
     
     @Override
     public void run() {
-        final FightNewService fightNewService = SpringUtils.getBean(FightNewService.class);
-        final Fight fight = fightNewService.getFight(this.fightId);
+        FightNewService fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
+        Fight fight = fightNewService.getFight(this.fightId);
         if (fight == null) {
             return;
         }
         fight.cancelTask(fight.getTimeOutTask());
-        final FightExecutorNewService fightExecutorNewService = SpringUtils.getBean(FightExecutorNewService.class);
+        FightExecutorNewService fightExecutorNewService = (FightExecutorNewService)SpringUtils.getBean(FightExecutorNewService.class);
         fightExecutorNewService.addFightTask(fight, this::timeOutAction);
+        return;
     }
     
     private void timeOutAction() {
-        final FightNewService fightNewService = SpringUtils.getBean(FightNewService.class);
-        final Fight fight = fightNewService.getFight(this.fightId);
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
-            fight.removeHostTask(fightObject.getId());
-            fight.removePetTask(fightObject.getId());
+        FightNewService fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
+        Fight fight = fightNewService.getFight(this.fightId);
+        for (FightObject fightObject : fight.getAllFightObjects()) {
+            fight.removeHostTask((int)fightObject.getId());
+            fight.removePetTask((int)fightObject.getId());
         }
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             if (!fightObject.isDoAction()) {
                 if (fightObject.isPlayer()) {
                     fightObject.getRole().getExtendBox().setAutoFight((byte)1);
-                    final RespUpdate respUpdate = new RespUpdate();
-                    respUpdate.setList(Collections.singletonList(new FiedValue("autoFight", (byte)1, 1)));
-                    respUpdate.setId(fightObject.getId());
+                    RespUpdate respUpdate = new RespUpdate();
+                    respUpdate.setList(Collections.singletonList(new FiedValue("autoFight", (byte)1, Integer.valueOf(1))));
+                    respUpdate.setId((int)fightObject.getId());
                     MessagePusher.pushMessage(fightObject.getRole(), respUpdate);
                 }
-                if (!fightObject.isPlayer() && !fightObject.isPet()) {
+                if (fightObject.isPlayer() || fightObject.isPet()) {
+                    fightObject.setAutoFight(1);
+                    fightNewService.autoFightOne(fight, fightObject, 100L);
+                }
+                else {
                     continue;
                 }
-                fightObject.setAutoFight(1);
-                fightNewService.autoFightOne(fight, fightObject, 100L);
+            }
+            else {
+                continue;
             }
         }
     }

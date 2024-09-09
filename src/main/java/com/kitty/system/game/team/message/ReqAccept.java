@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqAccept extends Message
     private int roleId;
     private String name;
     private String type;
+    
+    public ReqAccept() {
+    }
     
     public int getRoleId() {
         return this.roleId;
@@ -43,37 +45,21 @@ public class ReqAccept extends Message
         if (!(o instanceof ReqAccept)) {
             return false;
         }
-        final ReqAccept other = (ReqAccept)o;
+        ReqAccept other = (ReqAccept)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        if (this$type == null) {
-            if (other$type == null) {
-                return true;
-            }
-        }
-        else if (this$type.equals(other$type)) {
-            return true;
-        }
-        return false;
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        return (this$type != null) ? this$type.equals(other$type) : (other$type == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -82,12 +68,12 @@ public class ReqAccept extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
         return result;
     }

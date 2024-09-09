@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.ca;
 
 import com.kitty.system.game.team.domain.Member;
@@ -28,64 +27,62 @@ public class CaPkData implements Serializable
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<>(3);
+        this.fight = new ArrayList(3);
     }
     
-    public CaPkData(final Team team, final short pkValue) {
+    public CaPkData(Team team, short pkValue) {
         this.memberGrade = 0;
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<>(3);
+        this.fight = new ArrayList(3);
         this.teamId = team.getId();
         this.pkValue = pkValue;
         this.members = this.getMembers(team);
     }
     
-    private List<Long> getMembers(final Team team) {
-        final List<Long> members = new ArrayList<Long>();
-        final List<Member> list = team.getList();
+    private List<Long> getMembers(Team team) {
+        List<Long> members = new ArrayList<>();
+        List<Member> list = team.getList();
         for (int i = 0; i < list.size(); ++i) {
-            final Member member = list.get(i);
-            if (member.isInTeam()) {
-                if (!members.contains(member)) {
-                    members.add(member.getId());
-                }
+            Member member = (Member)list.get(i);
+            if (member.isInTeam() && !members.contains(member)) {
+                members.add(member.getId());
             }
         }
         return members;
     }
     
-    public void subPkValue(final short pkValue) {
+    public void subPkValue(short pkValue) {
         this.pkValue -= pkValue;
     }
     
-    public void updateTeamMember(final Team team) {
+    public void updateTeamMember(Team team) {
         this.members = this.getMembers(team);
     }
     
-    public void updateTeamMember(final byte state) {
+    public void updateTeamMember(byte state) {
         this.state = state;
     }
     
-    public CaPkData(final int teamId, final short pkValue, final int memberGrade, final int memberEquipScore) {
+    public CaPkData(int teamId, short pkValue, int memberGrade, int memberEquipScore) {
         this.memberGrade = 0;
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<>(3);
+        this.fight = new ArrayList(3);
         this.teamId = teamId;
         this.pkValue = pkValue;
         this.memberGrade = memberGrade;
         this.memberEquipScore = memberEquipScore;
     }
     
-    public CaPkData(final short group, final int teamId) {
+    public CaPkData(short group, int teamId) {
         this.memberGrade = 0;
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<>(3);
+        this.fight = new ArrayList(3);
         this.group = group;
         this.teamId = teamId;
     }
@@ -180,6 +177,6 @@ public class CaPkData implements Serializable
     
     @Override
     public String toString() {
-        return "CaPkData(teamId=" + this.getTeamId() + ", pkValue=" + this.getPkValue() + ", score=" + this.getScore() + ", memberGrade=" + this.getMemberGrade() + ", memberEquipScore=" + this.getMemberEquipScore() + ", members=" + this.getMembers() + ", time=" + this.getTime() + ", state=" + this.getState() + ", group=" + this.getGroup() + ", fight=" + this.getFight() + ", schedule=" + this.getSchedule() + ")";
+        return "CaPkData(teamId=" + this.getTeamId() + ", pkValue=" + (int)this.getPkValue() + ", score=" + (int)this.getScore() + ", memberGrade=" + this.getMemberGrade() + ", memberEquipScore=" + this.getMemberEquipScore() + ", members=" + this.getMembers() + ", time=" + this.getTime() + ", state=" + (int)this.getState() + ", group=" + this.getGroup() + ", fight=" + this.getFight() + ", schedule=" + this.getSchedule() + ")";
     }
 }

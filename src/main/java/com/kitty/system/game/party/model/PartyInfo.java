@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model;
 
 import java.util.ArrayList;
@@ -25,8 +24,8 @@ public class PartyInfo
         this.win = 0;
         this.lose = 0;
         this.standings = 0;
-        this.master = new ArrayList<FiedValue>();
-        this.flag = new ArrayList<FiedValue>();
+        this.master = new ArrayList<>();
+        this.flag = new ArrayList<>();
     }
     
     public int getSerial() {
@@ -133,24 +132,16 @@ public class PartyInfo
         if (!(o instanceof PartyInfo)) {
             return false;
         }
-        final PartyInfo other = (PartyInfo)o;
+        PartyInfo other = (PartyInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getLevel() != other.getLevel()) {
@@ -162,17 +153,9 @@ public class PartyInfo
         if (this.getActive() != other.getActive()) {
             return false;
         }
-        final Object this$aim = this.getAim();
-        final Object other$aim = other.getAim();
-        Label_0154: {
-            if (this$aim == null) {
-                if (other$aim == null) {
-                    break Label_0154;
-                }
-            }
-            else if (this$aim.equals(other$aim)) {
-                break Label_0154;
-            }
+        Object this$aim = this.getAim();
+        Object other$aim = other.getAim();
+        if (!((this$aim != null) ? this$aim.equals(other$aim) : (other$aim == null))) {
             return false;
         }
         if (this.getSum() != other.getSum()) {
@@ -187,30 +170,14 @@ public class PartyInfo
         if (this.getStandings() != other.getStandings()) {
             return false;
         }
-        final Object this$master = this.getMaster();
-        final Object other$master = other.getMaster();
-        Label_0243: {
-            if (this$master == null) {
-                if (other$master == null) {
-                    break Label_0243;
-                }
-            }
-            else if (this$master.equals(other$master)) {
-                break Label_0243;
-            }
+        Object this$master = this.getMaster();
+        Object other$master = other.getMaster();
+        if (!((this$master != null) ? this$master.equals(other$master) : (other$master == null))) {
             return false;
         }
-        final Object this$flag = this.getFlag();
-        final Object other$flag = other.getFlag();
-        if (this$flag == null) {
-            if (other$flag == null) {
-                return true;
-            }
-        }
-        else if (this$flag.equals(other$flag)) {
-            return true;
-        }
-        return false;
+        Object this$flag = this.getFlag();
+        Object other$flag = other.getFlag();
+        return (this$flag != null) ? this$flag.equals(other$flag) : (other$flag == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -219,29 +186,29 @@ public class PartyInfo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getMembers();
         result = result * 59 + this.getActive();
-        final Object $aim = this.getAim();
+        Object $aim = this.getAim();
         result = result * 59 + (($aim == null) ? 43 : $aim.hashCode());
         result = result * 59 + this.getSum();
         result = result * 59 + this.getWin();
         result = result * 59 + this.getLose();
         result = result * 59 + this.getStandings();
-        final Object $master = this.getMaster();
+        Object $master = this.getMaster();
         result = result * 59 + (($master == null) ? 43 : $master.hashCode());
-        final Object $flag = this.getFlag();
+        Object $flag = this.getFlag();
         result = result * 59 + (($flag == null) ? 43 : $flag.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "PartyInfo(serial=" + this.getSerial() + ", name=" + this.getName() + ", level=" + this.getLevel() + ", members=" + this.getMembers() + ", active=" + this.getActive() + ", aim=" + this.getAim() + ", sum=" + this.getSum() + ", win=" + this.getWin() + ", lose=" + this.getLose() + ", standings=" + this.getStandings() + ", master=" + this.getMaster() + ", flag=" + this.getFlag() + ")";
+        return "PartyInfo(serial=" + this.getSerial() + ", name=" + this.getName() + ", level=" + (int)this.getLevel() + ", members=" + (int)this.getMembers() + ", active=" + this.getActive() + ", aim=" + this.getAim() + ", sum=" + (int)this.getSum() + ", win=" + (int)this.getWin() + ", lose=" + (int)this.getLose() + ", standings=" + (int)this.getStandings() + ", master=" + this.getMaster() + ", flag=" + this.getFlag() + ")";
     }
 }

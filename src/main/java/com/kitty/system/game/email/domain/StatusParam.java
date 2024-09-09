@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.email.domain;
-
-import java.beans.ConstructorProperties;
 
 public class StatusParam
 {
@@ -27,7 +24,6 @@ public class StatusParam
     public StatusParam() {
     }
     
-    @ConstructorProperties({ "key", "value" })
     public StatusParam(final long key, final byte value) {
         this.key = key;
         this.value = value;

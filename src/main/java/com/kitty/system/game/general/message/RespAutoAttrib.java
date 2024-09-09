@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.general.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -78,7 +77,7 @@ public class RespAutoAttrib extends Message
         if (!(o instanceof RespAutoAttrib)) {
             return false;
         }
-        final RespAutoAttrib other = (RespAutoAttrib)o;
+        RespAutoAttrib other = (RespAutoAttrib)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getGg() == other.getGg() && this.getLx() == other.getLx() && this.getLl() == other.getLl() && this.getMj() == other.getMj() && this.getType() == other.getType();
     }
     
@@ -88,7 +87,7 @@ public class RespAutoAttrib extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getGg();

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.domain;
 
 import com.kitty.common.db.Db4EventService;
@@ -43,7 +42,7 @@ public class Mirror extends BaseEntity<Long>
         this.expireTime = new Date();
     }
     
-    public Mirror(final Long id, final Long rId, final String title, final String motto, final String posInfo, final int type) {
+    public Mirror(Long id, Long rId, String title, String motto, String posInfo, int type) {
         this.createTime = new Date();
         this.expireTime = new Date();
         this.id = id;

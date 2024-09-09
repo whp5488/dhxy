@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.utils;
 
 import java.util.Collections;
@@ -11,49 +10,63 @@ import com.kitty.system.game.fightnew.bean.Fight;
 
 public class FightMessageUtil
 {
-    public static void sendFightPackage(final Fight fight, final List<Message> messages) {
-        for (final FightObject fightObject : fight.getListA()) {
+    public FightMessageUtil() {
+    }
+    
+    public static void sendFightPackage(Fight fight, List<Message> messages) {
+        for (FightObject fightObject : fight.getListA()) {
             if (fightObject.isPlayer()) {
-                for (final Message message : messages) {
+                for (Message message : messages) {
                     MessagePusher.pushMessage(fightObject.getRole(), message);
                 }
             }
+            else {
+                continue;
+            }
         }
         if (fight.isPkFight()) {
-            for (final FightObject fightObject : fight.getListB()) {
+            for (FightObject fightObject : fight.getListB()) {
                 if (fightObject.isPlayer()) {
-                    for (final Message message : messages) {
+                    for (Message message : messages) {
                         MessagePusher.pushMessage(fightObject.getRole(), message);
                     }
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    public static void sendFightPackage(final Fight fight, final Message message) {
+    public static void sendFightPackage(Fight fight, Message message) {
         if (fight == null || message == null) {
             return;
         }
         sendFightPackage(fight, Collections.singletonList(message));
+        return;
     }
     
-    public static void sendFightPackage(final long roleId, final Message message) {
+    public static void sendFightPackage(long roleId, Message message) {
         MessagePusher.pushMessage(roleId, message);
     }
     
-    public static void sendFightPackage(final Fight fight, final Message message, final boolean isA, final boolean isFightSpetator) {
+    public static void sendFightPackage(Fight fight, Message message, boolean isA, boolean isFightSpetator) {
         if (fight == null || message == null) {
             return;
         }
         sendFightPackage(fight, Collections.singletonList(message), isA, isFightSpetator);
+        return;
     }
     
-    public static void sendFightPackage(final Fight fight, final List<Message> messages, final boolean isA, final boolean isFightSpetator) {
-        final List<FightObject> targets = isA ? fight.getListA() : fight.getListB();
-        for (final Message message : messages) {
-            for (final FightObject fightObject : targets) {
+    public static void sendFightPackage(Fight fight, List<Message> messages, boolean isA, boolean isFightSpetator) {
+        List<FightObject> targets = isA ? fight.getListA() : fight.getListB();
+        for (Message message : messages) {
+            for (FightObject fightObject : targets) {
                 if (fightObject.isPlayer()) {
                     MessagePusher.pushMessage(fightObject.getRole(), message);
+                }
+                else {
+                    continue;
                 }
             }
         }

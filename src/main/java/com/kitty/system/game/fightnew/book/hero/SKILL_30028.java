@@ -1,8 +1,8 @@
-
 package com.kitty.system.game.fightnew.book.hero;
 
 import java.util.Iterator;
 import java.util.ArrayList;
+import com.kitty.system.enums.war.itempro.mind.MIND;
 import com.kitty.system.game.fightnew.utils.SkillCompute;
 import com.kitty.system.game.fightnew.utils.SkillFunc;
 import com.kitty.system.game.fightnew.utils.PassiveSkillUtils;
@@ -20,60 +20,72 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_30028 extends SkillProcessor
 {
+    public SKILL_30028() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
-        final RoleSkill skill = effector.getSkillBy(30028);
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(30028));
         if (skill != null && skill != null) {
-            return Math.min(5, BigDecimalUtil.decimalScaleIntegerDown(0, 3.0 * (1.0 + Math.pow(skill.getProficient(), 0.3) * 5.0 / 100.0)));
+            return Math.min(5, BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(3.0 * (1.0 + Math.pow((double)(int)skill.getProficient(), 0.3) * 5.0 / 100.0))));
         }
         return 5;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill skill = effector.getSkillBy(30028);
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(30028));
         if (skill != null) {
-            final Effect e = new Effect();
+            Effect e = new Effect();
             int harm = 0;
             if (!target.isFrozen()) {
-                final SysSkill sysSkill = SkillDataPool.skillMap.get(30028);
-                final ArrayList<FightObject> objects = fight.getSideAllFightObjects(effector.isASide());
+                SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(Integer.valueOf(30028));
+                ArrayList<FightObject> objects = fight.getSideAllFightObjects(effector.isASide());
                 int die = 0;
-                for (final FightObject object : objects) {
+                for (FightObject object : objects) {
                     if (object.isFallDown()) {
                         ++die;
                     }
+                    else {
+                        continue;
+                    }
                 }
-                final double[] power = sysSkill.getPower();
-                final int proficient = skill.getProficient();
+                double[] power = sysSkill.getPower();
+                int proficient = (int)skill.getProficient();
                 double kx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_GH.getDist());
-                final double wsk = PassiveSkillUtils.getWsk(effector);
+                double wsk = PassiveSkillUtils.getWsk(effector);
                 kx -= wsk;
-                final double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
-                final double hkx = effector.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_GH.getDist());
-                final double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_GH.getDist());
-                final double wx = SkillFunc.getWuXingKeZhiXiuZheng(effector, target, fight.getType());
-                harm = SkillCompute.computeSkillDamageWildfire(effector, power, effector.getLevel(), proficient, kx, hkx, extra, weak, die, wx);
+                double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
+                double hkx = effector.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_GH.getDist());
+                double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_GH.getDist());
+                double wx = SkillFunc.getWuXingKeZhiXiuZheng(effector, target, fight.getType());
+                harm = (int)SkillCompute.computeSkillDamageWildfire(effector, power, effector.getLevel(), proficient, kx, hkx, extra, weak, die, wx);
+                harm -= (int)target.getSelfAllTempPro(MIND.XS_GH.getDist());
+                if (harm <= 0) {
+                    harm = 1;
+                }
             }
             e.setType(100000);
             e.setHurt(harm);
             return e;
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
-        return BigDecimalUtil.decimalScaleIntegerDown(0, 75.0 * (Math.pow(skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0));
+    public int costMana(RoleSkill skill, Object... args) {
+        return BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(75.0 * (Math.pow((double)(int)skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0)));
     }
 }

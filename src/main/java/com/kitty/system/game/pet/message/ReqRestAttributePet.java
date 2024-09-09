@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqRestAttributePet extends Message
 {
     private Integer petId;
     private byte type;
+    
+    public ReqRestAttributePet() {
+    }
     
     public Integer getPetId() {
         return this.petId;
@@ -34,21 +36,13 @@ public class ReqRestAttributePet extends Message
         if (!(o instanceof ReqRestAttributePet)) {
             return false;
         }
-        final ReqRestAttributePet other = (ReqRestAttributePet)o;
+        ReqRestAttributePet other = (ReqRestAttributePet)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$petId = this.getPetId();
-        final Object other$petId = other.getPetId();
-        if (this$petId == null) {
-            if (other$petId == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$petId.equals(other$petId)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$petId = this.getPetId();
+        Object other$petId = other.getPetId();
+        return ((this$petId != null) ? this$petId.equals(other$petId) : (other$petId == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,9 +51,9 @@ public class ReqRestAttributePet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $petId = this.getPetId();
+        Object $petId = this.getPetId();
         result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
         result = result * 59 + this.getType();
         return result;
@@ -67,6 +61,6 @@ public class ReqRestAttributePet extends Message
     
     @Override
     public String toString() {
-        return "ReqRestAttributePet(petId=" + this.getPetId() + ", type=" + this.getType() + ")";
+        return "ReqRestAttributePet(petId=" + this.getPetId() + ", type=" + (int)this.getType() + ")";
     }
 }

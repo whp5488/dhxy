@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -11,6 +10,9 @@ public class ReqUpdateInstruct extends Message
     private short serial;
     private byte index;
     private String string;
+    
+    public ReqUpdateInstruct() {
+    }
     
     public byte getType() {
         return this.type;

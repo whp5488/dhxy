@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.partner.domain;
 
 import com.kitty.common.db.Db4PartnerService;
@@ -87,11 +86,12 @@ public class Partner extends BaseEntity<Long>
     }
     
     public SkillBox getSkillBox() {
-        final String json = this.getSkillBoxJson();
+        String json = this.getSkillBoxJson();
         SkillBox skillBox = null;
-        if (StringUtils.isNotEmpty((CharSequence)json)) {
-            final String content = ZipUtil.uncompress(json);
-            skillBox = JsonUtils.string2Object(content, SkillBox.class);
+        if (StringUtils.isNotEmpty(json)) {
+            String content = ZipUtil.uncompress(json);
+            skillBox = (SkillBox)JsonUtils.string2Object(content, SkillBox.class);
+            return skillBox;
         }
         return skillBox;
     }

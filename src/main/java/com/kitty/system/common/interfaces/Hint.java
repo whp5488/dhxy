@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.interfaces;
 
 public interface Hint
@@ -34,4 +33,5 @@ public interface Hint
     public static final int instruct = 28;
     public static final int new_email = 29;
     public static final int stoneChange = 30;
+    public static final int seal = 31;
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -74,63 +73,31 @@ public class SysDataAcsrySuit
         if (!(o instanceof SysDataAcsrySuit)) {
             return false;
         }
-        final SysDataAcsrySuit other = (SysDataAcsrySuit)o;
+        SysDataAcsrySuit other = (SysDataAcsrySuit)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dist = this.getDist();
-        final Object other$dist = other.getDist();
-        Label_0065: {
-            if (this$dist == null) {
-                if (other$dist == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$dist.equals(other$dist)) {
-                break Label_0065;
-            }
+        Object this$dist = this.getDist();
+        Object other$dist = other.getDist();
+        if (!((this$dist != null) ? this$dist.equals(other$dist) : (other$dist == null))) {
             return false;
         }
-        final Object this$containList = this.getContainList();
-        final Object other$containList = other.getContainList();
-        Label_0102: {
-            if (this$containList == null) {
-                if (other$containList == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$containList.equals(other$containList)) {
-                break Label_0102;
-            }
+        Object this$containList = this.getContainList();
+        Object other$containList = other.getContainList();
+        if (!((this$containList != null) ? this$containList.equals(other$containList) : (other$containList == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getGrade() != other.getGrade()) {
             return false;
         }
-        final Object this$skills = this.getSkills();
-        final Object other$skills = other.getSkills();
-        if (this$skills == null) {
-            if (other$skills == null) {
-                return true;
-            }
-        }
-        else if (this$skills.equals(other$skills)) {
-            return true;
-        }
-        return false;
+        Object this$skills = this.getSkills();
+        Object other$skills = other.getSkills();
+        return (this$skills != null) ? this$skills.equals(other$skills) : (other$skills == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -139,16 +106,16 @@ public class SysDataAcsrySuit
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dist = this.getDist();
+        Object $dist = this.getDist();
         result = result * 59 + (($dist == null) ? 43 : $dist.hashCode());
-        final Object $containList = this.getContainList();
+        Object $containList = this.getContainList();
         result = result * 59 + (($containList == null) ? 43 : $containList.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getGrade();
-        final Object $skills = this.getSkills();
+        Object $skills = this.getSkills();
         result = result * 59 + (($skills == null) ? 43 : $skills.hashCode());
         return result;
     }

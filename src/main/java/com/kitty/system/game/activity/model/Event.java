@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model;
 
 import com.kitty.common.db.Db4EventService;
@@ -25,7 +24,7 @@ public class Event extends BaseEntity<Long>
     public Event() {
     }
     
-    public Event(final Long id, final int serial) {
+    public Event(Long id, int serial) {
         this.id = id;
         this.serial = serial;
     }

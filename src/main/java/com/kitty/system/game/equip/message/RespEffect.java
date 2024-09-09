@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class RespEffect extends Message
     private List<EffectInfo> list;
     
     public RespEffect() {
-        this.list = new ArrayList<EffectInfo>();
+        this.list = new ArrayList<>();
     }
     
     public List<EffectInfo> getList() {
@@ -32,21 +31,13 @@ public class RespEffect extends Message
         if (!(o instanceof RespEffect)) {
             return false;
         }
-        final RespEffect other = (RespEffect)o;
+        RespEffect other = (RespEffect)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -55,9 +46,9 @@ public class RespEffect extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

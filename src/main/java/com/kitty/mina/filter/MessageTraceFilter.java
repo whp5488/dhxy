@@ -1,4 +1,3 @@
-
 package com.kitty.mina.filter;
 
 import com.kitty.system.game.role.domain.Role;
@@ -25,34 +24,38 @@ public class MessageTraceFilter extends IoFilterAdapter
         this.debug = true;
     }
     
-    public void messageReceived(final IoFilter.NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
-        if (!this.debug || !this.traceRequest(message) || !"ReqEcho".equals(message.getClass().getSimpleName())) {}
-        final Message msg = (Message)message;
+    public void messageReceived(IoFilter.NextFilter nextFilter, IoSession session, Object message) throws Exception {
+        if (this.debug && this.traceRequest(message)) {
+            "ReqEcho".equals(message.getClass().getSimpleName());
+        }
+        Message msg = (Message)message;
         MessageStatistics.getInstance().addReceived(msg.getModule());
         nextFilter.messageReceived(session, message);
     }
     
-    private boolean traceRequest(final Object message) {
-        final Set<Class<?>> ignores = new HashSet<Class<?>>();
+    private boolean traceRequest(Object message) {
+        Set<Class<?>> ignores = new HashSet();
         ignores.add(ReqMultiMoveTo.class);
         return !ignores.contains(message.getClass());
     }
     
-    public void messageSent(final IoFilter.NextFilter nextFilter, final IoSession session, final WriteRequest writeRequest) throws Exception {
-        final Object message = writeRequest.getMessage();
-        if (!this.debug || !this.traceResponse(message) || !"RespReplyEcho".equals(message.getClass().getSimpleName())) {}
-        final Message msg = (Message)message;
+    public void messageSent(IoFilter.NextFilter nextFilter, IoSession session, WriteRequest writeRequest) throws Exception {
+        Object message = writeRequest.getMessage();
+        if (this.debug && this.traceResponse(message)) {
+            "RespReplyEcho".equals(message.getClass().getSimpleName());
+        }
+        Message msg = (Message)message;
         MessageStatistics.getInstance().addSent(msg.getModule());
         nextFilter.messageSent(session, writeRequest);
     }
     
-    private boolean traceResponse(final Object message) {
-        final Set<Class<?>> ignores = new HashSet<Class<?>>();
+    private boolean traceResponse(Object message) {
+        Set<Class<?>> ignores = new HashSet();
         return !ignores.contains(message.getClass());
     }
     
-    private String getMessageSignure(final IoSession session) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    private String getMessageSignure(IoSession session) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             return role.getName();
         }

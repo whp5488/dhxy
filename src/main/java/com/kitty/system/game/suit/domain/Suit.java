@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.suit.domain;
 
 import com.kitty.common.db.Db4CommonService;
@@ -37,11 +36,11 @@ public class Suit extends BaseEntity<Long>
     private int time;
     
     public Suit() {
-        this.equip = Collections.synchronizedList(new ArrayList<Long>());
+        this.equip = Collections.synchronizedList(new ArrayList<>());
     }
     
-    public Suit(final long id, final long rId, final String name, final byte state) {
-        this.equip = Collections.synchronizedList(new ArrayList<Long>());
+    public Suit(long id, long rId, String name, byte state) {
+        this.equip = Collections.synchronizedList(new ArrayList<>());
         this.id = id;
         this.rId = rId;
         this.time = (int)(System.currentTimeMillis() / 1000L);
@@ -51,7 +50,7 @@ public class Suit extends BaseEntity<Long>
     
     @Override
     public Long getId() {
-        return this.id;
+        return Long.valueOf(this.id);
     }
     
     public void save() {

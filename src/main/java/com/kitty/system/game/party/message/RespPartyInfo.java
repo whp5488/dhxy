@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.model.PartyInfo;
@@ -14,6 +13,9 @@ public class RespPartyInfo extends Message
     private byte sort;
     private byte way;
     private List<PartyInfo> list;
+    
+    public RespPartyInfo() {
+    }
     
     public String getOrder() {
         return this.order;
@@ -63,21 +65,13 @@ public class RespPartyInfo extends Message
         if (!(o instanceof RespPartyInfo)) {
             return false;
         }
-        final RespPartyInfo other = (RespPartyInfo)o;
+        RespPartyInfo other = (RespPartyInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$order = this.getOrder();
-        final Object other$order = other.getOrder();
-        Label_0065: {
-            if (this$order == null) {
-                if (other$order == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$order.equals(other$order)) {
-                break Label_0065;
-            }
+        Object this$order = this.getOrder();
+        Object other$order = other.getOrder();
+        if (!((this$order != null) ? this$order.equals(other$order) : (other$order == null))) {
             return false;
         }
         if (this.getPage() != other.getPage()) {
@@ -89,17 +83,9 @@ public class RespPartyInfo extends Message
         if (this.getWay() != other.getWay()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -108,20 +94,20 @@ public class RespPartyInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $order = this.getOrder();
+        Object $order = this.getOrder();
         result = result * 59 + (($order == null) ? 43 : $order.hashCode());
         result = result * 59 + this.getPage();
         result = result * 59 + this.getSort();
         result = result * 59 + this.getWay();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespPartyInfo(order=" + this.getOrder() + ", page=" + this.getPage() + ", sort=" + this.getSort() + ", way=" + this.getWay() + ", list=" + this.getList() + ")";
+        return "RespPartyInfo(order=" + this.getOrder() + ", page=" + (int)this.getPage() + ", sort=" + (int)this.getSort() + ", way=" + (int)this.getWay() + ", list=" + this.getList() + ")";
     }
 }

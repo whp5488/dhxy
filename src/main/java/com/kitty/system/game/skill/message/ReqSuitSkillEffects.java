@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.skill.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqSuitSkillEffects extends Message
 {
     private int serial;
     private byte type;
+    
+    public ReqSuitSkillEffects() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -34,7 +36,7 @@ public class ReqSuitSkillEffects extends Message
         if (!(o instanceof ReqSuitSkillEffects)) {
             return false;
         }
-        final ReqSuitSkillEffects other = (ReqSuitSkillEffects)o;
+        ReqSuitSkillEffects other = (ReqSuitSkillEffects)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getType() == other.getType();
     }
     
@@ -44,7 +46,7 @@ public class ReqSuitSkillEffects extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getType();
@@ -53,6 +55,6 @@ public class ReqSuitSkillEffects extends Message
     
     @Override
     public String toString() {
-        return "ReqSuitSkillEffects(serial=" + this.getSerial() + ", type=" + this.getType() + ")";
+        return "ReqSuitSkillEffects(serial=" + this.getSerial() + ", type=" + (int)this.getType() + ")";
     }
 }

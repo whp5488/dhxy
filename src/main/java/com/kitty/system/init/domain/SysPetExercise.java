@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -25,6 +24,9 @@ public class SysPetExercise implements Serializable
     @Comment("修炼经验")
     @Column("exp")
     private int exp;
+    
+    public SysPetExercise() {
+    }
     
     public int getId() {
         return this.id;
@@ -74,7 +76,7 @@ public class SysPetExercise implements Serializable
         if (!(o instanceof SysPetExercise)) {
             return false;
         }
-        final SysPetExercise other = (SysPetExercise)o;
+        SysPetExercise other = (SysPetExercise)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getSoul() == other.getSoul() && this.getLevel() == other.getLevel() && this.getRelive() == other.getRelive() && this.getExp() == other.getExp();
     }
     
@@ -84,7 +86,7 @@ public class SysPetExercise implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSoul();

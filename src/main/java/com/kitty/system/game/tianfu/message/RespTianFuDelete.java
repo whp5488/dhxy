@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.message;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -20,13 +18,12 @@ public class RespTianFuDelete extends Message
         this.tianFuIds = tianFuIds;
     }
     
-    @ConstructorProperties({ "tianFuIds" })
     public RespTianFuDelete(final List<String> tianFuIds) {
-        this.tianFuIds = new ArrayList<String>();
+        this.tianFuIds = new ArrayList<>();
         this.tianFuIds = tianFuIds;
     }
     
     public RespTianFuDelete() {
-        this.tianFuIds = new ArrayList<String>();
+        this.tianFuIds = new ArrayList<>();
     }
 }

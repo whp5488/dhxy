@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.model;
 
 public class StallItem
@@ -108,37 +107,21 @@ public class StallItem
         if (!(o instanceof StallItem)) {
             return false;
         }
-        final StallItem other = (StallItem)o;
+        StallItem other = (StallItem)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$price = this.getPrice();
-        final Object other$price = other.getPrice();
-        Label_0115: {
-            if (this$price == null) {
-                if (other$price == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$price.equals(other$price)) {
-                break Label_0115;
-            }
+        Object this$price = this.getPrice();
+        Object other$price = other.getPrice();
+        if (!((this$price != null) ? this$price.equals(other$price) : (other$price == null))) {
             return false;
         }
         if (this.getStatus() != other.getStatus()) {
@@ -159,17 +142,9 @@ public class StallItem
         if (this.getFocus() != other.getFocus()) {
             return false;
         }
-        final Object this$extra = this.getExtra();
-        final Object other$extra = other.getExtra();
-        if (this$extra == null) {
-            if (other$extra == null) {
-                return true;
-            }
-        }
-        else if (this$extra.equals(other$extra)) {
-            return true;
-        }
-        return false;
+        Object this$extra = this.getExtra();
+        Object other$extra = other.getExtra();
+        return (this$extra != null) ? this$extra.equals(other$extra) : (other$extra == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -178,12 +153,12 @@ public class StallItem
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getSerial();
-        final Object $price = this.getPrice();
+        Object $price = this.getPrice();
         result = result * 59 + (($price == null) ? 43 : $price.hashCode());
         result = result * 59 + this.getStatus();
         result = result * 59 + this.getStartTime();
@@ -191,13 +166,13 @@ public class StallItem
         result = result * 59 + this.getAmount();
         result = result * 59 + this.getNum();
         result = result * 59 + this.getFocus();
-        final Object $extra = this.getExtra();
+        Object $extra = this.getExtra();
         result = result * 59 + (($extra == null) ? 43 : $extra.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "StallItem(id=" + this.getId() + ", serial=" + this.getSerial() + ", price=" + this.getPrice() + ", status=" + this.getStatus() + ", startTime=" + this.getStartTime() + ", endTime=" + this.getEndTime() + ", amount=" + this.getAmount() + ", num=" + this.getNum() + ", focus=" + this.getFocus() + ", extra=" + this.getExtra() + ")";
+        return "StallItem(id=" + this.getId() + ", serial=" + this.getSerial() + ", price=" + this.getPrice() + ", status=" + (int)this.getStatus() + ", startTime=" + this.getStartTime() + ", endTime=" + this.getEndTime() + ", amount=" + (int)this.getAmount() + ", num=" + this.getNum() + ", focus=" + this.getFocus() + ", extra=" + this.getExtra() + ")";
     }
 }

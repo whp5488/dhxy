@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -23,13 +22,13 @@ public class SysDataPrizeDraw implements Serializable
     public SysDataPrizeDraw() {
     }
     
-    public SysDataPrizeDraw(final int serial, final int num, final int type) {
+    public SysDataPrizeDraw(int serial, int num, int type) {
         this.serial = serial;
         this.num = num;
         this.type = type;
     }
     
-    public SysDataPrizeDraw(final int id, final int serial, final int num, final double rate, final int type) {
+    public SysDataPrizeDraw(int id, int serial, int num, double rate, int type) {
         this.id = id;
         this.serial = serial;
         this.num = num;
@@ -85,7 +84,7 @@ public class SysDataPrizeDraw implements Serializable
         if (!(o instanceof SysDataPrizeDraw)) {
             return false;
         }
-        final SysDataPrizeDraw other = (SysDataPrizeDraw)o;
+        SysDataPrizeDraw other = (SysDataPrizeDraw)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && Double.compare(this.getRate(), other.getRate()) == 0 && this.getType() == other.getType();
     }
     
@@ -95,12 +94,12 @@ public class SysDataPrizeDraw implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();
-        final long $rate = Double.doubleToLongBits(this.getRate());
+        long $rate = Double.doubleToLongBits(this.getRate());
         result = result * 59 + (int)($rate >>> 32 ^ $rate);
         result = result * 59 + this.getType();
         return result;

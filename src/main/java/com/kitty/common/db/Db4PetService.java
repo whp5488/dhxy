@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -32,7 +31,7 @@ public class Db4PetService
     
     public Db4PetService() {
         this.logger = LoggerFactory.getLogger(Db4PetService.class);
-        this.queue = new BlockingUniqueQueue<Pet>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -42,11 +41,11 @@ public class Db4PetService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-pet-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-pet-save-service").newThread(new Db4PetService.Worker()).start();
         Db4PetService.instance = this;
     }
     
-    public void add2Queue(final Pet entity) {
+    public void add2Queue(Pet entity) {
         this.queue.add(entity);
     }
     
@@ -54,13 +53,13 @@ public class Db4PetService
         return this.queue.size();
     }
     
-    private void saveToDb(final Pet entity) {
+    private void saveToDb(Pet entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -70,14 +69,14 @@ public class Db4PetService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Pet] 执行全部命令后关闭");
+        LoggerUtils.error("[db4Pet] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<Pet> it = this.queue.iterator();
+            Iterator<Pet> it = this.queue.iterator();
             while (it.hasNext()) {
-                final Pet pet = it.next();
+                Pet pet = (Pet)it.next();
                 it.remove();
                 this.saveToDb(pet);
             }
@@ -89,19 +88,22 @@ public class Db4PetService
         @Override
         public void run() {
             while (Db4PetService.this.run.get()) {
+                Pet entity = null;
                 try {
-                    Pet entity = Db4PetService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (Pet)Db4PetService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     Db4PetService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("宠物数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("宠物数据持久化队列长度：" + Db4PetService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("宠物数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("宠物数据持久化队列长度：" + Db4PetService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     Db4PetService.this.logger.error("宠物存档异常", e);
                     e.printStackTrace();
                 }

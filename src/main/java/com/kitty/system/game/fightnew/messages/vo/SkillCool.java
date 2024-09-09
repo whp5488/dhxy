@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages.vo;
 
 import java.io.Serializable;
@@ -8,6 +7,9 @@ public class SkillCool implements Serializable
     private int objId;
     private int skillId;
     private int round;
+    
+    public SkillCool() {
+    }
     
     public int getObjId() {
         return this.objId;
@@ -41,7 +43,7 @@ public class SkillCool implements Serializable
         if (!(o instanceof SkillCool)) {
             return false;
         }
-        final SkillCool other = (SkillCool)o;
+        SkillCool other = (SkillCool)o;
         return other.canEqual(this) && this.getObjId() == other.getObjId() && this.getSkillId() == other.getSkillId() && this.getRound() == other.getRound();
     }
     
@@ -51,7 +53,7 @@ public class SkillCool implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getObjId();
         result = result * 59 + this.getSkillId();

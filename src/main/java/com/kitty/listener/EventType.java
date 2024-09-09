@@ -1,4 +1,3 @@
-
 package com.kitty.listener;
 
 public enum EventType

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import java.util.List;
@@ -10,6 +9,9 @@ public class ReqUpTaskEvent extends Message
 {
     private int taskId;
     private List<Integer> event;
+    
+    public ReqUpTaskEvent() {
+    }
     
     public int getTaskId() {
         return this.taskId;
@@ -35,24 +37,16 @@ public class ReqUpTaskEvent extends Message
         if (!(o instanceof ReqUpTaskEvent)) {
             return false;
         }
-        final ReqUpTaskEvent other = (ReqUpTaskEvent)o;
+        ReqUpTaskEvent other = (ReqUpTaskEvent)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getTaskId() != other.getTaskId()) {
             return false;
         }
-        final Object this$event = this.getEvent();
-        final Object other$event = other.getEvent();
-        if (this$event == null) {
-            if (other$event == null) {
-                return true;
-            }
-        }
-        else if (this$event.equals(other$event)) {
-            return true;
-        }
-        return false;
+        Object this$event = this.getEvent();
+        Object other$event = other.getEvent();
+        return (this$event != null) ? this$event.equals(other$event) : (other$event == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -61,10 +55,10 @@ public class ReqUpTaskEvent extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTaskId();
-        final Object $event = this.getEvent();
+        Object $event = this.getEvent();
         result = result * 59 + (($event == null) ? 43 : $event.hashCode());
         return result;
     }

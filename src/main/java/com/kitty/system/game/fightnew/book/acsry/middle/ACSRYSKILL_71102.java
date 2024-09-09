@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -15,38 +14,41 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_71102 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_71102() {
+    }
+    
     @Override
-    public void beforeExecuteMagic(final Fight fight, final FightObject effecter, final FightObject target, final Object... args) {
+    public void beforeExecuteMagic(Fight fight, FightObject effecter, FightObject target, Object... args) {
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
-            if (acsrySkillList.contains(71102)) {
-                final RoleSkill skill = (RoleSkill)args[0];
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            if (acsrySkillList.contains(Integer.valueOf(71102))) {
+                RoleSkill skill = (RoleSkill)args[0];
                 if (skill == null) {
                     return;
                 }
-                final int property = this.getProperty(skill);
+                int property = this.getProperty(skill);
                 if (property == 0) {
                     return;
                 }
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 71102);
-                final double percent = 0.6;
-                final boolean flag = SkillAi.canAffectOnPro(percent);
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 71102);
+                double percent = 0.6;
+                boolean flag = SkillAi.canAffectOnPro(percent);
                 if (flag) {
-                    final String dictStr = String.valueOf(property);
-                    playerFightObject.getAcsryPropertyMap().setv(dictStr, (Object)(-1));
-                    playerFightObject.getAcsryPropertyMap().setv(dictStr + "value", 0.03);
-                    skillRecord.setT(target.getId());
+                    String dictStr = String.valueOf(property);
+                    playerFightObject.getAcsryPropertyMap().setv(dictStr, Integer.valueOf(-1));
+                    playerFightObject.getAcsryPropertyMap().setv(dictStr + "value", Double.valueOf(0.03));
+                    skillRecord.setT((long)(int)target.getId());
                 }
             }
         }
     }
     
-    private int getProperty(final RoleSkill skill) {
-        if (SKILLATTR.SKILLATTR_ICE.getValue() == skill.getType()) {
+    private int getProperty(RoleSkill skill) {
+        if (SKILLATTR.SKILLATTR_ICE.getValue() == (int)skill.getType()) {
             return PRO_DICT_TYPE.OMIT_K_FY.getDist();
         }
-        if (SKILLATTR.SKILLATTR_SLEEP.getValue() == skill.getType()) {
+        if (SKILLATTR.SKILLATTR_SLEEP.getValue() == (int)skill.getType()) {
             return PRO_DICT_TYPE.OMIT_K_HS.getDist();
         }
         return 0;

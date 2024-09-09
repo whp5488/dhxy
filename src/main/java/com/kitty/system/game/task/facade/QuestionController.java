@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.facade;
 
 import com.kitty.system.game.task.message.ReqSubmitQuestionHall;
@@ -19,39 +18,46 @@ public class QuestionController
     @Autowired
     QuestionService questionService;
     
+    public QuestionController() {
+    }
+    
     @RequestMapping
-    public void submitQuestionDls(final IoSession session, final ReqSubmitQuestion submitQuestion) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void submitQuestionDls(IoSession session, ReqSubmitQuestion submitQuestion) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.questionService.submitQuestionDls(role, submitQuestion);
+        return;
     }
     
     @RequestMapping
-    public void submitQuestionXs(final IoSession session, final ReqSubmitQuestionCountry submitQuestionCountry) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void submitQuestionXs(IoSession session, ReqSubmitQuestionCountry submitQuestionCountry) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.questionService.submitQuestionXs(role, submitQuestionCountry);
+        return;
     }
     
     @RequestMapping
-    public void submitQuestionSs(final IoSession session, final ReqSubmitQuestionProvince submitQuestionProvince) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void submitQuestionSs(IoSession session, ReqSubmitQuestionProvince submitQuestionProvince) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.questionService.submitQuestionSs(role, submitQuestionProvince);
+        return;
     }
     
     @RequestMapping
-    public void submitQuestionDs(final IoSession session, final ReqSubmitQuestionHall submitQuestionHall) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void submitQuestionDs(IoSession session, ReqSubmitQuestionHall submitQuestionHall) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.questionService.submitQuestionDs(role, submitQuestionHall);
+        return;
     }
 }

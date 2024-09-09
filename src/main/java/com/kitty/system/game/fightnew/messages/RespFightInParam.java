@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages;
 
 import java.util.ArrayList;
@@ -32,9 +31,9 @@ public class RespFightInParam extends Message
         this.respCombatOpponets = new RespCombatOpponets();
     }
     
-    public void addPetFightInParam(final PetFightInParam petFightInParam) {
+    public void addPetFightInParam(PetFightInParam petFightInParam) {
         if (this.petFightInParam == null) {
-            this.petFightInParam = new ArrayList<PetFightInParam>();
+            this.petFightInParam = new ArrayList<>();
         }
         this.petFightInParam.add(petFightInParam);
     }

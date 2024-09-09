@@ -1,4 +1,3 @@
-
 package com.kitty.cross;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +14,9 @@ public class CrossServerConfig
     private int gamePort;
     @Value("${cross.center.bit}")
     private int isCenter;
+    
+    public CrossServerConfig() {
+    }
     
     public boolean isCenterServer() {
         return this.isCenter > 0;

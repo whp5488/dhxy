@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.role.domain;
 
-import java.beans.ConstructorProperties;
 import com.kitty.common.db.Db4CommonService;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Column;
@@ -117,7 +115,6 @@ public class Domesticate extends BaseEntity<Long>
         return this.count;
     }
     
-    @ConstructorProperties({ "id", "rId", "restsId", "logic", "type", "already", "createTime", "prevTime", "count" })
     public Domesticate(final Long id, final long rId, final long restsId, final byte logic, final byte type, final int already, final int createTime, final int prevTime, final int count) {
         this.id = id;
         this.rId = rId;

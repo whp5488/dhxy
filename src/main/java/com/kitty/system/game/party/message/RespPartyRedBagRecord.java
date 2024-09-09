@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.message.vo.RecvRedBagInfo;
@@ -13,6 +12,9 @@ public class RespPartyRedBagRecord extends Message
     private int count;
     private int total;
     private List<RecvRedBagInfo> recvRedBagInfoList;
+    
+    public RespPartyRedBagRecord() {
+    }
     
     public void setType(final byte type) {
         this.type = type;

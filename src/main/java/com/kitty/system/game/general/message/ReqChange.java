@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.general.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -39,7 +38,7 @@ public class ReqChange extends Message
         if (!(o instanceof ReqChange)) {
             return false;
         }
-        final ReqChange other = (ReqChange)o;
+        ReqChange other = (ReqChange)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getType() == other.getType();
     }
     
@@ -49,7 +48,7 @@ public class ReqChange extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getType();
@@ -58,6 +57,6 @@ public class ReqChange extends Message
     
     @Override
     public String toString() {
-        return "ReqChange(serial=" + this.getSerial() + ", type=" + this.getType() + ")";
+        return "ReqChange(serial=" + this.getSerial() + ", type=" + (int)this.getType() + ")";
     }
 }

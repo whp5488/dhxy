@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -13,6 +12,9 @@ public class ReqSavePartyFlag extends Message
     private short emblem;
     private short emblemColor;
     private String text;
+    
+    public ReqSavePartyFlag() {
+    }
     
     public short getFlag() {
         return this.flag;
@@ -70,7 +72,7 @@ public class ReqSavePartyFlag extends Message
         if (!(o instanceof ReqSavePartyFlag)) {
             return false;
         }
-        final ReqSavePartyFlag other = (ReqSavePartyFlag)o;
+        ReqSavePartyFlag other = (ReqSavePartyFlag)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -89,17 +91,9 @@ public class ReqSavePartyFlag extends Message
         if (this.getEmblemColor() != other.getEmblemColor()) {
             return false;
         }
-        final Object this$text = this.getText();
-        final Object other$text = other.getText();
-        if (this$text == null) {
-            if (other$text == null) {
-                return true;
-            }
-        }
-        else if (this$text.equals(other$text)) {
-            return true;
-        }
-        return false;
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        return (this$text != null) ? this$text.equals(other$text) : (other$text == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -108,20 +102,20 @@ public class ReqSavePartyFlag extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getFlag();
         result = result * 59 + this.getFlagColor();
         result = result * 59 + this.getLace();
         result = result * 59 + this.getEmblem();
         result = result * 59 + this.getEmblemColor();
-        final Object $text = this.getText();
+        Object $text = this.getText();
         result = result * 59 + (($text == null) ? 43 : $text.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqSavePartyFlag(flag=" + this.getFlag() + ", flagColor=" + this.getFlagColor() + ", lace=" + this.getLace() + ", emblem=" + this.getEmblem() + ", emblemColor=" + this.getEmblemColor() + ", text=" + this.getText() + ")";
+        return "ReqSavePartyFlag(flag=" + (int)this.getFlag() + ", flagColor=" + (int)this.getFlagColor() + ", lace=" + (int)this.getLace() + ", emblem=" + (int)this.getEmblem() + ", emblemColor=" + (int)this.getEmblemColor() + ", text=" + this.getText() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -48,7 +47,7 @@ public class RespIconCartoon extends Message
         if (!(o instanceof RespIconCartoon)) {
             return false;
         }
-        final RespIconCartoon other = (RespIconCartoon)o;
+        RespIconCartoon other = (RespIconCartoon)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -58,17 +57,9 @@ public class RespIconCartoon extends Message
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$onlyId = this.getOnlyId();
-        final Object other$onlyId = other.getOnlyId();
-        if (this$onlyId == null) {
-            if (other$onlyId == null) {
-                return true;
-            }
-        }
-        else if (this$onlyId.equals(other$onlyId)) {
-            return true;
-        }
-        return false;
+        Object this$onlyId = this.getOnlyId();
+        Object other$onlyId = other.getOnlyId();
+        return (this$onlyId != null) ? this$onlyId.equals(other$onlyId) : (other$onlyId == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -77,11 +68,11 @@ public class RespIconCartoon extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getSerial();
-        final Object $onlyId = this.getOnlyId();
+        Object $onlyId = this.getOnlyId();
         result = result * 59 + (($onlyId == null) ? 43 : $onlyId.hashCode());
         return result;
     }

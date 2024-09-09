@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -21,6 +20,9 @@ public class SysPartyFlag implements Serializable
     @Comment("分类：0.旗帜 1.边饰 2.纹章 3.旗帜颜色 4.纹章颜色")
     @Column("classify")
     private short classify;
+    
+    public SysPartyFlag() {
+    }
     
     public short getIndex() {
         return this.index;
@@ -62,7 +64,7 @@ public class SysPartyFlag implements Serializable
         if (!(o instanceof SysPartyFlag)) {
             return false;
         }
-        final SysPartyFlag other = (SysPartyFlag)o;
+        SysPartyFlag other = (SysPartyFlag)o;
         return other.canEqual(this) && this.getIndex() == other.getIndex() && this.getPrice() == other.getPrice() && this.getType() == other.getType() && this.getClassify() == other.getClassify();
     }
     
@@ -72,7 +74,7 @@ public class SysPartyFlag implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getIndex();
         result = result * 59 + this.getPrice();
@@ -83,6 +85,6 @@ public class SysPartyFlag implements Serializable
     
     @Override
     public String toString() {
-        return "SysPartyFlag(index=" + this.getIndex() + ", price=" + this.getPrice() + ", type=" + this.getType() + ", classify=" + this.getClassify() + ")";
+        return "SysPartyFlag(index=" + (int)this.getIndex() + ", price=" + this.getPrice() + ", type=" + this.getType() + ", classify=" + (int)this.getClassify() + ")";
     }
 }

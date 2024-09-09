@@ -1,68 +1,109 @@
-
 package com.kitty.common.utils.file;
 
-import java.util.Collection;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.FileNotFoundException;
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.File;
 
 public class FileUtils
 {
-    public static String readText(final String fileName) throws IOException {
-        final File file = new File(fileName);
+    public FileUtils() {
+    }
+    
+    public static String readText(String fileName) throws IOException {
+        File file = new File(fileName);
         if (!file.exists()) {
             throw new FileNotFoundException();
         }
-        final FileInputStream in = new FileInputStream(file);
-        final StringBuilder result = new StringBuilder();
-        try (final BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"))) {
+        FileInputStream in = new FileInputStream(file);
+        StringBuilder result = new StringBuilder();
+        BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+        Throwable t = null;
+        try {
             String line;
             while ((line = br.readLine()) != null) {
                 result.append(line).append("\n");
+            }
+        }
+        catch (Throwable t2) {
+            t = t2;
+            throw t2;
+        }
+        finally {
+            if (br != null) {
+                if (t != null) {
+                    try {
+                        br.close();
+                    }
+                    catch (Throwable exception2) {
+                        t.addSuppressed(exception2);
+                    }
+                }
+                else {
+                    br.close();
+                }
             }
         }
         in.close();
         return result.toString();
     }
     
-    public static List<String> readLines(final String fileName) throws IOException {
-        final File file = new File(fileName);
+    public static List<String> readLines(String fileName) throws IOException {
+        File file = new File(fileName);
         if (!file.exists()) {
             throw new FileNotFoundException();
         }
-        final List<String> result = new ArrayList<String>();
-        final FileInputStream in = new FileInputStream(file);
-        try (final BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"))) {
+        List<String> result = new ArrayList<>();
+        FileInputStream in = new FileInputStream(file);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+        Throwable t = null;
+        try {
             String line;
             while ((line = br.readLine()) != null) {
                 result.add(line);
+            }
+        }
+        catch (Throwable t2) {
+            t = t2;
+            throw t2;
+        }
+        finally {
+            if (br != null) {
+                if (t != null) {
+                    try {
+                        br.close();
+                    }
+                    catch (Throwable exception2) {
+                        t.addSuppressed(exception2);
+                    }
+                }
+                else {
+                    br.close();
+                }
             }
         }
         in.close();
         return result;
     }
     
-    public static List<File> listFiles(final String path) {
-        final List<File> result = new ArrayList<File>();
+    public static List<File> listFiles(String path) {
+        List<File> result = new ArrayList<>();
         try {
-            final File file = new File(path);
+            File file = new File(path);
             if (file.isFile()) {
                 result.add(file);
             }
             else {
-                final File[] files = file.listFiles();
+                File[] files = file.listFiles();
                 result.addAll(Arrays.asList(files));
             }
         }
-        catch (final Exception ex) {}
+        catch (Exception ex) {}
         return result;
     }
 }

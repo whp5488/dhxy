@@ -1,8 +1,6 @@
-
 package com.kitty.cache;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,11 +18,14 @@ public class RedisConfig extends CachingConfigurerSupport
     @Value("${spring.redis.database}")
     private int database;
     
+    public RedisConfig() {
+    }
+    
     @Bean({ "redisTemplate" })
-    public RedisTemplate redisTemplate(final RedisConnectionFactory factory) {
-        final StringRedisTemplate template = new StringRedisTemplate(factory);
-        final Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-        final ObjectMapper om = new ObjectMapper();
+    public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
+        StringRedisTemplate template = new StringRedisTemplate(factory);
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);

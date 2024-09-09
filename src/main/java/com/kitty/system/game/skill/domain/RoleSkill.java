@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.skill.domain;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import com.kitty.system.game.vo.FieldByte;
 import java.util.List;
@@ -16,9 +14,9 @@ public class RoleSkill implements Serializable
     private Byte fightType;
     private List<FieldByte> effects;
     
-    public RoleSkill(final Integer skillId, final Integer type, final Integer proficient, final Integer maxProficient) {
-        this.type = -1;
-        this.effects = new ArrayList<FieldByte>();
+    public RoleSkill(Integer skillId, Integer type, Integer proficient, Integer maxProficient) {
+        this.type = Integer.valueOf(-1);
+        this.effects = new ArrayList<>();
         this.skillId = skillId;
         this.type = type;
         this.proficient = proficient;
@@ -81,86 +79,38 @@ public class RoleSkill implements Serializable
         if (!(o instanceof RoleSkill)) {
             return false;
         }
-        final RoleSkill other = (RoleSkill)o;
+        RoleSkill other = (RoleSkill)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$skillId = this.getSkillId();
-        final Object other$skillId = other.getSkillId();
-        Label_0065: {
-            if (this$skillId == null) {
-                if (other$skillId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$skillId.equals(other$skillId)) {
-                break Label_0065;
-            }
+        Object this$skillId = this.getSkillId();
+        Object other$skillId = other.getSkillId();
+        if (!((this$skillId != null) ? this$skillId.equals(other$skillId) : (other$skillId == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0102: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0102;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$proficient = this.getProficient();
-        final Object other$proficient = other.getProficient();
-        Label_0139: {
-            if (this$proficient == null) {
-                if (other$proficient == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$proficient.equals(other$proficient)) {
-                break Label_0139;
-            }
+        Object this$proficient = this.getProficient();
+        Object other$proficient = other.getProficient();
+        if (!((this$proficient != null) ? this$proficient.equals(other$proficient) : (other$proficient == null))) {
             return false;
         }
-        final Object this$maxProficient = this.getMaxProficient();
-        final Object other$maxProficient = other.getMaxProficient();
-        Label_0176: {
-            if (this$maxProficient == null) {
-                if (other$maxProficient == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$maxProficient.equals(other$maxProficient)) {
-                break Label_0176;
-            }
+        Object this$maxProficient = this.getMaxProficient();
+        Object other$maxProficient = other.getMaxProficient();
+        if (!((this$maxProficient != null) ? this$maxProficient.equals(other$maxProficient) : (other$maxProficient == null))) {
             return false;
         }
-        final Object this$fightType = this.getFightType();
-        final Object other$fightType = other.getFightType();
-        Label_0213: {
-            if (this$fightType == null) {
-                if (other$fightType == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$fightType.equals(other$fightType)) {
-                break Label_0213;
-            }
+        Object this$fightType = this.getFightType();
+        Object other$fightType = other.getFightType();
+        if (!((this$fightType != null) ? this$fightType.equals(other$fightType) : (other$fightType == null))) {
             return false;
         }
-        final Object this$effects = this.getEffects();
-        final Object other$effects = other.getEffects();
-        if (this$effects == null) {
-            if (other$effects == null) {
-                return true;
-            }
-        }
-        else if (this$effects.equals(other$effects)) {
-            return true;
-        }
-        return false;
+        Object this$effects = this.getEffects();
+        Object other$effects = other.getEffects();
+        return (this$effects != null) ? this$effects.equals(other$effects) : (other$effects == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -169,19 +119,19 @@ public class RoleSkill implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $skillId = this.getSkillId();
+        Object $skillId = this.getSkillId();
         result = result * 59 + (($skillId == null) ? 43 : $skillId.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $proficient = this.getProficient();
+        Object $proficient = this.getProficient();
         result = result * 59 + (($proficient == null) ? 43 : $proficient.hashCode());
-        final Object $maxProficient = this.getMaxProficient();
+        Object $maxProficient = this.getMaxProficient();
         result = result * 59 + (($maxProficient == null) ? 43 : $maxProficient.hashCode());
-        final Object $fightType = this.getFightType();
+        Object $fightType = this.getFightType();
         result = result * 59 + (($fightType == null) ? 43 : $fightType.hashCode());
-        final Object $effects = this.getEffects();
+        Object $effects = this.getEffects();
         result = result * 59 + (($effects == null) ? 43 : $effects.hashCode());
         return result;
     }
@@ -192,14 +142,13 @@ public class RoleSkill implements Serializable
     }
     
     public RoleSkill() {
-        this.type = -1;
-        this.effects = new ArrayList<FieldByte>();
+        this.type = Integer.valueOf(-1);
+        this.effects = new ArrayList<>();
     }
     
-    @ConstructorProperties({ "skillId", "type", "proficient", "maxProficient", "fightType", "effects" })
     public RoleSkill(final Integer skillId, final Integer type, final Integer proficient, final Integer maxProficient, final Byte fightType, final List<FieldByte> effects) {
-        this.type = -1;
-        this.effects = new ArrayList<FieldByte>();
+        this.type = Integer.valueOf(-1);
+        this.effects = new ArrayList<>();
         this.skillId = skillId;
         this.type = type;
         this.proficient = proficient;

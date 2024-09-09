@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.message;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import com.kitty.system.game.tianfu.pojo.RoleTianFuClient;
 import java.util.List;
@@ -30,16 +28,15 @@ public class RespTianFuList extends Message
         this.tianFuList = tianFuList;
     }
     
-    @ConstructorProperties({ "type", "tianFuList" })
     public RespTianFuList(final byte type, final List<RoleTianFuClient> tianFuList) {
         this.type = 0;
-        this.tianFuList = new ArrayList<RoleTianFuClient>();
+        this.tianFuList = new ArrayList<>();
         this.type = type;
         this.tianFuList = tianFuList;
     }
     
     public RespTianFuList() {
         this.type = 0;
-        this.tianFuList = new ArrayList<RoleTianFuClient>();
+        this.tianFuList = new ArrayList<>();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.cxf.model;
 
 import java.io.Serializable;
@@ -18,7 +17,7 @@ public class Inquire implements Serializable
     public Inquire() {
     }
     
-    public Inquire(final long id, final int r, final String n, final int no, final byte re, final short gr, final String xy, final String yl, final String total) {
+    public Inquire(long id, int r, String n, int no, byte re, short gr, String xy, String yl, String total) {
         this.id = id;
         this.r = r;
         this.n = n;
@@ -110,7 +109,7 @@ public class Inquire implements Serializable
         if (!(o instanceof Inquire)) {
             return false;
         }
-        final Inquire other = (Inquire)o;
+        Inquire other = (Inquire)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -120,17 +119,9 @@ public class Inquire implements Serializable
         if (this.getR() != other.getR()) {
             return false;
         }
-        final Object this$n = this.getN();
-        final Object other$n = other.getN();
-        Label_0092: {
-            if (this$n == null) {
-                if (other$n == null) {
-                    break Label_0092;
-                }
-            }
-            else if (this$n.equals(other$n)) {
-                break Label_0092;
-            }
+        Object this$n = this.getN();
+        Object other$n = other.getN();
+        if (!((this$n != null) ? this$n.equals(other$n) : (other$n == null))) {
             return false;
         }
         if (this.getNo() != other.getNo()) {
@@ -142,43 +133,19 @@ public class Inquire implements Serializable
         if (this.getGr() != other.getGr()) {
             return false;
         }
-        final Object this$xy = this.getXy();
-        final Object other$xy = other.getXy();
-        Label_0168: {
-            if (this$xy == null) {
-                if (other$xy == null) {
-                    break Label_0168;
-                }
-            }
-            else if (this$xy.equals(other$xy)) {
-                break Label_0168;
-            }
+        Object this$xy = this.getXy();
+        Object other$xy = other.getXy();
+        if (!((this$xy != null) ? this$xy.equals(other$xy) : (other$xy == null))) {
             return false;
         }
-        final Object this$yl = this.getYl();
-        final Object other$yl = other.getYl();
-        Label_0205: {
-            if (this$yl == null) {
-                if (other$yl == null) {
-                    break Label_0205;
-                }
-            }
-            else if (this$yl.equals(other$yl)) {
-                break Label_0205;
-            }
+        Object this$yl = this.getYl();
+        Object other$yl = other.getYl();
+        if (!((this$yl != null) ? this$yl.equals(other$yl) : (other$yl == null))) {
             return false;
         }
-        final Object this$total = this.getTotal();
-        final Object other$total = other.getTotal();
-        if (this$total == null) {
-            if (other$total == null) {
-                return true;
-            }
-        }
-        else if (this$total.equals(other$total)) {
-            return true;
-        }
-        return false;
+        Object this$total = this.getTotal();
+        Object other$total = other.getTotal();
+        return (this$total != null) ? this$total.equals(other$total) : (other$total == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -187,27 +154,27 @@ public class Inquire implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final long $id = this.getId();
+        long $id = this.getId();
         result = result * 59 + (int)($id >>> 32 ^ $id);
         result = result * 59 + this.getR();
-        final Object $n = this.getN();
+        Object $n = this.getN();
         result = result * 59 + (($n == null) ? 43 : $n.hashCode());
         result = result * 59 + this.getNo();
         result = result * 59 + this.getRe();
         result = result * 59 + this.getGr();
-        final Object $xy = this.getXy();
+        Object $xy = this.getXy();
         result = result * 59 + (($xy == null) ? 43 : $xy.hashCode());
-        final Object $yl = this.getYl();
+        Object $yl = this.getYl();
         result = result * 59 + (($yl == null) ? 43 : $yl.hashCode());
-        final Object $total = this.getTotal();
+        Object $total = this.getTotal();
         result = result * 59 + (($total == null) ? 43 : $total.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "Inquire(id=" + this.getId() + ", r=" + this.getR() + ", n=" + this.getN() + ", no=" + this.getNo() + ", re=" + this.getRe() + ", gr=" + this.getGr() + ", xy=" + this.getXy() + ", yl=" + this.getYl() + ", total=" + this.getTotal() + ")";
+        return "Inquire(id=" + this.getId() + ", r=" + this.getR() + ", n=" + this.getN() + ", no=" + this.getNo() + ", re=" + (int)this.getRe() + ", gr=" + (int)this.getGr() + ", xy=" + this.getXy() + ", yl=" + this.getYl() + ", total=" + this.getTotal() + ")";
     }
 }

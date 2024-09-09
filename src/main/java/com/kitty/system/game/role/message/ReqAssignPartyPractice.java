@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqAssignPartyPractice extends Message
 {
     private String nutMap;
+    
+    public ReqAssignPartyPractice() {
+    }
     
     public String getNutMap() {
         return this.nutMap;
@@ -25,21 +27,13 @@ public class ReqAssignPartyPractice extends Message
         if (!(o instanceof ReqAssignPartyPractice)) {
             return false;
         }
-        final ReqAssignPartyPractice other = (ReqAssignPartyPractice)o;
+        ReqAssignPartyPractice other = (ReqAssignPartyPractice)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$nutMap = this.getNutMap();
-        final Object other$nutMap = other.getNutMap();
-        if (this$nutMap == null) {
-            if (other$nutMap == null) {
-                return true;
-            }
-        }
-        else if (this$nutMap.equals(other$nutMap)) {
-            return true;
-        }
-        return false;
+        Object this$nutMap = this.getNutMap();
+        Object other$nutMap = other.getNutMap();
+        return (this$nutMap != null) ? this$nutMap.equals(other$nutMap) : (other$nutMap == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqAssignPartyPractice extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $nutMap = this.getNutMap();
+        Object $nutMap = this.getNutMap();
         result = result * 59 + (($nutMap == null) ? 43 : $nutMap.hashCode());
         return result;
     }

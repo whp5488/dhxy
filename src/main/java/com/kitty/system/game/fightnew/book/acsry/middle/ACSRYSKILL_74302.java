@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.game.vo.utils.StatusConst;
@@ -16,38 +15,41 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_74302 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_74302() {
+    }
+    
     @Override
-    public void beforeExecuteMagic(final Fight fight, final FightObject effecter, final FightObject target, final Object... args) {
+    public void beforeExecuteMagic(Fight fight, FightObject effecter, FightObject target, Object... args) {
         if (fight.getRound() > 1 && effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
-            if (acsrySkillList.contains(74302)) {
-                if (acsrySkillList.contains(74303)) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            if (acsrySkillList.contains(Integer.valueOf(74302))) {
+                if (acsrySkillList.contains(Integer.valueOf(74303))) {
                     return;
                 }
-                final RoleSkill skill = (RoleSkill)args[0];
+                RoleSkill skill = (RoleSkill)args[0];
                 if (skill == null) {
                     return;
                 }
-                if (SKILLATTR.SKILLATTR_XIXUE.getValue() == skill.getType()) {
-                    final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 74302);
-                    final Map<Integer, Integer> abnormalRoundMap = playerFightObject.getAbnormalRoundMap();
+                if (SKILLATTR.SKILLATTR_XIXUE.getValue() == (int)skill.getType()) {
+                    SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 74302);
+                    Map<Integer, Integer> abnormalRoundMap = playerFightObject.getAbnormalRoundMap();
                     int round = fight.getRound();
                     --round;
-                    final Integer status = abnormalRoundMap.get(round);
-                    final String skillRound = playerFightObject.getOtherMap().getString("acsrySkillRound_" + round, (String)null);
+                    Integer status = (Integer)abnormalRoundMap.get(Integer.valueOf(round));
+                    String skillRound = playerFightObject.getOtherMap().getString("acsrySkillRound_" + round, null);
                     if (this.check(status, skillRound)) {
-                        final String distStr = String.valueOf(PRO_DICT_TYPE.SS_KB_RATIO.getDist());
-                        playerFightObject.getAcsryPropertyMap().setv(distStr, (Object)(-1));
-                        playerFightObject.getAcsryPropertyMap().setv(distStr + "value", (Object)1.0);
-                        skillRecord.setT(target.getId());
+                        String distStr = String.valueOf(PRO_DICT_TYPE.SS_KB_RATIO.getDist());
+                        playerFightObject.getAcsryPropertyMap().setv(distStr, Integer.valueOf(-1));
+                        playerFightObject.getAcsryPropertyMap().setv(distStr + "value", Double.valueOf(1.0));
+                        skillRecord.setT((long)(int)target.getId());
                     }
                 }
             }
         }
     }
     
-    private boolean check(final Integer status, final String skillRound) {
+    private boolean check(Integer status, String skillRound) {
         return (status == null || !StatusConst.getControlStatus().contains(status)) && (skillRound == null || !skillRound.contains(String.valueOf(74302)));
     }
 }

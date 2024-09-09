@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -12,42 +11,53 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_73312 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_73312() {
+    }
+    
     @Override
-    public void passive(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void passive(Fight fight, FightObject fightObject, Object... args) {
         if (fightObject.isFallDown()) {
             return;
         }
         if (fightObject.isPlayer()) {
-            final double percent = 0.1;
+            double percent = 0.1;
             FightObject recordTarget = null;
-            for (final FightObject obj : fight.getMySide(fightObject.getId())) {
+            for (FightObject obj : fight.getMySide((int)fightObject.getId())) {
                 if (obj.getStatusValue(1010) > 0) {
-                    final int unitId = obj.getStatusSubMap().getInt("1010target");
-                    if (fightObject.getId() != unitId) {
+                    int unitId = obj.getStatusSubMap().getInt("1010target");
+                    if ((int)fightObject.getId() != unitId) {
                         continue;
                     }
-                    if (!SkillAi.canAffectOnPro(percent)) {
-                        continue;
-                    }
-                    if (obj.isConfusion()) {
-                        if (recordTarget == null) {
-                            recordTarget = obj;
+                    if (SkillAi.canAffectOnPro(percent)) {
+                        if (obj.isConfusion()) {
+                            if (recordTarget == null) {
+                                recordTarget = obj;
+                            }
+                            AcsrySkillInsideUtil.excuteClearStatus(fight, fightObject, obj, 1002);
                         }
-                        AcsrySkillInsideUtil.excuteClearStatus(fight, fightObject, obj, 1002);
+                        if (obj.isSleep()) {
+                            if (recordTarget == null) {
+                                recordTarget = obj;
+                            }
+                            AcsrySkillInsideUtil.excuteClearStatus(fight, fightObject, obj, 1004);
+                        }
+                        else {
+                            continue;
+                        }
                     }
-                    if (!obj.isSleep()) {
+                    else {
                         continue;
                     }
-                    if (recordTarget == null) {
-                        recordTarget = obj;
-                    }
-                    AcsrySkillInsideUtil.excuteClearStatus(fight, fightObject, obj, 1004);
+                }
+                else {
+                    continue;
                 }
             }
             if (recordTarget != null) {
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 73312);
-                skillRecord.setT(recordTarget.getId());
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 73312);
+                skillRecord.setT((long)(int)recordTarget.getId());
             }
         }
+        return;
     }
 }

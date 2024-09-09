@@ -1,9 +1,6 @@
-
 package com.kitty.system.game.fightnew.model;
 
-import java.beans.ConstructorProperties;
 import java.util.HashMap;
-import java.util.Collection;
 import java.util.ArrayList;
 import com.kitty.system.game.fightnew.messages.old.RespFightShouting;
 import java.util.List;
@@ -30,38 +27,40 @@ public class FightObjectParam
     private int guardTarget;
     private int order;
     
-    public void addClearStatus(final int status) {
+    public void addClearStatus(int status) {
         if (status == 0) {
             return;
         }
         if (this.clearStatus == null) {
-            this.clearStatus = new ArrayList<Integer>();
+            this.clearStatus = new ArrayList<>();
         }
-        this.clearStatus.add(status);
+        this.clearStatus.add(Integer.valueOf(status));
+        return;
     }
     
-    public void addClearStatus(final List<Integer> status) {
+    public void addClearStatus(List<Integer> status) {
         if (status == null || status.size() <= 0) {
             return;
         }
         if (this.clearStatus == null) {
-            this.clearStatus = new ArrayList<Integer>();
+            this.clearStatus = new ArrayList<>();
         }
         this.clearStatus.addAll(status);
+        return;
     }
     
     public Map<Integer, Integer> getStatusMap() {
         if (this.statusMap == null) {
-            this.statusMap = new HashMap<Integer, Integer>();
+            this.statusMap = new HashMap();
         }
         return this.statusMap;
     }
     
-    public void addDamageType(final int flag) {
+    public void addDamageType(int flag) {
         if (this.damageType == null) {
-            this.damageType = new ArrayList<Integer>();
+            this.damageType = new ArrayList<>();
         }
-        this.damageType.add(flag);
+        this.damageType.add(Integer.valueOf(flag));
     }
     
     public void setType(final int type) {
@@ -209,7 +208,6 @@ public class FightObjectParam
         this.missed = -1;
     }
     
-    @ConstructorProperties({ "type", "objId", "changeLife", "changeMana", "currentLife", "currentMana", "maxLife", "maxMana", "statusMap", "clearStatus", "specialStatus", "isHit", "damageType", "missed", "fightShouting", "disappear", "guardTarget", "order" })
     public FightObjectParam(final int type, final int objId, final int changeLife, final int changeMana, final int currentLife, final int currentMana, final int maxLife, final int maxMana, final Map<Integer, Integer> statusMap, final List<Integer> clearStatus, final int specialStatus, final boolean isHit, final List<Integer> damageType, final int missed, final RespFightShouting fightShouting, final int disappear, final int guardTarget, final int order) {
         this.isHit = true;
         this.missed = -1;

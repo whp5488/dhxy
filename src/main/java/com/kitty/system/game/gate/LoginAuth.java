@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate;
 
 import java.util.Random;
@@ -10,7 +9,7 @@ public class LoginAuth
     private long uid;
     
     public LoginAuth() {
-        final Random random = new Random();
+        Random random = new Random();
         this.authKey = random.nextInt(8888888) + 1111111;
         this.seed = random.nextInt(888888888) + 111111111;
     }
@@ -47,7 +46,7 @@ public class LoginAuth
         if (!(o instanceof LoginAuth)) {
             return false;
         }
-        final LoginAuth other = (LoginAuth)o;
+        LoginAuth other = (LoginAuth)o;
         return other.canEqual(this) && this.getAuthKey() == other.getAuthKey() && this.getSeed() == other.getSeed() && this.getUid() == other.getUid();
     }
     
@@ -57,11 +56,11 @@ public class LoginAuth
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getAuthKey();
         result = result * 59 + this.getSeed();
-        final long $uid = this.getUid();
+        long $uid = this.getUid();
         result = result * 59 + (int)($uid >>> 32 ^ $uid);
         return result;
     }

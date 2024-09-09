@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import com.kitty.mina.codec.IMessageEncoder;
@@ -10,9 +9,12 @@ public class AsktaoUtil
 {
     public static long serverStartTime;
     
-    public static String getMoneyFormat(final int needMoney) {
-        final DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        final String msg = decimalFormat.format(needMoney);
+    public AsktaoUtil() {
+    }
+    
+    public static String getMoneyFormat(int needMoney) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String msg = decimalFormat.format((long)needMoney);
         String color;
         if (msg.length() >= 12) {
             color = "#c009ACD";
@@ -35,8 +37,8 @@ public class AsktaoUtil
         return color + msg + "#";
     }
     
-    public static byte[] getMessageBody(final Message message) {
-        final IMessageEncoder msgEncoder = SerializerHelper.getInstance().getEncoder();
+    public static byte[] getMessageBody(Message message) {
+        IMessageEncoder msgEncoder = SerializerHelper.getInstance().getEncoder();
         return msgEncoder.writeMessageBody(message);
     }
     

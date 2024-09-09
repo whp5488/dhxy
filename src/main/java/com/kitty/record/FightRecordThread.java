@@ -1,4 +1,3 @@
-
 package com.kitty.record;
 
 import java.util.Iterator;
@@ -27,7 +26,7 @@ public class FightRecordThread
     private final AtomicBoolean run;
     
     public FightRecordThread() {
-        this.queue = new BlockingUniqueQueue<FightRecord>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -37,17 +36,16 @@ public class FightRecordThread
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("fight-record-service").newThread(new Worker()).start();
+        new NamedThreadFactory("fight-record-service").newThread(new FightRecordThread.Worker()).start();
         FightRecordThread.instance = this;
     }
     
-    public void add2Queue(final FightRecord fightRecord) {
+    public void add2Queue(FightRecord fightRecord) {
         fightRecord.setMarking(this.serverService.getMarking());
-        this.queue.add(fightRecord);
     }
     
-    private void saveToDb(final FightRecord fightRecord) {
-        this.mongoTemplate.insert((Object)fightRecord);
+    private void saveToDb(FightRecord fightRecord) {
+        this.mongoTemplate.insert(fightRecord);
     }
     
     @PreDestroy
@@ -56,14 +54,14 @@ public class FightRecordThread
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[mongodb4FightRecord] 执行全部命令后关闭");
+        LoggerUtils.error("[mongodb4FightRecord] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<FightRecord> it = this.queue.iterator();
+            Iterator<FightRecord> it = this.queue.iterator();
             while (it.hasNext()) {
-                final FightRecord obj = it.next();
+                FightRecord obj = (FightRecord)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -76,10 +74,10 @@ public class FightRecordThread
         public void run() {
             while (FightRecordThread.this.run.get()) {
                 try {
-                    final FightRecord take = FightRecordThread.this.queue.take();
+                    FightRecord take = (FightRecord)FightRecordThread.this.queue.take();
                     FightRecordThread.this.saveToDb(take);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.horse.message.vo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.common.enter.FiedValue;
 import java.util.List;
 import java.io.Serializable;
@@ -53,7 +51,7 @@ public class MountBase implements Serializable
         if (!(o instanceof MountBase)) {
             return false;
         }
-        final MountBase other = (MountBase)o;
+        MountBase other = (MountBase)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -66,17 +64,9 @@ public class MountBase implements Serializable
         if (this.getScore() != other.getScore()) {
             return false;
         }
-        final Object this$skill = this.getSkill();
-        final Object other$skill = other.getSkill();
-        if (this$skill == null) {
-            if (other$skill == null) {
-                return true;
-            }
-        }
-        else if (this$skill.equals(other$skill)) {
-            return true;
-        }
-        return false;
+        Object this$skill = this.getSkill();
+        Object other$skill = other.getSkill();
+        return (this$skill != null) ? this$skill.equals(other$skill) : (other$skill == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -85,12 +75,12 @@ public class MountBase implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getGrow_up();
         result = result * 59 + this.getMove_sp();
         result = result * 59 + this.getScore();
-        final Object $skill = this.getSkill();
+        Object $skill = this.getSkill();
         result = result * 59 + (($skill == null) ? 43 : $skill.hashCode());
         return result;
     }
@@ -100,7 +90,6 @@ public class MountBase implements Serializable
         return "MountBase(grow_up=" + this.getGrow_up() + ", move_sp=" + this.getMove_sp() + ", score=" + this.getScore() + ", skill=" + this.getSkill() + ")";
     }
     
-    @ConstructorProperties({ "grow_up", "move_sp", "score", "skill" })
     public MountBase(final int grow_up, final int move_sp, final int score, final List<FiedValue> skill) {
         this.score = 0;
         this.grow_up = grow_up;

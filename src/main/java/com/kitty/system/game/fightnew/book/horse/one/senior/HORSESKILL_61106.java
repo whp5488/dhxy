@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.one.senior;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -13,32 +12,35 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_61106 extends HorseSkillProcessor
 {
+    public HORSESKILL_61106() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
-        final double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
+        double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
         double percenta = (15.0 * percent + 0.2) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         if (percenta != 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.COMBO_RATIO.getDist()), (Object)percenta);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.COMBO_RATIO.getDist()), Double.valueOf(percenta));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
-        final double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
+        double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
         double percentb = (12.5 * percent + 0.2) / 100.0;
         percentb = HorseSkillUtils.getMathRoundPercent(percentb);
         if (percentb != 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), (Object)percentb);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), Double.valueOf(percentb));
             return map;
         }
         return null;

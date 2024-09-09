@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.safe.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -47,7 +46,7 @@ public class RespSafeLockDlg extends Message
         if (!(o instanceof RespSafeLockDlg)) {
             return false;
         }
-        final RespSafeLockDlg other = (RespSafeLockDlg)o;
+        RespSafeLockDlg other = (RespSafeLockDlg)o;
         return other.canEqual(this) && this.isSet() == other.isSet() && this.isUnlock() == other.isUnlock() && this.getReset() == other.getReset();
     }
     
@@ -57,7 +56,7 @@ public class RespSafeLockDlg extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + (this.isSet() ? 79 : 97);
         result = result * 59 + (this.isUnlock() ? 79 : 97);

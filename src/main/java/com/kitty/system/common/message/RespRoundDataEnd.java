@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -18,14 +17,14 @@ public class RespRoundDataEnd extends Message
         this.type = 0;
     }
     
-    public RespRoundDataEnd(final int fightId, final int round, final String msg) {
+    public RespRoundDataEnd(int fightId, int round, String msg) {
         this.type = 0;
         this.fightId = fightId;
         this.round = round;
         this.msg = msg;
     }
     
-    public RespRoundDataEnd(final int fightId, final int round, final int type, final String msg) {
+    public RespRoundDataEnd(int fightId, int round, int type, String msg) {
         this.type = 0;
         this.fightId = fightId;
         this.round = round;
@@ -37,7 +36,7 @@ public class RespRoundDataEnd extends Message
         return this.msg;
     }
     
-    public void setMsg(final String msg) {
+    public void setMsg(String msg) {
         this.msg = msg;
     }
     
@@ -45,7 +44,7 @@ public class RespRoundDataEnd extends Message
         return this.type;
     }
     
-    public void setType(final int type) {
+    public void setType(int type) {
         this.type = type;
     }
     
@@ -53,7 +52,7 @@ public class RespRoundDataEnd extends Message
         return this.fightId;
     }
     
-    public void setFightId(final int fightId) {
+    public void setFightId(int fightId) {
         this.fightId = fightId;
     }
     
@@ -61,7 +60,7 @@ public class RespRoundDataEnd extends Message
         return this.round;
     }
     
-    public void setRound(final int round) {
+    public void setRound(int round) {
         this.round = round;
     }
 }

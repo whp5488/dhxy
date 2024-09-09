@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.horse.handler;
 
 import com.kitty.common.utils.spring.SpringUtils;
@@ -11,22 +10,22 @@ public enum FeedHelper
     
     private static final Map<Short, FeedHorseHandler> handlers;
     
-    public void init(final short type, final FeedHorseHandler feedPetHandler) {
-        FeedHelper.handlers.put(type, feedPetHandler);
+    public void init(short type, FeedHorseHandler feedPetHandler) {
+        FeedHelper.handlers.put(Short.valueOf(type), feedPetHandler);
     }
     
-    public FeedHorseHandler getHandler(final short type) {
-        return FeedHelper.handlers.get(type);
+    public FeedHorseHandler getHandler(short type) {
+        return (FeedHorseHandler)FeedHelper.handlers.get(Short.valueOf(type));
     }
     
     static {
-        handlers = new HashMap<Short, FeedHorseHandler>();
-        FeedHelper.INSTANCE.init((short)1, SpringUtils.getBean("HorseVitUpHandler", HorseVitUpHandler.class));
-        FeedHelper.INSTANCE.init((short)2, SpringUtils.getBean("HorseExpUpHandler", HorseExpUpHandler.class));
-        FeedHelper.INSTANCE.init((short)3, SpringUtils.getBean("HorseSkillUpHandler", HorseSkillUpHandler.class));
-        FeedHelper.INSTANCE.init((short)4, SpringUtils.getBean("HorseGrowUpHandler", HorseGrowUpHandler.class));
-        FeedHelper.INSTANCE.init((short)5, SpringUtils.getBean("HorseRefinePre", HorseRefinePreHandler.class));
-        FeedHelper.INSTANCE.init((short)6, SpringUtils.getBean("HorseRefine", HorseRefineHandler.class));
-        FeedHelper.INSTANCE.init((short)7, SpringUtils.getBean("HorseRefineReplace", HorseRefineReplaceHandler.class));
+        handlers = new HashMap();
+        FeedHelper.INSTANCE.init((short)1, (FeedHorseHandler)SpringUtils.getBean("HorseVitUpHandler", HorseVitUpHandler.class));
+        FeedHelper.INSTANCE.init((short)2, (FeedHorseHandler)SpringUtils.getBean("HorseExpUpHandler", HorseExpUpHandler.class));
+        FeedHelper.INSTANCE.init((short)3, (FeedHorseHandler)SpringUtils.getBean("HorseSkillUpHandler", HorseSkillUpHandler.class));
+        FeedHelper.INSTANCE.init((short)4, (FeedHorseHandler)SpringUtils.getBean("HorseGrowUpHandler", HorseGrowUpHandler.class));
+        FeedHelper.INSTANCE.init((short)5, (FeedHorseHandler)SpringUtils.getBean("HorseRefinePre", HorseRefinePreHandler.class));
+        FeedHelper.INSTANCE.init((short)6, (FeedHorseHandler)SpringUtils.getBean("HorseRefine", HorseRefineHandler.class));
+        FeedHelper.INSTANCE.init((short)7, (FeedHorseHandler)SpringUtils.getBean("HorseRefineReplace", HorseRefineReplaceHandler.class));
     }
 }

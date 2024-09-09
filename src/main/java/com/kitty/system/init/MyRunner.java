@@ -1,15 +1,12 @@
-
 package com.kitty.system.init;
 
-import com.kitty.system.game.activity.model.user.lu.WaterRankRecord;
-import java.util.Map;
-import com.kitty.system.game.ranking.pojo.PractitionersSource;
-import com.kitty.system.game.ranking.pojo.QlkRankingSource;
-import java.util.Collection;
 import com.kitty.system.game.ranking.RankingList;
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.system.game.role.domain.Role;
 import java.util.List;
+import com.kitty.system.game.player.serializer.HorseSerializerUtil;
+import com.kitty.system.game.player.serializer.PetSerializerUtil;
+import com.kitty.system.game.player.serializer.PlayerSerializerUtil;
 import com.kitty.system.init.rank.ActingRank;
 import com.kitty.system.game.email.pool.EmailDataPool;
 import com.kitty.system.game.house.pool.HouseDataPool;
@@ -25,6 +22,7 @@ import com.kitty.system.game.task.pool.TaskDataPool;
 import com.kitty.system.game.map.pool.MapDataPool;
 import com.kitty.system.game.welfare.pool.WelfareDataPool;
 import com.kitty.system.game.horse.pool.HorseDataPool;
+import com.kitty.system.game.train.pool.TrainDataPool;
 import com.kitty.system.game.partner.pool.PartnerDataPool;
 import com.kitty.system.game.pet.pool.PetDataPool;
 import com.kitty.system.init.pool.ExpDataPool;
@@ -33,7 +31,6 @@ import com.kitty.system.game.equip.pool.EquipDataPool;
 import com.kitty.system.init.pool.PartDataPool;
 import com.kitty.system.init.pool.ConvertDataPool;
 import com.kitty.system.game.dirtywords.WordDisposePool;
-import java.io.Serializable;
 import com.kitty.cache.JedisUtil;
 import org.springframework.boot.ApplicationArguments;
 import com.kitty.rabbit.RabbitService;
@@ -60,13 +57,16 @@ public class MyRunner implements ApplicationRunner
     @Autowired
     RabbitService rabbitService;
     
-    public void run(final ApplicationArguments var) {
+    public MyRunner() {
+    }
+    
+    public void run(ApplicationArguments var) {
         JedisUtil.load();
         this.redisService.delContain("*_countdown_*");
         this.rabbitService.purgeDelay();
-        final String[] split = this.serverService.getMarking().split(",");
+        String[] split = this.serverService.getMarking().split(",");
         if (split.length > 1) {
-            for (final String key : split) {
+            for (String key : split) {
                 JedisUtil.delContain("jzca:" + key + "_*");
                 JedisUtil.delContain("jzca:" + this.serverService.getMarking() + "_*");
             }
@@ -82,6 +82,7 @@ public class MyRunner implements ApplicationRunner
         ExpDataPool.load();
         PetDataPool.load();
         PartnerDataPool.load();
+        TrainDataPool.load();
         HorseDataPool.load();
         WelfareDataPool.load();
         MapDataPool.load();
@@ -96,8 +97,8 @@ public class MyRunner implements ApplicationRunner
         ActivityDataPool.load();
         HouseDataPool.load();
         EmailDataPool.load();
-        final List<Role> roles = this.initService.getRoles();
-        final List<Pet> pets = this.initService.getPets();
+        List<Role> roles = this.initService.getRoles();
+        List<Pet> pets = this.initService.getPets();
         this.initService.getWearEquips();
         ActingRank.initRoleRune(roles);
         ActingRank.initPetRanking(roles, pets);
@@ -108,13 +109,16 @@ public class MyRunner implements ApplicationRunner
         this.initWaterRank();
         this.initWaterMirror();
         ActingRank.clearRoleRune();
+        PlayerSerializerUtil.init();
+        PetSerializerUtil.init();
+        HorseSerializerUtil.init();
     }
     
-    public void initQlkRankingSource(final List<Role> roles) {
+    public void initQlkRankingSource(List<Role> roles) {
         RankingList.qlkRankingSources.addAll(this.initService.initQlkRankingSource(roles));
     }
     
-    public void initPractitionersSource(final List<Role> roles) {
+    public void initPractitionersSource(List<Role> roles) {
         RankingList.practitionersSources.addAll(this.initService.initPractitionersSource(roles));
     }
     

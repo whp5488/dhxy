@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -17,7 +16,7 @@ public class RespCS_ServerType extends Message
         return this.server_type;
     }
     
-    public void setServer_type(final int server_type) {
+    public void setServer_type(int server_type) {
         this.server_type = server_type;
     }
 }

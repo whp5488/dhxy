@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.equip.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -53,7 +51,7 @@ public class ReqUpgradeEquip extends Message
         if (!(o instanceof ReqUpgradeEquip)) {
             return false;
         }
-        final ReqUpgradeEquip other = (ReqUpgradeEquip)o;
+        ReqUpgradeEquip other = (ReqUpgradeEquip)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -66,17 +64,9 @@ public class ReqUpgradeEquip extends Message
         if (this.getOperationType() != other.getOperationType()) {
             return false;
         }
-        final Object this$param = this.getParam();
-        final Object other$param = other.getParam();
-        if (this$param == null) {
-            if (other$param == null) {
-                return true;
-            }
-        }
-        else if (this$param.equals(other$param)) {
-            return true;
-        }
-        return false;
+        Object this$param = this.getParam();
+        Object other$param = other.getParam();
+        return (this$param != null) ? this$param.equals(other$param) : (other$param == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -85,12 +75,12 @@ public class ReqUpgradeEquip extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPos();
         result = result * 59 + this.getType();
         result = result * 59 + this.getOperationType();
-        final Object $param = this.getParam();
+        Object $param = this.getParam();
         result = result * 59 + (($param == null) ? 43 : $param.hashCode());
         return result;
     }
@@ -100,7 +90,6 @@ public class ReqUpgradeEquip extends Message
         return "ReqUpgradeEquip(pos=" + this.getPos() + ", type=" + this.getType() + ", operationType=" + this.getOperationType() + ", param=" + this.getParam() + ")";
     }
     
-    @ConstructorProperties({ "pos", "type", "operationType", "param" })
     public ReqUpgradeEquip(final int pos, final int type, final int operationType, final String param) {
         this.operationType = 0;
         this.pos = pos;

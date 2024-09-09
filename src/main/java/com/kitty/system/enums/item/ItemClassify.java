@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.item;
 
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ public enum ItemClassify
 {
     RESTS(1), 
     PLUG(1024), 
+    CHARGE(8888), 
     RESTYPE_SILVER(90021), 
     HERO_EXP(90022), 
     PET_EXP(90023), 
@@ -17,13 +17,13 @@ public enum ItemClassify
     RES_TYPE_BOUND_GOLD(90035), 
     RES_TYPE_GOLD(90036), 
     RES_TYPE_BRAC(6), 
-    RES_TYPE_CHARGE_SCORE(15), 
+    RES_TYPE_CHARGE_SCORE(90015), 
     RES_TYPE_ACHIEVEMENT(17), 
     STATUS(65);
     
     private int id;
     
-    private ItemClassify(final int id) {
+    private ItemClassify(int id) {
         this.id = id;
     }
     
@@ -32,9 +32,9 @@ public enum ItemClassify
     }
     
     public static List<Integer> getValue() {
-        final List<Integer> objects = new ArrayList<>();
-        for (final ItemClassify itemClassify : values()) {
-            objects.add(itemClassify.id);
+        List<Integer> objects = new ArrayList<>();
+        for (ItemClassify itemClassify : values()) {
+            objects.add(Integer.valueOf(itemClassify.id));
         }
         return objects;
     }

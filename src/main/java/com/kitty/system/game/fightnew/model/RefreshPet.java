@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.model;
 
 import java.io.Serializable;
@@ -36,7 +35,7 @@ public class RefreshPet implements Serializable
         if (!(o instanceof RefreshPet)) {
             return false;
         }
-        final RefreshPet other = (RefreshPet)o;
+        RefreshPet other = (RefreshPet)o;
         return other.canEqual(this) && this.getPetId() == other.getPetId() && this.getType() == other.getType();
     }
     
@@ -46,7 +45,7 @@ public class RefreshPet implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetId();
         result = result * 59 + this.getType();

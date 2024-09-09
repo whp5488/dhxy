@@ -1,10 +1,8 @@
-
 package com.kitty.mina;
 
 import java.util.HashMap;
 import com.kitty.mina.session.SessionManager;
 import com.kitty.system.game.role.domain.Role;
-import com.kitty.mina.task.AbstractDistributeTask;
 import com.kitty.mina.task.MessageTask;
 import com.kitty.mina.task.TaskHandlerContext;
 import com.kitty.mina.session.SessionProperties;
@@ -34,33 +32,32 @@ public class MessageDispatcher implements IMessageDispatcher
         return MessageDispatcher.instance;
     }
     
-    public void registerMessageHandler(final Object controller) {
+    public void registerMessageHandler(Object controller) {
         try {
-            final Method[] declaredMethods;
-            final Method[] methods = declaredMethods = controller.getClass().getDeclaredMethods();
-            for (final Method method : declaredMethods) {
-                final RequestMapping mapperAnnotation = method.getAnnotation(RequestMapping.class);
+            Method[] methods;
+            for (Method method : methods = controller.getClass().getDeclaredMethods()) {
+                RequestMapping mapperAnnotation = (RequestMapping)method.getAnnotation(RequestMapping.class);
                 if (mapperAnnotation != null) {
-                    final String meta = this.getMessageMeta(method);
+                    String meta = this.getMessageMeta(method);
                     if (meta == null) {
                         throw new RuntimeException(String.format("facade[%s] method[%s] lack of RequestMapping annotation", controller.getClass().getSimpleName(), method.getName()));
                     }
-                    CmdExecutor cmdExecutor = MessageDispatcher.MODULE_CMD_HANDLERS.get(meta);
-                    if (cmdExecutor != null) {}
+                    CmdExecutor cmdExecutor = (CmdExecutor)MessageDispatcher.MODULE_CMD_HANDLERS.get(meta);
+                    if (cmdExecutor == null) {}
                     cmdExecutor = CmdExecutor.valueOf(method, method.getParameterTypes(), controller);
                     MessageDispatcher.MODULE_CMD_HANDLERS.put(meta, cmdExecutor);
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.logger.error("", e);
         }
     }
     
-    private String getMessageMeta(final Method method) {
-        for (final Class<?> paramClazz : method.getParameterTypes()) {
+    private String getMessageMeta(Method method) {
+        for (Class<?> paramClazz : method.getParameterTypes()) {
             if (Message.class.isAssignableFrom(paramClazz)) {
-                final MessageMeta protocol = paramClazz.getAnnotation(MessageMeta.class);
+                MessageMeta protocol = (MessageMeta)paramClazz.getAnnotation(MessageMeta.class);
                 if (protocol != null) {
                     return String.valueOf(protocol.module());
                 }
@@ -70,17 +67,17 @@ public class MessageDispatcher implements IMessageDispatcher
     }
     
     @Override
-    public void dispatch(final IoSession session, final Message message) {
-        final int module = message.getModule();
-        final CmdExecutor cmdExecutor = MessageDispatcher.MODULE_CMD_HANDLERS.get(String.valueOf(module));
+    public void dispatch(IoSession session, Message message) {
+        int module = message.getModule();
+        CmdExecutor cmdExecutor = (CmdExecutor)MessageDispatcher.MODULE_CMD_HANDLERS.get(String.valueOf(module));
         if (cmdExecutor == null) {
-            this.logger.error("message executor missed, module={}", module);
+            this.logger.error("message executor missed, module={}", Integer.valueOf(module));
             return;
         }
-        final Object[] params = this.convertToMethodParams(session, cmdExecutor.getParams(), message);
-        final Object controller = cmdExecutor.getHandler();
+        Object[] params = this.convertToMethodParams(session, cmdExecutor.getParams(), message);
+        Object controller = cmdExecutor.getHandler();
         int distributeKey = 0;
-        final Role role = SessionUtils.getRoleBySession(session);
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             distributeKey = role.getDistributeKey();
         }
@@ -88,23 +85,24 @@ public class MessageDispatcher implements IMessageDispatcher
             distributeKey = (int)session.getAttribute(SessionProperties.DISTRIBUTE_KEY);
         }
         TaskHandlerContext.INSTANCE.acceptTask(MessageTask.valueOf(distributeKey, controller, cmdExecutor.getMethod(), params, message));
+        return;
     }
     
-    private Object[] convertToMethodParams(final IoSession session, final Class<?>[] methodParams, final Message message) {
-        final Object[] result = new Object[(methodParams == null) ? 0 : methodParams.length];
+    private Object[] convertToMethodParams(IoSession session, Class<?>[] methodParams, Message message) {
+        Object[] result = new Object[(methodParams == null) ? 0 : methodParams.length];
         for (int i = 0; i < result.length; ++i) {
-            final Class<?> param = methodParams[i];
+            Class<?> param = methodParams[i];
             if (IoSession.class.isAssignableFrom(param)) {
                 result[i] = session;
             }
             else if (Long.class.isAssignableFrom(param)) {
-                result[i] = SessionManager.INSTANCE.getPlayerIdBy(session);
+                result[i] = Long.valueOf(SessionManager.INSTANCE.getPlayerIdBy(session));
             }
             else if (Long.TYPE.isAssignableFrom(param)) {
-                result[i] = SessionManager.INSTANCE.getPlayerIdBy(session);
+                result[i] = Long.valueOf(SessionManager.INSTANCE.getPlayerIdBy(session));
             }
             else if (Role.class.isAssignableFrom(param)) {
-                final Role role = SessionUtils.getRoleBySession(session);
+                Role role = SessionUtils.getRoleBySession(session);
                 result[i] = role;
             }
             else if (Message.class.isAssignableFrom(param)) {
@@ -116,6 +114,6 @@ public class MessageDispatcher implements IMessageDispatcher
     
     static {
         MessageDispatcher.instance = new MessageDispatcher();
-        MODULE_CMD_HANDLERS = new HashMap<>();
+        MODULE_CMD_HANDLERS = new HashMap();
     }
 }

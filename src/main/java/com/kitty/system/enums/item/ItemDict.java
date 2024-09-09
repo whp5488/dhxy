@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.item;
 
 public interface ItemDict
@@ -6,6 +5,7 @@ public interface ItemDict
     public static final int TREASURE_0 = 30026;
     public static final int TREASURE_1 = 30027;
     public static final int TREASURE_2 = 30028;
+    public static final int WSS = 75116;
     public static final int YQZ_PET = 75194;
     public static final int DOMESTICATE_PET = 75020;
     public static final int PANGEA_IRON = 75030;
@@ -18,6 +18,8 @@ public interface ItemDict
     public static final int PHOENIX_1 = 75401;
     public static final int PHOENIX_2 = 75402;
     public static final int XYD = 75403;
+    public static final int HY = 75406;
+    public static final int WZJ = 75408;
     public static final int TREASURE_MAP = 90032;
     public static final int HIGH_TREASURE_MAP = 90033;
     public static final int RARE_TREASURE_MAP = 90061;

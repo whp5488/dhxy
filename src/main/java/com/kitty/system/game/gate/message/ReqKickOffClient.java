@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class ReqKickOffClient extends Message
 {
     private String reason;
     
+    public ReqKickOffClient() {
+    }
+    
     public String getReason() {
         return this.reason;
     }
     
-    public void setReason(final String reason) {
+    public void setReason(String reason) {
         this.reason = reason;
     }
 }

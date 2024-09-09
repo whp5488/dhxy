@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -19,38 +18,42 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_324414 extends TianFuProcessor
 {
+    public FU_324414() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public void attackOver(final Fight fight, final FightObject effector, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effector, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         if (fight.isPvp() != 1 || effector.getRace() != RACE.RACE_REN.getValue()) {
             return;
         }
-        final RoleSkill roleSkill = (RoleSkill)args[0];
-        final Integer count = (Integer)args[1];
-        if (roleSkill == null || SKILLATTR.SKILLATTR_SLEEP.getValue() != roleSkill.getType() || count == null || count <= 0) {
+        RoleSkill roleSkill = (RoleSkill)args[0];
+        Integer count = (Integer)args[1];
+        if (roleSkill == null || SKILLATTR.SKILLATTR_SLEEP.getValue() != (int)roleSkill.getType() || count == null || (int)count <= 0) {
             return;
         }
         if (!effector.isPlayer()) {
             return;
         }
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 324414);
+        DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 324414);
         if (tianFuObject == null) {
             return;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 324414);
-        final double percenta = 0.8 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-        final int addLife = (int)(count * percenta * effector.getMaxLife());
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 324414);
+        double percenta = 0.8 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+        int addLife = (int)((double)(int)count * percenta * (double)effector.getMaxLife());
         TianFuUtils.whfmMethod(fight, effector, addLife, actionDetailParam);
-        skillRecord.setT(effector.getId());
+        skillRecord.setT((long)(int)effector.getId());
+        return;
     }
 }

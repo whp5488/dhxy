@@ -1,4 +1,3 @@
-
 package com.kitty.mina.task;
 
 import com.kitty.mina.session.SessionManager;
@@ -9,12 +8,16 @@ import org.apache.mina.core.session.IoSession;
 
 public class ThreadLocalUtil
 {
-    public static void addLocalTask(final IoSession session, final Runnable task) {
+    public ThreadLocalUtil() {
+    }
+    
+    public static void addLocalTask(IoSession session, Runnable task) {
         if (session == null) {
             throw new NullPointerException("session is null");
         }
-        final Role role = SessionUtils.getRoleBySession(session);
+        Role role = SessionUtils.getRoleBySession(session);
         addLocalTask(role, task);
+        return;
     }
     
     public static void addLocalTask(final Role role, final Runnable task) {
@@ -36,6 +39,7 @@ public class ThreadLocalUtil
                 task.run();
             }
         });
+        return;
     }
     
     public static void addLocalTask(final Runnable task) {

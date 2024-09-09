@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.enter.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -26,21 +24,13 @@ public class RespKickClient extends Message
         if (!(o instanceof RespKickClient)) {
             return false;
         }
-        final RespKickClient other = (RespKickClient)o;
+        RespKickClient other = (RespKickClient)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$tips = this.getTips();
-        final Object other$tips = other.getTips();
-        if (this$tips == null) {
-            if (other$tips == null) {
-                return true;
-            }
-        }
-        else if (this$tips.equals(other$tips)) {
-            return true;
-        }
-        return false;
+        Object this$tips = this.getTips();
+        Object other$tips = other.getTips();
+        return (this$tips != null) ? this$tips.equals(other$tips) : (other$tips == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -49,9 +39,9 @@ public class RespKickClient extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $tips = this.getTips();
+        Object $tips = this.getTips();
         result = result * 59 + (($tips == null) ? 43 : $tips.hashCode());
         return result;
     }
@@ -61,7 +51,6 @@ public class RespKickClient extends Message
         return "RespKickClient(tips=" + this.getTips() + ")";
     }
     
-    @ConstructorProperties({ "tips" })
     public RespKickClient(final String tips) {
         this.tips = tips;
     }

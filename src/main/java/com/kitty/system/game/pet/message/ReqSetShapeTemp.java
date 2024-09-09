@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqSetShapeTemp extends Message
     private int id;
     private int type;
     private int index;
+    
+    public ReqSetShapeTemp() {
+    }
     
     public int getId() {
         return this.id;
@@ -43,7 +45,7 @@ public class ReqSetShapeTemp extends Message
         if (!(o instanceof ReqSetShapeTemp)) {
             return false;
         }
-        final ReqSetShapeTemp other = (ReqSetShapeTemp)o;
+        ReqSetShapeTemp other = (ReqSetShapeTemp)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getType() == other.getType() && this.getIndex() == other.getIndex();
     }
     
@@ -53,7 +55,7 @@ public class ReqSetShapeTemp extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getType();

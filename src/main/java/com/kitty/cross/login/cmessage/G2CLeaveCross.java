@@ -1,4 +1,3 @@
-
 package com.kitty.cross.login.cmessage;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class G2CLeaveCross extends Message
 {
     private int code;
     
+    public G2CLeaveCross() {
+    }
+    
     public int getCode() {
         return this.code;
     }
     
-    public void setCode(final int code) {
+    public void setCode(int code) {
         this.code = code;
     }
 }

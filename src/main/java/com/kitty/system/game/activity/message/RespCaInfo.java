@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class RespCaInfo extends Message
     public RespCaInfo() {
         this.round = 1;
         this.currentSession = 0;
-        this.itself = new ArrayList<MemberInfo>(5);
+        this.itself = new ArrayList(5);
     }
     
     public byte getRound() {
@@ -71,7 +70,7 @@ public class RespCaInfo extends Message
         if (!(o instanceof RespCaInfo)) {
             return false;
         }
-        final RespCaInfo other = (RespCaInfo)o;
+        RespCaInfo other = (RespCaInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -81,33 +80,17 @@ public class RespCaInfo extends Message
         if (this.getCurrentSession() != other.getCurrentSession()) {
             return false;
         }
-        final Object this$itself = this.getItself();
-        final Object other$itself = other.getItself();
-        Label_0091: {
-            if (this$itself == null) {
-                if (other$itself == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$itself.equals(other$itself)) {
-                break Label_0091;
-            }
+        Object this$itself = this.getItself();
+        Object other$itself = other.getItself();
+        if (!((this$itself != null) ? this$itself.equals(other$itself) : (other$itself == null))) {
             return false;
         }
         if (this.getGroup() != other.getGroup()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -116,20 +99,20 @@ public class RespCaInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRound();
         result = result * 59 + this.getCurrentSession();
-        final Object $itself = this.getItself();
+        Object $itself = this.getItself();
         result = result * 59 + (($itself == null) ? 43 : $itself.hashCode());
         result = result * 59 + this.getGroup();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespCaInfo(round=" + this.getRound() + ", currentSession=" + this.getCurrentSession() + ", itself=" + this.getItself() + ", group=" + this.getGroup() + ", list=" + this.getList() + ")";
+        return "RespCaInfo(round=" + (int)this.getRound() + ", currentSession=" + (int)this.getCurrentSession() + ", itself=" + this.getItself() + ", group=" + (int)this.getGroup() + ", list=" + this.getList() + ")";
     }
 }

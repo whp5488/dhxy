@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.activity.model.user.hg;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class HgPrepare implements Serializable
@@ -60,7 +58,7 @@ public class HgPrepare implements Serializable
         if (!(o instanceof HgPrepare)) {
             return false;
         }
-        final HgPrepare other = (HgPrepare)o;
+        HgPrepare other = (HgPrepare)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -73,17 +71,9 @@ public class HgPrepare implements Serializable
         if (this.getGrade() != other.getGrade()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getState() == other.getState();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getState() == other.getState();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getState() == other.getState();
     }
     
     protected boolean canEqual(final Object other) {
@@ -92,12 +82,12 @@ public class HgPrepare implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getRei();
         result = result * 59 + this.getGrade();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getState();
         return result;
@@ -105,10 +95,9 @@ public class HgPrepare implements Serializable
     
     @Override
     public String toString() {
-        return "HgPrepare(serial=" + this.getSerial() + ", rei=" + this.getRei() + ", grade=" + this.getGrade() + ", name=" + this.getName() + ", state=" + this.getState() + ")";
+        return "HgPrepare(serial=" + this.getSerial() + ", rei=" + (int)this.getRei() + ", grade=" + (int)this.getGrade() + ", name=" + this.getName() + ", state=" + (int)this.getState() + ")";
     }
     
-    @ConstructorProperties({ "serial", "rei", "grade", "name", "state" })
     public HgPrepare(final int serial, final byte rei, final short grade, final String name, final byte state) {
         this.state = 0;
         this.serial = serial;

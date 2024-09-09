@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.intensify;
 
 import java.util.Iterator;
@@ -14,18 +13,21 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31426 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31426() {
+    }
+    
     @Override
-    public void skillIntensifyTM(final Fight fight, final PetFightObject petFightObject, final Object... args) {
+    public void skillIntensifyTM(Fight fight, PetFightObject petFightObject, Object... args) {
         if (args != null && args.length > 0) {
-            final int skillId = (int)args[0];
-            final List<Integer> list = (List<Integer>)args[1];
+            int skillId = (int)args[0];
+            List<Integer> list = (List)args[1];
             if (80003 == skillId || 80005 == skillId || 81010 == skillId || 81011 == skillId) {
                 NutMap map = AwakenSkillEffectUtils.getPercentDouble(petFightObject, 40.0, 20.0);
                 if (map == null) {
                     return;
                 }
                 int num = 0;
-                final double percenta = map.getDouble("percent");
+                double percenta = map.getDouble("percent");
                 if (percenta > 0.0 && SkillAi.canAffectOnPro(percenta)) {
                     num = 1;
                 }
@@ -33,14 +35,14 @@ public class AWAKENSKILL_31426 extends AwakenSkillProcessor
                 if (map == null) {
                     return;
                 }
-                final double percentb = map.getDouble("percent");
+                double percentb = map.getDouble("percent");
                 if (percentb > 0.0 && SkillAi.canAffectOnPro(percentb)) {
                     num = 2;
                 }
                 if (num > 0) {
-                    final List<FightObject> targets = PassiveSkillUtils.getTargetForCondition(fight, petFightObject, list, 1, true, num);
+                    List<FightObject> targets = PassiveSkillUtils.getTargetForCondition(fight, petFightObject, list, 1, true, num);
                     if (targets != null && targets.size() > 0) {
-                        for (final FightObject obj : targets) {
+                        for (FightObject obj : targets) {
                             list.add(obj.getId());
                         }
                     }

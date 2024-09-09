@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.task;
 
 public enum TaskEvent
@@ -22,7 +21,7 @@ public enum TaskEvent
     
     private int id;
     
-    private TaskEvent(final int id) {
+    private TaskEvent(int id) {
         this.id = id;
     }
     

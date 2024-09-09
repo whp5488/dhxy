@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -13,24 +12,27 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_324309 extends TianFuProcessor
 {
+    public FU_324309() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
-        final NutMap map = NutMap.NEW();
-        final double percent2 = 1.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
-        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_MH.getDist()), (Object)percent2);
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
+        NutMap map = NutMap.NEW();
+        double percent2 = 1.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+        map.setv(String.valueOf(PRO_DICT_TYPE.RISE_MH.getDist()), Double.valueOf(percent2));
         return map;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap wearInstantlyTakeEffect(final Role role, final Pet pet, final TianFuAddition tianFuAddition, final Object... obj) {
-        final NutMap map = NutMap.NEW();
-        final double percent1 = 1 * tianFuAddition.getTianFuLevel() / 100.0;
-        map.setv(String.valueOf(PRO_DICT_TYPE.HP_PCT.getDist()), (Object)(-percent1));
+    public NutMap wearInstantlyTakeEffect(Role role, Pet pet, TianFuAddition tianFuAddition, Object... obj) {
+        NutMap map = NutMap.NEW();
+        double percent1 = (double)(1 * tianFuAddition.getTianFuLevel()) / 100.0;
+        map.setv(String.valueOf(PRO_DICT_TYPE.HP_PCT.getDist()), Double.valueOf(-percent1));
         return map;
     }
 }

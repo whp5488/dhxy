@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqOperateEffect extends Message
 {
     private int serial;
     private byte type;
+    
+    public ReqOperateEffect() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -34,7 +36,7 @@ public class ReqOperateEffect extends Message
         if (!(o instanceof ReqOperateEffect)) {
             return false;
         }
-        final ReqOperateEffect other = (ReqOperateEffect)o;
+        ReqOperateEffect other = (ReqOperateEffect)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getType() == other.getType();
     }
     
@@ -44,7 +46,7 @@ public class ReqOperateEffect extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getType();
@@ -53,6 +55,6 @@ public class ReqOperateEffect extends Message
     
     @Override
     public String toString() {
-        return "ReqOperateEffect(serial=" + this.getSerial() + ", type=" + this.getType() + ")";
+        return "ReqOperateEffect(serial=" + this.getSerial() + ", type=" + (int)this.getType() + ")";
     }
 }

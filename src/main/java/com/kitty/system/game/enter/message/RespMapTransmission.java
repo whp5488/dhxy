@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import java.util.List;
@@ -12,7 +11,7 @@ public class RespMapTransmission extends Message
     private List<MapTransmission> list;
     
     public RespMapTransmission() {
-        this.add_exit = 1;
+        this.add_exit = Integer.valueOf(1);
     }
     
     public Integer getAdd_exit() {
@@ -39,34 +38,18 @@ public class RespMapTransmission extends Message
         if (!(o instanceof RespMapTransmission)) {
             return false;
         }
-        final RespMapTransmission other = (RespMapTransmission)o;
+        RespMapTransmission other = (RespMapTransmission)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$add_exit = this.getAdd_exit();
-        final Object other$add_exit = other.getAdd_exit();
-        Label_0065: {
-            if (this$add_exit == null) {
-                if (other$add_exit == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$add_exit.equals(other$add_exit)) {
-                break Label_0065;
-            }
+        Object this$add_exit = this.getAdd_exit();
+        Object other$add_exit = other.getAdd_exit();
+        if (!((this$add_exit != null) ? this$add_exit.equals(other$add_exit) : (other$add_exit == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -75,11 +58,11 @@ public class RespMapTransmission extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $add_exit = this.getAdd_exit();
+        Object $add_exit = this.getAdd_exit();
         result = result * 59 + (($add_exit == null) ? 43 : $add_exit.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -17,6 +16,9 @@ public class SysAboveAttrLib implements Serializable
     private String baseAttr;
     @Column("rnd_range")
     private String rndRange;
+    
+    public SysAboveAttrLib() {
+    }
     
     public String getDict() {
         return this.dict;
@@ -50,47 +52,23 @@ public class SysAboveAttrLib implements Serializable
         if (!(o instanceof SysAboveAttrLib)) {
             return false;
         }
-        final SysAboveAttrLib other = (SysAboveAttrLib)o;
+        SysAboveAttrLib other = (SysAboveAttrLib)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0065: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0065;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0102: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0102;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
-        final Object this$rndRange = this.getRndRange();
-        final Object other$rndRange = other.getRndRange();
-        if (this$rndRange == null) {
-            if (other$rndRange == null) {
-                return true;
-            }
-        }
-        else if (this$rndRange.equals(other$rndRange)) {
-            return true;
-        }
-        return false;
+        Object this$rndRange = this.getRndRange();
+        Object other$rndRange = other.getRndRange();
+        return (this$rndRange != null) ? this$rndRange.equals(other$rndRange) : (other$rndRange == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -99,13 +77,13 @@ public class SysAboveAttrLib implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
-        final Object $rndRange = this.getRndRange();
+        Object $rndRange = this.getRndRange();
         result = result * 59 + (($rndRange == null) ? 43 : $rndRange.hashCode());
         return result;
     }

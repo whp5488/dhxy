@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.ca;
 
 import java.util.HashMap;
@@ -37,9 +36,9 @@ public class CaData
         this.startTime = null;
         this.endTime = null;
         this.pkDurationTime = 5400;
-        this.pkDataList = new ArrayList<CaPkData>();
-        this.failTeamIds = new ArrayList<Integer>();
-        this.matchTeamIds = new HashMap<Integer, Integer>();
+        this.pkDataList = new ArrayList<>();
+        this.failTeamIds = new ArrayList<>();
+        this.matchTeamIds = new HashMap();
     }
     
     public void setStage(final byte stage) {

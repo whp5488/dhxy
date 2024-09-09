@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.equip.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.equip.helper.vo.PetEquipNeo;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -55,21 +53,13 @@ public class RespPetPreUpgradeEquip extends Message
         if (!(o instanceof RespPetPreUpgradeEquip)) {
             return false;
         }
-        final RespPetPreUpgradeEquip other = (RespPetPreUpgradeEquip)o;
+        RespPetPreUpgradeEquip other = (RespPetPreUpgradeEquip)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return this.getType() == other.getType() && this.getAsk() == other.getAsk() && this.getGrade() == other.getGrade();
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return this.getType() == other.getType() && this.getAsk() == other.getAsk() && this.getGrade() == other.getGrade();
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return ((this$list != null) ? this$list.equals(other$list) : (other$list == null)) && this.getType() == other.getType() && this.getAsk() == other.getAsk() && this.getGrade() == other.getGrade();
     }
     
     protected boolean canEqual(final Object other) {
@@ -78,9 +68,9 @@ public class RespPetPreUpgradeEquip extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getType();
         result = result * 59 + this.getAsk();
@@ -90,13 +80,12 @@ public class RespPetPreUpgradeEquip extends Message
     
     @Override
     public String toString() {
-        return "RespPetPreUpgradeEquip(list=" + this.getList() + ", type=" + this.getType() + ", ask=" + this.getAsk() + ", grade=" + this.getGrade() + ")";
+        return "RespPetPreUpgradeEquip(list=" + this.getList() + ", type=" + (int)this.getType() + ", ask=" + (int)this.getAsk() + ", grade=" + (int)this.getGrade() + ")";
     }
     
     public RespPetPreUpgradeEquip() {
     }
     
-    @ConstructorProperties({ "list", "type", "ask", "grade" })
     public RespPetPreUpgradeEquip(final List<PetEquipNeo> list, final byte type, final byte ask, final byte grade) {
         this.list = list;
         this.type = type;

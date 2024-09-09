@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.serializer.ipml;
 
 import java.util.IdentityHashMap;
@@ -23,20 +22,20 @@ public class HorseSerializer implements IHorsePropSerializer
     }
     
     @Override
-    public void serialize(final Horse obj) {
-        final String dark_base = JSON.toJSONString((Object)obj.getDarkBaseMap(), true);
+    public void serialize(Horse obj) {
+        String dark_base = JSON.toJSONString(obj.getDarkBaseMap(), true);
         obj.setDarkBase(dark_base);
-        final String skill = JSON.toJSONString((Object)obj.getSkill(), true);
+        String skill = JSON.toJSONString(obj.getSkill(), true);
         obj.setSkillJson(skill);
     }
     
     @Override
-    public void deserialize(final Horse obj) {
-        final String darkBase = obj.getDarkBase();
-        final String skillJson = obj.getSkillJson();
-        final Map<Byte, List<HorseBase>> map_base = (Map<Byte, List<HorseBase>>)JSON.parseObject(darkBase, (TypeReference)new TypeReference<HashMap<Byte, List<HorseBase>>>() {}, new Feature[0]);
+    public void deserialize(Horse obj) {
+        String darkBase = obj.getDarkBase();
+        String skillJson = obj.getSkillJson();
+        Map<Byte, List<HorseBase>> map_base = (Map)JSON.parseObject(darkBase, new TypeReference<HashMap<Byte, List<HorseBase>>>() {}, new Feature[0]);
         obj.setDarkBaseMap(map_base);
-        final IdentityHashMap<Integer, Long> skill = (IdentityHashMap<Integer, Long>)JSON.parseObject(skillJson, (TypeReference)new TypeReference<IdentityHashMap<Integer, Long>>() {}, new Feature[0]);
+        IdentityHashMap<Integer, Long> skill = (IdentityHashMap)JSON.parseObject(skillJson, new TypeReference<IdentityHashMap<Integer, Long>>() {}, new Feature[0]);
         obj.setSkill(skill);
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -9,7 +8,7 @@ public class LogoutEvent extends BasePlayerEvent
 {
     private Role role;
     
-    public LogoutEvent(final EventType evtType, final Role role) {
+    public LogoutEvent(EventType evtType, Role role) {
         super(evtType, role);
         this.role = role;
     }

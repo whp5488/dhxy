@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqPetAcsryLock extends Message
 {
     private String id;
     private byte lock;
+    
+    public ReqPetAcsryLock() {
+    }
     
     public String getId() {
         return this.id;
@@ -34,21 +36,13 @@ public class ReqPetAcsryLock extends Message
         if (!(o instanceof ReqPetAcsryLock)) {
             return false;
         }
-        final ReqPetAcsryLock other = (ReqPetAcsryLock)o;
+        ReqPetAcsryLock other = (ReqPetAcsryLock)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getLock() == other.getLock();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getLock() == other.getLock();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getLock() == other.getLock();
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,9 +51,9 @@ public class ReqPetAcsryLock extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getLock();
         return result;
@@ -67,6 +61,6 @@ public class ReqPetAcsryLock extends Message
     
     @Override
     public String toString() {
-        return "ReqPetAcsryLock(id=" + this.getId() + ", lock=" + this.getLock() + ")";
+        return "ReqPetAcsryLock(id=" + this.getId() + ", lock=" + (int)this.getLock() + ")";
     }
 }

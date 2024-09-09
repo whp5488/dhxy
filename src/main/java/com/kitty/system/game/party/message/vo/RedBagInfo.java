@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message.vo;
 
 public class RedBagInfo
@@ -11,6 +10,9 @@ public class RedBagInfo
     private byte state;
     private byte isSender;
     private byte isRecv;
+    
+    public RedBagInfo() {
+    }
     
     public String getRedBgGid() {
         return this.redBgGid;

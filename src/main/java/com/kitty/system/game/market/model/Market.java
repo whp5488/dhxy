@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.model;
 
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class Market extends BaseEntity<Long>
         this.auditTime = 0;
         this.amount = 1;
         this.saleAmount = 0;
-        this.focus = new ArrayList<Integer>();
+        this.focus = new ArrayList<>();
         this.status = 2;
     }
     

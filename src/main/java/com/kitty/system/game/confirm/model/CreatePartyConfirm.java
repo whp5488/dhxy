@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.model;
 
 import com.kitty.system.enums.confirm.ConfirmType;
@@ -12,7 +11,7 @@ public class CreatePartyConfirm extends RoleConfirm
         return ConfirmType.CREATE_PARTY;
     }
     
-    public CreatePartyConfirm(final String partyName) {
+    public CreatePartyConfirm(String partyName) {
         this.partyName = partyName;
     }
     

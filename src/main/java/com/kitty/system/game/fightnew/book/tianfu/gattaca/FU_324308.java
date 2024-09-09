@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightnew.FightObject;
@@ -11,18 +10,21 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_324308 extends TianFuProcessor
 {
+    public FU_324308() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
-        final NutMap map = NutMap.NEW();
-        final double percent1 = 1 * tianFuAddition.getTianFuLevel() / 100.0;
-        final double percent2 = 1.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
-        map.setv(String.valueOf(PRO_DICT_TYPE.SPEED_PCT.getDist()), (Object)(-percent1));
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_YW.getDist()), (Object)percent2);
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
+        NutMap map = NutMap.NEW();
+        double percent1 = (double)(1 * tianFuAddition.getTianFuLevel()) / 100.0;
+        double percent2 = 1.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+        map.setv(String.valueOf(PRO_DICT_TYPE.SPEED_PCT.getDist()), Double.valueOf(-percent1));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_YW.getDist()), Double.valueOf(percent2));
         return map;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
 }

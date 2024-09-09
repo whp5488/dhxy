@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.pool;
 
 import com.kitty.system.init.service.InitService;
@@ -10,12 +9,15 @@ public class EmailDataPool
 {
     public static CopyOnWriteArrayList<EmailSystem> emailSystemList;
     
+    public EmailDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         EmailDataPool.emailSystemList = initService.initEmailSystem();
     }
     
     static {
-        EmailDataPool.emailSystemList = new CopyOnWriteArrayList<EmailSystem>();
+        EmailDataPool.emailSystemList = new CopyOnWriteArrayList();
     }
 }

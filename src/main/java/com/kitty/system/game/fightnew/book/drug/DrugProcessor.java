@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.drug;
 
 import com.kitty.system.game.fightnew.book.drug.effect.DRUG_10028;
@@ -18,23 +17,26 @@ public abstract class DrugProcessor
 {
     static Map<Integer, DrugProcessor> drugs;
     
-    public static DrugProcessor queryProcessor(final Integer serial) {
-        return DrugProcessor.drugs.get(serial);
+    public DrugProcessor() {
     }
     
-    public abstract NutMap effect(final Fight p0, final FightObject p1, final FightObject p2, final Object... p3);
+    public static DrugProcessor queryProcessor(Integer serial) {
+        return (DrugProcessor)DrugProcessor.drugs.get(serial);
+    }
     
-    public boolean checkExcute(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public abstract NutMap effect(Fight fight, FightObject effector, FightObject target, Object... args);
+    
+    public boolean checkExcute(Fight fight, FightObject effector, FightObject target, Object... args) {
         return true;
     }
     
     static {
-        (DrugProcessor.drugs = new HashMap<Integer, DrugProcessor>()).put(10021, new DRUG_10021());
-        DrugProcessor.drugs.put(10022, new DRUG_10022());
-        DrugProcessor.drugs.put(10023, new DRUG_10023());
-        DrugProcessor.drugs.put(10024, new DRUG_10024());
-        DrugProcessor.drugs.put(10025, new DRUG_10025());
-        DrugProcessor.drugs.put(10027, new DRUG_10027());
-        DrugProcessor.drugs.put(10028, new DRUG_10028());
+        (DrugProcessor.drugs = new HashMap()).put(Integer.valueOf(10021), new DRUG_10021());
+        DrugProcessor.drugs.put(Integer.valueOf(10022), new DRUG_10022());
+        DrugProcessor.drugs.put(Integer.valueOf(10023), new DRUG_10023());
+        DrugProcessor.drugs.put(Integer.valueOf(10024), new DRUG_10024());
+        DrugProcessor.drugs.put(Integer.valueOf(10025), new DRUG_10025());
+        DrugProcessor.drugs.put(Integer.valueOf(10027), new DRUG_10027());
+        DrugProcessor.drugs.put(Integer.valueOf(10028), new DRUG_10028());
     }
 }

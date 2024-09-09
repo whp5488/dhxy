@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -23,6 +22,9 @@ public class SysRefine implements Serializable
     @Column("pos")
     @Default("[]")
     private List<Integer> pos;
+    
+    public SysRefine() {
+    }
     
     public int getId() {
         return this.id;
@@ -72,53 +74,29 @@ public class SysRefine implements Serializable
         if (!(o instanceof SysRefine)) {
             return false;
         }
-        final SysRefine other = (SysRefine)o;
+        SysRefine other = (SysRefine)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0078: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0078;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
         if (this.getPosition() != other.getPosition()) {
             return false;
         }
-        final Object this$fields = this.getFields();
-        final Object other$fields = other.getFields();
-        Label_0128: {
-            if (this$fields == null) {
-                if (other$fields == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$fields.equals(other$fields)) {
-                break Label_0128;
-            }
+        Object this$fields = this.getFields();
+        Object other$fields = other.getFields();
+        if (!((this$fields != null) ? this$fields.equals(other$fields) : (other$fields == null))) {
             return false;
         }
-        final Object this$pos = this.getPos();
-        final Object other$pos = other.getPos();
-        if (this$pos == null) {
-            if (other$pos == null) {
-                return true;
-            }
-        }
-        else if (this$pos.equals(other$pos)) {
-            return true;
-        }
-        return false;
+        Object this$pos = this.getPos();
+        Object other$pos = other.getPos();
+        return (this$pos != null) ? this$pos.equals(other$pos) : (other$pos == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -127,15 +105,15 @@ public class SysRefine implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
         result = result * 59 + this.getPosition();
-        final Object $fields = this.getFields();
+        Object $fields = this.getFields();
         result = result * 59 + (($fields == null) ? 43 : $fields.hashCode());
-        final Object $pos = this.getPos();
+        Object $pos = this.getPos();
         result = result * 59 + (($pos == null) ? 43 : $pos.hashCode());
         return result;
     }

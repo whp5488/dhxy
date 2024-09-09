@@ -1,9 +1,9 @@
-
 package com.kitty.system.game.onlinemall.pool;
 
 import java.util.HashMap;
 import com.kitty.system.init.service.InitService;
 import com.kitty.common.utils.spring.SpringUtils;
+import com.kitty.system.init.domain.SysDataChargeScoreShop;
 import com.kitty.system.init.domain.SysBoundShop;
 import com.kitty.system.init.domain.SysDataRecommendShop;
 import com.kitty.system.init.domain.SysDataLimitShop;
@@ -44,9 +44,13 @@ public class MallDataPool
     public static Map<Integer, SysDataLimitShop> t_data_limit_shop;
     public static Map<Integer, SysDataRecommendShop> data_recommend_shop;
     public static Map<Integer, SysBoundShop> boundShopMap;
+    public static Map<Integer, SysDataChargeScoreShop> chargeScoreShopMap;
+    
+    public MallDataPool() {
+    }
     
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         initShopNpcArena(initService);
         initShopNpcBrac(initService);
         initShopNpcDi(initService);
@@ -65,98 +69,104 @@ public class MallDataPool
         initLimitShop(initService);
         initRecommendShop(initService);
         initBoundShop(initService);
+        initChargeScoreShop(initService);
     }
     
-    public static void initShopNpcArena(final InitService initService) {
+    public static void initShopNpcArena(InitService initService) {
         MallDataPool.shop_npc_arena = initService.initShopNpcArena();
     }
     
-    public static void initShopNpcBrac(final InitService initService) {
+    public static void initShopNpcBrac(InitService initService) {
         MallDataPool.shop_npc_brac = initService.initShopNpcBrac();
     }
     
-    public static void initShopNpcDi(final InitService initService) {
+    public static void initShopNpcDi(InitService initService) {
         MallDataPool.shop_npc_di = initService.initShopNpcDi();
     }
     
-    public static void initShopNpcFeats(final InitService initService) {
+    public static void initShopNpcFeats(InitService initService) {
         MallDataPool.shop_npc_feats = initService.initShopNpcFeats();
     }
     
-    public static void initShopNpcGuo(final InitService initService) {
+    public static void initShopNpcGuo(InitService initService) {
         MallDataPool.shop_npc_guo = initService.initShopNpcGuo();
     }
     
-    public static void initShopNpcGuoRecycle(final InitService initService) {
+    public static void initShopNpcGuoRecycle(InitService initService) {
         MallDataPool.shop_npc_guo_recycle = initService.initShopNpcGuoRecycle();
     }
     
-    public static void initShopNpcLong(final InitService initService) {
+    public static void initShopNpcLong(InitService initService) {
         MallDataPool.shop_npc_long = initService.initShopNpcLong();
     }
     
-    public static void initShopNpcNao(final InitService initService) {
+    public static void initShopNpcNao(InitService initService) {
         MallDataPool.shop_npc_nao = initService.initShopNpcNao();
     }
     
-    public static void initShopNpcNice(final InitService initService) {
+    public static void initShopNpcNice(InitService initService) {
         MallDataPool.shop_npc_nice = initService.initShopNpcNice();
     }
     
-    public static void initShopNpcPet(final InitService initService) {
+    public static void initShopNpcPet(InitService initService) {
         MallDataPool.shop_npc_pet = initService.initShopNpcPet();
     }
     
-    public static void initShopNpcDrug(final InitService initService) {
+    public static void initShopNpcDrug(InitService initService) {
         MallDataPool.shop_npc_drug = initService.initShopNpcDrug();
     }
     
-    public static void initShopNpcEquip(final InitService initService) {
+    public static void initShopNpcEquip(InitService initService) {
         MallDataPool.shop_npc_equip = initService.initShopNpcEquip();
     }
     
-    public static void initShopNpcGrocery(final InitService initService) {
+    public static void initShopNpcGrocery(InitService initService) {
         MallDataPool.shop_npc_grocery = initService.initShopNpcGrocery();
     }
     
-    public static void initShopOther(final InitService initService) {
+    public static void initShopOther(InitService initService) {
         MallDataPool.data_shopother = initService.initShopOther();
     }
     
-    public static void initShopStrengthenMaterial(final InitService initService) {
+    public static void initShopStrengthenMaterial(InitService initService) {
         MallDataPool.data_shopStrengthenMaterial = initService.initShopStrengthenMaterial();
     }
     
-    public static void initLimitShop(final InitService initService) {
+    public static void initLimitShop(InitService initService) {
         MallDataPool.t_data_limit_shop = initService.initLimitShop();
     }
     
-    public static void initRecommendShop(final InitService initService) {
+    public static void initRecommendShop(InitService initService) {
         MallDataPool.data_recommend_shop = initService.initRecommendShop();
     }
     
-    public static void initBoundShop(final InitService initService) {
+    public static void initBoundShop(InitService initService) {
         MallDataPool.boundShopMap = initService.initBoundShop();
     }
     
+    public static void initChargeScoreShop(InitService initService) {
+        MallDataPool.chargeScoreShopMap = initService.initChargeScoreShop();
+    }
+    
     static {
-        MallDataPool.shop_npc_arena = new HashMap<Integer, SysShopNpcArena>();
-        MallDataPool.shop_npc_brac = new HashMap<Integer, SysShopNpcBrac>();
-        MallDataPool.shop_npc_di = new HashMap<Integer, SysShopNpcDi>();
-        MallDataPool.shop_npc_feats = new HashMap<Integer, SysShopNpcFeats>();
-        MallDataPool.shop_npc_guo = new HashMap<Integer, SysShopNpcGuo>();
-        MallDataPool.shop_npc_guo_recycle = new HashMap<Integer, SysShopNpcGuoRecycle>();
-        MallDataPool.shop_npc_long = new HashMap<Integer, SysShopNpcLong>();
-        MallDataPool.shop_npc_nao = new HashMap<Integer, SysShopNpcNao>();
-        MallDataPool.shop_npc_nice = new HashMap<Integer, SysShopNpcNice>();
-        MallDataPool.shop_npc_pet = new HashMap<Integer, SysShopNpcPet>();
-        MallDataPool.shop_npc_drug = new HashMap<Integer, SysShopNpcDrug>();
-        MallDataPool.shop_npc_equip = new HashMap<Integer, SysShopNpcEquip>();
-        MallDataPool.shop_npc_grocery = new HashMap<Integer, SysShopNpcGrocery>();
-        MallDataPool.data_shopother = new HashMap<Integer, SysShopOther>();
-        MallDataPool.data_shopStrengthenMaterial = new HashMap<Integer, SysShopStrengthenMaterial>();
-        MallDataPool.t_data_limit_shop = new HashMap<Integer, SysDataLimitShop>();
-        MallDataPool.data_recommend_shop = new HashMap<Integer, SysDataRecommendShop>();
-        MallDataPool.boundShopMap = new HashMap<Integer, SysBoundShop>();
+        MallDataPool.shop_npc_arena = new HashMap();
+        MallDataPool.shop_npc_brac = new HashMap();
+        MallDataPool.shop_npc_di = new HashMap();
+        MallDataPool.shop_npc_feats = new HashMap();
+        MallDataPool.shop_npc_guo = new HashMap();
+        MallDataPool.shop_npc_guo_recycle = new HashMap();
+        MallDataPool.shop_npc_long = new HashMap();
+        MallDataPool.shop_npc_nao = new HashMap();
+        MallDataPool.shop_npc_nice = new HashMap();
+        MallDataPool.shop_npc_pet = new HashMap();
+        MallDataPool.shop_npc_drug = new HashMap();
+        MallDataPool.shop_npc_equip = new HashMap();
+        MallDataPool.shop_npc_grocery = new HashMap();
+        MallDataPool.data_shopother = new HashMap();
+        MallDataPool.data_shopStrengthenMaterial = new HashMap();
+        MallDataPool.t_data_limit_shop = new HashMap();
+        MallDataPool.data_recommend_shop = new HashMap();
+        MallDataPool.boundShopMap = new HashMap();
+        MallDataPool.chargeScoreShopMap = new HashMap();
     }
 }

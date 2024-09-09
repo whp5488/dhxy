@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -63,7 +61,6 @@ public class ReqFightHandle extends Message
         return this.skillId;
     }
     
-    @ConstructorProperties({ "round", "autoFight", "attackerId", "targetId", "type", "skillId" })
     public ReqFightHandle(final int round, final int autoFight, final int attackerId, final int targetId, final int type, final int skillId) {
         this.round = round;
         this.autoFight = autoFight;

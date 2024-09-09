@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,11 +9,14 @@ public class RespOperateResult extends Message
     private boolean isSuccess;
     private String type;
     
+    public RespOperateResult() {
+    }
+    
     public boolean isSuccess() {
         return this.isSuccess;
     }
     
-    public void setSuccess(final boolean success) {
+    public void setSuccess(boolean success) {
         this.isSuccess = success;
     }
     
@@ -22,7 +24,7 @@ public class RespOperateResult extends Message
         return this.type;
     }
     
-    public void setType(final String type) {
+    public void setType(String type) {
         this.type = type;
     }
 }

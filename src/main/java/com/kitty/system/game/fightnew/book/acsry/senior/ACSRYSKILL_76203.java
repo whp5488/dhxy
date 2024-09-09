@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import org.nutz.lang.util.NutMap;
@@ -14,51 +13,55 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_76203 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_76203() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
-        final int statusValue = target.getStatusValue(1022);
-        if (SKILLATTR.SKILLATTR_ZHIYU.getValue() == skill.getType() && statusValue > 0 && effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            if (playerFightObject.getAcsrySkillList().contains(76203)) {
+        int statusValue = target.getStatusValue(1022);
+        if (SKILLATTR.SKILLATTR_ZHIYU.getValue() == (int)skill.getType() && statusValue > 0 && effecter.isPlayer()) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(76203))) {
                 target.setStatus(8010, statusValue);
                 double percent = 0.1;
-                percent += playerFightObject.getRole().getGg() / 100 * 0.01;
-                target.getStatusMap().setv("8010value", (Object)percent);
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 76203);
-                skillRecord.setT(target.getId());
+                percent += (double)((int)playerFightObject.getRole().getGg() / 100) * 0.01;
+                target.getStatusMap().setv("8010value", Double.valueOf(percent));
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 76203);
+                skillRecord.setT((long)(int)target.getId());
             }
         }
+        return;
     }
     
     @Override
-    public NutMap countRecoverBloodEnd(final Fight fight, final FightObject fightObject, final Object... args) {
+    public NutMap countRecoverBloodEnd(Fight fight, FightObject fightObject, Object... args) {
         if (fightObject.getStatusValue(1022) > 0 && fightObject.getStatusValue(8010) > 0) {
-            final double percent = fightObject.getStatusMap().getDouble("8010value", 0.0);
+            double percent = fightObject.getStatusMap().getDouble("8010value", 0.0);
             if (percent > 0.0) {
-                int addMp = (int)(fightObject.getMaxMana() * percent);
+                int addMp = (int)((double)fightObject.getMaxMana() * percent);
                 if (fightObject.getCurrMana() + addMp > fightObject.getMaxMana()) {
                     addMp = fightObject.getMaxMana() - fightObject.getCurrMana();
                 }
                 if (addMp > 0) {
                     fightObject.setCurrMana(fightObject.getCurrMana() + addMp);
-                    fightObject.getTempCache().put("recoverManaValue", addMp);
-                    final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 76203);
-                    skillRecord.setT(fightObject.getId());
+                    fightObject.getTempCache().put("recoverManaValue", Integer.valueOf(addMp));
+                    SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 76203);
+                    skillRecord.setT((long)(int)fightObject.getId());
                 }
             }
         }

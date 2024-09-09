@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.callback;
 
 import com.kitty.logs.LoggerUtils;
@@ -10,6 +9,9 @@ public class CallBack
     private int index;
     private Message data;
     private static final AtomicInteger idFactory;
+    
+    public CallBack() {
+    }
     
     public static int nextMsgId() {
         return CallBack.idFactory.getAndIncrement();
@@ -23,7 +25,7 @@ public class CallBack
         return this.index;
     }
     
-    public void setIndex(final int index) {
+    public void setIndex(int index) {
         this.index = index;
     }
     
@@ -31,7 +33,7 @@ public class CallBack
         return this.data;
     }
     
-    public void setData(final Message data) {
+    public void setData(Message data) {
         this.data = data;
     }
     

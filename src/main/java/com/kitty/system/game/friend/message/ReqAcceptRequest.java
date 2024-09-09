@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message;
 
 import java.util.List;
@@ -10,6 +9,9 @@ public class ReqAcceptRequest extends Message
 {
     private List<String> list;
     private byte accept;
+    
+    public ReqAcceptRequest() {
+    }
     
     public List<String> getList() {
         return this.list;
@@ -35,21 +37,13 @@ public class ReqAcceptRequest extends Message
         if (!(o instanceof ReqAcceptRequest)) {
             return false;
         }
-        final ReqAcceptRequest other = (ReqAcceptRequest)o;
+        ReqAcceptRequest other = (ReqAcceptRequest)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return this.getAccept() == other.getAccept();
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return this.getAccept() == other.getAccept();
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return ((this$list != null) ? this$list.equals(other$list) : (other$list == null)) && this.getAccept() == other.getAccept();
     }
     
     protected boolean canEqual(final Object other) {
@@ -58,9 +52,9 @@ public class ReqAcceptRequest extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getAccept();
         return result;
@@ -68,6 +62,6 @@ public class ReqAcceptRequest extends Message
     
     @Override
     public String toString() {
-        return "ReqAcceptRequest(list=" + this.getList() + ", accept=" + this.getAccept() + ")";
+        return "ReqAcceptRequest(list=" + this.getList() + ", accept=" + (int)this.getAccept() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.domain;
 
 import java.util.ArrayList;
@@ -11,15 +10,15 @@ public class RoleOfflineMessage
     private Map<Long, List<OfflineMessage>> messageMap;
     
     public RoleOfflineMessage() {
-        this.messageMap = new ConcurrentHashMap<Long, List<OfflineMessage>>();
+        this.messageMap = new ConcurrentHashMap();
     }
     
-    public void add(final long sendUid, final int sendTime, final String msg) {
-        final List<OfflineMessage> messageList = this.messageMap.computeIfAbsent(Long.valueOf(sendUid), k -> new ArrayList());
+    public void add(long sendUid, int sendTime, String msg) {
+        List<OfflineMessage> messageList = (List)this.messageMap.computeIfAbsent(Long.valueOf(sendUid), k -> new ArrayList<>());
         messageList.add(new OfflineMessage(sendTime, msg));
     }
     
-    public void setMessageMap(final Map<Long, List<OfflineMessage>> messageMap) {
+    public void setMessageMap(Map<Long, List<OfflineMessage>> messageMap) {
         this.messageMap = messageMap;
     }
     

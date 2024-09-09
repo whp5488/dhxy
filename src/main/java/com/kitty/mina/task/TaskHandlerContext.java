@@ -1,4 +1,3 @@
-
 package com.kitty.mina.task;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -21,7 +20,7 @@ public enum TaskHandlerContext
     
     private static Logger logger;
     private final int CORE_SIZE;
-    private final List<TaskWorker> workerPool;
+    private final List<TaskHandlerContext.TaskWorker> workerPool;
     private final AtomicBoolean run;
     
     private TaskHandlerContext() {
@@ -37,17 +36,17 @@ public enum TaskHandlerContext
         }
         TaskHandlerContext.logger.warn("初始化线程：" + size);
         for (int i = 1; i <= size; ++i) {
-            final TaskWorker worker = new TaskWorker(i);
+            TaskHandlerContext.TaskWorker worker = new TaskHandlerContext.TaskWorker(i);
             this.workerPool.add(worker);
             new NamedThreadFactory("message-task-handler_" + i).newThread(worker).start();
         }
     }
     
-    public void acceptTask(final AbstractDistributeTask task) {
+    public void acceptTask(AbstractDistributeTask task) {
         if (task == null) {
             throw new NullPointerException("task is null");
         }
-        final int distributeKey = task.distributeKey() % this.workerPool.size();
+        int distributeKey = task.distributeKey() % this.workerPool.size();
         this.workerPool.get(distributeKey).addTask(task);
     }
     
@@ -57,8 +56,8 @@ public enum TaskHandlerContext
     }
     
     public String statistics() {
-        final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for (final TaskWorker worker : this.workerPool) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (TaskHandlerContext.TaskWorker worker : this.workerPool) {
             map.put(worker.id, worker.taskQueue.size());
         }
         return JsonUtils.map2String(map);
@@ -73,12 +72,12 @@ public enum TaskHandlerContext
         private int id;
         private BlockingQueue<AbstractDistributeTask> taskQueue;
         
-        TaskWorker(final int index) {
+        TaskWorker(int index) {
             this.taskQueue = new LinkedBlockingQueue<>();
             this.id = index;
         }
         
-        public void addTask(final AbstractDistributeTask task) {
+        public void addTask(AbstractDistributeTask task) {
             this.taskQueue.add(task);
         }
         
@@ -86,20 +85,18 @@ public enum TaskHandlerContext
         public void run() {
             while (TaskHandlerContext.this.run.get()) {
                 try {
-                    final AbstractDistributeTask task = this.taskQueue.take();
+                    AbstractDistributeTask task = this.taskQueue.take();
                     task.markStartMillis();
                     task.action();
                     task.markEndMillis();
-                    if (!(task instanceof TimerTask)) {
-                        continue;
+                    if ((task instanceof TimerTask)) {
+                        TimerTask timerTask = (TimerTask)task;
+                        if (timerTask.canRunAgain()) {
+                            this.addTask(task);
+                        }
                     }
-                    final TimerTask timerTask = (TimerTask)task;
-                    if (!timerTask.canRunAgain()) {
-                        continue;
-                    }
-                    this.addTask(task);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     TaskHandlerContext.logger.error("task Worker" + this.id, e);
                 }
             }

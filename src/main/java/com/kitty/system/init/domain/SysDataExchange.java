@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -25,6 +24,9 @@ public class SysDataExchange implements Serializable
     @Comment("类型：0.装备 1.道具 2.宠物 3.变身卡 4.天策符")
     @Column("type")
     private int type;
+    
+    public SysDataExchange() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -74,7 +76,7 @@ public class SysDataExchange implements Serializable
         if (!(o instanceof SysDataExchange)) {
             return false;
         }
-        final SysDataExchange other = (SysDataExchange)o;
+        SysDataExchange other = (SysDataExchange)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && this.getNeedSerial() == other.getNeedSerial() && this.getNeedNum() == other.getNeedNum() && this.getType() == other.getType();
     }
     
@@ -84,7 +86,7 @@ public class SysDataExchange implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();

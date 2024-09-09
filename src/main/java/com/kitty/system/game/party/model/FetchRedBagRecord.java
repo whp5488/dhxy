@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model;
 
 public class FetchRedBagRecord
@@ -10,7 +9,7 @@ public class FetchRedBagRecord
     public FetchRedBagRecord() {
     }
     
-    public FetchRedBagRecord(final long roleUid, final short coin) {
+    public FetchRedBagRecord(long roleUid, short coin) {
         this.roleUid = roleUid;
         this.coin = coin;
         this.time = (int)(System.currentTimeMillis() / 1000L);

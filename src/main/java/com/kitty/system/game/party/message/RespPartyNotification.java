@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -12,7 +11,7 @@ public class RespPartyNotification extends Message
     public RespPartyNotification() {
     }
     
-    public RespPartyNotification(final short type) {
+    public RespPartyNotification(short type) {
         this.type = type;
     }
     

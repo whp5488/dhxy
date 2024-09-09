@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.card.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -14,7 +13,7 @@ public class RespCardFlyInfo extends Message
     public RespCardFlyInfo() {
     }
     
-    public RespCardFlyInfo(final String id, final int serial, final String rests) {
+    public RespCardFlyInfo(String id, int serial, String rests) {
         this.id = id;
         this.serial = serial;
         this.rests = rests;
@@ -52,37 +51,21 @@ public class RespCardFlyInfo extends Message
         if (!(o instanceof RespCardFlyInfo)) {
             return false;
         }
-        final RespCardFlyInfo other = (RespCardFlyInfo)o;
+        RespCardFlyInfo other = (RespCardFlyInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$rests = this.getRests();
-        final Object other$rests = other.getRests();
-        if (this$rests == null) {
-            if (other$rests == null) {
-                return true;
-            }
-        }
-        else if (this$rests.equals(other$rests)) {
-            return true;
-        }
-        return false;
+        Object this$rests = this.getRests();
+        Object other$rests = other.getRests();
+        return (this$rests != null) ? this$rests.equals(other$rests) : (other$rests == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -91,12 +74,12 @@ public class RespCardFlyInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getSerial();
-        final Object $rests = this.getRests();
+        Object $rests = this.getRests();
         result = result * 59 + (($rests == null) ? 43 : $rests.hashCode());
         return result;
     }

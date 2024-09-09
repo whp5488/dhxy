@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import com.kitty.system.game.vo.UnifiedValue;
@@ -13,11 +12,14 @@ public class RespRoleInfo extends Message
     private String type;
     private List<UnifiedValue> list;
     
+    public RespRoleInfo() {
+    }
+    
     public String getUuId() {
         return this.uuId;
     }
     
-    public void setUuId(final String uuId) {
+    public void setUuId(String uuId) {
         this.uuId = uuId;
     }
     
@@ -25,7 +27,7 @@ public class RespRoleInfo extends Message
         return this.type;
     }
     
-    public void setType(final String type) {
+    public void setType(String type) {
         this.type = type;
     }
     
@@ -33,7 +35,7 @@ public class RespRoleInfo extends Message
         return this.list;
     }
     
-    public void setList(final List<UnifiedValue> list) {
+    public void setList(List<UnifiedValue> list) {
         this.list = list;
     }
 }

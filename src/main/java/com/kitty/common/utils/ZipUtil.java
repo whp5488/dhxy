@@ -1,18 +1,18 @@
-
 package com.kitty.common.utils;
 
-import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import com.kitty.common.utils.base64.Base64Encoder;
-import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
 import java.io.ByteArrayOutputStream;
 
 public class ZipUtil
 {
-    public static String compress(final String str) {
+    public ZipUtil() {
+    }
+    
+    public static String compress(String str) {
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -24,26 +24,18 @@ public class ZipUtil
             gzip = new GZIPOutputStream(out);
             gzip.write(str.getBytes());
             gzip.close();
-            final byte[] compressed = out.toByteArray();
+            byte[] compressed = out.toByteArray();
             compress = Base64Encoder.encode(compressed);
         }
-        catch (final IOException e) {
+        catch (IOException e) {
             e.printStackTrace();
-            if (null != out) {
-                try {
-                    out.close();
-                }
-                catch (final IOException e2) {
-                    e.printStackTrace();
-                }
-            }
         }
         finally {
             if (null != out) {
                 try {
                     out.close();
                 }
-                catch (final IOException e2) {
+                catch (IOException e2) {
                     e2.printStackTrace();
                 }
             }
@@ -51,7 +43,7 @@ public class ZipUtil
         return compress;
     }
     
-    public static String uncompress(final String str) {
+    public static String uncompress(String str) {
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -61,10 +53,10 @@ public class ZipUtil
         String uncompress = "";
         try {
             out = new ByteArrayOutputStream();
-            final byte[] compressed = Base64Encoder.decode(str.getBytes());
+            byte[] compressed = Base64Encoder.decode(str.getBytes());
             in = new ByteArrayInputStream(compressed);
             gzip = new GZIPInputStream(in);
-            final byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[1024];
             int offset = -1;
             while ((offset = gzip.read(buffer)) != -1) {
                 out.write(buffer, 0, offset);
@@ -79,7 +71,7 @@ public class ZipUtil
                 try {
                     gzip.close();
                 }
-                catch (final IOException e2) {
+                catch (IOException e2) {
                     e2.printStackTrace();
                 }
             }
@@ -87,7 +79,7 @@ public class ZipUtil
                 try {
                     in.close();
                 }
-                catch (final IOException e2) {
+                catch (IOException e2) {
                     e2.printStackTrace();
                 }
             }
@@ -95,7 +87,7 @@ public class ZipUtil
                 try {
                     out.close();
                 }
-                catch (final IOException e2) {
+                catch (IOException e2) {
                     e2.printStackTrace();
                 }
             }

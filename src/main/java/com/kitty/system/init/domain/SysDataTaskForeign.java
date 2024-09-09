@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -14,6 +13,9 @@ public class SysDataTaskForeign implements Serializable
     private int roleIcon;
     @Column("task_reward_serial")
     private String taskRewardSerial;
+    
+    public SysDataTaskForeign() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -47,7 +49,7 @@ public class SysDataTaskForeign implements Serializable
         if (!(o instanceof SysDataTaskForeign)) {
             return false;
         }
-        final SysDataTaskForeign other = (SysDataTaskForeign)o;
+        SysDataTaskForeign other = (SysDataTaskForeign)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -57,17 +59,9 @@ public class SysDataTaskForeign implements Serializable
         if (this.getRoleIcon() != other.getRoleIcon()) {
             return false;
         }
-        final Object this$taskRewardSerial = this.getTaskRewardSerial();
-        final Object other$taskRewardSerial = other.getTaskRewardSerial();
-        if (this$taskRewardSerial == null) {
-            if (other$taskRewardSerial == null) {
-                return true;
-            }
-        }
-        else if (this$taskRewardSerial.equals(other$taskRewardSerial)) {
-            return true;
-        }
-        return false;
+        Object this$taskRewardSerial = this.getTaskRewardSerial();
+        Object other$taskRewardSerial = other.getTaskRewardSerial();
+        return (this$taskRewardSerial != null) ? this$taskRewardSerial.equals(other$taskRewardSerial) : (other$taskRewardSerial == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -76,11 +70,11 @@ public class SysDataTaskForeign implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getRoleIcon();
-        final Object $taskRewardSerial = this.getTaskRewardSerial();
+        Object $taskRewardSerial = this.getTaskRewardSerial();
         result = result * 59 + (($taskRewardSerial == null) ? 43 : $taskRewardSerial.hashCode());
         return result;
     }

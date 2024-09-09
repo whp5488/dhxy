@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import com.google.common.collect.Lists;
@@ -30,9 +29,9 @@ public enum ZSXZ_PRO_DICT
     private int pro;
     
     public static List<Integer> toList() {
-        final List list = Lists.newArrayList();
-        for (final ZSXZ_PRO_DICT n : values()) {
-            list.add(n.getPro());
+        List<Integer> list = Lists.newArrayList();
+        for (ZSXZ_PRO_DICT n : values()) {
+            list.add(Integer.valueOf(n.getPro()));
         }
         return list;
     }

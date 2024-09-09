@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message.vo;
 
 import com.kitty.system.game.market.model.MarketDealRecord;
@@ -10,13 +9,16 @@ public class MarketDealVo
     private short amount;
     private byte status;
     
-    public static MarketDealVo valueOf(final MarketDealRecord record) {
-        final MarketDealVo vo = new MarketDealVo();
+    public static MarketDealVo valueOf(MarketDealRecord record) {
+        MarketDealVo vo = new MarketDealVo();
         vo.setSerial(record.getSerial());
         vo.setPrice(String.valueOf(record.getPrice()));
         vo.setAmount(record.getAmount());
         vo.setStatus(record.getStatus());
         return vo;
+    }
+    
+    public MarketDealVo() {
     }
     
     public int getSerial() {
@@ -59,24 +61,16 @@ public class MarketDealVo
         if (!(o instanceof MarketDealVo)) {
             return false;
         }
-        final MarketDealVo other = (MarketDealVo)o;
+        MarketDealVo other = (MarketDealVo)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$price = this.getPrice();
-        final Object other$price = other.getPrice();
-        if (this$price == null) {
-            if (other$price == null) {
-                return this.getAmount() == other.getAmount() && this.getStatus() == other.getStatus();
-            }
-        }
-        else if (this$price.equals(other$price)) {
-            return this.getAmount() == other.getAmount() && this.getStatus() == other.getStatus();
-        }
-        return false;
+        Object this$price = this.getPrice();
+        Object other$price = other.getPrice();
+        return ((this$price != null) ? this$price.equals(other$price) : (other$price == null)) && this.getAmount() == other.getAmount() && this.getStatus() == other.getStatus();
     }
     
     protected boolean canEqual(final Object other) {
@@ -85,10 +79,10 @@ public class MarketDealVo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $price = this.getPrice();
+        Object $price = this.getPrice();
         result = result * 59 + (($price == null) ? 43 : $price.hashCode());
         result = result * 59 + this.getAmount();
         result = result * 59 + this.getStatus();
@@ -97,6 +91,6 @@ public class MarketDealVo
     
     @Override
     public String toString() {
-        return "MarketDealVo(serial=" + this.getSerial() + ", price=" + this.getPrice() + ", amount=" + this.getAmount() + ", status=" + this.getStatus() + ")";
+        return "MarketDealVo(serial=" + this.getSerial() + ", price=" + this.getPrice() + ", amount=" + (int)this.getAmount() + ", status=" + (int)this.getStatus() + ")";
     }
 }

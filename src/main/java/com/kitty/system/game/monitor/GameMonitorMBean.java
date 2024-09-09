@@ -1,19 +1,18 @@
-
 package com.kitty.system.game.monitor;
 
 public interface GameMonitorMBean
 {
-    int getOnlinePlayerSum();
+    public abstract int getOnlinePlayerSum();
     
-    int getCachePlayerSum();
+    public abstract int getCachePlayerSum();
     
-    int getFightRoomSum();
+    public abstract int getFightRoomSum();
     
-    int getPlayerDbQueueSum();
+    public abstract int getPlayerDbQueueSum();
     
-    String getMessageStatistics();
+    public abstract String getMessageStatistics();
     
-    String getTaskContextInfo();
+    public abstract String getTaskContextInfo();
     
-    String execGroovyScript(final String p0);
+    public abstract String execGroovyScript(String groovyCode);
 }

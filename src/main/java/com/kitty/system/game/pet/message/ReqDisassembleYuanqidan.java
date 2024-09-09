@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,11 +9,14 @@ public class ReqDisassembleYuanqidan extends Message
     private Integer serial;
     private Integer num;
     
+    public ReqDisassembleYuanqidan() {
+    }
+    
     public Integer getSerial() {
         return this.serial;
     }
     
-    public void setSerial(final Integer serial) {
+    public void setSerial(Integer serial) {
         this.serial = serial;
     }
     
@@ -22,7 +24,7 @@ public class ReqDisassembleYuanqidan extends Message
         return this.num;
     }
     
-    public void setNum(final Integer num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
 }

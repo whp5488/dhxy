@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import com.google.common.collect.Lists;
@@ -14,8 +13,8 @@ public enum PET_SKILL_TERM_DICT
     private String value;
     
     public static List<String> toList() {
-        final List list = Lists.newArrayList();
-        for (final PET_SKILL_TERM_DICT n : values()) {
+        List<String> list = Lists.newArrayList();
+        for (PET_SKILL_TERM_DICT n : values()) {
             list.add(n.getValue());
         }
         return list;

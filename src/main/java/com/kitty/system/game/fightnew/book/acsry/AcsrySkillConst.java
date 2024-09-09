@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry;
 
 import java.util.Arrays;
@@ -124,11 +123,11 @@ public interface AcsrySkillConst
     public static final int ACSRYSKILL_76313 = 76313;
     public static final int ACSRYSKILL_76323 = 76323;
     
-    static List<Integer> getAttackEndEffector() {
-        return Arrays.asList(73103, 76302, 71302, 73342, 76303, 71303, 71343, 76312, 75122, 71312, 73333, 76313, 76202, 74313, 71313, 71353, 76322, 76203, 74322, 74203, 73322, 76323, 74333, 74323, 73323, 74202, 71212, 73343, 76102, 73332, 73102, 71213, 76103);
+    public static List<Integer> getAttackEndEffector() {
+        return Arrays.asList(Integer.valueOf(73103), Integer.valueOf(76302), Integer.valueOf(71302), Integer.valueOf(73342), Integer.valueOf(76303), Integer.valueOf(71303), Integer.valueOf(71343), Integer.valueOf(76312), Integer.valueOf(75122), Integer.valueOf(71312), Integer.valueOf(73333), Integer.valueOf(76313), Integer.valueOf(76202), Integer.valueOf(74313), Integer.valueOf(71313), Integer.valueOf(71353), Integer.valueOf(76322), Integer.valueOf(76203), Integer.valueOf(74322), Integer.valueOf(74203), Integer.valueOf(73322), Integer.valueOf(76323), Integer.valueOf(74333), Integer.valueOf(74323), Integer.valueOf(73323), Integer.valueOf(74202), Integer.valueOf(71212), Integer.valueOf(73343), Integer.valueOf(76102), Integer.valueOf(73332), Integer.valueOf(73102), Integer.valueOf(71213), Integer.valueOf(76103));
     }
     
-    static List<Integer> getAttackEndTarget() {
-        return Arrays.asList(75302, 75303, 71363);
+    public static List<Integer> getAttackEndTarget() {
+        return Arrays.asList(Integer.valueOf(75302), Integer.valueOf(75303), Integer.valueOf(71363));
     }
 }

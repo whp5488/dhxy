@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import java.io.Serializable;
@@ -21,14 +20,14 @@ public abstract class BaseEntity<PK extends Comparable<PK> & Serializable> imple
     
     @Override
     public int hashCode() {
-        final int prime = 31;
+        int prime = 31;
         int result = 1;
         result = 31 * result + this.getId().hashCode();
         return result;
     }
     
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
@@ -38,7 +37,7 @@ public abstract class BaseEntity<PK extends Comparable<PK> & Serializable> imple
         if (this.getClass() != obj.getClass()) {
             return false;
         }
-        final BaseEntity other = (BaseEntity)obj;
+        BaseEntity other = (BaseEntity)obj;
         return this.getId().equals(other.getId());
     }
     
@@ -46,7 +45,7 @@ public abstract class BaseEntity<PK extends Comparable<PK> & Serializable> imple
         return this.delete;
     }
     
-    public void setDelete(final boolean delete) {
+    public void setDelete(boolean delete) {
         this.delete = delete;
     }
 }

@@ -1,11 +1,9 @@
-
 package com.kitty.system.game.fightnew.spectator.pool;
 
 import java.util.HashMap;
 import com.kitty.system.game.vo.utils.StatusConst;
 import com.kitty.system.game.fightnew.bean.PetFightObject;
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
-import com.kitty.listener.BaseGameEvent;
 import com.kitty.listener.event.FightRoundParamEvent;
 import com.kitty.listener.EventType;
 import com.kitty.listener.EventDispatcher;
@@ -36,59 +34,71 @@ public class FightParamPool
     public static ConcurrentHashMap<Integer, FightSkillRecord> FIGHT_SKILL_RECORD;
     public static ConcurrentHashMap<Integer, FightObjectInfo> FIGHTOBJECT_INFO;
     
-    public static void addFightInParam(final Fight fight) {
-        final FightNewService fightNewService = SpringUtils.getBean(FightNewService.class);
-        final FightRoundParam fightRoundParam = gainFightRoundParam(fight.getId());
+    public FightParamPool() {
+    }
+    
+    public static void addFightInParam(Fight fight) {
+        FightNewService fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
+        FightRoundParam fightRoundParam = gainFightRoundParam(fight.getId());
         fightRoundParam.setFightMemberA(fightNewService.getFightMemberList(fight.getListA()));
         fightRoundParam.setFightMemberB(fightNewService.getFightMemberList(fight.getListB()));
-        final List<ExcuteFightParam> excuteFightParams = fight.getFightStatus();
+        List<ExcuteFightParam> excuteFightParams = fight.getFightStatus();
         gainFightRoundParam(fight.getId()).setExcuteFightParams(excuteFightParams);
-        for (final FightObject roleObject : fight.getAllFightObjects()) {
+        for (FightObject roleObject : fight.getAllFightObjects()) {
             if (roleObject.isPlayer()) {
-                final Role role = roleObject.getRole();
-                final FightObject petObject = fight.queryFightObject(roleObject.getFightPetId());
+                Role role = roleObject.getRole();
+                FightObject petObject = fight.queryFightObject(Integer.valueOf(roleObject.getFightPetId()));
                 if (petObject != null) {
-                    final Pet pet = petObject.getPet();
+                    Pet pet = petObject.getPet();
                     if (pet != null) {
-                        final PetFightInParam petFightParam = fight.getPetFightParam(pet);
-                        fightRoundParam.addPetFightInParam(role.getRoleId(), petFightParam);
+                        PetFightInParam petFightParam = fight.getPetFightParam(pet);
+                        fightRoundParam.addPetFightInParam((int)role.getRoleId(), petFightParam);
                     }
                 }
-                final List<SkillParam> skillParams = fight.getSkillParams(role);
+                List<SkillParam> skillParams = fight.getSkillParams(role);
                 if (skillParams != null) {
-                    fightRoundParam.addSkillParam(role.getRoleId(), skillParams);
+                    fightRoundParam.addSkillParam((int)role.getRoleId(), skillParams);
                 }
-                final List<RefreshPet> refreshPets = fightNewService.getFightInParamPetList(fight, roleObject);
-                fightRoundParam.addRefreshPet(role.getRoleId(), refreshPets);
-                if (roleObject.getStatusMap().size() <= 0) {
-                    continue;
-                }
-                final List<Integer> statusList = new ArrayList<Integer>();
-                for (final Map.Entry<String, Object> entry : roleObject.getStatusMap().entrySet()) {
-                    if (!entry.getKey().matches("^[0-9]+$")) {
+                List<RefreshPet> refreshPets = fightNewService.getFightInParamPetList(fight, roleObject);
+                fightRoundParam.addRefreshPet((int)role.getRoleId(), refreshPets);
+                if (roleObject.getStatusMap().size() > 0) {
+                    List<Integer> statusList = new ArrayList<>();
+                    for (Map.Entry<String, Object> entry : roleObject.getStatusMap().entrySet()) {
+                        if (!((String)entry.getKey()).matches("^[0-9]+$")) {
+                            continue;
+                        }
+                        if (roleObject.getStatusMap().getInt((String)entry.getKey(), 0) > 0) {
+                            statusList.add(Integer.valueOf(Integer.parseInt((String)entry.getKey())));
+                            statusList.add(Integer.valueOf(roleObject.getStatusMap().getInt((String)entry.getKey(), 0)));
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    if (statusList.size() > 0) {
+                        fightRoundParam.addStatus((int)role.getRoleId(), statusList);
+                    }
+                    else {
                         continue;
                     }
-                    if (roleObject.getStatusMap().getInt((String)entry.getKey(), 0) <= 0) {
-                        continue;
-                    }
-                    statusList.add(Integer.parseInt(entry.getKey()));
-                    statusList.add(roleObject.getStatusMap().getInt((String)entry.getKey(), 0));
                 }
-                if (statusList.size() <= 0) {
+                else {
                     continue;
                 }
-                fightRoundParam.addStatus(role.getRoleId(), statusList);
+            }
+            else {
+                continue;
             }
         }
     }
     
-    public static RespFightInParam createRespFightInParam(final boolean isSpectator, final int fightId, final int roleId, final boolean isA) {
-        final RespFightInParam respFightInParam = new RespFightInParam();
+    public static RespFightInParam createRespFightInParam(boolean isSpectator, int fightId, int roleId, boolean isA) {
+        RespFightInParam respFightInParam = new RespFightInParam();
         if (isSpectator) {
             respFightInParam.setType((byte)2);
         }
         respFightInParam.setRoleId(roleId);
-        final FightRoundParam fightRoundParam = FightParamPool.FIGHT_ROUND_PARAM.get(fightId);
+        FightRoundParam fightRoundParam = (FightRoundParam)FightParamPool.FIGHT_ROUND_PARAM.get(Integer.valueOf(fightId));
         if (fightRoundParam == null) {
             return null;
         }
@@ -99,15 +109,15 @@ public class FightParamPool
             respFightInParam.setExcuteFightParams(fightRoundParam.getExcuteFightParams());
         }
         if (!isSpectator) {
-            final PetFightInParam petFightInParam = fightRoundParam.getPetFightInParam(roleId);
+            PetFightInParam petFightInParam = fightRoundParam.getPetFightInParam(roleId);
             if (petFightInParam != null) {
                 respFightInParam.addPetFightInParam(petFightInParam);
             }
-            final List<SkillParam> skillParamList = fightRoundParam.getSkillParamList(roleId);
+            List<SkillParam> skillParamList = fightRoundParam.getSkillParamList(roleId);
             if (skillParamList != null) {
-                respFightInParam.setSkillParams(fightRoundParam.getSkillParamMap().get(roleId));
+                respFightInParam.setSkillParams((List)fightRoundParam.getSkillParamMap().get(Integer.valueOf(roleId)));
             }
-            final List<RefreshPet> refreshPets = fightRoundParam.getRefreshPets(roleId);
+            List<RefreshPet> refreshPets = fightRoundParam.getRefreshPets(roleId);
             if (refreshPets != null) {
                 respFightInParam.setPetList(refreshPets);
             }
@@ -115,24 +125,23 @@ public class FightParamPool
         if (isA) {
             respFightInParam.getRespCombatFriends().setList(fightRoundParam.getFightMemberA());
             respFightInParam.getRespCombatOpponets().setList(fightRoundParam.getFightMemberB());
+            return respFightInParam;
         }
-        else {
-            respFightInParam.getRespCombatFriends().setList(fightRoundParam.getFightMemberB());
-            respFightInParam.getRespCombatOpponets().setList(fightRoundParam.getFightMemberA());
-        }
+        respFightInParam.getRespCombatFriends().setList(fightRoundParam.getFightMemberB());
+        respFightInParam.getRespCombatOpponets().setList(fightRoundParam.getFightMemberA());
         return respFightInParam;
     }
     
-    public static RespRoundStartParam getRespRoundStartParam(final int fightId, final int roleId) {
-        final FightRoundParam fightRoundParam = FightParamPool.FIGHT_ROUND_PARAM.get(fightId);
+    public static RespRoundStartParam getRespRoundStartParam(int fightId, int roleId) {
+        FightRoundParam fightRoundParam = (FightRoundParam)FightParamPool.FIGHT_ROUND_PARAM.get(Integer.valueOf(fightId));
         if (fightRoundParam == null) {
             return null;
         }
-        return fightRoundParam.getRespRoundStartParamMap().get(roleId);
+        return (RespRoundStartParam)fightRoundParam.getRespRoundStartParamMap().get(Integer.valueOf(roleId));
     }
     
-    public static RespRoundStartParam getRespRoundStartParam(final Fight fight, final boolean isA) {
-        final FightRoundParam fightRoundParam = FightParamPool.FIGHT_ROUND_PARAM.get(fight.getId());
+    public static RespRoundStartParam getRespRoundStartParam(Fight fight, boolean isA) {
+        FightRoundParam fightRoundParam = (FightRoundParam)FightParamPool.FIGHT_ROUND_PARAM.get(Integer.valueOf(fight.getId()));
         if (fightRoundParam == null) {
             return null;
         }
@@ -147,20 +156,21 @@ public class FightParamPool
             return null;
         }
         if (fightRoundParam.getRespRoundStartParamMap().size() > 0) {
-            for (final Map.Entry<Integer, RespRoundStartParam> entry : fightRoundParam.getRespRoundStartParamMap().entrySet()) {
+            for (Map.Entry<Integer, RespRoundStartParam> entry : fightRoundParam.getRespRoundStartParamMap().entrySet()) {
                 if (obj.getId().equals(entry.getKey())) {
-                    return entry.getValue();
+                    return (RespRoundStartParam)entry.getValue();
                 }
+                continue;
             }
         }
         return null;
     }
     
-    public static FightRoundParam gainFightRoundParam(final int fightId) {
-        FightRoundParam fightRoundParam = FightParamPool.FIGHT_ROUND_PARAM.get(fightId);
+    public static FightRoundParam gainFightRoundParam(int fightId) {
+        FightRoundParam fightRoundParam = (FightRoundParam)FightParamPool.FIGHT_ROUND_PARAM.get(Integer.valueOf(fightId));
         if (fightRoundParam == null) {
             fightRoundParam = new FightRoundParam();
-            FightParamPool.FIGHT_ROUND_PARAM.put(fightId, fightRoundParam);
+            FightParamPool.FIGHT_ROUND_PARAM.put(Integer.valueOf(fightId), fightRoundParam);
             if (FightParamPool.FIGHT_ROUND_PARAM.size() > 10000) {
                 EventDispatcher.getInstance().fireEvent(new FightRoundParamEvent(EventType.FIGHT_ROUND_PARAM));
             }
@@ -168,16 +178,16 @@ public class FightParamPool
         return fightRoundParam;
     }
     
-    public static SkillRecord addSkillRecord(final Fight fight, final int type, final long attaId, final int skill) {
-        FightSkillRecord fightSkillRecord = FightParamPool.FIGHT_SKILL_RECORD.get(fight.getId());
+    public static SkillRecord addSkillRecord(Fight fight, int type, long attaId, int skill) {
+        FightSkillRecord fightSkillRecord = (FightSkillRecord)FightParamPool.FIGHT_SKILL_RECORD.get(Integer.valueOf(fight.getId()));
         if (fightSkillRecord == null) {
             fightSkillRecord = new FightSkillRecord();
-            fightSkillRecord.setFightId(fight.getId());
+            fightSkillRecord.setFightId((long)fight.getId());
             fightSkillRecord.setCreateTime(System.currentTimeMillis());
             fightSkillRecord.setRoleIds(getRoleIds(fight));
-            FightParamPool.FIGHT_SKILL_RECORD.put(fight.getId(), fightSkillRecord);
+            FightParamPool.FIGHT_SKILL_RECORD.put(Integer.valueOf(fight.getId()), fightSkillRecord);
         }
-        final SkillRecord skillRecord = new SkillRecord();
+        SkillRecord skillRecord = new SkillRecord();
         skillRecord.setO(fightSkillRecord.getDataList().size() + 1);
         skillRecord.setA(attaId);
         skillRecord.setP(type);
@@ -187,7 +197,7 @@ public class FightParamPool
         return skillRecord;
     }
     
-    private static String getRoleIds(final Fight fight) {
+    private static String getRoleIds(Fight fight) {
         List<FightObject> list;
         if (fight.isPvp() == 1) {
             list = fight.getAllFightObjects();
@@ -196,10 +206,10 @@ public class FightParamPool
             list = fight.getListA();
         }
         if (list != null && list.size() > 0) {
-            final StringBuffer sb = new StringBuffer("[");
+            StringBuffer sb = new StringBuffer("[");
             for (int i = 0; i < list.size(); ++i) {
-                if (list.get(i).isPlayer()) {
-                    sb.append(list.get(i).getId());
+                if (((FightObject)list.get(i)).isPlayer()) {
+                    sb.append(((FightObject)list.get(i)).getId());
                     sb.append(",");
                 }
             }
@@ -210,17 +220,17 @@ public class FightParamPool
         return "[]";
     }
     
-    public static void excuteSaveSkillRecord(final Fight fight) {
+    public static void excuteSaveSkillRecord(Fight fight) {
         if (fight != null && fight.getId() > 0) {
-            final FightSkillRecord fightSkillRecord = FightParamPool.FIGHT_SKILL_RECORD.get(fight.getId());
+            FightSkillRecord fightSkillRecord = (FightSkillRecord)FightParamPool.FIGHT_SKILL_RECORD.get(Integer.valueOf(fight.getId()));
             if (fightSkillRecord != null) {
                 fightSkillRecord.setDestroyTime(System.currentTimeMillis());
                 fightSkillRecord.save();
-                FightParamPool.FIGHT_SKILL_RECORD.remove(fight.getId());
+                FightParamPool.FIGHT_SKILL_RECORD.remove(Integer.valueOf(fight.getId()));
             }
             else {
-                final FightSkillRecord fightSkillRecord2 = new FightSkillRecord();
-                fightSkillRecord2.setFightId(fight.getId());
+                FightSkillRecord fightSkillRecord2 = new FightSkillRecord();
+                fightSkillRecord2.setFightId((long)fight.getId());
                 fightSkillRecord2.setCreateTime(fight.getCreateTime());
                 fightSkillRecord2.setRoleIds(getRoleIds(fight));
                 fightSkillRecord2.setDestroyTime(System.currentTimeMillis());
@@ -229,29 +239,29 @@ public class FightParamPool
         }
     }
     
-    public static void fightDestroy(final Fight fight) {
+    public static void fightDestroy(Fight fight) {
         if (fight != null && fight.getId() > 0) {
-            FightParamPool.FIGHT_ROUND_PARAM.remove(fight.getId());
+            FightParamPool.FIGHT_ROUND_PARAM.remove(Integer.valueOf(fight.getId()));
             excuteSaveSkillRecord(fight);
         }
     }
     
-    public static void addDeathPet(final Fight fight, final int roleId, final PetFightObject petFightObject) {
+    public static void addDeathPet(Fight fight, int roleId, PetFightObject petFightObject) {
         if (fight.isPvp() == 1 && petFightObject != null && petFightObject.isFallDown()) {
-            final FightObjectInfo fightObjectInfo = gainInfo(fight.getId());
-            List<Integer> pets = fightObjectInfo.getPetMap().get(roleId);
+            FightObjectInfo fightObjectInfo = gainInfo(fight.getId());
+            List<Integer> pets = (List)fightObjectInfo.getPetMap().get(Integer.valueOf(roleId));
             if (pets == null) {
-                pets = new ArrayList<Integer>();
-                fightObjectInfo.getPetMap().put(roleId, pets);
+                pets = new ArrayList<>();
+                fightObjectInfo.getPetMap().put(Integer.valueOf(roleId), pets);
             }
             pets.add(petFightObject.getId());
         }
     }
     
-    public static int getDeathPetNum(final int fightId, final int roleId) {
-        final FightObjectInfo fightObjectInfo = FightParamPool.FIGHTOBJECT_INFO.get(fightId);
+    public static int getDeathPetNum(int fightId, int roleId) {
+        FightObjectInfo fightObjectInfo = (FightObjectInfo)FightParamPool.FIGHTOBJECT_INFO.get(Integer.valueOf(fightId));
         if (fightObjectInfo != null) {
-            final List<Integer> petIds = fightObjectInfo.getPetMap().get(roleId);
+            List<Integer> petIds = (List)fightObjectInfo.getPetMap().get(Integer.valueOf(roleId));
             if (petIds != null) {
                 return petIds.size();
             }
@@ -259,73 +269,84 @@ public class FightParamPool
         return 0;
     }
     
-    public static void addControlStatus(final Fight fight, final FightObject target, final int status) {
-        if (fight.isPvp() == 1 && StatusConst.getControlStatus().contains(status) && target.getStatusValue(status) <= 0) {
-            final FightObjectInfo fightObjectInfo = gainInfo(fight.getId());
+    public static void addControlStatus(Fight fight, FightObject target, int status) {
+        if (fight.isPvp() == 1 && StatusConst.getControlStatus().contains(Integer.valueOf(status)) && target.getStatusValue(status) <= 0) {
+            FightObjectInfo fightObjectInfo = gainInfo(fight.getId());
             FightObject host = target;
             if (!target.isPlayer()) {
-                host = fight.queryFightObject(target.getHostId());
+                host = fight.queryFightObject(Integer.valueOf(target.getHostId()));
             }
             if (host == null) {
                 return;
             }
-            Map<Integer, Map<Integer, Integer>> roleMap = fightObjectInfo.getStatusNumMap().get(host.getId());
+            Map<Integer, Map<Integer, Integer>> roleMap = (Map)fightObjectInfo.getStatusNumMap().get(host.getId());
             if (roleMap == null) {
-                roleMap = new HashMap<Integer, Map<Integer, Integer>>();
+                roleMap = new HashMap();
                 fightObjectInfo.getStatusNumMap().put(host.getId(), roleMap);
             }
-            Map<Integer, Integer> objMap = roleMap.get(target.getId());
+            Map<Integer, Integer> objMap = (Map)roleMap.get(target.getId());
             if (objMap == null) {
-                objMap = new HashMap<Integer, Integer>();
+                objMap = new HashMap();
                 roleMap.put(target.getId(), objMap);
             }
-            Integer num = objMap.get(status);
-            if (num == null || num < 0) {
-                num = 0;
+            Integer num = (Integer)objMap.get(Integer.valueOf(status));
+            if (num == null || (int)num < 0) {
+                num = Integer.valueOf(0);
             }
-            ++num;
-            objMap.put(status, num);
+            num = Integer.valueOf((int)num + 1);
+            objMap.put(Integer.valueOf(status), num);
         }
     }
     
-    public static int getControlNum(final int fightId, final int roleId) {
-        final FightObjectInfo fightObjectInfo = FightParamPool.FIGHTOBJECT_INFO.get(fightId);
+    public static int getControlNum(int fightId, int roleId) {
+        FightObjectInfo fightObjectInfo = (FightObjectInfo)FightParamPool.FIGHTOBJECT_INFO.get(Integer.valueOf(fightId));
         if (fightObjectInfo != null) {
             int num = 0;
-            final Map<Integer, Map<Integer, Integer>> roleMap = fightObjectInfo.getStatusNumMap().get(roleId);
+            Map<Integer, Map<Integer, Integer>> roleMap = (Map)fightObjectInfo.getStatusNumMap().get(Integer.valueOf(roleId));
             if (roleMap != null) {
-                for (final Map.Entry<Integer, Map<Integer, Integer>> entry : roleMap.entrySet()) {
-                    final Map<Integer, Integer> objMap = entry.getValue();
+                for (Map.Entry<Integer, Map<Integer, Integer>> entry : roleMap.entrySet()) {
+                    Map<Integer, Integer> objMap = (Map)entry.getValue();
                     if (objMap != null) {
-                        for (final Map.Entry<Integer, Integer> entry2 : objMap.entrySet()) {
+                        for (Map.Entry<Integer, Integer> entry2 : objMap.entrySet()) {
                             if (entry2 != null) {
-                                final Integer statusNum = entry2.getValue();
-                                if (statusNum == null || !StatusConst.getControlStatus().contains(entry2.getKey())) {
+                                Integer statusNum = (Integer)entry2.getValue();
+                                if (statusNum != null && StatusConst.getControlStatus().contains(entry2.getKey())) {
+                                    num += (int)statusNum;
+                                }
+                                else {
                                     continue;
                                 }
-                                num += statusNum;
+                            }
+                            else {
+                                continue;
                             }
                         }
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
             return num;
         }
-        return 0;
+        else {
+            return 0;
+        }
     }
     
-    private static FightObjectInfo gainInfo(final int fightId) {
-        FightObjectInfo fightObjectInfo = FightParamPool.FIGHTOBJECT_INFO.get(fightId);
+    private static FightObjectInfo gainInfo(int fightId) {
+        FightObjectInfo fightObjectInfo = (FightObjectInfo)FightParamPool.FIGHTOBJECT_INFO.get(Integer.valueOf(fightId));
         if (fightObjectInfo == null) {
             fightObjectInfo = new FightObjectInfo();
-            FightParamPool.FIGHTOBJECT_INFO.put(fightId, fightObjectInfo);
+            FightParamPool.FIGHTOBJECT_INFO.put(Integer.valueOf(fightId), fightObjectInfo);
+            return fightObjectInfo;
         }
         return fightObjectInfo;
     }
     
     static {
-        FightParamPool.FIGHT_ROUND_PARAM = new ConcurrentHashMap<Integer, FightRoundParam>();
-        FightParamPool.FIGHT_SKILL_RECORD = new ConcurrentHashMap<Integer, FightSkillRecord>();
-        FightParamPool.FIGHTOBJECT_INFO = new ConcurrentHashMap<Integer, FightObjectInfo>();
+        FightParamPool.FIGHT_ROUND_PARAM = new ConcurrentHashMap();
+        FightParamPool.FIGHT_SKILL_RECORD = new ConcurrentHashMap();
+        FightParamPool.FIGHTOBJECT_INFO = new ConcurrentHashMap();
     }
 }

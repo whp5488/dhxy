@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -18,6 +17,9 @@ public class SysCommonAward implements Serializable
     private List<Param> award;
     @Column("special")
     private List<Param> special;
+    
+    public SysCommonAward() {
+    }
     
     public String getDict() {
         return this.dict;
@@ -51,47 +53,23 @@ public class SysCommonAward implements Serializable
         if (!(o instanceof SysCommonAward)) {
             return false;
         }
-        final SysCommonAward other = (SysCommonAward)o;
+        SysCommonAward other = (SysCommonAward)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0065: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0065;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
-        final Object this$award = this.getAward();
-        final Object other$award = other.getAward();
-        Label_0102: {
-            if (this$award == null) {
-                if (other$award == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$award.equals(other$award)) {
-                break Label_0102;
-            }
+        Object this$award = this.getAward();
+        Object other$award = other.getAward();
+        if (!((this$award != null) ? this$award.equals(other$award) : (other$award == null))) {
             return false;
         }
-        final Object this$special = this.getSpecial();
-        final Object other$special = other.getSpecial();
-        if (this$special == null) {
-            if (other$special == null) {
-                return true;
-            }
-        }
-        else if (this$special.equals(other$special)) {
-            return true;
-        }
-        return false;
+        Object this$special = this.getSpecial();
+        Object other$special = other.getSpecial();
+        return (this$special != null) ? this$special.equals(other$special) : (other$special == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -100,13 +78,13 @@ public class SysCommonAward implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
-        final Object $award = this.getAward();
+        Object $award = this.getAward();
         result = result * 59 + (($award == null) ? 43 : $award.hashCode());
-        final Object $special = this.getSpecial();
+        Object $special = this.getSpecial();
         result = result * 59 + (($special == null) ? 43 : $special.hashCode());
         return result;
     }

@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.party.model.vo;
-
-import java.beans.ConstructorProperties;
 
 public class PartyTask
 {
@@ -32,7 +29,7 @@ public class PartyTask
         if (!(o instanceof PartyTask)) {
             return false;
         }
-        final PartyTask other = (PartyTask)o;
+        PartyTask other = (PartyTask)o;
         return other.canEqual(this) && this.getTime() == other.getTime() && this.getCount() == other.getCount();
     }
     
@@ -42,7 +39,7 @@ public class PartyTask
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTime();
         result = result * 59 + this.getCount();
@@ -54,7 +51,6 @@ public class PartyTask
         return "PartyTask(time=" + this.getTime() + ", count=" + this.getCount() + ")";
     }
     
-    @ConstructorProperties({ "time", "count" })
     public PartyTask(final int time, final int count) {
         this.time = time;
         this.count = count;

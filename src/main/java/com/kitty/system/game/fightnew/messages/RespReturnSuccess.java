@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.fightnew.messages.old.RespFightCommandInfo;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -38,7 +36,6 @@ public class RespReturnSuccess extends Message
         this.fightCommandInfos = fightCommandInfos;
     }
     
-    @ConstructorProperties({ "objId", "type", "fightCommandInfos" })
     public RespReturnSuccess(final int objId, final byte type, final List<RespFightCommandInfo> fightCommandInfos) {
         this.objId = objId;
         this.type = type;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqTempFriendState extends Message
 {
     private String gid;
     private String distName;
+    
+    public ReqTempFriendState() {
+    }
     
     public String getGid() {
         return this.gid;

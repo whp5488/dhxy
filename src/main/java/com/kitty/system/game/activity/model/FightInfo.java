@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model;
 
 import java.util.ArrayList;
@@ -14,9 +13,9 @@ public class FightInfo implements Serializable
     
     public FightInfo() {
         this.itselfLeader = 0L;
-        this.itself = new ArrayList<Long>(5);
+        this.itself = new ArrayList(5);
         this.enemyLeader = 0L;
-        this.enemy = new ArrayList<Long>(5);
+        this.enemy = new ArrayList(5);
     }
     
     public long getItselfLeader() {
@@ -59,40 +58,24 @@ public class FightInfo implements Serializable
         if (!(o instanceof FightInfo)) {
             return false;
         }
-        final FightInfo other = (FightInfo)o;
+        FightInfo other = (FightInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getItselfLeader() != other.getItselfLeader()) {
             return false;
         }
-        final Object this$itself = this.getItself();
-        final Object other$itself = other.getItself();
-        Label_0079: {
-            if (this$itself == null) {
-                if (other$itself == null) {
-                    break Label_0079;
-                }
-            }
-            else if (this$itself.equals(other$itself)) {
-                break Label_0079;
-            }
+        Object this$itself = this.getItself();
+        Object other$itself = other.getItself();
+        if (!((this$itself != null) ? this$itself.equals(other$itself) : (other$itself == null))) {
             return false;
         }
         if (this.getEnemyLeader() != other.getEnemyLeader()) {
             return false;
         }
-        final Object this$enemy = this.getEnemy();
-        final Object other$enemy = other.getEnemy();
-        if (this$enemy == null) {
-            if (other$enemy == null) {
-                return true;
-            }
-        }
-        else if (this$enemy.equals(other$enemy)) {
-            return true;
-        }
-        return false;
+        Object this$enemy = this.getEnemy();
+        Object other$enemy = other.getEnemy();
+        return (this$enemy != null) ? this$enemy.equals(other$enemy) : (other$enemy == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -101,15 +84,15 @@ public class FightInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final long $itselfLeader = this.getItselfLeader();
+        long $itselfLeader = this.getItselfLeader();
         result = result * 59 + (int)($itselfLeader >>> 32 ^ $itselfLeader);
-        final Object $itself = this.getItself();
+        Object $itself = this.getItself();
         result = result * 59 + (($itself == null) ? 43 : $itself.hashCode());
-        final long $enemyLeader = this.getEnemyLeader();
+        long $enemyLeader = this.getEnemyLeader();
         result = result * 59 + (int)($enemyLeader >>> 32 ^ $enemyLeader);
-        final Object $enemy = this.getEnemy();
+        Object $enemy = this.getEnemy();
         result = result * 59 + (($enemy == null) ? 43 : $enemy.hashCode());
         return result;
     }

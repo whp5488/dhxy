@@ -1,4 +1,3 @@
-
 package com.kitty.system.admin.domain;
 
 import com.kitty.system.init.domain.vo.Param;
@@ -15,7 +14,7 @@ public class BrieGift implements Serializable
         return this.name;
     }
     
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -23,7 +22,7 @@ public class BrieGift implements Serializable
         return this.time;
     }
     
-    public void setTime(final long time) {
+    public void setTime(long time) {
         this.time = time;
     }
     
@@ -31,11 +30,11 @@ public class BrieGift implements Serializable
         return this.list;
     }
     
-    public void setList(final List<Param> list) {
+    public void setList(List<Param> list) {
         this.list = list;
     }
     
-    public BrieGift(final String name, final long time, final List<Param> list) {
+    public BrieGift(String name, long time, List<Param> list) {
         this.name = name;
         this.time = time;
         this.list = list;

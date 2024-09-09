@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.StringField;
@@ -13,7 +12,7 @@ public class RespNotifyMisc extends Message
     private int time;
     private int friendId;
     
-    public RespNotifyMisc(final String msg) {
+    public RespNotifyMisc(String msg) {
         this.msg = msg;
         this.time = new Long(System.currentTimeMillis() / 1000L).intValue();
     }
@@ -53,21 +52,13 @@ public class RespNotifyMisc extends Message
         if (!(o instanceof RespNotifyMisc)) {
             return false;
         }
-        final RespNotifyMisc other = (RespNotifyMisc)o;
+        RespNotifyMisc other = (RespNotifyMisc)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        if (this$msg == null) {
-            if (other$msg == null) {
-                return this.getTime() == other.getTime() && this.getFriendId() == other.getFriendId();
-            }
-        }
-        else if (this$msg.equals(other$msg)) {
-            return this.getTime() == other.getTime() && this.getFriendId() == other.getFriendId();
-        }
-        return false;
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        return ((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null)) && this.getTime() == other.getTime() && this.getFriendId() == other.getFriendId();
     }
     
     protected boolean canEqual(final Object other) {
@@ -76,9 +67,9 @@ public class RespNotifyMisc extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
         result = result * 59 + this.getTime();
         result = result * 59 + this.getFriendId();

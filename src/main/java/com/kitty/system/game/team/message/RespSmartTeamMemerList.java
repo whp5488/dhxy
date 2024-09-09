@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class RespSmartTeamMemerList extends Message
     private List<SmartTeamMember> teamMemberList;
     
     public RespSmartTeamMemerList() {
-        this.teamMemberList = new ArrayList<SmartTeamMember>();
+        this.teamMemberList = new ArrayList<>();
     }
     
     public String getSerial() {

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -31,6 +30,9 @@ public class SysReiEn implements Serializable
     @Column("rei_en")
     @Default("[]")
     private List<Field> reiEn;
+    
+    public SysReiEn() {
+    }
     
     public int getKey() {
         return this.key;
@@ -88,7 +90,7 @@ public class SysReiEn implements Serializable
         if (!(o instanceof SysReiEn)) {
             return false;
         }
-        final SysReiEn other = (SysReiEn)o;
+        SysReiEn other = (SysReiEn)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -107,17 +109,9 @@ public class SysReiEn implements Serializable
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$reiEn = this.getReiEn();
-        final Object other$reiEn = other.getReiEn();
-        if (this$reiEn == null) {
-            if (other$reiEn == null) {
-                return true;
-            }
-        }
-        else if (this$reiEn.equals(other$reiEn)) {
-            return true;
-        }
-        return false;
+        Object this$reiEn = this.getReiEn();
+        Object other$reiEn = other.getReiEn();
+        return (this$reiEn != null) ? this$reiEn.equals(other$reiEn) : (other$reiEn == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -126,14 +120,14 @@ public class SysReiEn implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getKey();
         result = result * 59 + this.getRei();
         result = result * 59 + this.getRace();
         result = result * 59 + this.getSex();
         result = result * 59 + this.getSerial();
-        final Object $reiEn = this.getReiEn();
+        Object $reiEn = this.getReiEn();
         result = result * 59 + (($reiEn == null) ? 43 : $reiEn.hashCode());
         return result;
     }

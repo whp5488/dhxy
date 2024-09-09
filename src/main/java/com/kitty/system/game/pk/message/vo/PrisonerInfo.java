@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.message.vo;
 
 import com.kitty.system.game.role.domain.Role;
@@ -15,16 +14,16 @@ public class PrisonerInfo
     public PrisonerInfo() {
     }
     
-    public PrisonerInfo(final Role role) {
-        this.roleId = role.getRoleId();
+    public PrisonerInfo(Role role) {
+        this.roleId = (int)role.getRoleId();
         this.name = role.getName();
-        this.serial = role.getSerial();
+        this.serial = (int)role.getSerial();
         this.rei = role.getRelive().byteValue();
         this.level = role.getLevel().shortValue();
         this.lastTi = role.getPkInfoBox().getPrisonTime();
     }
     
-    public PrisonerInfo(final int roleId, final String name, final int serial, final byte rei, final short level, final int lastTi) {
+    public PrisonerInfo(int roleId, String name, int serial, byte rei, short level, int lastTi) {
         this.roleId = roleId;
         this.name = name;
         this.serial = serial;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqWorship extends Message
 {
     private int npcId;
+    
+    public ReqWorship() {
+    }
     
     public int getNpcId() {
         return this.npcId;
@@ -25,7 +27,7 @@ public class ReqWorship extends Message
         if (!(o instanceof ReqWorship)) {
             return false;
         }
-        final ReqWorship other = (ReqWorship)o;
+        ReqWorship other = (ReqWorship)o;
         return other.canEqual(this) && this.getNpcId() == other.getNpcId();
     }
     
@@ -35,7 +37,7 @@ public class ReqWorship extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getNpcId();
         return result;

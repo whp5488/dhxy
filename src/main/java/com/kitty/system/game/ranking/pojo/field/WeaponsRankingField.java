@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.pojo.field;
 
 import com.kitty.system.game.ranking.pojo.WeaponsRankingSource;
@@ -25,18 +24,18 @@ public class WeaponsRankingField extends RankingField
     public WeaponsRankingField() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
     
-    public WeaponsRankingField(final WeaponsRankingSource obj, final int order, final byte serverId) {
+    public WeaponsRankingField(WeaponsRankingSource obj, int order, byte serverId) {
         super(order, serverId);
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.wearEquipId = String.valueOf(obj.getWearEquipId());
         this.roleId = obj.getRoleId();
         this.roleName = obj.getRoleName();

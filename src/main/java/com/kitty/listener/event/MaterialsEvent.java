@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -12,7 +11,7 @@ public class MaterialsEvent extends BasePlayerEvent
     private byte type;
     private int num;
     
-    public MaterialsEvent(final EventType evtType, final Role role, final int serial, final int num, final byte type) {
+    public MaterialsEvent(EventType evtType, Role role, int serial, int num, byte type) {
         super(evtType, role);
         this.role = role;
         this.serial = serial;

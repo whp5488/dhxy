@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.model;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -32,11 +31,11 @@ public class MarketDealRecord extends BaseEntity<Long>
     @Column("info")
     private String info;
     
-    public MarketDealRecord(final Market m, final int amount, final long id, final int buyRoleId) {
+    public MarketDealRecord(Market m, int amount, long id, int buyRoleId) {
         this.setMarketId(String.valueOf(m.getId()));
         this.setBuyRoleId(buyRoleId);
-        this.setSaleRoleId(m.getRoleId());
-        this.setId(id);
+        this.setSaleRoleId((int)m.getRoleId());
+        this.setId(Long.valueOf(id));
         this.setAmount((short)amount);
         this.setSerial(m.getSerial());
         this.setPrice(m.getPrice());

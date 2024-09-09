@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model;
 
 import com.kitty.common.db.Db4CommonService;
@@ -73,21 +72,21 @@ public class PartyMember extends BaseEntity<Long> implements Comparable<PartyMem
     private int lastOnlineTime;
     private byte onLineStatus;
     
-    public PartyMember(final Role role, final int serial, final long joinTime, final byte job, final Long id) {
+    public PartyMember(Role role, int serial, long joinTime, byte job, Long id) {
         this.grade = 0;
         this.race = 1;
         this.weekBangBtl = 0;
         this.thisBangBtl = 0;
         this.weekEcType = 0;
-        this.partyTaskList = new ArrayList<PartyTask>();
+        this.partyTaskList = new ArrayList<>();
         this.contribute = 0L;
         this.team = "";
         this.titleChange = false;
         this.onLineStatus = 0;
         this.id = id;
         this.serial = serial;
-        this.roleSerial = role.getSerial();
-        this.roleId = role.getRoleId();
+        this.roleSerial = (int)role.getSerial();
+        this.roleId = (int)role.getRoleId();
         this.name = role.getName();
         this.job = job;
         this.joinTime = (int)(joinTime / 1000L);
@@ -95,11 +94,11 @@ public class PartyMember extends BaseEntity<Long> implements Comparable<PartyMem
         this.rei = role.getRelive().byteValue();
         this.level = role.getLevel().shortValue();
         this.grade = this.rei * 1000 + this.level;
-        this.race = role.getRace();
+        this.race = (int)role.getRace();
     }
     
     @Override
-    public int compareTo(final PartyMember o) {
+    public int compareTo(PartyMember o) {
         return 0;
     }
     
@@ -274,7 +273,7 @@ public class PartyMember extends BaseEntity<Long> implements Comparable<PartyMem
         this.weekBangBtl = 0;
         this.thisBangBtl = 0;
         this.weekEcType = 0;
-        this.partyTaskList = new ArrayList<PartyTask>();
+        this.partyTaskList = new ArrayList<>();
         this.contribute = 0L;
         this.team = "";
         this.titleChange = false;

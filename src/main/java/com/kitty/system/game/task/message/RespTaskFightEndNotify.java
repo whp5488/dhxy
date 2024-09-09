@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.task.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -44,7 +42,7 @@ public class RespTaskFightEndNotify extends Message
         if (!(o instanceof RespTaskFightEndNotify)) {
             return false;
         }
-        final RespTaskFightEndNotify other = (RespTaskFightEndNotify)o;
+        RespTaskFightEndNotify other = (RespTaskFightEndNotify)o;
         return other.canEqual(this) && this.getTaskId() == other.getTaskId() && this.getNpcId() == other.getNpcId() && this.getResult() == other.getResult();
     }
     
@@ -54,7 +52,7 @@ public class RespTaskFightEndNotify extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTaskId();
         result = result * 59 + this.getNpcId();
@@ -64,10 +62,9 @@ public class RespTaskFightEndNotify extends Message
     
     @Override
     public String toString() {
-        return "RespTaskFightEndNotify(taskId=" + this.getTaskId() + ", npcId=" + this.getNpcId() + ", result=" + this.getResult() + ")";
+        return "RespTaskFightEndNotify(taskId=" + this.getTaskId() + ", npcId=" + this.getNpcId() + ", result=" + (int)this.getResult() + ")";
     }
     
-    @ConstructorProperties({ "taskId", "npcId", "result" })
     public RespTaskFightEndNotify(final int taskId, final int npcId, final byte result) {
         this.taskId = taskId;
         this.npcId = npcId;

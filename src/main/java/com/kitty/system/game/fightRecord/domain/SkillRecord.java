@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightRecord.domain;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class SkillRecord implements Serializable
@@ -64,7 +62,6 @@ public class SkillRecord implements Serializable
     public SkillRecord() {
     }
     
-    @ConstructorProperties({ "o", "r", "p", "a", "t", "s" })
     public SkillRecord(final int o, final int r, final int p, final long a, final long t, final int s) {
         this.o = o;
         this.r = r;

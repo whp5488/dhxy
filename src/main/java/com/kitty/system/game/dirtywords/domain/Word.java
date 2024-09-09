@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.dirtywords.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -10,11 +9,14 @@ public class Word
     @Column
     private String word;
     
+    public Word() {
+    }
+    
     public String getWord() {
         return this.word;
     }
     
-    public void setWord(final String word) {
+    public void setWord(String word) {
         this.word = word;
     }
 }

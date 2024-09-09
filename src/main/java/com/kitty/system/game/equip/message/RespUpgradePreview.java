@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import com.kitty.system.common.enter.FiedValue;
@@ -76,7 +75,7 @@ public class RespUpgradePreview extends Message
         if (!(o instanceof RespUpgradePreview)) {
             return false;
         }
-        final RespUpgradePreview other = (RespUpgradePreview)o;
+        RespUpgradePreview other = (RespUpgradePreview)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -86,46 +85,22 @@ public class RespUpgradePreview extends Message
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0091: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0091;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getLevel() != other.getLevel()) {
             return false;
         }
-        final Object this$listOne = this.getListOne();
-        final Object other$listOne = other.getListOne();
-        Label_0141: {
-            if (this$listOne == null) {
-                if (other$listOne == null) {
-                    break Label_0141;
-                }
-            }
-            else if (this$listOne.equals(other$listOne)) {
-                break Label_0141;
-            }
+        Object this$listOne = this.getListOne();
+        Object other$listOne = other.getListOne();
+        if (!((this$listOne != null) ? this$listOne.equals(other$listOne) : (other$listOne == null))) {
             return false;
         }
-        final Object this$listTwo = this.getListTwo();
-        final Object other$listTwo = other.getListTwo();
-        if (this$listTwo == null) {
-            if (other$listTwo == null) {
-                return true;
-            }
-        }
-        else if (this$listTwo.equals(other$listTwo)) {
-            return true;
-        }
-        return false;
+        Object this$listTwo = this.getListTwo();
+        Object other$listTwo = other.getListTwo();
+        return (this$listTwo != null) ? this$listTwo.equals(other$listTwo) : (other$listTwo == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -134,16 +109,16 @@ public class RespUpgradePreview extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getLevel();
-        final Object $listOne = this.getListOne();
+        Object $listOne = this.getListOne();
         result = result * 59 + (($listOne == null) ? 43 : $listOne.hashCode());
-        final Object $listTwo = this.getListTwo();
+        Object $listTwo = this.getListTwo();
         result = result * 59 + (($listTwo == null) ? 43 : $listTwo.hashCode());
         return result;
     }

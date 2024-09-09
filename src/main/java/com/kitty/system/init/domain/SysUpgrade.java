@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -22,6 +21,9 @@ public class SysUpgrade implements Serializable
     @Comment("奖励")
     @Column("reward")
     private String reward;
+    
+    public SysUpgrade() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -63,60 +65,28 @@ public class SysUpgrade implements Serializable
         if (!(o instanceof SysUpgrade)) {
             return false;
         }
-        final SysUpgrade other = (SysUpgrade)o;
+        SysUpgrade other = (SysUpgrade)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$zs = this.getZs();
-        final Object other$zs = other.getZs();
-        Label_0102: {
-            if (this$zs == null) {
-                if (other$zs == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$zs.equals(other$zs)) {
-                break Label_0102;
-            }
+        Object this$zs = this.getZs();
+        Object other$zs = other.getZs();
+        if (!((this$zs != null) ? this$zs.equals(other$zs) : (other$zs == null))) {
             return false;
         }
-        final Object this$lv = this.getLv();
-        final Object other$lv = other.getLv();
-        Label_0139: {
-            if (this$lv == null) {
-                if (other$lv == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$lv.equals(other$lv)) {
-                break Label_0139;
-            }
+        Object this$lv = this.getLv();
+        Object other$lv = other.getLv();
+        if (!((this$lv != null) ? this$lv.equals(other$lv) : (other$lv == null))) {
             return false;
         }
-        final Object this$reward = this.getReward();
-        final Object other$reward = other.getReward();
-        if (this$reward == null) {
-            if (other$reward == null) {
-                return true;
-            }
-        }
-        else if (this$reward.equals(other$reward)) {
-            return true;
-        }
-        return false;
+        Object this$reward = this.getReward();
+        Object other$reward = other.getReward();
+        return (this$reward != null) ? this$reward.equals(other$reward) : (other$reward == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -125,15 +95,15 @@ public class SysUpgrade implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $zs = this.getZs();
+        Object $zs = this.getZs();
         result = result * 59 + (($zs == null) ? 43 : $zs.hashCode());
-        final Object $lv = this.getLv();
+        Object $lv = this.getLv();
         result = result * 59 + (($lv == null) ? 43 : $lv.hashCode());
-        final Object $reward = this.getReward();
+        Object $reward = this.getReward();
         result = result * 59 + (($reward == null) ? 43 : $reward.hashCode());
         return result;
     }

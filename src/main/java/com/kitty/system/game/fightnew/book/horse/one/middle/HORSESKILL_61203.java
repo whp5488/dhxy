@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.one.middle;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -14,29 +13,32 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_61203 extends HorseSkillProcessor
 {
+    public HORSESKILL_61203() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
         if (pet == null) {
             return null;
         }
-        final NutMap map = NutMap.NEW();
-        final int maxMana = pet.getMaxMana();
-        final double percent = HorseSkillUtils.getPercentMiddle(horseSkillParam);
+        NutMap map = NutMap.NEW();
+        int maxMana = (int)pet.getMaxMana();
+        double percent = HorseSkillUtils.getPercentMiddle(horseSkillParam);
         double percenta = (10.0 * percent + 0.1) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
-        final int value = BigDecimalUtil.decimalScaleInteger(0, maxMana * percenta);
+        int value = BigDecimalUtil.decimalScaleInteger(Integer.valueOf(0), Double.valueOf((double)maxMana * percenta));
         if (value != 0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK.getDist()), (Object)value);
+            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK.getDist()), Integer.valueOf(value));
             return map;
         }
         return null;

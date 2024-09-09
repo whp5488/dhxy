@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -18,7 +16,6 @@ public class RespDayInCe extends Message
         this.level = level;
     }
     
-    @ConstructorProperties({ "level" })
     public RespDayInCe(final short level) {
         this.level = level;
     }

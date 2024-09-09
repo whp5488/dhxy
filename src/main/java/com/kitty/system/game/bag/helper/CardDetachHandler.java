@@ -1,9 +1,7 @@
-
 package com.kitty.system.game.bag.helper;
 
 import com.kitty.system.game.card.domain.CardChange;
 import java.util.Map;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespNotifyMiscEx;
 import java.text.MessageFormat;
@@ -21,32 +19,35 @@ public class CardDetachHandler extends BagHandler
     private static final String[] NAMES;
     private static final String SUCCEED = "消耗{0}X{1}得到了{2}";
     
+    public CardDetachHandler() {
+    }
+    
     @Override
-    public String acceptOperate(final Role role, final Integer pos, final Integer num, final String param) {
-        final int serial = Integer.valueOf(param);
-        final SysDataCard card = CardDataPool.cardMap.get(serial);
+    public String acceptOperate(Role role, Integer pos, Integer num, String param) {
+        int serial = (int)Integer.valueOf(param);
+        SysDataCard card = (SysDataCard)CardDataPool.cardMap.get(Integer.valueOf(serial));
         if (card == null) {
             return null;
         }
         if (card.getRarity() == 2) {
             return "普通变身卡无法分解";
         }
-        final Map<Long, CardChange> cardMap = this.cardService.getCard(role);
-        final Integer sum = cardMap.values().stream().filter(e -> e.getSerial() == serial).collect(Collectors.summingInt(e -> DataGlobalFunc.getCardChangeNum(e)));
-        if (sum < num) {
+        Map<Long, CardChange> cardMap = this.cardService.getCard(role);
+        Integer sum = (Integer)cardMap.values().stream().filter(e -> e.getSerial() == serial).collect(Collectors.summingInt(e -> DataGlobalFunc.getCardChangeNum(e)));
+        if ((int)sum < (int)num) {
             return "数量不足";
         }
-        final int item = CardDetachHandler.SERIAL[card.getRarity()];
-        if (!this.bagService.checkPos(role, item, num)) {
+        int item = CardDetachHandler.SERIAL[card.getRarity()];
+        if (!this.bagService.checkPos(role, item, (int)num)) {
             return null;
         }
-        final boolean detach = this.cardService.cardDetach(role, card.getSerial(), num);
+        boolean detach = this.cardService.cardDetach(role, card.getSerial(), (int)num);
         if (!detach) {
             return "数量不足哦";
         }
-        this.bagService.addGoods(role, item, num, 0, true, true, "分解变身卡");
-        final String format = String.format("#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", card.getSerial(), card.getSerial(), card.getSerial(), card.getName());
-        final String msg = MessageFormat.format("消耗{0}X{1}得到了{2}", format, num, String.format("#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", item, item, item, CardDetachHandler.NAMES[card.getRarity()]));
+        this.bagService.addGoods(role, item, (int)num, 0, true, true, "分解变身卡");
+        String format = String.format("#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", Integer.valueOf(card.getSerial()), Integer.valueOf(card.getSerial()), Integer.valueOf(card.getSerial()), card.getName());
+        String msg = MessageFormat.format("消耗{0}X{1}得到了{2}", format, num, String.format("#<II%d>##<MP:0,M:1,MT:%d,CI:%d}>[%s]#", Integer.valueOf(item), Integer.valueOf(item), Integer.valueOf(item), CardDetachHandler.NAMES[card.getRarity()]));
         MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), msg, true));
         return null;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -32,7 +31,7 @@ public class Db4PetEquipService
     
     public Db4PetEquipService() {
         this.logger = LoggerFactory.getLogger(Db4PetEquipService.class);
-        this.queue = new BlockingUniqueQueue<PetEquip>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -42,11 +41,11 @@ public class Db4PetEquipService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-pet_equip-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-pet_equip-save-service").newThread(new Db4PetEquipService.Worker()).start();
         Db4PetEquipService.instance = this;
     }
     
-    public void add2Queue(final PetEquip entity) {
+    public void add2Queue(PetEquip entity) {
         this.queue.add(entity);
     }
     
@@ -54,13 +53,13 @@ public class Db4PetEquipService
         return this.queue.size();
     }
     
-    private void saveToDb(final PetEquip entity) {
+    private void saveToDb(PetEquip entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -70,14 +69,14 @@ public class Db4PetEquipService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Equip] 执行全部命令后关闭");
+        LoggerUtils.error("[db4Equip] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<PetEquip> it = this.queue.iterator();
+            Iterator<PetEquip> it = this.queue.iterator();
             while (it.hasNext()) {
-                final PetEquip obj = it.next();
+                PetEquip obj = (PetEquip)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -91,18 +90,20 @@ public class Db4PetEquipService
             while (Db4PetEquipService.this.run.get()) {
                 PetEquip entity = null;
                 try {
-                    entity = Db4PetEquipService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (PetEquip)Db4PetEquipService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     Db4PetEquipService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("宠物装备数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("宠物装备数据持久化队列长度：" + Db4PetEquipService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("宠物装备数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("宠物装备数据持久化队列长度：" + Db4PetEquipService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     Db4PetEquipService.this.logger.error("宠物装备存档异常", e);
                     e.printStackTrace();
                 }

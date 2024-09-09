@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -54,37 +53,21 @@ public class SysDataAcsryIdentify
         if (!(o instanceof SysDataAcsryIdentify)) {
             return false;
         }
-        final SysDataAcsryIdentify other = (SysDataAcsryIdentify)o;
+        SysDataAcsryIdentify other = (SysDataAcsryIdentify)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$suiteType = this.getSuiteType();
-        final Object other$suiteType = other.getSuiteType();
-        Label_0065: {
-            if (this$suiteType == null) {
-                if (other$suiteType == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$suiteType.equals(other$suiteType)) {
-                break Label_0065;
-            }
+        Object this$suiteType = this.getSuiteType();
+        Object other$suiteType = other.getSuiteType();
+        if (!((this$suiteType != null) ? this$suiteType.equals(other$suiteType) : (other$suiteType == null))) {
             return false;
         }
         if (this.getSilver() != other.getSilver()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -93,13 +76,13 @@ public class SysDataAcsryIdentify
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $suiteType = this.getSuiteType();
+        Object $suiteType = this.getSuiteType();
         result = result * 59 + (($suiteType == null) ? 43 : $suiteType.hashCode());
-        final long $silver = this.getSilver();
+        long $silver = this.getSilver();
         result = result * 59 + (int)($silver >>> 32 ^ $silver);
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

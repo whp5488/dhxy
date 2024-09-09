@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.safe.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqUnlock extends Message
 {
     private String password;
+    
+    public ReqUnlock() {
+    }
     
     public String getPassword() {
         return this.password;
@@ -25,21 +27,13 @@ public class ReqUnlock extends Message
         if (!(o instanceof ReqUnlock)) {
             return false;
         }
-        final ReqUnlock other = (ReqUnlock)o;
+        ReqUnlock other = (ReqUnlock)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$password = this.getPassword();
-        final Object other$password = other.getPassword();
-        if (this$password == null) {
-            if (other$password == null) {
-                return true;
-            }
-        }
-        else if (this$password.equals(other$password)) {
-            return true;
-        }
-        return false;
+        Object this$password = this.getPassword();
+        Object other$password = other.getPassword();
+        return (this$password != null) ? this$password.equals(other$password) : (other$password == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqUnlock extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $password = this.getPassword();
+        Object $password = this.getPassword();
         result = result * 59 + (($password == null) ? 43 : $password.hashCode());
         return result;
     }

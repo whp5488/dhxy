@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.other;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -19,46 +18,49 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31509 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31509() {
+    }
+    
     @Override
-    public NutMap additionSuit(final Role role, final Pet pet, final Object... args) {
-        final byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
+    public NutMap additionSuit(Role role, Pet pet, Object... args) {
+        byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
         if (suitLevParam > 0) {
-            final double percent = this.getPercent(suitLevParam);
-            final NutMap map = NutMap.NEW();
-            map.put(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()), (Object)percent);
+            double percent = this.getPercent((short)suitLevParam);
+            NutMap map = NutMap.NEW();
+            map.put(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()), Double.valueOf(percent));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap additionAwaken(final Role role, final Pet pet, final Object... args) {
-        final short awaken = pet.getAwaken();
+    public NutMap additionAwaken(Role role, Pet pet, Object... args) {
+        short awaken = pet.getAwaken();
         if (awaken > 0) {
-            final double percent = this.getPercent(awaken);
-            final NutMap map = NutMap.NEW();
-            map.put(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()), (Object)percent);
+            double percent = this.getPercent(awaken);
+            NutMap map = NutMap.NEW();
+            map.put(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()), Double.valueOf(percent));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap enteringSide(final Fight fight, final FightObject effector, final Object... args) {
-        final NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 100.0, 20.0);
+    public NutMap enteringSide(Fight fight, FightObject effector, Object... args) {
+        NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 100.0, 20.0);
         if (map != null) {
-            final double percent = map.getDouble("percent");
+            double percent = map.getDouble("percent");
             if (percent > 0.0 && SkillAi.canAffectOnPro(percent)) {
-                final Pet pet = effector.getPet();
+                Pet pet = effector.getPet();
                 if (pet != null) {
-                    final int dict = this.getDict(pet);
-                    final NutMap addMap = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 60.0, 20.0);
-                    final double add = addMap.getDouble("percent");
+                    int dict = this.getDict(pet);
+                    NutMap addMap = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 60.0, 20.0);
+                    double add = addMap.getDouble("percent");
                     if (add > 0.0) {
-                        ImbueUtil.addRound(effector.getImbueMap(), dict, 3, add * 100.0);
+                        ImbueUtil.addRound(effector.getImbueMap(), Integer.valueOf(dict), 3, add * 100.0);
                         ActionParamUtils.actionForTargetNoth(fight, effector, effector, 7, 31509, 2);
-                        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 31509);
-                        skillRecord.setT(effector.getId());
+                        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 31509);
+                        skillRecord.setT((long)(int)effector.getId());
                     }
                 }
             }
@@ -66,24 +68,24 @@ public class AWAKENSKILL_31509 extends AwakenSkillProcessor
         return null;
     }
     
-    private int getDict(final Pet pet) {
+    private int getDict(Pet pet) {
         int dict = 0;
-        if (dict < pet.getMj()) {
+        if (dict < (int)pet.getMj()) {
             dict = PRO_DICT_TYPE.RISE_SPEED.getDist();
         }
-        if (dict < pet.getLl()) {
+        if (dict < (int)pet.getLl()) {
             dict = PRO_DICT_TYPE.RISE_ATTACK.getDist();
         }
-        if (dict < pet.getGg()) {
+        if (dict < (int)pet.getGg()) {
             dict = PRO_DICT_TYPE.RISE_DEF.getDist();
         }
-        if (dict < pet.getLx()) {
+        if (dict < (int)pet.getLx()) {
             dict = PRO_DICT_TYPE.RISE_DEF.getDist();
         }
         return dict;
     }
     
-    private double getPercent(final short lev) {
-        return 60 * lev / 20.0;
+    private double getPercent(short lev) {
+        return (double)(60 * lev) / 20.0;
     }
 }

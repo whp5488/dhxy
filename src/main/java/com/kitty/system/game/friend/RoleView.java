@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend;
 
 import com.kitty.common.utils.spring.SpringUtils;
@@ -10,18 +9,19 @@ public class RoleView
     private Role role;
     private PlayerProfile playerProfile;
     
-    public RoleView(final long id) {
+    public RoleView(long id) {
         this.role = SpringUtils.getRoleService().getPlayer(id);
         if (this.role == null) {
             this.playerProfile = SpringUtils.getPlayerService().queryPlayerProfile(id);
         }
     }
     
-    public RoleView(final Role role) {
+    public RoleView(Role role) {
         if (role == null) {
             throw new IllegalArgumentException("RoleView传入参数role不能为null");
         }
         this.role = role;
+        return;
     }
     
     public boolean isOnline() {
@@ -29,11 +29,11 @@ public class RoleView
     }
     
     public long getId() {
-        return (this.role != null) ? this.role.getId() : this.playerProfile.getId();
+        return (long)((this.role != null) ? this.role.getId() : this.playerProfile.getId());
     }
     
     public int getRoleId() {
-        return (this.role != null) ? this.role.getRoleId() : this.playerProfile.getRoleId();
+        return (int)((this.role != null) ? this.role.getRoleId() : this.playerProfile.getRoleId());
     }
     
     public String getName() {
@@ -45,11 +45,11 @@ public class RoleView
     }
     
     public int getLevel() {
-        return (this.role != null) ? this.role.getLevel() : this.playerProfile.getLevel();
+        return (this.role != null) ? ((int)this.role.getLevel()) : this.playerProfile.getLevel();
     }
     
     public int getFaction() {
-        return (this.role != null) ? this.role.getFaction() : this.playerProfile.getFaction();
+        return (this.role != null) ? ((int)this.role.getFaction()) : this.playerProfile.getFaction();
     }
     
     public int getRace() {

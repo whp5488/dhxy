@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Comment;
@@ -53,6 +52,9 @@ public class SysDataStall implements Serializable
     @Comment("是否校验张跌值：0.否 1.是")
     @Column("is_check")
     private byte isCheck;
+    
+    public SysDataStall() {
+    }
     
     public Integer getSerial() {
         return this.serial;
@@ -182,89 +184,41 @@ public class SysDataStall implements Serializable
         if (!(o instanceof SysDataStall)) {
             return false;
         }
-        final SysDataStall other = (SysDataStall)o;
+        SysDataStall other = (SysDataStall)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0065: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0065;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$stallMenuSerial = this.getStallMenuSerial();
-        final Object other$stallMenuSerial = other.getStallMenuSerial();
-        Label_0102: {
-            if (this$stallMenuSerial == null) {
-                if (other$stallMenuSerial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$stallMenuSerial.equals(other$stallMenuSerial)) {
-                break Label_0102;
-            }
+        Object this$stallMenuSerial = this.getStallMenuSerial();
+        Object other$stallMenuSerial = other.getStallMenuSerial();
+        if (!((this$stallMenuSerial != null) ? this$stallMenuSerial.equals(other$stallMenuSerial) : (other$stallMenuSerial == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0139: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0139;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0176: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0176;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getCategory() != other.getCategory()) {
             return false;
         }
-        final Object this$categoryName = this.getCategoryName();
-        final Object other$categoryName = other.getCategoryName();
-        Label_0226: {
-            if (this$categoryName == null) {
-                if (other$categoryName == null) {
-                    break Label_0226;
-                }
-            }
-            else if (this$categoryName.equals(other$categoryName)) {
-                break Label_0226;
-            }
+        Object this$categoryName = this.getCategoryName();
+        Object other$categoryName = other.getCategoryName();
+        if (!((this$categoryName != null) ? this$categoryName.equals(other$categoryName) : (other$categoryName == null))) {
             return false;
         }
-        final Object this$basicsPrice = this.getBasicsPrice();
-        final Object other$basicsPrice = other.getBasicsPrice();
-        Label_0263: {
-            if (this$basicsPrice == null) {
-                if (other$basicsPrice == null) {
-                    break Label_0263;
-                }
-            }
-            else if (this$basicsPrice.equals(other$basicsPrice)) {
-                break Label_0263;
-            }
+        Object this$basicsPrice = this.getBasicsPrice();
+        Object other$basicsPrice = other.getBasicsPrice();
+        if (!((this$basicsPrice != null) ? this$basicsPrice.equals(other$basicsPrice) : (other$basicsPrice == null))) {
             return false;
         }
         if (Double.compare(this.getRise(), other.getRise()) != 0) {
@@ -279,43 +233,19 @@ public class SysDataStall implements Serializable
         if (this.getIsItem() != other.getIsItem()) {
             return false;
         }
-        final Object this$expireTime = this.getExpireTime();
-        final Object other$expireTime = other.getExpireTime();
-        Label_0361: {
-            if (this$expireTime == null) {
-                if (other$expireTime == null) {
-                    break Label_0361;
-                }
-            }
-            else if (this$expireTime.equals(other$expireTime)) {
-                break Label_0361;
-            }
+        Object this$expireTime = this.getExpireTime();
+        Object other$expireTime = other.getExpireTime();
+        if (!((this$expireTime != null) ? this$expireTime.equals(other$expireTime) : (other$expireTime == null))) {
             return false;
         }
-        final Object this$publicityPeriod = this.getPublicityPeriod();
-        final Object other$publicityPeriod = other.getPublicityPeriod();
-        Label_0398: {
-            if (this$publicityPeriod == null) {
-                if (other$publicityPeriod == null) {
-                    break Label_0398;
-                }
-            }
-            else if (this$publicityPeriod.equals(other$publicityPeriod)) {
-                break Label_0398;
-            }
+        Object this$publicityPeriod = this.getPublicityPeriod();
+        Object other$publicityPeriod = other.getPublicityPeriod();
+        if (!((this$publicityPeriod != null) ? this$publicityPeriod.equals(other$publicityPeriod) : (other$publicityPeriod == null))) {
             return false;
         }
-        final Object this$auditTime = this.getAuditTime();
-        final Object other$auditTime = other.getAuditTime();
-        if (this$auditTime == null) {
-            if (other$auditTime == null) {
-                return this.getIsCheck() == other.getIsCheck();
-            }
-        }
-        else if (this$auditTime.equals(other$auditTime)) {
-            return this.getIsCheck() == other.getIsCheck();
-        }
-        return false;
+        Object this$auditTime = this.getAuditTime();
+        Object other$auditTime = other.getAuditTime();
+        return ((this$auditTime != null) ? this$auditTime.equals(other$auditTime) : (other$auditTime == null)) && this.getIsCheck() == other.getIsCheck();
     }
     
     protected boolean canEqual(final Object other) {
@@ -324,33 +254,33 @@ public class SysDataStall implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $stallMenuSerial = this.getStallMenuSerial();
+        Object $stallMenuSerial = this.getStallMenuSerial();
         result = result * 59 + (($stallMenuSerial == null) ? 43 : $stallMenuSerial.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getCategory();
-        final Object $categoryName = this.getCategoryName();
+        Object $categoryName = this.getCategoryName();
         result = result * 59 + (($categoryName == null) ? 43 : $categoryName.hashCode());
-        final Object $basicsPrice = this.getBasicsPrice();
+        Object $basicsPrice = this.getBasicsPrice();
         result = result * 59 + (($basicsPrice == null) ? 43 : $basicsPrice.hashCode());
-        final long $rise = Double.doubleToLongBits(this.getRise());
+        long $rise = Double.doubleToLongBits(this.getRise());
         result = result * 59 + (int)($rise >>> 32 ^ $rise);
-        final long $fall = Double.doubleToLongBits(this.getFall());
+        long $fall = Double.doubleToLongBits(this.getFall());
         result = result * 59 + (int)($fall >>> 32 ^ $fall);
-        final long $revenueRatio = Double.doubleToLongBits(this.getRevenueRatio());
+        long $revenueRatio = Double.doubleToLongBits(this.getRevenueRatio());
         result = result * 59 + (int)($revenueRatio >>> 32 ^ $revenueRatio);
         result = result * 59 + this.getIsItem();
-        final Object $expireTime = this.getExpireTime();
+        Object $expireTime = this.getExpireTime();
         result = result * 59 + (($expireTime == null) ? 43 : $expireTime.hashCode());
-        final Object $publicityPeriod = this.getPublicityPeriod();
+        Object $publicityPeriod = this.getPublicityPeriod();
         result = result * 59 + (($publicityPeriod == null) ? 43 : $publicityPeriod.hashCode());
-        final Object $auditTime = this.getAuditTime();
+        Object $auditTime = this.getAuditTime();
         result = result * 59 + (($auditTime == null) ? 43 : $auditTime.hashCode());
         result = result * 59 + this.getIsCheck();
         return result;
@@ -358,6 +288,6 @@ public class SysDataStall implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataStall(serial=" + this.getSerial() + ", stallMenuSerial=" + this.getStallMenuSerial() + ", type=" + this.getType() + ", name=" + this.getName() + ", category=" + this.getCategory() + ", categoryName=" + this.getCategoryName() + ", basicsPrice=" + this.getBasicsPrice() + ", rise=" + this.getRise() + ", fall=" + this.getFall() + ", revenueRatio=" + this.getRevenueRatio() + ", isItem=" + this.getIsItem() + ", expireTime=" + this.getExpireTime() + ", publicityPeriod=" + this.getPublicityPeriod() + ", auditTime=" + this.getAuditTime() + ", isCheck=" + this.getIsCheck() + ")";
+        return "SysDataStall(serial=" + this.getSerial() + ", stallMenuSerial=" + this.getStallMenuSerial() + ", type=" + this.getType() + ", name=" + this.getName() + ", category=" + this.getCategory() + ", categoryName=" + this.getCategoryName() + ", basicsPrice=" + this.getBasicsPrice() + ", rise=" + this.getRise() + ", fall=" + this.getFall() + ", revenueRatio=" + this.getRevenueRatio() + ", isItem=" + (int)this.getIsItem() + ", expireTime=" + this.getExpireTime() + ", publicityPeriod=" + this.getPublicityPeriod() + ", auditTime=" + this.getAuditTime() + ", isCheck=" + (int)this.getIsCheck() + ")";
     }
 }

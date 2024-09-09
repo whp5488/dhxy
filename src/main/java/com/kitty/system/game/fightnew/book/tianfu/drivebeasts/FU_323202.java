@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.drivebeasts;
 
 import com.kitty.system.game.fightnew.FightObject;
@@ -11,22 +10,25 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_323202 extends TianFuProcessor
 {
+    public FU_323202() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
-        final NutMap map = NutMap.NEW();
-        final double percenta = 2.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
+        NutMap map = NutMap.NEW();
+        double percenta = 2.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
         if (percenta != 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.TM_KB_RATIO.getDist()), (Object)percenta);
-            map.setv(String.valueOf(PRO_DICT_TYPE.FG_KB_RATIO.getDist()), (Object)percenta);
-            map.setv(String.valueOf(PRO_DICT_TYPE.QM_KB_RATIO.getDist()), (Object)percenta);
-            map.setv(String.valueOf(PRO_DICT_TYPE.XL_KB_RATIO.getDist()), (Object)percenta);
+            map.setv(String.valueOf(PRO_DICT_TYPE.TM_KB_RATIO.getDist()), Double.valueOf(percenta));
+            map.setv(String.valueOf(PRO_DICT_TYPE.FG_KB_RATIO.getDist()), Double.valueOf(percenta));
+            map.setv(String.valueOf(PRO_DICT_TYPE.QM_KB_RATIO.getDist()), Double.valueOf(percenta));
+            map.setv(String.valueOf(PRO_DICT_TYPE.XL_KB_RATIO.getDist()), Double.valueOf(percenta));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
 }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.model;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.fightnew.messages.vo.SkillCool;
 import java.util.List;
 
@@ -26,7 +24,6 @@ public class SkillCoolParam
         return this.skillCools;
     }
     
-    @ConstructorProperties({ "roleId", "skillCools" })
     public SkillCoolParam(final int roleId, final List<SkillCool> skillCools) {
         this.roleId = roleId;
         this.skillCools = skillCools;

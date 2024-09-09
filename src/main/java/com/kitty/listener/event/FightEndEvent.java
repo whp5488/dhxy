@@ -1,10 +1,8 @@
-
 package com.kitty.listener.event;
 
 import java.util.Iterator;
 import java.util.ArrayList;
 import com.kitty.system.game.fightnew.FightObject;
-import java.util.Collection;
 import com.kitty.system.game.fightnew.bean.Fight;
 import com.kitty.listener.EventType;
 import java.util.List;
@@ -29,11 +27,11 @@ public class FightEndEvent extends BasePlayerEvent
     private List<Role> rolesA;
     private List<Role> rolesB;
     
-    public FightEndEvent(final EventType evtType, final Role role) {
+    public FightEndEvent(EventType evtType, Role role) {
         super(evtType, role);
     }
     
-    public FightEndEvent(final Fight fight, final EventType evtType, final Role role, final int fightId, final byte status, final int fightType, final NutMap reward, final int taskId, final int npcId, final int currPetId) {
+    public FightEndEvent(Fight fight, EventType evtType, Role role, int fightId, byte status, int fightType, NutMap reward, int taskId, int npcId, int currPetId) {
         super(evtType, role);
         this.role = role;
         this.fightId = fightId;
@@ -47,7 +45,7 @@ public class FightEndEvent extends BasePlayerEvent
         this.rolesB = this.getRolesNew(fight.getListB());
     }
     
-    public FightEndEvent(final Fight fight, final EventType evtType, final Role role, final byte status, final int currPetId, final List<Role> rolesA, final List<Role> rolesB) {
+    public FightEndEvent(Fight fight, EventType evtType, Role role, byte status, int currPetId, List<Role> rolesA, List<Role> rolesB) {
         super(evtType, role);
         this.role = role;
         this.fightId = fight.getId();
@@ -67,11 +65,14 @@ public class FightEndEvent extends BasePlayerEvent
         }
     }
     
-    private List<Role> getRolesNew(final List<FightObject> list) {
-        final List<Role> roles = new ArrayList<Role>();
-        for (final FightObject fightObject : list) {
+    private List<Role> getRolesNew(List<FightObject> list) {
+        List<Role> roles = new ArrayList<>();
+        for (FightObject fightObject : list) {
             if (fightObject.isPlayer()) {
                 roles.add(fightObject.getRole());
+            }
+            else {
+                continue;
             }
         }
         return roles;

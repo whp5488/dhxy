@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.enums.war.warskill.skilldef.SKILLATTR;
@@ -14,93 +13,97 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_76302 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_76302() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
-        final int status = this.getStatus(skill);
+        int status = this.getStatus(skill);
         if ((1020 == status || 1021 == status) && effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            if (playerFightObject.getAcsrySkillList().contains(76302)) {
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 76302);
-                if (playerFightObject.getAcsrySkillList().contains(76303)) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(76302))) {
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 76302);
+                if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(76303))) {
                     return;
                 }
-                target.getStatusMap().setv(status + "perpetrator", (Object)("76302_" + effecter.getId()));
-                skillRecord.setT(target.getId());
+                target.getStatusMap().setv(status + "perpetrator", "76302_" + effecter.getId());
+                skillRecord.setT((long)(int)target.getId());
             }
         }
+        return;
     }
     
     @Override
-    public void statusOver(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void statusOver(Fight fight, FightObject fightObject, Object... args) {
         Integer status = null;
         try {
             status = (Integer)args[0];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        if (1021 == status || 1020 == status) {
-            final String perpetrator = fightObject.getStatusMap().getString(status + "perpetrator");
+        if (1021 == (int)status || 1020 == (int)status) {
+            String perpetrator = fightObject.getStatusMap().getString(status + "perpetrator");
             if (perpetrator != null && perpetrator.contains(String.valueOf(76302))) {
                 fightObject.getStatusMap().unset(status + "perpetrator");
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 76302);
-                skillRecord.setT(fightObject.getId());
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 76302);
+                skillRecord.setT((long)(int)fightObject.getId());
             }
         }
     }
     
     @Override
-    public NutMap reduceMp(final Fight fight, final FightObject fightObject, final Object... args) {
+    public NutMap reduceMp(Fight fight, FightObject fightObject, Object... args) {
         int mana = 0;
         try {
             mana = (int)args[0];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return null;
         }
         if (mana <= 0) {
             return null;
         }
-        final int status = this.getStatusExcute(fightObject);
+        int status = this.getStatusExcute(fightObject);
         if (status != 0) {
-            final String perpetrator = fightObject.getStatusMap().getString(status + "perpetrator");
+            String perpetrator = fightObject.getStatusMap().getString(status + "perpetrator");
             if (perpetrator != null && perpetrator.contains(String.valueOf(76302))) {
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 76302);
-                skillRecord.setT(fightObject.getId());
-                final double percent = 0.4;
-                final int changeMp = (int)(mana * percent);
-                return NutMap.NEW().setv("changeMana", (Object)changeMp);
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 76302);
+                skillRecord.setT((long)(int)fightObject.getId());
+                double percent = 0.4;
+                int changeMp = (int)((double)mana * percent);
+                return NutMap.NEW().setv("changeMana", Integer.valueOf(changeMp));
             }
         }
         return null;
     }
     
-    private int getStatus(final RoleSkill skill) {
-        if (SKILLATTR.SKILLATTR_POJIA.getValue() == skill.getType()) {
+    private int getStatus(RoleSkill skill) {
+        if (SKILLATTR.SKILLATTR_POJIA.getValue() == (int)skill.getType()) {
             return 1021;
         }
-        if (SKILLATTR.SKILLATTR_ZHENJI.getValue() == skill.getType()) {
+        if (SKILLATTR.SKILLATTR_ZHENJI.getValue() == (int)skill.getType()) {
             return 1020;
         }
         return 0;
     }
     
-    private int getStatusExcute(final FightObject fightObject) {
+    private int getStatusExcute(FightObject fightObject) {
         if (fightObject.getStatusValue(1020) > 0) {
             return 1020;
         }

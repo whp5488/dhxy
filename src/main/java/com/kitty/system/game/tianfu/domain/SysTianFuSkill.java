@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.domain;
 
-import java.beans.ConstructorProperties;
 import org.nutz.dao.entity.annotation.Default;
 import java.util.List;
 import org.nutz.dao.entity.annotation.Column;
@@ -261,7 +259,6 @@ public class SysTianFuSkill implements Serializable
         this.isEffects = isEffects;
     }
     
-    @ConstructorProperties({ "id", "serial", "category", "categoryDesc", "name", "layer", "race", "skill", "tag", "target", "icon", "skillSeqId", "effs", "targetType", "ceSerial", "pointWeight", "rarity", "rarityJudge", "toIdentifyCeSerial", "baoDiWeight", "opportunity", "isEffects" })
     public SysTianFuSkill(final int id, final int serial, final byte category, final String categoryDesc, final String name, final byte layer, final List<Byte> race, final List<Integer> skill, final String tag, final byte target, final int icon, final int skillSeqId, final List<Integer> effs, final List<Integer> targetType, final int ceSerial, final List<Short> pointWeight, final byte rarity, final List<Byte> rarityJudge, final int toIdentifyCeSerial, final short baoDiWeight, final String opportunity, final boolean isEffects) {
         this.id = id;
         this.serial = serial;

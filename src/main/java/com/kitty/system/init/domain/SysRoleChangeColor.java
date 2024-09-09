@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -22,6 +21,9 @@ public class SysRoleChangeColor implements Serializable
     @Comment("部位-2")
     @Column("color_two")
     private String colorTwo;
+    
+    public SysRoleChangeColor() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -63,60 +65,28 @@ public class SysRoleChangeColor implements Serializable
         if (!(o instanceof SysRoleChangeColor)) {
             return false;
         }
-        final SysRoleChangeColor other = (SysRoleChangeColor)o;
+        SysRoleChangeColor other = (SysRoleChangeColor)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$colorOne = this.getColorOne();
-        final Object other$colorOne = other.getColorOne();
-        Label_0139: {
-            if (this$colorOne == null) {
-                if (other$colorOne == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$colorOne.equals(other$colorOne)) {
-                break Label_0139;
-            }
+        Object this$colorOne = this.getColorOne();
+        Object other$colorOne = other.getColorOne();
+        if (!((this$colorOne != null) ? this$colorOne.equals(other$colorOne) : (other$colorOne == null))) {
             return false;
         }
-        final Object this$colorTwo = this.getColorTwo();
-        final Object other$colorTwo = other.getColorTwo();
-        if (this$colorTwo == null) {
-            if (other$colorTwo == null) {
-                return true;
-            }
-        }
-        else if (this$colorTwo.equals(other$colorTwo)) {
-            return true;
-        }
-        return false;
+        Object this$colorTwo = this.getColorTwo();
+        Object other$colorTwo = other.getColorTwo();
+        return (this$colorTwo != null) ? this$colorTwo.equals(other$colorTwo) : (other$colorTwo == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -125,15 +95,15 @@ public class SysRoleChangeColor implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $colorOne = this.getColorOne();
+        Object $colorOne = this.getColorOne();
         result = result * 59 + (($colorOne == null) ? 43 : $colorOne.hashCode());
-        final Object $colorTwo = this.getColorTwo();
+        Object $colorTwo = this.getColorTwo();
         result = result * 59 + (($colorTwo == null) ? 43 : $colorTwo.hashCode());
         return result;
     }

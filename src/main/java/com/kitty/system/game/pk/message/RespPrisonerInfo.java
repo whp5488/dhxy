@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.message;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class RespPrisonerInfo extends Message
     private List<PrisonerInfo> list;
     
     public RespPrisonerInfo() {
-        this.list = new ArrayList<PrisonerInfo>();
+        this.list = new ArrayList<>();
     }
     
     public List<PrisonerInfo> getList() {

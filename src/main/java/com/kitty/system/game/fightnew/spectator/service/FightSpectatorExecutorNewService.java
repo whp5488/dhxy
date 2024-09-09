@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.spectator.service;
 
 import com.kitty.logs.LoggerUtils;
@@ -15,27 +14,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class FightSpectatorExecutorNewService
 {
-    private final List<TaskWorker> workerPool;
+    private final List<FightSpectatorExecutorNewService.TaskWorker> workerPool;
     private volatile boolean run;
     
     public FightSpectatorExecutorNewService() {
-        this.workerPool = new ArrayList<TaskWorker>();
+        this.workerPool = new ArrayList<>();
         this.run = true;
     }
     
     @PostConstruct
     private void init() {
         for (int size = 2, i = 1; i <= size; ++i) {
-            final TaskWorker worker = new TaskWorker(i);
+            FightSpectatorExecutorNewService.TaskWorker worker = new FightSpectatorExecutorNewService.TaskWorker(i);
             this.workerPool.add(worker);
             new NamedThreadFactory("game-fightnew-spectator_" + i).newThread(worker).start();
         }
     }
     
-    public void addFightTask(final int fightId, final FightingTask task) {
-        final int size = this.workerPool.size();
-        final int index = fightId % size;
-        this.workerPool.get(index).addTask(task);
+    public void addFightTask(int fightId, FightingTask task) {
+        int size = this.workerPool.size();
+        int index = fightId % size;
+        ((FightSpectatorExecutorNewService.TaskWorker)this.workerPool.get(index)).addTask(task);
     }
     
     @PreDestroy
@@ -48,12 +47,12 @@ public class FightSpectatorExecutorNewService
         private int id;
         private BlockingQueue<FightingTask> taskQueue;
         
-        TaskWorker(final int index) {
-            this.taskQueue = new LinkedBlockingQueue<FightingTask>();
+        TaskWorker(int index) {
+            this.taskQueue = new LinkedBlockingQueue();
             this.id = index;
         }
         
-        public void addTask(final FightingTask task) {
+        public void addTask(FightingTask task) {
             this.taskQueue.add(task);
         }
         
@@ -61,10 +60,10 @@ public class FightSpectatorExecutorNewService
         public void run() {
             while (FightSpectatorExecutorNewService.this.run) {
                 try {
-                    final FightingTask task = this.taskQueue.take();
+                    FightingTask task = (FightingTask)this.taskQueue.take();
                     task.run();
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("task Worker" + this.id, e);
                 }
             }

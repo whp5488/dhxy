@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -11,7 +10,7 @@ public class FetchEvent extends BasePlayerEvent
     private Role role;
     private byte fetchType;
     
-    public FetchEvent(final EventType evtType, final Role role, final byte fetchType) {
+    public FetchEvent(EventType evtType, Role role, byte fetchType) {
         super(evtType, role);
         this.role = role;
         this.fetchType = fetchType;

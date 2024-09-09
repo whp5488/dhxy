@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.factory;
 
 import com.kitty.system.game.fightnew.bean.Fight;
@@ -10,17 +9,20 @@ import com.kitty.system.game.fightnew.bean.BossFight;
 
 public class BossFightFactory extends FightFactory
 {
+    public BossFightFactory() {
+    }
+    
     @Override
-    public BossFight create(final int mapId, final Object... params) {
-        final Role role = (Role)params[0];
-        final Team team = (Team)params[1];
-        final BossFightParam bossFightParam = (BossFightParam)params[2];
-        final BossFight battleground = new BossFight(bossFightParam.getFightType(), mapId, role, team, bossFightParam);
+    public BossFight create(int mapId, Object... params) {
+        Role role = (Role)params[0];
+        Team team = (Team)params[1];
+        BossFightParam bossFightParam = (BossFightParam)params[2];
+        BossFight battleground = new BossFight(bossFightParam.getFightType(), mapId, role, team, bossFightParam);
         battleground.setMapId(mapId);
         battleground.setNpcId(bossFightParam.getNpcId());
         battleground.setTaskId(bossFightParam.getTaskId());
         battleground.setLeaderId(team.getLeaderRoleId());
-        FightExecutorNewService.FIGHTS.put(battleground.getId(), battleground);
+        FightExecutorNewService.FIGHTS.put(Integer.valueOf(battleground.getId()), battleground);
         return battleground;
     }
 }

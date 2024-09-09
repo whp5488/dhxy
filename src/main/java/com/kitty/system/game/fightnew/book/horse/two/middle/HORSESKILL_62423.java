@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.two.middle;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -13,40 +12,43 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_62423 extends HorseSkillProcessor
 {
+    public HORSESKILL_62423() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         double percentc = (7.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) / 100.0;
         percentc = HorseSkillUtils.getMathRoundPercent(percentc);
         if (percentc != 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), (Object)percentc);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), (Object)percentc);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), Double.valueOf(percentc));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), Double.valueOf(percentc));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
         double percenta = (15.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) / 100.0;
         double percentb = (5.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         percentb = HorseSkillUtils.getMathRoundPercent(percentb);
-        final NutMap map = NutMap.NEW();
+        NutMap map = NutMap.NEW();
         if (percenta != 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.MP_PCT.getDist()), (Object)percenta);
+            map.setv(String.valueOf(PRO_DICT_TYPE.MP_PCT.getDist()), Double.valueOf(percenta));
         }
         if (percentb != 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.HP_PCT.getDist()), (Object)percenta);
-            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), (Object)percenta);
+            map.setv(String.valueOf(PRO_DICT_TYPE.HP_PCT.getDist()), Double.valueOf(percenta));
+            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), Double.valueOf(percenta));
         }
         if (map.size() > 0) {
             return map;

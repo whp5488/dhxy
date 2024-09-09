@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqPetEquip extends Message
 {
     private String id;
     private String eId;
+    
+    public ReqPetEquip() {
+    }
     
     public String getId() {
         return this.id;
@@ -34,34 +36,18 @@ public class ReqPetEquip extends Message
         if (!(o instanceof ReqPetEquip)) {
             return false;
         }
-        final ReqPetEquip other = (ReqPetEquip)o;
+        ReqPetEquip other = (ReqPetEquip)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$eId = this.getEId();
-        final Object other$eId = other.getEId();
-        if (this$eId == null) {
-            if (other$eId == null) {
-                return true;
-            }
-        }
-        else if (this$eId.equals(other$eId)) {
-            return true;
-        }
-        return false;
+        Object this$eId = this.getEId();
+        Object other$eId = other.getEId();
+        return (this$eId != null) ? this$eId.equals(other$eId) : (other$eId == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -70,11 +56,11 @@ public class ReqPetEquip extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $eId = this.getEId();
+        Object $eId = this.getEId();
         result = result * 59 + (($eId == null) ? 43 : $eId.hashCode());
         return result;
     }

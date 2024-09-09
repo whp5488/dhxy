@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.serializer.ipml;
 
 import com.kitty.system.game.player.bean.TaskProgress;
@@ -10,20 +9,23 @@ import com.kitty.system.game.player.serializer.IPlayerPropSerializer;
 
 public class PlayerTaskProgressSerializer implements IPlayerPropSerializer
 {
+    public PlayerTaskProgressSerializer() {
+    }
+    
     @Override
-    public void serialize(final Role player) {
+    public void serialize(Role player) {
         if (player.getTaskProgress() != null) {
-            final String json = JsonUtils.object2String(player.getTaskProgress());
+            String json = JsonUtils.object2String(player.getTaskProgress());
             player.setTaskProgressJson(ZipUtil.compress(json));
         }
     }
     
     @Override
-    public void deserialize(final Role player) {
-        final String json = player.getTaskProgressJson();
-        if (StringUtils.isNotEmpty((CharSequence)json)) {
-            final String content = ZipUtil.uncompress(json);
-            player.setTaskProgress(JsonUtils.string2Object(content, TaskProgress.class));
+    public void deserialize(Role player) {
+        String json = player.getTaskProgressJson();
+        if (StringUtils.isNotEmpty(json)) {
+            String content = ZipUtil.uncompress(json);
+            player.setTaskProgress((TaskProgress)JsonUtils.string2Object(content, TaskProgress.class));
         }
     }
 }

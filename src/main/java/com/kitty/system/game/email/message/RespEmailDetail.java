@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.message;
 
 import com.kitty.system.game.email.domain.EmailSystemAccessory;
@@ -14,6 +13,9 @@ public class RespEmailDetail extends Message
     private String senderName;
     private String content;
     List<EmailSystemAccessory> accessorys;
+    
+    public RespEmailDetail() {
+    }
     
     public String getEmailId() {
         return this.emailId;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ public class RespQlkRankingList extends Message
     private short qlkType;
     List<QlkRankingField> qlkRankingFields;
     
-    public RespQlkRankingList(final short qlkType, final List<QlkRankingField> qlkRankingFields) {
-        this.qlkRankingFields = new ArrayList<QlkRankingField>();
+    public RespQlkRankingList(short qlkType, List<QlkRankingField> qlkRankingFields) {
+        this.qlkRankingFields = new ArrayList<>();
         this.qlkType = qlkType;
         this.qlkRankingFields = qlkRankingFields;
     }
@@ -43,24 +42,16 @@ public class RespQlkRankingList extends Message
         if (!(o instanceof RespQlkRankingList)) {
             return false;
         }
-        final RespQlkRankingList other = (RespQlkRankingList)o;
+        RespQlkRankingList other = (RespQlkRankingList)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getQlkType() != other.getQlkType()) {
             return false;
         }
-        final Object this$qlkRankingFields = this.getQlkRankingFields();
-        final Object other$qlkRankingFields = other.getQlkRankingFields();
-        if (this$qlkRankingFields == null) {
-            if (other$qlkRankingFields == null) {
-                return true;
-            }
-        }
-        else if (this$qlkRankingFields.equals(other$qlkRankingFields)) {
-            return true;
-        }
-        return false;
+        Object this$qlkRankingFields = this.getQlkRankingFields();
+        Object other$qlkRankingFields = other.getQlkRankingFields();
+        return (this$qlkRankingFields != null) ? this$qlkRankingFields.equals(other$qlkRankingFields) : (other$qlkRankingFields == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -69,16 +60,16 @@ public class RespQlkRankingList extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getQlkType();
-        final Object $qlkRankingFields = this.getQlkRankingFields();
+        Object $qlkRankingFields = this.getQlkRankingFields();
         result = result * 59 + (($qlkRankingFields == null) ? 43 : $qlkRankingFields.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespQlkRankingList(qlkType=" + this.getQlkType() + ", qlkRankingFields=" + this.getQlkRankingFields() + ")";
+        return "RespQlkRankingList(qlkType=" + (int)this.getQlkType() + ", qlkRankingFields=" + this.getQlkRankingFields() + ")";
     }
 }

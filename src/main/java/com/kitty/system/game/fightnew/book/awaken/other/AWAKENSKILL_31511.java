@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.other;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -24,74 +23,81 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31511 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31511() {
+    }
+    
     @Override
-    public NutMap enteringSide(final Fight fight, final FightObject effector, final Object... args) {
-        final NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 25.0, 20.0);
+    public NutMap enteringSide(Fight fight, FightObject effector, Object... args) {
+        NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 25.0, 20.0);
         if (map != null) {
-            final double percent = map.getDouble("percent");
+            double percent = map.getDouble("percent");
             if (percent > 0.0) {
                 ActionDetailParam actionDetailParam = null;
-                final boolean a = SkillAi.canAffectOnPro(percent);
+                boolean a = SkillAi.canAffectOnPro(percent);
                 if (a) {
-                    final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 31511);
-                    final List<FightObject> targets = PassiveSkillUtils.getTargets(fight, effector, (byte)1);
+                    SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 31511);
+                    List<FightObject> targets = PassiveSkillUtils.getTargets(fight, effector, (byte)1);
                     if (targets != null && targets.size() > 0) {
                         int controlStatus = 0;
                         FightObject target = null;
-                        for (final FightObject fightObject : targets) {
+                        for (FightObject fightObject : targets) {
                             controlStatus = AwakenSkillEffectUtils.getStatus(fightObject, StatusConst.getControlStatus());
                             if (controlStatus > 0) {
                                 target = fightObject;
                                 break;
                             }
+                            continue;
                         }
                         if (target != null && controlStatus > 0) {
                             target.removeStatus(controlStatus);
-                            final List<Integer> clearList = new ArrayList<Integer>();
-                            clearList.add(controlStatus);
+                            List<Integer> clearList = new ArrayList<>();
+                            clearList.add(Integer.valueOf(controlStatus));
                             actionDetailParam = ActionParamUtils.clearStatusReturn(effector, target, 7, 31511, 2, clearList);
                             fight.getActionParam().getActionDetailParams().add(actionDetailParam);
-                            skillRecord.setT(target.getId());
+                            skillRecord.setT((long)(int)target.getId());
                         }
                     }
                 }
-                final boolean b = SkillAi.canAffectOnPro(percent);
+                boolean b = SkillAi.canAffectOnPro(percent);
                 if (b) {
-                    final SkillRecord skillRecord2 = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 31516);
-                    final List<FightObject> targetSide = fight.getTargetSide(effector.getId());
+                    SkillRecord skillRecord2 = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 31516);
+                    List<FightObject> targetSide = fight.getTargetSide((int)effector.getId());
                     if (targetSide != null && targetSide.size() > 0) {
-                        final List<FightObject> targets2 = PassiveSkillUtils.getTargets(fight, targetSide.get(0), (byte)1);
+                        List<FightObject> targets2 = PassiveSkillUtils.getTargets(fight, (FightObject)targetSide.get(0), (byte)1);
                         if (targets2 != null && targets2.size() > 0) {
-                            final List<FightObject> list = new ArrayList<FightObject>();
-                            for (final FightObject obj : targets2) {
+                            List<FightObject> list = new ArrayList<>();
+                            for (FightObject obj : targets2) {
                                 if (AwakenSkillEffectUtils.getStatus(obj, StatusConst.getMiniPositiveStatus()) > 0) {
                                     list.add(obj);
                                 }
+                                else {
+                                    continue;
+                                }
                             }
                             if (list.size() > 0) {
-                                final int round = RandomUtil.round(0, list.size() - 1);
-                                final FightObject target2 = list.get(round);
+                                int round = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(list.size() - 1));
+                                FightObject target2 = (FightObject)list.get(round);
                                 if (target2 != null) {
-                                    final int status = AwakenSkillEffectUtils.getStatus(target2, StatusConst.getMiniPositiveStatus());
+                                    int status = AwakenSkillEffectUtils.getStatus(target2, StatusConst.getMiniPositiveStatus());
                                     if (status > 0) {
                                         target2.removeStatus(status);
-                                        final List<Integer> dicts = PRO_DICT_TYPE.getGFSDict().get(status);
+                                        List<Integer> dicts = (List)PRO_DICT_TYPE.getGFSDict().get(Integer.valueOf(status));
                                         if (dicts != null && dicts.size() > 0) {
-                                            for (final Integer dist : dicts) {
-                                                ImbueUtil.removeStatus(target2.getImbueMap(), dist, status);
+                                            for (Integer dist : dicts) {
+                                                ImbueUtil.removeStatus(target2.getImbueMap(), (int)dist, status);
                                             }
                                         }
-                                        final List<Integer> clearList2 = new ArrayList<Integer>();
-                                        clearList2.add(status);
+                                        List<Integer> clearList2 = new ArrayList<>();
+                                        clearList2.add(Integer.valueOf(status));
                                         if (actionDetailParam != null) {
-                                            final FightObjectParam targetParam = ActionParamUtils.clearStatusForTarget(target2.getId(), 2, clearList2, 2);
+                                            FightObjectParam targetParam = ActionParamUtils.clearStatusForTarget((int)target2.getId(), 2, clearList2, 2);
                                             actionDetailParam.getTargetParamList().add(targetParam);
                                         }
                                         else {
                                             ActionParamUtils.clearStatus(fight, effector, target2, 7, 31511, 2, clearList2);
                                         }
                                     }
-                                    skillRecord2.setT(target2.getId());
+                                    skillRecord2.setT((long)(int)target2.getId());
                                 }
                             }
                         }

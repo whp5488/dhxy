@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages.old;
 
 import com.kitty.system.game.fightnew.messages.vo.CombatAddObject;
@@ -11,11 +10,14 @@ public class RespCombatAddOpponent extends Message
 {
     private List<CombatAddObject> list;
     
+    public RespCombatAddOpponent() {
+    }
+    
     public List<CombatAddObject> getList() {
         return this.list;
     }
     
-    public void setList(final List<CombatAddObject> list) {
+    public void setList(List<CombatAddObject> list) {
         this.list = list;
     }
 }

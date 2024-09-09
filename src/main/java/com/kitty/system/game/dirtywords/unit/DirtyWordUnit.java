@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.dirtywords.unit;
 
 import java.util.ArrayList;
@@ -10,8 +9,8 @@ public class DirtyWordUnit
     private final String keyWord;
     private final List<Integer> indexList;
     
-    public DirtyWordUnit(final String source, final String word) {
-        this.indexList = new ArrayList<Integer>();
+    public DirtyWordUnit(String source, String word) {
+        this.indexList = new ArrayList<>();
         this.source = source;
         this.keyWord = word;
     }
@@ -23,13 +22,14 @@ public class DirtyWordUnit
         }
         for (int i = 0, n = this.source.length(); i < n; ++i) {
             if (this.keyWord.length() > index && this.source.charAt(i) == this.keyWord.charAt(index)) {
-                this.indexList.add(index);
+                this.indexList.add(Integer.valueOf(index));
                 ++index;
                 if (this.foundDitryWord()) {
                     break;
                 }
             }
         }
+        return;
     }
     
     public boolean foundDitryWord() {

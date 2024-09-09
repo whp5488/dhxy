@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.onlinemall.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -11,6 +10,9 @@ public class ReqBuyFromOnlineMall extends Message
     private int amount;
     private int type;
     private String pwd;
+    
+    public ReqBuyFromOnlineMall() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -52,7 +54,7 @@ public class ReqBuyFromOnlineMall extends Message
         if (!(o instanceof ReqBuyFromOnlineMall)) {
             return false;
         }
-        final ReqBuyFromOnlineMall other = (ReqBuyFromOnlineMall)o;
+        ReqBuyFromOnlineMall other = (ReqBuyFromOnlineMall)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -65,17 +67,9 @@ public class ReqBuyFromOnlineMall extends Message
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$pwd = this.getPwd();
-        final Object other$pwd = other.getPwd();
-        if (this$pwd == null) {
-            if (other$pwd == null) {
-                return true;
-            }
-        }
-        else if (this$pwd.equals(other$pwd)) {
-            return true;
-        }
-        return false;
+        Object this$pwd = this.getPwd();
+        Object other$pwd = other.getPwd();
+        return (this$pwd != null) ? this$pwd.equals(other$pwd) : (other$pwd == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -84,12 +78,12 @@ public class ReqBuyFromOnlineMall extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getAmount();
         result = result * 59 + this.getType();
-        final Object $pwd = this.getPwd();
+        Object $pwd = this.getPwd();
         result = result * 59 + (($pwd == null) ? 43 : $pwd.hashCode());
         return result;
     }

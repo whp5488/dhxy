@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.domain;
 
 import com.kitty.common.db.DbRecordService;
@@ -23,7 +22,7 @@ public class WeekTreasure extends BaseEntity<Long>
     @Column("time")
     private int time;
     
-    public WeekTreasure(final Long id, final long rId, final int serial) {
+    public WeekTreasure(Long id, long rId, int serial) {
         this.serial = 0;
         this.share = 0;
         this.time = new Long(TimeUtil.getTimeMills() / 1000L).intValue();

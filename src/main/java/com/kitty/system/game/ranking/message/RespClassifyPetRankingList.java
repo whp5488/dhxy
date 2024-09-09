@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import java.util.ArrayList;
@@ -14,8 +13,8 @@ public class RespClassifyPetRankingList extends Message
     private byte serverId;
     private List<PetClassifyRankingField> petClassifyRankingFields;
     
-    public RespClassifyPetRankingList(final int petSerial, final byte serverId, final List<PetClassifyRankingField> petClassifyRankingFields) {
-        this.petClassifyRankingFields = new ArrayList<PetClassifyRankingField>();
+    public RespClassifyPetRankingList(int petSerial, byte serverId, List<PetClassifyRankingField> petClassifyRankingFields) {
+        this.petClassifyRankingFields = new ArrayList<>();
         this.petSerial = petSerial;
         this.serverId = serverId;
         this.petClassifyRankingFields = petClassifyRankingFields;
@@ -53,7 +52,7 @@ public class RespClassifyPetRankingList extends Message
         if (!(o instanceof RespClassifyPetRankingList)) {
             return false;
         }
-        final RespClassifyPetRankingList other = (RespClassifyPetRankingList)o;
+        RespClassifyPetRankingList other = (RespClassifyPetRankingList)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -63,17 +62,9 @@ public class RespClassifyPetRankingList extends Message
         if (this.getServerId() != other.getServerId()) {
             return false;
         }
-        final Object this$petClassifyRankingFields = this.getPetClassifyRankingFields();
-        final Object other$petClassifyRankingFields = other.getPetClassifyRankingFields();
-        if (this$petClassifyRankingFields == null) {
-            if (other$petClassifyRankingFields == null) {
-                return true;
-            }
-        }
-        else if (this$petClassifyRankingFields.equals(other$petClassifyRankingFields)) {
-            return true;
-        }
-        return false;
+        Object this$petClassifyRankingFields = this.getPetClassifyRankingFields();
+        Object other$petClassifyRankingFields = other.getPetClassifyRankingFields();
+        return (this$petClassifyRankingFields != null) ? this$petClassifyRankingFields.equals(other$petClassifyRankingFields) : (other$petClassifyRankingFields == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -82,17 +73,17 @@ public class RespClassifyPetRankingList extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetSerial();
         result = result * 59 + this.getServerId();
-        final Object $petClassifyRankingFields = this.getPetClassifyRankingFields();
+        Object $petClassifyRankingFields = this.getPetClassifyRankingFields();
         result = result * 59 + (($petClassifyRankingFields == null) ? 43 : $petClassifyRankingFields.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespClassifyPetRankingList(petSerial=" + this.getPetSerial() + ", serverId=" + this.getServerId() + ", petClassifyRankingFields=" + this.getPetClassifyRankingFields() + ")";
+        return "RespClassifyPetRankingList(petSerial=" + this.getPetSerial() + ", serverId=" + (int)this.getServerId() + ", petClassifyRankingFields=" + this.getPetClassifyRankingFields() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -16,7 +15,7 @@ public class RespTaskIcon extends Message
         this.is = 1;
     }
     
-    public RespTaskIcon(final int serial, final String para, final byte is) {
+    public RespTaskIcon(int serial, String para, byte is) {
         this.serial = 0;
         this.is = 1;
         this.serial = serial;
@@ -56,24 +55,16 @@ public class RespTaskIcon extends Message
         if (!(o instanceof RespTaskIcon)) {
             return false;
         }
-        final RespTaskIcon other = (RespTaskIcon)o;
+        RespTaskIcon other = (RespTaskIcon)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$para = this.getPara();
-        final Object other$para = other.getPara();
-        if (this$para == null) {
-            if (other$para == null) {
-                return this.getIs() == other.getIs();
-            }
-        }
-        else if (this$para.equals(other$para)) {
-            return this.getIs() == other.getIs();
-        }
-        return false;
+        Object this$para = this.getPara();
+        Object other$para = other.getPara();
+        return ((this$para != null) ? this$para.equals(other$para) : (other$para == null)) && this.getIs() == other.getIs();
     }
     
     protected boolean canEqual(final Object other) {
@@ -82,10 +73,10 @@ public class RespTaskIcon extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $para = this.getPara();
+        Object $para = this.getPara();
         result = result * 59 + (($para == null) ? 43 : $para.hashCode());
         result = result * 59 + this.getIs();
         return result;
@@ -93,6 +84,6 @@ public class RespTaskIcon extends Message
     
     @Override
     public String toString() {
-        return "RespTaskIcon(serial=" + this.getSerial() + ", para=" + this.getPara() + ", is=" + this.getIs() + ")";
+        return "RespTaskIcon(serial=" + this.getSerial() + ", para=" + this.getPara() + ", is=" + (int)this.getIs() + ")";
     }
 }

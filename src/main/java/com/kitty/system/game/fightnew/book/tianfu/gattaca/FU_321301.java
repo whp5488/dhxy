@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -18,54 +17,57 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_321301 extends TianFuProcessor
 {
+    public FU_321301() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill roleSkill = (RoleSkill)args[1];
-        if (roleSkill == null || roleSkill.getSkillId() == null || roleSkill.getSkillId() < 1) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill roleSkill = (RoleSkill)args[1];
+        if (roleSkill == null || roleSkill.getSkillId() == null || (int)roleSkill.getSkillId() < 1) {
             return null;
         }
-        final SysSkill sysSkill = SkillDataPool.skillMap.get(roleSkill.getSkillId());
+        SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(roleSkill.getSkillId());
         if (sysSkill == null) {
             return null;
         }
-        if (4 != sysSkill.getStep()) {
+        if (4 != (int)sysSkill.getStep()) {
             return null;
         }
         if (!effector.isPlayer()) {
             return null;
         }
-        final int isPvp = fight.isPvp();
+        int isPvp = fight.isPvp();
         if (0 == isPvp) {
-            final DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
-            final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 321301);
+            DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
+            TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 321301);
             if (tianFuObject == null) {
                 return null;
             }
-            final double percentb = 2.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-            final int hurt = (int)args[0];
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 321301);
-            skillRecord.setT(effector.getId());
+            double percentb = 2.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+            int hurt = (int)args[0];
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 321301);
+            skillRecord.setT((long)(int)effector.getId());
             return TianFuUtils.getHurtReturnMap(hurt, percentb);
         }
-        else {
-            if (1 != isPvp || fight.getRound() % 5 != 0) {
-                return null;
-            }
-            final DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
-            final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 321301);
+        else if (1 == isPvp && fight.getRound() % 5 == 0) {
+            DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
+            TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 321301);
             if (tianFuObject == null) {
                 return null;
             }
-            final double percenta = 5.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-            final int hurt = (int)args[0];
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 321301);
-            skillRecord.setT(effector.getId());
+            double percenta = 5.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+            int hurt = (int)args[0];
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 321301);
+            skillRecord.setT((long)(int)effector.getId());
             return TianFuUtils.getHurtReturnMap(hurt, percenta);
+        }
+        else {
+            return null;
         }
     }
 }

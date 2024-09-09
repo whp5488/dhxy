@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.onlinemall.domain;
 
 public class OnlineMallInfo
@@ -9,6 +8,7 @@ public class OnlineMallInfo
     private int sort;
     private int price;
     private int costType;
+    private int give;
     private int discount;
     private int quotaLimit;
     private int mustVip;
@@ -44,6 +44,10 @@ public class OnlineMallInfo
     
     public int getCostType() {
         return this.costType;
+    }
+    
+    public int getGive() {
+        return this.give;
     }
     
     public int getDiscount() {
@@ -90,6 +94,10 @@ public class OnlineMallInfo
         this.costType = costType;
     }
     
+    public void setGive(final int give) {
+        this.give = give;
+    }
+    
     public void setDiscount(final int discount) {
         this.discount = discount;
     }
@@ -118,7 +126,7 @@ public class OnlineMallInfo
         if (!(o instanceof OnlineMallInfo)) {
             return false;
         }
-        final OnlineMallInfo other = (OnlineMallInfo)o;
+        OnlineMallInfo other = (OnlineMallInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -128,17 +136,9 @@ public class OnlineMallInfo
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$recommend = this.getRecommend();
-        final Object other$recommend = other.getRecommend();
-        if (this$recommend == null) {
-            if (other$recommend == null) {
-                return this.getSort() == other.getSort() && this.getPrice() == other.getPrice() && this.getCostType() == other.getCostType() && this.getDiscount() == other.getDiscount() && this.getQuotaLimit() == other.getQuotaLimit() && this.getMustVip() == other.getMustVip() && this.getLvLimit() == other.getLvLimit() && this.getZsLimit() == other.getZsLimit();
-            }
-        }
-        else if (this$recommend.equals(other$recommend)) {
-            return this.getSort() == other.getSort() && this.getPrice() == other.getPrice() && this.getCostType() == other.getCostType() && this.getDiscount() == other.getDiscount() && this.getQuotaLimit() == other.getQuotaLimit() && this.getMustVip() == other.getMustVip() && this.getLvLimit() == other.getLvLimit() && this.getZsLimit() == other.getZsLimit();
-        }
-        return false;
+        Object this$recommend = this.getRecommend();
+        Object other$recommend = other.getRecommend();
+        return ((this$recommend != null) ? this$recommend.equals(other$recommend) : (other$recommend == null)) && this.getSort() == other.getSort() && this.getPrice() == other.getPrice() && this.getCostType() == other.getCostType() && this.getGive() == other.getGive() && this.getDiscount() == other.getDiscount() && this.getQuotaLimit() == other.getQuotaLimit() && this.getMustVip() == other.getMustVip() && this.getLvLimit() == other.getLvLimit() && this.getZsLimit() == other.getZsLimit();
     }
     
     protected boolean canEqual(final Object other) {
@@ -147,15 +147,16 @@ public class OnlineMallInfo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getType();
-        final Object $recommend = this.getRecommend();
+        Object $recommend = this.getRecommend();
         result = result * 59 + (($recommend == null) ? 43 : $recommend.hashCode());
         result = result * 59 + this.getSort();
         result = result * 59 + this.getPrice();
         result = result * 59 + this.getCostType();
+        result = result * 59 + this.getGive();
         result = result * 59 + this.getDiscount();
         result = result * 59 + this.getQuotaLimit();
         result = result * 59 + this.getMustVip();
@@ -166,6 +167,6 @@ public class OnlineMallInfo
     
     @Override
     public String toString() {
-        return "OnlineMallInfo(serial=" + this.getSerial() + ", type=" + this.getType() + ", recommend=" + this.getRecommend() + ", sort=" + this.getSort() + ", price=" + this.getPrice() + ", costType=" + this.getCostType() + ", discount=" + this.getDiscount() + ", quotaLimit=" + this.getQuotaLimit() + ", mustVip=" + this.getMustVip() + ", lvLimit=" + this.getLvLimit() + ", zsLimit=" + this.getZsLimit() + ")";
+        return "OnlineMallInfo(serial=" + this.getSerial() + ", type=" + this.getType() + ", recommend=" + this.getRecommend() + ", sort=" + this.getSort() + ", price=" + this.getPrice() + ", costType=" + this.getCostType() + ", give=" + this.getGive() + ", discount=" + this.getDiscount() + ", quotaLimit=" + this.getQuotaLimit() + ", mustVip=" + this.getMustVip() + ", lvLimit=" + this.getLvLimit() + ", zsLimit=" + this.getZsLimit() + ")";
     }
 }

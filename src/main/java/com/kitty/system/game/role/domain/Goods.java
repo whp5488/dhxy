@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.domain;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class Goods implements Serializable
         return this.id;
     }
     
-    public void setId(final String id) {
+    public void setId(String id) {
         this.id = id;
     }
     
@@ -26,7 +25,7 @@ public class Goods implements Serializable
         return this.num;
     }
     
-    public void setNum(final Integer num) {
+    public void setNum(Integer num) {
         this.num = num;
     }
     
@@ -34,7 +33,7 @@ public class Goods implements Serializable
         return this.type;
     }
     
-    public void setType(final Integer type) {
+    public void setType(Integer type) {
         this.type = type;
     }
     
@@ -42,7 +41,7 @@ public class Goods implements Serializable
         return this.position;
     }
     
-    public void setPosition(final Integer position) {
+    public void setPosition(Integer position) {
         this.position = position;
     }
     
@@ -50,31 +49,31 @@ public class Goods implements Serializable
         return this.rests;
     }
     
-    public void setRests(final List<FiedValue> rests) {
+    public void setRests(List<FiedValue> rests) {
         this.rests = rests;
     }
     
     public Goods() {
-        this.rests = new ArrayList<FiedValue>();
+        this.rests = new ArrayList<>();
     }
     
-    public Goods(final Integer num, final Integer type, final Integer position) {
-        this.rests = new ArrayList<FiedValue>();
+    public Goods(Integer num, Integer type, Integer position) {
+        this.rests = new ArrayList<>();
         this.num = num;
         this.type = type;
         this.position = position;
     }
     
-    public Goods(final Integer num, final Integer type, final Integer position, final List<FiedValue> rests) {
-        this.rests = new ArrayList<FiedValue>();
+    public Goods(Integer num, Integer type, Integer position, List<FiedValue> rests) {
+        this.rests = new ArrayList<>();
         this.num = num;
         this.type = type;
         this.position = position;
         this.rests = rests;
     }
     
-    public Goods(final String id, final Integer num, final Integer type, final Integer position, final List<FiedValue> rests) {
-        this.rests = new ArrayList<FiedValue>();
+    public Goods(String id, Integer num, Integer type, Integer position, List<FiedValue> rests) {
+        this.rests = new ArrayList<>();
         this.id = id;
         this.num = num;
         this.type = type;

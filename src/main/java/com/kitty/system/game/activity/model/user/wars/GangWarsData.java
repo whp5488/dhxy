@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.wars;
 
 import com.kitty.system.game.activity.model.user.wars.vo.Equipment;
@@ -27,13 +26,13 @@ public class GangWarsData
         this.signUpTime = null;
         this.startTime = null;
         this.endTime = null;
-        this.announce = new ArrayList<String>();
-        this.pkData = new ConcurrentHashMap<Integer, Map<Long, GangWarsPkData>>();
-        this.warsMap = new ConcurrentHashMap<Integer, GangWarsInfo>();
+        this.announce = new ArrayList<>();
+        this.pkData = new ConcurrentHashMap();
+        this.warsMap = new ConcurrentHashMap();
         this.recordMap = new NutConcurrentMap();
-        this.byeMap = new ConcurrentHashMap<Integer, Integer>();
-        this.cannonMap = new ConcurrentHashMap<Integer, Equipment>();
-        this.gateMap = new ConcurrentHashMap<Integer, Equipment>();
+        this.byeMap = new ConcurrentHashMap();
+        this.cannonMap = new ConcurrentHashMap();
+        this.gateMap = new ConcurrentHashMap();
     }
     
     public void setStage(final byte stage) {

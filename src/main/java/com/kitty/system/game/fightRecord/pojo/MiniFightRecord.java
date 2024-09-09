@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightRecord.pojo;
 
 import com.kitty.record.domain.FightRecord;
@@ -9,7 +8,7 @@ public class MiniFightRecord implements Serializable
     private String recordId;
     private String createTime;
     
-    public MiniFightRecord(final FightRecord record) {
+    public MiniFightRecord(FightRecord record) {
         this.recordId = String.valueOf(record.getId());
         this.createTime = String.valueOf(record.getCreateTime());
     }

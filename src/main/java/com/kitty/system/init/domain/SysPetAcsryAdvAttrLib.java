@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -27,6 +26,9 @@ public class SysPetAcsryAdvAttrLib
     private List<Integer> valueList;
     @Column("value_show_type")
     private int type;
+    
+    public SysPetAcsryAdvAttrLib() {
+    }
     
     public String getDict() {
         return this.dict;
@@ -92,66 +94,34 @@ public class SysPetAcsryAdvAttrLib
         if (!(o instanceof SysPetAcsryAdvAttrLib)) {
             return false;
         }
-        final SysPetAcsryAdvAttrLib other = (SysPetAcsryAdvAttrLib)o;
+        SysPetAcsryAdvAttrLib other = (SysPetAcsryAdvAttrLib)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0065: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0065;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
         if (this.getAttrSerial() != other.getAttrSerial()) {
             return false;
         }
-        final Object this$propList = this.getPropList();
-        final Object other$propList = other.getPropList();
-        Label_0115: {
-            if (this$propList == null) {
-                if (other$propList == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$propList.equals(other$propList)) {
-                break Label_0115;
-            }
+        Object this$propList = this.getPropList();
+        Object other$propList = other.getPropList();
+        if (!((this$propList != null) ? this$propList.equals(other$propList) : (other$propList == null))) {
             return false;
         }
         if (this.getScore() != other.getScore()) {
             return false;
         }
-        final Object this$skillList = this.getSkillList();
-        final Object other$skillList = other.getSkillList();
-        Label_0165: {
-            if (this$skillList == null) {
-                if (other$skillList == null) {
-                    break Label_0165;
-                }
-            }
-            else if (this$skillList.equals(other$skillList)) {
-                break Label_0165;
-            }
+        Object this$skillList = this.getSkillList();
+        Object other$skillList = other.getSkillList();
+        if (!((this$skillList != null) ? this$skillList.equals(other$skillList) : (other$skillList == null))) {
             return false;
         }
-        final Object this$valueList = this.getValueList();
-        final Object other$valueList = other.getValueList();
-        if (this$valueList == null) {
-            if (other$valueList == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$valueList.equals(other$valueList)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$valueList = this.getValueList();
+        Object other$valueList = other.getValueList();
+        return ((this$valueList != null) ? this$valueList.equals(other$valueList) : (other$valueList == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -160,17 +130,17 @@ public class SysPetAcsryAdvAttrLib
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
         result = result * 59 + this.getAttrSerial();
-        final Object $propList = this.getPropList();
+        Object $propList = this.getPropList();
         result = result * 59 + (($propList == null) ? 43 : $propList.hashCode());
         result = result * 59 + this.getScore();
-        final Object $skillList = this.getSkillList();
+        Object $skillList = this.getSkillList();
         result = result * 59 + (($skillList == null) ? 43 : $skillList.hashCode());
-        final Object $valueList = this.getValueList();
+        Object $valueList = this.getValueList();
         result = result * 59 + (($valueList == null) ? 43 : $valueList.hashCode());
         result = result * 59 + this.getType();
         return result;

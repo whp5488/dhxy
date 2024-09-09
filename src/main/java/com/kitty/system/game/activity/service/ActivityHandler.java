@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.service;
 
 import com.kitty.system.game.team.domain.Member;
@@ -17,29 +16,29 @@ public abstract class ActivityHandler
         this.logger = LoggerFunction.ACTIVITY.getLogger();
     }
     
-    public abstract void handleFightEnd(final FightEndEvent p0);
+    public abstract void handleFightEnd(FightEndEvent fightEndEvent);
     
-    public void handleTeamLeave(final Role role, final boolean leader, final Team team) {
+    public void handleTeamLeave(Role role, boolean leader, Team team) {
     }
     
-    public void handleTeamLeaveMoment(final Role role) {
+    public void handleTeamLeaveMoment(Role role) {
     }
     
-    public void handleTeamJoinEvent(final Role role) {
+    public void handleTeamJoinEvent(Role role) {
     }
     
-    public void handleTeamChangeLeader(final Role role, final List<Member> memberList) {
+    public void handleTeamChangeLeader(Role role, List<Member> memberList) {
     }
     
-    public void handleLogout(final Role role) {
+    public void handleLogout(Role role) {
     }
     
-    public void handleLogin(final Role role) {
+    public void handleLogin(Role role) {
     }
     
-    public void handleHeartBeat(final Role role, final long prevHeartTime) {
+    public void handleHeartBeat(Role role, long prevHeartTime) {
     }
     
-    public void handleRoleExpire(final Role role) {
+    public void handleRoleExpire(Role role) {
     }
 }

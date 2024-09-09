@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -28,7 +27,7 @@ public class DbCardChangeService
     private final AtomicBoolean run;
     
     public DbCardChangeService() {
-        this.queue = new BlockingUniqueQueue<CardChange>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -38,11 +37,11 @@ public class DbCardChangeService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-card-change-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-card-change-save-service").newThread(new DbCardChangeService.Worker()).start();
         DbCardChangeService.instance = this;
     }
     
-    public void add2Queue(final CardChange entity) {
+    public void add2Queue(CardChange entity) {
         this.queue.add(entity);
     }
     
@@ -50,13 +49,13 @@ public class DbCardChangeService
         return this.queue.size();
     }
     
-    private void saveToDb(final CardChange entity) {
+    private void saveToDb(CardChange entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
-            this.dao.delete((Object)entity);
+            this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -66,14 +65,14 @@ public class DbCardChangeService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[DbCardChange] 执行全部命令后关闭");
+        LoggerUtils.error("[DbCardChange] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<CardChange> it = this.queue.iterator();
+            Iterator<CardChange> it = this.queue.iterator();
             while (it.hasNext()) {
-                final CardChange obj = it.next();
+                CardChange obj = (CardChange)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -87,18 +86,20 @@ public class DbCardChangeService
             while (DbCardChangeService.this.run.get()) {
                 CardChange entity = null;
                 try {
-                    entity = DbCardChangeService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (CardChange)DbCardChangeService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     DbCardChangeService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("变身卡-卡包数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("变身卡-卡包数据持久化队列长度：" + DbCardChangeService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("变身卡-卡包数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("变身卡-卡包数据持久化队列长度：" + DbCardChangeService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("变身卡存档异常", e);
                     e.printStackTrace();
                 }

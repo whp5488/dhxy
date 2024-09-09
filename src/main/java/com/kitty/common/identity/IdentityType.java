@@ -1,4 +1,3 @@
-
 package com.kitty.common.identity;
 
 public enum IdentityType
@@ -13,9 +12,9 @@ public enum IdentityType
     int value;
     int addValue;
     
-    private IdentityType(final int type) {
+    private IdentityType(int type) {
         this.type = type;
-        this.save = Boolean.TRUE;
+        this.save = (boolean)Boolean.TRUE;
         this.installValue(type);
     }
     
@@ -27,7 +26,7 @@ public enum IdentityType
         return this.save;
     }
     
-    public void installValue(final int type) {
+    public void installValue(int type) {
         switch (type) {
             case 2: {
                 this.addValue = 5000000;
@@ -52,13 +51,18 @@ public enum IdentityType
         }
     }
     
-    public int gainValue(final int type) {
+    public int gainValue(int type) {
         int returValue = -1;
-        for (final IdentityType n : values()) {
+        IdentityType[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            IdentityType n = values[i];
             if (n.type == type) {
                 returValue = n.addValue;
                 break;
             }
+            ++i;
         }
         return returValue;
     }

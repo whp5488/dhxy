@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.bean;
 
 public class PkRecord
@@ -9,7 +8,7 @@ public class PkRecord
     public PkRecord() {
     }
     
-    public PkRecord(final long id, final int time) {
+    public PkRecord(long id, int time) {
         this.id = id;
         this.time = time;
     }

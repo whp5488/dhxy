@@ -1,4 +1,3 @@
-
 package com.kitty.mina.session;
 
 import org.apache.mina.core.session.AttributeKey;

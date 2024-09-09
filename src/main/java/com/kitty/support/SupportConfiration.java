@@ -1,4 +1,3 @@
-
 package com.kitty.support;
 
 import org.springframework.context.annotation.Bean;
@@ -9,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SupportConfiration
 {
+    public SupportConfiration() {
+    }
+    
     @Bean({ "gameConversion" })
     public ConversionService createConversionService() {
         return new DefaultConversionService();

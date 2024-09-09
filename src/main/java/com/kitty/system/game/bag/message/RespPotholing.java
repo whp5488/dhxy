@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.bag.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.bag.message.vo.PotholingVo;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -46,37 +44,21 @@ public class RespPotholing extends Message
         if (!(o instanceof RespPotholing)) {
             return false;
         }
-        final RespPotholing other = (RespPotholing)o;
+        RespPotholing other = (RespPotholing)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        Label_0065: {
-            if (this$list == null) {
-                if (other$list == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$list.equals(other$list)) {
-                break Label_0065;
-            }
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        if (!((this$list != null) ? this$list.equals(other$list) : (other$list == null))) {
             return false;
         }
         if (this.getIndex() != other.getIndex()) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return true;
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return true;
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return (this$id != null) ? this$id.equals(other$id) : (other$id == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -85,12 +67,12 @@ public class RespPotholing extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getIndex();
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         return result;
     }
@@ -100,7 +82,6 @@ public class RespPotholing extends Message
         return "RespPotholing(list=" + this.getList() + ", index=" + this.getIndex() + ", id=" + this.getId() + ")";
     }
     
-    @ConstructorProperties({ "list", "index", "id" })
     public RespPotholing(final List<PotholingVo> list, final int index, final String id) {
         this.list = list;
         this.index = index;

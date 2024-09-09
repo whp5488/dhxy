@@ -1,7 +1,5 @@
-
 package com.kitty.system.init.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.util.Arrays;
 
 public class ChangeColor
@@ -42,24 +40,16 @@ public class ChangeColor
         if (!(o instanceof ChangeColor)) {
             return false;
         }
-        final ChangeColor other = (ChangeColor)o;
+        ChangeColor other = (ChangeColor)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return Arrays.equals(this.getGoodsNum(), other.getGoodsNum());
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return Arrays.equals(this.getGoodsNum(), other.getGoodsNum());
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && Arrays.equals(this.getGoodsNum(), other.getGoodsNum());
     }
     
     protected boolean canEqual(final Object other) {
@@ -68,10 +58,10 @@ public class ChangeColor
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + Arrays.hashCode(this.getGoodsNum());
         return result;
@@ -85,7 +75,6 @@ public class ChangeColor
     public ChangeColor() {
     }
     
-    @ConstructorProperties({ "serial", "name", "goodsNum" })
     public ChangeColor(final int serial, final String name, final int[] goodsNum) {
         this.serial = serial;
         this.name = name;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.shop.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -12,6 +11,9 @@ public class ReqBuyItem extends Message
     private int serial;
     private byte type;
     private String param;
+    
+    public ReqBuyItem() {
+    }
     
     public int getShipper() {
         return this.shipper;
@@ -61,7 +63,7 @@ public class ReqBuyItem extends Message
         if (!(o instanceof ReqBuyItem)) {
             return false;
         }
-        final ReqBuyItem other = (ReqBuyItem)o;
+        ReqBuyItem other = (ReqBuyItem)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -77,17 +79,9 @@ public class ReqBuyItem extends Message
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$param = this.getParam();
-        final Object other$param = other.getParam();
-        if (this$param == null) {
-            if (other$param == null) {
-                return true;
-            }
-        }
-        else if (this$param.equals(other$param)) {
-            return true;
-        }
-        return false;
+        Object this$param = this.getParam();
+        Object other$param = other.getParam();
+        return (this$param != null) ? this$param.equals(other$param) : (other$param == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -96,19 +90,19 @@ public class ReqBuyItem extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getShipper();
         result = result * 59 + this.getAmount();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getType();
-        final Object $param = this.getParam();
+        Object $param = this.getParam();
         result = result * 59 + (($param == null) ? 43 : $param.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqBuyItem(shipper=" + this.getShipper() + ", amount=" + this.getAmount() + ", serial=" + this.getSerial() + ", type=" + this.getType() + ", param=" + this.getParam() + ")";
+        return "ReqBuyItem(shipper=" + this.getShipper() + ", amount=" + this.getAmount() + ", serial=" + this.getSerial() + ", type=" + (int)this.getType() + ", param=" + this.getParam() + ")";
     }
 }

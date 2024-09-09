@@ -1,10 +1,8 @@
-
 package com.kitty.system.game.horse.pool;
 
 import java.util.Iterator;
 import java.util.HashSet;
 import com.kitty.system.enums.war.itempro.def.HORSE_SKILL_TRIGGER_DICT;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -31,90 +29,99 @@ public class HorseDataPool
     public static Map<Integer, HorseSkill> horseSkillMap;
     public static Map<String, Set<Integer>> horseSkillSerialType;
     
+    public HorseDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         HorseDataPool.horseMap = initService.initHorse();
         loadHorseSkill(initService);
         loadHorseGrowList();
     }
     
     public static void loadHorseGrowList() {
-        final List<Lottery> list = new ArrayList<Lottery>();
-        list.add(new Lottery(815, "", 0.03));
-        list.add(new Lottery(855, "", 0.03));
-        list.add(new Lottery(895, "", 0.04));
-        list.add(new Lottery(935, "", 0.1));
-        list.add(new Lottery(975, "", 0.1));
-        list.add(new Lottery(1015, "", 0.15));
-        list.add(new Lottery(1055, "", 0.15));
-        list.add(new Lottery(1095, "", 0.15));
-        list.add(new Lottery(1135, "", 0.15));
-        list.add(new Lottery(1175, "", 0.1));
+        List<Lottery> list = new ArrayList<>();
+        list.add(new Lottery(Integer.valueOf(815), "", Double.valueOf(0.03)));
+        list.add(new Lottery(Integer.valueOf(855), "", Double.valueOf(0.03)));
+        list.add(new Lottery(Integer.valueOf(895), "", Double.valueOf(0.04)));
+        list.add(new Lottery(Integer.valueOf(935), "", Double.valueOf(0.1)));
+        list.add(new Lottery(Integer.valueOf(975), "", Double.valueOf(0.1)));
+        list.add(new Lottery(Integer.valueOf(1015), "", Double.valueOf(0.15)));
+        list.add(new Lottery(Integer.valueOf(1055), "", Double.valueOf(0.15)));
+        list.add(new Lottery(Integer.valueOf(1095), "", Double.valueOf(0.15)));
+        list.add(new Lottery(Integer.valueOf(1135), "", Double.valueOf(0.15)));
+        list.add(new Lottery(Integer.valueOf(1175), "", Double.valueOf(0.1)));
         HorseDataPool.horseGrowList = list;
     }
     
-    public static void loadHorseSkill(final InitService initService) {
-        final List<HorseSkill> skills = initService.initHorseSkill();
-        for (final HorseSkill skill : skills) {
-            final byte seat = skill.getSeat();
-            HorseDataPool.horseSkillGradeMap.put(skill.getSerial(), skill.getRarity());
+    public static void loadHorseSkill(InitService initService) {
+        List<HorseSkill> skills = initService.initHorseSkill();
+        for (HorseSkill skill : skills) {
+            byte seat = skill.getSeat();
+            HorseDataPool.horseSkillGradeMap.put(Integer.valueOf(skill.getSerial()), Byte.valueOf(skill.getRarity()));
             if (skill.getType() == 0) {
-                Map<Integer, List<Lottery>> map = HorseDataPool.commonHorseSkillMap.get(seat);
+                Map<Integer, List<Lottery>> map = (Map)HorseDataPool.commonHorseSkillMap.get(Byte.valueOf(seat));
                 if (map == null) {
-                    map = new HashMap<Integer, List<Lottery>>();
+                    map = new HashMap();
                 }
                 map = loadHorseSkill(map, skill);
-                HorseDataPool.commonHorseSkillMap.put(seat, map);
+                HorseDataPool.commonHorseSkillMap.put(Byte.valueOf(seat), map);
             }
             else {
-                Map<Integer, List<Lottery>> map = HorseDataPool.superHorseSkillMap.get(seat);
+                Map<Integer, List<Lottery>> map = (Map)HorseDataPool.superHorseSkillMap.get(Byte.valueOf(seat));
                 if (map == null) {
-                    map = new HashMap<Integer, List<Lottery>>();
+                    map = new HashMap();
                 }
                 map = loadHorseSkill(map, skill);
-                HorseDataPool.superHorseSkillMap.put(seat, map);
+                HorseDataPool.superHorseSkillMap.put(Byte.valueOf(seat), map);
             }
         }
-        HorseDataPool.horseSkillMap = skills.stream().collect(Collectors.toMap(HorseSkill::getSerial, HorseSkill -> HorseSkill, (key1, key2) -> key1));
-        for (final HORSE_SKILL_TRIGGER_DICT dict : HORSE_SKILL_TRIGGER_DICT.values()) {
-            HorseDataPool.horseSkillSerialType.put(dict.getValue(), new HashSet<Integer>());
+        HorseDataPool.horseSkillMap = (Map)skills.stream().collect(Collectors.toMap(HorseSkill::getSerial, HorseSkill -> HorseSkill, (key1, key2) -> key1));
+        for (HORSE_SKILL_TRIGGER_DICT dict : HORSE_SKILL_TRIGGER_DICT.values()) {
+            HorseDataPool.horseSkillSerialType.put(dict.getValue(), new HashSet());
         }
-        for (final HorseSkill horseSkill : HorseDataPool.horseSkillMap.values()) {
+        for (HorseSkill horseSkill : HorseDataPool.horseSkillMap.values()) {
             if (horseSkill != null && horseSkill.getTriggerType() != null && HorseDataPool.horseSkillSerialType.get(horseSkill.getTriggerType()) != null) {
-                HorseDataPool.horseSkillSerialType.get(horseSkill.getTriggerType()).add(horseSkill.getSerial());
+                ((Set)HorseDataPool.horseSkillSerialType.get(horseSkill.getTriggerType())).add(Integer.valueOf(horseSkill.getSerial()));
+            }
+            else {
+                continue;
             }
         }
     }
     
-    public static Map<Integer, List<Lottery>> loadHorseSkill(final Map<Integer, List<Lottery>> map, final HorseSkill skill) {
+    public static Map<Integer, List<Lottery>> loadHorseSkill(Map<Integer, List<Lottery>> map, HorseSkill skill) {
         if (skill.getSeatWeightOne() > 0.0) {
-            List<Lottery> list_ont = map.get(1);
+            List<Lottery> list_ont = (List)map.get(Integer.valueOf(1));
             if (list_ont == null) {
-                list_ont = new ArrayList<Lottery>();
+                list_ont = new ArrayList<>();
             }
-            list_ont.add(new Lottery(skill.getSerial(), "", skill.getSeatWeightOne()));
-            map.put(1, list_ont);
+            list_ont.add(new Lottery(Integer.valueOf(skill.getSerial()), "", Double.valueOf(skill.getSeatWeightOne())));
+            map.put(Integer.valueOf(1), list_ont);
         }
         if (skill.getSeatWeightTow() > 0.0) {
-            List<Lottery> list_two = map.get(2);
+            List<Lottery> list_two = (List)map.get(Integer.valueOf(2));
             if (list_two == null) {
-                list_two = new ArrayList<Lottery>();
+                list_two = new ArrayList<>();
             }
-            list_two.add(new Lottery(skill.getSerial(), "", skill.getSeatWeightTow()));
-            map.put(2, list_two);
+            list_two.add(new Lottery(Integer.valueOf(skill.getSerial()), "", Double.valueOf(skill.getSeatWeightTow())));
+            map.put(Integer.valueOf(2), list_two);
         }
         if (skill.getSeatWeightThree() > 0.0) {
-            List<Lottery> list_three = map.get(3);
+            List<Lottery> list_three = (List)map.get(Integer.valueOf(3));
             if (list_three == null) {
-                list_three = new ArrayList<Lottery>();
+                list_three = new ArrayList<>();
             }
-            list_three.add(new Lottery(skill.getSerial(), "", skill.getSeatWeightThree()));
-            map.put(3, list_three);
+            list_three.add(new Lottery(Integer.valueOf(skill.getSerial()), "", Double.valueOf(skill.getSeatWeightThree())));
+            map.put(Integer.valueOf(3), list_three);
+            return map;
         }
-        return map;
+        else {
+            return map;
+        }
     }
     
-    public static byte getGrowthDanLimit(final short level) {
+    public static byte getGrowthDanLimit(short level) {
         byte limit = 2;
         if (level >= 100) {
             limit = 15;
@@ -131,7 +138,7 @@ public class HorseDataPool
         return limit;
     }
     
-    public static short getGrowthDanLimit(final int level) {
+    public static short getGrowthDanLimit(int level) {
         short limit = 40;
         if (level >= 3150) {
             limit = 100;
@@ -159,12 +166,12 @@ public class HorseDataPool
         HorseDataPool.horseLevelMax = 100;
         HorseDataPool.horseMoveScope = new int[] { 10, 30 };
         HorseDataPool.horseSkillProb = new int[] { 1, 1000, 20 };
-        HorseDataPool.horseMap = new HashMap<Integer, SysHorse>();
-        HorseDataPool.horseGrowList = new ArrayList<Lottery>();
-        HorseDataPool.horseSkillGradeMap = new HashMap<Integer, Byte>();
-        HorseDataPool.commonHorseSkillMap = new HashMap<Byte, Map<Integer, List<Lottery>>>();
-        HorseDataPool.superHorseSkillMap = new HashMap<Byte, Map<Integer, List<Lottery>>>();
-        HorseDataPool.horseSkillMap = new HashMap<Integer, HorseSkill>();
-        HorseDataPool.horseSkillSerialType = new HashMap<String, Set<Integer>>();
+        HorseDataPool.horseMap = new HashMap();
+        HorseDataPool.horseGrowList = new ArrayList<>();
+        HorseDataPool.horseSkillGradeMap = new HashMap();
+        HorseDataPool.commonHorseSkillMap = new HashMap();
+        HorseDataPool.superHorseSkillMap = new HashMap();
+        HorseDataPool.horseSkillMap = new HashMap();
+        HorseDataPool.horseSkillSerialType = new HashMap();
     }
 }

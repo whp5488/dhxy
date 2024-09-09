@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.pet.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -71,86 +69,38 @@ public class RespPetInfo extends Message
         if (!(o instanceof RespPetInfo)) {
             return false;
         }
-        final RespPetInfo other = (RespPetInfo)o;
+        RespPetInfo other = (RespPetInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$roleId = this.getRoleId();
-        final Object other$roleId = other.getRoleId();
-        Label_0065: {
-            if (this$roleId == null) {
-                if (other$roleId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$roleId.equals(other$roleId)) {
-                break Label_0065;
-            }
+        Object this$roleId = this.getRoleId();
+        Object other$roleId = other.getRoleId();
+        if (!((this$roleId != null) ? this$roleId.equals(other$roleId) : (other$roleId == null))) {
             return false;
         }
-        final Object this$petId = this.getPetId();
-        final Object other$petId = other.getPetId();
-        Label_0102: {
-            if (this$petId == null) {
-                if (other$petId == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$petId.equals(other$petId)) {
-                break Label_0102;
-            }
+        Object this$petId = this.getPetId();
+        Object other$petId = other.getPetId();
+        if (!((this$petId != null) ? this$petId.equals(other$petId) : (other$petId == null))) {
             return false;
         }
-        final Object this$petName = this.getPetName();
-        final Object other$petName = other.getPetName();
-        Label_0139: {
-            if (this$petName == null) {
-                if (other$petName == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$petName.equals(other$petName)) {
-                break Label_0139;
-            }
+        Object this$petName = this.getPetName();
+        Object other$petName = other.getPetName();
+        if (!((this$petName != null) ? this$petName.equals(other$petName) : (other$petName == null))) {
             return false;
         }
-        final Object this$petType = this.getPetType();
-        final Object other$petType = other.getPetType();
-        Label_0176: {
-            if (this$petType == null) {
-                if (other$petType == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$petType.equals(other$petType)) {
-                break Label_0176;
-            }
+        Object this$petType = this.getPetType();
+        Object other$petType = other.getPetType();
+        if (!((this$petType != null) ? this$petType.equals(other$petType) : (other$petType == null))) {
             return false;
         }
-        final Object this$color = this.getColor();
-        final Object other$color = other.getColor();
-        Label_0213: {
-            if (this$color == null) {
-                if (other$color == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$color.equals(other$color)) {
-                break Label_0213;
-            }
+        Object this$color = this.getColor();
+        Object other$color = other.getColor();
+        if (!((this$color != null) ? this$color.equals(other$color) : (other$color == null))) {
             return false;
         }
-        final Object this$combat = this.getCombat();
-        final Object other$combat = other.getCombat();
-        if (this$combat == null) {
-            if (other$combat == null) {
-                return true;
-            }
-        }
-        else if (this$combat.equals(other$combat)) {
-            return true;
-        }
-        return false;
+        Object this$combat = this.getCombat();
+        Object other$combat = other.getCombat();
+        return (this$combat != null) ? this$combat.equals(other$combat) : (other$combat == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -159,19 +109,19 @@ public class RespPetInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $roleId = this.getRoleId();
+        Object $roleId = this.getRoleId();
         result = result * 59 + (($roleId == null) ? 43 : $roleId.hashCode());
-        final Object $petId = this.getPetId();
+        Object $petId = this.getPetId();
         result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
-        final Object $petName = this.getPetName();
+        Object $petName = this.getPetName();
         result = result * 59 + (($petName == null) ? 43 : $petName.hashCode());
-        final Object $petType = this.getPetType();
+        Object $petType = this.getPetType();
         result = result * 59 + (($petType == null) ? 43 : $petType.hashCode());
-        final Object $color = this.getColor();
+        Object $color = this.getColor();
         result = result * 59 + (($color == null) ? 43 : $color.hashCode());
-        final Object $combat = this.getCombat();
+        Object $combat = this.getCombat();
         result = result * 59 + (($combat == null) ? 43 : $combat.hashCode());
         return result;
     }
@@ -181,9 +131,8 @@ public class RespPetInfo extends Message
         return "RespPetInfo(roleId=" + this.getRoleId() + ", petId=" + this.getPetId() + ", petName=" + this.getPetName() + ", petType=" + this.getPetType() + ", color=" + this.getColor() + ", combat=" + this.getCombat() + ")";
     }
     
-    @ConstructorProperties({ "roleId", "petId", "petName", "petType", "color", "combat" })
     public RespPetInfo(final Integer roleId, final Integer petId, final String petName, final Integer petType, final String color, final Integer combat) {
-        this.combat = 0;
+        this.combat = Integer.valueOf(0);
         this.roleId = roleId;
         this.petId = petId;
         this.petName = petName;
@@ -193,6 +142,6 @@ public class RespPetInfo extends Message
     }
     
     public RespPetInfo() {
-        this.combat = 0;
+        this.combat = Integer.valueOf(0);
     }
 }

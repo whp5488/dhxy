@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.callback;
 
 import com.kitty.common.utils.spring.SpringUtils;
@@ -12,10 +11,13 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class CallbackController
 {
+    public CallbackController() {
+    }
+    
     @RpcRequestMapping
-    public void onReqCallBack(final SCSession session, final CReqCallBack req) {
-        final int cmdType = req.getCmd();
-        final CallbackHandler handler = CallbackHandler.queryHandler(cmdType);
+    public void onReqCallBack(SCSession session, CReqCallBack req) {
+        int cmdType = req.getCmd();
+        CallbackHandler handler = CallbackHandler.queryHandler(cmdType);
         if (handler != null) {
             req.deserialize();
             handler.onRequest(session, req);
@@ -23,13 +25,13 @@ public class CallbackController
     }
     
     @RpcRequestMapping
-    public void onRespCallBack(final CCSession session, final CRespCallBack respCallBack) {
-        final String json = respCallBack.getData();
+    public void onRespCallBack(CCSession session, CRespCallBack respCallBack) {
+        String json = respCallBack.getData();
         try {
-            final Message message = (Message)JsonUtils.string2Object(json, Class.forName(respCallBack.getMsgClass()));
+            Message message = (Message)JsonUtils.string2Object(json, Class.forName(respCallBack.getMsgClass()));
             SpringUtils.getBean(CallBackService.class).fillCallBack(respCallBack.getIndex(), message);
         }
-        catch (final ClassNotFoundException e) {
+        catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

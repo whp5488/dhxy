@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.house.controller;
 
 import com.kitty.system.game.house.message.ReqHouseFriedVisit;
@@ -16,18 +15,21 @@ public class HouseController
     @Autowired
     protected HouseService houseService;
     
+    public HouseController() {
+    }
+    
     @RequestMapping
-    public void reqBuyFurniture(final Role role, final ReqBuyFurniture buyFurniture) {
+    public void reqBuyFurniture(Role role, ReqBuyFurniture buyFurniture) {
         this.houseService.reqBuyFurniture(role, buyFurniture.getSerial());
     }
     
     @RequestMapping
-    public void reqHouseGoHome(final Role role, final ReqHouseGoHome reqHouseGoHome) {
+    public void reqHouseGoHome(Role role, ReqHouseGoHome reqHouseGoHome) {
         this.houseService.reqHouseGoHome(role, reqHouseGoHome.getType());
     }
     
     @RequestMapping
-    public void reqHouseFriedVisit(final Role role, final ReqHouseFriedVisit reqHouseFriedVisit) {
+    public void reqHouseFriedVisit(Role role, ReqHouseFriedVisit reqHouseFriedVisit) {
         this.houseService.reqHouseFriedVisit(role, reqHouseFriedVisit.getId());
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.talent;
 
 import java.util.Iterator;
@@ -21,66 +20,71 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_83033 extends SkillProcessor
 {
+    public SKILL_83033() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         if (args.length > 0 && args[0] instanceof SysPetSkill) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 83033);
-            final int mana = Math.min(effector.getCurrMana() + BigDecimalUtil.decimalScaleIntegerDown(0, effector.getMaxMana() * 0.8), effector.getMaxMana());
-            final int change = mana - effector.getCurrMana();
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 83033);
+            int mana = Math.min(effector.getCurrMana() + BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf((double)effector.getMaxMana() * 0.8)), effector.getMaxMana());
+            int change = mana - effector.getCurrMana();
             if (change <= 0) {
                 return null;
             }
             ActionParamUtils.changeMana(fight, effector, effector, 7, 83033, 2, change);
-            skillRecord.setT(effector.getId());
+            skillRecord.setT((long)(int)effector.getId());
         }
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     
     @Override
-    public List<Integer> getTargetIdsForTFQX(final Fight fight, final FightObject effector, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 83033);
-        final List<FightObject> targets = SkillTargetPicker.getFightObjects(fight, effector, true);
+    public List<Integer> getTargetIdsForTFQX(Fight fight, FightObject effector, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 83033);
+        List<FightObject> targets = SkillTargetPicker.getFightObjects(fight, effector, true);
         if (targets != null && targets.size() > 0) {
-            final Iterator<FightObject> iterator = targets.iterator();
+            Iterator<FightObject> iterator = targets.iterator();
             while (iterator.hasNext()) {
-                FightObject obj = iterator.next();
-                if (obj.getId().equals(effector.getTargetId())) {
+            	FightObject obj = (FightObject)iterator.next();
+                if (obj.getId().equals(Integer.valueOf(effector.getTargetId()))) {
                     targets.remove(obj);
                     break;
                 }
+                continue;
             }
             if (targets.size() > 0) {
                 int length = 2;
-                targets.sort(Comparator.comparing(obj -> obj.getSpeed()));
-                final List<Integer> list = new ArrayList<Integer>();
-                for (final FightObject target : targets) {
+                targets.sort(Comparator.comparing(obj -> Integer.valueOf(obj.getSpeed())));
+                List<Integer> list = new ArrayList<>();
+                for (FightObject target : targets) {
                     list.add(target.getId());
                     if (--length <= 0) {
                         break;
                     }
+                    continue;
                 }
                 if (list.size() > 0) {
-                    skillRecord.setT(list.get(0));
+                    skillRecord.setT((long)(int)list.get(0));
                     return list;
                 }
             }

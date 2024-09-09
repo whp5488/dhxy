@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.service;
 
 import com.kitty.system.game.pk.message.RespReleasePrisonerSuccess;
@@ -9,20 +8,17 @@ import com.kitty.system.game.equip.domain.WearEquip;
 import com.kitty.system.game.pk.message.RespTraceRole;
 import com.kitty.system.game.vo.utils.Const;
 import com.kitty.mina.cache.SessionUtils;
+import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.pk.message.RespSearchRole;
 import com.kitty.system.game.friend.message.vo.SearchFriend;
 import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import com.kitty.mina.cache.DataCache;
-import com.kitty.mina.message.Message;
-import com.kitty.system.common.message.RespMsg;
 import org.apache.mina.core.session.IoSession;
 import com.kitty.system.game.vo.Npc;
 import com.kitty.common.utils.RandomUtil;
 import com.kitty.system.game.enter.message.ReqTelePort;
 import com.kitty.system.common.data.DataGlobalFunc;
-import java.util.Map;
 import com.kitty.system.game.player.bean.PkRecord;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,15 +54,18 @@ public class PkService extends ActivityHandler
     @Autowired
     MapService mapService;
     
+    public PkService() {
+    }
+    
     @Override
-    public void handleFightEnd(final FightEndEvent fightEndEvent) {
+    public void handleFightEnd(FightEndEvent fightEndEvent) {
         this.doFightEnd(fightEndEvent.getRole(), fightEndEvent);
     }
     
     @Override
-    public void handleHeartBeat(final Role role, final long prevHeartTime) {
-        final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final PkInfoBox box = role.getPkInfoBox();
+    public void handleHeartBeat(Role role, long prevHeartTime) {
+        int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+        PkInfoBox box = role.getPkInfoBox();
         if (box.getIncense() > 0 && currTime >= box.getIncense()) {
             box.setIncense(0);
             this.roleService.stateRefresh(role);
@@ -93,7 +92,7 @@ public class PkService extends ActivityHandler
         }
     }
     
-    public void doFightEnd(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightEnd(Role role, FightEndEvent fightEndEvent) {
         if (!this.isMatchFightType(role, fightEndEvent.getFightType())) {
             return;
         }
@@ -116,19 +115,20 @@ public class PkService extends ActivityHandler
                 break;
             }
         }
+        return;
     }
     
-    private boolean isMatchFightType(final Role role, final int fightType) {
+    private boolean isMatchFightType(Role role, int fightType) {
         return FIGHT_TYPE.FORCE_PK.getValue() == fightType;
     }
     
-    public void doFightWin(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightWin(Role role, FightEndEvent fightEndEvent) {
         if (this.isASide(role, fightEndEvent.getRolesA()) && !this.isAllRedName(fightEndEvent.getRolesB())) {
-            final PkInfoBox box = role.getPkInfoBox();
-            final SysMapInfo mapInfo = this.mapService.getMap(role.getPos().getMapId());
+            PkInfoBox box = role.getPkInfoBox();
+            SysMapInfo mapInfo = this.mapService.getMap((int)role.getPos().getMapId());
             if (role.getLastDead() > 0 && box.getConceal() <= 0 && !box.isRedName() && mapInfo.getIsWanted() != 1) {
                 box.setConceal((int)((System.currentTimeMillis() + 60000L) / 1000L));
-                MessagePusher.notify2Player(role, 1107);
+                MessagePusher.notify2Player(role, 1107, new Object[0]);
                 role.save();
             }
             box.setRedName(true);
@@ -138,42 +138,48 @@ public class PkService extends ActivityHandler
             this.checkAfterWin(role);
         }
         if (role.getLastDead() == 0) {
-            final Team team = this.teamService.getTeam(role.getRoleId());
-            if (team != null && !team.isLeader(role.getRoleId())) {
+            Team team = this.teamService.getTeam((int)role.getRoleId());
+            if (team != null && !team.isLeader((int)role.getRoleId())) {
                 this.teamService.leaveTemp(role, true);
             }
             role.setVisible(1201);
-            this.roleService.goBackBorn(role, new Pos(107, 64, 5, 1002));
-            final long exp = BigDecimalUtil.decimalScaleDown(0, FormulaHero.formulaHeroLvUpExp(role.getLevel(), role.getLevel() + 1, role.getRelive()) * 0.2).longValue();
+            this.roleService.goBackBorn(role, new Pos(Integer.valueOf(107), Integer.valueOf(64), Integer.valueOf(5), Integer.valueOf(1002)));
+            long exp = BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf((double)FormulaHero.formulaHeroLvUpExp(role.getLevel(), Integer.valueOf((int)role.getLevel() + 1), role.getRelive()) * 0.2)).longValue();
             this.teamService.memberHandleThreadLocal(role, memberRole -> this.roleService.punishFightDead(memberRole, -exp, "由于你的死亡，你丢失了"));
+            return;
+        }
+        else {
+            return;
         }
     }
     
-    public boolean isASide(final Role role, final List<Role> rolesA) {
+    public boolean isASide(Role role, List<Role> rolesA) {
         if (rolesA != null) {
-            for (final Role roleA : rolesA) {
+            for (Role roleA : rolesA) {
                 if (role.getId().equals(roleA.getId())) {
                     return true;
                 }
+                continue;
             }
         }
         return false;
     }
     
-    private boolean isAllRedName(final List<Role> roles) {
+    private boolean isAllRedName(List<Role> roles) {
         if (roles != null) {
-            for (final Role role : roles) {
+            for (Role role : roles) {
                 if (!role.getPkInfoBox().isRedName()) {
                     return false;
                 }
+                continue;
             }
         }
         return true;
     }
     
-    public void doFightFail(final Role role, final FightEndEvent fightEndEvent) {
-        this.roleService.goBackBorn(role, new Pos(107, 64, 5, 1002));
-        final long exp = BigDecimalUtil.decimalScaleDown(0, FormulaHero.formulaHeroLvUpExp(role.getLevel(), role.getLevel() + 1, role.getRelive()) * 0.2).longValue();
+    public void doFightFail(Role role, FightEndEvent fightEndEvent) {
+        this.roleService.goBackBorn(role, new Pos(Integer.valueOf(107), Integer.valueOf(64), Integer.valueOf(5), Integer.valueOf(1002)));
+        long exp = BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf((double)FormulaHero.formulaHeroLvUpExp(role.getLevel(), Integer.valueOf((int)role.getLevel() + 1), role.getRelive()) * 0.2)).longValue();
         this.roleService.punishFightDead(role, -exp, "由于你的死亡，你丢失了");
         if (!this.teamService.isInTeam(role) || this.teamService.isTeamLeader(role)) {
             Role killRole = null;
@@ -191,69 +197,72 @@ public class PkService extends ActivityHandler
         }
     }
     
-    private void addKillRole(final Role role, final Role targetRole) {
+    private void addKillRole(Role role, Role targetRole) {
         if (role.getPkInfoBox().getKillRoles() == null) {
-            role.getPkInfoBox().setKillRoles(new HashMap<Long, PkRecord>());
+            role.getPkInfoBox().setKillRoles(new HashMap());
         }
-        final int now = (int)(System.currentTimeMillis() / 1000L);
-        final PkRecord pkRecord = new PkRecord(targetRole.getId(), now);
-        role.getPkInfoBox().getKillRoles().put(pkRecord.getId(), pkRecord);
+        int now = (int)(System.currentTimeMillis() / 1000L);
+        PkRecord pkRecord = new PkRecord((long)targetRole.getId(), now);
+        role.getPkInfoBox().getKillRoles().put(Long.valueOf(pkRecord.getId()), pkRecord);
     }
     
-    private void addBeKillRole(final Role role, final Role targetRole) {
+    private void addBeKillRole(Role role, Role targetRole) {
         if (role.getPkInfoBox().getBeKillRoles() == null) {
-            role.getPkInfoBox().setBeKillRoles(new HashMap<Long, PkRecord>());
+            role.getPkInfoBox().setBeKillRoles(new HashMap());
         }
-        final int now = (int)(System.currentTimeMillis() / 1000L);
-        final PkRecord pkRecord = new PkRecord(targetRole.getId(), now);
-        role.getPkInfoBox().getBeKillRoles().put(pkRecord.getId(), pkRecord);
+        int now = (int)(System.currentTimeMillis() / 1000L);
+        PkRecord pkRecord = new PkRecord((long)targetRole.getId(), now);
+        role.getPkInfoBox().getBeKillRoles().put(Long.valueOf(pkRecord.getId()), pkRecord);
     }
     
-    private Role getOperRole(final List<Role> roles) {
+    private Role getOperRole(List<Role> roles) {
         if (roles != null && roles.size() > 0) {
             if (roles.size() == 1) {
-                return roles.get(0);
+                return (Role)roles.get(0);
             }
-            for (final Role role : roles) {
+            for (Role role : roles) {
                 if (this.teamService.isTeamLeader(role)) {
                     return role;
                 }
+                continue;
             }
         }
         return null;
     }
     
-    public void doFightRunAway(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightRunAway(Role role, FightEndEvent fightEndEvent) {
     }
     
-    public void doFightMaxRound(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightMaxRound(Role role, FightEndEvent fightEndEvent) {
         if (this.isASide(role, fightEndEvent.getRolesA())) {
-            final long exp = BigDecimalUtil.decimalScaleDown(0, FormulaHero.formulaHeroLvUpExp(role.getLevel(), role.getLevel() + 1, role.getRelive()) * 0.2).longValue();
+            long exp = BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf((double)FormulaHero.formulaHeroLvUpExp(role.getLevel(), Integer.valueOf((int)role.getLevel() + 1), role.getRelive()) * 0.2)).longValue();
             this.roleService.punishFightDead(role, -exp, "由于你的死亡，你丢失了");
         }
     }
     
-    public boolean isInPrisonTime(final Role role) {
+    public boolean isInPrisonTime(Role role) {
         return role.getPkInfoBox().getPrisonTime() > 0;
     }
     
-    public void checkEnterMap(final Role role) {
+    public void checkEnterMap(Role role) {
         this.teamService.memberHandle(role, memberRole -> {
             if (this.isNeedInPrison(memberRole)) {
                 this.add2Prison(memberRole);
             }
+            return;
         });
     }
     
-    public void checkAfterWin(final Role role) {
+    public void checkAfterWin(Role role) {
         this.teamService.memberHandle(role, memberRole -> {
             if (this.isNeedInPrison(memberRole)) {
                 this.add2Prison(memberRole);
             }
+            return;
         });
     }
     
-    private boolean isNeedInPrison(final Role role) {
+    private boolean isNeedInPrison(Role role) {
         if (role.getVisible() == 1201) {
             role.setVisible(1);
             return false;
@@ -262,8 +271,8 @@ public class PkService extends ActivityHandler
             return false;
         }
         if (role.getPkInfoBox().isRedName()) {
-            final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
-            final SysMapInfo mapInfo = this.mapService.getMap(role.getPos().getMapId());
+            int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+            SysMapInfo mapInfo = this.mapService.getMap((int)role.getPos().getMapId());
             if (mapInfo.getIsWanted() == 1 && role.getPkInfoBox().getRedTime() > currTime) {
                 return true;
             }
@@ -271,22 +280,22 @@ public class PkService extends ActivityHandler
         return false;
     }
     
-    public void add2Prison(final Role role) {
+    public void add2Prison(Role role) {
         if (this.teamService.isInTeam(role)) {
             this.teamService.leave(role, false);
         }
-        final PkInfoBox pkInfoBox = role.getPkInfoBox();
+        PkInfoBox pkInfoBox = role.getPkInfoBox();
         int x = 62;
         int y = 5;
         int time = 60;
-        final ReqTelePort reqTelePort = new ReqTelePort();
+        ReqTelePort reqTelePort = new ReqTelePort();
         reqTelePort.setMapId(1201);
-        final int size = pkInfoBox.getKillRoles().size();
+        int size = pkInfoBox.getKillRoles().size();
         if (size > 3 && size < 6) {
             x = 27;
             y = 34;
             time = 90;
-            final int round = RandomUtil.round(1, 10);
+            int round = RandomUtil.round(Integer.valueOf(1), Integer.valueOf(10));
             if (round < 5) {
                 x = 10;
                 y = 43;
@@ -302,66 +311,68 @@ public class PkService extends ActivityHandler
         reqTelePort.setX(x);
         reqTelePort.setY(y);
         this.mapService.changeMap(role, reqTelePort, null);
-        pkInfoBox.setPrisonTime((int)((System.currentTimeMillis() + time * 60000L) / 1000L));
+        pkInfoBox.setPrisonTime((int)((System.currentTimeMillis() + (long)time * 60000L) / 1000L));
         this.roleService.stateRefresh(role);
         role.save();
     }
     
-    public void removeFromPrison(final Role role, final int map, final int x, final int y) {
+    public void removeFromPrison(Role role, int map, int x, int y) {
         role.getPkInfoBox().setRedName(false);
         role.getPkInfoBox().setRedTime(0);
         role.getPkInfoBox().setPrisonTime(0);
         this.mapService.changeMap(role, new ReqTelePort(map, x, y), "runs_prison");
     }
     
-    public void loginCheckFromPrison(final Role role) {
-        final Pos pos = role.getPos();
-        if (pos.getMapId().equals(1201)) {
-            final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
-            final PkInfoBox box = role.getPkInfoBox();
+    public void loginCheckFromPrison(Role role) {
+        Pos pos = role.getPos();
+        if (pos.getMapId().equals(Integer.valueOf(1201))) {
+            int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+            PkInfoBox box = role.getPkInfoBox();
             if (box.getPrisonTime() < currTime) {
                 box.setRedName(false);
                 box.setRedTime(0);
                 role.getPkInfoBox().setPrisonTime(0);
-                pos.setX(44);
-                pos.setY(19);
+                pos.setX(Integer.valueOf(44));
+                pos.setY(Integer.valueOf(19));
             }
         }
     }
     
-    public void npcButton(final Role role, final String msg, final Npc npc) {
-        if (SpringUtils.getBean(PkService.class).isInPrisonTime(role)) {
-            MessagePusher.notify2Player(role, 1113);
+    public void npcButton(Role role, String msg, Npc npc) {
+        if (((PkService)SpringUtils.getBean(PkService.class)).isInPrisonTime(role)) {
+            MessagePusher.notify2Player(role, 1113, new Object[0]);
             return;
         }
-        final ReqTelePort reqTelePort = new ReqTelePort();
+        ReqTelePort reqTelePort = new ReqTelePort();
         reqTelePort.setMapId(1011);
         reqTelePort.setX(124);
         reqTelePort.setY(67);
         SpringUtils.getMapService().changeMap(role, reqTelePort, msg);
+        return;
     }
     
-    public void searchRole(final IoSession session, final String name) {
+    public void searchRole(IoSession session, String name) {
         if (name.length() <= 0) {
             MessagePusher.pushMessage(session, new RespMsg("你要找的人目前不在大话的世界中#<E:17>#"));
             return;
         }
-        final List<Role> collect = DataCache.ONLINE_ROLES.values().stream().filter(e -> e.getName().contains(name) || e.getRoleId().toString().equals(name)).collect(Collectors.toList());
+        List<Role> collect = (List)DataCache.ONLINE_ROLES.values().stream().filter(e -> e.getName().contains(name) || e.getRoleId().toString().equals(name)).collect(Collectors.toList());
         if (collect.size() <= 0) {
             MessagePusher.pushMessage(session, new RespMsg("你要找的人目前不在大话的世界中#<E:17>#"));
             return;
         }
-        final List<SearchFriend> objects = new ArrayList<SearchFriend>();
-        for (final Role role : collect) {
-            objects.add(new SearchFriend(role.getRoleId(), role.getName(), role.getSerial(), role.getRelive().byteValue(), role.getLevel().shortValue()));
+        List<SearchFriend> objects = new ArrayList<>();
+        for (Role role : collect) {
+            objects.add(new SearchFriend((int)role.getRoleId(), role.getName(), (int)role.getSerial(), role.getRelive().byteValue(), role.getLevel().shortValue()));
         }
-        final RespSearchRole searchRole = new RespSearchRole();
+        RespSearchRole searchRole = new RespSearchRole();
         searchRole.setList(objects);
         MessagePusher.pushMessage(session, searchRole);
+        return;
     }
     
-    public void traceRole(final IoSession session, final int roleId) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void traceRole(IoSession session, int roleId) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
@@ -369,48 +380,48 @@ public class PkService extends ActivityHandler
             MessagePusher.pushMessage(session, new RespMsg("你要找的人目前刚刚离开了大话的世界#<E:17>#"));
             return;
         }
-        final Role player = this.roleService.getOnlinePlayer(roleId);
+        Role player = this.roleService.getOnlinePlayer(roleId);
         if (player == null) {
             MessagePusher.pushMessage(session, new RespMsg("你要找的人目前刚刚离开了大话的世界#<E:17>#"));
             return;
         }
-        final Pos pos = player.getPos();
-        if (pos.getMapId().equals(3002) || pos.getMapId().equals(3002) || pos.getMapId().equals(3002)) {
+        Pos pos = player.getPos();
+        if (pos.getMapId().equals(Integer.valueOf(3002)) || pos.getMapId().equals(Integer.valueOf(3002)) || pos.getMapId().equals(Integer.valueOf(3002))) {
             MessagePusher.pushMessage(session, new RespMsg(player.getName() + "在帮派，该场景不可被追踪"));
             return;
         }
-        if (pos.getMapId().equals(3003)) {
+        if (pos.getMapId().equals(Integer.valueOf(3003))) {
             MessagePusher.pushMessage(session, new RespMsg(player.getName() + "在水陆大会，该场景不可被追踪"));
             return;
         }
-        if (pos.getMapId().equals(4154)) {
+        if (pos.getMapId().equals(Integer.valueOf(4154))) {
             MessagePusher.pushMessage(session, new RespMsg(player.getName() + "在英雄争霸赛，该场景不可被追踪"));
             return;
         }
-        if (pos.getMapId().equals(3001)) {
+        if (pos.getMapId().equals(Integer.valueOf(3001))) {
             MessagePusher.pushMessage(session, new RespMsg(player.getName() + "在帮派大战，该场景不可被追踪"));
             return;
         }
-        if (pos.getMapId().equals(1201)) {
+        if (pos.getMapId().equals(Integer.valueOf(1201))) {
             MessagePusher.pushMessage(session, new RespMsg(player.getName() + "在天牢，该场景不可被追踪"));
             return;
         }
-        final boolean currency = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, 5000L, "千里追踪");
+        boolean currency = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, 5000L, "千里追踪");
         if (!currency) {
             return;
         }
         role.pushTempCache("trace", pos.getMapId() + "-" + pos.getX() + "-" + pos.getY());
-        final RespTraceRole traceRole = new RespTraceRole();
-        traceRole.setRoleId(player.getRoleId());
-        traceRole.setSerial(player.getSerial());
+        RespTraceRole traceRole = new RespTraceRole();
+        traceRole.setRoleId((int)player.getRoleId());
+        traceRole.setSerial((int)player.getSerial());
         traceRole.setName(player.getName());
         traceRole.setRelive(player.getRelive().byteValue());
         traceRole.setLevel(player.getLevel().shortValue());
         traceRole.setWeapon(player.getWeaponIcon());
         traceRole.setLightEffect(this.equipService.getWearEffect(role));
-        final List<WearEquip> wearEquips = this.equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = this.equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
-            final int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
+            int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
             traceRole.setGem(num);
         }
         traceRole.setList(this.roleService.deyList(role.getColor()));
@@ -418,36 +429,38 @@ public class PkService extends ActivityHandler
         traceRole.setMap(pos.getX().shortValue());
         traceRole.setMap(pos.getY().shortValue());
         MessagePusher.pushMessage(session, traceRole);
+        return;
     }
     
-    public void traceGo(final IoSession session) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void traceGo(IoSession session) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final Object trace = role.getTempCache("trace", null);
+        Object trace = role.getTempCache("trace", null);
         if (trace == null) {
             return;
         }
-        final String[] split = trace.toString().split("-");
+        String[] split = trace.toString().split("-");
         if (split.length < 3) {
             return;
         }
-        final ReqTelePort reqTelePort = new ReqTelePort(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Integer.valueOf(split[2]));
+        ReqTelePort reqTelePort = new ReqTelePort((int)Integer.valueOf(split[0]), (int)Integer.valueOf(split[1]), (int)Integer.valueOf(split[2]));
         this.mapService.changeMap(role, reqTelePort, null);
+        return;
     }
     
-    public void viewPrisoner(final Role role, final Npc npc) {
-        final RespPrisonerInfo respPrisonerInfo = new RespPrisonerInfo();
-        final List<Role> prisonRoles = this.getPrisonRoles();
-        for (final Role prisonRole : prisonRoles) {
+    public void viewPrisoner(Role role, Npc npc) {
+        RespPrisonerInfo respPrisonerInfo = new RespPrisonerInfo();
+        List<Role> prisonRoles = this.getPrisonRoles();
+        for (Role prisonRole : prisonRoles) {
             respPrisonerInfo.getList().add(new PrisonerInfo(prisonRole));
         }
-        MessagePusher.pushMessage(role.getId(), respPrisonerInfo);
+        MessagePusher.pushMessage((long)role.getId(), respPrisonerInfo);
     }
     
     public List<Role> getPrisonRoles() {
-        final List<Role> prisonRoles = new ArrayList<Role>();
+        List<Role> prisonRoles = new ArrayList<>();
         DataCache.ONLINE_ROLES.values().forEach(role -> {
             if (role.getPkInfoBox().getPrisonTime() > 0) {
                 prisonRoles.add(role);
@@ -457,8 +470,8 @@ public class PkService extends ActivityHandler
         return prisonRoles;
     }
     
-    public void releaseInfo(final Role role, final int id) {
-        final Role targetRole = this.roleService.getOnlinePlayer(id);
+    public void releaseInfo(Role role, int id) {
+        Role targetRole = this.roleService.getOnlinePlayer(id);
         if (targetRole == null) {
             MessagePusher.pushMessage(role, new RespMsg("该玩家不在线，无法保释"));
             return;
@@ -467,26 +480,27 @@ public class PkService extends ActivityHandler
             MessagePusher.notify2Player(role, 1119, targetRole.getName());
             return;
         }
-        final RespReleaseInfo releaseInfo = new RespReleaseInfo();
-        releaseInfo.setRoleId(targetRole.getRoleId());
-        releaseInfo.setSerial(targetRole.getSerial());
+        RespReleaseInfo releaseInfo = new RespReleaseInfo();
+        releaseInfo.setRoleId((int)targetRole.getRoleId());
+        releaseInfo.setSerial((int)targetRole.getSerial());
         releaseInfo.setName(targetRole.getName());
         releaseInfo.setRelive(targetRole.getRelive().byteValue());
         releaseInfo.setLevel(targetRole.getLevel().shortValue());
         releaseInfo.setWeapon(targetRole.getWeaponIcon());
         releaseInfo.setLightEffect(this.equipService.getWearEffect(targetRole));
-        final List<WearEquip> wearEquips = this.equipService.getEquipValid(targetRole, false);
+        List<WearEquip> wearEquips = this.equipService.getEquipValid(targetRole, false);
         if (wearEquips.size() > 0) {
-            final int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
+            int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
             releaseInfo.setGem(num);
         }
         releaseInfo.setList(this.roleService.deyList(targetRole.getColor()));
         releaseInfo.setBail(String.valueOf(10000L));
         MessagePusher.pushMessage(role, releaseInfo);
+        return;
     }
     
-    public void confirmReleasePrisoner(final Role role, final int id) {
-        final Role targetRole = this.roleService.getOnlinePlayer(id);
+    public void confirmReleasePrisoner(Role role, int id) {
+        Role targetRole = this.roleService.getOnlinePlayer(id);
         if (targetRole == null) {
             MessagePusher.pushMessage(role, new RespMsg("该玩家不在线，无法保释"));
             return;
@@ -501,6 +515,7 @@ public class PkService extends ActivityHandler
         this.removeFromPrison(targetRole, 1201, 47, 24);
         this.roleService.stateRefresh(targetRole);
         targetRole.save();
-        MessagePusher.pushMessage(role, new RespReleasePrisonerSuccess(targetRole.getRoleId()));
+        MessagePusher.pushMessage(role, new RespReleasePrisonerSuccess((int)targetRole.getRoleId()));
+        return;
     }
 }

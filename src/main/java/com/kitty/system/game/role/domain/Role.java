@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.domain;
 
 import com.kitty.system.game.player.serializer.PlayerSerializerUtil;
@@ -259,32 +258,32 @@ public class Role extends BaseEntity<Long>
     private Map<Integer, Integer> heartCounts;
     
     public Role() {
-        this.relive = 0;
+        this.relive = Integer.valueOf(0);
         this.exp = 0L;
-        this.gold = 0L;
+        this.gold = Long.valueOf(0L);
         this.tc = 0;
         this.totalGold = 0L;
-        this.silver = 0L;
-        this.coin = 0L;
+        this.silver = Long.valueOf(0L);
+        this.coin = Long.valueOf(0L);
         this.weaponIcon = 0;
         this.masquerade = 0;
         this.cardExpireTime = 0;
-        this.vip = 0;
+        this.vip = Integer.valueOf(0);
         this.currTitle = -1;
-        this.gg = 0;
-        this.lx = 0;
-        this.ll = 0;
-        this.mj = 0;
-        this.fpoint = 0;
-        this.skills = new HashMap<Integer, RoleSkill>();
-        this.faction = 0;
-        this.dailyFiveResetTime = 0L;
+        this.gg = Integer.valueOf(0);
+        this.lx = Integer.valueOf(0);
+        this.ll = Integer.valueOf(0);
+        this.mj = Integer.valueOf(0);
+        this.fpoint = Integer.valueOf(0);
+        this.skills = new HashMap();
+        this.faction = Integer.valueOf(0);
+        this.dailyFiveResetTime = Long.valueOf(0L);
         this.weeklyResetTime = 0L;
         this.monthResetTime = 0L;
-        this.WordTime = 0L;
-        this.lockTime = 0L;
-        this.ofLineTime = 0L;
-        this.preOnlineSec = 0L;
+        this.WordTime = Long.valueOf(0L);
+        this.lockTime = Long.valueOf(0L);
+        this.ofLineTime = Long.valueOf(0L);
+        this.preOnlineSec = Long.valueOf(0L);
         this.createTime = System.currentTimeMillis();
         this.SafeResetStartTime = 0;
         this.offlineNotice = new RoleOfflineNotice();
@@ -297,17 +296,17 @@ public class Role extends BaseEntity<Long>
         this.unlock = false;
         this.expireTimeMap = new HashMap<String, Integer>() {
             {
-                this.put("incenseExpireTime", 0);
+                this.put("incenseExpireTime", Integer.valueOf(0));
             }
         };
         this.lastDead = 1;
         this.visible = 1;
-        this.friendMap = new HashMap<Long, PalFriend>();
-        this.friendGroupMap = new HashMap<Long, PalFriendGroup>();
-        this.palNotifyMap = new HashMap<Long, PalNotify>();
+        this.friendMap = new HashMap();
+        this.friendGroupMap = new HashMap();
+        this.palNotifyMap = new HashMap();
         this.state = 0;
-        this.canFight = true;
-        this.heartCounts = new HashMap<Integer, Integer>(4);
+        this.canFight = Boolean.valueOf(true);
+        this.heartCounts = new HashMap(4);
     }
     
     @JsonIgnore
@@ -316,14 +315,14 @@ public class Role extends BaseEntity<Long>
         return this.id;
     }
     
-    public Object pushTempCache(final String key, final Object value) {
+    public Object pushTempCache(String key, Object value) {
         if (this.tempCache == null) {
-            this.tempCache = new HashMap<String, Object>(4);
+            this.tempCache = new HashMap(4);
         }
         return this.tempCache.put(key, value);
     }
     
-    public <T> T popTempCache(final String key) {
+    public <T> T popTempCache(String key) {
         if (this.tempCache == null) {
             return null;
         }
@@ -331,18 +330,18 @@ public class Role extends BaseEntity<Long>
     }
     
     @JsonIgnore
-    public <T> T getTempCache(final String key, final T defaultValue) {
+    public <T> T getTempCache(String key, T defaultValue) {
         if (this.tempCache == null) {
             return defaultValue;
         }
         return (T)this.tempCache.getOrDefault(key, defaultValue);
     }
     
-    public void setPos(final int x, final int y, final int dir, final int mapId) {
-        this.pos.setX(x);
-        this.pos.setY(y);
-        this.pos.setDir(dir);
-        this.pos.setMapId(mapId);
+    public void setPos(int x, int y, int dir, int mapId) {
+        this.pos.setX(Integer.valueOf(x));
+        this.pos.setY(Integer.valueOf(y));
+        this.pos.setDir(Integer.valueOf(dir));
+        this.pos.setMapId(Integer.valueOf(mapId));
     }
     
     public void save() {

@@ -1,4 +1,3 @@
-
 package com.kitty.mina.codec.reflect;
 
 import org.slf4j.LoggerFactory;
@@ -13,21 +12,24 @@ public class ReflectDecoder implements IMessageDecoder
 {
     private static Logger logger;
     
+    public ReflectDecoder() {
+    }
+    
     @Override
-    public Message readMessage(final int module, final int cmd, final byte[] body) {
-        final IoBuffer in = IoBuffer.allocate(body.length);
+    public Message readMessage(int module, int cmd, byte[] body) {
+        IoBuffer in = IoBuffer.allocate(body.length);
         in.put(body);
         in.flip();
-        final Class<?> msgClazz = MessageFactory.INSTANCE.getMessage(module, cmd);
+        Class<?> msgClazz = MessageFactory.INSTANCE.getMessage(module, cmd);
         if (msgClazz == null) {
             return null;
         }
         try {
-            final Serializer messageCodec = Serializer.getSerializer(msgClazz);
+            Serializer messageCodec = Serializer.getSerializer(msgClazz);
             return (Message)messageCodec.decode(in, msgClazz, null);
         }
-        catch (final Exception e) {
-            ReflectDecoder.logger.error("读取消息出错,模块号{}，类型{},异常{}", new Object[] { module, cmd, e });
+        catch (Exception e) {
+            ReflectDecoder.logger.error("读取消息出错,模块号{}，类型{},异常{}", new Object[] { Integer.valueOf(module), Integer.valueOf(cmd), e });
             return null;
         }
     }

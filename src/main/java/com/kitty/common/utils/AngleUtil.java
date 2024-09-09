@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 public class AngleUtil
@@ -9,50 +8,50 @@ public class AngleUtil
     private AngleUtil() {
     }
     
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         System.out.println(isInCircle(0.0, 0.0, 0.0, 0.0, 0.0));
     }
     
-    public static double relativePosition2Angle(final double x, final double y) {
+    public static double relativePosition2Angle(double x, double y) {
         return Math.toDegrees(Math.atan2(y, x));
     }
     
-    public static double position2Angle(final double sourceX, final double sourceY, final double targetX, final double targetY) {
+    public static double position2Angle(double sourceX, double sourceY, double targetX, double targetY) {
         return circleAngle(relativePosition2Angle(targetX - sourceX, targetY - sourceY));
     }
     
-    public static boolean isInCircle(final double sourceX, final double sourceY, final double targetX, final double targetY, final double radius) {
+    public static boolean isInCircle(double sourceX, double sourceY, double targetX, double targetY, double radius) {
         checkNotNegative(radius, "圆半径");
         return square(radius) >= square(targetX - sourceX) + square(targetY - sourceY);
     }
     
-    public static boolean isInRing(final double sourceX, final double sourceY, final double targetX, final double targetY, final double innerRadius, final double outerRadius) {
+    public static boolean isInRing(double sourceX, double sourceY, double targetX, double targetY, double innerRadius, double outerRadius) {
         checkNotNegative(innerRadius, "内圆半径");
         checkNotNegative(outerRadius, "外圆半径");
-        final double inner = (innerRadius <= outerRadius) ? innerRadius : outerRadius;
-        final double outer = (inner == innerRadius) ? outerRadius : innerRadius;
-        final double distanceSquare = square(targetX - sourceX) + square(targetY - sourceY);
+        double inner = (innerRadius <= outerRadius) ? innerRadius : outerRadius;
+        double outer = (inner == innerRadius) ? outerRadius : innerRadius;
+        double distanceSquare = square(targetX - sourceX) + square(targetY - sourceY);
         return square(inner) <= distanceSquare && distanceSquare <= square(outer);
     }
     
-    public static boolean isInSector(final double sourceX, final double sourceY, final double targetX, final double targetY, final double radius, final double axisAngle, final double extendAngle) {
+    public static boolean isInSector(double sourceX, double sourceY, double targetX, double targetY, double radius, double axisAngle, double extendAngle) {
         checkNotNegative(radius, "扇形半径");
         if (extendAngle >= 180.0) {
             return isInCircle(sourceX, sourceY, targetX, targetY, radius);
         }
-        final double radiusSquare = square(radius);
-        final double distanceSquare = square(targetX - sourceX) + square(targetY - sourceY);
+        double radiusSquare = square(radius);
+        double distanceSquare = square(targetX - sourceX) + square(targetY - sourceY);
         if (distanceSquare <= radiusSquare) {
-            final double maxAngle = circleAngle(axisAngle + extendAngle);
-            final double minAngle = circleAngle(axisAngle - extendAngle);
-            final double realAngel = circleAngle(position2Angle(sourceX, sourceY, targetX, targetY));
-            final boolean across = minAngle > maxAngle;
+            double maxAngle = circleAngle(axisAngle + extendAngle);
+            double minAngle = circleAngle(axisAngle - extendAngle);
+            double realAngel = circleAngle(position2Angle(sourceX, sourceY, targetX, targetY));
+            boolean across = minAngle > maxAngle;
             return maxAngle >= realAngel && (realAngel >= minAngle || across);
         }
         return false;
     }
     
-    public static boolean isInRect(final double sourceX, final double sourceY, final double targetX, final double targetY, final double axisAngle, final double width, final double length) {
+    public static boolean isInRect(double sourceX, double sourceY, double targetX, double targetY, double axisAngle, double width, double length) {
         checkNotNegative(length, "矩形长度");
         checkNotNegative(width, "矩形宽度");
         if (sourceX == targetX && sourceY == targetY) {
@@ -61,37 +60,37 @@ public class AngleUtil
         if (length == 0.0 || width == 0.0) {
             return false;
         }
-        final double distance = distance(sourceX, sourceY, targetX, targetY);
-        final double targetAngle = position2Angle(sourceX, sourceY, targetX, targetY);
-        final double relativeAngle = circleAngle(targetAngle - axisAngle);
-        final double targetRelativeX = angleToXRatio(relativeAngle) * distance;
-        final double targetRelativeY = angleToYRatio(relativeAngle) * distance;
-        final double halfWid = width / 2.0;
+        double distance = distance(sourceX, sourceY, targetX, targetY);
+        double targetAngle = position2Angle(sourceX, sourceY, targetX, targetY);
+        double relativeAngle = circleAngle(targetAngle - axisAngle);
+        double targetRelativeX = angleToXRatio(relativeAngle) * distance;
+        double targetRelativeY = angleToYRatio(relativeAngle) * distance;
+        double halfWid = width / 2.0;
         return 0.0 <= targetRelativeX && targetRelativeX <= length && -halfWid <= targetRelativeY && targetRelativeY <= halfWid;
     }
     
-    private static double circleAngle(final double angle) {
-        final double a = (angle < 0.0) ? (angle + 360.0) : angle;
+    private static double circleAngle(double angle) {
+        double a = (angle < 0.0) ? (angle + 360.0) : angle;
         return a % 360.0;
     }
     
-    public static double distance(final double sourceX, final double sourceY, final double targetX, final double targetY) {
+    public static double distance(double sourceX, double sourceY, double targetX, double targetY) {
         return Math.sqrt(square(targetX - sourceX) + square(targetY - sourceY));
     }
     
-    public static double angleToYRatio(final double angle) {
-        final double a = circleAngle(angle);
+    public static double angleToYRatio(double angle) {
+        double a = circleAngle(angle);
         if (a == 0.0) {
             return 0.0;
         }
         if (a % 90.0 == 0.0) {
-            return (a == 180.0) ? 0.0 : ((a == 270.0) ? -1 : 1);
+            return (a == 180.0) ? 0.0 : ((double)((a == 270.0) ? -1 : 1));
         }
         return Math.sin(Math.toRadians(a));
     }
     
-    public static double angleToXRatio(final double angle) {
-        final double a = circleAngle(angle);
+    public static double angleToXRatio(double angle) {
+        double a = circleAngle(angle);
         if (a == 0.0) {
             return 1.0;
         }
@@ -101,13 +100,14 @@ public class AngleUtil
         return Math.cos(Math.toRadians(a));
     }
     
-    public static double square(final double num) {
+    public static double square(double num) {
         return Math.pow(num, 2.0);
     }
     
-    private static void checkNotNegative(final double num, final String errorMessage) {
+    private static void checkNotNegative(double num, String errorMessage) {
         if (num < 0.0) {
             throw new IllegalArgumentException("[" + errorMessage + "]不能小于0");
         }
+        return;
     }
 }

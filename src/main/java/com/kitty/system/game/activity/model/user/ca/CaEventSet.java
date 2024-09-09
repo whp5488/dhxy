@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.activity.model.user.ca;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class CaEventSet implements Serializable
@@ -42,7 +40,7 @@ public class CaEventSet implements Serializable
         if (!(o instanceof CaEventSet)) {
             return false;
         }
-        final CaEventSet other = (CaEventSet)o;
+        CaEventSet other = (CaEventSet)o;
         return other.canEqual(this) && this.getRound() == other.getRound() && this.getMax() == other.getMax() && this.getSeason() == other.getSeason();
     }
     
@@ -52,7 +50,7 @@ public class CaEventSet implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRound();
         result = result * 59 + this.getMax();
@@ -62,10 +60,9 @@ public class CaEventSet implements Serializable
     
     @Override
     public String toString() {
-        return "CaEventSet(round=" + this.getRound() + ", max=" + this.getMax() + ", season=" + this.getSeason() + ")";
+        return "CaEventSet(round=" + (int)this.getRound() + ", max=" + (int)this.getMax() + ", season=" + this.getSeason() + ")";
     }
     
-    @ConstructorProperties({ "round", "max", "season" })
     public CaEventSet(final byte round, final byte max, final int season) {
         this.round = 1;
         this.max = 3;

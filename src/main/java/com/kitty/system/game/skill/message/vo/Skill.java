@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.skill.message.vo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.skill.domain.RoleSkill;
 import java.io.Serializable;
 
@@ -12,8 +10,8 @@ public class Skill implements Serializable
     private Integer proficient;
     private Integer maxProficient;
     
-    public Skill(final RoleSkill roleSkill) {
-        this.type = -1;
+    public Skill(RoleSkill roleSkill) {
+        this.type = Integer.valueOf(-1);
         this.skillId = roleSkill.getSkillId();
         this.type = roleSkill.getType();
         this.proficient = roleSkill.getProficient();
@@ -60,60 +58,28 @@ public class Skill implements Serializable
         if (!(o instanceof Skill)) {
             return false;
         }
-        final Skill other = (Skill)o;
+        Skill other = (Skill)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$skillId = this.getSkillId();
-        final Object other$skillId = other.getSkillId();
-        Label_0065: {
-            if (this$skillId == null) {
-                if (other$skillId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$skillId.equals(other$skillId)) {
-                break Label_0065;
-            }
+        Object this$skillId = this.getSkillId();
+        Object other$skillId = other.getSkillId();
+        if (!((this$skillId != null) ? this$skillId.equals(other$skillId) : (other$skillId == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0102: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0102;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$proficient = this.getProficient();
-        final Object other$proficient = other.getProficient();
-        Label_0139: {
-            if (this$proficient == null) {
-                if (other$proficient == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$proficient.equals(other$proficient)) {
-                break Label_0139;
-            }
+        Object this$proficient = this.getProficient();
+        Object other$proficient = other.getProficient();
+        if (!((this$proficient != null) ? this$proficient.equals(other$proficient) : (other$proficient == null))) {
             return false;
         }
-        final Object this$maxProficient = this.getMaxProficient();
-        final Object other$maxProficient = other.getMaxProficient();
-        if (this$maxProficient == null) {
-            if (other$maxProficient == null) {
-                return true;
-            }
-        }
-        else if (this$maxProficient.equals(other$maxProficient)) {
-            return true;
-        }
-        return false;
+        Object this$maxProficient = this.getMaxProficient();
+        Object other$maxProficient = other.getMaxProficient();
+        return (this$maxProficient != null) ? this$maxProficient.equals(other$maxProficient) : (other$maxProficient == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -122,15 +88,15 @@ public class Skill implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $skillId = this.getSkillId();
+        Object $skillId = this.getSkillId();
         result = result * 59 + (($skillId == null) ? 43 : $skillId.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $proficient = this.getProficient();
+        Object $proficient = this.getProficient();
         result = result * 59 + (($proficient == null) ? 43 : $proficient.hashCode());
-        final Object $maxProficient = this.getMaxProficient();
+        Object $maxProficient = this.getMaxProficient();
         result = result * 59 + (($maxProficient == null) ? 43 : $maxProficient.hashCode());
         return result;
     }
@@ -141,12 +107,11 @@ public class Skill implements Serializable
     }
     
     public Skill() {
-        this.type = -1;
+        this.type = Integer.valueOf(-1);
     }
     
-    @ConstructorProperties({ "skillId", "type", "proficient", "maxProficient" })
     public Skill(final Integer skillId, final Integer type, final Integer proficient, final Integer maxProficient) {
-        this.type = -1;
+        this.type = Integer.valueOf(-1);
         this.skillId = skillId;
         this.type = type;
         this.proficient = proficient;

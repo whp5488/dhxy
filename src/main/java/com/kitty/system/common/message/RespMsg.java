@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -16,12 +15,12 @@ public class RespMsg extends Message
         this.active = 0;
     }
     
-    public RespMsg(final String msg) {
+    public RespMsg(String msg) {
         this.active = 0;
         this.msg = msg;
     }
     
-    public RespMsg(final String msg, final short active) {
+    public RespMsg(String msg, short active) {
         this.active = 0;
         this.msg = msg;
         this.active = active;
@@ -41,49 +40,5 @@ public class RespMsg extends Message
     
     public void setActive(final short active) {
         this.active = active;
-    }
-    
-    @Override
-    public boolean equals(final Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof RespMsg)) {
-            return false;
-        }
-        final RespMsg other = (RespMsg)o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        if (this$msg == null) {
-            if (other$msg == null) {
-                return this.getActive() == other.getActive();
-            }
-        }
-        else if (this$msg.equals(other$msg)) {
-            return this.getActive() == other.getActive();
-        }
-        return false;
-    }
-    
-    protected boolean canEqual(final Object other) {
-        return other instanceof RespMsg;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $msg = this.getMsg();
-        result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
-        result = result * 59 + this.getActive();
-        return result;
-    }
-    
-    @Override
-    public String toString() {
-        return "RespMsg(msg=" + this.getMsg() + ", active=" + this.getActive() + ")";
     }
 }

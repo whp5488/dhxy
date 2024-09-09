@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.message;
 
 import com.kitty.system.game.email.message.vo.EmailParam;
@@ -11,7 +10,7 @@ public class RespEmailList extends Message
 {
     private List<EmailParam> emails;
     
-    public RespEmailList(final List<EmailParam> emails) {
+    public RespEmailList(List<EmailParam> emails) {
         this.emails = emails;
     }
     

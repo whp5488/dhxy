@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.facade;
 
 import com.kitty.mina.annotation.RequestMapping;
@@ -13,9 +12,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ConfirmController
 {
+    public ConfirmController() {
+    }
+    
     @RequestMapping
-    public void reqConfirmResult(final IoSession session, final ReqConfirmResult reqConfirmResult) {
-        final Role role = SessionUtils.getRoleBySession(session);
-        SpringUtils.getBean(ConfirmService.class).handleConfirmResult(role, reqConfirmResult);
+    public void reqConfirmResult(IoSession session, ReqConfirmResult reqConfirmResult) {
+        Role role = SessionUtils.getRoleBySession(session);
+        ((ConfirmService)SpringUtils.getBean(ConfirmService.class)).handleConfirmResult(role, reqConfirmResult);
     }
 }

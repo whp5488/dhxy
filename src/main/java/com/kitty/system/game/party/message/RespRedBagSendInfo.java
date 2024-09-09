@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.message.vo.ActiviesInfo;
@@ -12,6 +11,9 @@ public class RespRedBagSendInfo extends Message
     private short leftTimes;
     private short memberCount;
     private List<ActiviesInfo> activiesInfoList;
+    
+    public RespRedBagSendInfo() {
+    }
     
     public void setLeftTimes(final short leftTimes) {
         this.leftTimes = leftTimes;

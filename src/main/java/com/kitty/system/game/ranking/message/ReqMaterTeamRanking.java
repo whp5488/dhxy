@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -7,6 +6,9 @@ import com.kitty.mina.message.Message;
 @MessageMeta(module = 4228)
 public class ReqMaterTeamRanking extends Message
 {
+    public ReqMaterTeamRanking() {
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
@@ -15,7 +17,7 @@ public class ReqMaterTeamRanking extends Message
         if (!(o instanceof ReqMaterTeamRanking)) {
             return false;
         }
-        final ReqMaterTeamRanking other = (ReqMaterTeamRanking)o;
+        ReqMaterTeamRanking other = (ReqMaterTeamRanking)o;
         return other.canEqual(this);
     }
     
@@ -25,7 +27,7 @@ public class ReqMaterTeamRanking extends Message
     
     @Override
     public int hashCode() {
-        final int result = 1;
+        int result = 1;
         return result;
     }
     

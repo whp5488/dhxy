@@ -1,20 +1,21 @@
-
 package com.kitty.common.utils;
 
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.util.List;
 
 public class PageUtil
 {
-    public static <T> List<T> subList(final List<T> list, final Integer page, final Integer pageSize) {
+    public PageUtil() {
+    }
+    
+    public static <T> List<T> subList(List<T> list, Integer page, Integer pageSize) {
         if (list == null) {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
         if (list.size() == 0) {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
-        return list.stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        return (List)list.stream().skip((long)(((int)page - 1) * (int)pageSize)).limit((long)(int)pageSize).collect(Collectors.toList());
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -105,7 +104,7 @@ public class RespLookPlayerInfo extends Message
         if (!(o instanceof RespLookPlayerInfo)) {
             return false;
         }
-        final RespLookPlayerInfo other = (RespLookPlayerInfo)o;
+        RespLookPlayerInfo other = (RespLookPlayerInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -115,30 +114,14 @@ public class RespLookPlayerInfo extends Message
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0091: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0091;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$faction = this.getFaction();
-        final Object other$faction = other.getFaction();
-        if (this$faction == null) {
-            if (other$faction == null) {
-                return this.getSerial() == other.getSerial() && this.getTeamMembersCount() == other.getTeamMembersCount() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel() && this.getIsPK() == other.getIsPK();
-            }
-        }
-        else if (this$faction.equals(other$faction)) {
-            return this.getSerial() == other.getSerial() && this.getTeamMembersCount() == other.getTeamMembersCount() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel() && this.getIsPK() == other.getIsPK();
-        }
-        return false;
+        Object this$faction = this.getFaction();
+        Object other$faction = other.getFaction();
+        return ((this$faction != null) ? this$faction.equals(other$faction) : (other$faction == null)) && this.getSerial() == other.getSerial() && this.getTeamMembersCount() == other.getTeamMembersCount() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel() && this.getIsPK() == other.getIsPK();
     }
     
     protected boolean canEqual(final Object other) {
@@ -147,13 +130,13 @@ public class RespLookPlayerInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getLeaderRoleId();
         result = result * 59 + this.getRoleId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $faction = this.getFaction();
+        Object $faction = this.getFaction();
         result = result * 59 + (($faction == null) ? 43 : $faction.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getTeamMembersCount();
@@ -165,6 +148,6 @@ public class RespLookPlayerInfo extends Message
     
     @Override
     public String toString() {
-        return "RespLookPlayerInfo(leaderRoleId=" + this.getLeaderRoleId() + ", roleId=" + this.getRoleId() + ", name=" + this.getName() + ", faction=" + this.getFaction() + ", serial=" + this.getSerial() + ", teamMembersCount=" + this.getTeamMembersCount() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ", isPK=" + this.getIsPK() + ")";
+        return "RespLookPlayerInfo(leaderRoleId=" + this.getLeaderRoleId() + ", roleId=" + this.getRoleId() + ", name=" + this.getName() + ", faction=" + this.getFaction() + ", serial=" + this.getSerial() + ", teamMembersCount=" + this.getTeamMembersCount() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ", isPK=" + (int)this.getIsPK() + ")";
     }
 }

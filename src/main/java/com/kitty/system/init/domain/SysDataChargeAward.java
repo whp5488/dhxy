@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -26,6 +25,9 @@ public class SysDataChargeAward implements Serializable
     @Comment("类型：0.充值奖励 1.每日充值奖励")
     @Column("type")
     private byte type;
+    
+    public SysDataChargeAward() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -67,7 +69,7 @@ public class SysDataChargeAward implements Serializable
         if (!(o instanceof SysDataChargeAward)) {
             return false;
         }
-        final SysDataChargeAward other = (SysDataChargeAward)o;
+        SysDataChargeAward other = (SysDataChargeAward)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -77,17 +79,9 @@ public class SysDataChargeAward implements Serializable
         if (this.getAmount() != other.getAmount()) {
             return false;
         }
-        final Object this$award = this.getAward();
-        final Object other$award = other.getAward();
-        if (this$award == null) {
-            if (other$award == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$award.equals(other$award)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$award = this.getAward();
+        Object other$award = other.getAward();
+        return ((this$award != null) ? this$award.equals(other$award) : (other$award == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -96,12 +90,12 @@ public class SysDataChargeAward implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final long $amount = this.getAmount();
+        long $amount = this.getAmount();
         result = result * 59 + (int)($amount >>> 32 ^ $amount);
-        final Object $award = this.getAward();
+        Object $award = this.getAward();
         result = result * 59 + (($award == null) ? 43 : $award.hashCode());
         result = result * 59 + this.getType();
         return result;
@@ -109,6 +103,6 @@ public class SysDataChargeAward implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataChargeAward(serial=" + this.getSerial() + ", amount=" + this.getAmount() + ", award=" + this.getAward() + ", type=" + this.getType() + ")";
+        return "SysDataChargeAward(serial=" + this.getSerial() + ", amount=" + this.getAmount() + ", award=" + this.getAward() + ", type=" + (int)this.getType() + ")";
     }
 }

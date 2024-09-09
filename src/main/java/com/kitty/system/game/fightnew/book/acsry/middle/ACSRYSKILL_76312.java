@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import org.nutz.lang.util.NutMap;
@@ -14,37 +13,41 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_76312 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_76312() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
-        if (SKILLATTR.SKILLATTR_ZHIYU.getValue() == skill.getType() && effecter.isPlayer()) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 76312);
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            if (playerFightObject.getAcsrySkillList().contains(76313)) {
+        if (SKILLATTR.SKILLATTR_ZHIYU.getValue() == (int)skill.getType() && effecter.isPlayer()) {
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 76312);
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(76313))) {
                 return;
             }
-            target.getStatusMap().setv("1022perpetrator", (Object)("76312_" + effecter.getId()));
-            skillRecord.setT(target.getId());
+            target.getStatusMap().setv("1022perpetrator", "76312_" + effecter.getId());
+            skillRecord.setT((long)(int)target.getId());
         }
+        return;
     }
     
     @Override
-    public NutMap countRecoverBloodEnd(final Fight fight, final FightObject fightObject, final Object... args) {
-        final String string = fightObject.getStatusMap().getString("1022perpetrator");
+    public NutMap countRecoverBloodEnd(Fight fight, FightObject fightObject, Object... args) {
+        String string = fightObject.getStatusMap().getString("1022perpetrator");
         if (string == null || !string.contains(String.valueOf(76312))) {
             return null;
         }
@@ -52,38 +55,39 @@ public class ACSRYSKILL_76312 extends AcsrySkillProcessor
         try {
             life = (int)args[0];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 76312);
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 76312);
         if (life > 0) {
-            final double percent = 0.04;
-            final int addLife = (int)(life * percent);
-            final NutMap map = NutMap.NEW();
-            map.setv("changeLife", (Object)addLife);
-            skillRecord.setT(fightObject.getId());
+            double percent = 0.04;
+            int addLife = (int)((double)life * percent);
+            NutMap map = NutMap.NEW();
+            map.setv("changeLife", Integer.valueOf(addLife));
+            skillRecord.setT((long)(int)fightObject.getId());
             return map;
         }
         return null;
     }
     
     @Override
-    public void statusOver(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void statusOver(Fight fight, FightObject fightObject, Object... args) {
         Integer status = null;
         try {
             status = (Integer)args[0];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        if (status == null || 1022 != status) {
+        if (status == null || 1022 != (int)status) {
             return;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 76312);
-        final String perpetrator = fightObject.getStatusMap().getString("1022perpetrator");
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 76312);
+        String perpetrator = fightObject.getStatusMap().getString("1022perpetrator");
         if (perpetrator != null && perpetrator.contains(String.valueOf(76312))) {
             fightObject.getStatusMap().unset("1022perpetrator");
-            skillRecord.setT(fightObject.getId());
+            skillRecord.setT((long)(int)fightObject.getId());
         }
+        return;
     }
 }

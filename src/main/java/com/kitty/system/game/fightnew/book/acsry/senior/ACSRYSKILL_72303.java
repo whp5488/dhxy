@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -11,26 +10,29 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_72303 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_72303() {
+    }
+    
     @Override
-    public void passive(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void passive(Fight fight, FightObject fightObject, Object... args) {
         if (fightObject.isPlayer() && fight.getRound() == 1) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-            final Role role = playerFightObject.getRole();
-            final int base = 550;
-            final Integer lx = role.getLx();
-            final int baseParam = lx - base;
+            PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+            Role role = playerFightObject.getRole();
+            int base = 550;
+            Integer lx = role.getLx();
+            int baseParam = (int)lx - base;
             if (baseParam <= 0) {
                 return;
             }
-            final int baseHurt = 40;
+            int baseHurt = 40;
             int addHurt = baseParam * baseHurt;
-            final int hurt = playerFightObject.getAcsryPropertyMap().getInt("baseHurt", 0);
+            int hurt = playerFightObject.getAcsryPropertyMap().getInt("baseHurt", 0);
             if (hurt > 0) {
                 addHurt += hurt;
             }
-            playerFightObject.getAcsryPropertyMap().setv("baseHurt", (Object)addHurt);
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 72303);
-            skillRecord.setT(fightObject.getId());
+            playerFightObject.getAcsryPropertyMap().setv("baseHurt", Integer.valueOf(addHurt));
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 72303);
+            skillRecord.setT((long)(int)fightObject.getId());
         }
     }
 }

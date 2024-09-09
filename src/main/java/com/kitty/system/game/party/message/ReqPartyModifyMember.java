@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqPartyModifyMember extends Message
     private Integer id;
     private String name;
     private byte job;
+    
+    public ReqPartyModifyMember() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -43,34 +45,18 @@ public class ReqPartyModifyMember extends Message
         if (!(o instanceof ReqPartyModifyMember)) {
             return false;
         }
-        final ReqPartyModifyMember other = (ReqPartyModifyMember)o;
+        ReqPartyModifyMember other = (ReqPartyModifyMember)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getJob() == other.getJob();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getJob() == other.getJob();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getJob() == other.getJob();
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,11 +65,11 @@ public class ReqPartyModifyMember extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getJob();
         return result;
@@ -91,6 +77,6 @@ public class ReqPartyModifyMember extends Message
     
     @Override
     public String toString() {
-        return "ReqPartyModifyMember(id=" + this.getId() + ", name=" + this.getName() + ", job=" + this.getJob() + ")";
+        return "ReqPartyModifyMember(id=" + this.getId() + ", name=" + this.getName() + ", job=" + (int)this.getJob() + ")";
     }
 }

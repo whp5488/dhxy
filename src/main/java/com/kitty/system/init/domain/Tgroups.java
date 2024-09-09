@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -11,6 +10,9 @@ public class Tgroups
     private String skid;
     @Column("groups_name")
     private String groupsName;
+    
+    public Tgroups() {
+    }
     
     public void setSkid(final String skid) {
         this.skid = skid;

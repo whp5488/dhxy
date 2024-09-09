@@ -1,15 +1,13 @@
-
 package com.kitty.system.game.fightnew.book.acsry.utils;
 
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.enums.common.ACC_GRADE;
 import com.kitty.system.init.domain.SysDataAcsrySuit;
-import java.util.Collection;
 import java.util.Collections;
 import com.kitty.system.game.equip.pool.EquipDataPool;
 import com.kitty.system.init.domain.SysDataAcsry;
-import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.equip.domain.WearEquip;
+import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.vo.utils.StatusConst;
 import com.kitty.system.enums.war.wardef.WarMaxRound;
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -33,330 +31,383 @@ import com.kitty.system.game.fightnew.bean.Fight;
 
 public class AcsrySkillUtil
 {
-    public static void roundStart(final Fight fight, final FightObject fightObject) {
+    public AcsrySkillUtil() {
+    }
+    
+    public static void roundStart(Fight fight, FightObject fightObject) {
         if (fightObject.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
             if (acsrySkillList != null && acsrySkillList.size() > 0) {
-                for (final Integer acsrySerial : acsrySkillList) {
-                    if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_ROUND_START.getValue()).contains(acsrySerial)) {
-                        final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                        processor.passive(fight, playerFightObject);
+                for (Integer acsrySerial : acsrySkillList) {
+                    if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_ROUND_START.getValue())).contains(acsrySerial)) {
+                        AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
+                        processor.passive(fight, playerFightObject, new Object[0]);
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
         }
-        final Set<Integer> skillSerials = SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_ROUND_START_TARGET.getValue());
+        Set<Integer> skillSerials = (Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_ROUND_START_TARGET.getValue());
         if (skillSerials != null && skillSerials.size() > 0) {
-            for (final Integer skillSerial : skillSerials) {
-                final AcsrySkillProcessor processor2 = AcsrySkillProcessor.queryProcessor(skillSerial);
-                processor2.passive(fight, fightObject);
+            for (Integer skillSerial : skillSerials) {
+                AcsrySkillProcessor processor2 = AcsrySkillProcessor.queryProcessor(skillSerial);
+                processor2.passive(fight, fightObject, new Object[0]);
             }
         }
     }
     
-    public static void roundEnd(final Fight fight, final FightObject fightObject) {
+    public static void roundEnd(Fight fight, FightObject fightObject) {
         if (fightObject.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
             if (acsrySkillList == null || acsrySkillList.size() <= 0) {
                 return;
             }
-            for (final Integer acsrySerial : acsrySkillList) {
-                if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.ROUND_END.getValue()).contains(acsrySerial)) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                    processor.passive(fight, playerFightObject);
+            for (Integer acsrySerial : acsrySkillList) {
+                if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.ROUND_END.getValue())).contains(acsrySerial)) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
+                    processor.passive(fight, playerFightObject, new Object[0]);
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    public static void attackEnd(final Fight fight, final FightObject effecter, final FightObject target, RoleSkill roleSkill, final boolean isHit, final List<Integer> clearStatusList, final int targetHurt, final int targetMpHurt, final FightObject sideTarget, final ActionDetailParam actionDetailParam) {
+    public static void attackEnd(Fight fight, FightObject effecter, FightObject target, RoleSkill roleSkill, boolean isHit, List<Integer> clearStatusList, int targetHurt, int targetMpHurt, FightObject sideTarget, ActionDetailParam actionDetailParam) {
         if (roleSkill == null) {
             roleSkill = new RoleSkill();
-            roleSkill.setType(PETSKILLATTR.PETSKILLATTR_WULI.getValue());
-            roleSkill.setSkillId(0);
+            roleSkill.setType(Integer.valueOf(PETSKILLATTR.PETSKILLATTR_WULI.getValue()));
+            roleSkill.setSkillId(Integer.valueOf(0));
         }
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
             if (acsrySkillList != null && acsrySkillList.size() > 0) {
-                for (final Integer acsrySerial : acsrySkillList) {
-                    if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.ATTACK_END.getValue()).contains(acsrySerial) && AcsrySkillConst.getAttackEndEffector().contains(acsrySerial)) {
-                        final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                        processor.attackOver(fight, playerFightObject, target, actionDetailParam, roleSkill, isHit, clearStatusList, targetHurt, targetMpHurt, true, sideTarget);
+                for (Integer acsrySerial : acsrySkillList) {
+                    if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.ATTACK_END.getValue())).contains(acsrySerial) && AcsrySkillConst.getAttackEndEffector().contains(acsrySerial)) {
+                        AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
+                        processor.attackOver(fight, playerFightObject, target, actionDetailParam, roleSkill, Boolean.valueOf(isHit), clearStatusList, Integer.valueOf(targetHurt), Integer.valueOf(targetMpHurt), Boolean.valueOf(true), sideTarget);
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
         }
         if (target.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)target;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            PlayerFightObject playerFightObject = (PlayerFightObject)target;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
             if (acsrySkillList != null && acsrySkillList.size() > 0) {
-                for (final Integer acsrySerial : acsrySkillList) {
-                    if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.ATTACK_END.getValue()).contains(acsrySerial) && AcsrySkillConst.getAttackEndTarget().contains(acsrySerial)) {
-                        final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                        processor.attackOver(fight, effecter, target, actionDetailParam, roleSkill, isHit, clearStatusList, targetHurt, targetMpHurt, true);
+                for (Integer acsrySerial : acsrySkillList) {
+                    if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.ATTACK_END.getValue())).contains(acsrySerial) && AcsrySkillConst.getAttackEndTarget().contains(acsrySerial)) {
+                        AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
+                        processor.attackOver(fight, effecter, target, actionDetailParam, roleSkill, Boolean.valueOf(isHit), clearStatusList, Integer.valueOf(targetHurt), Integer.valueOf(targetMpHurt), Boolean.valueOf(true));
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
         }
-        final String string = effecter.getStatusMap().getString("1008perpetrator", null);
+        String string = effecter.getStatusMap().getString("1008perpetrator", null);
         if (string != null) {
-            if (!string.contains(String.valueOf(73323))) {
-                if (!string.contains(String.valueOf(73322))) {
-                    return;
-                }
+            if (!string.contains(String.valueOf(73323)) && !string.contains(String.valueOf(73322))) {
+                return;
             }
             try {
-                final String[] splits = string.split("_");
-                final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(Integer.parseInt(splits[0]));
-                processor.attackOver(fight, effecter, target, actionDetailParam, roleSkill, isHit, clearStatusList, targetHurt, targetMpHurt, false);
+                String[] splits = string.split("_");
+                AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(Integer.valueOf(Integer.parseInt(splits[0])));
+                processor.attackOver(fight, effecter, target, actionDetailParam, roleSkill, Boolean.valueOf(isHit), clearStatusList, Integer.valueOf(targetHurt), Integer.valueOf(targetMpHurt), Boolean.valueOf(false));
             }
-            catch (final Exception e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
     
-    public static boolean magicSelectTarget(final Fight fight, final FightObject fightObject, RoleSkill roleSkill) {
-        if (!fightObject.isPlayer()) {
-            return false;
-        }
-        final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-        final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
-        if (acsrySkillList == null || acsrySkillList.size() <= 0) {
-            return false;
-        }
-        if (roleSkill == null) {
-            roleSkill = new RoleSkill();
-            roleSkill.setType(PETSKILLATTR.PETSKILLATTR_WULI.getValue());
-            roleSkill.setSkillId(0);
-        }
-        boolean flag = false;
-        for (final Integer acsrySerial : acsrySkillList) {
-            if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.MAGIC_SELECT_TARGET.getValue()).contains(acsrySerial)) {
-                final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                flag = processor.magicSelectTarget(fight, playerFightObject, roleSkill);
-                if (flag) {
-                    break;
-                }
-                continue;
+    public static boolean magicSelectTarget(Fight fight, FightObject fightObject, RoleSkill roleSkill) {
+        if (fightObject.isPlayer()) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            if (acsrySkillList == null || acsrySkillList.size() <= 0) {
+                return false;
             }
+            if (roleSkill == null) {
+                roleSkill = new RoleSkill();
+                roleSkill.setType(Integer.valueOf(PETSKILLATTR.PETSKILLATTR_WULI.getValue()));
+                roleSkill.setSkillId(Integer.valueOf(0));
+            }
+            boolean flag = false;
+            for (Integer acsrySerial : acsrySkillList) {
+                if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.MAGIC_SELECT_TARGET.getValue())).contains(acsrySerial)) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
+                    flag = processor.magicSelectTarget(fight, playerFightObject, roleSkill);
+                    if (flag) {
+                        break;
+                    }
+                    continue;
+                }
+                else {
+                    continue;
+                }
+            }
+            return flag;
         }
-        return flag;
+        else {
+            return false;
+        }
     }
     
-    public static void statusOver(final Fight fight, final FightObject fightObject, final int status) {
+    public static void statusOver(Fight fight, FightObject fightObject, int status) {
         try {
-            final Set<Integer> serials = SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.STATUS_OVER.getValue());
+            Set<Integer> serials = (Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.STATUS_OVER.getValue());
             if (serials != null && serials.size() > 0) {
-                for (final Integer serial : serials) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
-                    processor.statusOver(fight, fightObject, status);
+                for (Integer serial : serials) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+                    processor.statusOver(fight, fightObject, Integer.valueOf(status));
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public static int executeReduceHp(final Fight fight, final FightObject effecter, final FightObject target, RoleSkill roleSkill, final int hurt, final List<Integer> clearStatusList) {
+    public static int executeReduceHp(Fight fight, FightObject effecter, FightObject target, RoleSkill roleSkill, int hurt, List<Integer> clearStatusList) {
         int changeHurt = 0;
         if (roleSkill == null) {
             roleSkill = new RoleSkill();
-            roleSkill.setType(PETSKILLATTR.PETSKILLATTR_WULI.getValue());
-            roleSkill.setSkillId(0);
+            roleSkill.setType(Integer.valueOf(PETSKILLATTR.PETSKILLATTR_WULI.getValue()));
+            roleSkill.setSkillId(Integer.valueOf(0));
         }
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
             if (acsrySkillList != null && acsrySkillList.size() > 0) {
-                for (final Integer acsrySerial : acsrySkillList) {
-                    if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.EXECUTE_REDUCE_HP.getValue()).contains(acsrySerial)) {
-                        final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                        final NutMap map = processor.executeReduceHp(fight, playerFightObject, target, roleSkill, hurt, clearStatusList);
-                        if (map == null) {
+                for (Integer acsrySerial : acsrySkillList) {
+                    if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.EXECUTE_REDUCE_HP.getValue())).contains(acsrySerial)) {
+                        AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
+                        NutMap map = processor.executeReduceHp(fight, playerFightObject, target, roleSkill, Integer.valueOf(hurt), clearStatusList);
+                        if (map != null) {
+                            changeHurt += map.getInt("changeHurt", 0);
+                        }
+                        else {
                             continue;
                         }
-                        changeHurt += map.getInt("changeHurt", 0);
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
         }
-        final String string = effecter.getStatusMap().getString("1008perpetrator", null);
-        Label_0315: {
-            if (string != null) {
-                if (!string.contains(String.valueOf(73323))) {
-                    if (!string.contains(String.valueOf(73322))) {
-                        break Label_0315;
-                    }
-                }
+        String string = effecter.getStatusMap().getString("1008perpetrator", null);
+        if (string != null) {
+            if (string.contains(String.valueOf(73323)) || string.contains(String.valueOf(73322))) {
                 try {
-                    final String[] splits = string.split("_");
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(Integer.parseInt(splits[0]));
-                    final NutMap map = processor.executeReduceHp(fight, effecter, target, roleSkill, hurt, clearStatusList);
+                    String[] splits = string.split("_");
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(Integer.valueOf(Integer.parseInt(splits[0])));
+                    NutMap map = processor.executeReduceHp(fight, effecter, target, roleSkill, Integer.valueOf(hurt), clearStatusList);
                     if (map != null) {
                         changeHurt += map.getInt("changeHurt", 0);
                     }
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        final String str = effecter.getOtherMap().getString("skillRound", null);
+        String str = effecter.getOtherMap().getString("skillRound", null);
         if (str != null) {
-            if (!str.contains(String.valueOf(73332))) {
-                if (!str.contains(String.valueOf(73333))) {
-                    return changeHurt;
-                }
+            if (!str.contains(String.valueOf(73332)) && !str.contains(String.valueOf(73333))) {
+                return changeHurt;
             }
             try {
-                final String[] splits2 = str.split("_");
-                final AcsrySkillProcessor processor2 = AcsrySkillProcessor.queryProcessor(Integer.parseInt(splits2[0]));
-                final NutMap map2 = processor2.executeReduceHp(fight, effecter, target, roleSkill, hurt, clearStatusList);
+                String[] splits2 = str.split("_");
+                AcsrySkillProcessor processor2 = AcsrySkillProcessor.queryProcessor(Integer.valueOf(Integer.parseInt(splits2[0])));
+                NutMap map2 = processor2.executeReduceHp(fight, effecter, target, roleSkill, Integer.valueOf(hurt), clearStatusList);
                 if (map2 != null) {
                     changeHurt += map2.getInt("changeHurt", 0);
                 }
             }
-            catch (final Exception e2) {
+            catch (Exception e2) {
                 e2.printStackTrace();
             }
         }
         return changeHurt;
     }
     
-    public static void afterPrintCommand(final Fight fight) {
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+    public static void afterPrintCommand(Fight fight) {
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             if (fightObject.isPlayer()) {
-                final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-                final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
-                if (acsrySkillList == null || acsrySkillList.size() <= 0) {
-                    continue;
-                }
-                for (final Integer skillSerial : acsrySkillList) {
-                    if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.AFTER_INPUT_INSTRUCT.getValue()).contains(skillSerial)) {
-                        final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(skillSerial);
-                        processor.afterPrintCommand(fight, fightObject);
+                PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+                List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+                if (acsrySkillList != null && acsrySkillList.size() > 0) {
+                    for (Integer skillSerial : acsrySkillList) {
+                        if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.AFTER_INPUT_INSTRUCT.getValue())).contains(skillSerial)) {
+                            AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(skillSerial);
+                            processor.afterPrintCommand(fight, fightObject, new Object[0]);
+                        }
+                        else {
+                            continue;
+                        }
                     }
                 }
+                else {
+                    continue;
+                }
+            }
+            else {
+                continue;
             }
         }
     }
     
-    public static int countRecoverBloodEnd(final Fight fight, final FightObject fightObject, final RoleSkill skill, final int life) {
+    public static int countRecoverBloodEnd(Fight fight, FightObject fightObject, RoleSkill skill, int life) {
         int changeLife = 0;
-        for (final Integer serial : SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.COUNT_RECOVER_BLOOD_END.getValue())) {
-            final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
-            final NutMap map = processor.countRecoverBloodEnd(fight, fightObject, life, skill);
+        for (Integer serial : SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.COUNT_RECOVER_BLOOD_END.getValue())) {
+            AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+            NutMap map = processor.countRecoverBloodEnd(fight, fightObject, Integer.valueOf(life), skill);
             if (map != null) {
                 changeLife += map.getInt("changeLife", 0);
+            }
+            else {
+                continue;
             }
         }
         return changeLife;
     }
     
-    public static int countRecoverMpEnd(final Fight fight, final FightObject fightObject, final int mana) {
+    public static int countRecoverMpEnd(Fight fight, FightObject fightObject, int mana) {
         int changeMana = 0;
-        for (final Integer serial : SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.COUNT_RECOVER_MP_END.getValue())) {
-            final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
-            final NutMap map = processor.countRecoverMpEnd(fight, fightObject, mana);
+        for (Integer serial : SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.COUNT_RECOVER_MP_END.getValue())) {
+            AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+            NutMap map = processor.countRecoverMpEnd(fight, fightObject, Integer.valueOf(mana));
             if (map != null) {
                 changeMana += map.getInt("changeMana", 0);
+            }
+            else {
+                continue;
             }
         }
         return changeMana;
     }
     
-    public static int countRecoverBloodEndSS(final Fight fight, final FightObject effecter, final FightObject target, RoleSkill roleSkill, final int life) {
+    public static int countRecoverBloodEndSS(Fight fight, FightObject effecter, FightObject target, RoleSkill roleSkill, int life) {
         int changeLife = 0;
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
             if (acsrySkillList == null || acsrySkillList.size() <= 0) {
                 return 0;
             }
             if (roleSkill == null) {
                 roleSkill = new RoleSkill();
-                roleSkill.setType(PETSKILLATTR.PETSKILLATTR_WULI.getValue());
-                roleSkill.setSkillId(0);
+                roleSkill.setType(Integer.valueOf(PETSKILLATTR.PETSKILLATTR_WULI.getValue()));
+                roleSkill.setSkillId(Integer.valueOf(0));
             }
-            for (final Integer acsrySerial : acsrySkillList) {
-                if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.COUNT_RECOVER_BLOOD_END_SS.getValue()).contains(acsrySerial)) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
-                    final NutMap map = processor.countRecoverBloodEndSS(fight, playerFightObject, target, life, roleSkill);
-                    if (map == null) {
+            for (Integer acsrySerial : acsrySkillList) {
+                if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.COUNT_RECOVER_BLOOD_END_SS.getValue())).contains(acsrySerial)) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(acsrySerial);
+                    NutMap map = processor.countRecoverBloodEndSS(fight, playerFightObject, target, Integer.valueOf(life), roleSkill);
+                    if (map != null) {
+                        changeLife += map.getInt("changeLife", 0);
+                    }
+                    else {
                         continue;
                     }
-                    changeLife += map.getInt("changeLife", 0);
+                }
+                else {
+                    continue;
                 }
             }
         }
         return changeLife;
     }
     
-    public static int reduceMp(final Fight fight, final FightObject fightObject, final int mana) {
+    public static int reduceMp(Fight fight, FightObject fightObject, int mana) {
         int changeMana = 0;
-        for (final Integer serial : SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.REDUCE_MP.getValue())) {
-            final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
-            final NutMap map = processor.reduceMp(fight, fightObject, mana);
+        for (Integer serial : SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.REDUCE_MP.getValue())) {
+            AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+            NutMap map = processor.reduceMp(fight, fightObject, Integer.valueOf(mana));
             if (map != null) {
                 changeMana += map.getInt("changeMana", 0);
+            }
+            else {
+                continue;
             }
         }
         return changeMana;
     }
     
-    public static void beforeExecuteMagic(final Fight fight, final FightObject effecter, final FightObject target, final RoleSkill skill) {
+    public static void beforeExecuteMagic(Fight fight, FightObject effecter, FightObject target, RoleSkill skill) {
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
-            for (final Integer skillSerial : acsrySkillList) {
-                if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_EXECUTE_MAGIC.getValue()).contains(skillSerial)) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(skillSerial);
-                    if (processor == null) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerFightObject.getAcsrySkillList();
+            for (Integer skillSerial : acsrySkillList) {
+                if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_EXECUTE_MAGIC.getValue())).contains(skillSerial)) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(skillSerial);
+                    if (processor != null) {
+                        processor.beforeExecuteMagic(fight, effecter, target, skill);
+                    }
+                    else {
                         continue;
                     }
-                    processor.beforeExecuteMagic(fight, effecter, target, skill);
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    public static int poisonReduceHp(final Fight fight, final FightObject target, final int hurt) {
+    public static int poisonReduceHp(Fight fight, FightObject target, int hurt) {
         int changeHurt = 0;
-        final Set<Integer> serials = SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.POISON_REDUCE_HP.getValue());
+        Set<Integer> serials = (Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.POISON_REDUCE_HP.getValue());
         if (serials.size() > 0) {
-            for (final Integer serial : serials) {
-                final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+            for (Integer serial : serials) {
+                AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
                 if (processor != null) {
-                    final NutMap map = processor.poisonReduceHp(fight, target, hurt);
-                    if (map == null) {
+                    NutMap map = processor.poisonReduceHp(fight, target, Integer.valueOf(hurt));
+                    if (map != null) {
+                        changeHurt += map.getInt("changeHurt", 0);
+                    }
+                    else {
                         continue;
                     }
-                    changeHurt += map.getInt("changeHurt", 0);
+                }
+                else {
+                    continue;
                 }
             }
         }
         return changeHurt;
     }
     
-    public static int beforeReduceHurtMp(final Fight fight, final FightObject effecter, final FightObject target, final RoleSkill skill, final int mp) {
+    public static int beforeReduceHurtMp(Fight fight, FightObject effecter, FightObject target, RoleSkill skill, int mp) {
         int changeMp = 0;
         if (target.isPlayer()) {
-            final PlayerFightObject playerTarget = (PlayerFightObject)target;
-            final List<Integer> acsrySkillList = playerTarget.getAcsrySkillList();
+            PlayerFightObject playerTarget = (PlayerFightObject)target;
+            List<Integer> acsrySkillList = playerTarget.getAcsrySkillList();
             if (acsrySkillList.size() > 0) {
-                for (final Integer serial : acsrySkillList) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+                for (Integer serial : acsrySkillList) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
                     if (processor != null) {
-                        final NutMap map = processor.beforeReduceHurtMp(fight, effecter, target, skill, mp);
-                        if (map == null) {
+                        NutMap map = processor.beforeReduceHurtMp(fight, effecter, target, skill, Integer.valueOf(mp));
+                        if (map != null) {
+                            changeMp += map.getInt("changeMana", 0);
+                        }
+                        else {
                             continue;
                         }
-                        changeMp += map.getInt("changeMana", 0);
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
@@ -364,46 +415,61 @@ public class AcsrySkillUtil
         return changeMp;
     }
     
-    public static NutMap initializeFightObject(final Role role) {
-        final List<Integer> acsrySkillList = getAcsrySkillList(role);
-        final NutMap nutMap = NutMap.NEW();
+    public static NutMap initializeFightObject(Role role) {
+        List<Integer> acsrySkillList = getAcsrySkillList(role);
+        NutMap nutMap = NutMap.NEW();
         if (acsrySkillList != null && acsrySkillList.size() > 0) {
-            for (final Integer serial : acsrySkillList) {
-                if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.INITIALIZE_FIGHT_OBJECT.getValue()).contains(serial)) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
-                    if (processor == null) {
-                        continue;
+            for (Integer serial : acsrySkillList) {
+                if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.INITIALIZE_FIGHT_OBJECT.getValue())).contains(serial)) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+                    if (processor != null) {
+                        NutMap map = processor.addition(role, acsrySkillList);
+                        if (map != null) {
+                            for (String key : map.keySet()) {
+                                nutMap.setv(key, Double.valueOf(nutMap.getDouble(key) + map.getDouble(key)));
+                            }
+                        }
+                        else {
+                            continue;
+                        }
                     }
-                    final NutMap map = processor.addition(role, acsrySkillList);
-                    if (map == null) {
+                    else {
                         continue;
-                    }
-                    for (final String key : map.keySet()) {
-                        nutMap.setv(key, (Object)(nutMap.getDouble(key) + map.getDouble(key)));
                     }
                 }
+                else {
+                    continue;
+                }
             }
+            return nutMap;
         }
         return nutMap;
     }
     
-    public static NutMap wearTakeEffect(final Role role) {
-        final List<Integer> acsrySkillList = getAcsrySkillList(role);
+    public static NutMap wearTakeEffect(Role role) {
+        List<Integer> acsrySkillList = getAcsrySkillList(role);
         if (acsrySkillList != null && acsrySkillList.size() > 0) {
-            final NutMap nutMap = NutMap.NEW();
-            for (final Integer serial : acsrySkillList) {
-                if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.WEAR_TAKE_EFFECT.getValue()).contains(serial)) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
-                    if (processor == null) {
+            NutMap nutMap = NutMap.NEW();
+            for (Integer serial : acsrySkillList) {
+                if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.WEAR_TAKE_EFFECT.getValue())).contains(serial)) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(serial);
+                    if (processor != null) {
+                        NutMap map = processor.additionWear(role, new Object[0]);
+                        if (map != null) {
+                            for (String key : map.keySet()) {
+                                nutMap.setv(key, Double.valueOf(nutMap.getDouble(key) + map.getDouble(key)));
+                            }
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                    else {
                         continue;
                     }
-                    final NutMap map = processor.additionWear(role);
-                    if (map == null) {
-                        continue;
-                    }
-                    for (final String key : map.keySet()) {
-                        nutMap.setv(key, (Object)(nutMap.getDouble(key) + map.getDouble(key)));
-                    }
+                }
+                else {
+                    continue;
                 }
             }
             return nutMap;
@@ -411,30 +477,35 @@ public class AcsrySkillUtil
         return null;
     }
     
-    public static void beforePhysicalAttack(final Fight fight, final FightObject effecter, final FightObject target) {
+    public static void beforePhysicalAttack(Fight fight, FightObject effecter, FightObject target) {
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerEffecter = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerEffecter.getAcsrySkillList();
-            for (final Integer skillSerial : acsrySkillList) {
-                if (SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_PHYSICAL_ATTACK.getValue()).contains(skillSerial)) {
-                    final AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(skillSerial);
-                    if (processor == null) {
+            PlayerFightObject playerEffecter = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerEffecter.getAcsrySkillList();
+            for (Integer skillSerial : acsrySkillList) {
+                if (((Set)SkillDataPool.acsrySkillSerialType.get(ACSRY_SKILL_TRIGGER_DICT.BEFORE_PHYSICAL_ATTACK.getValue())).contains(skillSerial)) {
+                    AcsrySkillProcessor processor = AcsrySkillProcessor.queryProcessor(skillSerial);
+                    if (processor != null) {
+                        processor.beforePhysicalAttack(fight, effecter, target, new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    processor.beforePhysicalAttack(fight, effecter, target);
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    public static void excutePropertyChange(final FightObject fightObject) {
+    public static void excutePropertyChange(FightObject fightObject) {
         if (fightObject.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-            final NutMap acsryPropertyMap = playerFightObject.getAcsryPropertyMap();
-            final List<String> deleteProperies = new ArrayList<String>();
-            for (final Map.Entry<String, Object> entry : acsryPropertyMap.entrySet()) {
-                final String key = entry.getKey();
-                final Object value = entry.getValue();
+            PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+            NutMap acsryPropertyMap = playerFightObject.getAcsryPropertyMap();
+            List<String> deleteProperies = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : acsryPropertyMap.entrySet()) {
+                String key = (String)entry.getKey();
+                Object value = entry.getValue();
                 if (!key.matches("^[0-9]+$")) {
                     continue;
                 }
@@ -449,22 +520,22 @@ public class AcsrySkillUtil
                 else {
                     --valueInt;
                 }
-                acsryPropertyMap.setv(key, (Object)valueInt);
+                acsryPropertyMap.setv(key, Integer.valueOf(valueInt));
             }
             if (deleteProperies.size() > 0) {
                 for (int i = 0; i < deleteProperies.size(); ++i) {
-                    removeProperty(playerFightObject, deleteProperies.get(i));
+                    removeProperty(playerFightObject, (String)deleteProperies.get(i));
                 }
             }
         }
     }
     
-    private static void removeProperty(final PlayerFightObject playerFightObject, final String distStr) {
-        playerFightObject.getAcsryPropertyMap().remove((Object)distStr);
-        playerFightObject.getAcsryPropertyMap().remove((Object)(distStr + "value"));
+    private static void removeProperty(PlayerFightObject playerFightObject, String distStr) {
+        playerFightObject.getAcsryPropertyMap().remove(distStr);
+        playerFightObject.getAcsryPropertyMap().remove(distStr + "value");
     }
     
-    public static void excutePropertyType(final PlayerFightObject playerfightObject, final int dist) {
+    public static void excutePropertyType(PlayerFightObject playerfightObject, int dist) {
         if (PRO_DICT_TYPE.OMIT_K_F.getDist() == dist || PRO_DICT_TYPE.OMIT_K_L.getDist() == dist || PRO_DICT_TYPE.OMIT_K_S.getDist() == dist || PRO_DICT_TYPE.OMIT_K_H.getDist() == dist) {
             removeProperty(playerfightObject, String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()));
             removeProperty(playerfightObject, String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()));
@@ -476,93 +547,100 @@ public class AcsrySkillUtil
         }
     }
     
-    public static int getChageBaseHurt(final FightObject fightObject) {
+    public static int getChageBaseHurt(FightObject fightObject) {
         try {
             if (fightObject.isPlayer()) {
-                final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-                final int chageHurt = playerFightObject.getAcsryPropertyMap().getInt("baseHurt", 0);
+                PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+                int chageHurt = playerFightObject.getAcsryPropertyMap().getInt("baseHurt", 0);
                 return chageHurt;
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
     
-    public static boolean isUnlock(final Fight fight, final FightObject fightObject, final Integer status) {
+    public static boolean isUnlock(Fight fight, FightObject fightObject, Integer status) {
         try {
             int round = fightObject.getStatusMap().getInt(status + "statusConstraint", 0);
             if (round > 0 && round <= WarMaxRound.WAR_MAX_ROUND.getValue()) {
-                fightObject.getStatusMap().setv(status + "statusConstraint", (Object)(--round));
+                fightObject.getStatusMap().setv(status + "statusConstraint", Integer.valueOf(--round));
                 return true;
             }
             if (round > WarMaxRound.WAR_MAX_ROUND.getValue()) {
                 int count = 0;
-                final List<FightObject> mySide = fight.getMySide(fightObject.getId());
+                List<FightObject> mySide = fight.getMySide((int)fightObject.getId());
                 if (mySide.size() > 0) {
                     for (int i = 0; i < mySide.size(); ++i) {
-                        final FightObject obj = mySide.get(i);
+                        FightObject obj = (FightObject)mySide.get(i);
                         if (obj.isFallDown()) {
                             ++count;
                         }
                         else {
-                            for (final Integer j : StatusConst.getControlStatus()) {
-                                if (obj.getStatusValue(j) > 0) {
+                            for (Integer j : StatusConst.getControlStatus()) {
+                                if (obj.getStatusValue((int)j) > 0) {
                                     ++count;
                                     break;
                                 }
+                                continue;
                             }
                         }
                     }
-                    if (count / mySide.size() <= 0.4) {
+                    if ((double)(count / mySide.size()) <= 0.4) {
                         return true;
                     }
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
     
-    public static List<Integer> getAcsrySkillList(final Role role) {
-        final List<Integer> acsrySkillList = new ArrayList<Integer>();
-        final List<WearEquip> wearEquips = DataCache.EQUIP_MAP.get(role.getId());
-        final List<String> suitTypes = new ArrayList<String>();
-        final List<Byte> acsryProductOrders = new ArrayList<Byte>();
+    public static List<Integer> getAcsrySkillList(Role role) {
+        List<Integer> acsrySkillList = new ArrayList<>();
+        List<WearEquip> wearEquips = (List)DataCache.EQUIP_MAP.get(role.getId());
+        List<String> suitTypes = new ArrayList<>();
+        List<Byte> acsryProductOrders = new ArrayList<>();
         for (int i = 0; i < wearEquips.size(); ++i) {
-            if (wearEquips.get(i).getPosition() > 5) {
-                final SysDataAcsry sysDataAcsry = EquipDataPool.acsryMap.get(wearEquips.get(i).getType());
+            if (((WearEquip)wearEquips.get(i)).getPosition() > 5) {
+                SysDataAcsry sysDataAcsry = (SysDataAcsry)EquipDataPool.acsryMap.get(Integer.valueOf(((WearEquip)wearEquips.get(i)).getType()));
                 if (sysDataAcsry != null) {
                     suitTypes.add(sysDataAcsry.getSuiteType());
-                    acsryProductOrders.add(wearEquips.get(i).getProductOrder());
+                    acsryProductOrders.add(Byte.valueOf(((WearEquip)wearEquips.get(i)).getProductOrder()));
                 }
             }
         }
-        final long count = suitTypes.stream().distinct().count();
+        long count = suitTypes.stream().distinct().count();
         if (suitTypes.size() >= 5 && count == 1L) {
-            final Byte min = Collections.min((Collection<? extends Byte>)acsryProductOrders);
-            final SysDataAcsrySuit sysDataAcsrySuit = EquipDataPool.acsrySuitMap.get(suitTypes.get(0));
+            Byte min = (Byte)Collections.min(acsryProductOrders);
+            SysDataAcsrySuit sysDataAcsrySuit = (SysDataAcsrySuit)EquipDataPool.acsrySuitMap.get(suitTypes.get(0));
             if (sysDataAcsrySuit != null) {
-                final List<Integer> skills = sysDataAcsrySuit.getSkills();
-                if (ACC_GRADE.PRICELESS.getValue() == min) {
-                    for (final Integer skill : skills) {
+                List<Integer> skills = sysDataAcsrySuit.getSkills();
+                if (ACC_GRADE.PRICELESS.getValue() == (byte)min) {
+                    for (Integer skill : skills) {
                         acsrySkillList.add(skill);
                     }
                 }
-                else if (ACC_GRADE.RESERVE.getValue() == min) {
-                    for (final Integer skill : skills) {
-                        if (skill % 10000 % 1000 % 100 % 10 < 3) {
+                else if (ACC_GRADE.RESERVE.getValue() == (byte)min) {
+                    for (Integer skill : skills) {
+                        if ((int)skill % 10000 % 1000 % 100 % 10 < 3) {
                             acsrySkillList.add(skill);
+                        }
+                        else {
+                            continue;
                         }
                     }
                 }
-                else if (ACC_GRADE.PLAY_WITH.getValue() == min) {
-                    for (final Integer skill : skills) {
-                        if (skill % 10000 % 1000 % 100 % 10 < 2) {
+                else if (ACC_GRADE.PLAY_WITH.getValue() == (byte)min) {
+                    for (Integer skill : skills) {
+                        if ((int)skill % 10000 % 1000 % 100 % 10 < 2) {
                             acsrySkillList.add(skill);
+                        }
+                        else {
+                            continue;
                         }
                     }
                 }
@@ -571,20 +649,20 @@ public class AcsrySkillUtil
         return acsrySkillList;
     }
     
-    public static SysDataAcsrySuit getAcsrySuit(final Role role) {
-        final List<WearEquip> wearEquips = SpringUtils.getEquipService().selectWearEquip(role);
-        final List<String> suitTypes = new ArrayList<String>();
+    public static SysDataAcsrySuit getAcsrySuit(Role role) {
+        List<WearEquip> wearEquips = SpringUtils.getEquipService().selectWearEquip(role);
+        List<String> suitTypes = new ArrayList<>();
         for (int i = 0; i < wearEquips.size(); ++i) {
-            if (wearEquips.get(i).getPosition() > 5) {
-                final SysDataAcsry sysDataAcsry = EquipDataPool.acsryMap.get(wearEquips.get(i).getType());
+            if (((WearEquip)wearEquips.get(i)).getPosition() > 5) {
+                SysDataAcsry sysDataAcsry = (SysDataAcsry)EquipDataPool.acsryMap.get(Integer.valueOf(((WearEquip)wearEquips.get(i)).getType()));
                 if (sysDataAcsry != null) {
                     suitTypes.add(sysDataAcsry.getSuiteType());
                 }
             }
         }
-        final long count = suitTypes.stream().distinct().count();
+        long count = suitTypes.stream().distinct().count();
         if (suitTypes.size() >= 5 && count == 1L) {
-            final SysDataAcsrySuit sysDataAcsrySuit = EquipDataPool.acsrySuitMap.get(suitTypes.get(0));
+            SysDataAcsrySuit sysDataAcsrySuit = (SysDataAcsrySuit)EquipDataPool.acsrySuitMap.get(suitTypes.get(0));
             return sysDataAcsrySuit;
         }
         return null;

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.bean;
 
-import java.beans.ConstructorProperties;
 import com.kitty.common.utils.BigDecimalUtil;
 import com.kitty.system.game.fightnew.utils.SkillAi;
 import com.kitty.system.game.fightnew.task.AutoRoundFinishTask;
@@ -14,7 +12,6 @@ import com.kitty.system.game.fightnew.model.SkillParam;
 import com.kitty.system.game.fightnew.book.pet.utils.PetSkillEffectorUtil;
 import com.kitty.system.enums.war.wardef.LOGIC;
 import com.kitty.system.enums.war.wardef.FIGHT_TYPE;
-import java.util.function.Function;
 import java.util.Comparator;
 import com.kitty.system.game.skill.domain.RoleSkill;
 import com.kitty.system.game.fightnew.book.definition.SkillConst;
@@ -23,18 +20,15 @@ import com.kitty.system.init.domain.SysPetSkill;
 import com.kitty.system.game.fightnew.book.pet.utils.PetTriggerPassiveSkill;
 import com.kitty.system.enums.war.itempro.def.PET_PASSIVE_SKILL_TRIGGER_DICT;
 import java.util.Random;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import com.kitty.system.game.fightnew.utils.SkillTargetPicker;
 import com.kitty.common.core.SchedulerManager;
 import com.kitty.system.game.fightnew.task.TimeOutNewTask;
 import com.kitty.system.game.role.domain.Role;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.fightnew.messages.old.RespEndCombat;
 import com.kitty.system.game.fightnew.service.FightExecutorNewService;
 import com.kitty.system.game.fightnew.spectator.pool.FightParamPool;
-import java.util.Collection;
 import java.util.Iterator;
 import com.kitty.common.utils.spring.SpringUtils;
 import java.util.HashSet;
@@ -111,160 +105,184 @@ public class Fight
     private byte winSide;
     private Map<Boolean, Set<FieldValue>> exitRoles;
     
-    public Fight(final int type) {
+    public Fight(int type) {
         this.logger = LoggerFunction.FIGHT.getLogger();
-        this.listA = Collections.synchronizedList(new ArrayList<FightObject>());
-        this.listB = Collections.synchronizedList(new ArrayList<FightObject>());
-        this.fightMemberA = new ArrayList<FightMember>();
-        this.fightMemberB = new ArrayList<FightMember>();
+        this.listA = Collections.synchronizedList(new ArrayList<>());
+        this.listB = Collections.synchronizedList(new ArrayList<>());
+        this.fightMemberA = new ArrayList<>();
+        this.fightMemberB = new ArrayList<>();
         this.round = 1;
         this.roundParam = new RoundParam(this.round);
         this.maxRound = WarMaxRound.WAR_MAX_ROUND.getValue();
-        this.astrictSkillMap = new HashMap<Boolean, AstrictSkill>();
-        this.beforeActionMap = new HashMap<Boolean, BeforeActionSkill>();
-        this.reduceRatioMap = new HashMap<Boolean, Map<Integer, Integer>>();
-        this.ObjectAttributeMap = new HashMap<>();
+        this.astrictSkillMap = new HashMap();
+        this.beforeActionMap = new HashMap();
+        this.reduceRatioMap = new HashMap();
+        this.ObjectAttributeMap = new HashMap();
         this.monsterAstrict = NutMap.NEW();
-        this.fightInParams = Collections.synchronizedList(new ArrayList<RespFightInParam>());
+        this.fightInParams = Collections.synchronizedList(new ArrayList<>());
         this.actionParam = new ActionParam();
-        this.respRoundStartParamMap = new HashMap<>();
-        this.isCompleted = new HashSet<Integer>();
-        this.fleeList = new ArrayList<Integer>();
-        this.fightActors = new HashMap<>();
-        this.deadPetIds = new HashSet<>();
+        this.respRoundStartParamMap = new HashMap();
+        this.isCompleted = new HashSet();
+        this.fleeList = new ArrayList<>();
+        this.fightActors = new HashMap();
+        this.deadPetIds = new HashSet();
         this.fightType = 0;
         this.rewardType = -1;
-        this.fightId_timer_host = new HashMap<>();
-        this.roundFinish_timer_player = new HashMap<>();
-        this.fightId_timer_pet = new HashMap<>();
-        this.animationPlayMap = new HashMap<>();
-        this.fightNewService = SpringUtils.getBean(FightNewService.class);
+        this.fightId_timer_host = new HashMap();
+        this.roundFinish_timer_player = new HashMap();
+        this.fightId_timer_pet = new HashMap();
+        this.animationPlayMap = new HashMap();
+        this.fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
         this.watchFightOnOff = false;
-        this.spectatorObjectMap = new ConcurrentHashMap<>();
+        this.spectatorObjectMap = new ConcurrentHashMap();
         this.fightOverReason = 0;
         this.winSide = 0;
-        this.exitRoles = new HashMap<>();
+        this.exitRoles = new HashMap();
         this.id = Fight.idFactory.getAndIncrement();
         this.createTime = System.currentTimeMillis();
         this.type = type;
     }
     
     public ArrayList<FightObject> getAllFightObjects() {
-        final ArrayList<FightObject> container = new ArrayList<>();
-        for (final FightObject object : this.listA) {
+        ArrayList<FightObject> container = new ArrayList<>();
+        for (FightObject object : this.listA) {
             if (object != null) {
                 container.add(object);
             }
+            else {
+                continue;
+            }
         }
-        for (final FightObject object : this.listB) {
+        for (FightObject object : this.listB) {
             if (object != null) {
                 container.add(object);
+            }
+            else {
+                continue;
             }
         }
         return container;
     }
     
-    private boolean isCompleted(final int round) {
-        final boolean boo = this.isCompleted.contains(round);
+    private boolean isCompleted(int round) {
+        boolean boo = this.isCompleted.contains(Integer.valueOf(round));
         if (!boo) {
-            this.isCompleted.add(round);
+            this.isCompleted.add(Integer.valueOf(round));
         }
         return boo;
     }
     
-    public ArrayList<FightObject> getSideAllFightObjects(final boolean isASide) {
-        final ArrayList<FightObject> container = new ArrayList<>();
+    public ArrayList<FightObject> getSideAllFightObjects(boolean isASide) {
+        ArrayList<FightObject> container = new ArrayList<>();
         if (isASide) {
             container.addAll(this.listA);
+            return container;
         }
-        else {
-            container.addAll(this.listB);
-        }
+        container.addAll(this.listB);
         return container;
     }
     
-    public FightObject queryFightObject(final Integer roleId) {
+    public FightObject queryFightObject(Integer roleId) {
         if (this.getListA() != null) {
-            for (final FightObject fightObject : this.getListA()) {
+            for (FightObject fightObject : this.getListA()) {
                 if (fightObject.getId().equals(roleId)) {
                     return fightObject;
                 }
+                continue;
             }
         }
         if (this.getListB() != null) {
-            for (final FightObject fightObject : this.getListB()) {
+            for (FightObject fightObject : this.getListB()) {
                 if (fightObject.getId().equals(roleId)) {
                     return fightObject;
                 }
+                continue;
             }
         }
         return null;
     }
     
-    public FightObject getAttackTarget(final FightObject effector) {
-        final List<FightObject> targets = effector.isASide() ? this.getListB() : this.getListA();
-        for (final FightObject target : targets) {
+    public FightObject getAttackTarget(FightObject effector) {
+        List<FightObject> targets = effector.isASide() ? this.getListB() : this.getListA();
+        for (FightObject target : targets) {
             if (!target.isFallDown()) {
                 return target;
             }
+            continue;
         }
         return null;
     }
     
-    public FightObject getAttackSelf(final FightObject effector) {
-        final List<FightObject> targets = effector.isASide() ? this.getListA() : this.getListB();
-        for (final FightObject target : targets) {
+    public FightObject getAttackSelf(FightObject effector) {
+        List<FightObject> targets = effector.isASide() ? this.getListA() : this.getListB();
+        for (FightObject target : targets) {
             if (!target.isFallDown()) {
                 return target;
             }
+            continue;
         }
         return null;
     }
     
-    public boolean isSameSide(final FightObject o1, final FightObject o2) {
+    public boolean isSameSide(FightObject o1, FightObject o2) {
         return o1.isASide() == o2.isASide();
     }
     
-    public List<FightObject> getMySide(final int roleId) {
-        for (final FightObject fightObject : this.getListA()) {
-            if (fightObject.getId() == roleId) {
+    public List<FightObject> getMySide(int roleId) {
+        for (FightObject fightObject : this.getListA()) {
+            if ((int)fightObject.getId() == roleId) {
                 return this.getListA();
             }
+            continue;
         }
         return this.getListB();
     }
     
-    public List<FightObject> getTargetSide(final int roleId) {
-        for (final FightObject fightObject : this.getListA()) {
-            if (fightObject.getId() == roleId) {
+    public List<FightObject> getTargetSide(int roleId) {
+        for (FightObject fightObject : this.getListA()) {
+            if ((int)fightObject.getId() == roleId) {
                 return this.getListB();
             }
+            continue;
         }
         return this.getListA();
     }
     
-    public boolean isWinner(final int roleId) {
-        if (this.getFightOverReason() != 1) {
-            final List<FightObject> mySide = this.getMySide(roleId);
-            for (final FightObject fightObject : mySide) {
+    public boolean isWinner(int roleId) {
+        if (this.getFightOverReason() == 1) {
+            FightObject fightObject2 = this.queryFightObject(Integer.valueOf(roleId));
+            if (this.winSide == 0) {
+                return this.defineWin(fightObject2);
+            }
+            if (this.winSide == 1) {
+                return fightObject2.isASide();
+            }
+            return !fightObject2.isASide();
+        }
+        else {
+            List<FightObject> mySide = this.getMySide(roleId);
+            for (FightObject fightObject : mySide) {
                 if (fightObject.getCurrLife() > 0) {
                     return true;
                 }
+                continue;
             }
             return false;
         }
-        final FightObject fightObject2 = this.queryFightObject(roleId);
-        if (this.winSide == 0) {
-            return this.defineWin(fightObject2);
-        }
-        if (this.winSide == 1) {
-            return fightObject2.isASide();
-        }
-        return !fightObject2.isASide();
     }
     
-    public boolean isWinner(final int roleId, final boolean isA) {
-        if (this.getFightOverReason() != 1) {
+    public boolean isWinner(int roleId, boolean isA) {
+        if (this.getFightOverReason() == 1) {
+            FightObject fightObject2 = this.queryFightObject(Integer.valueOf(roleId));
+            if (this.winSide == 0) {
+                return this.defineWin(roleId, isA);
+            }
+            if (this.winSide == 1) {
+                return isA;
+            }
+            return !isA;
+        }
+        else {
             List<FightObject> mySide;
             if (isA) {
                 mySide = this.listA;
@@ -272,33 +290,28 @@ public class Fight
             else {
                 mySide = this.listB;
             }
-            for (final FightObject fightObject : mySide) {
+            for (FightObject fightObject : mySide) {
                 if (fightObject.getCurrLife() > 0) {
                     return true;
                 }
+                continue;
             }
             return false;
         }
-        final FightObject fightObject2 = this.queryFightObject(roleId);
-        if (this.winSide == 0) {
-            return this.defineWin(roleId, isA);
-        }
-        if (this.winSide == 1) {
-            return isA;
-        }
-        return !isA;
     }
     
     public boolean isStartFight() {
-        for (final FightObject fightObject : this.getListA()) {
+        for (FightObject fightObject : this.getListA()) {
             if (!fightObject.isDoAction()) {
                 return false;
             }
+            continue;
         }
-        for (final FightObject fightObject : this.getListB()) {
+        for (FightObject fightObject : this.getListB()) {
             if (!fightObject.isDoAction()) {
                 return false;
             }
+            continue;
         }
         return true;
     }
@@ -307,148 +320,159 @@ public class Fight
         return this.isSideOver(this.getListA()) || this.isSideOver(this.getListB()) || (this.getData() != null && this.getData().getBoolean("fight_result_fail", false)) || (this.getData() != null && this.getData().getBoolean("fight_result_success", false));
     }
     
-    public boolean isSideOver(final List<FightObject> members) {
+    public boolean isSideOver(List<FightObject> members) {
         if (members != null && members.size() > 0) {
-            for (int i = 0; i < members.size(); ++i) {
-                final FightObject fightObject = members.get(i);
+            int i = 0;
+            while (i < members.size()) {
+                FightObject fightObject = (FightObject)members.get(i);
                 if (fightObject != null && !fightObject.isFallDown()) {
                     return false;
                 }
+                ++i;
             }
         }
         return true;
     }
     
-    public void addFightObject(final FightObject addObject) {
+    public void addFightObject(FightObject addObject) {
         this.fightActors.put(addObject.getId(), addObject);
-        for (final FightObject object : this.getListA()) {
-            if (object.getId() == addObject.getHostId()) {
+        for (FightObject object : this.getListA()) {
+            if ((int)object.getId() == addObject.getHostId()) {
                 this.getListA().add(addObject);
                 return;
             }
+            continue;
         }
-        for (final FightObject fightObject : this.getListB()) {
-            if (fightObject.getId() == addObject.getHostId()) {
+        for (FightObject fightObject : this.getListB()) {
+            if ((int)fightObject.getId() == addObject.getHostId()) {
                 this.getListB().add(addObject);
                 return;
             }
+            continue;
         }
     }
     
-    public void removeFightObject(final FightObject fightObject) {
+    public void removeFightObject(FightObject fightObject) {
         if (this.getType() == 25 && fightObject.isPet() && fightObject.getPos() == 8) {
             if (this.getData() == null) {
                 this.setData(NutMap.NEW());
             }
-            this.getData().setv("fight_result_fail", true);
+            this.getData().setv("fight_result_fail", Boolean.valueOf(true));
         }
         this.removeFightObject(this.getListA(), fightObject);
         this.removeFightObject(this.getListB(), fightObject);
     }
     
-    private void removeFightObject(final List<FightObject> pool, final FightObject toRemove) {
+    private void removeFightObject(List<FightObject> pool, FightObject toRemove) {
         pool.removeIf(next -> next.getId().equals(toRemove.getId()));
     }
     
-    public FightObject queryFightObjectAnyWay(final int objId) {
-        return this.fightActors.get(objId);
+    public FightObject queryFightObjectAnyWay(int objId) {
+        return (FightObject)this.fightActors.get(Integer.valueOf(objId));
     }
     
     public void destroy() {
         FightParamPool.fightDestroy(this);
-        for (final FightObject fightObject : this.getAllFightObjects()) {
+        for (FightObject fightObject : this.getAllFightObjects()) {
             if (fightObject != null && fightObject.isPlayer()) {
-                final Role role = SpringUtils.getRoleService().getPlayer(fightObject.getRole().getId());
+                Role role = SpringUtils.getRoleService().getPlayer((long)fightObject.getRole().getId());
                 if (role != null) {
                     role.setPrevFightEndTime(System.currentTimeMillis());
-                    role.setCanFight(true);
-                    this.removeRoundFinishTask(role.getRoleId());
+                    role.setCanFight(Boolean.valueOf(true));
+                    this.removeRoundFinishTask((int)role.getRoleId());
                 }
             }
-            final Integer temp = FightExecutorNewService.FIGHT_ROOMS.get(fightObject.getId());
+            Integer temp = (Integer)FightExecutorNewService.FIGHT_ROOMS.get(fightObject.getId());
             if (temp == null) {
                 continue;
             }
+            continue;
         }
         if (this.watchFightOnOff && this.spectatorObjectMap.size() > 0) {
             this.setWatchFightOnOff(false);
-            final RespEndCombat respEndCombat = new RespEndCombat();
-            for (final Map.Entry<Long, SpectatorObject> entry : this.spectatorObjectMap.entrySet()) {
-                MessagePusher.pushMessage(entry.getKey(), respEndCombat);
+            RespEndCombat respEndCombat = new RespEndCombat();
+            for (Map.Entry<Long, SpectatorObject> entry : this.spectatorObjectMap.entrySet()) {
+                MessagePusher.pushMessage((long)entry.getKey(), respEndCombat);
             }
         }
-        FightExecutorNewService.FIGHTS.remove(this.getId());
+        FightExecutorNewService.FIGHTS.remove(Integer.valueOf(this.getId()));
         this.cancelTask(this.timeOutTask);
     }
     
-    public void addHostTask(final int roleId, final ScheduledFuture<?> task) {
+    public void addHostTask(int roleId, ScheduledFuture<?> task) {
         this.removeHostTask(roleId);
-        this.fightId_timer_host.put(roleId, task);
+        this.fightId_timer_host.put(Integer.valueOf(roleId), task);
     }
     
-    public void removeHostTask(final int roleId) {
-        final ScheduledFuture<?> task = this.fightId_timer_host.get(roleId);
+    public void removeHostTask(int roleId) {
+        ScheduledFuture<?> task = (ScheduledFuture)this.fightId_timer_host.get(Integer.valueOf(roleId));
         if (task != null) {
             this.cancelTask(task);
-            this.fightId_timer_host.remove(roleId);
+            this.fightId_timer_host.remove(Integer.valueOf(roleId));
         }
     }
     
-    public void addPetTask(final int roleId, final ScheduledFuture<?> task) {
+    public void addPetTask(int roleId, ScheduledFuture<?> task) {
         this.removePetTask(roleId);
-        this.fightId_timer_pet.put(roleId, task);
+        this.fightId_timer_pet.put(Integer.valueOf(roleId), task);
     }
     
-    public void removePetTask(final int memberId) {
-        final ScheduledFuture<?> task = this.fightId_timer_pet.get(memberId);
+    public void removePetTask(int memberId) {
+        ScheduledFuture<?> task = (ScheduledFuture)this.fightId_timer_pet.get(Integer.valueOf(memberId));
         if (task != null) {
             this.cancelTask(task);
-            this.fightId_timer_host.remove(memberId);
+            this.fightId_timer_host.remove(Integer.valueOf(memberId));
         }
     }
     
-    public void cancelTask(final ScheduledFuture<?> task) {
+    public void cancelTask(ScheduledFuture<?> task) {
         if (task != null && !task.isDone()) {
-            task.cancel(Boolean.FALSE);
+            task.cancel((boolean)Boolean.FALSE);
         }
     }
     
-    public void addRoundFinishTask(final int objId, final ScheduledFuture<?> task) {
+    public void addRoundFinishTask(int objId, ScheduledFuture<?> task) {
         this.removeRoundFinishTask(objId);
-        this.roundFinish_timer_player.put(objId, task);
+        this.roundFinish_timer_player.put(Integer.valueOf(objId), task);
     }
     
-    public void removeRoundFinishTask(final int objId) {
-        final ScheduledFuture<?> task = this.roundFinish_timer_player.get(objId);
+    public void removeRoundFinishTask(int objId) {
+        ScheduledFuture<?> task = (ScheduledFuture)this.roundFinish_timer_player.get(Integer.valueOf(objId));
         if (task != null) {
             this.cancelTask(task);
-            this.roundFinish_timer_player.remove(objId);
+            this.roundFinish_timer_player.remove(Integer.valueOf(objId));
         }
     }
     
     public void start() {
-        final FightExecutorNewService fightExecutorService = SpringUtils.getBean(FightExecutorNewService.class);
+        FightExecutorNewService fightExecutorService = (FightExecutorNewService)SpringUtils.getBean(FightExecutorNewService.class);
         fightExecutorService.addFightTask(this, () -> {
             try {
                 this.loadActors();
                 this.notifyAndStart();
-                for (FightObject object : getListA())
+                Iterator<FightObject> iterator = this.getListA().iterator();
+                while (iterator.hasNext()) {
+                    FightObject object = (FightObject)iterator.next();
                     this.fightActors.put(object.getId(), object);
-                for (FightObject object : getListB())
-                    this.fightActors.put(object.getId(), object);
-                SpringUtils.getBean(FightNewService.class).excuteFightInSend(this);
-                SpringUtils.getBean(FightNewService.class).excuteRoundStartSend(this);
+                }
+                Iterator<FightObject> iterator2 = this.getListB().iterator();
+                while (iterator2.hasNext()) {
+                    FightObject object2 = (FightObject)iterator2.next();
+                    this.fightActors.put(object2.getId(), object2);
+                }
+                ((FightNewService)SpringUtils.getBean(FightNewService.class)).excuteFightInSend(this);
+                ((FightNewService)SpringUtils.getBean(FightNewService.class)).excuteRoundStartSend(this);
                 this.setRoundType(1);
             }
-            catch (final Exception e) {
+            catch (Exception e) {
                 LoggerFunction.FIGHT.getLogger().error(e.getMessage(), e);
                 LoggerFunction.TASK.getLogger().error(e.getMessage(), e);
             }
             return;
         });
-        SpringUtils.getBean(FightNewService.class).besure(this);
-        final TimeOutNewTask timeOut = new TimeOutNewTask(this.getId());
-        final ScheduledFuture<?> timeOutTask = SchedulerManager.getInstance().schedule(timeOut, 30000L);
+        ((FightNewService)SpringUtils.getBean(FightNewService.class)).besure(this);
+        TimeOutNewTask timeOut = new TimeOutNewTask(this.getId());
+        ScheduledFuture<?> timeOutTask = SchedulerManager.getInstance().schedule(timeOut, 30000L);
         this.setTimeOutTask(timeOutTask);
     }
     
@@ -464,17 +488,20 @@ public class Fight
     
     public int getMaxFightObjectId() {
         int maxId = 0;
-        final ArrayList<FightObject> allFightObjects = this.getAllFightObjects();
-        for (final FightObject fightObject : allFightObjects) {
-            if (fightObject.getId() > maxId) {
-                maxId = fightObject.getId();
+        ArrayList<FightObject> allFightObjects = this.getAllFightObjects();
+        for (FightObject fightObject : allFightObjects) {
+            if ((int)fightObject.getId() > maxId) {
+                maxId = (int)fightObject.getId();
+            }
+            else {
+                continue;
             }
         }
         return maxId;
     }
     
-    public FightObject getTargetNoCurrentTarget(final int attackerId, final int oldTargetId) {
-        final FightObject attactor = this.queryFightObject(attackerId);
+    public FightObject getTargetNoCurrentTarget(int attackerId, int oldTargetId) {
+        FightObject attactor = this.queryFightObject(Integer.valueOf(attackerId));
         List<FightObject> targetSideList = null;
         if (oldTargetId > 0) {
             targetSideList = SkillTargetPicker.getFightObjectsOldTarget(this, attactor, oldTargetId);
@@ -485,52 +512,61 @@ public class Fight
         if (targetSideList == null || targetSideList.size() <= 0) {
             return null;
         }
-        targetSideList = targetSideList.stream().filter(obj -> obj.getId() != oldTargetId && obj.getId() != attackerId).collect(Collectors.toList());
+        targetSideList = (List)targetSideList.stream().filter(obj -> (int)obj.getId() != oldTargetId && (int)obj.getId() != attackerId).collect(Collectors.toList());
         if (targetSideList.size() <= 0) {
             return null;
         }
-        final Random random = new Random();
-        final int index = random.nextInt(targetSideList.size());
-        return targetSideList.get(index);
+        Random random = new Random();
+        int index = random.nextInt(targetSideList.size());
+        return (FightObject)targetSideList.get(index);
     }
     
     public void clearAstrictSkills() {
-        if (this.getAstrictSkillMap().get(true) != null) {
-            this.getAstrictSkillMap().get(true).getSkillMap().clear();
+        if (this.getAstrictSkillMap().get(Boolean.valueOf(true)) != null) {
+            ((AstrictSkill)this.getAstrictSkillMap().get(Boolean.valueOf(true))).getSkillMap().clear();
         }
-        if (this.getAstrictSkillMap().get(false) != null) {
-            this.getAstrictSkillMap().get(false).getSkillMap().clear();
+        if (this.getAstrictSkillMap().get(Boolean.valueOf(false)) != null) {
+            ((AstrictSkill)this.getAstrictSkillMap().get(Boolean.valueOf(false))).getSkillMap().clear();
         }
     }
     
-    public void excuteReduceRatio(final FightObject fightObject, final boolean isExcute) {
+    public void excuteReduceRatio(FightObject fightObject, boolean isExcute) {
         if (fightObject == null) {
             return;
         }
-        final List<SysPetSkill> petSkillList = PetTriggerPassiveSkill.normalAttack(PET_PASSIVE_SKILL_TRIGGER_DICT.PET_BE.getValue(), fightObject.getSkillIds(), this.isPvp());
+        List<SysPetSkill> petSkillList = PetTriggerPassiveSkill.normalAttack(PET_PASSIVE_SKILL_TRIGGER_DICT.PET_BE.getValue(), fightObject.getSkillIds(), this.isPvp());
         SkillProcessor skillProcessor = null;
         if (petSkillList.size() > 0) {
-            for (final SysPetSkill petSkill : petSkillList) {
+            for (SysPetSkill petSkill : petSkillList) {
                 skillProcessor = SkillProcessor.queryProcessor(petSkill.getSerial());
                 if (skillProcessor != null) {
-                    skillProcessor.passive(this, fightObject, isExcute);
+                    skillProcessor.passive(this, fightObject, Boolean.valueOf(isExcute));
+                }
+                else {
+                    continue;
                 }
             }
         }
-        for (final Integer skillId : SkillConst.getPetBeSkills()) {
-            for (final RoleSkill roleSkill : fightObject.getSkillIds()) {
-                if (roleSkill.getSkillId() > 0 && roleSkill.getSkillId().equals(skillId)) {
+        for (Integer skillId : SkillConst.getPetBeSkills()) {
+            for (RoleSkill roleSkill : fightObject.getSkillIds()) {
+                if ((int)roleSkill.getSkillId() > 0 && roleSkill.getSkillId().equals(skillId)) {
                     skillProcessor = SkillProcessor.queryProcessor(skillId);
-                    if (skillProcessor == null) {
+                    if (skillProcessor != null) {
+                        skillProcessor.death(this, fightObject, fightObject, new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    skillProcessor.death(this, fightObject, fightObject);
+                }
+                else {
+                    continue;
                 }
             }
         }
+        return;
     }
     
-    public boolean diedTriggerSkill(final FightObject fightObject, final String type) {
+    public boolean diedTriggerSkill(FightObject fightObject, String type) {
         if (fightObject == null) {
             return false;
         }
@@ -538,31 +574,34 @@ public class Fight
         List<SysPetSkill> petSkillList = PetTriggerPassiveSkill.petExit(type, fightObject.getSkillIds(), this.isPvp());
         SkillProcessor skillProcessor = null;
         if (petSkillList.size() > 0) {
-            petSkillList = petSkillList.stream().sorted(Comparator.comparing(SysPetSkill::getSerial)).collect(Collectors.toList());
-            for (final SysPetSkill petSkill : petSkillList) {
+            petSkillList = (List)petSkillList.stream().sorted(Comparator.comparing(SysPetSkill::getSerial)).collect(Collectors.toList());
+            for (SysPetSkill petSkill : petSkillList) {
                 skillProcessor = SkillProcessor.queryProcessor(petSkill.getSerial());
-                final NutMap passive = skillProcessor.passive(this, fightObject, petSkill);
+                NutMap passive = skillProcessor.passive(this, fightObject, petSkill);
                 if (passive != null && passive.getInt(String.valueOf(41)) > 0) {
                     isRever = true;
+                }
+                else {
+                    continue;
                 }
             }
         }
         return isRever;
     }
     
-    public List<FightObject> queryAnomalousObject(final FightObject effecter, final int num, final List<Integer> logics) {
-        final List<FightObject> returnObj = new ArrayList<FightObject>();
+    public List<FightObject> queryAnomalousObject(FightObject effecter, int num, List<Integer> logics) {
+        List<FightObject> returnObj = new ArrayList<>();
         List<FightObject> myFightObjects = this.getListA();
         if (!effecter.isASide()) {
             myFightObjects = this.getListB();
         }
         Collections.sort(myFightObjects);
-        final Iterator<FightObject> it = myFightObjects.iterator();
+        Iterator<FightObject> it = myFightObjects.iterator();
         FightObject obj = null;
         int count = 0;
         while (it.hasNext()) {
-            obj = it.next();
-            if (!logics.contains(obj.getLogic())) {
+            obj = (FightObject)it.next();
+            if (!logics.contains(Integer.valueOf(obj.getLogic()))) {
                 continue;
             }
             boolean isAdd = false;
@@ -588,65 +627,74 @@ public class Fight
             if (count >= num) {
                 break;
             }
+            continue;
         }
         return returnObj;
     }
     
     public int isPvp() {
         int isPvp = 0;
-        if (1 == FIGHT_TYPE.getType(this.getType())) {
+        if (1 == (int)FIGHT_TYPE.getType(Integer.valueOf(this.getType()))) {
             isPvp = 1;
         }
         return isPvp;
     }
     
-    public void excuteExitPassive(final FightObject actor) {
+    public void excuteExitPassive(FightObject actor) {
         try {
             this.diedTriggerSkill(actor, PET_PASSIVE_SKILL_TRIGGER_DICT.PET_EXIT.getValue());
             this.excuteReduceRatio(actor, false);
-            final List<FightObject> otherPets = this.getMySide(actor.getId()).stream().filter(obj -> !obj.isFallDown() && obj.getLogic() == LOGIC.LOGICTYPE_PET.getValue() && !obj.getId().equals(actor.getId())).collect(Collectors.toList());
-            for (final FightObject otherPet : otherPets) {
+            List<FightObject> otherPets = (List)this.getMySide((int)actor.getId()).stream().filter(obj -> !obj.isFallDown() && obj.getLogic() == LOGIC.LOGICTYPE_PET.getValue() && !obj.getId().equals(actor.getId())).collect(Collectors.toList());
+            for (FightObject otherPet : otherPets) {
                 this.diedTriggerSkill(otherPet, PET_PASSIVE_SKILL_TRIGGER_DICT.NON_SELF_PET_EXIT.getValue());
             }
             PetSkillEffectorUtil.sendCancelAction(this, actor);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public RespFightInParam getRoleFightInParam(final Role role) {
+    public RespFightInParam getRoleFightInParam(Role role) {
         RespFightInParam fightInParam = null;
-        for (int i = 0; i < this.fightInParams.size(); ++i) {
-            if (this.fightInParams.get(i).getRoleId() == role.getRoleId()) {
-                fightInParam = this.fightInParams.get(i);
+        int i = 0;
+        while (i < this.fightInParams.size()) {
+            if (((RespFightInParam)this.fightInParams.get(i)).getRoleId() == (int)role.getRoleId()) {
+                fightInParam = (RespFightInParam)this.fightInParams.get(i);
                 break;
             }
+            ++i;
         }
         if (fightInParam == null) {
             fightInParam = new RespFightInParam();
             fightInParam.setId(String.valueOf(role.getId()));
-            final List<SkillParam> skillParams = this.getSkillParams(role);
+            List<SkillParam> skillParams = this.getSkillParams(role);
             if (skillParams != null) {
                 fightInParam.setSkillParams(skillParams);
             }
-            fightInParam.setRoleId(role.getRoleId());
+            fightInParam.setRoleId((int)role.getRoleId());
             this.fightInParams.add(fightInParam);
+            return fightInParam;
         }
-        return fightInParam;
+        else {
+            return fightInParam;
+        }
     }
     
-    public PetFightInParam addPetFightInParam(final Role role, final Pet pet) {
+    public PetFightInParam addPetFightInParam(Role role, Pet pet) {
         PetFightInParam petFightInParam = null;
         RespFightInParam fightInParam = null;
         int i = 0;
         while (i < this.fightInParams.size()) {
-            if (this.fightInParams.get(i).getRoleId() == role.getRoleId()) {
-                fightInParam = this.fightInParams.get(i);
+            if (((RespFightInParam)this.fightInParams.get(i)).getRoleId() == (int)role.getRoleId()) {
+                fightInParam = (RespFightInParam)this.fightInParams.get(i);
                 if (fightInParam.getPetFightInParam() != null && fightInParam.getPetFightInParam().size() > 0) {
-                    for (final PetFightInParam petFightInParam2 : fightInParam.getPetFightInParam()) {
-                        if (pet.getPetId() == petFightInParam2.getPetId()) {
+                    for (PetFightInParam petFightInParam2 : fightInParam.getPetFightInParam()) {
+                        if ((int)pet.getPetId() == petFightInParam2.getPetId()) {
                             petFightInParam = petFightInParam2;
+                        }
+                        else {
+                            continue;
                         }
                     }
                     break;
@@ -660,52 +708,55 @@ public class Fight
         if (fightInParam == null) {
             fightInParam = new RespFightInParam();
             fightInParam.setId(String.valueOf(role.getId()));
-            final List<SkillParam> skillParams = this.getSkillParams(role);
+            List<SkillParam> skillParams = this.getSkillParams(role);
             if (skillParams != null) {
                 fightInParam.setSkillParams(skillParams);
             }
-            fightInParam.setRoleId(role.getRoleId());
+            fightInParam.setRoleId((int)role.getRoleId());
             this.fightInParams.add(fightInParam);
         }
         if (petFightInParam == null) {
             petFightInParam = this.getPetFightParam(pet);
             fightInParam.addPetFightInParam(petFightInParam);
+            return petFightInParam;
         }
         return petFightInParam;
     }
     
-    public PetFightInParam getPetFightParam(final Pet pet) {
-        final PetFightInParam petFightInParam = new PetFightInParam();
-        petFightInParam.setPetId(pet.getPetId());
+    public PetFightInParam getPetFightParam(Pet pet) {
+        PetFightInParam petFightInParam = new PetFightInParam();
+        petFightInParam.setPetId((int)pet.getPetId());
         petFightInParam.addSkillIds(pet);
         return petFightInParam;
     }
     
-    public void onActorDie(final FightObject actor) {
+    public void onActorDie(FightObject actor) {
         if (actor.getLogic() == LOGIC.LOGICTYPE_HERO.getValue()) {
-            final FightObject object = this.queryFightObject(actor.getFightPetId());
-            if (object != null) {}
+            FightObject object = this.queryFightObject(Integer.valueOf(actor.getFightPetId()));
         }
     }
     
-    public void petDie(final FightObject actor) {
+    public void petDie(FightObject actor) {
         if (actor.isPet() && !this.deadPetIds.contains(actor.getId())) {
             this.deadPetIds.add(actor.getId());
         }
         this.removeFightObject(actor);
     }
     
-    public List<SkillParam> getSkillParams(final Role role) {
-        final Map<Integer, RoleSkill> skills = role.getSkills();
+    public List<SkillParam> getSkillParams(Role role) {
+        Map<Integer, RoleSkill> skills = role.getSkills();
         if (skills != null && skills.size() > 0) {
-            final List<SkillParam> skillParams = new ArrayList<SkillParam>();
-            for (final Map.Entry<Integer, RoleSkill> entry : skills.entrySet()) {
-                final RoleSkill value = entry.getValue();
+            List<SkillParam> skillParams = new ArrayList<>();
+            for (Map.Entry<Integer, RoleSkill> entry : skills.entrySet()) {
+                RoleSkill value = (RoleSkill)entry.getValue();
                 if (value != null) {
-                    final SkillParam skillParam = new SkillParam();
-                    skillParam.setSkillId(value.getSkillId());
-                    skillParam.setProficient(value.getProficient() / 100);
+                    SkillParam skillParam = new SkillParam();
+                    skillParam.setSkillId((int)value.getSkillId());
+                    skillParam.setProficient((int)value.getProficient() / 100);
                     skillParams.add(skillParam);
+                }
+                else {
+                    continue;
                 }
             }
             return skillParams;
@@ -713,27 +764,27 @@ public class Fight
         return null;
     }
     
-    public boolean petDeadOnce(final int petId) {
-        return this.deadPetIds.contains(petId);
+    public boolean petDeadOnce(int petId) {
+        return this.deadPetIds.contains(Integer.valueOf(petId));
     }
     
     public List<ExcuteFightParam> getFightStatus() {
-        final List<ActionDetailParam> actionDetailParams = PetSkillEffectorUtil.checkActionForPrivate(this);
+        List<ActionDetailParam> actionDetailParams = PetSkillEffectorUtil.checkActionForPrivate(this);
         if (actionDetailParams != null && actionDetailParams.size() > 0) {
-            final List<ExcuteFightParam> excuteFightParams = SpringUtils.getBean(FightMessageNewService.class).getExcuteFightParams(actionDetailParams);
+            List<ExcuteFightParam> excuteFightParams = ((FightMessageNewService)SpringUtils.getBean(FightMessageNewService.class)).getExcuteFightParams(actionDetailParams);
             return excuteFightParams;
         }
         return null;
     }
     
-    public void roundFinishTask(final FightObject fightObject, final long time) {
-        final AutoRoundFinishTask autoRoundFinishTask = new AutoRoundFinishTask(this, fightObject.getId());
-        final ScheduledFuture<?> timeOut = SchedulerManager.getInstance().schedule(autoRoundFinishTask, time);
-        this.addRoundFinishTask(fightObject.getId(), timeOut);
+    public void roundFinishTask(FightObject fightObject, long time) {
+        AutoRoundFinishTask autoRoundFinishTask = new AutoRoundFinishTask(this, (int)fightObject.getId());
+        ScheduledFuture<?> timeOut = SchedulerManager.getInstance().schedule(autoRoundFinishTask, time);
+        this.addRoundFinishTask((int)fightObject.getId(), timeOut);
     }
     
-    public boolean defineWin(final FightObject fightObject) {
-        final int isWin = this.roundExceeded(fightObject.getId());
+    public boolean defineWin(FightObject fightObject) {
+        int isWin = this.roundExceeded((int)fightObject.getId());
         boolean flag = false;
         if (isWin == 2) {
             flag = SkillAi.canAffectOnPro(0.5);
@@ -758,8 +809,8 @@ public class Fight
         return flag;
     }
     
-    public boolean defineWin(final int roleId, final boolean isA) {
-        final int isWin = this.roundExceeded(roleId);
+    public boolean defineWin(int roleId, boolean isA) {
+        int isWin = this.roundExceeded(roleId);
         boolean flag = false;
         if (isWin == 2) {
             flag = SkillAi.canAffectOnPro(0.5);
@@ -784,14 +835,14 @@ public class Fight
         return flag;
     }
     
-    public byte roundExceeded(final int roleId) {
-        final byte returnFlag = 2;
-        final List<FightObject> mySide = this.getMySide(roleId);
-        final List<FightObject> targetSide = this.getTargetSide(roleId);
+    public byte roundExceeded(int roleId) {
+        byte returnFlag = 2;
+        List<FightObject> mySide = this.getMySide(roleId);
+        List<FightObject> targetSide = this.getTargetSide(roleId);
         int mySideNum = 0;
         int mySideCurrLife = 0;
         int mySideMaxLife = 0;
-        for (final FightObject fightObject : mySide) {
+        for (FightObject fightObject : mySide) {
             if (fightObject != null && !fightObject.isFallDown()) {
                 ++mySideNum;
             }
@@ -801,7 +852,7 @@ public class Fight
         int targetSideNum = 0;
         int targetSideCurrLife = 0;
         int targetSideMaxLife = 0;
-        for (final FightObject fightObject2 : targetSide) {
+        for (FightObject fightObject2 : targetSide) {
             if (fightObject2 != null && !fightObject2.isFallDown()) {
                 ++targetSideNum;
             }
@@ -815,15 +866,21 @@ public class Fight
             return 0;
         }
         int myDefeatPet = 0;
-        for (final FightObject fightObject3 : mySide) {
+        for (FightObject fightObject3 : mySide) {
             if (fightObject3.isPlayer()) {
-                myDefeatPet += FightParamPool.getDeathPetNum(this.getId(), fightObject3.getId());
+                myDefeatPet += FightParamPool.getDeathPetNum(this.getId(), (int)fightObject3.getId());
+            }
+            else {
+                continue;
             }
         }
         int targetDefeatPet = 0;
-        for (final FightObject fightObject4 : targetSide) {
+        for (FightObject fightObject4 : targetSide) {
             if (fightObject4.isPlayer()) {
-                targetDefeatPet += FightParamPool.getDeathPetNum(this.getId(), fightObject4.getId());
+                targetDefeatPet += FightParamPool.getDeathPetNum(this.getId(), (int)fightObject4.getId());
+            }
+            else {
+                continue;
             }
         }
         if (myDefeatPet < targetDefeatPet) {
@@ -833,27 +890,33 @@ public class Fight
             return 0;
         }
         if (mySideMaxLife > 0 && targetSideMaxLife > 0) {
-            final String mySidePCTStr = BigDecimalUtil.divide(String.valueOf(mySideCurrLife), String.valueOf(mySideMaxLife), 4);
-            final String targetSidePCTStr = BigDecimalUtil.divide(String.valueOf(targetSideCurrLife), String.valueOf(targetSideMaxLife), 4);
-            final Double mySidePCT = Double.valueOf(mySidePCTStr);
-            final Double targetSidePCT = Double.valueOf(targetSidePCTStr);
-            if (mySidePCT > targetSidePCT) {
+            String mySidePCTStr = BigDecimalUtil.divide(String.valueOf(mySideCurrLife), String.valueOf(mySideMaxLife), 4);
+            String targetSidePCTStr = BigDecimalUtil.divide(String.valueOf(targetSideCurrLife), String.valueOf(targetSideMaxLife), 4);
+            Double mySidePCT = Double.valueOf(mySidePCTStr);
+            Double targetSidePCT = Double.valueOf(targetSidePCTStr);
+            if ((double)mySidePCT > (double)targetSidePCT) {
                 return 1;
             }
-            if (mySidePCT < targetSidePCT) {
+            if ((double)mySidePCT < (double)targetSidePCT) {
                 return 0;
             }
         }
         int myControlNum = 0;
-        for (final FightObject fightObject5 : mySide) {
+        for (FightObject fightObject5 : mySide) {
             if (fightObject5.isPlayer()) {
-                myControlNum += FightParamPool.getControlNum(this.getId(), fightObject5.getId());
+                myControlNum += FightParamPool.getControlNum(this.getId(), (int)fightObject5.getId());
+            }
+            else {
+                continue;
             }
         }
         int targetControlNum = 0;
-        for (final FightObject fightObject6 : targetSide) {
+        for (FightObject fightObject6 : targetSide) {
             if (fightObject6.isPlayer()) {
-                targetControlNum += FightParamPool.getControlNum(this.getId(), fightObject6.getId());
+                targetControlNum += FightParamPool.getControlNum(this.getId(), (int)fightObject6.getId());
+            }
+            else {
+                continue;
             }
         }
         if (myControlNum < targetControlNum) {
@@ -865,33 +928,36 @@ public class Fight
         return returnFlag;
     }
     
-    public void addExitRole(final Boolean isA, final FieldValue fieldValue) {
-        Set<FieldValue> fieldValues = this.exitRoles.get(isA);
+    public void addExitRole(Boolean isA, FieldValue fieldValue) {
+        Set<FieldValue> fieldValues = (Set)this.exitRoles.get(isA);
         if (fieldValues == null) {
-            fieldValues = new HashSet<FieldValue>();
+            fieldValues = new HashSet();
             this.exitRoles.put(isA, fieldValues);
         }
         fieldValues.add(fieldValue);
     }
     
-    public boolean isSameCamp(final int objIdA, final int objIdB) {
-        final boolean isInA = this.isSameCamp(this.listA, objIdA, objIdB);
+    public boolean isSameCamp(int objIdA, int objIdB) {
+        boolean isInA = this.isSameCamp(this.listA, objIdA, objIdB);
         if (isInA) {
             return true;
         }
-        final boolean isInB = this.isSameCamp(this.listB, objIdA, objIdB);
+        boolean isInB = this.isSameCamp(this.listB, objIdA, objIdB);
         return isInB;
     }
     
-    private boolean isSameCamp(final List<FightObject> list, final int objIdA, final int objIdB) {
+    private boolean isSameCamp(List<FightObject> list, int objIdA, int objIdB) {
         if (list != null && list.size() > 0) {
             int flag = 0;
-            for (final FightObject obj : list) {
-                if (obj.getId().equals(objIdA)) {
+            for (FightObject obj : list) {
+                if (obj.getId().equals(Integer.valueOf(objIdA))) {
                     ++flag;
                 }
-                if (obj.getId().equals(objIdB)) {
+                if (obj.getId().equals(Integer.valueOf(objIdB))) {
                     ++flag;
+                }
+                else {
+                    continue;
                 }
             }
             if (flag == 2) {
@@ -1272,40 +1338,39 @@ public class Fight
         return this.exitRoles;
     }
     
-    @ConstructorProperties({ "logger", "id", "recordId", "leaderId", "createTime", "listA", "listB", "fightMemberA", "fightMemberB", "mapId", "type", "specialMonsterType", "round", "roundParam", "maxRound", "taskId", "expMap", "bossReward", "npcId", "data", "timeOutTask", "astrictSkillMap", "beforeActionMap", "reduceRatioMap", "ObjectAttributeMap", "monsterAstrict", "fightInParams", "actionParam", "respRoundStartParamMap", "isCompleted", "fleeList", "fightActors", "deadPetIds", "fightType", "rewardType", "roundType", "fightId_timer_host", "roundFinish_timer_player", "fightId_timer_pet", "animationPlayMap", "fightNewService", "watchFightOnOff", "spectatorObjectMap", "fightOverReason", "winSide", "exitRoles" })
     public Fight(final Logger logger, final int id, final long recordId, final int leaderId, final long createTime, final List<FightObject> listA, final List<FightObject> listB, final ArrayList<FightMember> fightMemberA, final ArrayList<FightMember> fightMemberB, final int mapId, final int type, final byte specialMonsterType, final int round, final RoundParam roundParam, final int maxRound, final int taskId, final NutMap expMap, final NutMap bossReward, final int npcId, final NutMap data, final ScheduledFuture<?> timeOutTask, final Map<Boolean, AstrictSkill> astrictSkillMap, final Map<Boolean, BeforeActionSkill> beforeActionMap, final Map<Boolean, Map<Integer, Integer>> reduceRatioMap, final Map<Boolean, Map<Integer, Double>> ObjectAttributeMap, final NutMap monsterAstrict, final List<RespFightInParam> fightInParams, final ActionParam actionParam, final Map<Integer, RespRoundStartParam> respRoundStartParamMap, final Set<Integer> isCompleted, final List<Integer> fleeList, final Map<Integer, FightObject> fightActors, final Set<Integer> deadPetIds, final byte fightType, final int rewardType, final int roundType, final Map<Integer, ScheduledFuture<?>> fightId_timer_host, final Map<Integer, ScheduledFuture<?>> roundFinish_timer_player, final Map<Integer, ScheduledFuture<?>> fightId_timer_pet, final Map<Integer, AnimationPlayParam> animationPlayMap, final FightNewService fightNewService, final boolean watchFightOnOff, final ConcurrentHashMap<Long, SpectatorObject> spectatorObjectMap, final byte fightOverReason, final byte winSide, final Map<Boolean, Set<FieldValue>> exitRoles) {
         this.logger = LoggerFunction.FIGHT.getLogger();
-        this.listA = Collections.synchronizedList(new ArrayList<FightObject>());
-        this.listB = Collections.synchronizedList(new ArrayList<FightObject>());
-        this.fightMemberA = new ArrayList<FightMember>();
-        this.fightMemberB = new ArrayList<FightMember>();
+        this.listA = Collections.synchronizedList(new ArrayList<>());
+        this.listB = Collections.synchronizedList(new ArrayList<>());
+        this.fightMemberA = new ArrayList<>();
+        this.fightMemberB = new ArrayList<>();
         this.round = 1;
         this.roundParam = new RoundParam(this.round);
         this.maxRound = WarMaxRound.WAR_MAX_ROUND.getValue();
-        this.astrictSkillMap = new HashMap<Boolean, AstrictSkill>();
-        this.beforeActionMap = new HashMap<Boolean, BeforeActionSkill>();
-        this.reduceRatioMap = new HashMap<Boolean, Map<Integer, Integer>>();
-        this.ObjectAttributeMap = new HashMap<Boolean, Map<Integer, Double>>();
+        this.astrictSkillMap = new HashMap();
+        this.beforeActionMap = new HashMap();
+        this.reduceRatioMap = new HashMap();
+        this.ObjectAttributeMap = new HashMap();
         this.monsterAstrict = NutMap.NEW();
-        this.fightInParams = Collections.synchronizedList(new ArrayList<RespFightInParam>());
+        this.fightInParams = Collections.synchronizedList(new ArrayList<>());
         this.actionParam = new ActionParam();
-        this.respRoundStartParamMap = new HashMap<Integer, RespRoundStartParam>();
-        this.isCompleted = new HashSet<Integer>();
-        this.fleeList = new ArrayList<Integer>();
-        this.fightActors = new HashMap<Integer, FightObject>();
-        this.deadPetIds = new HashSet<Integer>();
+        this.respRoundStartParamMap = new HashMap();
+        this.isCompleted = new HashSet();
+        this.fleeList = new ArrayList<>();
+        this.fightActors = new HashMap();
+        this.deadPetIds = new HashSet();
         this.fightType = 0;
         this.rewardType = -1;
-        this.fightId_timer_host = new HashMap<Integer, ScheduledFuture<?>>();
-        this.roundFinish_timer_player = new HashMap<Integer, ScheduledFuture<?>>();
-        this.fightId_timer_pet = new HashMap<Integer, ScheduledFuture<?>>();
-        this.animationPlayMap = new HashMap<Integer, AnimationPlayParam>();
-        this.fightNewService = SpringUtils.getBean(FightNewService.class);
+        this.fightId_timer_host = new HashMap();
+        this.roundFinish_timer_player = new HashMap();
+        this.fightId_timer_pet = new HashMap();
+        this.animationPlayMap = new HashMap();
+        this.fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
         this.watchFightOnOff = false;
-        this.spectatorObjectMap = new ConcurrentHashMap<Long, SpectatorObject>();
+        this.spectatorObjectMap = new ConcurrentHashMap();
         this.fightOverReason = 0;
         this.winSide = 0;
-        this.exitRoles = new HashMap<Boolean, Set<FieldValue>>();
+        this.exitRoles = new HashMap();
         this.logger = logger;
         this.id = id;
         this.recordId = recordId;
@@ -1356,37 +1421,37 @@ public class Fight
     
     public Fight() {
         this.logger = LoggerFunction.FIGHT.getLogger();
-        this.listA = Collections.synchronizedList(new ArrayList<FightObject>());
-        this.listB = Collections.synchronizedList(new ArrayList<FightObject>());
-        this.fightMemberA = new ArrayList<FightMember>();
-        this.fightMemberB = new ArrayList<FightMember>();
+        this.listA = Collections.synchronizedList(new ArrayList<>());
+        this.listB = Collections.synchronizedList(new ArrayList<>());
+        this.fightMemberA = new ArrayList<>();
+        this.fightMemberB = new ArrayList<>();
         this.round = 1;
         this.roundParam = new RoundParam(this.round);
         this.maxRound = WarMaxRound.WAR_MAX_ROUND.getValue();
-        this.astrictSkillMap = new HashMap<Boolean, AstrictSkill>();
-        this.beforeActionMap = new HashMap<Boolean, BeforeActionSkill>();
-        this.reduceRatioMap = new HashMap<Boolean, Map<Integer, Integer>>();
-        this.ObjectAttributeMap = new HashMap<Boolean, Map<Integer, Double>>();
+        this.astrictSkillMap = new HashMap();
+        this.beforeActionMap = new HashMap();
+        this.reduceRatioMap = new HashMap();
+        this.ObjectAttributeMap = new HashMap();
         this.monsterAstrict = NutMap.NEW();
-        this.fightInParams = Collections.synchronizedList(new ArrayList<RespFightInParam>());
+        this.fightInParams = Collections.synchronizedList(new ArrayList<>());
         this.actionParam = new ActionParam();
-        this.respRoundStartParamMap = new HashMap<Integer, RespRoundStartParam>();
-        this.isCompleted = new HashSet<Integer>();
-        this.fleeList = new ArrayList<Integer>();
-        this.fightActors = new HashMap<Integer, FightObject>();
-        this.deadPetIds = new HashSet<Integer>();
+        this.respRoundStartParamMap = new HashMap();
+        this.isCompleted = new HashSet();
+        this.fleeList = new ArrayList<>();
+        this.fightActors = new HashMap();
+        this.deadPetIds = new HashSet();
         this.fightType = 0;
         this.rewardType = -1;
-        this.fightId_timer_host = new HashMap<Integer, ScheduledFuture<?>>();
-        this.roundFinish_timer_player = new HashMap<Integer, ScheduledFuture<?>>();
-        this.fightId_timer_pet = new HashMap<Integer, ScheduledFuture<?>>();
-        this.animationPlayMap = new HashMap<Integer, AnimationPlayParam>();
-        this.fightNewService = SpringUtils.getBean(FightNewService.class);
+        this.fightId_timer_host = new HashMap();
+        this.roundFinish_timer_player = new HashMap();
+        this.fightId_timer_pet = new HashMap();
+        this.animationPlayMap = new HashMap();
+        this.fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
         this.watchFightOnOff = false;
-        this.spectatorObjectMap = new ConcurrentHashMap<Long, SpectatorObject>();
+        this.spectatorObjectMap = new ConcurrentHashMap();
         this.fightOverReason = 0;
         this.winSide = 0;
-        this.exitRoles = new HashMap<Boolean, Set<FieldValue>>();
+        this.exitRoles = new HashMap();
     }
     
     static {

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.system.game.market.model.Cargo;
@@ -11,6 +10,9 @@ public class RespStallMine extends Message
 {
     private byte stallTotalNum;
     private List<Cargo> list;
+    
+    public RespStallMine() {
+    }
     
     public void setStallTotalNum(final byte stallTotalNum) {
         this.stallTotalNum = stallTotalNum;

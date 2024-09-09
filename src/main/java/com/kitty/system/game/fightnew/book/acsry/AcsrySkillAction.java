@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry;
 
 public interface AcsrySkillAction

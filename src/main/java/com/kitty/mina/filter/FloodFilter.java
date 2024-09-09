@@ -1,4 +1,3 @@
-
 package com.kitty.mina.filter;
 
 import org.slf4j.LoggerFactory;
@@ -17,17 +16,20 @@ public class FloodFilter extends IoFilterAdapter
 {
     private static Logger logger;
     
-    public void messageReceived(final IoFilter.NextFilter nextFilter, final IoSession session, final Object message) throws Exception {
-        final FloodRecord record = getFloodRecordBy(session);
-        final long now = System.currentTimeMillis();
-        final long currSecond = NumberUtil.intValue(now / 1000L);
-        final long lastTime = record.getLastReceivedTime();
-        final int lastSecond = NumberUtil.intValue(lastTime / 1000L);
+    public FloodFilter() {
+    }
+    
+    public void messageReceived(IoFilter.NextFilter nextFilter, IoSession session, Object message) throws Exception {
+        FloodRecord record = getFloodRecordBy(session);
+        long now = System.currentTimeMillis();
+        long currSecond = (long)NumberUtil.intValue(Long.valueOf(now / 1000L));
+        long lastTime = record.getLastReceivedTime();
+        int lastSecond = NumberUtil.intValue(Long.valueOf(lastTime / 1000L));
         tryToResetFloodTimes(now, record);
-        if (currSecond == lastSecond) {
-            final int packageSum = record.addSecondReceivedPackage();
+        if (currSecond == (long)lastSecond) {
+            int packageSum = record.addSecondReceivedPackage();
             if (isMessageTooFast(packageSum)) {
-                final int floodTimes = record.addFloodTimes();
+                int floodTimes = record.addFloodTimes();
                 if (isMeetFloodStandard(floodTimes)) {
                     FloodFilter.logger.info("session窗口期洪水记录超过上限");
                 }
@@ -42,31 +44,32 @@ public class FloodFilter extends IoFilterAdapter
         nextFilter.messageReceived(session, message);
     }
     
-    private static FloodRecord getFloodRecordBy(final IoSession session) {
-        final SessionManager sessionMgr = SessionManager.INSTANCE;
-        FloodRecord record = sessionMgr.getSessionAttr(session, SessionProperties.FLOOD, FloodRecord.class);
+    private static FloodRecord getFloodRecordBy(IoSession session) {
+        SessionManager sessionMgr = SessionManager.INSTANCE;
+        FloodRecord record = (FloodRecord)sessionMgr.getSessionAttr(session, SessionProperties.FLOOD, FloodRecord.class);
         if (record == null) {
             record = new FloodRecord();
-            session.setAttribute((Object)SessionProperties.FLOOD, (Object)record);
+            session.setAttribute(SessionProperties.FLOOD, record);
+            return record;
         }
         return record;
     }
     
-    private static void tryToResetFloodTimes(final long now, final FloodRecord record) {
-        final FireWallConfig config = SpringUtils.getBean(FireWallConfig.class);
-        final long diffTime = now - record.getLastFloodTime();
-        if (NumberUtil.intValue(diffTime / 1000L) > config.getFloodWindowSeconds()) {
+    private static void tryToResetFloodTimes(long now, FloodRecord record) {
+        FireWallConfig config = (FireWallConfig)SpringUtils.getBean(FireWallConfig.class);
+        long diffTime = now - record.getLastFloodTime();
+        if (NumberUtil.intValue(Long.valueOf(diffTime / 1000L)) > config.getFloodWindowSeconds()) {
             record.setFloodTimes(0);
         }
     }
     
-    private static boolean isMessageTooFast(final int packageSum) {
-        final FireWallConfig config = SpringUtils.getBean(FireWallConfig.class);
+    private static boolean isMessageTooFast(int packageSum) {
+        FireWallConfig config = (FireWallConfig)SpringUtils.getBean(FireWallConfig.class);
         return packageSum >= config.getMaxPackagePerSecond();
     }
     
-    private static boolean isMeetFloodStandard(final int floodTimes) {
-        final FireWallConfig config = SpringUtils.getBean(FireWallConfig.class);
+    private static boolean isMeetFloodStandard(int floodTimes) {
+        FireWallConfig config = (FireWallConfig)SpringUtils.getBean(FireWallConfig.class);
         return floodTimes > config.getMaxFloodTimes();
     }
     

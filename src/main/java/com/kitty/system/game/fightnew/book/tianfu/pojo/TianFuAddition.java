@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.pojo;
 
 import java.io.Serializable;
@@ -8,7 +7,7 @@ public class TianFuAddition implements Serializable
     private short dayInCeLevel;
     private byte tianFuLevel;
     
-    public TianFuAddition(final short dayInCeLevel, final byte tianFuLevel) {
+    public TianFuAddition(short dayInCeLevel, byte tianFuLevel) {
         this.dayInCeLevel = dayInCeLevel;
         this.tianFuLevel = tianFuLevel;
     }

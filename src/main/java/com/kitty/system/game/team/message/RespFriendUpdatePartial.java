@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.system.common.enter.FiedValue;
@@ -59,50 +58,26 @@ public class RespFriendUpdatePartial extends Message
         if (!(o instanceof RespFriendUpdatePartial)) {
             return false;
         }
-        final RespFriendUpdatePartial other = (RespFriendUpdatePartial)o;
+        RespFriendUpdatePartial other = (RespFriendUpdatePartial)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getUpdate_type() != other.getUpdate_type()) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0078: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0078;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0115: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0115;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -111,14 +86,14 @@ public class RespFriendUpdatePartial extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getUpdate_type();
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

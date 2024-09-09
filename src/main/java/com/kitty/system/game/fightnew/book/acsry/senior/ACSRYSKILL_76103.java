@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -15,27 +14,30 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_76103 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_76103() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
         if (target.isPet() && target.isFallDown() && effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            final double percent = 0.04;
-            final double maxPercent = 0.3;
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            double percent = 0.04;
+            double maxPercent = 0.3;
             double attackAddition = playerFightObject.getAcsryPropertyMap().getDouble(String.valueOf(PRO_DICT_TYPE.ATTACK_ADDITION.getDist()), 0.0);
             if (attackAddition >= maxPercent) {
                 return;
@@ -44,18 +46,19 @@ public class ACSRYSKILL_76103 extends AcsrySkillProcessor
             if (attackAddition > maxPercent) {
                 attackAddition = maxPercent;
             }
-            playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.ATTACK_ADDITION.getDist()), (Object)attackAddition);
-            final int oldHp = effecter.getCurrLife();
-            int addHp = (int)(oldHp * percent);
+            playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.ATTACK_ADDITION.getDist()), Double.valueOf(attackAddition));
+            int oldHp = effecter.getCurrLife();
+            int addHp = (int)((double)oldHp * percent);
             if (oldHp + addHp > effecter.getMaxLife()) {
                 addHp = effecter.getMaxLife() - oldHp;
             }
             if (addHp > 0) {
-                final FightObjectParam targetParam = actionDetailParam.gainTargetParam(effecter.getId(), true);
+                FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)effecter.getId(), true);
                 PassiveSkillUtils.excuteChangeLifeAuto(fight, effecter, actionDetailParam, targetParam, addHp);
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 76103);
-                skillRecord.setT(effecter.getId());
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 76103);
+                skillRecord.setT((long)(int)effecter.getId());
             }
         }
+        return;
     }
 }

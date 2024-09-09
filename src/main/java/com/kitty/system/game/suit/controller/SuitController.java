@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.suit.controller;
 
 import com.kitty.system.game.suit.message.ReqSwitchoverSuit;
@@ -17,19 +16,22 @@ public class SuitController
     @Autowired
     private SuitService suitService;
     
+    public SuitController() {
+    }
+    
     @RequestMapping
-    public void suit(final IoSession session, final ReqSuit reqSuit) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void suit(IoSession session, ReqSuit reqSuit) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.suitService.suit(role);
         }
     }
     
     @RequestMapping
-    public void switchover(final IoSession session, final ReqSwitchoverSuit switchoverSuit) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void switchover(IoSession session, ReqSwitchoverSuit switchoverSuit) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            this.suitService.switchover(role, Long.valueOf(switchoverSuit.getId()));
+            this.suitService.switchover(role, (long)Long.valueOf(switchoverSuit.getId()));
         }
     }
 }

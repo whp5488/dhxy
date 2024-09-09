@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.drivebeasts;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -13,33 +12,36 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_323501 extends TianFuProcessor
 {
+    public FU_323501() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap wearInstantlyTakeEffect(final Role role, final Pet pet, final TianFuAddition tianFuAddition, final Object... obj) {
+    public NutMap wearInstantlyTakeEffect(Role role, Pet pet, TianFuAddition tianFuAddition, Object... obj) {
         if (pet == null || tianFuAddition == null) {
             return null;
         }
-        int level = pet.getPetLv();
-        if (pet.getRebirth() < 3 || level < 120) {
+        int level = (int)pet.getPetLv();
+        if ((int)pet.getRebirth() < 3 || level < 120) {
             return null;
         }
         if (level > 180) {
             level = 180;
         }
-        final int flag = (level - 120) / 10;
+        int flag = (level - 120) / 10;
         if (flag > 0) {
-            final NutMap map = NutMap.NEW();
-            final double cnta = 5.0E-4 * TianFuUtils.getCountAddition(tianFuAddition);
-            map.setv(String.valueOf(PRO_DICT_TYPE.CZL.getDist()), (Object)(cnta * flag));
+            NutMap map = NutMap.NEW();
+            double cnta = 5.0E-4 * TianFuUtils.getCountAddition(tianFuAddition);
+            map.setv(String.valueOf(PRO_DICT_TYPE.CZL.getDist()), Double.valueOf(cnta * (double)flag));
             return map;
         }
         return null;

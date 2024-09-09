@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.horse.service;
 
 import com.kitty.system.game.horse.handler.FeedHorseHandler;
@@ -9,21 +8,18 @@ import com.kitty.system.game.horse.message.ReqUpgradeHorse;
 import com.kitty.system.game.fightnew.book.horse.utils.HorseSkillUtils;
 import com.kitty.system.game.horse.message.ReqMountControlPet;
 import com.kitty.system.common.data.DataGlobalFunc;
-import com.kitty.system.common.message.RespMsg;
 import com.kitty.common.utils.CheckCharUtils;
 import com.kitty.system.enums.war.wardef.LOGIC;
+import com.kitty.system.common.message.RespMsg;
 import com.kitty.mina.cache.SessionUtils;
 import com.kitty.system.game.horse.message.ReqSetMountName;
 import org.apache.mina.core.session.IoSession;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.horse.message.RespMount;
 import com.kitty.system.game.horse.message.vo.Mount;
-import com.kitty.listener.BaseGameEvent;
 import com.kitty.listener.event.ranking.PetChangeEvent;
 import com.kitty.listener.EventType;
 import com.kitty.listener.EventDispatcher;
-import java.util.stream.Collector;
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.common.utils.spring.SpringUtils;
 import java.util.IdentityHashMap;
@@ -36,9 +32,7 @@ import com.kitty.system.game.horse.pool.HorseDataPool;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
 import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.horse.domain.Horse;
@@ -70,28 +64,28 @@ public class HorseService
         this.logger = LoggerFactory.getLogger(HorseService.class);
     }
     
-    public Map<Long, Horse> getHorse(final Role role) {
-        final Map<Long, Horse> horseMap = DataCache.HORSE_MAP.get(role.getId());
+    public Map<Long, Horse> getHorse(Role role) {
+        Map<Long, Horse> horseMap = (Map)DataCache.HORSE_MAP.get(role.getId());
         if (horseMap == null) {
-            final List<Horse> list = this.dao.query(Horse.class, Cnd.where("r_id", "=", role.getId()));
-            for (final Horse horse : list) {
+            List<Horse> list = this.dao.query(Horse.class, Cnd.where("r_id", "=", role.getId()));
+            for (Horse horse : list) {
                 horse.doAfterInit();
             }
-            final Map<Long, Horse> map = list.stream().collect(Collectors.toMap(Horse::getId, Horse -> Horse));
+            Map<Long, Horse> map = (Map)list.stream().collect(Collectors.toMap(Horse::getId, Horse -> Horse));
             DataCache.HORSE_MAP.put(role.getId(), map);
             return map;
         }
         return horseMap;
     }
     
-    public void creationHorse(final Role role) {
-        final Map<Long, Horse> map = new HashMap<Long, Horse>(4);
-        final Integer serial = role.getSerial();
-        final Map<Integer, SysHorse> horseMap = HorseDataPool.horseMap;
-        for (final Integer key : horseMap.keySet()) {
-            final SysHorse sysHorse = horseMap.get(key);
+    public void creationHorse(Role role) {
+        Map<Long, Horse> map = new HashMap(4);
+        Integer serial = role.getSerial();
+        Map<Integer, SysHorse> horseMap = HorseDataPool.horseMap;
+        for (Integer key : horseMap.keySet()) {
+            SysHorse sysHorse = (SysHorse)horseMap.get(key);
             if (sysHorse.getNeedSerial().contains(serial)) {
-                final Horse horse = this.creationHorse(role.getId(), sysHorse);
+                Horse horse = this.creationHorse((long)role.getId(), sysHorse);
                 horse.setScore(this.score(horse));
                 horse.save();
                 map.put(horse.getId(), horse);
@@ -100,97 +94,101 @@ public class HorseService
                 }
                 continue;
             }
+            else {
+                continue;
+            }
         }
         DataCache.HORSE_MAP.put(role.getId(), map);
     }
     
-    public Horse creationHorse(final long id, final SysHorse sysHorse) {
-        final List<Double> rates = new ArrayList<Double>(HorseDataPool.horseGrowList.size());
-        for (final Lottery lottery : HorseDataPool.horseGrowList) {
+    public Horse creationHorse(long id, SysHorse sysHorse) {
+        List<Double> rates = new ArrayList(HorseDataPool.horseGrowList.size());
+        for (Lottery lottery : HorseDataPool.horseGrowList) {
             rates.add(lottery.getBili());
         }
-        final int index = LotteryUtils.lottery(rates);
-        Lottery lottery = HorseDataPool.horseGrowList.get(index);
-        final int[] horseMoveScope = HorseDataPool.horseMoveScope;
-        final Horse horse = new Horse(this.worker.nextId(), id, (short)0, sysHorse.getSerial(), sysHorse.getName(), 0L, lottery.getSerial(), RandomUtil.round(horseMoveScope[0], horseMoveScope[1]), sysHorse.getSeat());
-        final IdentityHashMap<Integer, Long> skill = this.creationHorseSkill(sysHorse.getSeat(), new IdentityHashMap<Integer, Long>(3));
+        int index = LotteryUtils.lottery(rates);
+        Lottery lottery = (Lottery)HorseDataPool.horseGrowList.get(index);
+        int[] horseMoveScope = HorseDataPool.horseMoveScope;
+        Horse horse = new Horse(Long.valueOf(this.worker.nextId()), id, (short)0, sysHorse.getSerial(), sysHorse.getName(), 0L, (int)lottery.getSerial(), RandomUtil.round(Integer.valueOf(horseMoveScope[0]), Integer.valueOf(horseMoveScope[1])), sysHorse.getSeat());
+        IdentityHashMap<Integer, Long> skill = this.creationHorseSkill(sysHorse.getSeat(), new IdentityHashMap(3));
         horse.setSkill(skill);
         return horse;
     }
     
-    public IdentityHashMap<Integer, Long> creationHorseSkill(final byte seat, final IdentityHashMap<Integer, Long> map) {
+    public IdentityHashMap<Integer, Long> creationHorseSkill(byte seat, IdentityHashMap<Integer, Long> map) {
         if (map.size() <= 0) {
-            map.put(1, 0L);
-            map.put(2, 0L);
-            map.put(3, 0L);
+            map.put(Integer.valueOf(1), Long.valueOf(0L));
+            map.put(Integer.valueOf(2), Long.valueOf(0L));
+            map.put(Integer.valueOf(3), Long.valueOf(0L));
         }
-        final IdentityHashMap<Integer, Long> skill = new IdentityHashMap<Integer, Long>(3);
-        final int[] horseSkillProb = HorseDataPool.horseSkillProb;
+        IdentityHashMap<Integer, Long> skill = new IdentityHashMap(3);
+        int[] horseSkillProb = HorseDataPool.horseSkillProb;
         int i = 1;
-        for (final Integer key : map.keySet()) {
+        for (Integer key : map.keySet()) {
             List<Lottery> list = null;
-            final int round = RandomUtil.round(horseSkillProb[0], horseSkillProb[1]);
+            int round = RandomUtil.round(Integer.valueOf(horseSkillProb[0]), Integer.valueOf(horseSkillProb[1]));
             if (round <= horseSkillProb[2]) {
-                list = (List)HorseDataPool.superHorseSkillMap.get(seat).get(i);
+                list = (List)((Map)HorseDataPool.superHorseSkillMap.get(Byte.valueOf(seat))).get(Integer.valueOf(i));
             }
             else {
-                list = (List)HorseDataPool.commonHorseSkillMap.get(seat).get(i);
+                list = (List)((Map)HorseDataPool.commonHorseSkillMap.get(Byte.valueOf(seat))).get(Integer.valueOf(i));
             }
-            final List<Double> rates = new ArrayList<Double>(list.size());
-            for (final Lottery lottery : list) {
+            List<Double> rates = new ArrayList(list.size());
+            for (Lottery lottery : list) {
                 rates.add(lottery.getBili());
             }
-            final int index = LotteryUtils.lottery(rates);
-            Lottery lottery = list.get(index);
-            Long value = map.get(key);
+            int index = LotteryUtils.lottery(rates);
+            Lottery lottery = (Lottery)list.get(index);
+            Long value = (Long)map.get(key);
             if (value == null) {
-                value = 0L;
+                value = Long.valueOf(0L);
             }
             skill.put(lottery.getSerial(), value);
             if (++i > 3) {
                 break;
             }
+            continue;
         }
         return skill;
     }
     
-    public int score(final Horse horse) {
-        final int score = (int)(horse.getGrowUp() * 1.8 + horse.getGrowthDan() * 48 + horse.getMoveSp() * 5 + horse.getLevel() * 20 + this.skillScore(horse));
+    public int score(Horse horse) {
+        int score = (int)((double)horse.getGrowUp() * 1.8 + (double)(horse.getGrowthDan() * 48) + (double)(horse.getMoveSp() * 5) + (double)(horse.getLevel() * 20) + this.skillScore(horse));
         return score;
     }
     
-    public double skillScore(final Horse horse) {
+    public double skillScore(Horse horse) {
         int score = 0;
-        for (final Integer key : horse.getSkill().keySet()) {
-            final Long value = horse.getSkill().get(key);
+        for (Integer key : horse.getSkill().keySet()) {
+            Long value = (Long)horse.getSkill().get(key);
             int base = 27;
-            final Byte grade = HorseDataPool.horseSkillGradeMap.get(key);
+            Byte grade = (Byte)HorseDataPool.horseSkillGradeMap.get(key);
             if (grade == null) {
                 base = 27;
             }
-            else if (grade == 2) {
+            else if ((byte)grade == 2) {
                 base = 75;
             }
-            else if (grade == 3) {
+            else if ((byte)grade == 3) {
                 base = 184;
             }
-            score += base + (int)(value / 357.0);
+            score += base + (int)((double)(long)value / 357.0);
         }
-        return score;
+        return (double)score;
     }
     
-    public void convertMount(final Role role) {
-        final Map<Integer, SysHorse> map = HorseDataPool.horseMap;
-        final Map<Long, Horse> horseMap = this.getHorse(role);
-        for (final Long key : horseMap.keySet()) {
-            final Horse horse = horseMap.get(key);
-            final SysHorse sysHorse = map.values().stream().filter(e -> e.getNeedSerial().contains(role.getSerial()) && e.getSeat() == horse.getSeat()).findFirst().orElse(null);
+    public void convertMount(Role role) {
+        Map<Integer, SysHorse> map = HorseDataPool.horseMap;
+        Map<Long, Horse> horseMap = this.getHorse(role);
+        for (Long key : horseMap.keySet()) {
+            Horse horse = (Horse)horseMap.get(key);
+            SysHorse sysHorse = (SysHorse)map.values().stream().filter(e -> e.getNeedSerial().contains(role.getSerial()) && e.getSeat() == horse.getSeat()).findFirst().orElse(null);
             if (sysHorse == null) {
-                this.logger.error("种族转换更换坐骑外观数据错误：角色外观编号= {}，位置：{}", (Object)role.getSerial(), (Object)horse.getSeat());
+                this.logger.error("种族转换更换坐骑外观数据错误：角色外观编号= {}，位置：{}", role.getSerial(), Byte.valueOf(horse.getSeat()));
             }
             else {
                 String name = sysHorse.getName();
-                final SysHorse mount = map.get(horse.getSerial());
+                SysHorse mount = (SysHorse)map.get(Integer.valueOf(horse.getSerial()));
                 if (!mount.getName().equals(horse.getName())) {
                     name = horse.getName();
                 }
@@ -203,60 +201,61 @@ public class HorseService
         SpringUtils.getBroadcastService().sendUpdateAppear(role);
     }
     
-    public void vitDispose(final Role role) {
-        final Map<Long, Horse> horseMap = this.getHorse(role);
-        final Horse horse = horseMap.values().stream().filter(e -> e.getState() == 1).findFirst().orElse(null);
+    public void vitDispose(Role role) {
+        Map<Long, Horse> horseMap = this.getHorse(role);
+        Horse horse = (Horse)horseMap.values().stream().filter(e -> e.getState() == 1).findFirst().orElse(null);
         if (horse == null) {
             return;
         }
-        final int vit = horse.getVit() - 3;
+        int vit = horse.getVit() - 3;
         horse.setVit((vit < 0) ? 0 : vit);
         horse.save();
         if (horse.getVit() <= 0) {
-            this.calculateControlPet(role, horse.getId());
+            this.calculateControlPet(role, (long)horse.getId());
         }
+        return;
     }
     
-    public void calculateControlPet(final Role role, final long id) {
-        final List<Pet> collect = this.petService.selectPet(role).values().stream().filter(e -> e.getHorse() == id).collect(Collectors.toList());
-        for (final Pet pet : collect) {
-            this.petService.calculateBase(role.getId(), pet);
+    public void calculateControlPet(Role role, long id) {
+        List<Pet> collect = (List)this.petService.selectPet(role).values().stream().filter(e -> e.getHorse() == id).collect(Collectors.toList());
+        for (Pet pet : collect) {
+            this.petService.calculateBase((long)role.getId(), pet);
             pet.save();
             this.petService.sendPetPanels(role, pet);
-            EventDispatcher.getInstance().fireEvent(new PetChangeEvent(EventType.PET_CHANGE, pet, this.petService.getPetEffective(role.getId(), pet)));
+            EventDispatcher.getInstance().fireEvent(new PetChangeEvent(EventType.PET_CHANGE, pet, this.petService.getPetEffective((long)role.getId(), pet)));
         }
         role.save();
     }
     
-    public void refresh(final Role role, final Map<Long, Horse> horseMap) {
-        final List<Mount> list = new ArrayList<Mount>();
-        for (final Long key : horseMap.keySet()) {
-            final Horse horse = horseMap.get(key);
-            final Mount mount = new Mount(horse);
+    public void refresh(Role role, Map<Long, Horse> horseMap) {
+        List<Mount> list = new ArrayList<>();
+        for (Long key : horseMap.keySet()) {
+            Horse horse = (Horse)horseMap.get(key);
+            Mount mount = new Mount(horse);
             list.add(mount);
         }
         MessagePusher.pushMessage(role, new RespMount(list));
     }
     
-    public void refresh(final Role role, final Horse horse) {
+    public void refresh(Role role, Horse horse) {
         if (role == null || horse == null) {
             return;
         }
-        final List<Mount> list = new ArrayList<Mount>();
+        List<Mount> list = new ArrayList<>();
         list.add(new Mount(horse));
         MessagePusher.pushMessage(role, new RespMount(list));
+        return;
     }
     
-    public void changeName(final IoSession session, final ReqSetMountName reqSetMountName) {
-        final Role role = SessionUtils.getRoleBySession(session);
-        if (role != null) {}
-        final Map<Long, Horse> horseMap = this.getHorse(role);
-        final Horse horse = horseMap.get(Long.valueOf(reqSetMountName.getId()));
+    public void changeName(IoSession session, ReqSetMountName reqSetMountName) {
+        Role role = SessionUtils.getRoleBySession(session);
+        Map<Long, Horse> horseMap = this.getHorse(role);
+        Horse horse = (Horse)horseMap.get(Long.valueOf(reqSetMountName.getId()));
         if (horse != null) {
             if (!this.roleService.canCreateRole(session, reqSetMountName.getName(), LOGIC.HORSE.getValue())) {
                 return;
             }
-            final String name = CheckCharUtils.replaceName(reqSetMountName.getName());
+            String name = CheckCharUtils.replaceName(reqSetMountName.getName());
             horse.setName(name);
             horse.save();
             this.refresh(role, horse);
@@ -266,10 +265,10 @@ public class HorseService
         }
     }
     
-    public void rideMount(final Role role, final String mountId, final byte type) {
-        final Long id = Long.valueOf(mountId);
-        final Map<Long, Horse> horseMap = this.getHorse(role);
-        final Horse horse = horseMap.get(id);
+    public void rideMount(Role role, String mountId, byte type) {
+        Long id = Long.valueOf(mountId);
+        Map<Long, Horse> horseMap = this.getHorse(role);
+        Horse horse = (Horse)horseMap.get(id);
         if (horse == null) {
             return;
         }
@@ -277,94 +276,101 @@ public class HorseService
             this.comeDown(role, horse);
             return;
         }
-        final SysHorse sysHorse = HorseDataPool.horseMap.get(horse.getSerial());
+        SysHorse sysHorse = (SysHorse)HorseDataPool.horseMap.get(Integer.valueOf(horse.getSerial()));
         if (sysHorse == null) {
             return;
         }
-        final String msg = DataGlobalFunc.needGradeJudge(sysHorse.getNeedGrade() / 1000, sysHorse.getNeedGrade() % 1000, role.getRelive(), role.getLevel(), "你的#<R>角色等级#不足");
+        String msg = DataGlobalFunc.needGradeJudge(sysHorse.getNeedGrade() / 1000, sysHorse.getNeedGrade() % 1000, (int)role.getRelive(), (int)role.getLevel(), "你的#<R>角色等级#不足");
         if (msg != null) {
             MessagePusher.pushMessage(role, new RespMsg(msg));
             return;
         }
-        for (final Long key : horseMap.keySet()) {
-            final Horse h = horseMap.get(key);
+        for (Long key : horseMap.keySet()) {
+            Horse h = (Horse)horseMap.get(key);
             if (h != null && h.getState() == 1) {
                 this.comeDown(role, h);
+            }
+            else {
+                continue;
             }
         }
         horse.setState((byte)1);
         horse.save();
         this.refresh(role, horse);
         SpringUtils.getBroadcastService().sendUpdateAppear(role);
+        return;
     }
     
-    public void comeDown(final Role role, final Horse horse) {
+    public void comeDown(Role role, Horse horse) {
         horse.setState((byte)0);
         horse.save();
         this.refresh(role, horse);
         SpringUtils.getBroadcastService().sendUpdateAppear(role);
     }
     
-    public Horse getRideMount(final Role role) {
-        final Map<Long, Horse> horseMap = this.getHorse(role);
-        for (final Long key : horseMap.keySet()) {
-            final Horse horse = horseMap.get(key);
+    public Horse getRideMount(Role role) {
+        Map<Long, Horse> horseMap = this.getHorse(role);
+        for (Long key : horseMap.keySet()) {
+            Horse horse = (Horse)horseMap.get(key);
             if (horse != null && horse.getState() == 1) {
                 return horse;
             }
+            continue;
         }
         return null;
     }
     
-    public void controlPet(final Role role, final ReqMountControlPet controlPet) {
-        final Pet pet = this.petService.selectPet(role).get(controlPet.getPetId());
+    public void controlPet(Role role, ReqMountControlPet controlPet) {
+        Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(controlPet.getPetId()));
         if (pet == null) {
             return;
         }
-        Long id = 0L;
+        Long id = Long.valueOf(0L);
         if (!controlPet.getMountId().isEmpty()) {
             id = Long.valueOf(controlPet.getMountId());
         }
-        if (id > 0L) {
-            final Horse horse = this.getHorse(role).get(id);
+        if ((long)id > 0L) {
+            Horse horse = (Horse)this.getHorse(role).get(id);
             if (horse == null) {
                 return;
             }
         }
-        final PetService petService = SpringUtils.getPetService();
-        pet.setHorse(id);
-        petService.calculateBase(role.getId(), pet);
+        PetService petService = SpringUtils.getPetService();
+        pet.setHorse((long)id);
+        petService.calculateBase((long)role.getId(), pet);
         pet.save();
         role.save();
         HorseSkillUtils.studyFinish(role, pet.getHorse(), pet);
         petService.sendPetPanels(role, pet);
+        return;
     }
     
-    public void upgrade(final Role role, final ReqUpgradeHorse reqUpgradeHorse) {
-        final boolean clicker = this.roleService.mouserClicker(role, "mount", 250L);
+    public void upgrade(Role role, ReqUpgradeHorse reqUpgradeHorse) {
+        boolean clicker = this.roleService.mouserClicker(role, "mount", 250L);
         if (!clicker) {
             return;
         }
-        final Long id = Long.valueOf(reqUpgradeHorse.getParam());
-        final Map<Long, Horse> horseMap = this.getHorse(role);
-        final Horse horse = horseMap.get(id);
+        Long id = Long.valueOf(reqUpgradeHorse.getParam());
+        Map<Long, Horse> horseMap = this.getHorse(role);
+        Horse horse = (Horse)horseMap.get(id);
         if (horse == null) {
             return;
         }
-        final short type = reqUpgradeHorse.getType();
-        final FeedHorseHandler handler = FeedHelper.INSTANCE.getHandler(reqUpgradeHorse.getType());
+        short type = reqUpgradeHorse.getType();
+        FeedHorseHandler handler = FeedHelper.INSTANCE.getHandler(reqUpgradeHorse.getType());
         if (handler != null) {
-            final String tips = handler.acceptFeed(horse, role, type, reqUpgradeHorse.getOperationType(), reqUpgradeHorse.getRests());
-            if (!Strings.isEmpty((CharSequence)tips)) {
+            String tips = handler.acceptFeed(horse, role, type, reqUpgradeHorse.getOperationType(), Integer.valueOf(reqUpgradeHorse.getRests()));
+            if (!Strings.isEmpty(tips)) {
                 MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), tips, false));
             }
         }
         else {
             MessagePusher.pushMessage(role, new RespMsg("很抱歉，该功能暂未开放。"));
         }
+        return;
     }
     
-    public void addExp(final Role role, final Horse horse, final long exp) {
+    public void addExp(Role role, Horse horse, long exp) {
         if (exp <= 0L) {
             return;
         }
@@ -373,9 +379,9 @@ public class HorseService
         if (horse.getLevel() >= HorseDataPool.horseLevelMax) {
             return;
         }
-        final short limit = HorseDataPool.getGrowthDanLimit(role.getRelive() * 1000 + role.getLevel());
+        short limit = HorseDataPool.getGrowthDanLimit((int)role.getRelive() * 1000 + (int)role.getLevel());
         long totalExp = horse.getExp() + exp;
-        long needExp = DataGlobalFunc.getExpForRebirthLevel(LOGIC.HORSE.getValue(), 0, level);
+        long needExp = DataGlobalFunc.getExpForRebirthLevel(LOGIC.HORSE.getValue(), 0, (int)level);
         if (totalExp >= needExp) {
             flag = true;
             while (totalExp >= needExp) {
@@ -386,7 +392,7 @@ public class HorseService
                 if (horse.getLevel() >= limit) {
                     break;
                 }
-                needExp = DataGlobalFunc.getExpForRebirthLevel(LOGIC.HORSE.getValue(), 0, level);
+                needExp = DataGlobalFunc.getExpForRebirthLevel(LOGIC.HORSE.getValue(), 0, (int)level);
             }
         }
         else {
@@ -394,28 +400,30 @@ public class HorseService
         }
         if (flag) {
             horse.setScore(this.score(horse));
-            this.calculateControlPet(role, horse.getId());
+            this.calculateControlPet(role, (long)horse.getId());
         }
         horse.save();
         this.refresh(role, horse);
+        return;
     }
     
-    public void domesticateEarnings(final Role role, final long id, long exp, final int serial, final int tips) {
-        final Map<Long, Horse> horseMap = this.getHorse(role);
-        final Horse horse = horseMap.get(id);
+    public void domesticateEarnings(Role role, long id, long exp, int serial, int tips) {
+        Map<Long, Horse> horseMap = this.getHorse(role);
+        Horse horse = (Horse)horseMap.get(Long.valueOf(id));
         if (horse == null) {
             return;
         }
-        final short limit = HorseDataPool.getGrowthDanLimit(role.getRelive() * 1000 + role.getLevel());
+        short limit = HorseDataPool.getGrowthDanLimit((int)role.getRelive() * 1000 + (int)role.getLevel());
         if (horse.getLevel() >= limit) {
             return;
         }
         this.addExp(role, horse, exp);
         if (serial == 703) {
             if (tips > 0) {
-                exp = tips;
+                exp = (long)tips;
             }
-            MessagePusher.notify2Misc(role, true, 703, horse.getName(), exp);
+            MessagePusher.notify2Misc(role, true, 703, horse.getName(), Long.valueOf(exp));
         }
+        return;
     }
 }

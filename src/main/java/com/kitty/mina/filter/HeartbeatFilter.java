@@ -1,4 +1,3 @@
-
 package com.kitty.mina.filter;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,55 +20,58 @@ public class HeartbeatFilter extends IoFilterAdapter
     private static final int REGULAR_TIME = 5000;
     private static Map<Long, HeartRecord> heartRecords;
     
-    public void messageReceived(final IoFilter.NextFilter nextFilter, final IoSession session, final Object packet) {
-        final Message message = (Message)packet;
-        final Role role = SessionUtils.getRoleBySession(session);
+    public HeartbeatFilter() {
+    }
+    
+    public void messageReceived(IoFilter.NextFilter nextFilter, IoSession session, Object packet) {
+        Message message = (Message)packet;
+        Role role = SessionUtils.getRoleBySession(session);
         if (isHeartBeat(message.getModule(), role)) {
-            HeartRecord record = getRecord(role.getId());
+            HeartRecord record = getRecord((long)role.getId());
             if (record == null) {
                 record = new HeartRecord();
                 record.setLastTime(System.currentTimeMillis());
                 record.setCurrTime(System.currentTimeMillis());
-                setRecord(role.getId(), record);
+                setRecord((long)role.getId(), record);
             }
             else {
                 record.setLastTime(record.getCurrTime());
                 record.setCurrTime(System.currentTimeMillis());
                 if (isIllegalHeartBeat(record) && record.addCount()) {
-                    final RespOtherLogin respOtherLogin = new RespOtherLogin();
+                    RespOtherLogin respOtherLogin = new RespOtherLogin();
                     respOtherLogin.setContent("检测到使用第三方辅助软件，请正常游戏");
-                    respOtherLogin.setResult(2);
+                    respOtherLogin.setResult(Integer.valueOf(2));
                     MessagePusher.pushMessage(role, respOtherLogin);
                     role.getHeartCounts().clear();
                     return;
                 }
             }
         }
-        nextFilter.messageReceived(session, (Object)message);
+        nextFilter.messageReceived(session, message);
     }
     
-    private static boolean isHeartBeat(final int moduleId, final Role role) {
+    private static boolean isHeartBeat(int moduleId, Role role) {
         return 4274 == moduleId && role != null;
     }
     
-    private static HeartRecord getRecord(final long uid) {
-        return HeartbeatFilter.heartRecords.get(uid);
+    private static HeartRecord getRecord(long uid) {
+        return (HeartRecord)HeartbeatFilter.heartRecords.get(Long.valueOf(uid));
     }
     
-    private static void setRecord(final long uid, final HeartRecord record) {
-        HeartbeatFilter.heartRecords.put(uid, record);
+    private static void setRecord(long uid, HeartRecord record) {
+        HeartbeatFilter.heartRecords.put(Long.valueOf(uid), record);
     }
     
-    private static boolean isIllegalHeartBeat(final HeartRecord heartRecord) {
+    private static boolean isIllegalHeartBeat(HeartRecord heartRecord) {
         return heartRecord.getCurrTime() - heartRecord.getLastTime() < 5000L;
     }
     
-    public static void cleanHeartBeatRecord(final long uid) {
-        HeartbeatFilter.heartRecords.remove(uid);
+    public static void cleanHeartBeatRecord(long uid) {
+        HeartbeatFilter.heartRecords.remove(Long.valueOf(uid));
     }
     
     static {
         log = LoggerFactory.getLogger(HeartbeatFilter.class);
-        HeartbeatFilter.heartRecords = new ConcurrentHashMap<Long, HeartRecord>();
+        HeartbeatFilter.heartRecords = new ConcurrentHashMap();
     }
 }

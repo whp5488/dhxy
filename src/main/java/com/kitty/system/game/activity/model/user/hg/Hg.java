@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.activity.model.user.hg;
 
-import java.beans.ConstructorProperties;
 import java.util.HashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.Map;
@@ -15,8 +13,8 @@ public class Hg implements Serializable
     private Map<Long, Byte> map;
     private ScheduledFuture<?> scheduledFuture;
     
-    public Hg(final long id, final byte type, final long time) {
-        this.map = new HashMap<Long, Byte>(5);
+    public Hg(long id, byte type, long time) {
+        this.map = new HashMap(5);
         this.id = id;
         this.type = type;
         this.time = time;
@@ -70,7 +68,7 @@ public class Hg implements Serializable
         if (!(o instanceof Hg)) {
             return false;
         }
-        final Hg other = (Hg)o;
+        Hg other = (Hg)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -83,30 +81,14 @@ public class Hg implements Serializable
         if (this.getTime() != other.getTime()) {
             return false;
         }
-        final Object this$map = this.getMap();
-        final Object other$map = other.getMap();
-        Label_0106: {
-            if (this$map == null) {
-                if (other$map == null) {
-                    break Label_0106;
-                }
-            }
-            else if (this$map.equals(other$map)) {
-                break Label_0106;
-            }
+        Object this$map = this.getMap();
+        Object other$map = other.getMap();
+        if (!((this$map != null) ? this$map.equals(other$map) : (other$map == null))) {
             return false;
         }
-        final Object this$scheduledFuture = this.getScheduledFuture();
-        final Object other$scheduledFuture = other.getScheduledFuture();
-        if (this$scheduledFuture == null) {
-            if (other$scheduledFuture == null) {
-                return true;
-            }
-        }
-        else if (this$scheduledFuture.equals(other$scheduledFuture)) {
-            return true;
-        }
-        return false;
+        Object this$scheduledFuture = this.getScheduledFuture();
+        Object other$scheduledFuture = other.getScheduledFuture();
+        return (this$scheduledFuture != null) ? this$scheduledFuture.equals(other$scheduledFuture) : (other$scheduledFuture == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -115,28 +97,27 @@ public class Hg implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final long $id = this.getId();
+        long $id = this.getId();
         result = result * 59 + (int)($id >>> 32 ^ $id);
         result = result * 59 + this.getType();
-        final long $time = this.getTime();
+        long $time = this.getTime();
         result = result * 59 + (int)($time >>> 32 ^ $time);
-        final Object $map = this.getMap();
+        Object $map = this.getMap();
         result = result * 59 + (($map == null) ? 43 : $map.hashCode());
-        final Object $scheduledFuture = this.getScheduledFuture();
+        Object $scheduledFuture = this.getScheduledFuture();
         result = result * 59 + (($scheduledFuture == null) ? 43 : $scheduledFuture.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "Hg(id=" + this.getId() + ", type=" + this.getType() + ", time=" + this.getTime() + ", map=" + this.getMap() + ", scheduledFuture=" + this.getScheduledFuture() + ")";
+        return "Hg(id=" + this.getId() + ", type=" + (int)this.getType() + ", time=" + this.getTime() + ", map=" + this.getMap() + ", scheduledFuture=" + this.getScheduledFuture() + ")";
     }
     
-    @ConstructorProperties({ "id", "type", "time", "map", "scheduledFuture" })
     public Hg(final long id, final byte type, final long time, final Map<Long, Byte> map, final ScheduledFuture<?> scheduledFuture) {
-        this.map = new HashMap<Long, Byte>(5);
+        this.map = new HashMap(5);
         this.id = id;
         this.type = type;
         this.time = time;
@@ -145,6 +126,6 @@ public class Hg implements Serializable
     }
     
     public Hg() {
-        this.map = new HashMap<Long, Byte>(5);
+        this.map = new HashMap(5);
     }
 }

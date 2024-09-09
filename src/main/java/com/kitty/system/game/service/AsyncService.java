@@ -1,32 +1,27 @@
-
 package com.kitty.system.game.service;
 
 import com.kitty.common.start.ServerService;
-import com.kitty.cache.JedisUtil;
 import com.kitty.system.game.activity.model.user.ca.vo.CaCache;
+import com.kitty.cache.JedisUtil;
 import java.util.ArrayList;
 import com.kitty.system.game.activity.model.user.ca.CaRankRecord;
 import com.kitty.common.utils.JsonUtils;
 import com.kitty.common.model.Pos;
 import com.kitty.system.game.vo.utils.Const;
 import com.kitty.system.game.vo.TitleInfo;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.function.Function;
 import java.util.Comparator;
-import com.kitty.system.game.ranking.RankingList;
 import com.kitty.system.game.activity.model.user.lu.WaterRankRecord;
+import com.kitty.system.game.ranking.RankingList;
 import java.util.HashSet;
 import com.kitty.mina.cache.DataCache;
 import java.util.Set;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
 import com.kitty.system.game.npc.domain.Mirror;
 import java.util.List;
 import org.springframework.scheduling.annotation.Async;
 import com.kitty.system.game.role.domain.Role;
 import java.util.Iterator;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.init.pool.PartDataPool;
@@ -34,7 +29,6 @@ import com.kitty.system.init.domain.SysCommonAward;
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.system.common.data.DataExpFunc;
 import com.kitty.system.enums.item.ItemClassify;
-import java.io.Serializable;
 import com.kitty.system.game.task.domain.vo.RecordHallQuestion;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.game.task.service.handler.activity.KejuTaskHandler;
@@ -75,75 +69,83 @@ public class AsyncService
     }
     
     @Async("asyncServiceExecutor")
-    public void kjHallQuestionAward(final Map<Integer, Boolean> memberMap, final int serial, final int num) {
+    public void kjHallQuestionAward(Map<Integer, Boolean> memberMap, int serial, int num) {
         if (serial <= 0 || num <= 0 || num > 10) {
             return;
         }
-        final KejuTaskHandler kejuTaskHandler = SpringUtils.getBean(KejuTaskHandler.class);
-        for (final Integer key : memberMap.keySet()) {
-            final Boolean flag = memberMap.get(key);
-            if (!flag) {
+        KejuTaskHandler kejuTaskHandler = (KejuTaskHandler)SpringUtils.getBean(KejuTaskHandler.class);
+        for (Integer key : memberMap.keySet()) {
+            Boolean flag = (Boolean)memberMap.get(key);
+            if (!(boolean)flag) {
                 continue;
             }
-            final Role role = this.roleService.getPlayer(key);
-            if (role == null) {
-                continue;
-            }
-            final RecordHallQuestion question = this.redisService.get("hall:" + role.getRoleId() + "_" + serial + "_" + num, RecordHallQuestion.class);
-            if (question == null) {
-                this.logger.error("玩家{}科举殿试，第{}道题获取为空", (Object)role.getName(), (Object)num);
+            Role role = this.roleService.getPlayer((int)key);
+            if (role != null) {
+                RecordHallQuestion question = (RecordHallQuestion)this.redisService.get("hall:" + role.getRoleId() + "_" + serial + "_" + num, RecordHallQuestion.class);
+                if (question == null) {
+                    this.logger.error("玩家{}科举殿试，第{}道题获取为空", role.getName(), Integer.valueOf(num));
+                }
+                else {
+                    String msg = "很可惜，你答错了#<E:17>#";
+                    int multiple = 3;
+                    if (question.getR() == 1) {
+                        multiple = 4;
+                        msg = "恭喜您答对了#<E:93>#";
+                    }
+                    this.roleService.addExp(role, DataExpFunc.calculateKj((int)role.getLevel(), (int)role.getRelive(), ItemClassify.HERO_EXP.getId(), multiple), "殿试答题", true);
+                    Integer combatPet = role.getExtendBox().getCombatPet();
+                    if ((int)combatPet > 0) {
+                        Pet pet = (Pet)this.petService.selectPet(role).get(combatPet);
+                        this.petService.addExp(role, pet, DataExpFunc.calculateKj((int)pet.getPetLv(), (int)pet.getRebirth(), ItemClassify.PET_EXP.getId(), multiple), true);
+                    }
+                    if (question.getR() == 1) {
+                        kejuTaskHandler.award(role, (SysCommonAward)PartDataPool.commonAwardMap.get("hall"));
+                    }
+                    MessagePusher.pushMessage(role, new RespMsg(msg));
+                    if (num >= 10) {
+                        kejuTaskHandler.leave(role, true);
+                    }
+                    else {
+                        continue;
+                    }
+                }
             }
             else {
-                String msg = "很可惜，你答错了#<E:17>#";
-                int multiple = 3;
-                if (question.getR() == 1) {
-                    multiple = 4;
-                    msg = "恭喜您答对了#<E:93>#";
-                }
-                this.roleService.addExp(role, DataExpFunc.calculateKj(role.getLevel(), role.getRelive(), ItemClassify.HERO_EXP.getId(), multiple), "殿试答题", true);
-                final Integer combatPet = role.getExtendBox().getCombatPet();
-                if (combatPet > 0) {
-                    final Pet pet = this.petService.selectPet(role).get(combatPet);
-                    this.petService.addExp(role, pet, DataExpFunc.calculateKj(pet.getPetLv(), pet.getRebirth(), ItemClassify.PET_EXP.getId(), multiple), true);
-                }
-                if (question.getR() == 1) {
-                    kejuTaskHandler.award(role, PartDataPool.commonAwardMap.get("hall"));
-                }
-                MessagePusher.pushMessage(role, new RespMsg(msg));
-                if (num < 10) {
-                    continue;
-                }
-                kejuTaskHandler.leave(role, true);
+                continue;
             }
         }
         if (num >= 10) {
             kejuTaskHandler.rank();
         }
+        return;
     }
     
     @Async("asyncServiceExecutor")
     public void clearKjTitle() {
-        final List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", (Class)Long.class);
-        for (final Long id : roles) {
-            final Role player = this.roleService.getPlayer(id);
+        List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", Long.class);
+        for (Long id : roles) {
+            Role player = this.roleService.getPlayer((long)id);
             if (player != null) {
                 try {
-                    for (final Integer serial : KejuTaskHandler.TITLE) {
-                        this.titleService.delTitle(player, serial);
+                    for (Integer serial : KejuTaskHandler.TITLE) {
+                        this.titleService.delTitle(player, (int)serial);
                     }
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+            else {
+                continue;
             }
         }
     }
     
     @Async("asyncServiceExecutor")
     public void clearWaterTitle() {
-        final List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", (Class)Long.class);
-        for (final Long id : roles) {
-            final Role player = this.roleService.getPlayer(id);
+        List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", Long.class);
+        for (Long id : roles) {
+            Role player = this.roleService.getPlayer((long)id);
             if (player != null) {
                 try {
                     this.titleService.delTitle(player, 400001);
@@ -153,37 +155,40 @@ public class AsyncService
                     this.titleService.delTitle(player, 400005);
                     this.titleService.delTitle(player, 400006);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+            else {
+                continue;
             }
         }
     }
     
     @Async("asyncServiceExecutor")
     public void awardWaterSeason() {
-        final int map = 1000;
-        final List<Mirror> mirrors = this.dao.query(Mirror.class, Cnd.where("type", "=", 3003));
-        Set<Long> set = DataCache.MIRROR_MAP_NPC.get(map);
+        int map = 1000;
+        List<Mirror> mirrors = this.dao.query(Mirror.class, Cnd.where("type", "=", Integer.valueOf(3003)));
+        Set<Long> set = (Set)DataCache.MIRROR_MAP_NPC.get(Integer.valueOf(map));
         if (set == null) {
-            set = new HashSet<Long>();
+            set = new HashSet();
         }
-        for (final Mirror mirror : mirrors) {
+        for (Mirror mirror : mirrors) {
             set.remove(mirror.getRId());
             mirror.setDelete(true);
             mirror.save();
         }
         DataCache.MIRROR_MAP.clear();
-        final List<WaterRankRecord> list = RankingList.WATER_RANK_RECORDS.values().stream().sorted(Comparator.comparing(WaterRankRecord::getScore, Comparator.reverseOrder()).thenComparing(WaterRankRecord::getEquipScore, Comparator.reverseOrder()).thenComparing(WaterRankRecord::getGrade, Comparator.reverseOrder())).collect(Collectors.toList());
+        List<WaterRankRecord> list = (List)RankingList.WATER_RANK_RECORDS.values().stream().sorted(Comparator.comparing(WaterRankRecord::getScore, Comparator.reverseOrder()).thenComparing(WaterRankRecord::getEquipScore, Comparator.reverseOrder()).thenComparing(WaterRankRecord::getGrade, Comparator.reverseOrder())).collect(Collectors.toList());
         for (int i = 0; i < list.size(); ++i) {
-            final WaterRankRecord record = list.get(i);
-            final Role role = this.roleService.getPlayer(record.getRId());
+            WaterRankRecord record = (WaterRankRecord)list.get(i);
+            Role role = this.roleService.getPlayer(record.getRId());
             if (role != null) {
                 if (i < 5) {
                     this.titleService.addTitle(role, new TitleInfo(400001, 0));
-                    final String[] split = Const.WATER_MIRRIR_POS.get(i).split(",");
-                    final String pos = JsonUtils.object2String(new Pos(Integer.valueOf(split[0]), Integer.valueOf(split[1]), 5, map));
-                    final Mirror mirror2 = new Mirror(this.worker.nextId(), role.getId(), "水陆战神", "水陆战神很忙，此处什么都没有留下……", pos, 3003);
+                    String[] split = ((String)Const.WATER_MIRRIR_POS.get(i)).split(",");
+                    String pos = JsonUtils.object2String(new Pos(Integer.valueOf(split[0]), Integer.valueOf(split[1]), Integer.valueOf(5), Integer.valueOf(map)));
+                    Mirror mirror2 = new Mirror(Long.valueOf(this.worker.nextId()), role.getId(), "水陆战神", "水陆战神很忙，此处什么都没有留下……", pos, 3003);
                     DataCache.MIRROR_MAP.put(role.getId(), mirror2);
                     set.add(mirror2.getRId());
                     mirror2.save();
@@ -206,15 +211,15 @@ public class AsyncService
             }
         }
         if (set.size() > 0) {
-            DataCache.MIRROR_MAP_NPC.put(map, set);
+            DataCache.MIRROR_MAP_NPC.put(Integer.valueOf(map), set);
         }
     }
     
     @Async("asyncServiceExecutor")
     public void clearCaTitle() {
-        final List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", (Class)Long.class);
-        for (final Long id : roles) {
-            final Role player = this.roleService.getPlayer(id);
+        List<Long> roles = this.jdbcTemplate.queryForList("select id from role;", Long.class);
+        for (Long id : roles) {
+            Role player = this.roleService.getPlayer((long)id);
             if (player != null) {
                 try {
                     this.titleService.delTitle(player, 900003);
@@ -223,18 +228,21 @@ public class AsyncService
                     this.titleService.delTitle(player, 900005);
                     this.titleService.delTitle(player, 900004);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+            else {
+                continue;
             }
         }
     }
     
     @Async("asyncServiceExecutor")
     public void awardCaSeason() {
-        for (final Long key : RankingList.CA_RANK_RECORDS.keySet()) {
-            final CaRankRecord record = RankingList.CA_RANK_RECORDS.get(key);
-            final Role role = this.roleService.getPlayer(key);
+        for (Long key : RankingList.CA_RANK_RECORDS.keySet()) {
+            CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(key);
+            Role role = this.roleService.getPlayer((long)key);
             if (role == null) {
                 continue;
             }
@@ -242,62 +250,62 @@ public class AsyncService
                 if (record.getFullRank() <= 100) {
                     this.titleService.addTitle(role, new TitleInfo(900003, 0));
                 }
-                else {
-                    if (record.getScore() < 5000) {
-                        continue;
-                    }
+                else if (record.getScore() >= 5000) {
                     this.titleService.addTitle(role, new TitleInfo(900004, 0));
+                }
+                else {
+                    continue;
                 }
             }
             else if (record.getGrade() < 2120) {
                 if (record.getFullRank() <= 100) {
                     this.titleService.addTitle(role, new TitleInfo(900002, 0));
                 }
-                else {
-                    if (record.getScore() < 5000) {
-                        continue;
-                    }
+                else if (record.getScore() >= 5000) {
                     this.titleService.addTitle(role, new TitleInfo(900004, 0));
+                }
+                else {
+                    continue;
                 }
             }
             else if (record.getGrade() < 3120) {
                 if (record.getFullRank() <= 100) {
                     this.titleService.addTitle(role, new TitleInfo(900001, 0));
                 }
-                else {
-                    if (record.getScore() < 5000) {
-                        continue;
-                    }
+                else if (record.getScore() >= 5000) {
                     this.titleService.addTitle(role, new TitleInfo(900004, 0));
+                }
+                else {
+                    continue;
                 }
             }
             else if (record.getFullRank() <= 100) {
                 this.titleService.addTitle(role, new TitleInfo(900005, 0));
             }
-            else {
-                if (record.getScore() < 5000) {
-                    continue;
-                }
+            else if (record.getScore() >= 5000) {
                 this.titleService.addTitle(role, new TitleInfo(900004, 0));
+            }
+            else {
+                continue;
             }
         }
     }
     
     @Async("asyncServiceExecutor")
     public void syncCaRan() {
-        List<CaCache> oneList = new ArrayList<CaCache>();
-        List<CaCache> twoList = new ArrayList<CaCache>();
-        List<CaCache> triList = new ArrayList<CaCache>();
-        List<CaCache> fourList = new ArrayList<CaCache>();
-        final Set<String> keys = JedisUtil.keys("jzca:*");
+        List<CaCache> oneList = new ArrayList<>();
+        List<CaCache> twoList = new ArrayList<>();
+        List<CaCache> triList = new ArrayList<>();
+        List<CaCache> fourList = new ArrayList<>();
+        Set<String> keys = JedisUtil.keys("jzca:*");
         if (keys.size() <= 0) {
             return;
         }
-        for (final String key : keys) {
-            final String value = JedisUtil.get(key);
+        for (String key : keys) {
+            String value = JedisUtil.get(key);
             if (value != null) {
                 try {
-                    final CaCache caCache = JsonUtils.string2Object(value, CaCache.class);
+                    CaCache caCache = (CaCache)JsonUtils.string2Object(value, CaCache.class);
                     if (caCache.getGrade() < 1080) {
                         oneList.add(caCache);
                     }
@@ -311,30 +319,34 @@ public class AsyncService
                         fourList.add(caCache);
                     }
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            else {
+                continue;
+            }
         }
-        final String marking = SpringUtils.getBean(ServerService.class).getMarking();
-        oneList = oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
-        twoList = oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
-        triList = oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
-        fourList = oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
+        String marking = ((ServerService)SpringUtils.getBean(ServerService.class)).getMarking();
+        oneList = (List)oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
+        twoList = (List)oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
+        triList = (List)oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
+        fourList = (List)oneList.stream().sorted(Comparator.comparing(CaCache::getScore, Comparator.reverseOrder())).collect(Collectors.toList());
         this.syncCaRan(marking, oneList);
         this.syncCaRan(marking, twoList);
         this.syncCaRan(marking, triList);
         this.syncCaRan(marking, fourList);
+        return;
     }
     
-    public void syncCaRan(final String marking, final List<CaCache> list) {
+    public void syncCaRan(String marking, List<CaCache> list) {
         for (int i = 0; i < list.size(); ++i) {
-            final CaCache caCache = list.get(i);
+            CaCache caCache = (CaCache)list.get(i);
             if (caCache == null || caCache.getMarking() == null) {
-                this.logger.error("syncCaRan数据错误：{}", (Object)caCache);
+                this.logger.error("syncCaRan数据错误：{}", caCache);
             }
             else if (caCache.getMarking().equals(marking)) {
-                final CaRankRecord record = RankingList.CA_RANK_RECORDS.get(caCache.getId());
+                CaRankRecord record = (CaRankRecord)RankingList.CA_RANK_RECORDS.get(caCache.getId());
                 if (record != null) {
                     record.setFullRank(i + 1);
                     record.save();

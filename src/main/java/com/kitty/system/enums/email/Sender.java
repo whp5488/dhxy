@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.email;
 
 public enum Sender
@@ -10,13 +9,18 @@ public enum Sender
     private int note;
     private String value;
     
-    public static String getName(final int note) {
+    public static String getName(int note) {
         String name = "系统";
-        for (final Sender n : values()) {
+        Sender[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            Sender n = values[i];
             if (n.note == note) {
                 name = n.getValue();
                 break;
             }
+            ++i;
         }
         return name;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class ReqAlterFriendGroup extends Message
     private List<Integer> list;
     
     public ReqAlterFriendGroup() {
-        this.list = new ArrayList<Integer>();
+        this.list = new ArrayList<>();
     }
     
     public String getId() {
@@ -49,47 +48,23 @@ public class ReqAlterFriendGroup extends Message
         if (!(o instanceof ReqAlterFriendGroup)) {
             return false;
         }
-        final ReqAlterFriendGroup other = (ReqAlterFriendGroup)o;
+        ReqAlterFriendGroup other = (ReqAlterFriendGroup)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -98,13 +73,13 @@ public class ReqAlterFriendGroup extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

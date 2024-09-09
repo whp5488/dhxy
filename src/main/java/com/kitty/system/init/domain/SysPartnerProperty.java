@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.HashMap;
@@ -258,8 +257,8 @@ public class SysPartnerProperty
     private String fightAi;
     
     public SysPartnerProperty() {
-        this.extSkillInfo = new HashMap<Integer, Integer>();
-        this.skillInfo = new HashMap<Integer, Integer>();
+        this.extSkillInfo = new HashMap();
+        this.skillInfo = new HashMap();
     }
     
     public int getId() {
@@ -918,7 +917,7 @@ public class SysPartnerProperty
         if (!(o instanceof SysPartnerProperty)) {
             return false;
         }
-        final SysPartnerProperty other = (SysPartnerProperty)o;
+        SysPartnerProperty other = (SysPartnerProperty)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -1156,43 +1155,19 @@ public class SysPartnerProperty
         if (this.getSkillId() != other.getSkillId()) {
             return false;
         }
-        final Object this$extSkillInfo = this.getExtSkillInfo();
-        final Object other$extSkillInfo = other.getExtSkillInfo();
-        Label_1253: {
-            if (this$extSkillInfo == null) {
-                if (other$extSkillInfo == null) {
-                    break Label_1253;
-                }
-            }
-            else if (this$extSkillInfo.equals(other$extSkillInfo)) {
-                break Label_1253;
-            }
+        Object this$extSkillInfo = this.getExtSkillInfo();
+        Object other$extSkillInfo = other.getExtSkillInfo();
+        if (!((this$extSkillInfo != null) ? this$extSkillInfo.equals(other$extSkillInfo) : (other$extSkillInfo == null))) {
             return false;
         }
-        final Object this$skillInfo = this.getSkillInfo();
-        final Object other$skillInfo = other.getSkillInfo();
-        Label_1290: {
-            if (this$skillInfo == null) {
-                if (other$skillInfo == null) {
-                    break Label_1290;
-                }
-            }
-            else if (this$skillInfo.equals(other$skillInfo)) {
-                break Label_1290;
-            }
+        Object this$skillInfo = this.getSkillInfo();
+        Object other$skillInfo = other.getSkillInfo();
+        if (!((this$skillInfo != null) ? this$skillInfo.equals(other$skillInfo) : (other$skillInfo == null))) {
             return false;
         }
-        final Object this$fightAi = this.getFightAi();
-        final Object other$fightAi = other.getFightAi();
-        if (this$fightAi == null) {
-            if (other$fightAi == null) {
-                return true;
-            }
-        }
-        else if (this$fightAi.equals(other$fightAi)) {
-            return true;
-        }
-        return false;
+        Object this$fightAi = this.getFightAi();
+        Object other$fightAi = other.getFightAi();
+        return (this$fightAi != null) ? this$fightAi.equals(other$fightAi) : (other$fightAi == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -1201,7 +1176,7 @@ public class SysPartnerProperty
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getPartnerSerial();
@@ -1220,136 +1195,136 @@ public class SysPartnerProperty
         result = result * 59 + this.getSoil();
         result = result * 59 + this.getWater();
         result = result * 59 + this.getWood();
-        final long $conFire = Double.doubleToLongBits(this.getConFire());
+        long $conFire = Double.doubleToLongBits(this.getConFire());
         result = result * 59 + (int)($conFire >>> 32 ^ $conFire);
-        final long $conGold = Double.doubleToLongBits(this.getConGold());
+        long $conGold = Double.doubleToLongBits(this.getConGold());
         result = result * 59 + (int)($conGold >>> 32 ^ $conGold);
-        final long $conSoil = Double.doubleToLongBits(this.getConSoil());
+        long $conSoil = Double.doubleToLongBits(this.getConSoil());
         result = result * 59 + (int)($conSoil >>> 32 ^ $conSoil);
-        final long $conWater = Double.doubleToLongBits(this.getConWater());
+        long $conWater = Double.doubleToLongBits(this.getConWater());
         result = result * 59 + (int)($conWater >>> 32 ^ $conWater);
-        final long $conWood = Double.doubleToLongBits(this.getConWood());
+        long $conWood = Double.doubleToLongBits(this.getConWood());
         result = result * 59 + (int)($conWood >>> 32 ^ $conWood);
-        final long $phyDef = Double.doubleToLongBits(this.getPhyDef());
+        long $phyDef = Double.doubleToLongBits(this.getPhyDef());
         result = result * 59 + (int)($phyDef >>> 32 ^ $phyDef);
-        final long $phyDefNef = Double.doubleToLongBits(this.getPhyDefNef());
+        long $phyDefNef = Double.doubleToLongBits(this.getPhyDefNef());
         result = result * 59 + (int)($phyDefNef >>> 32 ^ $phyDefNef);
-        final long $fatalRate = Double.doubleToLongBits(this.getFatalRate());
+        long $fatalRate = Double.doubleToLongBits(this.getFatalRate());
         result = result * 59 + (int)($fatalRate >>> 32 ^ $fatalRate);
         result = result * 59 + this.getHitCombo();
-        final long $hitComboRate = Double.doubleToLongBits(this.getHitComboRate());
+        long $hitComboRate = Double.doubleToLongBits(this.getHitComboRate());
         result = result * 59 + (int)($hitComboRate >>> 32 ^ $hitComboRate);
-        final long $hitRate = Double.doubleToLongBits(this.getHitRate());
+        long $hitRate = Double.doubleToLongBits(this.getHitRate());
         result = result * 59 + (int)($hitRate >>> 32 ^ $hitRate);
-        final long $voidRate = Double.doubleToLongBits(this.getVoidRate());
+        long $voidRate = Double.doubleToLongBits(this.getVoidRate());
         result = result * 59 + (int)($voidRate >>> 32 ^ $voidRate);
-        final long $phyDefNefRate = Double.doubleToLongBits(this.getPhyDefNefRate());
+        long $phyDefNefRate = Double.doubleToLongBits(this.getPhyDefNefRate());
         result = result * 59 + (int)($phyDefNefRate >>> 32 ^ $phyDefNefRate);
-        final long $rainRageOdds = Double.doubleToLongBits(this.getRainRageOdds());
+        long $rainRageOdds = Double.doubleToLongBits(this.getRainRageOdds());
         result = result * 59 + (int)($rainRageOdds >>> 32 ^ $rainRageOdds);
-        final long $fireRageOdds = Double.doubleToLongBits(this.getFireRageOdds());
+        long $fireRageOdds = Double.doubleToLongBits(this.getFireRageOdds());
         result = result * 59 + (int)($fireRageOdds >>> 32 ^ $fireRageOdds);
-        final long $windRageOdds = Double.doubleToLongBits(this.getWindRageOdds());
+        long $windRageOdds = Double.doubleToLongBits(this.getWindRageOdds());
         result = result * 59 + (int)($windRageOdds >>> 32 ^ $windRageOdds);
-        final long $thunderRageOdds = Double.doubleToLongBits(this.getThunderRageOdds());
+        long $thunderRageOdds = Double.doubleToLongBits(this.getThunderRageOdds());
         result = result * 59 + (int)($thunderRageOdds >>> 32 ^ $thunderRageOdds);
-        final long $gfireRageOdds = Double.doubleToLongBits(this.getGfireRageOdds());
+        long $gfireRageOdds = Double.doubleToLongBits(this.getGfireRageOdds());
         result = result * 59 + (int)($gfireRageOdds >>> 32 ^ $gfireRageOdds);
-        final long $shanshiRageOdds = Double.doubleToLongBits(this.getShanshiRageOdds());
+        long $shanshiRageOdds = Double.doubleToLongBits(this.getShanshiRageOdds());
         result = result * 59 + (int)($shanshiRageOdds >>> 32 ^ $shanshiRageOdds);
-        final long $rainEhan = Double.doubleToLongBits(this.getRainEhan());
+        long $rainEhan = Double.doubleToLongBits(this.getRainEhan());
         result = result * 59 + (int)($rainEhan >>> 32 ^ $rainEhan);
-        final long $fireEhan = Double.doubleToLongBits(this.getFireEhan());
+        long $fireEhan = Double.doubleToLongBits(this.getFireEhan());
         result = result * 59 + (int)($fireEhan >>> 32 ^ $fireEhan);
-        final long $windEhan = Double.doubleToLongBits(this.getWindEhan());
+        long $windEhan = Double.doubleToLongBits(this.getWindEhan());
         result = result * 59 + (int)($windEhan >>> 32 ^ $windEhan);
-        final long $thunderEhan = Double.doubleToLongBits(this.getThunderEhan());
+        long $thunderEhan = Double.doubleToLongBits(this.getThunderEhan());
         result = result * 59 + (int)($thunderEhan >>> 32 ^ $thunderEhan);
         result = result * 59 + this.getRecoverEhan();
-        final long $sanshiEhan = Double.doubleToLongBits(this.getSanshiEhan());
+        long $sanshiEhan = Double.doubleToLongBits(this.getSanshiEhan());
         result = result * 59 + (int)($sanshiEhan >>> 32 ^ $sanshiEhan);
-        final long $breakEhan = Double.doubleToLongBits(this.getBreakEhan());
+        long $breakEhan = Double.doubleToLongBits(this.getBreakEhan());
         result = result * 59 + (int)($breakEhan >>> 32 ^ $breakEhan);
-        final long $adAtkEhan = Double.doubleToLongBits(this.getAdAtkEhan());
+        long $adAtkEhan = Double.doubleToLongBits(this.getAdAtkEhan());
         result = result * 59 + (int)($adAtkEhan >>> 32 ^ $adAtkEhan);
-        final long $adDefEhan = Double.doubleToLongBits(this.getAdDefEhan());
+        long $adDefEhan = Double.doubleToLongBits(this.getAdDefEhan());
         result = result * 59 + (int)($adDefEhan >>> 32 ^ $adDefEhan);
-        final long $adSpdEhan = Double.doubleToLongBits(this.getAdSpdEhan());
+        long $adSpdEhan = Double.doubleToLongBits(this.getAdSpdEhan());
         result = result * 59 + (int)($adSpdEhan >>> 32 ^ $adSpdEhan);
-        final long $sweepEhan = Double.doubleToLongBits(this.getSweepEhan());
+        long $sweepEhan = Double.doubleToLongBits(this.getSweepEhan());
         result = result * 59 + (int)($sweepEhan >>> 32 ^ $sweepEhan);
-        final long $thudEhan = Double.doubleToLongBits(this.getThudEhan());
+        long $thudEhan = Double.doubleToLongBits(this.getThudEhan());
         result = result * 59 + (int)($thudEhan >>> 32 ^ $thudEhan);
-        final long $disorderEhan = Double.doubleToLongBits(this.getDisorderEhan());
+        long $disorderEhan = Double.doubleToLongBits(this.getDisorderEhan());
         result = result * 59 + (int)($disorderEhan >>> 32 ^ $disorderEhan);
-        final long $sealEhan = Double.doubleToLongBits(this.getSealEhan());
+        long $sealEhan = Double.doubleToLongBits(this.getSealEhan());
         result = result * 59 + (int)($sealEhan >>> 32 ^ $sealEhan);
-        final long $poisonEhan = Double.doubleToLongBits(this.getPoisonEhan());
+        long $poisonEhan = Double.doubleToLongBits(this.getPoisonEhan());
         result = result * 59 + (int)($poisonEhan >>> 32 ^ $poisonEhan);
-        final long $sleepEhan = Double.doubleToLongBits(this.getSleepEhan());
+        long $sleepEhan = Double.doubleToLongBits(this.getSleepEhan());
         result = result * 59 + (int)($sleepEhan >>> 32 ^ $sleepEhan);
-        final long $forgetEhan = Double.doubleToLongBits(this.getForgetEhan());
+        long $forgetEhan = Double.doubleToLongBits(this.getForgetEhan());
         result = result * 59 + (int)($forgetEhan >>> 32 ^ $forgetEhan);
-        final long $charmEhan = Double.doubleToLongBits(this.getCharmEhan());
+        long $charmEhan = Double.doubleToLongBits(this.getCharmEhan());
         result = result * 59 + (int)($charmEhan >>> 32 ^ $charmEhan);
-        final long $cureEhan = Double.doubleToLongBits(this.getCureEhan());
+        long $cureEhan = Double.doubleToLongBits(this.getCureEhan());
         result = result * 59 + (int)($cureEhan >>> 32 ^ $cureEhan);
-        final long $shockEhan = Double.doubleToLongBits(this.getShockEhan());
+        long $shockEhan = Double.doubleToLongBits(this.getShockEhan());
         result = result * 59 + (int)($shockEhan >>> 32 ^ $shockEhan);
-        final long $gfireEhan = Double.doubleToLongBits(this.getGfireEhan());
+        long $gfireEhan = Double.doubleToLongBits(this.getGfireEhan());
         result = result * 59 + (int)($gfireEhan >>> 32 ^ $gfireEhan);
-        final long $rainDef = Double.doubleToLongBits(this.getRainDef());
+        long $rainDef = Double.doubleToLongBits(this.getRainDef());
         result = result * 59 + (int)($rainDef >>> 32 ^ $rainDef);
-        final long $fireDef = Double.doubleToLongBits(this.getFireDef());
+        long $fireDef = Double.doubleToLongBits(this.getFireDef());
         result = result * 59 + (int)($fireDef >>> 32 ^ $fireDef);
-        final long $windDef = Double.doubleToLongBits(this.getWindDef());
+        long $windDef = Double.doubleToLongBits(this.getWindDef());
         result = result * 59 + (int)($windDef >>> 32 ^ $windDef);
-        final long $thunderDef = Double.doubleToLongBits(this.getThunderDef());
+        long $thunderDef = Double.doubleToLongBits(this.getThunderDef());
         result = result * 59 + (int)($thunderDef >>> 32 ^ $thunderDef);
-        final long $disorderDef = Double.doubleToLongBits(this.getDisorderDef());
+        long $disorderDef = Double.doubleToLongBits(this.getDisorderDef());
         result = result * 59 + (int)($disorderDef >>> 32 ^ $disorderDef);
-        final long $sealDef = Double.doubleToLongBits(this.getSealDef());
+        long $sealDef = Double.doubleToLongBits(this.getSealDef());
         result = result * 59 + (int)($sealDef >>> 32 ^ $sealDef);
-        final long $sleepDef = Double.doubleToLongBits(this.getSleepDef());
+        long $sleepDef = Double.doubleToLongBits(this.getSleepDef());
         result = result * 59 + (int)($sleepDef >>> 32 ^ $sleepDef);
-        final long $forgetDef = Double.doubleToLongBits(this.getForgetDef());
+        long $forgetDef = Double.doubleToLongBits(this.getForgetDef());
         result = result * 59 + (int)($forgetDef >>> 32 ^ $forgetDef);
-        final long $poisonDef = Double.doubleToLongBits(this.getPoisonDef());
+        long $poisonDef = Double.doubleToLongBits(this.getPoisonDef());
         result = result * 59 + (int)($poisonDef >>> 32 ^ $poisonDef);
-        final long $shockDef = Double.doubleToLongBits(this.getShockDef());
+        long $shockDef = Double.doubleToLongBits(this.getShockDef());
         result = result * 59 + (int)($shockDef >>> 32 ^ $shockDef);
-        final long $gfireDef = Double.doubleToLongBits(this.getGfireDef());
+        long $gfireDef = Double.doubleToLongBits(this.getGfireDef());
         result = result * 59 + (int)($gfireDef >>> 32 ^ $gfireDef);
-        final long $sanshiDef = Double.doubleToLongBits(this.getSanshiDef());
+        long $sanshiDef = Double.doubleToLongBits(this.getSanshiDef());
         result = result * 59 + (int)($sanshiDef >>> 32 ^ $sanshiDef);
-        final long $rainDefNeg = Double.doubleToLongBits(this.getRainDefNeg());
+        long $rainDefNeg = Double.doubleToLongBits(this.getRainDefNeg());
         result = result * 59 + (int)($rainDefNeg >>> 32 ^ $rainDefNeg);
-        final long $fireDefNeg = Double.doubleToLongBits(this.getFireDefNeg());
+        long $fireDefNeg = Double.doubleToLongBits(this.getFireDefNeg());
         result = result * 59 + (int)($fireDefNeg >>> 32 ^ $fireDefNeg);
-        final long $windDefNeg = Double.doubleToLongBits(this.getWindDefNeg());
+        long $windDefNeg = Double.doubleToLongBits(this.getWindDefNeg());
         result = result * 59 + (int)($windDefNeg >>> 32 ^ $windDefNeg);
-        final long $thunderDefNeg = Double.doubleToLongBits(this.getThunderDefNeg());
+        long $thunderDefNeg = Double.doubleToLongBits(this.getThunderDefNeg());
         result = result * 59 + (int)($thunderDefNeg >>> 32 ^ $thunderDefNeg);
-        final long $disorderDefNeg = Double.doubleToLongBits(this.getDisorderDefNeg());
+        long $disorderDefNeg = Double.doubleToLongBits(this.getDisorderDefNeg());
         result = result * 59 + (int)($disorderDefNeg >>> 32 ^ $disorderDefNeg);
-        final long $shockDefNeg = Double.doubleToLongBits(this.getShockDefNeg());
+        long $shockDefNeg = Double.doubleToLongBits(this.getShockDefNeg());
         result = result * 59 + (int)($shockDefNeg >>> 32 ^ $shockDefNeg);
-        final long $gfireDefNeg = Double.doubleToLongBits(this.getGfireDefNeg());
+        long $gfireDefNeg = Double.doubleToLongBits(this.getGfireDefNeg());
         result = result * 59 + (int)($gfireDefNeg >>> 32 ^ $gfireDefNeg);
-        final long $sanshiDefNeg = Double.doubleToLongBits(this.getSanshiDefNeg());
+        long $sanshiDefNeg = Double.doubleToLongBits(this.getSanshiDefNeg());
         result = result * 59 + (int)($sanshiDefNeg >>> 32 ^ $sanshiDefNeg);
         result = result * 59 + this.getSkillId();
-        final Object $extSkillInfo = this.getExtSkillInfo();
+        Object $extSkillInfo = this.getExtSkillInfo();
         result = result * 59 + (($extSkillInfo == null) ? 43 : $extSkillInfo.hashCode());
-        final Object $skillInfo = this.getSkillInfo();
+        Object $skillInfo = this.getSkillInfo();
         result = result * 59 + (($skillInfo == null) ? 43 : $skillInfo.hashCode());
-        final Object $fightAi = this.getFightAi();
+        Object $fightAi = this.getFightAi();
         result = result * 59 + (($fightAi == null) ? 43 : $fightAi.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "SysPartnerProperty(id=" + this.getId() + ", partnerSerial=" + this.getPartnerSerial() + ", race=" + this.getRace() + ", sex=" + this.getSex() + ", level=" + this.getLevel() + ", basecon=" + this.getBasecon() + ", wakan=" + this.getWakan() + ", atk=" + this.getAtk() + ", agility=" + this.getAgility() + ", power=" + this.getPower() + ", speed=" + this.getSpeed() + ", hpMax=" + this.getHpMax() + ", fire=" + this.getFire() + ", gold=" + this.getGold() + ", soil=" + this.getSoil() + ", water=" + this.getWater() + ", wood=" + this.getWood() + ", conFire=" + this.getConFire() + ", conGold=" + this.getConGold() + ", conSoil=" + this.getConSoil() + ", conWater=" + this.getConWater() + ", conWood=" + this.getConWood() + ", phyDef=" + this.getPhyDef() + ", phyDefNef=" + this.getPhyDefNef() + ", fatalRate=" + this.getFatalRate() + ", hitCombo=" + this.getHitCombo() + ", hitComboRate=" + this.getHitComboRate() + ", hitRate=" + this.getHitRate() + ", voidRate=" + this.getVoidRate() + ", phyDefNefRate=" + this.getPhyDefNefRate() + ", rainRageOdds=" + this.getRainRageOdds() + ", fireRageOdds=" + this.getFireRageOdds() + ", windRageOdds=" + this.getWindRageOdds() + ", thunderRageOdds=" + this.getThunderRageOdds() + ", gfireRageOdds=" + this.getGfireRageOdds() + ", shanshiRageOdds=" + this.getShanshiRageOdds() + ", rainEhan=" + this.getRainEhan() + ", fireEhan=" + this.getFireEhan() + ", windEhan=" + this.getWindEhan() + ", thunderEhan=" + this.getThunderEhan() + ", recoverEhan=" + this.getRecoverEhan() + ", sanshiEhan=" + this.getSanshiEhan() + ", breakEhan=" + this.getBreakEhan() + ", adAtkEhan=" + this.getAdAtkEhan() + ", adDefEhan=" + this.getAdDefEhan() + ", adSpdEhan=" + this.getAdSpdEhan() + ", sweepEhan=" + this.getSweepEhan() + ", thudEhan=" + this.getThudEhan() + ", disorderEhan=" + this.getDisorderEhan() + ", sealEhan=" + this.getSealEhan() + ", poisonEhan=" + this.getPoisonEhan() + ", sleepEhan=" + this.getSleepEhan() + ", forgetEhan=" + this.getForgetEhan() + ", charmEhan=" + this.getCharmEhan() + ", cureEhan=" + this.getCureEhan() + ", shockEhan=" + this.getShockEhan() + ", gfireEhan=" + this.getGfireEhan() + ", rainDef=" + this.getRainDef() + ", fireDef=" + this.getFireDef() + ", windDef=" + this.getWindDef() + ", thunderDef=" + this.getThunderDef() + ", disorderDef=" + this.getDisorderDef() + ", sealDef=" + this.getSealDef() + ", sleepDef=" + this.getSleepDef() + ", forgetDef=" + this.getForgetDef() + ", poisonDef=" + this.getPoisonDef() + ", shockDef=" + this.getShockDef() + ", gfireDef=" + this.getGfireDef() + ", sanshiDef=" + this.getSanshiDef() + ", rainDefNeg=" + this.getRainDefNeg() + ", fireDefNeg=" + this.getFireDefNeg() + ", windDefNeg=" + this.getWindDefNeg() + ", thunderDefNeg=" + this.getThunderDefNeg() + ", disorderDefNeg=" + this.getDisorderDefNeg() + ", shockDefNeg=" + this.getShockDefNeg() + ", gfireDefNeg=" + this.getGfireDefNeg() + ", sanshiDefNeg=" + this.getSanshiDefNeg() + ", skillId=" + this.getSkillId() + ", extSkillInfo=" + this.getExtSkillInfo() + ", skillInfo=" + this.getSkillInfo() + ", fightAi=" + this.getFightAi() + ")";
+        return "SysPartnerProperty(id=" + this.getId() + ", partnerSerial=" + this.getPartnerSerial() + ", race=" + this.getRace() + ", sex=" + this.getSex() + ", level=" + (int)this.getLevel() + ", basecon=" + this.getBasecon() + ", wakan=" + this.getWakan() + ", atk=" + this.getAtk() + ", agility=" + this.getAgility() + ", power=" + this.getPower() + ", speed=" + this.getSpeed() + ", hpMax=" + this.getHpMax() + ", fire=" + this.getFire() + ", gold=" + this.getGold() + ", soil=" + this.getSoil() + ", water=" + this.getWater() + ", wood=" + this.getWood() + ", conFire=" + this.getConFire() + ", conGold=" + this.getConGold() + ", conSoil=" + this.getConSoil() + ", conWater=" + this.getConWater() + ", conWood=" + this.getConWood() + ", phyDef=" + this.getPhyDef() + ", phyDefNef=" + this.getPhyDefNef() + ", fatalRate=" + this.getFatalRate() + ", hitCombo=" + this.getHitCombo() + ", hitComboRate=" + this.getHitComboRate() + ", hitRate=" + this.getHitRate() + ", voidRate=" + this.getVoidRate() + ", phyDefNefRate=" + this.getPhyDefNefRate() + ", rainRageOdds=" + this.getRainRageOdds() + ", fireRageOdds=" + this.getFireRageOdds() + ", windRageOdds=" + this.getWindRageOdds() + ", thunderRageOdds=" + this.getThunderRageOdds() + ", gfireRageOdds=" + this.getGfireRageOdds() + ", shanshiRageOdds=" + this.getShanshiRageOdds() + ", rainEhan=" + this.getRainEhan() + ", fireEhan=" + this.getFireEhan() + ", windEhan=" + this.getWindEhan() + ", thunderEhan=" + this.getThunderEhan() + ", recoverEhan=" + this.getRecoverEhan() + ", sanshiEhan=" + this.getSanshiEhan() + ", breakEhan=" + this.getBreakEhan() + ", adAtkEhan=" + this.getAdAtkEhan() + ", adDefEhan=" + this.getAdDefEhan() + ", adSpdEhan=" + this.getAdSpdEhan() + ", sweepEhan=" + this.getSweepEhan() + ", thudEhan=" + this.getThudEhan() + ", disorderEhan=" + this.getDisorderEhan() + ", sealEhan=" + this.getSealEhan() + ", poisonEhan=" + this.getPoisonEhan() + ", sleepEhan=" + this.getSleepEhan() + ", forgetEhan=" + this.getForgetEhan() + ", charmEhan=" + this.getCharmEhan() + ", cureEhan=" + this.getCureEhan() + ", shockEhan=" + this.getShockEhan() + ", gfireEhan=" + this.getGfireEhan() + ", rainDef=" + this.getRainDef() + ", fireDef=" + this.getFireDef() + ", windDef=" + this.getWindDef() + ", thunderDef=" + this.getThunderDef() + ", disorderDef=" + this.getDisorderDef() + ", sealDef=" + this.getSealDef() + ", sleepDef=" + this.getSleepDef() + ", forgetDef=" + this.getForgetDef() + ", poisonDef=" + this.getPoisonDef() + ", shockDef=" + this.getShockDef() + ", gfireDef=" + this.getGfireDef() + ", sanshiDef=" + this.getSanshiDef() + ", rainDefNeg=" + this.getRainDefNeg() + ", fireDefNeg=" + this.getFireDefNeg() + ", windDefNeg=" + this.getWindDefNeg() + ", thunderDefNeg=" + this.getThunderDefNeg() + ", disorderDefNeg=" + this.getDisorderDefNeg() + ", shockDefNeg=" + this.getShockDefNeg() + ", gfireDefNeg=" + this.getGfireDefNeg() + ", sanshiDefNeg=" + this.getSanshiDefNeg() + ", skillId=" + this.getSkillId() + ", extSkillInfo=" + this.getExtSkillInfo() + ", skillInfo=" + this.getSkillInfo() + ", fightAi=" + this.getFightAi() + ")";
     }
 }

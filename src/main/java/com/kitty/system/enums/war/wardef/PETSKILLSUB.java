@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.wardef;
 
 public enum PETSKILLSUB
@@ -13,13 +12,18 @@ public enum PETSKILLSUB
     private String note;
     private int value;
     
-    public static String getNote(final int value) {
+    public static String getNote(int value) {
         String note = PETSKILLSUB.SUBTYPE_NORMAL.note;
-        for (final PETSKILLSUB n : values()) {
+        PETSKILLSUB[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            PETSKILLSUB n = values[i];
             if (n.value == value) {
                 note = n.note;
                 break;
             }
+            ++i;
         }
         return note;
     }

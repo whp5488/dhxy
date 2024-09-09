@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages.old;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -66,7 +65,7 @@ public class ReqAutoFightSetData extends Message
         if (!(o instanceof ReqAutoFightSetData)) {
             return false;
         }
-        final ReqAutoFightSetData other = (ReqAutoFightSetData)o;
+        ReqAutoFightSetData other = (ReqAutoFightSetData)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getAction() == other.getAction() && this.getType() == other.getType() && this.getSkillId() == other.getSkillId() && this.getBorn() == other.getBorn();
     }
     
@@ -76,7 +75,7 @@ public class ReqAutoFightSetData extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getAction();

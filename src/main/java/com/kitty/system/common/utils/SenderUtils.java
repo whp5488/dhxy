@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.utils;
 
 import org.slf4j.LoggerFactory;
@@ -19,26 +18,30 @@ public class SenderUtils
 {
     private static Logger logger;
     
-    public static void brodCastMessage(final Message message, final int type) {
+    public SenderUtils() {
+    }
+    
+    public static void brodCastMessage(Message message, int type) {
         if (type == LOGIC.LOGICTYPE_HERO.getValue()) {
             DataCache.ONLINE_ROLES.values().forEach(role -> MessagePusher.pushMessage(role, message));
         }
     }
     
-    public static void pushChatMessage(final RespChat respChat) {
+    public static void pushChatMessage(RespChat respChat) {
         DataCache.ONLINE_ROLES.values().forEach(role -> MessagePusher.pushMessage(role, respChat));
     }
     
-    public static void pushChatMessage(final RespSystemChat systemChat) {
+    public static void pushChatMessage(RespSystemChat systemChat) {
         DataCache.ONLINE_ROLES.values().forEach(role -> MessagePusher.pushMessage(role, systemChat));
     }
     
-    public static void pushChatMessage(final Npc npc, final RespChat respChat) {
+    public static void pushChatMessage(Npc npc, RespChat respChat) {
         if (respChat.getType() == 1) {
             DataCache.ONLINE_ROLES.values().forEach(role -> {
-                if (role.getPos().getMapId().equals(npc.getMap())) {
+                if (role.getPos().getMapId().equals(Integer.valueOf(npc.getMap()))) {
                     MessagePusher.pushMessage(role, respChat);
                 }
+                return;
             });
         }
         else if (respChat.getType() == 2) {
@@ -46,25 +49,28 @@ public class SenderUtils
         }
     }
     
-    public static void pushTeamRecruitChatMessage(final RespChat respChat) {
-        final TeamService teamService = SpringUtils.getTeamService();
+    public static void pushTeamRecruitChatMessage(RespChat respChat) {
+        TeamService teamService = SpringUtils.getTeamService();
         DataCache.ONLINE_ROLES.values().forEach(onlineRole -> {
-            final Team team = teamService.getTeam(onlineRole.getRoleId());
+            Team team = teamService.getTeam((int)onlineRole.getRoleId());
             if (team == null) {
                 MessagePusher.pushMessage(onlineRole, respChat);
             }
+            return;
         });
     }
     
-    public static void pushPartyChatMessage(final Integer partyId, final RespChat respChat) {
+    public static void pushPartyChatMessage(Integer partyId, RespChat respChat) {
         DataCache.ONLINE_ROLES.values().forEach(onlineRole -> {
-            if (!(!partyId.equals(onlineRole.getFaction()))) {
-                MessagePusher.pushMessage(onlineRole, respChat);
+            if (!partyId.equals(onlineRole.getFaction())) {
+                return;
             }
+            MessagePusher.pushMessage(onlineRole, respChat);
+            return;
         });
     }
     
-    public static void sendAllOnlinePlayers(final Message message) {
+    public static void sendAllOnlinePlayers(Message message) {
         DataCache.ONLINE_ROLES.values().forEach(role -> MessagePusher.pushMessage(role, message));
     }
     

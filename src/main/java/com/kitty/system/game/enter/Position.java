@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.enter;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class Position implements Serializable
@@ -33,34 +31,18 @@ public class Position implements Serializable
         if (!(o instanceof Position)) {
             return false;
         }
-        final Position other = (Position)o;
+        Position other = (Position)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$x = this.getX();
-        final Object other$x = other.getX();
-        Label_0065: {
-            if (this$x == null) {
-                if (other$x == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$x.equals(other$x)) {
-                break Label_0065;
-            }
+        Object this$x = this.getX();
+        Object other$x = other.getX();
+        if (!((this$x != null) ? this$x.equals(other$x) : (other$x == null))) {
             return false;
         }
-        final Object this$y = this.getY();
-        final Object other$y = other.getY();
-        if (this$y == null) {
-            if (other$y == null) {
-                return true;
-            }
-        }
-        else if (this$y.equals(other$y)) {
-            return true;
-        }
-        return false;
+        Object this$y = this.getY();
+        Object other$y = other.getY();
+        return (this$y != null) ? this$y.equals(other$y) : (other$y == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -69,11 +51,11 @@ public class Position implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $x = this.getX();
+        Object $x = this.getX();
         result = result * 59 + (($x == null) ? 43 : $x.hashCode());
-        final Object $y = this.getY();
+        Object $y = this.getY();
         result = result * 59 + (($y == null) ? 43 : $y.hashCode());
         return result;
     }
@@ -86,7 +68,6 @@ public class Position implements Serializable
     public Position() {
     }
     
-    @ConstructorProperties({ "x", "y" })
     public Position(final Integer x, final Integer y) {
         this.x = x;
         this.y = y;

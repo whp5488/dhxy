@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightRecord.domain;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import com.kitty.common.db.Db4FightSkillRecordService;
 import com.kitty.common.utils.ZipUtil;
@@ -21,16 +19,16 @@ public class FightSkillRecord
     
     public void doBeforeSave() {
         if (this.dataList != null && this.dataList.size() > 0) {
-            final String dataStr = JsonUtils.object2String(this.dataList);
+            String dataStr = JsonUtils.object2String(this.dataList);
             this.data = ZipUtil.compress(dataStr);
         }
     }
     
     public void doAfterInit() {
         if (this.data != null && !this.data.isEmpty()) {
-            final String content = ZipUtil.uncompress(this.data);
+            String content = ZipUtil.uncompress(this.data);
             this.dataM = content;
-            this.dataList = JsonUtils.string2Collection(content, List.class, SkillRecord.class);
+            this.dataList = (List)JsonUtils.string2Collection(content, List.class, SkillRecord.class);
         }
     }
     
@@ -103,12 +101,11 @@ public class FightSkillRecord
     }
     
     public FightSkillRecord() {
-        this.dataList = new ArrayList<SkillRecord>();
+        this.dataList = new ArrayList<>();
     }
     
-    @ConstructorProperties({ "fightId", "roleIds", "createTime", "destroyTime", "data", "marking", "dataList", "dataM" })
     public FightSkillRecord(final long fightId, final String roleIds, final long createTime, final long destroyTime, final String data, final String marking, final List<SkillRecord> dataList, final String dataM) {
-        this.dataList = new ArrayList<SkillRecord>();
+        this.dataList = new ArrayList<>();
         this.fightId = fightId;
         this.roleIds = roleIds;
         this.createTime = createTime;

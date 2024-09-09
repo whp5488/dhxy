@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.domain;
 
 public class OfflineMessage
@@ -17,7 +16,7 @@ public class OfflineMessage
     public OfflineMessage() {
     }
     
-    public OfflineMessage(final int time, final String msg) {
+    public OfflineMessage(int time, String msg) {
         this.time = time;
         this.msg = msg;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -59,7 +58,7 @@ public class ReqPartyRejectLevel extends Message
         if (!(o instanceof ReqPartyRejectLevel)) {
             return false;
         }
-        final ReqPartyRejectLevel other = (ReqPartyRejectLevel)o;
+        ReqPartyRejectLevel other = (ReqPartyRejectLevel)o;
         return other.canEqual(this) && this.getConsent() == other.getConsent() && this.getConsentLevel() == other.getConsentLevel() && this.getRefuse() == other.getRefuse() && this.getRefuseLevel() == other.getRefuseLevel();
     }
     
@@ -69,7 +68,7 @@ public class ReqPartyRejectLevel extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getConsent();
         result = result * 59 + this.getConsentLevel();
@@ -80,6 +79,6 @@ public class ReqPartyRejectLevel extends Message
     
     @Override
     public String toString() {
-        return "ReqPartyRejectLevel(consent=" + this.getConsent() + ", consentLevel=" + this.getConsentLevel() + ", refuse=" + this.getRefuse() + ", refuseLevel=" + this.getRefuseLevel() + ")";
+        return "ReqPartyRejectLevel(consent=" + (int)this.getConsent() + ", consentLevel=" + (int)this.getConsentLevel() + ", refuse=" + (int)this.getRefuse() + ", refuseLevel=" + (int)this.getRefuseLevel() + ")";
     }
 }

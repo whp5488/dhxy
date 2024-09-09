@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages.old;
 
 import com.kitty.system.game.fightnew.messages.vo.CombatAddObject;
@@ -10,6 +9,9 @@ import com.kitty.mina.message.Message;
 public class RespCombatAddFriend extends Message
 {
     private List<CombatAddObject> list;
+    
+    public RespCombatAddFriend() {
+    }
     
     public List<CombatAddObject> getList() {
         return this.list;
@@ -27,21 +29,13 @@ public class RespCombatAddFriend extends Message
         if (!(o instanceof RespCombatAddFriend)) {
             return false;
         }
-        final RespCombatAddFriend other = (RespCombatAddFriend)o;
+        RespCombatAddFriend other = (RespCombatAddFriend)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -50,9 +44,9 @@ public class RespCombatAddFriend extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

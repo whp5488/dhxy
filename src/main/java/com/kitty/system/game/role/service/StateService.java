@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.service;
 
 import java.util.Iterator;
@@ -20,29 +19,36 @@ public class StateService extends EchoHandler
     @Autowired
     BroadcastService broadcastService;
     
+    public StateService() {
+    }
+    
     @Override
-    public void handleEcho(final HeartBeatEvent heartBeatEvent) {
-        final Role role = heartBeatEvent.getRole();
+    public void handleEcho(HeartBeatEvent heartBeatEvent) {
+        Role role = heartBeatEvent.getRole();
         if (role == null) {
             return;
         }
-        final NutMap stateNutMap = role.getExtendBox().getState();
+        NutMap stateNutMap = role.getExtendBox().getState();
         if (stateNutMap.size() > 0) {
-            final List<String> list = new ArrayList<String>();
-            final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
-            for (final String key : stateNutMap.keySet()) {
+            List<String> list = new ArrayList<>();
+            int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+            for (String key : stateNutMap.keySet()) {
                 if (stateNutMap.getInt(key, 0) >= currTime) {
                     list.add(key);
                 }
+                else {
+                    continue;
+                }
             }
             if (list.size() > 0) {
-                for (final String key : list) {
-                    stateNutMap.remove((Object)key);
+                for (String key : list) {
+                    stateNutMap.remove(key);
                 }
                 this.roleService.stateRefresh(role);
                 role.save();
                 this.broadcastService.sendUpdateAppear(role);
             }
         }
+        return;
     }
 }

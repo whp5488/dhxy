@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.fightnew.model;
-
-import java.beans.ConstructorProperties;
 
 public class SandClockParam
 {
@@ -24,7 +21,6 @@ public class SandClockParam
         return this.isClear;
     }
     
-    @ConstructorProperties({ "objId", "isClear" })
     public SandClockParam(final int objId, final int isClear) {
         this.isClear = 1;
         this.objId = objId;

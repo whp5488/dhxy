@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.system.game.role.message.vo.Instruct;
@@ -14,7 +13,7 @@ public class RespInstruct extends Message
     public RespInstruct() {
     }
     
-    public RespInstruct(final List<Instruct> list) {
+    public RespInstruct(List<Instruct> list) {
         this.list = list;
     }
     

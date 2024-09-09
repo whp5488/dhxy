@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.helper;
 
 import java.util.Arrays;
@@ -10,12 +9,11 @@ import java.util.Optional;
 import com.kitty.system.game.bag.domain.BagEquip;
 import com.kitty.system.game.equip.helper.vo.EquipInfo;
 import com.kitty.common.utils.text.Convert;
+import java.text.MessageFormat;
+import com.kitty.system.common.message.RespNotifyMiscEx;
+import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespHint;
 import com.kitty.system.game.equip.utils.EquipUtils;
-import java.text.MessageFormat;
-import com.kitty.mina.message.Message;
-import com.kitty.mina.message.MessagePusher;
-import com.kitty.system.common.message.RespNotifyMiscEx;
 import com.kitty.system.common.data.DataGlobalFunc;
 import java.util.LinkedHashMap;
 import com.kitty.system.game.vo.FiedEquip;
@@ -33,53 +31,56 @@ public class EquipGemHandler extends UpgradeHandler
     public static final String FIND_GEM_MIN = "请先镶嵌一颗宝石吧";
     public static final List<Integer> gem_tips;
     
+    public EquipGemHandler() {
+    }
+    
     @Override
-    public String acceptUpgrade(final Role role, final Integer pos, final Integer type, final String param, final String cause) {
+    public String acceptUpgrade(Role role, Integer pos, Integer type, String param, String cause) {
         try {
-            final Long id = Long.valueOf(param);
-            final EquipInfo equipInfo = this.getEquip(role, pos, id);
+            Long id = Long.valueOf(param);
+            EquipInfo equipInfo = this.getEquip(role, pos, id);
             if (equipInfo.getTips() != null) {
                 return equipInfo.getTips();
             }
             BagEquip equip = equipInfo.getEquip();
             int bn = 0;
-            final Optional<FiedEquip> first = equip.getField().stream().filter(e -> e.getType().equals(6670)).findFirst();
+            Optional<FiedEquip> first = equip.getField().stream().filter(e -> e.getType().equals(6670)).findFirst();
             if (first.isPresent()) {
-                FiedEquip fiedEquip = first.get();
+            	FiedEquip fiedEquip = first.get();
                 bn = fiedEquip.getValue();
             }
-            final Map<Integer, Integer> map = new LinkedHashMap<Integer, Integer>();
-            final EquipAlike equipData = DataGlobalFunc.getEquipData(equip.getType());
+            Map<Integer, Integer> map = new LinkedHashMap<>();
+            EquipAlike equipData = DataGlobalFunc.getEquipData(equip.getType());
             if (type == 0) {
                 if (equipData != null) {
                     if (bn >= equipData.getMaxEmbedGemCnt()) {
                         return "宝石镶嵌已达最大数量";
                     }
-                    final Integer serial = DataGlobalFunc.getEquipInlayGemSerial(equip.getType(), equip.getPosition(), bn);
-                    final Integer goods = this.bagService.getBagGoodsNum(role, serial);
+                    Integer serial2 = DataGlobalFunc.getEquipInlayGemSerial(equip.getType(), equip.getPosition(), bn);
+                    Integer goods = this.bagService.getBagGoodsNum(role, serial2);
                     boolean flag = false;
                     if (goods >= 1) {
                         flag = true;
-                        map.put(serial, 1);
+                        map.put(serial2, 1);
                     }
                     else {
-                        final int temp = serial % 10000;
-                        final int level = temp % 100;
-                        if (level > 1) {
-                            final int subType = temp / 100;
-                            int needNum = DataGlobalFunc.gem2lowGemNum(serial);
-                            final int typeId = 70000 + subType * 100;
+                        int temp = serial2 % 10000;
+                        int level2 = temp % 100;
+                        if (level2 > 1) {
+                            int subType = temp / 100;
+                            int needNum = DataGlobalFunc.gem2lowGemNum(serial2);
+                            int typeId = 70000 + subType * 100;
                             int count = 0;
-                            for (int i = 1; i < level; ++i) {
-                                final int gemSerial = typeId + (level - i);
-                                final Integer gemNum = this.bagService.getBagGoodsNum(role, gemSerial);
+                            for (int j = 1; j < level2; ++j) {
+                                int gemSerial = typeId + (level2 - j);
+                                Integer gemNum = this.bagService.getBagGoodsNum(role, gemSerial);
                                 if (gemNum > 0) {
-                                    int num = DataGlobalFunc.gem2lowGemNum(gemSerial) * gemNum;
-                                    count += num;
-                                    if (num > needNum) {
+                                    int num2 = DataGlobalFunc.gem2lowGemNum(gemSerial) * gemNum;
+                                    count += num2;
+                                    if (num2 > needNum) {
                                         flag = true;
                                         int needed = needNum;
-                                        if (level - i > 1) {
+                                        if (level2 - j > 1) {
                                             needed = needNum / DataGlobalFunc.gem2lowGemNum(gemSerial);
                                         }
                                         else {
@@ -88,21 +89,23 @@ public class EquipGemHandler extends UpgradeHandler
                                         map.put(gemSerial, needed);
                                         break;
                                     }
-                                    map.put(gemSerial, gemNum);
-                                    if (count >= needNum) {
-                                        flag = true;
-                                        break;
+                                    else {
+                                        map.put(gemSerial, gemNum);
+                                        if (count >= needNum) {
+                                            flag = true;
+                                            break;
+                                        }
+                                        needNum -= count;
                                     }
-                                    needNum -= count;
                                 }
                             }
                         }
                     }
                     if (flag) {
-                        for (final Integer key : map.keySet()) {
-                            final Integer bagGoods = this.bagService.consumeBagGoods(role, key, map.get(key), false, true, "镶嵌宝石");
+                        for (Integer key2 : map.keySet()) {
+                            Integer bagGoods = this.bagService.consumeBagGoods(role, key2, map.get(key2), false, true, "镶嵌宝石");
                             if (bagGoods != null) {
-                                final ItemEasyInfo easyInfo = DataGlobalFunc.getItemEasyInfo(key);
+                                ItemEasyInfo easyInfo = DataGlobalFunc.getItemEasyInfo(key2);
                                 if (easyInfo != null) {
                                     MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), String.format("缺少%sX%d", easyInfo.getName(), bagGoods), true));
                                 }
@@ -112,19 +115,19 @@ public class EquipGemHandler extends UpgradeHandler
                                 return null;
                             }
                         }
-                        int[] num = { 0 };
+                        int[] num3 = { 0 };
                         equip.getField().forEach(fiedEquip -> {
                             if (fiedEquip.getType().equals(6670)) {
                                 fiedEquip.setValue(fiedEquip.getValue() + 1);
-                                num[0] = fiedEquip.getValue();
+                                num3[0] = fiedEquip.getValue();
                             }
                         });
                         equip = EquipUtils.gemChange(equipData, equip);
                         this.refresh(role, equip, pos, id, true);
                         MessagePusher.pushMessage(role, new RespHint(0, (short)1));
                         MessagePusher.pushMessage(role, new RespNotifyMiscEx(role.getId(), "恭喜，镶嵌成功", false));
-                        if (EquipGemHandler.gem_tips.contains(num[0])) {
-                            MessagePusher.notify2Lb(role, 600, role.getName(), Convert.getChineseFromArabic(num[0]), String.format("#<MP:0,M:1,MT:%d,CI:%d}>%s#", equip.getType(), equip.getType(), equip.getName()));
+                        if (EquipGemHandler.gem_tips.contains(num3[0])) {
+                            MessagePusher.notify2Lb(role, 600, role.getName(), Convert.getChineseFromArabic(num3[0]), String.format("#<MP:0,M:1,MT:%d,CI:%d}>%s#", equip.getType(), equip.getType(), equip.getName()));
                         }
                     }
                     else {
@@ -136,31 +139,27 @@ public class EquipGemHandler extends UpgradeHandler
                 if (bn < 1) {
                     return "请先镶嵌一颗宝石吧";
                 }
-                int level2 = 1;
-                for (int j = 1; j <= bn; ++j) {
-                    int num3 = 1;
-                    final int serial2 = 70000 + equip.getPosition() * 100 + level2;
-                    final Integer value = map.get(serial2);
+                int level = 1;
+                for (int i = 1; i <= bn; ++i) {
+                    int num = 1;
+                    int serial = 70000 + equip.getPosition() * 100 + level;
+                    Integer value = map.get(serial);
                     if (value != null) {
-                        num3 += value;
+                        num += value;
                     }
-                    map.put(serial2, num3);
-                    final int cost = j % 3;
+                    map.put(serial, num);
+                    int cost = i % 3;
                     if (cost == 0) {
-                        level2 = ((++level2 > 7) ? 7 : level2);
+                        level = ((++level > 7) ? 7 : level);
                     }
                 }
                 equip.getField().forEach(fiedEquip -> {
                     if (fiedEquip.getType().equals(6670)) {
                         fiedEquip.setValue(0);
-                        return;
-                    }
-                    else {
-                        return;
                     }
                 });
-                for (final Integer key2 : map.keySet()) {
-                    this.bagService.addGoods(role, key2, map.get(key2), 0, true, false, "拆卸宝石");
+                for (Integer key : map.keySet()) {
+                    this.bagService.addGoods(role, key, map.get(key), 0, true, false, "拆卸宝石");
                 }
                 equip = EquipUtils.gemChange(equipData, equip);
                 this.refresh(role, equip, pos, id, true);
@@ -168,7 +167,7 @@ public class EquipGemHandler extends UpgradeHandler
             }
             return null;
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.logger.error("镶嵌宝石出错了：");
             e.printStackTrace();
             return null;

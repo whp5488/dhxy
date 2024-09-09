@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightRecord.controller;
 
 import com.kitty.system.game.role.domain.Role;
@@ -23,14 +22,17 @@ public class FightRecordController
     @Autowired
     FightRecordService fightRecordService;
     
+    public FightRecordController() {
+    }
+    
     @GetMapping({ "/get" })
-    public void get(final long startTime, final long endTime, final long roleId) {
-        final List<FightSkillRecord> fightSkillRecords = this.fightRecordService.testGetFightSkillRecordsNew(startTime, endTime, roleId);
+    public void get(long startTime, long endTime, long roleId) {
+        List<FightSkillRecord> fightSkillRecords = this.fightRecordService.testGetFightSkillRecordsNew(startTime, endTime, roleId);
         if (fightSkillRecords != null) {
-            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            for (final FightSkillRecord fightSkillRecord : fightSkillRecords) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            for (FightSkillRecord fightSkillRecord : fightSkillRecords) {
                 System.out.println(fightSkillRecord.getFightId());
-                final String format = sdf.format(new Date(fightSkillRecord.getCreateTime()));
+                String format = sdf.format(new Date(fightSkillRecord.getCreateTime()));
                 System.out.println(format);
                 System.out.println(fightSkillRecord.getDataM());
             }
@@ -38,18 +40,19 @@ public class FightRecordController
     }
     
     @com.kitty.mina.annotation.RequestMapping
-    public void returnRoundEnd(final IoSession session, final ReqFightRecords reqFightRecords) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void returnRoundEnd(IoSession session, ReqFightRecords reqFightRecords) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         try {
-            final byte type = reqFightRecords.getType();
-            final long objId = Long.parseLong(reqFightRecords.getObjId());
+            byte type = reqFightRecords.getType();
+            long objId = Long.parseLong(reqFightRecords.getObjId());
             this.fightRecordService.getPlayerFightRecord(role, type, objId);
         }
-        catch (final NumberFormatException e) {
+        catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        return;
     }
 }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.party.model;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,24 +77,16 @@ public class ReqJoinMember
         if (!(o instanceof ReqJoinMember)) {
             return false;
         }
-        final ReqJoinMember other = (ReqJoinMember)o;
+        ReqJoinMember other = (ReqJoinMember)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getTime() != other.getTime()) {
@@ -111,17 +101,9 @@ public class ReqJoinMember
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$light_effect = this.getLight_effect();
-        final Object other$light_effect = other.getLight_effect();
-        if (this$light_effect == null) {
-            if (other$light_effect == null) {
-                return true;
-            }
-        }
-        else if (this$light_effect.equals(other$light_effect)) {
-            return true;
-        }
-        return false;
+        Object this$light_effect = this.getLight_effect();
+        Object other$light_effect = other.getLight_effect();
+        return (this$light_effect != null) ? this$light_effect.equals(other$light_effect) : (other$light_effect == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -130,32 +112,31 @@ public class ReqJoinMember
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getTime();
         result = result * 59 + this.getRei();
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getSerial();
-        final Object $light_effect = this.getLight_effect();
+        Object $light_effect = this.getLight_effect();
         result = result * 59 + (($light_effect == null) ? 43 : $light_effect.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqJoinMember(id=" + this.getId() + ", name=" + this.getName() + ", time=" + this.getTime() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ", serial=" + this.getSerial() + ", light_effect=" + this.getLight_effect() + ")";
+        return "ReqJoinMember(id=" + this.getId() + ", name=" + this.getName() + ", time=" + this.getTime() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ", serial=" + (int)this.getSerial() + ", light_effect=" + this.getLight_effect() + ")";
     }
     
     public ReqJoinMember() {
-        this.light_effect = new ArrayList<Integer>();
+        this.light_effect = new ArrayList<>();
     }
     
-    @ConstructorProperties({ "id", "name", "time", "rei", "level", "serial", "light_effect" })
     public ReqJoinMember(final int id, final String name, final int time, final byte rei, final short level, final short serial, final List<Integer> light_effect) {
-        this.light_effect = new ArrayList<Integer>();
+        this.light_effect = new ArrayList<>();
         this.id = id;
         this.name = name;
         this.time = time;

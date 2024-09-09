@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -48,7 +47,7 @@ public class RespPositionMove extends Message
         if (!(o instanceof RespPositionMove)) {
             return false;
         }
-        final RespPositionMove other = (RespPositionMove)o;
+        RespPositionMove other = (RespPositionMove)o;
         return other.canEqual(this) && this.getX() == other.getX() && this.getY() == other.getY() && this.getRoleId() == other.getRoleId();
     }
     
@@ -58,7 +57,7 @@ public class RespPositionMove extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getX();
         result = result * 59 + this.getY();

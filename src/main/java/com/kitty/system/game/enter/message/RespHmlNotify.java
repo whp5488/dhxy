@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.enter.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,7 +33,7 @@ public class RespHmlNotify extends Message
         if (!(o instanceof RespHmlNotify)) {
             return false;
         }
-        final RespHmlNotify other = (RespHmlNotify)o;
+        RespHmlNotify other = (RespHmlNotify)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getState() == other.getState();
     }
     
@@ -45,7 +43,7 @@ public class RespHmlNotify extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getState();
@@ -54,10 +52,9 @@ public class RespHmlNotify extends Message
     
     @Override
     public String toString() {
-        return "RespHmlNotify(serial=" + this.getSerial() + ", state=" + this.getState() + ")";
+        return "RespHmlNotify(serial=" + (int)this.getSerial() + ", state=" + (int)this.getState() + ")";
     }
     
-    @ConstructorProperties({ "serial", "state" })
     public RespHmlNotify(final short serial, final byte state) {
         this.serial = serial;
         this.state = state;

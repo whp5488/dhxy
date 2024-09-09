@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.horse.domain;
 
 import com.kitty.system.game.player.serializer.HorseSerializerUtil;
@@ -74,7 +73,7 @@ public class Horse extends BaseEntity<Long>
         return this.id;
     }
     
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
@@ -82,7 +81,7 @@ public class Horse extends BaseEntity<Long>
         return this.rId;
     }
     
-    public void setrId(final long rId) {
+    public void setrId(long rId) {
         this.rId = rId;
     }
     
@@ -90,7 +89,7 @@ public class Horse extends BaseEntity<Long>
         return this.name;
     }
     
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -98,7 +97,7 @@ public class Horse extends BaseEntity<Long>
         return this.level;
     }
     
-    public void setLevel(final short level) {
+    public void setLevel(short level) {
         this.level = level;
     }
     
@@ -106,7 +105,7 @@ public class Horse extends BaseEntity<Long>
         return this.serial;
     }
     
-    public void setSerial(final int serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
@@ -114,7 +113,7 @@ public class Horse extends BaseEntity<Long>
         return this.exp;
     }
     
-    public void setExp(final long exp) {
+    public void setExp(long exp) {
         this.exp = exp;
     }
     
@@ -122,7 +121,7 @@ public class Horse extends BaseEntity<Long>
         return this.growUp;
     }
     
-    public void setGrowUp(final int growUp) {
+    public void setGrowUp(int growUp) {
         this.growUp = growUp;
     }
     
@@ -130,7 +129,7 @@ public class Horse extends BaseEntity<Long>
         return this.moveSp;
     }
     
-    public void setMoveSp(final int moveSp) {
+    public void setMoveSp(int moveSp) {
         this.moveSp = moveSp;
     }
     
@@ -138,7 +137,7 @@ public class Horse extends BaseEntity<Long>
         return this.vit;
     }
     
-    public void setVit(final int vit) {
+    public void setVit(int vit) {
         this.vit = vit;
     }
     
@@ -146,7 +145,7 @@ public class Horse extends BaseEntity<Long>
         return this.score;
     }
     
-    public void setScore(final int score) {
+    public void setScore(int score) {
         this.score = score;
     }
     
@@ -154,7 +153,7 @@ public class Horse extends BaseEntity<Long>
         return this.growthDan;
     }
     
-    public void setGrowthDan(final byte growthDan) {
+    public void setGrowthDan(byte growthDan) {
         this.growthDan = growthDan;
     }
     
@@ -162,7 +161,7 @@ public class Horse extends BaseEntity<Long>
         return this.skillJson;
     }
     
-    public void setSkillJson(final String skillJson) {
+    public void setSkillJson(String skillJson) {
         this.skillJson = skillJson;
     }
     
@@ -170,7 +169,7 @@ public class Horse extends BaseEntity<Long>
         return this.skill;
     }
     
-    public void setSkill(final IdentityHashMap<Integer, Long> skill) {
+    public void setSkill(IdentityHashMap<Integer, Long> skill) {
         this.skill = skill;
     }
     
@@ -178,7 +177,7 @@ public class Horse extends BaseEntity<Long>
         return this.darkBase;
     }
     
-    public void setDarkBase(final String darkBase) {
+    public void setDarkBase(String darkBase) {
         this.darkBase = darkBase;
     }
     
@@ -186,7 +185,7 @@ public class Horse extends BaseEntity<Long>
         return this.darkBaseMap;
     }
     
-    public void setDarkBaseMap(final Map<Byte, List<HorseBase>> darkBaseMap) {
+    public void setDarkBaseMap(Map<Byte, List<HorseBase>> darkBaseMap) {
         this.darkBaseMap = darkBaseMap;
     }
     
@@ -194,7 +193,7 @@ public class Horse extends BaseEntity<Long>
         return this.state;
     }
     
-    public void setState(final byte state) {
+    public void setState(byte state) {
         this.state = state;
     }
     
@@ -202,7 +201,7 @@ public class Horse extends BaseEntity<Long>
         return this.seat;
     }
     
-    public void setSeat(final byte seat) {
+    public void setSeat(byte seat) {
         this.seat = seat;
     }
     
@@ -211,17 +210,17 @@ public class Horse extends BaseEntity<Long>
         this.score = 0;
         this.growthDan = 0;
         this.state = 0;
-        this.skill = new IdentityHashMap<Integer, Long>(3);
-        this.darkBaseMap = new HashMap<Byte, List<HorseBase>>();
+        this.skill = new IdentityHashMap(3);
+        this.darkBaseMap = new HashMap();
     }
     
-    public Horse(final Long id, final long rId, final short level, final int serial, final String name, final long exp, final int growUp, final int moveSp, final byte seat) {
+    public Horse(Long id, long rId, short level, int serial, String name, long exp, int growUp, int moveSp, byte seat) {
         this.vit = HorseDataPool.horseVitMax;
         this.score = 0;
         this.growthDan = 0;
         this.state = 0;
-        this.skill = new IdentityHashMap<Integer, Long>(3);
-        this.darkBaseMap = new HashMap<Byte, List<HorseBase>>();
+        this.skill = new IdentityHashMap(3);
+        this.darkBaseMap = new HashMap();
         this.id = id;
         this.rId = rId;
         this.level = level;
@@ -233,13 +232,13 @@ public class Horse extends BaseEntity<Long>
         this.seat = seat;
     }
     
-    public Horse(final Long id, final long rId, final short level, final int serial, final String name, final long exp, final int growUp, final int moveSp, final int vit, final int score, final byte growthDan, final IdentityHashMap<Integer, Long> skill, final String darkBase, final Map<Byte, List<HorseBase>> darkBaseMap, final byte seat) {
+    public Horse(Long id, long rId, short level, int serial, String name, long exp, int growUp, int moveSp, int vit, int score, byte growthDan, IdentityHashMap<Integer, Long> skill, String darkBase, Map<Byte, List<HorseBase>> darkBaseMap, byte seat) {
         this.vit = HorseDataPool.horseVitMax;
         this.score = 0;
         this.growthDan = 0;
         this.state = 0;
-        this.skill = new IdentityHashMap<Integer, Long>(3);
-        this.darkBaseMap = new HashMap<Byte, List<HorseBase>>();
+        this.skill = new IdentityHashMap(3);
+        this.darkBaseMap = new HashMap();
         this.id = id;
         this.rId = rId;
         this.level = level;

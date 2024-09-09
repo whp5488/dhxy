@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.product;
 
 import java.util.Iterator;
@@ -16,14 +15,14 @@ public enum ProductDataPool
     private ConcurrentMap<Class<?>, Reloadable> datas;
     
     private ProductDataPool() {
-        this.datas = new ConcurrentHashMap<Class<?>, Reloadable>();
+        this.datas = new ConcurrentHashMap();
     }
     
     public void load() {
-        SpringUtils.getBean(CommonService.class).loadProduct();
-        final Map<String, Reloadable> storages = SpringUtils.getBeansOfType(Reloadable.class);
-        for (final Map.Entry<String, Reloadable> entry : storages.entrySet()) {
-            final Reloadable reloadable = entry.getValue();
+        ((CommonService)SpringUtils.getBean(CommonService.class)).loadProduct();
+        Map<String, Reloadable> storages = SpringUtils.getBeansOfType(Reloadable.class);
+        for (Map.Entry<String, Reloadable> entry : storages.entrySet()) {
+            Reloadable reloadable = (Reloadable)entry.getValue();
             reloadable.reload();
             this.datas.put(reloadable.getClass(), reloadable);
         }

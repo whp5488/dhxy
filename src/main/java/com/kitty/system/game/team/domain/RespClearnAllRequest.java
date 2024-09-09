@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.domain;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class RespClearnAllRequest extends Message
 {
     private String type;
     
+    public RespClearnAllRequest() {
+    }
+    
     public String getType() {
         return this.type;
     }
     
-    public void setType(final String type) {
+    public void setType(String type) {
         this.type = type;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import java.util.HashMap;
@@ -12,7 +11,7 @@ public class AstrictSkill
     
     public AstrictSkill() {
         this.time = 1;
-        this.skillMap = new HashMap<Integer, Integer>();
+        this.skillMap = new HashMap();
     }
     
     public boolean isASide() {
@@ -55,7 +54,7 @@ public class AstrictSkill
         if (!(o instanceof AstrictSkill)) {
             return false;
         }
-        final AstrictSkill other = (AstrictSkill)o;
+        AstrictSkill other = (AstrictSkill)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -68,17 +67,9 @@ public class AstrictSkill
         if (this.getTime() != other.getTime()) {
             return false;
         }
-        final Object this$skillMap = this.getSkillMap();
-        final Object other$skillMap = other.getSkillMap();
-        if (this$skillMap == null) {
-            if (other$skillMap == null) {
-                return true;
-            }
-        }
-        else if (this$skillMap.equals(other$skillMap)) {
-            return true;
-        }
-        return false;
+        Object this$skillMap = this.getSkillMap();
+        Object other$skillMap = other.getSkillMap();
+        return (this$skillMap != null) ? this$skillMap.equals(other$skillMap) : (other$skillMap == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -87,12 +78,12 @@ public class AstrictSkill
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + (this.isASide() ? 79 : 97);
         result = result * 59 + this.getRound();
         result = result * 59 + this.getTime();
-        final Object $skillMap = this.getSkillMap();
+        Object $skillMap = this.getSkillMap();
         result = result * 59 + (($skillMap == null) ? 43 : $skillMap.hashCode());
         return result;
     }

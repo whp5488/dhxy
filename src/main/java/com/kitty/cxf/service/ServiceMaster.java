@@ -1,4 +1,3 @@
-
 package com.kitty.cxf.service;
 
 import javax.jws.WebMethod;
@@ -9,77 +8,77 @@ import javax.jws.WebService;
 public interface ServiceMaster
 {
     @WebMethod
-    String notice(@WebParam(name = "notice") final String p0);
+    public abstract String notice(@WebParam(name = "notice") String notice);
     
     @WebMethod
-    String close(@WebParam(name = "close") final String p0);
+    public abstract String close(@WebParam(name = "close") String close);
     
     @WebMethod
-    String speak(@WebParam(name = "speak") final String p0);
+    public abstract String speak(@WebParam(name = "speak") String speak);
     
     @WebMethod
-    String seal(@WebParam(name = "seal") final String p0);
+    public abstract String seal(@WebParam(name = "seal") String seal);
     
     @WebMethod
-    String coin(@WebParam(name = "coin") final String p0);
+    public abstract String coin(@WebParam(name = "coin") String coin);
     
     @WebMethod
-    String recharge(@WebParam(name = "recharge") final String p0);
+    public abstract String recharge(@WebParam(name = "recharge") String recharge);
     
     @WebMethod
-    String rechargeable(@WebParam(name = "rechargeable") final String p0);
+    public abstract String rechargeable(@WebParam(name = "rechargeable") String rechargeable);
     
     @WebMethod
-    String prop(@WebParam(name = "prop") final String p0);
+    public abstract String prop(@WebParam(name = "prop") String prop);
     
     @WebMethod
-    String gamers(@WebParam(name = "gamers") final String p0);
+    public abstract String gamers(@WebParam(name = "gamers") String gamers);
     
     @WebMethod
-    String exp(@WebParam(name = "exp") final String p0);
+    public abstract String exp(@WebParam(name = "exp") String exp);
     
     @WebMethod
-    String task(@WebParam(name = "task") final String p0);
+    public abstract String task(@WebParam(name = "task") String task);
     
     @WebMethod
-    String inquire(@WebParam(name = "inquire") final String p0);
+    public abstract String inquire(@WebParam(name = "inquire") String inquire);
     
     @WebMethod
-    String market(@WebParam(name = "market") final String p0);
+    public abstract String market(@WebParam(name = "market") String market);
     
     @WebMethod
-    String load(@WebParam(name = "load") final String p0);
+    public abstract String load(@WebParam(name = "load") String load);
     
     @WebMethod
-    String gift(@WebParam(name = "gift") final String p0);
+    public abstract String gift(@WebParam(name = "gift") String gift);
     
     @WebMethod
-    String adjustRoleGrade(@WebParam(name = "adjustRoleGrade") final String p0);
+    public abstract String adjustRoleGrade(@WebParam(name = "adjustRoleGrade") String adjustRoleGrade);
     
     @WebMethod
-    String pet(@WebParam(name = "pet") final String p0);
+    public abstract String pet(@WebParam(name = "pet") String pet);
     
     @WebMethod
-    String horse(@WebParam(name = "horse") final String p0);
+    public abstract String horse(@WebParam(name = "horse") String horse);
     
     @WebMethod
-    String rune(@WebParam(name = "rune") final String p0);
+    public abstract String rune(@WebParam(name = "rune") String rune);
     
     @WebMethod
-    String magical(@WebParam(name = "magical") final String p0);
+    public abstract String magical(@WebParam(name = "magical") String magical);
     
     @WebMethod
-    String sin(@WebParam(name = "sin") final String p0);
+    public abstract String sin(@WebParam(name = "sin") String sin);
     
     @WebMethod
-    String acsry(@WebParam(name = "acsry") final String p0);
+    public abstract String acsry(@WebParam(name = "acsry") String acsry);
     
     @WebMethod
-    String acsryPet(@WebParam(name = "acsryPet") final String p0);
+    public abstract String acsryPet(@WebParam(name = "acsryPet") String acsryPet);
     
     @WebMethod
-    String email(@WebParam(name = "email") final String p0);
+    public abstract String email(@WebParam(name = "email") String email);
     
     @WebMethod
-    String delEmail(@WebParam(name = "email") final String p0);
+    public abstract String delEmail(@WebParam(name = "email") String email);
 }

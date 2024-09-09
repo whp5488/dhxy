@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.activity.model.user.lu.vo;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -53,24 +51,16 @@ public class WaterFight implements Serializable
         if (!(o instanceof WaterFight)) {
             return false;
         }
-        final WaterFight other = (WaterFight)o;
+        WaterFight other = (WaterFight)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getTeamId() != other.getTeamId()) {
             return false;
         }
-        final Object this$members = this.getMembers();
-        final Object other$members = other.getMembers();
-        if (this$members == null) {
-            if (other$members == null) {
-                return this.getState() == other.getState() && this.getSession() == other.getSession();
-            }
-        }
-        else if (this$members.equals(other$members)) {
-            return this.getState() == other.getState() && this.getSession() == other.getSession();
-        }
-        return false;
+        Object this$members = this.getMembers();
+        Object other$members = other.getMembers();
+        return ((this$members != null) ? this$members.equals(other$members) : (other$members == null)) && this.getState() == other.getState() && this.getSession() == other.getSession();
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,10 +69,10 @@ public class WaterFight implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTeamId();
-        final Object $members = this.getMembers();
+        Object $members = this.getMembers();
         result = result * 59 + (($members == null) ? 43 : $members.hashCode());
         result = result * 59 + this.getState();
         result = result * 59 + this.getSession();
@@ -91,12 +81,11 @@ public class WaterFight implements Serializable
     
     @Override
     public String toString() {
-        return "WaterFight(teamId=" + this.getTeamId() + ", members=" + this.getMembers() + ", state=" + this.getState() + ", session=" + this.getSession() + ")";
+        return "WaterFight(teamId=" + this.getTeamId() + ", members=" + this.getMembers() + ", state=" + (int)this.getState() + ", session=" + (int)this.getSession() + ")";
     }
     
-    @ConstructorProperties({ "teamId", "members", "state", "session" })
     public WaterFight(final int teamId, final List<Long> members, final byte state, final byte session) {
-        this.members = new ArrayList<Long>();
+        this.members = new ArrayList<>();
         this.state = 0;
         this.session = 0;
         this.teamId = teamId;
@@ -106,7 +95,7 @@ public class WaterFight implements Serializable
     }
     
     public WaterFight() {
-        this.members = new ArrayList<Long>();
+        this.members = new ArrayList<>();
         this.state = 0;
         this.session = 0;
     }

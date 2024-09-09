@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import com.kitty.system.game.ranking.pojo.RankingField;
@@ -13,7 +12,7 @@ public class RespMyRanking extends Message
     private byte serverId;
     private RankingField rankingFields;
     
-    public RespMyRanking(final byte type, final int serial, final byte serverId, final RankingField rankingFields) {
+    public RespMyRanking(byte type, int serial, byte serverId, RankingField rankingFields) {
         this.type = type;
         this.serial = serial;
         this.serverId = serverId;
@@ -60,7 +59,7 @@ public class RespMyRanking extends Message
         if (!(o instanceof RespMyRanking)) {
             return false;
         }
-        final RespMyRanking other = (RespMyRanking)o;
+        RespMyRanking other = (RespMyRanking)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -73,17 +72,9 @@ public class RespMyRanking extends Message
         if (this.getServerId() != other.getServerId()) {
             return false;
         }
-        final Object this$rankingFields = this.getRankingFields();
-        final Object other$rankingFields = other.getRankingFields();
-        if (this$rankingFields == null) {
-            if (other$rankingFields == null) {
-                return true;
-            }
-        }
-        else if (this$rankingFields.equals(other$rankingFields)) {
-            return true;
-        }
-        return false;
+        Object this$rankingFields = this.getRankingFields();
+        Object other$rankingFields = other.getRankingFields();
+        return (this$rankingFields != null) ? this$rankingFields.equals(other$rankingFields) : (other$rankingFields == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -92,18 +83,18 @@ public class RespMyRanking extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getServerId();
-        final Object $rankingFields = this.getRankingFields();
+        Object $rankingFields = this.getRankingFields();
         result = result * 59 + (($rankingFields == null) ? 43 : $rankingFields.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespMyRanking(type=" + this.getType() + ", serial=" + this.getSerial() + ", serverId=" + this.getServerId() + ", rankingFields=" + this.getRankingFields() + ")";
+        return "RespMyRanking(type=" + (int)this.getType() + ", serial=" + this.getSerial() + ", serverId=" + (int)this.getServerId() + ", rankingFields=" + this.getRankingFields() + ")";
     }
 }

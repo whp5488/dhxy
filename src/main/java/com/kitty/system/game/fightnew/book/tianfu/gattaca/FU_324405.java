@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -18,38 +17,41 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_324405 extends TianFuProcessor
 {
+    public FU_324405() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final FightObject host = fight.queryFightObject(target.getHostId());
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)host).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 324405);
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
+        FightObject host = fight.queryFightObject(Integer.valueOf(target.getHostId()));
+        DayInCeFight dayInCeFight = ((PlayerFightObject)host).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 324405);
         if (tianFuObject == null) {
             return null;
         }
         boolean statusFlag = false;
-        final List<Integer> statusList = (List<Integer>)args[0];
-        if (statusList.size() > 0 && statusList.contains(1009) && (target.getStatusValue(1009) <= 0 || target.isFallDown())) {
+        List<Integer> statusList = (List)args[0];
+        if (statusList.size() > 0 && statusList.contains(Integer.valueOf(1009)) && (target.getStatusValue(1009) <= 0 || target.isFallDown())) {
             statusFlag = true;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 324405);
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 324405);
         if (target.isPet() && statusFlag) {
-            final double percenta = 5.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-            final boolean triggerFlag = SkillAi.canAffectOnPro(percenta);
+            double percenta = 5.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+            boolean triggerFlag = SkillAi.canAffectOnPro(percenta);
             if (triggerFlag) {
-                final List<FightObject> list = TianFuUtils.getFightObject(fight, target, 1009);
+                List<FightObject> list = TianFuUtils.getFightObject(fight, target, Integer.valueOf(1009));
                 if (list == null || list.size() <= 0) {
                     return null;
                 }
-                final FightObject myTarget = list.get(0);
-                final int time = TianFuUtils.defUp(myTarget, target.getStatusValue(1009));
-                myTarget.getStatusMap().setv(String.valueOf(1009), (Object)time);
+                FightObject myTarget = (FightObject)list.get(0);
+                int time = TianFuUtils.defUp(myTarget, Integer.valueOf(target.getStatusValue(1009)));
+                myTarget.getStatusMap().setv(String.valueOf(1009), Integer.valueOf(time));
                 ActionParamUtils.addStatus(fight, target, myTarget, 7, 300999, 2, 1009, time);
-                skillRecord.setT(target.getId());
+                skillRecord.setT((long)(int)target.getId());
             }
         }
         return null;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqSubmitQuestion extends Message
     private int type;
     private int serial;
     private String answer;
+    
+    public ReqSubmitQuestion() {
+    }
     
     public int getType() {
         return this.type;
@@ -43,7 +45,7 @@ public class ReqSubmitQuestion extends Message
         if (!(o instanceof ReqSubmitQuestion)) {
             return false;
         }
-        final ReqSubmitQuestion other = (ReqSubmitQuestion)o;
+        ReqSubmitQuestion other = (ReqSubmitQuestion)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -53,17 +55,9 @@ public class ReqSubmitQuestion extends Message
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$answer = this.getAnswer();
-        final Object other$answer = other.getAnswer();
-        if (this$answer == null) {
-            if (other$answer == null) {
-                return true;
-            }
-        }
-        else if (this$answer.equals(other$answer)) {
-            return true;
-        }
-        return false;
+        Object this$answer = this.getAnswer();
+        Object other$answer = other.getAnswer();
+        return (this$answer != null) ? this$answer.equals(other$answer) : (other$answer == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -72,11 +66,11 @@ public class ReqSubmitQuestion extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getSerial();
-        final Object $answer = this.getAnswer();
+        Object $answer = this.getAnswer();
         result = result * 59 + (($answer == null) ? 43 : $answer.hashCode());
         return result;
     }

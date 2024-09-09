@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -23,20 +22,23 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81015 extends SkillProcessor
 {
+    public SKILL_81015() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81015);
-        final SysPetSkill petSkill = (SysPetSkill)args[0];
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81015);
+        SysPetSkill petSkill = (SysPetSkill)args[0];
         if (PetSkillEffectorUtil.checkCover(petSkill, fight, effector, null, false, args)) {
             return null;
         }
-        final double percent = BigDecimalUtil.decimalScaleObjectDown(3, (0.1 + 14.0 * (effector.getRelive() * 0.5 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-        List<FightObject> targetObjs = new ArrayList<FightObject>();
+        double percent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf((0.1 + 14.0 * ((double)effector.getRelive() * 0.5 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+        List<FightObject> targetObjs = new ArrayList<>();
         if (!effector.isASide()) {
             targetObjs = fight.getListA();
         }
@@ -44,25 +46,28 @@ public class SKILL_81015 extends SkillProcessor
             targetObjs = fight.getListB();
         }
         FightObject newTargetPet = null;
-        final List<FightObject> targetPets = new ArrayList<FightObject>();
-        for (final FightObject targetObj : targetObjs) {
+        List<FightObject> targetPets = new ArrayList<>();
+        for (FightObject targetObj : targetObjs) {
             if (LOGIC.LOGICTYPE_PET.getValue() == targetObj.getLogic() && effector.getIcon() == targetObj.getIcon()) {
                 targetPets.add(targetObj);
             }
+            else {
+                continue;
+            }
         }
         if (targetPets.size() > 0) {
-            final Random rd = new Random();
-            final int i = rd.nextInt(targetPets.size());
-            newTargetPet = targetPets.get(i);
+            Random rd = new Random();
+            int i = rd.nextInt(targetPets.size());
+            newTargetPet = (FightObject)targetPets.get(i);
         }
         if (newTargetPet == null) {
             return null;
         }
-        final boolean flag = SkillAi.canAffectOnPro(percent);
+        boolean flag = SkillAi.canAffectOnPro(percent);
         if (flag) {
-            final int oldLife = newTargetPet.getCurrLife();
+            int oldLife = newTargetPet.getCurrLife();
             ActionParamUtils.changeLife(fight, effector, newTargetPet, 7, 81015, 1, -oldLife, false);
-            skillRecord.setT(newTargetPet.getId());
+            skillRecord.setT((long)(int)newTargetPet.getId());
         }
         else {
             ActionParamUtils.attackNoHit(fight, effector, newTargetPet, 7, 81015, 0);
@@ -71,17 +76,17 @@ public class SKILL_81015 extends SkillProcessor
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 0;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
 }

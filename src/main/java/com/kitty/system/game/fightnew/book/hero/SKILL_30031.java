@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.hero;
 
 import com.kitty.system.enums.war.wardef.LOGIC;
@@ -17,35 +16,38 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_30031 extends SkillProcessor
 {
+    public SKILL_30031() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill skill = effector.getSkillBy(30031);
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(30031));
         if (skill != null) {
-            final Effect e = new Effect();
+            Effect e = new Effect();
             if (!target.isFrozen()) {
-                final SysSkill sysSkill = SkillDataPool.skillMap.get(30031);
-                final double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_MH.getDist());
-                final int proficient = skill.getProficient();
-                final double[] power = sysSkill.getPower();
-                final double Debuff = BigDecimalUtil.decimalScaleObjectDown(2, BigDecimalUtil.decimalScaleObjectDown(2, power[0] * (Math.pow(proficient, 0.35) * 20.0 / 100.0 + 1.0)) * (1.0 + extra));
-                final double buff = BigDecimalUtil.decimalScaleObjectDown(3, BigDecimalUtil.decimalScaleObjectDown(3, power[1] * (Math.pow(proficient, 0.35) * 2.0 / 100.0 + 1.0)) * (1.0 + extra));
-                final double add = BigDecimalUtil.decimalScaleObjectDown(3, BigDecimalUtil.decimalScaleObjectDown(3, power[2] * (Math.pow(proficient, 0.35) * 2.0 / 100.0 + 1.0)) * (1.0 + extra));
-                final int time = this.time(effector, skill);
+                SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(Integer.valueOf(30031));
+                double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_MH.getDist());
+                int proficient = (int)skill.getProficient();
+                double[] power = sysSkill.getPower();
+                double Debuff = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(2), Double.valueOf(BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(2), Double.valueOf(power[0] * (Math.pow((double)proficient, 0.35) * 20.0 / 100.0 + 1.0))) * (1.0 + extra)));
+                double buff = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(power[1] * (Math.pow((double)proficient, 0.35) * 2.0 / 100.0 + 1.0))) * (1.0 + extra)));
+                double add = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(power[2] * (Math.pow((double)proficient, 0.35) * 2.0 / 100.0 + 1.0))) * (1.0 + extra)));
+                int time = this.time(effector, skill);
                 ImbueUtil.addOrUpdStatus(target.getImbueMap(), 1007, PRO_DICT_TYPE.K_FY.getDist(), time, -Debuff);
                 ImbueUtil.addOrUpdStatus(target.getImbueMap(), 1007, PRO_DICT_TYPE.K_HS.getDist(), time, -Debuff);
                 ImbueUtil.addOrUpdStatus(target.getImbueMap(), 1007, PRO_DICT_TYPE.K_HL.getDist(), time, -Debuff);
@@ -57,21 +59,24 @@ public class SKILL_30031 extends SkillProcessor
                 ImbueUtil.addOrUpdStatus(target.getImbueMap(), 1007, PRO_DICT_TYPE.WL_XS.getDist(), time, -add);
                 e.setTime(time);
                 e.setType(1007);
+                return e;
             }
             return e;
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
-        return BigDecimalUtil.decimalScaleIntegerDown(0, 25.0 * (Math.pow(skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0));
+    public int costMana(RoleSkill skill, Object... args) {
+        return BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(25.0 * (Math.pow((double)(int)skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0)));
     }
     
-    public int time(final FightObject effector, final RoleSkill skill) {
+    public int time(FightObject effector, RoleSkill skill) {
         int time = 3;
         if (effector.getLogic() != LOGIC.LOGICTYPE_MONSTER.getValue() && skill != null) {
-            time = BigDecimalUtil.decimalScaleIntegerDown(0, 3.0 * (1.0 + Math.pow(skill.getProficient(), 0.35) * 5.0 / 100.0));
+            time = BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(3.0 * (1.0 + Math.pow((double)(int)skill.getProficient(), 0.35) * 5.0 / 100.0)));
         }
         return time;
     }

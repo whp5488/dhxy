@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.house;
 
 public enum HouseFurniture

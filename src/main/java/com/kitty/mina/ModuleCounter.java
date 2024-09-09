@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 import com.kitty.common.utils.JsonUtils;
@@ -18,14 +17,14 @@ public class ModuleCounter implements Serializable
     
     public ModuleCounter() {
         this.count = new AtomicLong(0L);
-        this.counterMap = new ConcurrentHashMap<Integer, AtomicInteger>();
+        this.counterMap = new ConcurrentHashMap();
     }
     
     public boolean isChecked() {
         return this.checked;
     }
     
-    public void setChecked(final boolean checked) {
+    public void setChecked(boolean checked) {
         this.checked = checked;
     }
     
@@ -33,7 +32,7 @@ public class ModuleCounter implements Serializable
         return this.loginTime;
     }
     
-    public void setLoginTime(final long loginTime) {
+    public void setLoginTime(long loginTime) {
         this.loginTime = loginTime;
     }
     
@@ -41,7 +40,7 @@ public class ModuleCounter implements Serializable
         return this.lastPackTime;
     }
     
-    public void setLastPackTime(final long lastPackTime) {
+    public void setLastPackTime(long lastPackTime) {
         this.lastPackTime = lastPackTime;
     }
     
@@ -49,7 +48,7 @@ public class ModuleCounter implements Serializable
         return this.counterMap;
     }
     
-    public void setCounterMap(final Map<Integer, AtomicInteger> counterMap) {
+    public void setCounterMap(Map<Integer, AtomicInteger> counterMap) {
         this.counterMap = counterMap;
     }
     
@@ -57,7 +56,7 @@ public class ModuleCounter implements Serializable
         return this.count;
     }
     
-    public void setCount(final AtomicLong count) {
+    public void setCount(AtomicLong count) {
         this.count = count;
     }
     

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.message.vo.PartyLogInfo;
@@ -10,6 +9,9 @@ import com.kitty.mina.message.Message;
 public class RespPartyLog extends Message
 {
     private List<PartyLogInfo> list;
+    
+    public RespPartyLog() {
+    }
     
     public void setList(final List<PartyLogInfo> list) {
         this.list = list;

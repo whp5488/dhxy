@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class ReqRefreshRequestInfo extends Message
 {
     private String type;
     
+    public ReqRefreshRequestInfo() {
+    }
+    
     public String getType() {
         return this.type;
     }
     
-    public void setType(final String type) {
+    public void setType(String type) {
         this.type = type;
     }
 }

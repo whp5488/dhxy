@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.enter.service;
 
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.enter.message.RespHmlNotify;
 import com.kitty.common.utils.TimeUtil;
@@ -19,12 +17,15 @@ public class EnterService
     @Autowired
     private ServerConfig serverConfig;
     
-    public void loadHmlNotify(final Role role) {
-        final long serverDate = role.getCreateTime() + WelfareDataPool.newDistrictMap.size() * 86400000L;
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        final Date date = new Date(serverDate);
-        final int begin = TimeUtil.dayInMillis(simpleDateFormat.format(date));
-        final int current = TimeUtil.dayInMillis(TimeUtil.when());
+    public EnterService() {
+    }
+    
+    public void loadHmlNotify(Role role) {
+        long serverDate = role.getCreateTime() + (long)WelfareDataPool.newDistrictMap.size() * 86400000L;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(serverDate);
+        int begin = TimeUtil.dayInMillis(simpleDateFormat.format(date));
+        int current = TimeUtil.dayInMillis(TimeUtil.when());
         if (current < begin) {
             MessagePusher.pushMessage(role, new RespHmlNotify((short)1, (byte)1));
         }

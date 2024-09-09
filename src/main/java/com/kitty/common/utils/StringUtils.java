@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.regex.Matcher;
@@ -12,55 +11,58 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
     private static final String NULLSTR = "";
     private static final char SEPARATOR = '_';
     
-    public static <T> T nvl(final T value, final T defaultValue) {
+    public StringUtils() {
+    }
+    
+    public static <T> T nvl(T value, T defaultValue) {
         return (value != null) ? value : defaultValue;
     }
     
-    public static boolean isEmpty(final Collection<?> coll) {
+    public static boolean isEmpty(Collection<?> coll) {
         return isNull(coll) || coll.isEmpty();
     }
     
-    public static boolean isNotEmpty(final Collection<?> coll) {
+    public static boolean isNotEmpty(Collection<?> coll) {
         return !isEmpty(coll);
     }
     
-    public static boolean isEmpty(final Object[] objects) {
+    public static boolean isEmpty(Object[] objects) {
         return isNull(objects) || objects.length == 0;
     }
     
-    public static boolean isNotEmpty(final Object[] objects) {
+    public static boolean isNotEmpty(Object[] objects) {
         return !isEmpty(objects);
     }
     
-    public static boolean isEmpty(final Map<?, ?> map) {
+    public static boolean isEmpty(Map<?, ?> map) {
         return isNull(map) || map.isEmpty();
     }
     
-    public static boolean isNotEmpty(final Map<?, ?> map) {
+    public static boolean isNotEmpty(Map<?, ?> map) {
         return !isEmpty(map);
     }
     
-    public static boolean isEmpty(final String str) {
+    public static boolean isEmpty(String str) {
         return isNull(str) || "".equals(str.trim());
     }
     
-    public static boolean isNotEmpty(final String str) {
+    public static boolean isNotEmpty(String str) {
         return !isEmpty(str);
     }
     
-    public static boolean isNull(final Object object) {
+    public static boolean isNull(Object object) {
         return object == null;
     }
     
-    public static boolean isNotNull(final Object object) {
+    public static boolean isNotNull(Object object) {
         return !isNull(object);
     }
     
-    public static boolean isArray(final Object object) {
+    public static boolean isArray(Object object) {
         return isNotNull(object) && object.getClass().isArray();
     }
     
-    public static String trim(final String str) {
+    public static String trim(String str) {
         return (str == null) ? "" : str.trim();
     }
     
@@ -105,23 +107,23 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
         return str.substring(start, end);
     }
     
-    public static String format(final String template, final Object... params) {
+    public static String format(String template, Object... params) {
         if (isEmpty(params) || isEmpty(template)) {
             return template;
         }
         return StrFormatter.format(template, params);
     }
     
-    public static String toUnderScoreCase(final String str) {
+    public static String toUnderScoreCase(String str) {
         if (str == null) {
             return null;
         }
-        final StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         boolean preCharIsUpperCase = true;
         boolean curreCharIsUpperCase = true;
         boolean nexteCharIsUpperCase = true;
         for (int i = 0; i < str.length(); ++i) {
-            final char c = str.charAt(i);
+            char c = str.charAt(i);
             preCharIsUpperCase = (i > 0 && Character.isUpperCase(str.charAt(i - 1)));
             curreCharIsUpperCase = Character.isUpperCase(c);
             if (i < str.length() - 1) {
@@ -138,28 +140,31 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
         return sb.toString();
     }
     
-    public static boolean inStringIgnoreCase(final String str, final String... strs) {
+    public static boolean inStringIgnoreCase(String str, String... strs) {
         if (str != null && strs != null) {
-            for (final String s : strs) {
+            int length = strs.length;
+            int i = 0;
+            while (i < length) {
+                String s = strs[i];
                 if (str.equalsIgnoreCase(trim(s))) {
                     return true;
                 }
+                ++i;
             }
         }
         return false;
     }
     
-    public static String convertToCamelCase(final String name) {
-        final StringBuilder result = new StringBuilder();
+    public static String convertToCamelCase(String name) {
+        StringBuilder result = new StringBuilder();
         if (name == null || name.isEmpty()) {
             return "";
         }
         if (!name.contains("_")) {
             return name.substring(0, 1).toUpperCase() + name.substring(1);
         }
-        final String[] split;
-        final String[] camels = split = name.split("_");
-        for (final String camel : split) {
+        String[] camels;
+        for (String camel : camels = name.split("_")) {
             if (!camel.isEmpty()) {
                 result.append(camel.substring(0, 1).toUpperCase());
                 result.append(camel.substring(1).toLowerCase());
@@ -176,10 +181,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
             return s;
         }
         s = s.toLowerCase();
-        final StringBuilder sb = new StringBuilder(s.length());
+        StringBuilder sb = new StringBuilder(s.length());
         boolean upperCase = false;
         for (int i = 0; i < s.length(); ++i) {
-            final char c = s.charAt(i);
+            char c = s.charAt(i);
             if (c == '_') {
                 upperCase = true;
             }
@@ -194,31 +199,33 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
         return sb.toString();
     }
     
-    public static <T> T cast(final Object obj) {
+    public static <T> T cast(Object obj) {
         return (T)obj;
     }
     
-    public static String deleteStringFront(String string, final String str, final int num) {
+    public static String deleteStringFront(String string, String str, int num) {
         if (string.contains(str)) {
             string = string.substring(string.indexOf(str) + num);
+            return string;
         }
         return string;
     }
     
-    public static String deleteStringAfter(String string, final String str) {
+    public static String deleteStringAfter(String string, String str) {
         if (string.contains(str)) {
             string = string.substring(0, string.indexOf(str));
+            return string;
         }
         return string;
     }
     
-    public static boolean isChineseCharacter(final String input) {
+    public static boolean isChineseCharacter(String input) {
         if (input == null) {
             return false;
         }
-        final String regex = "^[一-龥]$";
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher = pattern.matcher(input);
+        String regex = "^[一-龥]$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
         return matcher.matches();
     }
 }

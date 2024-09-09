@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.system.game.activity.message.vo.GeneralClash;
@@ -13,6 +12,9 @@ public class RespClashPlans extends Message
     private List<GeneralClash> clashListA;
     private List<GeneralClash> clashListB;
     private int type;
+    
+    public RespClashPlans() {
+    }
     
     public String getCountDown() {
         return this.countDown;
@@ -54,47 +56,23 @@ public class RespClashPlans extends Message
         if (!(o instanceof RespClashPlans)) {
             return false;
         }
-        final RespClashPlans other = (RespClashPlans)o;
+        RespClashPlans other = (RespClashPlans)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$countDown = this.getCountDown();
-        final Object other$countDown = other.getCountDown();
-        Label_0065: {
-            if (this$countDown == null) {
-                if (other$countDown == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$countDown.equals(other$countDown)) {
-                break Label_0065;
-            }
+        Object this$countDown = this.getCountDown();
+        Object other$countDown = other.getCountDown();
+        if (!((this$countDown != null) ? this$countDown.equals(other$countDown) : (other$countDown == null))) {
             return false;
         }
-        final Object this$clashListA = this.getClashListA();
-        final Object other$clashListA = other.getClashListA();
-        Label_0102: {
-            if (this$clashListA == null) {
-                if (other$clashListA == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$clashListA.equals(other$clashListA)) {
-                break Label_0102;
-            }
+        Object this$clashListA = this.getClashListA();
+        Object other$clashListA = other.getClashListA();
+        if (!((this$clashListA != null) ? this$clashListA.equals(other$clashListA) : (other$clashListA == null))) {
             return false;
         }
-        final Object this$clashListB = this.getClashListB();
-        final Object other$clashListB = other.getClashListB();
-        if (this$clashListB == null) {
-            if (other$clashListB == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$clashListB.equals(other$clashListB)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$clashListB = this.getClashListB();
+        Object other$clashListB = other.getClashListB();
+        return ((this$clashListB != null) ? this$clashListB.equals(other$clashListB) : (other$clashListB == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -103,13 +81,13 @@ public class RespClashPlans extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $countDown = this.getCountDown();
+        Object $countDown = this.getCountDown();
         result = result * 59 + (($countDown == null) ? 43 : $countDown.hashCode());
-        final Object $clashListA = this.getClashListA();
+        Object $clashListA = this.getClashListA();
         result = result * 59 + (($clashListA == null) ? 43 : $clashListA.hashCode());
-        final Object $clashListB = this.getClashListB();
+        Object $clashListB = this.getClashListB();
         result = result * 59 + (($clashListB == null) ? 43 : $clashListB.hashCode());
         result = result * 59 + this.getType();
         return result;

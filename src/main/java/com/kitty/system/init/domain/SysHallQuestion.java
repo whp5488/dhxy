@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -16,6 +15,9 @@ public class SysHallQuestion implements Serializable
     @Comment("答案")
     @Column("answer")
     private String answer;
+    
+    public SysHallQuestion() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -41,24 +43,16 @@ public class SysHallQuestion implements Serializable
         if (!(o instanceof SysHallQuestion)) {
             return false;
         }
-        final SysHallQuestion other = (SysHallQuestion)o;
+        SysHallQuestion other = (SysHallQuestion)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$answer = this.getAnswer();
-        final Object other$answer = other.getAnswer();
-        if (this$answer == null) {
-            if (other$answer == null) {
-                return true;
-            }
-        }
-        else if (this$answer.equals(other$answer)) {
-            return true;
-        }
-        return false;
+        Object this$answer = this.getAnswer();
+        Object other$answer = other.getAnswer();
+        return (this$answer != null) ? this$answer.equals(other$answer) : (other$answer == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -67,10 +61,10 @@ public class SysHallQuestion implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $answer = this.getAnswer();
+        Object $answer = this.getAnswer();
         result = result * 59 + (($answer == null) ? 43 : $answer.hashCode());
         return result;
     }

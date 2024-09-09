@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -9,7 +8,7 @@ public class EnterMapEvent extends BasePlayerEvent
 {
     private Role role;
     
-    public EnterMapEvent(final EventType evtType, final Role role) {
+    public EnterMapEvent(EventType evtType, Role role) {
         super(evtType, role);
         this.role = role;
     }

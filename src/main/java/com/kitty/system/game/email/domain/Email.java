@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.domain;
 
 import com.kitty.common.db.Db4EmailService;
@@ -51,8 +50,8 @@ public class Email extends BaseEntity<Long>
     @Transient
     private List<EmailAccessory> accessorys;
     
-    public Email(final EmailSystem emailSystem, final long id, final long roleId) {
-        this.id = id;
+    public Email(EmailSystem emailSystem, long id, long roleId) {
+        this.id = Long.valueOf(id);
         this.sender = 0L;
         this.emailTitle = emailSystem.getEmailTitle();
         this.recipient = roleId;

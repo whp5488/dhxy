@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.horse.handler;
 
 import com.kitty.system.game.role.domain.Role;
@@ -26,5 +25,5 @@ public abstract class FeedHorseHandler
         this.logger = LoggerFunction.HORSE.getLogger();
     }
     
-    public abstract String acceptFeed(final Horse p0, final Role p1, final short p2, final byte p3, final Object... p4);
+    public abstract String acceptFeed(Horse horse, Role role, short type, byte operation, Object... args);
 }

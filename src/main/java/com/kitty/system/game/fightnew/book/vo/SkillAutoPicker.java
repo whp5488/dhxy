@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.vo;
 
 public class SkillAutoPicker
@@ -8,11 +7,14 @@ public class SkillAutoPicker
     private boolean def;
     private int type;
     
+    public SkillAutoPicker() {
+    }
+    
     public int getSkillId() {
         return this.skillId;
     }
     
-    public SkillAutoPicker setSkillId(final int skillId) {
+    public SkillAutoPicker setSkillId(int skillId) {
         this.skillId = skillId;
         return this;
     }
@@ -21,7 +23,7 @@ public class SkillAutoPicker
         return this.targetId;
     }
     
-    public SkillAutoPicker setTargetId(final int targetId) {
+    public SkillAutoPicker setTargetId(int targetId) {
         this.targetId = targetId;
         return this;
     }
@@ -30,7 +32,7 @@ public class SkillAutoPicker
         return this.def;
     }
     
-    public SkillAutoPicker setDef(final boolean def) {
+    public SkillAutoPicker setDef(boolean def) {
         this.def = def;
         return this;
     }
@@ -39,7 +41,7 @@ public class SkillAutoPicker
         return this.type;
     }
     
-    public SkillAutoPicker setType(final int type) {
+    public SkillAutoPicker setType(int type) {
         this.type = type;
         return this;
     }

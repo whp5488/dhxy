@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -36,7 +34,6 @@ public class ReqReturnRoundEnd extends Message
         this.round = round;
     }
     
-    @ConstructorProperties({ "recordId", "roleId", "round" })
     public ReqReturnRoundEnd(final String recordId, final int roleId, final int round) {
         this.recordId = recordId;
         this.roleId = roleId;

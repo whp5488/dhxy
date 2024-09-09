@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class RespReplyServerTime extends Message
 {
     private String serverTime;
     
+    public RespReplyServerTime() {
+    }
+    
     public String getServerTime() {
         return this.serverTime;
     }
     
-    public void setServerTime(final String serverTime) {
+    public void setServerTime(String serverTime) {
         this.serverTime = serverTime;
     }
 }

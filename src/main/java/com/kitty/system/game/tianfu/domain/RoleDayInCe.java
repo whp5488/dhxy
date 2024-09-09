@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.domain;
 
-import java.beans.ConstructorProperties;
 import com.kitty.common.db.DbTianFuService;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
@@ -382,7 +380,6 @@ public class RoleDayInCe extends BaseEntity<Long>
         this.driveBeasts = driveBeasts;
     }
     
-    @ConstructorProperties({ "id", "roleId", "level", "gattaca11", "gattaca12", "gattaca21", "gattaca22", "gattaca31", "gattaca32", "gattaca41", "gattaca42", "gattaca51", "gattaca", "loadObj11", "loadObj12", "loadObj21", "loadObj22", "loadObj31", "loadObj32", "loadObj41", "loadObj42", "loadObj51", "loadObj", "driveBeasts11", "driveBeasts12", "driveBeasts21", "driveBeasts22", "driveBeasts31", "driveBeasts32", "driveBeasts41", "driveBeasts42", "driveBeasts51", "driveBeasts" })
     public RoleDayInCe(final Long id, final long roleId, final short level, final long gattaca11, final long gattaca12, final long gattaca21, final long gattaca22, final long gattaca31, final long gattaca32, final long gattaca41, final long gattaca42, final long gattaca51, final long gattaca, final long loadObj11, final long loadObj12, final long loadObj21, final long loadObj22, final long loadObj31, final long loadObj32, final long loadObj41, final long loadObj42, final long loadObj51, final long loadObj, final long driveBeasts11, final long driveBeasts12, final long driveBeasts21, final long driveBeasts22, final long driveBeasts31, final long driveBeasts32, final long driveBeasts41, final long driveBeasts42, final long driveBeasts51, final long driveBeasts) {
         this.gattaca = 1L;
         this.loadObj = 1L;

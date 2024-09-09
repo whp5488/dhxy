@@ -1,4 +1,3 @@
-
 package com.kitty.logs;
 
 import org.slf4j.Logger;
@@ -28,6 +27,6 @@ public enum LoggerFunction
     BUG;
     
     public Logger getLogger() {
-        return (Logger)LoggerBuilder.getLogger(this.name().toLowerCase());
+        return LoggerBuilder.getLogger(this.name().toLowerCase());
     }
 }

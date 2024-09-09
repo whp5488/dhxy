@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.equip;
 
 import com.kitty.system.enums.war.itempro.def.ITEMLARGETYPE;
@@ -23,11 +22,16 @@ public enum EquipDistKind
     private int type;
     private int value;
     
-    public static FiedEquip getInfo(final Integer note) {
-        for (final EquipDistKind concise : values()) {
-            if (concise.getNote() == note) {
-                return new FiedEquip(concise.getType(), concise.getValue());
+    public static FiedEquip getInfo(Integer note) {
+        EquipDistKind[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            EquipDistKind concise = values[i];
+            if (concise.getNote() == (int)note) {
+                return new FiedEquip(Integer.valueOf(concise.getType()), Integer.valueOf(concise.getValue()));
             }
+            ++i;
         }
         return null;
     }

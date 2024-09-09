@@ -1,7 +1,8 @@
-
 package com.kitty.system.game.instruct.service;
 
 import com.kitty.system.game.instruct.handler.MonsterHandler;
+import com.kitty.system.game.instruct.handler.MindHandler;
+import com.kitty.system.game.instruct.handler.SealHandler;
 import com.kitty.system.game.instruct.handler.TianFuHandler;
 import com.kitty.system.game.instruct.handler.PayHandler;
 import com.kitty.system.game.instruct.handler.PartnerHandler;
@@ -24,7 +25,7 @@ public class InstructService
     HashMap<String, NcFather> instruct;
     
     public InstructService() {
-        this.instruct = new HashMap<>();
+        this.instruct = new HashMap();
     }
     
     public void init() {
@@ -40,6 +41,8 @@ public class InstructService
         this.instruct.put("@partner", new PartnerHandler());
         this.instruct.put("@pay", new PayHandler());
         this.instruct.put("@tianfu", new TianFuHandler());
+        this.instruct.put("@seal", new SealHandler());
+        this.instruct.put("@mind", new MindHandler());
         this.instruct.put("@monster", new MonsterHandler());
     }
     

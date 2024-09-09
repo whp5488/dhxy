@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -44,21 +42,13 @@ public class MaterTeamRank implements Serializable
         if (!(o instanceof MaterTeamRank)) {
             return false;
         }
-        final MaterTeamRank other = (MaterTeamRank)o;
+        MaterTeamRank other = (MaterTeamRank)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return this.getScore() == other.getScore() && this.getRestsScore() == other.getRestsScore();
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return this.getScore() == other.getScore() && this.getRestsScore() == other.getRestsScore();
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return ((this$list != null) ? this$list.equals(other$list) : (other$list == null)) && this.getScore() == other.getScore() && this.getRestsScore() == other.getRestsScore();
     }
     
     protected boolean canEqual(final Object other) {
@@ -67,9 +57,9 @@ public class MaterTeamRank implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getScore();
         result = result * 59 + this.getRestsScore();
@@ -81,15 +71,14 @@ public class MaterTeamRank implements Serializable
         return "MaterTeamRank(list=" + this.getList() + ", score=" + this.getScore() + ", restsScore=" + this.getRestsScore() + ")";
     }
     
-    @ConstructorProperties({ "list", "score", "restsScore" })
     public MaterTeamRank(final List<MaterRank> list, final int score, final int restsScore) {
-        this.list = new ArrayList<MaterRank>();
+        this.list = new ArrayList<>();
         this.list = list;
         this.score = score;
         this.restsScore = restsScore;
     }
     
     public MaterTeamRank() {
-        this.list = new ArrayList<MaterRank>();
+        this.list = new ArrayList<>();
     }
 }

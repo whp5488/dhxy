@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.other;
 
 import com.kitty.system.game.fightnew.imbue.utils.ImbueUtil;
@@ -13,13 +12,16 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31404 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31404() {
+    }
+    
     @Override
-    public NutMap countRecoverBloodEnd(final Fight fight, final FightObject effector, final Object... args) {
-        final NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 30.0, 20.0);
+    public NutMap countRecoverBloodEnd(Fight fight, FightObject effector, Object... args) {
+        NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 30.0, 20.0);
         if (map != null) {
-            final double percent = map.getDouble("percent");
+            double percent = map.getDouble("percent");
             if (percent > 0.0 && SkillAi.canAffectOnPro(percent)) {
-                ImbueUtil.addOrUpdSkill(effector.getImbueMap(), PRO_DICT_TYPE.CONQUER_EXTENT.getDist(), 2, 31404, percent);
+                ImbueUtil.addOrUpdSkill(effector.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.CONQUER_EXTENT.getDist()), 2, 31404, percent);
             }
         }
         return null;

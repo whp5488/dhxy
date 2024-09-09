@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -12,11 +11,14 @@ public class ReqSetFightMsg extends Message
     private int id;
     private String msg;
     
+    public ReqSetFightMsg() {
+    }
+    
     public int getId() {
         return this.id;
     }
     
-    public void setId(final int id) {
+    public void setId(int id) {
         this.id = id;
     }
     
@@ -24,7 +26,7 @@ public class ReqSetFightMsg extends Message
         return this.msg;
     }
     
-    public void setMsg(final String msg) {
+    public void setMsg(String msg) {
         this.msg = msg;
     }
 }

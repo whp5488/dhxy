@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.helper;
 
 import java.util.Arrays;
@@ -6,15 +5,15 @@ import java.util.LinkedHashMap;
 import com.kitty.system.game.equip.domain.PetEquip;
 import java.util.Iterator;
 import java.util.Map;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.equip.message.RespPetPreUpgradeEquip;
+import com.kitty.system.game.equip.helper.vo.PetEquipNeo;
 import com.kitty.system.game.equip.make.MakeAttribute;
 import com.kitty.system.enums.common.ACC_GRADE;
-import com.kitty.system.game.equip.helper.vo.PetEquipNeo;
 import java.util.ArrayList;
 import com.kitty.system.game.vo.utils.Const;
 import com.kitty.common.utils.NumberUtil;
+import com.kitty.system.common.data.DataGlobalFunc;
 import com.kitty.system.game.role.domain.Role;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -25,56 +24,57 @@ public class PetEquipComposeHandler extends UpgradeHandler
     public static final List<Integer> integers;
     public static final String NOT_STUFF = "材料不足";
     
+    public PetEquipComposeHandler() {
+    }
+    
     @Override
-    public String acceptUpgrade(final Role role, final Integer position, final Integer type, final String param, final String cause) {
-        final int residue = this.bagService.residuePetEquipBagPos(role);
-        if (residue < this.expend(type)) {
+    public String acceptUpgrade(Role role, Integer position, Integer type, String param, String cause) {
+        int residue = this.bagService.residuePetEquipBagPos(role);
+        if (residue < DataGlobalFunc.expend(type)) {
             return "物品栏空间不足";
         }
         if (!NumberUtil.isNumber(param)) {
             return null;
         }
-        final int grade = Integer.valueOf(param);
+        int grade = Integer.valueOf(param);
         if (grade < 1 || grade > 3) {
             return null;
         }
         if (!this.checkGrade(role.getRelive() * 1000 + role.getLevel(), grade)) {
             return null;
         }
-        final int expend = this.expend(type);
-        final Map<Integer, Integer> consume = this.consume(grade, position, expend);
-        for (final Integer key : consume.keySet()) {
-            final Integer amount = consume.get(key);
+        int expend = DataGlobalFunc.expend(type);
+        Map<Integer, Integer> consume = this.consume(grade, position, expend);
+        for (Integer key : consume.keySet()) {
+            Integer amount = consume.get(key);
             if (!key.equals(Const.RESTYPE_SILVER)) {
-                final Integer num = this.bagService.getBagGoods(role, key, amount);
+                Integer num = this.bagService.getBagGoods(role, key, amount);
                 if (num != null) {
                     return "材料不足";
                 }
-                continue;
             }
             else {
-                if (role.getSilver() < amount) {
+                if (role.getSilver() < (long)(int)amount) {
                     return "材料不足";
                 }
-                continue;
             }
         }
-        final boolean deduct = this.deduct(role, consume);
+        boolean deduct = this.deduct(role, consume);
         if (!deduct) {
             return "道具或者货币扣除失败";
         }
-        final List<PetEquipNeo> objects = new ArrayList<PetEquipNeo>(expend);
+        List<PetEquipNeo> objects = new ArrayList<>(expend);
         byte b;
         if (position <= 0) {
-            final ACC_GRADE priceless = ACC_GRADE.PRICELESS;
+            ACC_GRADE priceless = ACC_GRADE.PRICELESS;
             b = ACC_GRADE.PLAY_WITH.getValue();
         }
         else {
             b = ACC_GRADE.PRICELESS.getValue();
         }
-        final byte productOrder = b;
+        byte productOrder = b;
         for (int i = 0; i < expend; ++i) {
-            final PetEquip petBaseBieEq = MakeAttribute.createPetBaseBieEq(grade, productOrder, PetEquipComposeHandler.integers, 0);
+            PetEquip petBaseBieEq = MakeAttribute.createPetBaseBieEq(grade, productOrder, PetEquipComposeHandler.integers, 0);
             petBaseBieEq.setId(this.worker.nextId());
             petBaseBieEq.setRId(role.getId());
             this.bagService.addPetEquip(role, petBaseBieEq, true, "宠物配饰打造");
@@ -84,12 +84,12 @@ public class PetEquipComposeHandler extends UpgradeHandler
         return null;
     }
     
-    public boolean checkGrade(final int grade, final int type) {
+    public boolean checkGrade(int grade, int type) {
         return (type != 2 || grade >= 2120) && (type != 3 || grade >= 3145);
     }
     
-    public Map<Integer, Integer> consume(final int grade, final int position, final int num) {
-        final Map<Integer, Integer> map = new LinkedHashMap<Integer, Integer>();
+    public Map<Integer, Integer> consume(int grade, int position, int num) {
+        Map<Integer, Integer> map = new LinkedHashMap<>();
         if (grade == 1) {
             map.put(Const.RESTYPE_SILVER, 50000 * num);
         }
@@ -103,9 +103,10 @@ public class PetEquipComposeHandler extends UpgradeHandler
             map.put(Const.RESTYPE_SILVER, 150000 * num);
         }
         if (map.size() > 0) {
-            final int phoenix = (position <= 0) ? 75401 : 75402;
+            int phoenix = (position <= 0) ? 75401 : 75402;
             map.put(phoenix, 1 * num);
             map.put(75400, 1 * num);
+            return map;
         }
         return map;
     }

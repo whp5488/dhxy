@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.other;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -17,25 +16,28 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31406 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31406() {
+    }
+    
     @Override
-    public void magicAttackEndOther(final Fight fight, final FightObject effector, final Object... args) {
+    public void magicAttackEndOther(Fight fight, FightObject effector, Object... args) {
         if (effector.isPet()) {
-            final NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 70.0, 20.0);
+            NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 70.0, 20.0);
             if (map != null) {
-                final double percent = map.getDouble("percent");
+                double percent = map.getDouble("percent");
                 if (percent > 0.0 && SkillAi.canAffectOnPro(percent)) {
-                    final FightObject target = PassiveSkillUtils.getRandomTarget(fight, effector, (byte)0);
+                    FightObject target = PassiveSkillUtils.getRandomTarget(fight, effector, (byte)0);
                     if (target == null) {
                         return;
                     }
-                    final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 31406);
-                    skillRecord.setT(target.getId());
+                    SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 31406);
+                    skillRecord.setT((long)(int)target.getId());
                     int level = effector.getLevel();
                     if (level <= 0) {
                         level = 1;
                     }
-                    final double hurt = BigDecimalUtil.decimalScaleObjectDown(0, 80 * level + effector.getMaxMana() / 100 * 6 * (effector.getRelive() * 0.6 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose()));
-                    final int harm = PetSkillEffectorUtil.wuXingFireCount(fight, effector, target, hurt);
+                    double hurt = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(0), Double.valueOf((double)(80 * level) + (double)(effector.getMaxMana() / 100 * 6) * ((double)effector.getRelive() * 0.6 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())));
+                    int harm = PetSkillEffectorUtil.wuXingFireCount(fight, effector, target, hurt);
                     ActionParamUtils.changeLife(fight, effector, target, 7, 31406, 2, -harm, false);
                 }
             }

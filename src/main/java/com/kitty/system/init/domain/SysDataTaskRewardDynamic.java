@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -28,6 +27,9 @@ public class SysDataTaskRewardDynamic implements Serializable
     @Comment("公告编号")
     @Column("notice")
     private int notice;
+    
+    public SysDataTaskRewardDynamic() {
+    }
     
     public int getIdentify() {
         return this.identify;
@@ -85,53 +87,29 @@ public class SysDataTaskRewardDynamic implements Serializable
         if (!(o instanceof SysDataTaskRewardDynamic)) {
             return false;
         }
-        final SysDataTaskRewardDynamic other = (SysDataTaskRewardDynamic)o;
+        SysDataTaskRewardDynamic other = (SysDataTaskRewardDynamic)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getIdentify() != other.getIdentify()) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0078: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0078;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$rateCalculate = this.getRateCalculate();
-        final Object other$rateCalculate = other.getRateCalculate();
-        Label_0128: {
-            if (this$rateCalculate == null) {
-                if (other$rateCalculate == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$rateCalculate.equals(other$rateCalculate)) {
-                break Label_0128;
-            }
+        Object this$rateCalculate = this.getRateCalculate();
+        Object other$rateCalculate = other.getRateCalculate();
+        if (!((this$rateCalculate != null) ? this$rateCalculate.equals(other$rateCalculate) : (other$rateCalculate == null))) {
             return false;
         }
-        final Object this$numCalculate = this.getNumCalculate();
-        final Object other$numCalculate = other.getNumCalculate();
-        if (this$numCalculate == null) {
-            if (other$numCalculate == null) {
-                return this.getNotice() == other.getNotice();
-            }
-        }
-        else if (this$numCalculate.equals(other$numCalculate)) {
-            return this.getNotice() == other.getNotice();
-        }
-        return false;
+        Object this$numCalculate = this.getNumCalculate();
+        Object other$numCalculate = other.getNumCalculate();
+        return ((this$numCalculate != null) ? this$numCalculate.equals(other$numCalculate) : (other$numCalculate == null)) && this.getNotice() == other.getNotice();
     }
     
     protected boolean canEqual(final Object other) {
@@ -140,15 +118,15 @@ public class SysDataTaskRewardDynamic implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getIdentify();
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
         result = result * 59 + this.getSerial();
-        final Object $rateCalculate = this.getRateCalculate();
+        Object $rateCalculate = this.getRateCalculate();
         result = result * 59 + (($rateCalculate == null) ? 43 : $rateCalculate.hashCode());
-        final Object $numCalculate = this.getNumCalculate();
+        Object $numCalculate = this.getNumCalculate();
         result = result * 59 + (($numCalculate == null) ? 43 : $numCalculate.hashCode());
         result = result * 59 + this.getNotice();
         return result;

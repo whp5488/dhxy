@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.utils;
 
 import org.apache.mina.core.session.IoSession;
@@ -8,20 +7,25 @@ import com.kitty.system.game.role.domain.Role;
 
 public class SessionDataUtils
 {
-    public static NutMap getData(final Role role) {
+    public SessionDataUtils() {
+    }
+    
+    public static NutMap getData(Role role) {
         if (role == null) {
             return new NutMap();
         }
-        final IoSession session = SessionUtils.getSessionBy(role.getId());
+        IoSession session = SessionUtils.getSessionBy((long)role.getId());
         if (session != null) {
-            Object object = session.getAttribute((Object)"data");
+            Object object = session.getAttribute("data");
             if (object == null) {
-                final NutMap nutMap = new NutMap();
-                session.setAttribute((Object)"data", (Object)nutMap);
+                NutMap nutMap = new NutMap();
+                session.setAttribute("data", nutMap);
             }
-            object = session.getAttribute((Object)"data");
+            object = session.getAttribute("data");
             return (NutMap)object;
         }
-        return new NutMap();
+        else {
+            return new NutMap();
+        }
     }
 }

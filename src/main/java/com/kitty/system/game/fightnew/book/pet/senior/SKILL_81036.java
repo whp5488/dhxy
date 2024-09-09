@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -14,31 +13,34 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81036 extends SkillProcessor
 {
+    public SKILL_81036() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
-        final NutMap map = NutMap.NEW();
-        final double add = BigDecimalUtil.decimalScaleObjectDown(0, 50.0 * (addition.getRei() * 0.3 + 1.0) * PetSkillEffectorUtil.getSuffix(addition.getLv(), addition.getRei(), addition.getExperience()));
-        map.setv(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()), (Object)add);
+    public NutMap addition(Addition addition, Object... args) {
+        NutMap map = NutMap.NEW();
+        double add = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(0), Double.valueOf(50.0 * ((double)addition.getRei() * 0.3 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(addition.getLv()), Integer.valueOf(addition.getRei()), addition.getExperience())));
+        map.setv(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()), Double.valueOf(add));
         return map;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
 }

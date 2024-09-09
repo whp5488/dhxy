@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.service.handler;
 
 import com.kitty.system.game.bag.service.BagService;
@@ -12,7 +11,6 @@ import com.kitty.system.game.activity.model.product.ActivityType;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.game.activity.service.ActivityService;
 import com.kitty.system.common.data.DataGlobalFunc;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.vo.Npc;
@@ -40,26 +38,27 @@ public class TreasureMapHandler extends TaskHandler
     }
     
     @Override
-    public void canSubmitTask(final Role role, final TaskSet taskSet) {
+    public void canSubmitTask(Role role, TaskSet taskSet) {
         this.addActivityCount(role, taskSet);
     }
     
-    public void acceptTreasureMapTask(final Role role, final Npc npc) {
-        final String content = this.getNpcContentNotAccept(role);
+    public void acceptTreasureMapTask(Role role, Npc npc) {
+        String content = this.getNpcContentNotAccept(role);
         if (content != null) {
             MessagePusher.pushMessage(role, new RespMsg(content));
             return;
         }
         this.acceptTask(role);
+        return;
     }
     
-    public String getNpcContentNotAccept(final Role role) {
-        final String msg = DataGlobalFunc.needGradeJudge(0, 33, role.getRelive(), role.getLevel(), "你的#<R>角色等级#不足");
+    public String getNpcContentNotAccept(Role role) {
+        String msg = DataGlobalFunc.needGradeJudge(0, 33, (int)role.getRelive(), (int)role.getLevel(), "你的#<R>角色等级#不足");
         if (msg != null) {
             return msg;
         }
-        final ActivityService activityService = SpringUtils.getBean(ActivityService.class);
-        final boolean isHave = activityService.isHaveRemainCount(role, ActivityType.TREASURE_MAP_TASK);
+        ActivityService activityService = (ActivityService)SpringUtils.getBean(ActivityService.class);
+        boolean isHave = activityService.isHaveRemainCount(role, ActivityType.TREASURE_MAP_TASK);
         if (!isHave) {
             return "英雄今天已经打了很多，请明天再来吧";
         }
@@ -69,70 +68,72 @@ public class TreasureMapHandler extends TaskHandler
         return null;
     }
     
-    public void acceptTask(final Role role) {
+    public void acceptTask(Role role) {
         if (!this.canAcceptTask(role)) {
             return;
         }
-        final TaskSet randTaskSet = this.getRandomSchoolTask(role);
+        TaskSet randTaskSet = this.getRandomSchoolTask(role);
         if (randTaskSet == null) {
             return;
         }
-        this.acceptTask(role, randTaskSet, -1);
+        super.acceptTask(role, randTaskSet, -1);
+        return;
     }
     
-    private TaskSet getRandomSchoolTask(final Role role) {
-        final List<SysDataTaskTreasureMap> list = TaskDataPool.taskTreasureMap;
-        final int random = (int)(Math.random() * list.size());
-        final Integer taskId = list.get(random).getSerial();
-        return this.taskService.getTaskSet(taskId);
+    private TaskSet getRandomSchoolTask(Role role) {
+        List<SysDataTaskTreasureMap> list = TaskDataPool.taskTreasureMap;
+        int random = (int)(Math.random() * (double)list.size());
+        Integer taskId = Integer.valueOf(((SysDataTaskTreasureMap)list.get(random)).getSerial());
+        return this.taskService.getTaskSet((int)taskId);
     }
     
-    private boolean canAcceptTask(final Role role) {
-        final ActivityService activityService = SpringUtils.getBean(ActivityService.class);
-        final boolean isHave = activityService.isHaveRemainCount(role, ActivityType.TREASURE_MAP_TASK);
+    private boolean canAcceptTask(Role role) {
+        ActivityService activityService = (ActivityService)SpringUtils.getBean(ActivityService.class);
+        boolean isHave = activityService.isHaveRemainCount(role, ActivityType.TREASURE_MAP_TASK);
         return isHave && !this.isAcceptedSchoolTask(role) && !this.isWaitGiveUpCD(role);
     }
     
-    public boolean isAcceptedSchoolTask(final Role role) {
-        final List<TaskSet> taskList = this.taskService.getAcceptedTaskListMatchTaskType(role, TaskType.TREASURE_MAP);
+    public boolean isAcceptedSchoolTask(Role role) {
+        List<TaskSet> taskList = this.taskService.getAcceptedTaskListMatchTaskType(role, TaskType.TREASURE_MAP);
         return taskList != null && !taskList.isEmpty();
     }
     
-    private boolean isWaitGiveUpCD(final Role role) {
-        final long giveUpTime = role.getTask().getGiveUpTime(TaskType.TREASURE_MAP);
+    private boolean isWaitGiveUpCD(Role role) {
+        long giveUpTime = role.getTask().getGiveUpTime(TaskType.TREASURE_MAP);
         return giveUpTime > 0L && System.currentTimeMillis() - giveUpTime < 300000L;
     }
     
     @Override
-    public TaskInfo getTaskInfo(final Role role, final TaskSet taskSet) {
-        final TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
+    public TaskInfo getTaskInfo(Role role, TaskSet taskSet) {
+        TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
         if (this.taskService.isMatchTaskType(taskSet, TaskType.TREASURE_MAP)) {
-            final int doStep = this.activityService.getFinishCount(role, ActivityType.TREASURE_MAP_TASK, 1);
+            int doStep = this.activityService.getFinishCount(role, ActivityType.TREASURE_MAP_TASK, 1);
             taskInfo.setCounter((short)doStep);
+            return taskInfo;
         }
         return taskInfo;
     }
     
     @Override
-    public boolean canGiveUpTask(final Role role, final TaskSet taskSet) {
+    public boolean canGiveUpTask(Role role, TaskSet taskSet) {
         return true;
     }
     
     @Override
-    public void giveReward(final Role role, final TaskSet taskSet) {
+    public void giveReward(Role role, TaskSet taskSet) {
         this.addActivityCount(role, taskSet);
-        final int doStep = this.activityService.getFinishCount(role, ActivityType.TREASURE_MAP_TASK, 1);
+        int doStep = this.activityService.getFinishCount(role, ActivityType.TREASURE_MAP_TASK, 1);
         if (doStep <= ActivityType.TREASURE_MAP_TASK.getTotalCount()) {
             this.acceptTask(role);
         }
-        final List<Param> list = JsonUtils.string2Collection(taskSet.getTaskReward(), List.class, Param.class);
-        SpringUtils.getBean(BagService.class).sendReward(role, list, "藏宝图", 0);
+        List<Param> list = (List)JsonUtils.string2Collection(taskSet.getTaskReward(), List.class, Param.class);
+        ((BagService)SpringUtils.getBean(BagService.class)).sendReward(role, list, "藏宝图", 0);
     }
     
-    private void addActivityCount(final Role role, final TaskSet taskSet) {
-        final int step = 1;
+    private void addActivityCount(Role role, TaskSet taskSet) {
+        int step = 1;
         if (this.activityService.isHaveRemainCount(role, ActivityType.TREASURE_MAP_TASK)) {
-            final ActivityService activityService = SpringUtils.getBean(ActivityService.class);
+            ActivityService activityService = (ActivityService)SpringUtils.getBean(ActivityService.class);
             activityService.addFinishCount(role, ActivityType.TREASURE_MAP_TASK, step);
             this.activationTips(role, step);
         }

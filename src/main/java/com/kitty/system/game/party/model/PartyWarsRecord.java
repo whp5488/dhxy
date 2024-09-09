@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.party.model;
 
-import java.beans.ConstructorProperties;
 import com.kitty.common.db.Db4EventService;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Column;
@@ -105,7 +103,6 @@ public class PartyWarsRecord extends BaseEntity<Long>
         this.sideNum = sideNum;
     }
     
-    @ConstructorProperties({ "id", "serial", "time", "combatResults", "enemySerial", "enemyName", "enemyNum", "sideNum" })
     public PartyWarsRecord(final Long id, final int serial, final int time, final byte combatResults, final int enemySerial, final String enemyName, final int enemyNum, final int sideNum) {
         this.enemyNum = 0;
         this.sideNum = 0;

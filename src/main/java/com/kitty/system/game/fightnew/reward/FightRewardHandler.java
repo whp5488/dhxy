@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.reward;
 
 import java.util.HashMap;
@@ -21,26 +20,26 @@ public abstract class FightRewardHandler
     
     @PostConstruct
     public void init() {
-        FightRewardHandler.handlers.put(this.getType(), this);
+        FightRewardHandler.handlers.put(Integer.valueOf(this.getType()), this);
     }
     
-    public void putHndlers(final FightRewardHandler fightRewardHandler) {
-        FightRewardHandler.handlers.put(this.getType(), fightRewardHandler);
+    public void putHndlers(FightRewardHandler fightRewardHandler) {
+        FightRewardHandler.handlers.put(Integer.valueOf(this.getType()), fightRewardHandler);
     }
     
-    public static FightRewardHandler queryHandler(final int type) {
-        return FightRewardHandler.handlers.get(type);
+    public static FightRewardHandler queryHandler(int type) {
+        return (FightRewardHandler)FightRewardHandler.handlers.get(Integer.valueOf(type));
     }
     
-    public abstract void sendReward(final Fight p0, final Role p1, final Pet p2);
+    public abstract void sendReward(Fight fight, Role role, Pet pet);
     
-    public abstract void fightFailed(final Fight p0, final Role p1);
+    public abstract void fightFailed(Fight fight, Role role);
     
-    public abstract void flee(final Fight p0, final Role p1);
+    public abstract void flee(Fight fight, Role role);
     
     public abstract int getType();
     
     static {
-        handlers = new HashMap<Integer, FightRewardHandler>();
+        handlers = new HashMap();
     }
 }

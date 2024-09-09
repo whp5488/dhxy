@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -124,34 +123,18 @@ public class RespConfirm extends Message
         if (!(o instanceof RespConfirm)) {
             return false;
         }
-        final RespConfirm other = (RespConfirm)o;
+        RespConfirm other = (RespConfirm)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$title = this.getTitle();
-        final Object other$title = other.getTitle();
-        Label_0065: {
-            if (this$title == null) {
-                if (other$title == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$title.equals(other$title)) {
-                break Label_0065;
-            }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (!((this$title != null) ? this$title.equals(other$title) : (other$title == null))) {
             return false;
         }
-        final Object this$tips = this.getTips();
-        final Object other$tips = other.getTips();
-        Label_0102: {
-            if (this$tips == null) {
-                if (other$tips == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$tips.equals(other$tips)) {
-                break Label_0102;
-            }
+        Object this$tips = this.getTips();
+        Object other$tips = other.getTips();
+        if (!((this$tips != null) ? this$tips.equals(other$tips) : (other$tips == null))) {
             return false;
         }
         if (this.getDownCount() != other.getDownCount()) {
@@ -160,72 +143,32 @@ public class RespConfirm extends Message
         if (this.getOnlyConfirm() != other.getOnlyConfirm()) {
             return false;
         }
-        final Object this$confirmType = this.getConfirmType();
-        final Object other$confirmType = other.getConfirmType();
-        Label_0165: {
-            if (this$confirmType == null) {
-                if (other$confirmType == null) {
-                    break Label_0165;
-                }
-            }
-            else if (this$confirmType.equals(other$confirmType)) {
-                break Label_0165;
-            }
+        Object this$confirmType = this.getConfirmType();
+        Object other$confirmType = other.getConfirmType();
+        if (!((this$confirmType != null) ? this$confirmType.equals(other$confirmType) : (other$confirmType == null))) {
             return false;
         }
-        final Object this$confirmText = this.getConfirmText();
-        final Object other$confirmText = other.getConfirmText();
-        Label_0202: {
-            if (this$confirmText == null) {
-                if (other$confirmText == null) {
-                    break Label_0202;
-                }
-            }
-            else if (this$confirmText.equals(other$confirmText)) {
-                break Label_0202;
-            }
+        Object this$confirmText = this.getConfirmText();
+        Object other$confirmText = other.getConfirmText();
+        if (!((this$confirmText != null) ? this$confirmText.equals(other$confirmText) : (other$confirmText == null))) {
             return false;
         }
-        final Object this$cancelText = this.getCancelText();
-        final Object other$cancelText = other.getCancelText();
-        Label_0239: {
-            if (this$cancelText == null) {
-                if (other$cancelText == null) {
-                    break Label_0239;
-                }
-            }
-            else if (this$cancelText.equals(other$cancelText)) {
-                break Label_0239;
-            }
+        Object this$cancelText = this.getCancelText();
+        Object other$cancelText = other.getCancelText();
+        if (!((this$cancelText != null) ? this$cancelText.equals(other$cancelText) : (other$cancelText == null))) {
             return false;
         }
         if (this.getShow_dlg_mode() != other.getShow_dlg_mode()) {
             return false;
         }
-        final Object this$countDownTips = this.getCountDownTips();
-        final Object other$countDownTips = other.getCountDownTips();
-        Label_0289: {
-            if (this$countDownTips == null) {
-                if (other$countDownTips == null) {
-                    break Label_0289;
-                }
-            }
-            else if (this$countDownTips.equals(other$countDownTips)) {
-                break Label_0289;
-            }
+        Object this$countDownTips = this.getCountDownTips();
+        Object other$countDownTips = other.getCountDownTips();
+        if (!((this$countDownTips != null) ? this$countDownTips.equals(other$countDownTips) : (other$countDownTips == null))) {
             return false;
         }
-        final Object this$para_str = this.getPara_str();
-        final Object other$para_str = other.getPara_str();
-        if (this$para_str == null) {
-            if (other$para_str == null) {
-                return this.getNo_close_btn() == other.getNo_close_btn();
-            }
-        }
-        else if (this$para_str.equals(other$para_str)) {
-            return this.getNo_close_btn() == other.getNo_close_btn();
-        }
-        return false;
+        Object this$para_str = this.getPara_str();
+        Object other$para_str = other.getPara_str();
+        return ((this$para_str != null) ? this$para_str.equals(other$para_str) : (other$para_str == null)) && this.getNo_close_btn() == other.getNo_close_btn();
     }
     
     protected boolean canEqual(final Object other) {
@@ -234,24 +177,24 @@ public class RespConfirm extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $title = this.getTitle();
+        Object $title = this.getTitle();
         result = result * 59 + (($title == null) ? 43 : $title.hashCode());
-        final Object $tips = this.getTips();
+        Object $tips = this.getTips();
         result = result * 59 + (($tips == null) ? 43 : $tips.hashCode());
         result = result * 59 + this.getDownCount();
         result = result * 59 + this.getOnlyConfirm();
-        final Object $confirmType = this.getConfirmType();
+        Object $confirmType = this.getConfirmType();
         result = result * 59 + (($confirmType == null) ? 43 : $confirmType.hashCode());
-        final Object $confirmText = this.getConfirmText();
+        Object $confirmText = this.getConfirmText();
         result = result * 59 + (($confirmText == null) ? 43 : $confirmText.hashCode());
-        final Object $cancelText = this.getCancelText();
+        Object $cancelText = this.getCancelText();
         result = result * 59 + (($cancelText == null) ? 43 : $cancelText.hashCode());
         result = result * 59 + this.getShow_dlg_mode();
-        final Object $countDownTips = this.getCountDownTips();
+        Object $countDownTips = this.getCountDownTips();
         result = result * 59 + (($countDownTips == null) ? 43 : $countDownTips.hashCode());
-        final Object $para_str = this.getPara_str();
+        Object $para_str = this.getPara_str();
         result = result * 59 + (($para_str == null) ? 43 : $para_str.hashCode());
         result = result * 59 + this.getNo_close_btn();
         return result;

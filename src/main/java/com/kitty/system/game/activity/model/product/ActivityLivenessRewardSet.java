@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.product;
 
 import com.kitty.system.init.domain.vo.Param;
@@ -12,7 +11,7 @@ public class ActivityLivenessRewardSet
     public ActivityLivenessRewardSet() {
     }
     
-    public ActivityLivenessRewardSet(final int livenessCount, final List<Param> list) {
+    public ActivityLivenessRewardSet(int livenessCount, List<Param> list) {
         this.livenessCount = livenessCount;
         this.list = list;
     }

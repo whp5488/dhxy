@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -138,50 +137,26 @@ public class SysPetAcsry
         if (!(o instanceof SysPetAcsry)) {
             return false;
         }
-        final SysPetAcsry other = (SysPetAcsry)o;
+        SysPetAcsry other = (SysPetAcsry)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0115: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0115;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
-        final Object this$attrLib = this.getAttrLib();
-        final Object other$attrLib = other.getAttrLib();
-        if (this$attrLib == null) {
-            if (other$attrLib == null) {
-                return this.getBaseScore() == other.getBaseScore() && this.getGrade() == other.getGrade() && this.getPos() == other.getPos() && this.getMaxEndure() == other.getMaxEndure() && this.getNeedGrade() == other.getNeedGrade() && this.getNeedRei() == other.getNeedRei() && this.getType() == other.getType();
-            }
-        }
-        else if (this$attrLib.equals(other$attrLib)) {
-            return this.getBaseScore() == other.getBaseScore() && this.getGrade() == other.getGrade() && this.getPos() == other.getPos() && this.getMaxEndure() == other.getMaxEndure() && this.getNeedGrade() == other.getNeedGrade() && this.getNeedRei() == other.getNeedRei() && this.getType() == other.getType();
-        }
-        return false;
+        Object this$attrLib = this.getAttrLib();
+        Object other$attrLib = other.getAttrLib();
+        return ((this$attrLib != null) ? this$attrLib.equals(other$attrLib) : (other$attrLib == null)) && this.getBaseScore() == other.getBaseScore() && this.getGrade() == other.getGrade() && this.getPos() == other.getPos() && this.getMaxEndure() == other.getMaxEndure() && this.getNeedGrade() == other.getNeedGrade() && this.getNeedRei() == other.getNeedRei() && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -190,14 +165,14 @@ public class SysPetAcsry
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
-        final Object $attrLib = this.getAttrLib();
+        Object $attrLib = this.getAttrLib();
         result = result * 59 + (($attrLib == null) ? 43 : $attrLib.hashCode());
         result = result * 59 + this.getBaseScore();
         result = result * 59 + this.getGrade();
@@ -211,6 +186,6 @@ public class SysPetAcsry
     
     @Override
     public String toString() {
-        return "SysPetAcsry(serial=" + this.getSerial() + ", name=" + this.getName() + ", baseAttr=" + this.getBaseAttr() + ", attrLib=" + this.getAttrLib() + ", baseScore=" + this.getBaseScore() + ", grade=" + this.getGrade() + ", pos=" + this.getPos() + ", maxEndure=" + this.getMaxEndure() + ", needGrade=" + this.getNeedGrade() + ", needRei=" + this.getNeedRei() + ", type=" + this.getType() + ")";
+        return "SysPetAcsry(serial=" + this.getSerial() + ", name=" + this.getName() + ", baseAttr=" + this.getBaseAttr() + ", attrLib=" + this.getAttrLib() + ", baseScore=" + this.getBaseScore() + ", grade=" + (int)this.getGrade() + ", pos=" + this.getPos() + ", maxEndure=" + this.getMaxEndure() + ", needGrade=" + this.getNeedGrade() + ", needRei=" + this.getNeedRei() + ", type=" + this.getType() + ")";
     }
 }

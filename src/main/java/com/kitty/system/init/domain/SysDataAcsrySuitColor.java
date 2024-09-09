@@ -1,7 +1,5 @@
-
 package com.kitty.system.init.domain;
 
-import java.beans.ConstructorProperties;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Table;
 
@@ -62,7 +60,6 @@ public class SysDataAcsrySuitColor
     public SysDataAcsrySuitColor() {
     }
     
-    @ConstructorProperties({ "id", "skillSerial", "suitDist", "suitName", "colorId" })
     public SysDataAcsrySuitColor(final int id, final int skillSerial, final String suitDist, final String suitName, final byte colorId) {
         this.id = id;
         this.skillSerial = skillSerial;

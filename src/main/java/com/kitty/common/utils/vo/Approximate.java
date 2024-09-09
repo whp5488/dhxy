@@ -1,7 +1,4 @@
-
 package com.kitty.common.utils.vo;
-
-import java.beans.ConstructorProperties;
 
 public class Approximate
 {
@@ -27,7 +24,6 @@ public class Approximate
     public Approximate() {
     }
     
-    @ConstructorProperties({ "id", "num" })
     public Approximate(final int id, final int num) {
         this.id = id;
         this.num = num;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate.message;
 
 import java.util.List;
@@ -10,11 +9,14 @@ public class ResplineData extends Message
 {
     private List<LineData> datas;
     
+    public ResplineData() {
+    }
+    
     public List<LineData> getDatas() {
         return this.datas;
     }
     
-    public void setDatas(final List<LineData> datas) {
+    public void setDatas(List<LineData> datas) {
         this.datas = datas;
     }
 }

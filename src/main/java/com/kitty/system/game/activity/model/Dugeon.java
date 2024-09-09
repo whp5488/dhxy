@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -14,7 +13,7 @@ public class Dugeon
     public Dugeon() {
     }
     
-    public Dugeon(final long id, final List<Long> memberList) {
+    public Dugeon(long id, List<Long> memberList) {
         this.id = id;
         this.createTime = System.currentTimeMillis();
         this.endTime = this.createTime + 7200000L;
@@ -22,8 +21,8 @@ public class Dugeon
     }
     
     @JsonIgnore
-    public boolean isCreator(final long uid) {
-        return this.memberList.get(0) == uid;
+    public boolean isCreator(long uid) {
+        return (long)this.memberList.get(0) == uid;
     }
     
     @JsonIgnore
@@ -31,19 +30,19 @@ public class Dugeon
         return System.currentTimeMillis() >= this.endTime;
     }
     
-    public void setId(final long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
-    public void setCreateTime(final long createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
     
-    public void setEndTime(final long endTime) {
+    public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
     
-    public void setMemberList(final List<Long> memberList) {
+    public void setMemberList(List<Long> memberList) {
         this.memberList = memberList;
     }
     

@@ -1,15 +1,13 @@
-
 package com.kitty.system.game.party.service;
 
 import org.apache.commons.lang3.time.StopWatch;
-import java.util.function.ToIntFunction;
 import com.kitty.common.utils.BigDecimalUtil;
+import java.util.Collection;
 import com.kitty.system.game.party.message.vo.PartyLogInfo;
 import com.kitty.system.game.party.message.vo.LogInfo;
 import java.util.HashMap;
 import com.kitty.system.game.party.message.RespPartyLog;
 import com.kitty.system.game.enter.message.ReqTelePort;
-import com.kitty.listener.BaseGameEvent;
 import com.kitty.system.game.party.event.QuitPartyEvent;
 import com.kitty.listener.EventType;
 import com.kitty.listener.EventDispatcher;
@@ -21,8 +19,8 @@ import com.kitty.system.common.utils.SenderUtils;
 import com.kitty.system.game.activity.model.user.wars.GangWarsData;
 import com.kitty.system.game.activity.handler.timing.wars.GangWarsHandler;
 import com.kitty.system.game.dirtywords.WordDisposePool;
-import com.kitty.common.utils.TimeUtil;
 import com.kitty.system.game.party.model.vo.PartyTask;
+import com.kitty.common.utils.TimeUtil;
 import com.kitty.common.utils.bean.BeanUtils;
 import com.kitty.system.game.party.model.vo.PartyMemberObject;
 import com.kitty.system.game.party.message.RespPartyMembers;
@@ -41,11 +39,9 @@ import java.util.ConcurrentModificationException;
 import com.kitty.system.game.party.message.RespPartyNotification;
 import com.kitty.system.game.party.model.ReqJoinMember;
 import java.util.Comparator;
-import java.util.function.Function;
-import com.kitty.common.utils.PageUtil;
 import com.kitty.system.game.party.model.PartyInfo;
+import com.kitty.common.utils.PageUtil;
 import com.kitty.system.game.party.message.RespPartyInfo;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import com.kitty.system.game.party.message.ReqQueryPartys;
 import com.kitty.system.game.friend.RoleView;
@@ -61,13 +57,13 @@ import com.kitty.system.init.domain.SysPartyFlag;
 import com.kitty.system.game.party.message.ReqPartyUnlockFlag;
 import com.kitty.system.game.party.message.vo.PartyFlag;
 import com.kitty.system.game.party.message.RespPartyFlag;
+import com.kitty.mina.message.Message;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.common.data.DataGlobalFunc;
 import com.kitty.mina.cache.Deploy;
 import com.kitty.common.start.ServerService;
 import com.kitty.system.game.enter.message.RespNotifyMisc;
 import com.kitty.system.game.i18n.I18nIdDataPool;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespHint;
 import com.kitty.system.game.vo.utils.Const;
@@ -79,14 +75,12 @@ import java.util.List;
 import java.util.Map;
 import com.kitty.system.game.party.pool.PartyDataPool;
 import com.kitty.system.game.party.model.PartyLog;
-import java.util.Collection;
 import com.kitty.system.game.party.model.PartyWarsRecord;
 import com.kitty.system.game.party.model.PartyMember;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
+import com.kitty.system.game.party.model.Party;
 import com.kitty.common.utils.spring.SpringUtils;
 import org.nutz.dao.Dao;
-import com.kitty.system.game.party.model.Party;
 import java.util.concurrent.ConcurrentHashMap;
 import com.kitty.logs.LoggerFunction;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -118,19 +112,19 @@ public class PartyService
     }
     
     public void loadParty() {
-        final Map<Integer, Party> partyMap = new ConcurrentHashMap<Integer, Party>();
-        final Map<String, Integer> name2Ids = new ConcurrentHashMap<String, Integer>();
-        final Dao dao = SpringUtils.getBean(Dao.class);
-        final List<Party> list = dao.query(Party.class, Cnd.NEW());
-        for (final Party party : list) {
+        Map<Integer, Party> partyMap = new ConcurrentHashMap();
+        Map<String, Integer> name2Ids = new ConcurrentHashMap();
+        Dao dao = (Dao)SpringUtils.getBean(Dao.class);
+        List<Party> list = dao.query(Party.class, Cnd.NEW());
+        for (Party party : list) {
             party.doAfterInit();
-            final List<PartyMember> members = dao.query(PartyMember.class, Cnd.where("serial", "=", party.getSerial()).groupBy(new String[] { "role_id" }).desc("join_time"));
-            for (final PartyMember member : members) {
-                party.getMembers().put(member.getRoleId(), member);
+            List<PartyMember> members = dao.query(PartyMember.class, Cnd.where("serial", "=", party.getSerial()).groupBy(new String[] { "role_id" }).desc("join_time"));
+            for (PartyMember member : members) {
+                party.getMembers().put(Integer.valueOf(member.getRoleId()), member);
             }
-            final List<PartyWarsRecord> warsRecordList = dao.query(PartyWarsRecord.class, Cnd.where("serial", "=", party.getSerial()));
+            List<PartyWarsRecord> warsRecordList = dao.query(PartyWarsRecord.class, Cnd.where("serial", "=", party.getSerial()));
             party.getWarsRecordList().addAll(warsRecordList);
-            final List<PartyLog> partyLogs = dao.query(PartyLog.class, Cnd.where("serial", "=", party.getSerial()));
+            List<PartyLog> partyLogs = dao.query(PartyLog.class, Cnd.where("serial", "=", party.getSerial()));
             party.setLogs(partyLogs);
             partyMap.put(party.getSerial(), party);
             name2Ids.put(party.getName(), party.getSerial());
@@ -139,29 +133,29 @@ public class PartyService
         PartyDataPool.partyName2Id.putAll(name2Ids);
     }
     
-    public Party getParty(final Role role) {
+    public Party getParty(Role role) {
         if (role == null) {
             return null;
         }
         return this.getParty(role.getFaction());
     }
     
-    public Party getParty(final Integer serial) {
-        return PartyDataPool.partyMap.get(serial);
+    public Party getParty(Integer serial) {
+        return (Party)PartyDataPool.partyMap.get(serial);
     }
     
-    public Party getPartyByName(final String partyName) {
+    public Party getPartyByName(String partyName) {
         if (StringUtils.isEmpty(partyName)) {
             return null;
         }
-        final Integer serial = PartyDataPool.partyName2Id.get(partyName);
+        Integer serial = (Integer)PartyDataPool.partyName2Id.get(partyName);
         if (serial != null) {
             return this.getParty(serial);
         }
         return null;
     }
     
-    public void confirmCreateParty(final Role role, final ReqCreateParty createParty) {
+    public void confirmCreateParty(Role role, ReqCreateParty createParty) {
         if (role == null) {
             return;
         }
@@ -170,18 +164,19 @@ public class PartyService
                 return;
             }
             this.roleService.deductCurrency(role, Const.RESTYPE_GOLD, 20L, "创建帮派");
-            final Party party = this.newParty(role, createParty);
+            Party party = this.newParty(role, createParty);
             if (party != null) {
                 MessagePusher.pushMessage(role, new RespHint(4, (short)1));
             }
-            final String content = I18nIdDataPool.getI18nContent(361, 20, party.getName());
+            String content = I18nIdDataPool.getI18nContent(361, Integer.valueOf(20), party.getName());
             MessagePusher.pushMessage(role, new RespNotifyMisc(content));
         }
+        return;
     }
     
-    private boolean checkCreateParty(final Role role, final String partyName) {
-        if (SpringUtils.getBean(ServerService.class).getType() == 1) {
-            final Message message = DataGlobalFunc.operationalConstraint(role, Deploy.party, "充值#<R>%d#才可以创建帮派！");
+    private boolean checkCreateParty(Role role, String partyName) {
+        if (((ServerService)SpringUtils.getBean(ServerService.class)).getType() == 1) {
+            Message message = DataGlobalFunc.operationalConstraint(role, Deploy.party, "充值#<R>%d#才可以创建帮派！");
             if (message != null) {
                 MessagePusher.pushMessage(role, message);
                 return false;
@@ -191,54 +186,54 @@ public class PartyService
                 return false;
             }
         }
-        final boolean check = this.checkPartyName(role, partyName);
+        boolean check = this.checkPartyName(role, partyName);
         if (!check) {
             return false;
         }
         if (this.isHaveParty(role)) {
-            MessagePusher.notify2Player(role, 302);
+            MessagePusher.notify2Player(role, 302, new Object[0]);
             return false;
         }
-        if (role.getLevel() < 30) {
-            MessagePusher.notify2Player(role, 303);
+        if ((int)role.getLevel() < 30) {
+            MessagePusher.notify2Player(role, 303, new Object[0]);
             return false;
         }
-        if (role.getGold() < 20L) {
-            MessagePusher.notify2Player(role, 403);
+        if ((long)role.getGold() < 20L) {
+            MessagePusher.notify2Player(role, 403, new Object[0]);
             return false;
         }
         return true;
     }
     
-    public void partyFlag(final Party party, final Role role) {
-        final RespPartyFlag partyFlag = new RespPartyFlag();
+    public void partyFlag(Party party, Role role) {
+        RespPartyFlag partyFlag = new RespPartyFlag();
         partyFlag.setText(party.getEmblemText());
-        party.getFlag().forEach((key, value) -> partyFlag.getFlagList().add(new PartyFlag(key, value)));
-        party.getFlagColor().forEach((key, value) -> partyFlag.getFlagColorList().add(new PartyFlag(key, value)));
-        party.getLace().forEach((key, value) -> partyFlag.getLaceList().add(new PartyFlag(key, value)));
-        party.getEmblem().forEach((key, value) -> partyFlag.getEmblemList().add(new PartyFlag(key, value)));
-        party.getEmblemColor().forEach((key, value) -> partyFlag.getEmblemColorList().add(new PartyFlag(key, value)));
-        MessagePusher.pushMessage(role.getId(), partyFlag);
+        party.getFlag().forEach((key, value) -> partyFlag.getFlagList().add(new PartyFlag((short)key, (byte)value)));
+        party.getFlagColor().forEach((key, value) -> partyFlag.getFlagColorList().add(new PartyFlag((short)key, (byte)value)));
+        party.getLace().forEach((key, value) -> partyFlag.getLaceList().add(new PartyFlag((short)key, (byte)value)));
+        party.getEmblem().forEach((key, value) -> partyFlag.getEmblemList().add(new PartyFlag((short)key, (byte)value)));
+        party.getEmblemColor().forEach((key, value) -> partyFlag.getEmblemColorList().add(new PartyFlag((short)key, (byte)value)));
+        MessagePusher.pushMessage((long)role.getId(), partyFlag);
     }
     
-    public void unlockPartyFlag(final Party party, final Role role, final ReqPartyUnlockFlag reqPartyUnlockFlag) {
+    public void unlockPartyFlag(Party party, Role role, ReqPartyUnlockFlag reqPartyUnlockFlag) {
         if (1 != this.getPermission(role)) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("帮主才可以操作战旗哦！"));
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("帮主才可以操作战旗哦！"));
             return;
         }
-        final SysPartyFlag sysPartyFlag = PartyDataPool.partyFlagList.stream().filter(e -> e.getIndex() == reqPartyUnlockFlag.getIndex() && e.getClassify() == reqPartyUnlockFlag.getType()).findFirst().orElse(null);
+        SysPartyFlag sysPartyFlag = (SysPartyFlag)PartyDataPool.partyFlagList.stream().filter(e -> e.getIndex() == reqPartyUnlockFlag.getIndex() && e.getClassify() == reqPartyUnlockFlag.getType()).findFirst().orElse(null);
         if (sysPartyFlag == null) {
             return;
         }
         switch (reqPartyUnlockFlag.getType()) {
             case 0: {
-                final Byte flag = party.getFlag().get(reqPartyUnlockFlag.getIndex());
+                Byte flag = (Byte)party.getFlag().get(Short.valueOf(reqPartyUnlockFlag.getIndex()));
                 if (flag != null) {
-                    MessagePusher.pushMessage(role.getId(), new RespMsg("你已经解锁该旗帜！"));
+                    MessagePusher.pushMessage((long)role.getId(), new RespMsg("你已经解锁该旗帜！"));
                     return;
                 }
-                if (this.roleService.deductCurrency(role, sysPartyFlag.getType(), sysPartyFlag.getPrice(), "解锁帮派旗帜")) {
-                    party.getFlag().put(sysPartyFlag.getIndex(), (byte)0);
+                if (this.roleService.deductCurrency(role, Integer.valueOf(sysPartyFlag.getType()), (long)sysPartyFlag.getPrice(), "解锁帮派旗帜")) {
+                    party.getFlag().put(Short.valueOf(sysPartyFlag.getIndex()), Byte.valueOf((byte)0));
                     party.save();
                     this.partyFlag(party, role);
                     break;
@@ -246,13 +241,13 @@ public class PartyService
                 break;
             }
             case 1: {
-                final Byte lace = party.getLace().get(reqPartyUnlockFlag.getIndex());
+                Byte lace = (Byte)party.getLace().get(Short.valueOf(reqPartyUnlockFlag.getIndex()));
                 if (lace != null) {
-                    MessagePusher.pushMessage(role.getId(), new RespMsg("你已经解锁该边饰！"));
+                    MessagePusher.pushMessage((long)role.getId(), new RespMsg("你已经解锁该边饰！"));
                     return;
                 }
-                if (this.roleService.deductCurrency(role, sysPartyFlag.getType(), sysPartyFlag.getPrice(), "解锁帮派边饰")) {
-                    party.getLace().put(sysPartyFlag.getIndex(), (byte)0);
+                if (this.roleService.deductCurrency(role, Integer.valueOf(sysPartyFlag.getType()), (long)sysPartyFlag.getPrice(), "解锁帮派边饰")) {
+                    party.getLace().put(Short.valueOf(sysPartyFlag.getIndex()), Byte.valueOf((byte)0));
                     party.save();
                     this.partyFlag(party, role);
                     break;
@@ -260,13 +255,13 @@ public class PartyService
                 break;
             }
             case 2: {
-                final Byte emblem = party.getEmblem().get(reqPartyUnlockFlag.getIndex());
+                Byte emblem = (Byte)party.getEmblem().get(Short.valueOf(reqPartyUnlockFlag.getIndex()));
                 if (emblem != null) {
-                    MessagePusher.pushMessage(role.getId(), new RespMsg("你已经解锁该纹章！"));
+                    MessagePusher.pushMessage((long)role.getId(), new RespMsg("你已经解锁该纹章！"));
                     return;
                 }
-                if (this.roleService.deductCurrency(role, sysPartyFlag.getType(), sysPartyFlag.getPrice(), "解锁帮派纹章")) {
-                    party.getEmblem().put(sysPartyFlag.getIndex(), (byte)0);
+                if (this.roleService.deductCurrency(role, Integer.valueOf(sysPartyFlag.getType()), (long)sysPartyFlag.getPrice(), "解锁帮派纹章")) {
+                    party.getEmblem().put(Short.valueOf(sysPartyFlag.getIndex()), Byte.valueOf((byte)0));
                     party.save();
                     this.partyFlag(party, role);
                     break;
@@ -274,13 +269,13 @@ public class PartyService
                 break;
             }
             case 3: {
-                final Byte flagColor = party.getFlagColor().get(reqPartyUnlockFlag.getIndex());
+                Byte flagColor = (Byte)party.getFlagColor().get(Short.valueOf(reqPartyUnlockFlag.getIndex()));
                 if (flagColor != null) {
-                    MessagePusher.pushMessage(role.getId(), new RespMsg("你已经解锁该旗帜颜色！"));
+                    MessagePusher.pushMessage((long)role.getId(), new RespMsg("你已经解锁该旗帜颜色！"));
                     return;
                 }
-                if (this.roleService.deductCurrency(role, sysPartyFlag.getType(), sysPartyFlag.getPrice(), "解锁帮派旗帜颜色")) {
-                    party.getFlagColor().put(sysPartyFlag.getIndex(), (byte)0);
+                if (this.roleService.deductCurrency(role, Integer.valueOf(sysPartyFlag.getType()), (long)sysPartyFlag.getPrice(), "解锁帮派旗帜颜色")) {
+                    party.getFlagColor().put(Short.valueOf(sysPartyFlag.getIndex()), Byte.valueOf((byte)0));
                     party.save();
                     this.partyFlag(party, role);
                     break;
@@ -288,13 +283,13 @@ public class PartyService
                 break;
             }
             case 4: {
-                final Byte emblemColor = party.getEmblemColor().get(reqPartyUnlockFlag.getIndex());
+                Byte emblemColor = (Byte)party.getEmblemColor().get(Short.valueOf(reqPartyUnlockFlag.getIndex()));
                 if (emblemColor != null) {
-                    MessagePusher.pushMessage(role.getId(), new RespMsg("你已经解锁该纹章颜色！"));
+                    MessagePusher.pushMessage((long)role.getId(), new RespMsg("你已经解锁该纹章颜色！"));
                     return;
                 }
-                if (this.roleService.deductCurrency(role, sysPartyFlag.getType(), sysPartyFlag.getPrice(), "解锁帮派纹章颜色")) {
-                    party.getEmblemColor().put(sysPartyFlag.getIndex(), (byte)0);
+                if (this.roleService.deductCurrency(role, Integer.valueOf(sysPartyFlag.getType()), (long)sysPartyFlag.getPrice(), "解锁帮派纹章颜色")) {
+                    party.getEmblemColor().put(Short.valueOf(sysPartyFlag.getIndex()), Byte.valueOf((byte)0));
                     party.save();
                     this.partyFlag(party, role);
                     break;
@@ -302,93 +297,95 @@ public class PartyService
                 break;
             }
         }
+        return;
     }
     
-    public void savePartyFlag(final Party party, final Role role, final ReqSavePartyFlag reqPartyFlag) {
+    public void savePartyFlag(Party party, Role role, ReqSavePartyFlag reqPartyFlag) {
         if (1 != this.getPermission(role)) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("帮主才可以操作战旗哦！"));
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("帮主才可以操作战旗哦！"));
             return;
         }
-        if (party.getFlag().get(reqPartyFlag.getFlag()) == null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("本帮尚未解锁该旗帜"));
+        if (party.getFlag().get(Short.valueOf(reqPartyFlag.getFlag())) == null) {
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("本帮尚未解锁该旗帜"));
             return;
         }
-        if (party.getFlagColor().get(reqPartyFlag.getFlagColor()) == null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("本帮尚未解锁该旗帜颜色"));
+        if (party.getFlagColor().get(Short.valueOf(reqPartyFlag.getFlagColor())) == null) {
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("本帮尚未解锁该旗帜颜色"));
             return;
         }
-        if (party.getLace().get(reqPartyFlag.getLace()) == null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("本帮尚未解锁该边饰"));
+        if (party.getLace().get(Short.valueOf(reqPartyFlag.getLace())) == null) {
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("本帮尚未解锁该边饰"));
             return;
         }
-        if (party.getEmblem().get(reqPartyFlag.getEmblem()) == null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("本帮尚未解锁该纹章"));
+        if (party.getEmblem().get(Short.valueOf(reqPartyFlag.getEmblem())) == null) {
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("本帮尚未解锁该纹章"));
             return;
         }
-        if (party.getEmblemColor().get(reqPartyFlag.getEmblemColor()) == null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("本帮尚未解锁该纹章"));
+        if (party.getEmblemColor().get(Short.valueOf(reqPartyFlag.getEmblemColor())) == null) {
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("本帮尚未解锁该纹章"));
             return;
         }
         if (reqPartyFlag.getText() == null || !StringUtils.isChineseCharacter(reqPartyFlag.getText())) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("必须是一个汉字"));
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("必须是一个汉字"));
             return;
         }
         party.setEmblemText(reqPartyFlag.getText());
         party.getFlag().forEach((key, value) -> {
-            if (key.equals(reqPartyFlag.getFlag())) {
-                party.getFlag().put(key, (byte)1);
+            if (key.equals(Short.valueOf(reqPartyFlag.getFlag()))) {
+                party.getFlag().put(key, Byte.valueOf((byte)1));
             }
             else {
-                party.getFlag().put(key, (byte)0);
+                party.getFlag().put(key, Byte.valueOf((byte)0));
             }
             return;
         });
         party.getFlagColor().forEach((key, value) -> {
-            if (key.equals(reqPartyFlag.getFlagColor())) {
-                party.getFlagColor().put(key, (byte)1);
+            if (key.equals(Short.valueOf(reqPartyFlag.getFlagColor()))) {
+                party.getFlagColor().put(key, Byte.valueOf((byte)1));
             }
             else {
-                party.getFlagColor().put(key, (byte)0);
+                party.getFlagColor().put(key, Byte.valueOf((byte)0));
             }
             return;
         });
         party.getLace().forEach((key, value) -> {
-            if (key.equals(reqPartyFlag.getLace())) {
-                party.getLace().put(key, (byte)1);
+            if (key.equals(Short.valueOf(reqPartyFlag.getLace()))) {
+                party.getLace().put(key, Byte.valueOf((byte)1));
             }
             else {
-                party.getLace().put(key, (byte)0);
+                party.getLace().put(key, Byte.valueOf((byte)0));
             }
             return;
         });
         party.getEmblem().forEach((key, value) -> {
-            if (key.equals(reqPartyFlag.getEmblem())) {
-                party.getEmblem().put(key, (byte)1);
+            if (key.equals(Short.valueOf(reqPartyFlag.getEmblem()))) {
+                party.getEmblem().put(key, Byte.valueOf((byte)1));
             }
             else {
-                party.getEmblem().put(key, (byte)0);
+                party.getEmblem().put(key, Byte.valueOf((byte)0));
             }
             return;
         });
         party.getEmblemColor().forEach((key, value) -> {
-            if (key.equals(reqPartyFlag.getEmblemColor())) {
-                party.getEmblemColor().put(key, (byte)1);
+            if (key.equals(Short.valueOf(reqPartyFlag.getEmblemColor()))) {
+                party.getEmblemColor().put(key, Byte.valueOf((byte)1));
             }
             else {
-                party.getEmblemColor().put(key, (byte)0);
+                party.getEmblemColor().put(key, Byte.valueOf((byte)0));
             }
             return;
         });
         party.save();
         this.partyFlag(party, role);
-        MessagePusher.pushMessage(role.getId(), new RespMsg("保存成功"));
+        MessagePusher.pushMessage((long)role.getId(), new RespMsg("保存成功"));
+        return;
     }
     
-    public void getRespOpenPatry(final Party party, final Role role) {
-        final RespOpenParty respOpenParty = new RespOpenParty();
+    public void getRespOpenPatry(Party party, Role role) {
+        RespOpenParty respOpenParty = new RespOpenParty();
         try {
-            respOpenParty.setSerial(party.getSerial());
-            respOpenParty.setCreateTime(Math.toIntExact(party.getCreateTime() / 1000L));
+            respOpenParty.setSerial((int)party.getSerial());
+            respOpenParty.setCreateTime(Math.toIntExact((long)party.getCreateTime() / 1000L));
             respOpenParty.setLevel(party.getLevel());
             respOpenParty.setCount(this.getPartyTotalCount(party));
             respOpenParty.setOnlineMember(this.getPartyOnlineCount(party));
@@ -402,7 +399,7 @@ public class PartyService
             respOpenParty.setConsentLevel(party.getConsentLevel());
             respOpenParty.setRefuse(party.getRefuse());
             respOpenParty.setRefuseLevel(party.getRefuseLevel());
-            final PartyMember partyMember = party.getMembers().get(role.getRoleId());
+            PartyMember partyMember = (PartyMember)party.getMembers().get(role.getRoleId());
             if (partyMember != null) {
                 respOpenParty.setJoinTime(partyMember.getJoinTime());
                 respOpenParty.setJob(partyMember.getJob());
@@ -411,42 +408,45 @@ public class PartyService
             respOpenParty.setSum((short)party.getWarsRecordList().size());
             respOpenParty.setWin((short)party.getRating());
             respOpenParty.setLose((short)(respOpenParty.getSum() - respOpenParty.getWin()));
-            final PartyMember member = party.getMembers().get(party.getMasterId());
+            PartyMember member = (PartyMember)party.getMembers().get(party.getMasterId());
             if (member != null) {
-                final Role player = this.roleService.getPlayer(member.getRoleId());
+                Role player = this.roleService.getPlayer(member.getRoleId());
                 respOpenParty.getMaster().add(new FiedValue("n", (byte)4, party.getMasterName()));
-                respOpenParty.getMaster().add(new FiedValue("s", (byte)2, member.getRoleSerial()));
+                respOpenParty.getMaster().add(new FiedValue("s", (byte)2, Integer.valueOf(member.getRoleSerial())));
                 respOpenParty.getMaster().addAll(this.roleService.deyList(player.getColor()));
                 respOpenParty.getMaster().add(new FiedValue("l", (byte)4, JsonUtils.object2String(this.equipService.getWearEffect(player))));
-                respOpenParty.getMaster().add(new FiedValue("f", (byte)4, JsonUtils.object2String(new ArrayList())));
-                respOpenParty.getMaster().add(new FiedValue("w", (byte)3, player.getWeaponIcon()));
+                respOpenParty.getMaster().add(new FiedValue("f", (byte)4, JsonUtils.object2String(new ArrayList<>())));
+                respOpenParty.getMaster().add(new FiedValue("w", (byte)3, Integer.valueOf(player.getWeaponIcon())));
                 int gem = 0;
-                final List<WearEquip> wearEquips = this.equipService.getEquipValid(player, false);
+                List<WearEquip> wearEquips = this.equipService.getEquipValid(player, false);
                 if (wearEquips.size() > 0) {
                     gem = DataGlobalFunc.getWeaponGemNum(wearEquips);
                 }
-                respOpenParty.getMaster().add(new FiedValue("gem", (byte)2, gem));
+                respOpenParty.getMaster().add(new FiedValue("gem", (byte)2, Integer.valueOf(gem)));
             }
             else {
-                this.logger.error("查询帮主信息错误，帮派编号：{}", (Object)party.getSerial());
+                this.logger.error("查询帮主信息错误，帮派编号：{}", party.getSerial());
             }
             MessagePusher.pushMessage(role, respOpenParty);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.logger.error("发送内政异常");
             e.printStackTrace();
         }
     }
     
-    public short getPartyOnlineCount(final Party party) {
+    public short getPartyOnlineCount(Party party) {
         if (party == null) {
             return 0;
         }
         if (party.getMembers() != null) {
             short count = 0;
-            for (final PartyMember member : party.getMembers().values()) {
+            for (PartyMember member : party.getMembers().values()) {
                 if (this.roleService.isOnline(member.getRoleId())) {
                     ++count;
+                }
+                else {
+                    continue;
                 }
             }
             return count;
@@ -454,28 +454,28 @@ public class PartyService
         return 0;
     }
     
-    private short getPartyTotalCount(final Party party) {
+    private short getPartyTotalCount(Party party) {
         if (party == null) {
             return 0;
         }
         return (short)party.getMembers().size();
     }
     
-    private Party newParty(final Role role, final ReqCreateParty createParty) {
-        final Party party = new Party();
-        party.setId(IdGenerator.getNextId());
-        party.setSerial(SpringUtils.getIdentityService().getNextId(IdentityType.PARTY));
+    private Party newParty(Role role, ReqCreateParty createParty) {
+        Party party = new Party();
+        party.setId(Long.valueOf(IdGenerator.getNextId()));
+        party.setSerial(Integer.valueOf(SpringUtils.getIdentityService().getNextId(IdentityType.PARTY)));
         party.setName(createParty.getPartyName().trim());
         party.setMasterId(role.getRoleId());
         party.setMasterName(role.getName());
         party.setCreateTime(Math.toIntExact(System.currentTimeMillis() / 1000L));
         party.setAim(createParty.getAnnounce());
         createParty.setConsent(createParty.getConsent());
-        party.getFlag().put((short)1, (byte)1);
-        party.getFlagColor().put((short)1, (byte)1);
-        party.getLace().put((short)1, (byte)1);
-        party.getEmblem().put((short)1, (byte)1);
-        party.getEmblemColor().put((short)1, (byte)1);
+        party.getFlag().put(Short.valueOf((short)1), Byte.valueOf((byte)1));
+        party.getFlagColor().put(Short.valueOf((short)1), Byte.valueOf((byte)1));
+        party.getLace().put(Short.valueOf((short)1), Byte.valueOf((byte)1));
+        party.getEmblem().put(Short.valueOf((short)1), Byte.valueOf((byte)1));
+        party.getEmblemColor().put(Short.valueOf((short)1), Byte.valueOf((byte)1));
         this.addPartyMember(party, role, (byte)70);
         PartyDataPool.partyMap.put(party.getSerial(), party);
         PartyDataPool.partyName2Id.put(party.getName(), party.getSerial());
@@ -487,93 +487,93 @@ public class PartyService
         return party;
     }
     
-    public PartyMember addPartyMember(final Party party, final Role role, final byte job) {
-        final long now = System.currentTimeMillis();
-        final PartyMember partyMember = new PartyMember(role, party.getSerial(), now, job, IdGenerator.getNextId());
+    public PartyMember addPartyMember(Party party, Role role, byte job) {
+        long now = System.currentTimeMillis();
+        PartyMember partyMember = new PartyMember(role, (int)party.getSerial(), now, job, Long.valueOf(IdGenerator.getNextId()));
         partyMember.save();
-        party.getMembers().put(partyMember.getRoleId(), partyMember);
+        party.getMembers().put(Integer.valueOf(partyMember.getRoleId()), partyMember);
         return partyMember;
     }
     
-    private PartyMember addPartyMember(final Party party, final RoleView roleView, final byte job) {
-        final long now = System.currentTimeMillis();
-        final PartyMember partyMember = new PartyMember(roleView.getRole(), party.getSerial(), now, job, IdGenerator.getNextId());
+    private PartyMember addPartyMember(Party party, RoleView roleView, byte job) {
+        long now = System.currentTimeMillis();
+        PartyMember partyMember = new PartyMember(roleView.getRole(), (int)party.getSerial(), now, job, Long.valueOf(IdGenerator.getNextId()));
         partyMember.save();
-        party.getMembers().put(partyMember.getRoleId(), partyMember);
+        party.getMembers().put(Integer.valueOf(partyMember.getRoleId()), partyMember);
         return partyMember;
     }
     
-    private boolean isHaveParty(final Role role) {
+    private boolean isHaveParty(Role role) {
         return role == null || this.getParty(role.getFaction()) != null;
     }
     
-    private boolean isPartyNameExist(final String partyName) {
+    private boolean isPartyNameExist(String partyName) {
         return this.getPartyByName(partyName) != null;
     }
     
-    public void queryParties(final Role role, final ReqQueryPartys queryParty) {
+    public void queryParties(Role role, ReqQueryPartys queryParty) {
         List<Party> parties = this.getSortedParties();
         if ("fuzzy_by".equals(queryParty.getType())) {
-            parties = parties.stream().filter(party -> party.getSerial().equals(queryParty.getPara()) || party.getName().contains(queryParty.getPara())).collect(Collectors.toList());
+            parties = (List)parties.stream().filter(party -> party.getSerial().equals(queryParty.getPara()) || party.getName().contains(queryParty.getPara())).collect(Collectors.toList());
         }
         this.sendParties(role, queryParty, parties);
     }
     
-    public void sendParties(final Role role, final ReqQueryPartys queryParty, List<Party> parties) {
-        final RespPartyInfo respPartyInfo = new RespPartyInfo();
+    public void sendParties(Role role, ReqQueryPartys queryParty, List<Party> parties) {
+        RespPartyInfo respPartyInfo = new RespPartyInfo();
         respPartyInfo.setOrder(queryParty.getType());
         respPartyInfo.setPage(queryParty.getPage());
         respPartyInfo.setSort(queryParty.getSort());
         respPartyInfo.setWay(queryParty.getWay());
-        List<PartyInfo> list = new ArrayList<PartyInfo>();
+        List<PartyInfo> list = new ArrayList<>();
         if (parties.size() > 0) {
-            parties = PageUtil.subList(parties, (int)queryParty.getPage(), (int)queryParty.getSize());
-            for (final Party party : parties) {
-                final short partyTotalCount = this.getPartyTotalCount(party);
-                final PartyInfo partyInfo = new PartyInfo();
-                partyInfo.setSerial(party.getSerial());
+            parties = PageUtil.subList(parties, Integer.valueOf((int)queryParty.getPage()), Integer.valueOf((int)queryParty.getSize()));
+            for (Party party : parties) {
+                short partyTotalCount = this.getPartyTotalCount(party);
+                PartyInfo partyInfo = new PartyInfo();
+                partyInfo.setSerial((int)party.getSerial());
                 partyInfo.setName(party.getName());
                 partyInfo.setLevel(party.getLevel());
                 partyInfo.setMembers(partyTotalCount);
-                partyInfo.setActive(party.getActive());
+                partyInfo.setActive((int)party.getActive());
                 partyInfo.setAim(party.getAim());
                 partyInfo.setStandings(party.getStandings());
                 partyInfo.setSum((short)party.getWarsRecordList().size());
                 partyInfo.setWin((short)party.getRating());
                 partyInfo.setLose((short)(partyInfo.getSum() - partyInfo.getWin()));
-                final PartyMember member = party.getMembers().get(party.getMasterId());
+                PartyMember member = (PartyMember)party.getMembers().get(party.getMasterId());
                 if (member != null) {
                     partyInfo.getMaster().add(new FiedValue("n", (byte)4, party.getMasterName()));
-                    partyInfo.getMaster().add(new FiedValue("s", (byte)2, member.getRoleSerial()));
-                    partyInfo.getMaster().add(new FiedValue("g", (byte)2, member.getRei() * 1000 + member.getLevel()));
+                    partyInfo.getMaster().add(new FiedValue("s", (byte)2, Integer.valueOf(member.getRoleSerial())));
+                    partyInfo.getMaster().add(new FiedValue("g", (byte)2, Integer.valueOf(member.getRei() * 1000 + member.getLevel())));
                     list.add(partyInfo);
                 }
                 else {
-                    this.logger.error("查询帮主信息错误，帮派编号：{}", (Object)party.getSerial());
+                    this.logger.error("查询帮主信息错误，帮派编号：{}", party.getSerial());
                 }
-                Short flag = party.getFlag().entrySet().stream().filter(entry -> entry.getValue().equals(1)).map(Map.Entry::getKey).findFirst().orElse(null);
+                Short flag = (Short)party.getFlag().entrySet().stream().filter(entry -> ((Byte)entry.getValue()).equals(Byte.valueOf((byte)1))).map(Map.Entry::getKey).findFirst().orElse(null);
                 if (flag == null) {
-                    flag = 1;
+                    flag = Short.valueOf((short)1);
                 }
                 partyInfo.getFlag().add(new FiedValue("qz", (byte)2, flag));
-                Short lace = party.getLace().entrySet().stream().filter(entry -> entry.getValue().equals(1)).map(Map.Entry::getKey).findFirst().orElse(null);
+                Short lace = (Short)party.getLace().entrySet().stream().filter(entry -> ((Byte)entry.getValue()).equals(Byte.valueOf((byte)1))).map(Map.Entry::getKey).findFirst().orElse(null);
                 if (lace == null) {
-                    lace = 1;
+                    lace = Short.valueOf((short)1);
                 }
                 partyInfo.getFlag().add(new FiedValue("bs", (byte)2, lace));
-                Short emblem = party.getEmblem().entrySet().stream().filter(entry -> entry.getValue().equals(1)).map(Map.Entry::getKey).findFirst().orElse(null);
+                Short emblem = (Short)party.getEmblem().entrySet().stream().filter(entry -> ((Byte)entry.getValue()).equals(Byte.valueOf((byte)1))).map(Map.Entry::getKey).findFirst().orElse(null);
                 if (emblem == null) {
-                    emblem = 1;
+                    emblem = Short.valueOf((short)1);
                 }
                 partyInfo.getFlag().add(new FiedValue("wz", (byte)2, emblem));
-                Short flagC = party.getFlagColor().entrySet().stream().filter(entry -> entry.getValue().equals(1)).map(Map.Entry::getKey).findFirst().orElse(null);
+                Short flagC = (Short)party.getFlagColor().entrySet().stream().filter(entry -> ((Byte)entry.getValue()).equals(Byte.valueOf((byte)1))).map(Map.Entry::getKey).findFirst().orElse(null);
                 if (flagC == null) {
-                    flagC = 1;
+                    flagC = Short.valueOf((short)1);
                 }
                 partyInfo.getFlag().add(new FiedValue("qzc", (byte)2, flagC));
-                Short emblemC = party.getEmblemColor().entrySet().stream().filter(entry -> entry.getValue().equals(1)).map(Map.Entry::getKey).findFirst().orElse(null);
+                Short emblemC = (Short)party.getEmblemColor().entrySet().stream().filter(entry -> ((Byte)entry.getValue()).equals(Byte.valueOf((byte)1))).map(Map.Entry::getKey).findFirst().orElse(null);
                 if (emblemC == null) {
-                    emblemC = 1;
+                    emblemC = Short.valueOf((short)1);
                 }
                 partyInfo.getFlag().add(new FiedValue("wzc", (byte)2, emblemC));
                 String text = party.getEmblemText();
@@ -584,42 +584,42 @@ public class PartyService
             }
             if (queryParty.getSort() == 1) {
                 if (queryParty.getWay() == 0) {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getSerial)).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getSerial)).collect(Collectors.toList());
                 }
                 else {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getSerial).reversed()).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getSerial).reversed()).collect(Collectors.toList());
                 }
             }
             else if (queryParty.getSort() == 2) {
                 if (queryParty.getWay() == 0) {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getName)).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getName)).collect(Collectors.toList());
                 }
                 else {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getName).reversed()).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getName).reversed()).collect(Collectors.toList());
                 }
             }
             else if (queryParty.getSort() == 3) {
                 if (queryParty.getWay() == 0) {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getLevel)).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getLevel)).collect(Collectors.toList());
                 }
                 else {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getLevel).reversed()).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getLevel).reversed()).collect(Collectors.toList());
                 }
             }
             else if (queryParty.getSort() == 4) {
                 if (queryParty.getWay() == 0) {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getMembers)).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getMembers)).collect(Collectors.toList());
                 }
                 else {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getMembers).reversed()).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getMembers).reversed()).collect(Collectors.toList());
                 }
             }
             else if (queryParty.getSort() == 5) {
                 if (queryParty.getWay() == 0) {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getActive)).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getActive)).collect(Collectors.toList());
                 }
                 else {
-                    list = list.stream().sorted(Comparator.comparing(PartyInfo::getActive).reversed()).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyInfo::getActive).reversed()).collect(Collectors.toList());
                 }
             }
             respPartyInfo.setList(list);
@@ -628,28 +628,28 @@ public class PartyService
     }
     
     public List<Party> getSortedParties() {
-        final ArrayList<Party> partyList = new ArrayList<Party>(PartyDataPool.partyMap.values());
+        ArrayList<Party> partyList = new ArrayList(PartyDataPool.partyMap.values());
         partyList.sort(Comparator.comparing(Party::getLevel).reversed());
         return partyList;
     }
     
-    public void reqJoinParty(final Role role, final String partyName) {
+    public void reqJoinParty(Role role, String partyName) {
         if (role == null || StringUtils.isEmpty(partyName)) {
             return;
         }
-        final Party party = this.getPartyByName(partyName);
+        Party party = this.getPartyByName(partyName);
         if (party == null) {
             return;
         }
         if (this.isHaveParty(role)) {
-            MessagePusher.notify2Player(role, 304);
+            MessagePusher.notify2Player(role, 304, new Object[0]);
             return;
         }
         if (this.isPartyFull(party)) {
-            MessagePusher.notify2Player(role, 305);
+            MessagePusher.notify2Player(role, 305, new Object[0]);
             return;
         }
-        final int curve = role.getRelive() * 1000 + role.getLevel();
+        int curve = (int)role.getRelive() * 1000 + (int)role.getLevel();
         if (party.getConsent() == 0 && curve >= party.getConsentLevel()) {
             this.addPartyMember(party, new RoleView(role), (byte)10);
             this.doJoinParty(party, role);
@@ -658,19 +658,20 @@ public class PartyService
             this.addPartyLog(party, 349, new String[] { role.getRoleId().toString(), role.getName() });
         }
         else {
-            final ReqJoinMember reqJoinMember = new ReqJoinMember(role.getRoleId(), role.getName(), Math.toIntExact(System.currentTimeMillis() / 1000L), role.getRelive().byteValue(), role.getLevel().shortValue(), role.getSerial().shortValue(), new ArrayList<Integer>());
-            (party.getReqJoin()).put(role.getName(), reqJoinMember);
+            ReqJoinMember reqJoinMember = new ReqJoinMember((int)role.getRoleId(), role.getName(), Math.toIntExact(System.currentTimeMillis() / 1000L), role.getRelive().byteValue(), role.getLevel().shortValue(), role.getSerial().shortValue(), new ArrayList<>());
+            party.getReqJoin().put(role.getName(), reqJoinMember);
             this.notifyOnlineManager(party, new RespPartyNotification((short)2));
         }
+        return;
     }
     
-    private boolean isPartyFull(final Party party) {
-        final short partyTotalCount = this.getPartyTotalCount(party);
-        final int partyMaxCount = this.getPartyMaxMembers(party.getLevel());
+    private boolean isPartyFull(Party party) {
+        short partyTotalCount = this.getPartyTotalCount(party);
+        int partyMaxCount = this.getPartyMaxMembers((int)party.getLevel());
         return partyTotalCount >= partyMaxCount;
     }
     
-    public void oneKeyJoin(final Role role) {
+    public void oneKeyJoin(Role role) {
         if (role == null) {
             return;
         }
@@ -678,8 +679,8 @@ public class PartyService
             return;
         }
         boolean joined = false;
-        final List<Party> sortedParties = this.getSortedParties();
-        for (final Party party : sortedParties) {
+        List<Party> sortedParties = this.getSortedParties();
+        for (Party party : sortedParties) {
             if (this.isPartyFull(party)) {
                 continue;
             }
@@ -687,104 +688,111 @@ public class PartyService
             if (joined) {
                 break;
             }
+            continue;
         }
         if (!joined) {
-            for (final Party party : sortedParties) {
+            for (Party party : sortedParties) {
                 if (this.isPartyFull(party)) {
                     continue;
                 }
-                final ReqJoinMember reqJoinMember = new ReqJoinMember(role.getRoleId(), role.getName(), Math.toIntExact(System.currentTimeMillis() / 1000L), role.getRelive().byteValue(), role.getLevel().shortValue(), role.getSerial().shortValue(), new ArrayList<Integer>());
-                (party.getReqJoin()).put(role.getName(), reqJoinMember);
+                ReqJoinMember reqJoinMember = new ReqJoinMember((int)role.getRoleId(), role.getName(), Math.toIntExact(System.currentTimeMillis() / 1000L), role.getRelive().byteValue(), role.getLevel().shortValue(), role.getSerial().shortValue(), new ArrayList<>());
+                party.getReqJoin().put(role.getName(), reqJoinMember);
                 this.notifyOnlineManager(party, new RespPartyNotification((short)2));
             }
         }
+        return;
     }
     
-    private void notifyOnlineManager(final Party party, final Message message) {
+    private void notifyOnlineManager(Party party, Message message) {
         if (party == null || message == null) {
             return;
         }
         try {
-            for (final Integer key : party.getMembers().keySet()) {
-                final PartyMember member = party.getMembers().get(key);
+            for (Integer key : party.getMembers().keySet()) {
+                PartyMember member = (PartyMember)party.getMembers().get(key);
                 if (member.getJob() > 10) {
-                    final Role role = SpringUtils.getRoleService().getPlayerBy(key);
+                    Role role = SpringUtils.getRoleService().getPlayerBy((int)key);
                     if (role == null) {
                         continue;
                     }
                     MessagePusher.pushMessage(role, message);
                 }
+                else {
+                    continue;
+                }
             }
         }
-        catch (final ConcurrentModificationException ex) {}
+        catch (ConcurrentModificationException ex) {}
+        return;
     }
     
-    private boolean autoJoin(final Role role, final Party party) {
+    private boolean autoJoin(Role role, Party party) {
         if (role == null || party == null) {
             return false;
         }
-        final int curve = role.getRelive() * 1000 + role.getLevel();
+        int curve = (int)role.getRelive() * 1000 + (int)role.getLevel();
         if (party.getConsent() == 0 && curve >= party.getConsentLevel()) {
             this.addPartyMember(party, new RoleView(role), (byte)10);
             this.doJoinParty(party, role);
-            final String acceptContent = I18nIdDataPool.getI18nContent(316, party.getName());
+            String acceptContent = I18nIdDataPool.getI18nContent(316, party.getName());
             MessagePusher.pushMessage(role, new RespNotifyMisc(acceptContent));
-            final String content = I18nIdDataPool.getI18nContent(315, role.getName());
+            String content = I18nIdDataPool.getI18nContent(315, role.getName());
             this.npcPartyChat(party, content);
-            final String mailTitle = I18nIdDataPool.getI18nContent(317);
-            final String mailContent = I18nIdDataPool.getI18nContent(318, party.getName(), party.getName());
+            String mailTitle = I18nIdDataPool.getI18nContent(317);
+            String mailContent = I18nIdDataPool.getI18nContent(318, party.getName(), party.getName());
             this.addPartyLog(party, 349, new String[] { role.getRoleId().toString(), role.getName() });
             return true;
         }
         return false;
     }
     
-    public void checkJoinList(final Role role) {
+    public void checkJoinList(Role role) {
         if (role == null) {
             return;
         }
-        final Party party = this.getParty(role);
+        Party party = this.getParty(role);
         if (party == null) {
             return;
         }
-        final RespJoinPartyList joinPartyList = new RespJoinPartyList();
-        final ArrayList<JoinMemberInfo> list = new ArrayList<JoinMemberInfo>();
-        final NutConcurrentMap reqJoin = party.getReqJoin();
-        for (final Map.Entry<String, Object> entry : reqJoin.entrySet()) {
-            final JoinMemberInfo join = new JoinMemberInfo();
+        RespJoinPartyList joinPartyList = new RespJoinPartyList();
+        ArrayList<JoinMemberInfo> list = new ArrayList<>();
+        NutConcurrentMap reqJoin = party.getReqJoin();
+        for (Map.Entry<String, Object> entry : reqJoin.entrySet()) {
+            JoinMemberInfo join = new JoinMemberInfo();
             try {
-                final String jsonString = JSONObject.toJSONString(entry.getValue());
-                final ReqJoinMember member = (ReqJoinMember)JSONObject.parseObject(jsonString, (Class)ReqJoinMember.class);
-                join.setName(entry.getKey());
+                String jsonString = JSONObject.toJSONString(entry.getValue());
+                ReqJoinMember member = (ReqJoinMember)JSONObject.parseObject(jsonString, ReqJoinMember.class);
+                join.setName((String)entry.getKey());
                 join.setId(member.getId());
                 join.setRei(member.getRei());
                 join.setLevel(member.getLevel());
                 join.setSerial(member.getSerial());
                 list.add(join);
             }
-            catch (final Exception e) {
-                this.logger.error("查看帮派申请列表异常：{}，玩家编号：{}", (Object)e.getMessage(), (Object)role.getId());
+            catch (Exception e) {
+                this.logger.error("查看帮派申请列表异常：{}，玩家编号：{}", e.getMessage(), role.getId());
             }
         }
         joinPartyList.setList(list);
         MessagePusher.pushMessage(role, joinPartyList);
+        return;
     }
     
-    public void agreeJoinParty(final Role role, final String name) {
+    public void agreeJoinParty(Role role, String name) {
         try {
             if (role == null || StringUtils.isEmpty(name)) {
                 return;
             }
-            final Party party = this.getParty(role.getFaction());
+            Party party = this.getParty(role.getFaction());
             if (party == null) {
                 return;
             }
             if (!this.isAgreeOrDenyApply(role)) {
                 return;
             }
-            final ArrayList<String> names = new ArrayList<String>();
+            ArrayList<String> names = new ArrayList<>();
             if ("all".equals(name)) {
-                final Set<String> keySet = party.getReqJoin().keySet();
+                Set<String> keySet = party.getReqJoin().keySet();
                 if (keySet != null) {
                     names.addAll(keySet);
                 }
@@ -792,63 +800,63 @@ public class PartyService
             else {
                 names.add(name);
             }
-            final RespClearnRequest respClearnRequest = new RespClearnRequest();
+            RespClearnRequest respClearnRequest = new RespClearnRequest();
             respClearnRequest.setType("party");
             respClearnRequest.setNames(names);
             MessagePusher.pushMessage(role, respClearnRequest);
-            for (final String tempName : names) {
-                final ReqJoinMember reqJoinMember = party.getReqJoin().getAs(tempName, ReqJoinMember.class, null);
+            for (String tempName : names) {
+                ReqJoinMember reqJoinMember = (ReqJoinMember)party.getReqJoin().getAs(tempName, ReqJoinMember.class, null);
                 party.getReqJoin().remove(tempName);
                 if (reqJoinMember == null) {
                     continue;
                 }
-                final Role player = this.roleService.getPlayer(reqJoinMember.getId());
+                Role player = this.roleService.getPlayer(reqJoinMember.getId());
                 if (player == null) {
                     continue;
                 }
-                final RoleView reqRoleView = new RoleView(player);
+                RoleView reqRoleView = new RoleView(player);
                 if (this.isHaveParty(reqRoleView.getRole())) {
-                    MessagePusher.notify2Player(role, 306);
+                    MessagePusher.notify2Player(role, 306, new Object[0]);
                 }
-                else if (!reqRoleView.isOnline() && PartyDataPool.offlineRoleParty.getOrDefault(reqJoinMember.getId(), 0) > 0) {
-                    MessagePusher.notify2Player(role, 306);
+                else if (!reqRoleView.isOnline() && (int)PartyDataPool.offlineRoleParty.getOrDefault(Integer.valueOf(reqJoinMember.getId()), Integer.valueOf(0)) > 0) {
+                    MessagePusher.notify2Player(role, 306, new Object[0]);
                 }
                 else {
                     this.addPartyMember(party, reqRoleView, (byte)10);
-                    final Role reqRole = reqRoleView.getRole();
+                    Role reqRole = reqRoleView.getRole();
                     if (reqRole != null) {
                         ThreadLocalUtil.addLocalTask(reqRole, () -> this.joinParty(party, reqRole));
                     }
                     else {
-                        PartyDataPool.offlineRoleParty.put(reqJoinMember.getId(), party.getSerial());
+                        PartyDataPool.offlineRoleParty.put(Integer.valueOf(reqJoinMember.getId()), party.getSerial());
                     }
                     MessagePusher.pushMessage(role, new RespMsg("收人成功"));
-                    final String content = I18nIdDataPool.getI18nContent(315, reqRoleView.getName());
+                    String content = I18nIdDataPool.getI18nContent(315, reqRoleView.getName());
                     this.npcPartyChat(party, content);
                     this.checkPartyMember(role, new ReqPartyMembers());
                     this.addPartyLog(party, 349, new String[] { role.getRoleId().toString(), role.getName() });
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    private boolean isAgreeOrDenyApply(final Role role) {
-        final byte permission = this.getPermission(role);
+    private boolean isAgreeOrDenyApply(Role role) {
+        byte permission = this.getPermission(role);
         return permission == 1 || permission == 2 || permission == 4 || permission == 3 || permission == 5 || permission == 6;
     }
     
-    private void joinParty(final Party party, final Role role) {
+    private void joinParty(Party party, Role role) {
         this.doJoinParty(party, role);
-        final String acceptContent = I18nIdDataPool.getI18nContent(316, party.getName());
+        String acceptContent = I18nIdDataPool.getI18nContent(316, party.getName());
         MessagePusher.pushMessage(role, new RespNotifyMisc(acceptContent));
-        final String mailTitle = I18nIdDataPool.getI18nContent(317);
-        final String mailContent = I18nIdDataPool.getI18nContent(318, party.getName(), party.getName());
+        String mailTitle = I18nIdDataPool.getI18nContent(317);
+        String mailContent = I18nIdDataPool.getI18nContent(318, party.getName(), party.getName());
     }
     
-    private void doJoinParty(final Party party, final Role role) {
+    private void doJoinParty(Party party, Role role) {
         if (party == null || role == null) {
             return;
         }
@@ -857,50 +865,52 @@ public class PartyService
         role.save();
         this.roleService.refreshParty(role);
         MessagePusher.pushMessage(role, new RespHint(5, (short)1));
+        return;
     }
     
-    public void addPartyTitle(final Party party, final Role role) {
-        final PartyMember partyMember = this.getPartyMember(party, role);
+    public void addPartyTitle(Party party, Role role) {
+        PartyMember partyMember = this.getPartyMember(party, role);
         if (partyMember == null) {
             return;
         }
-        final String partyJobName = this.getPartyJobName(partyMember);
+        String partyJobName = this.getPartyJobName(partyMember);
         if (partyJobName != null) {
             this.titleService.addTitle(role, new TitleInfo(this.getTitle(partyMember), 0));
         }
+        return;
     }
     
-    public void delPartyTitle(final Role role) {
-        for (final Integer value : PartyDataPool.jobId2TitleSerial.values()) {
-            this.titleService.delTitle(role, value);
+    public void delPartyTitle(Role role) {
+        for (Integer value : PartyDataPool.jobId2TitleSerial.values()) {
+            this.titleService.delTitle(role, (int)value);
         }
     }
     
-    public PartyMember getPartyMember(final Party party, final Role role) {
+    public PartyMember getPartyMember(Party party, Role role) {
         if (party == null || role == null) {
             return null;
         }
-        return party.getMembers().get(role.getRoleId());
+        return (PartyMember)party.getMembers().get(role.getRoleId());
     }
     
-    public void getPartyRoleInfo(final Role role, final int roleId) {
-        final Party party = this.getParty(role);
+    public void getPartyRoleInfo(Role role, int roleId) {
+        Party party = this.getParty(role);
         if (party == null) {
             return;
         }
-        if (role.getRoleId().equals(roleId)) {
+        if (role.getRoleId().equals(Integer.valueOf(roleId))) {
             return;
         }
-        final Role player = this.roleService.getPlayer(roleId);
+        Role player = this.roleService.getPlayer(roleId);
         if (player != null) {
-            final Party query = this.getParty(player.getFaction());
+            Party query = this.getParty(player.getFaction());
             if (query == null || !query.getSerial().equals(party.getSerial())) {
                 return;
             }
             if (party != null) {
-                final PartyMember member = query.getMembers().get(roleId);
-                final RespPartyRole partyRole = new RespPartyRole();
-                final PartyDeny deny = query.getDenyMap().get(member.getRoleId());
+                PartyMember member = (PartyMember)query.getMembers().get(Integer.valueOf(roleId));
+                RespPartyRole partyRole = new RespPartyRole();
+                PartyDeny deny = (PartyDeny)query.getDenyMap().get(Integer.valueOf(member.getRoleId()));
                 if (deny != null) {
                     partyRole.setState((byte)1);
                 }
@@ -908,51 +918,53 @@ public class PartyService
                     partyRole.setState((byte)0);
                 }
                 partyRole.setList(this.roleService.deyList(player.getColor()));
-                final List<WearEquip> wearEquips = this.equipService.getEquipValid(player, false);
+                List<WearEquip> wearEquips = this.equipService.getEquipValid(player, false);
                 if (wearEquips.size() > 0) {
                     partyRole.setWeaponIcon(player.getWeaponIcon());
-                    final int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
+                    int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
                     partyRole.setGem(num);
                 }
                 partyRole.setLight_effect(this.equipService.getWearEffect(player));
-                partyRole.setRoleId(player.getRoleId());
+                partyRole.setRoleId((int)player.getRoleId());
                 MessagePusher.pushMessage(role, partyRole);
             }
         }
+        return;
     }
     
-    public void checkPartyMember(final Role role, final ReqPartyMembers reqPartyMembers) {
-        final Party party = this.getParty(role);
+    public void checkPartyMember(Role role, ReqPartyMembers reqPartyMembers) {
+        Party party = this.getParty(role);
         if (party == null || party.getMembers().get(role.getRoleId()) == null) {
             this.clearParty(role);
             return;
         }
-        final RespPartyMembers respPartyMembers = this.getRespPartyMembers(party, role, reqPartyMembers);
+        RespPartyMembers respPartyMembers = this.getRespPartyMembers(party, role, reqPartyMembers);
         MessagePusher.pushMessage(role, respPartyMembers);
+        return;
     }
     
-    public RespPartyMembers getRespPartyMembers(final Party party, final Role role, final ReqPartyMembers reqMembers) {
-        final RespPartyMembers respPartyMembers = new RespPartyMembers();
+    public RespPartyMembers getRespPartyMembers(Party party, Role role, ReqPartyMembers reqMembers) {
+        RespPartyMembers respPartyMembers = new RespPartyMembers();
         try {
             List<PartyMember> members = this.getMembers(role, party, reqMembers);
             if (reqMembers.getPage() == 1 && reqMembers.getSort() == 4 && reqMembers.getWay() == 0 && reqMembers.getList().isEmpty() && reqMembers.getPara().isEmpty()) {
-                final List<PartyMember> memberList = new ArrayList<PartyMember>();
-                final PartyMember member = party.getMembers().get(role.getRoleId());
-                final byte onLineStatus = (byte)(this.roleService.isOnline(member.getRoleId()) ? 1 : 0);
+                List<PartyMember> memberList = new ArrayList<>();
+                PartyMember member = (PartyMember)party.getMembers().get(role.getRoleId());
+                byte onLineStatus = (byte)(this.roleService.isOnline(member.getRoleId()) ? 1 : 0);
                 member.setOnLineStatus(onLineStatus);
                 if (onLineStatus == 0) {
-                    final Role r = this.roleService.getPlayer(role.getRoleId());
+                    Role r = this.roleService.getPlayer((int)role.getRoleId());
                     if (r != null) {
-                        member.setLastOnlineTime(Math.toIntExact(r.getOfLineTime() / 1000L));
+                        member.setLastOnlineTime(Math.toIntExact((long)r.getOfLineTime() / 1000L));
                     }
                 }
                 memberList.add(member);
                 memberList.addAll(members);
                 members = memberList;
             }
-            List<PartyMemberObject> list = new ArrayList<PartyMemberObject>();
-            for (final PartyMember member2 : members) {
-                final PartyMemberObject object = new PartyMemberObject();
+            List<PartyMemberObject> list = new ArrayList<>();
+            for (PartyMember member2 : members) {
+                PartyMemberObject object = new PartyMemberObject();
                 BeanUtils.copyBeanProp(object, member2);
                 object.setRei(member2.getRei());
                 object.setLevel(member2.getLevel());
@@ -962,18 +974,18 @@ public class PartyService
                 }
                 int taskCount = 0;
                 if (reqMembers.getSort() == 13) {
-                    taskCount = member2.getPartyTaskList().stream().collect(Collectors.summingInt(PartyTask::getCount));
+                    taskCount = (int)member2.getPartyTaskList().stream().collect(Collectors.summingInt(PartyTask::getCount));
                 }
                 else if (reqMembers.getSort() == 12) {
-                    final int millis = TimeUtil.dayInMillis(TimeUtil.yesterday());
-                    final PartyTask partyTask = member2.getPartyTaskList().stream().filter(task -> task.getTime() == millis).findFirst().orElse(null);
+                    int millis = TimeUtil.dayInMillis(TimeUtil.yesterday());
+                    PartyTask partyTask = (PartyTask)member2.getPartyTaskList().stream().filter(task -> task.getTime() == millis).findFirst().orElse(null);
                     if (partyTask != null) {
                         taskCount = partyTask.getCount();
                     }
                 }
                 else {
-                    final int millis = TimeUtil.dayInMillis(TimeUtil.when());
-                    final PartyTask partyTask = member2.getPartyTaskList().stream().filter(task -> task.getTime() == millis).findFirst().orElse(null);
+                    int millis = TimeUtil.dayInMillis(TimeUtil.when());
+                    PartyTask partyTask = (PartyTask)member2.getPartyTaskList().stream().filter(task -> task.getTime() == millis).findFirst().orElse(null);
                     if (partyTask != null) {
                         taskCount = partyTask.getCount();
                     }
@@ -983,174 +995,176 @@ public class PartyService
             }
             if (reqMembers.getSort() == 11 || reqMembers.getSort() == 12 || reqMembers.getSort() == 13) {
                 if (reqMembers.getWay() == 0) {
-                    list = list.stream().sorted(Comparator.comparing(PartyMemberObject::getPartyTask)).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyMemberObject::getPartyTask)).collect(Collectors.toList());
                 }
                 else {
-                    list = list.stream().sorted(Comparator.comparing(PartyMemberObject::getPartyTask).reversed()).collect(Collectors.toList());
+                    list = (List)list.stream().sorted(Comparator.comparing(PartyMemberObject::getPartyTask).reversed()).collect(Collectors.toList());
                 }
             }
             respPartyMembers.setList(list);
             respPartyMembers.setPage(reqMembers.getPage());
             respPartyMembers.setTail(this.getMemberCount(party));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("获取该帮派成员信息错误");
         }
         return respPartyMembers;
     }
     
-    public List<PartyMember> getMembers(final Role role, final Party party, final ReqPartyMembers reqMembers) {
-        List<PartyMember> objects = new ArrayList<PartyMember>();
-        List<PartyMember> members = party.getMembers().values().stream().collect(Collectors.toList());
+    public List<PartyMember> getMembers(Role role, Party party, ReqPartyMembers reqMembers) {
+        List<PartyMember> objects = new ArrayList<>();
+        List<PartyMember> members = (List)party.getMembers().values().stream().collect(Collectors.toList());
         if (reqMembers.getList().isEmpty() && reqMembers.getPara().isEmpty()) {
             if (reqMembers.getPage() == 1 && reqMembers.getSort() == 4 && reqMembers.getWay() == 0) {
-                for (int i = 0; i < members.size(); ++i) {
-                    PartyMember member = members.get(i);
-                    if (role.getRoleId().equals(member.getRoleId())) {
+                int i = 0;
+                while (i < members.size()) {
+                	PartyMember member = (PartyMember)members.get(i);
+                    if (role.getRoleId().equals(Integer.valueOf(member.getRoleId()))) {
                         members.remove(i);
                         break;
                     }
+                    ++i;
                 }
             }
         }
         else {
-            List<Integer> serials = new ArrayList<Integer>();
+            List<Integer> serials = new ArrayList<>();
             if (!reqMembers.getList().isEmpty()) {
-                List<Integer> arrays = new ArrayList<Integer>();
+                List<Integer> arrays = new ArrayList<>();
                 try {
-                    arrays = JsonUtils.string2Collection(reqMembers.getList(), List.class, Integer.class);
+                    arrays = (List)JsonUtils.string2Collection(reqMembers.getList(), List.class, Integer.class);
                     serials = DataGlobalFunc.getRoleCareerSerial(arrays);
                 }
-                catch (final Exception e) {
-                    this.logger.error("获取种族搜索数据错误：{}", (Object)reqMembers.getList());
+                catch (Exception e) {
+                    this.logger.error("获取种族搜索数据错误：{}", reqMembers.getList());
                     e.printStackTrace();
                 }
             }
-            final List<PartyMember> list = party.getMembers().values().stream().collect(Collectors.toList());
-            final List<Integer> finalSerials = serials;
-            members = list.stream().filter(member -> member.getName().equals(reqMembers.getPara()) || finalSerials.contains(member.getRoleSerial())).collect(Collectors.toList());
+            List<PartyMember> list = (List)party.getMembers().values().stream().collect(Collectors.toList());
+            List<Integer> finalSerials = serials;
+            members = (List)list.stream().filter(member -> member.getName().equals(reqMembers.getPara()) || finalSerials.contains(Integer.valueOf(member.getRoleSerial()))).collect(Collectors.toList());
         }
-        final List<PartyMember> list2 = PageUtil.subList(members, (int)reqMembers.getPage(), (int)reqMembers.getSize());
+        List<PartyMember> list2 = PageUtil.subList(members, Integer.valueOf((int)reqMembers.getPage()), Integer.valueOf((int)reqMembers.getSize()));
         objects.addAll(list2);
         objects.forEach(member -> {
-            final byte onLineStatus = (byte)(this.roleService.isOnline(member.getRoleId()) ? 1 : 0);
+            byte onLineStatus = this.roleService.isOnline(member.getRoleId())?(byte)1:(byte)0;
             member.setOnLineStatus(onLineStatus);
             if (onLineStatus == 0) {
-                final Role r = this.roleService.getPlayer(role.getRoleId());
+                Role r = this.roleService.getPlayer((int)role.getRoleId());
                 if (r != null) {
-                    member.setLastOnlineTime(Math.toIntExact(r.getOfLineTime() / 1000L));
+                    member.setLastOnlineTime(Math.toIntExact((long)r.getOfLineTime() / 1000L));
                 }
             }
             return;
         });
         if (reqMembers.getSort() == 1) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getName)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getName)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getName).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getName).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 2) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getGrade)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getGrade)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getGrade).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getGrade).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 3) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getRace)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getRace)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getRace).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getRace).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 4) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getJob)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getJob)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getJob).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getJob).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 5) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getTeam)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getTeam)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getTeam).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getTeam).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 6) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getJoinTime)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getJoinTime)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getJoinTime).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getJoinTime).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 7) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getOnLineStatus)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getOnLineStatus)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getOnLineStatus).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getOnLineStatus).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 8) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getWeekBangBtl)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getWeekBangBtl)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getWeekBangBtl).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getWeekBangBtl).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 9) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getThisBangBtl)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getThisBangBtl)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getThisBangBtl).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getThisBangBtl).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 10) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getWeekEcType)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getWeekEcType)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getWeekEcType).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getWeekEcType).reversed()).collect(Collectors.toList());
             }
         }
         else if (reqMembers.getSort() == 14) {
             if (reqMembers.getWay() == 0) {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getContribute)).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getContribute)).collect(Collectors.toList());
             }
             else {
-                objects = objects.stream().sorted(Comparator.comparing(PartyMember::getContribute).reversed()).collect(Collectors.toList());
+                objects = (List)objects.stream().sorted(Comparator.comparing(PartyMember::getContribute).reversed()).collect(Collectors.toList());
             }
         }
         return objects;
     }
     
-    public void refuseJoinParty(final Role role, final String name) {
+    public void refuseJoinParty(Role role, String name) {
         try {
             if (role == null || StringUtils.isEmpty(name)) {
                 return;
             }
-            final Party party = this.getParty(role.getFaction());
+            Party party = this.getParty(role.getFaction());
             if (party == null) {
                 return;
             }
             if (!this.isAgreeOrDenyApply(role)) {
                 return;
             }
-            final RespClearnRequest respClearnRequest = new RespClearnRequest();
-            final List<String> names = new ArrayList<String>();
+            RespClearnRequest respClearnRequest = new RespClearnRequest();
+            List<String> names = new ArrayList<>();
             if ("all".equals(name)) {
-                final Set<String> keySet = party.getReqJoin().keySet();
+                Set<String> keySet = party.getReqJoin().keySet();
                 if (keySet != null) {
                     names.addAll(keySet);
                 }
@@ -1161,60 +1175,61 @@ public class PartyService
             }
             respClearnRequest.setType("party");
             MessagePusher.pushMessage(role, respClearnRequest);
-            final NutConcurrentMap reqJoin = party.getReqJoin();
+            NutConcurrentMap reqJoin = party.getReqJoin();
             if (reqJoin == null) {
                 return;
             }
-            for (final String tempName : names) {
-                final ReqJoinMember reqJoinAs = reqJoin.getAs(tempName, ReqJoinMember.class, null);
+            for (String tempName : names) {
+                ReqJoinMember reqJoinAs = (ReqJoinMember)reqJoin.getAs(tempName, ReqJoinMember.class, null);
                 if (reqJoin != null) {
-                    final Role sessionRole = SpringUtils.getRoleService().getOnlinePlayer(reqJoinAs.getId());
+                    Role sessionRole = SpringUtils.getRoleService().getOnlinePlayer(reqJoinAs.getId());
                     if (sessionRole != null) {
-                        MessagePusher.notify2Player(sessionRole, 307);
+                        MessagePusher.notify2Player(sessionRole, 307, new Object[0]);
                     }
                 }
                 reqJoin.remove(tempName);
             }
             party.save();
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void upgrade(final Role role) {
-        final Party party = this.getParty(role.getFaction());
+    public void upgrade(Role role) {
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
             return;
         }
         if (!this.isAgreeOrDenyApply(role)) {
             return;
         }
-        final byte nextLevel = (byte)(party.getLevel() + 1);
-        final Integer capital = PartyDataPool.partyUpgrades.get(nextLevel);
+        byte nextLevel = (byte)(party.getLevel() + 1);
+        Integer capital = (Integer)PartyDataPool.partyUpgrades.get(Byte.valueOf(nextLevel));
         if (capital == null) {
-            MessagePusher.notify2Player(role, 372);
+            MessagePusher.notify2Player(role, 372, new Object[0]);
             return;
         }
-        if (party.getCapital() < capital) {
+        if (party.getCapital() < (long)(int)capital) {
             MessagePusher.notify2Player(role, 373, capital);
             return;
         }
-        if (!this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, PartyDataPool.partyUpgrades.get(nextLevel), "升级帮派")) {
+        if (!this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, (long)(int)PartyDataPool.partyUpgrades.get(Byte.valueOf(nextLevel)), "升级帮派")) {
             return;
         }
         party.setLevel(nextLevel);
         party.save();
         this.getRespOpenPatry(party, role);
+        return;
     }
     
-    public void modifyNotice(final Role role, final String notice, final byte type) {
-        final Party party = this.getParty(role.getFaction());
+    public void modifyNotice(Role role, String notice, byte type) {
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
             return;
         }
         if (!this.isPartyLeader(role)) {
-            MessagePusher.notify2Player(role, 345);
+            MessagePusher.notify2Player(role, 345, new Object[0]);
             return;
         }
         if (this.checkNotice(role, notice)) {
@@ -1227,15 +1242,16 @@ public class PartyService
             party.save();
         }
         this.getRespOpenPatry(party, role);
-        MessagePusher.notify2Player(role, 358);
+        MessagePusher.notify2Player(role, 358, new Object[0]);
+        return;
     }
     
-    public boolean checkNotice(final Role role, final String notice) {
+    public boolean checkNotice(Role role, String notice) {
         if (notice.length() > 2048) {
-            MessagePusher.notify2Player(role, 362);
+            MessagePusher.notify2Player(role, 362, new Object[0]);
             return false;
         }
-        final List<String> set = WordDisposePool.checkDirtyWords(notice);
+        List<String> set = WordDisposePool.checkDirtyWords(notice);
         if (set.size() >= 1) {
             MessagePusher.pushMessage(role, new RespMsg("输入的内容存在敏感词。"));
             return false;
@@ -1243,150 +1259,153 @@ public class PartyService
         return true;
     }
     
-    public void kickOut(final Role role, final int id) {
+    public void kickOut(Role role, int id) {
         if (role == null) {
             return;
         }
-        if (role.getRoleId() == id) {
+        if ((int)role.getRoleId() == id) {
             return;
         }
-        final GangWarsData objData = SpringUtils.getBean(GangWarsHandler.class).getObjData();
+        GangWarsData objData = ((GangWarsHandler)SpringUtils.getBean(GangWarsHandler.class)).getObjData();
         if (objData != null && objData.getWarsMap().get(role.getFaction()) != null) {
             MessagePusher.pushMessage(role, new RespMsg("正临帮战，大敌当前，应精诚团结，一致对外，不宜踢人、离帮"));
             return;
         }
-        final Party party = this.getParty(role.getFaction());
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308);
+            MessagePusher.notify2Player(role, 308, new Object[0]);
             return;
         }
         if (!this.isKickPermission(role)) {
-            MessagePusher.notify2Player(role, 309);
+            MessagePusher.notify2Player(role, 309, new Object[0]);
             return;
         }
-        if (this.isPermissionHigher(party, role.getRoleId(), id)) {
-            MessagePusher.notify2Player(role, 310);
+        if (this.isPermissionHigher(party, (int)role.getRoleId(), id)) {
+            MessagePusher.notify2Player(role, 310, new Object[0]);
             return;
         }
         this.doKickOut(role, party, id);
+        return;
     }
     
-    private boolean isPermissionHigher(final Role firstRole, final Role secondRole) {
-        final byte firstPermission = this.getPermission(firstRole);
-        final byte secondPermission = this.getPermission(secondRole);
+    private boolean isPermissionHigher(Role firstRole, Role secondRole) {
+        byte firstPermission = this.getPermission(firstRole);
+        byte secondPermission = this.getPermission(secondRole);
         return firstPermission < secondPermission;
     }
     
-    private boolean isPermissionHigher(final Party party, final int firstId, final int secondId) {
-        final PartyMember firstPartyMember = party.getMembers().get(firstId);
-        final PartyMember secondPartyMember = party.getMembers().get(secondId);
-        final byte firstPermission = firstPartyMember.getJob();
-        final byte secondPermission = secondPartyMember.getJob();
+    private boolean isPermissionHigher(Party party, int firstId, int secondId) {
+        PartyMember firstPartyMember = (PartyMember)party.getMembers().get(Integer.valueOf(firstId));
+        PartyMember secondPartyMember = (PartyMember)party.getMembers().get(Integer.valueOf(secondId));
+        byte firstPermission = firstPartyMember.getJob();
+        byte secondPermission = secondPartyMember.getJob();
         return firstPermission < secondPermission;
     }
     
-    private boolean isKickPermission(final Role role) {
+    private boolean isKickPermission(Role role) {
         if (role == null) {
             return false;
         }
-        final byte permission = this.getPermission(role);
+        byte permission = this.getPermission(role);
         return permission == 1 || permission == 2;
     }
     
-    private boolean isExistPermission(final Party party, final byte job) {
-        final List<PartyMember> list = party.getMembers().values().stream().filter(member -> member.getJob() == job).collect(Collectors.toList());
+    private boolean isExistPermission(Party party, byte job) {
+        List<PartyMember> list = (List)party.getMembers().values().stream().filter(member -> member.getJob() == job).collect(Collectors.toList());
         return list.size() > 0;
     }
     
-    private byte getPermission(final Role role) {
-        final String partyJob = this.getPartyJob(role);
+    private byte getPermission(Role role) {
+        String partyJob = this.getPartyJob(role);
         if (partyJob != null) {
-            final Byte permission = PartyDataPool.partyPermissions.get(partyJob);
+            Byte permission = (Byte)PartyDataPool.partyPermissions.get(partyJob);
             if (permission != null) {
-                return permission;
+                return (byte)permission;
             }
         }
         return 8;
     }
     
-    public String getPartyJob(final Role role) {
-        final Party party = this.getParty(role);
+    public String getPartyJob(Role role) {
+        Party party = this.getParty(role);
         if (party == null) {
             return null;
         }
-        final PartyMember partyMember = this.getPartyMember(party, role);
+        PartyMember partyMember = this.getPartyMember(party, role);
         return this.getPartyJobName(partyMember);
     }
     
-    public String getPartyJob(final Party party, final Integer id) {
+    public String getPartyJob(Party party, Integer id) {
         if (party == null) {
             return null;
         }
-        final PartyMember partyMember = this.getPartyMember(party, id);
+        PartyMember partyMember = this.getPartyMember(party, id);
         return this.getPartyJobName(partyMember);
     }
     
-    public PartyMember getPartyMember(final Party party, final Integer id) {
+    public PartyMember getPartyMember(Party party, Integer id) {
         if (party == null) {
             return null;
         }
-        return party.getMembers().get(id);
+        return (PartyMember)party.getMembers().get(id);
     }
     
-    private void doKickOut(final Role role, final Party party, final int id) {
+    private void doKickOut(Role role, Party party, int id) {
         if (party == null) {
             return;
         }
-        final RoleView roleView = new RoleView(this.roleService.getPlayer(id));
-        final String content = I18nIdDataPool.getI18nContent(314, this.getPartyJob(role), role.getName(), roleView.getName());
+        RoleView roleView = new RoleView(this.roleService.getPlayer(id));
+        String content = I18nIdDataPool.getI18nContent(314, this.getPartyJob(role), role.getName(), roleView.getName());
         this.npcPartyChat(party, content);
-        final Role targetRole = roleView.getRole();
+        Role targetRole = roleView.getRole();
         if (targetRole != null) {
             ThreadLocalUtil.addLocalTask(targetRole, () -> this.leaveParty(party, targetRole));
         }
         else {
-            PartyDataPool.offlineRoleParty.put(id, -1);
+            PartyDataPool.offlineRoleParty.put(Integer.valueOf(id), Integer.valueOf(-1));
         }
-        final PartyMember member = party.getMembers().get(id);
+        PartyMember member = (PartyMember)party.getMembers().get(Integer.valueOf(id));
         member.setDelete(true);
         member.save();
-        party.getMembers().remove(id);
+        party.getMembers().remove(Integer.valueOf(id));
         MessagePusher.notify2Player(role, 311, roleView.getName());
         MessagePusher.pushMessage(role, new RespHint(7, (short)1));
         this.addPartyLog(party, 351, new String[] { role.getRoleId().toString(), role.getName(), String.valueOf(roleView.getRoleId()), roleView.getName() });
+        return;
     }
     
-    private void leaveParty(final Party party, final Role role) {
+    private void leaveParty(Party party, Role role) {
         this.doLeaveParty(role);
         if (this.isInPartyMap(role)) {
             this.leavePartyMap(role);
         }
-        final String kickContent = I18nIdDataPool.getI18nContent(313, party.getName());
+        String kickContent = I18nIdDataPool.getI18nContent(313, party.getName());
         MessagePusher.pushMessage(role, new RespNotifyMisc(kickContent));
-        final String mailTitle = I18nIdDataPool.getI18nContent(312);
-        final String mailContent = I18nIdDataPool.getI18nContent(313, party.getName());
+        String mailTitle = I18nIdDataPool.getI18nContent(312);
+        String mailContent = I18nIdDataPool.getI18nContent(313, party.getName());
     }
     
-    public void doLeaveParty(final Role role) {
-        role.setFaction(0);
+    public void doLeaveParty(Role role) {
+        role.setFaction(Integer.valueOf(0));
         role.save();
         this.delPartyTitle(role);
         this.roleService.refreshParty(role);
     }
     
-    public void npcPartyChat(final Party party, final String content) {
+    public void npcPartyChat(Party party, String content) {
         if (party == null || StringUtils.isEmpty(content)) {
             return;
         }
-        final Npc npc = SpringUtils.getMapService().getNpc(90999);
+        Npc npc = SpringUtils.getMapService().getNpc(90999);
         SenderUtils.pushPartyChatMessage(party.getSerial(), this.getPartyRespChat(npc, party.getName(), content));
+        return;
     }
     
-    private RespChat getPartyRespChat(final Npc npc, final String partyName, final String content) {
-        final RespChat respChat = new RespChat();
+    private RespChat getPartyRespChat(Npc npc, String partyName, String content) {
+        RespChat respChat = new RespChat();
         respChat.setRoleId(npc.getId());
         respChat.setRoleName(npc.getName());
         respChat.setPartyName(partyName);
@@ -1396,17 +1415,17 @@ public class PartyService
         return respChat;
     }
     
-    public void setAutoAgreeSetting(final Role role, final ReqPartyRejectLevel reqPartyRejectLevel) {
+    public void setAutoAgreeSetting(Role role, ReqPartyRejectLevel reqPartyRejectLevel) {
         if (role == null) {
             return;
         }
-        final Party party = this.getParty(role.getFaction());
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
-            MessagePusher.notify2Player(role, 319);
+            MessagePusher.notify2Player(role, 319, new Object[0]);
             return;
         }
         if (!this.isAgreeOrDenyApply(role)) {
-            MessagePusher.notify2Player(role, 345);
+            MessagePusher.notify2Player(role, 345, new Object[0]);
             return;
         }
         party.setConsent(reqPartyRejectLevel.getConsent());
@@ -1416,41 +1435,42 @@ public class PartyService
         party.save();
         MessagePusher.pushMessage(role, new RespMsg("设置成功"));
         MessagePusher.pushMessage(role, new RespHint(6, (short)1));
+        return;
     }
     
-    public void quitParty(final Role role) {
+    public void quitParty(Role role) {
         if (role == null) {
             return;
         }
-        final Party party = this.getParty(role.getFaction());
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
-            MessagePusher.notify2Player(role, 319);
+            MessagePusher.notify2Player(role, 319, new Object[0]);
             return;
         }
-        final GangWarsData objData = SpringUtils.getBean(GangWarsHandler.class).getObjData();
+        GangWarsData objData = ((GangWarsHandler)SpringUtils.getBean(GangWarsHandler.class)).getObjData();
         if (objData != null && objData.getWarsMap().get(role.getFaction()) != null) {
             MessagePusher.pushMessage(role, new RespMsg("正临帮战，大敌当前，应精诚团结，一致对外，不宜踢人、离帮"));
             return;
         }
-        final String partyJob = this.getPartyJob(role);
+        String partyJob = this.getPartyJob(role);
         if ("帮主".equals(partyJob)) {
             PartyMember member = null;
-            List<PartyMember> collect = party.getMembers().values().stream().filter(e -> e.getJob() > 10 && !role.getRoleId().equals(e.getRoleId())).collect(Collectors.toList());
+            List<PartyMember> collect = (List)party.getMembers().values().stream().filter(e -> e.getJob() > 10 && !role.getRoleId().equals(Integer.valueOf(e.getRoleId()))).collect(Collectors.toList());
             if (collect.size() > 0) {
-                collect = collect.stream().sorted(Comparator.comparing(PartyMember::getJob, Comparator.reverseOrder())).collect(Collectors.toList());
-                member = collect.get(0);
+                collect = (List)collect.stream().sorted(Comparator.comparing(PartyMember::getJob, Comparator.reverseOrder())).collect(Collectors.toList());
+                member = (PartyMember)collect.get(0);
             }
             else {
-                List<PartyMember> list = party.getMembers().values().stream().filter(e -> e.getJob() == 10).collect(Collectors.toList());
-                list = list.stream().sorted(Comparator.comparing(PartyMember::getContribute, Comparator.reverseOrder())).collect(Collectors.toList());
+                List<PartyMember> list = (List)party.getMembers().values().stream().filter(e -> e.getJob() == 10).collect(Collectors.toList());
+                list = (List)list.stream().sorted(Comparator.comparing(PartyMember::getContribute, Comparator.reverseOrder())).collect(Collectors.toList());
                 if (list != null && list.size() > 0) {
-                    member = list.get(0);
+                    member = (PartyMember)list.get(0);
                 }
             }
             if (member == null) {
                 return;
             }
-            final Role player = this.roleService.getPlayer(member.getRoleId());
+            Role player = this.roleService.getPlayer(member.getRoleId());
             if (party == null) {
                 return;
             }
@@ -1462,7 +1482,7 @@ public class PartyService
             this.addPartyTitle(party, player);
         }
         this.doLeaveParty(role);
-        PartyMember member = party.getMembers().get(role.getRoleId());
+        PartyMember member = (PartyMember)party.getMembers().get(role.getRoleId());
         if (member != null) {
             member.setDelete(true);
             member.save();
@@ -1475,26 +1495,27 @@ public class PartyService
         }
         MessagePusher.notify2Player(role, 321, party.getName());
         this.addPartyLog(party, 350, new String[] { role.getRoleId().toString(), role.getName() });
+        return;
     }
     
-    public boolean isInPartyMap(final Role role) {
-        return role != null && (role.getPos().getMapId() == 3002 || role.getPos().getMapId() == 3021 || role.getPos().getMapId() == 3022);
+    public boolean isInPartyMap(Role role) {
+        return role != null && ((int)role.getPos().getMapId() == 3002 || (int)role.getPos().getMapId() == 3021 || (int)role.getPos().getMapId() == 3022);
     }
     
-    public void leavePartyMap(final Role role) {
-        final ReqTelePort reqTelePort = new ReqTelePort();
+    public void leavePartyMap(Role role) {
+        ReqTelePort reqTelePort = new ReqTelePort();
         SpringUtils.getMapService().changeMap(role, reqTelePort, null);
     }
     
-    public void handleLogin(final Role role) {
+    public void handleLogin(Role role) {
         Party party = this.getParty(role.getFaction());
-        final Integer newPartyId = PartyDataPool.offlineRoleParty.remove(role.getRoleId());
+        Integer newPartyId = (Integer)PartyDataPool.offlineRoleParty.remove(role.getRoleId());
         if (party != null) {
-            if (newPartyId != null && newPartyId == -1) {
+            if (newPartyId != null && (int)newPartyId == -1) {
                 this.leaveParty(party, role);
             }
             else if (this.isAgreeOrDenyApply(role) && this.isHaveJoinRequest(party)) {
-                final RespPartyNotification respPartyNotification = new RespPartyNotification((short)2);
+                RespPartyNotification respPartyNotification = new RespPartyNotification((short)2);
                 MessagePusher.pushMessage(role, respPartyNotification);
             }
         }
@@ -1502,226 +1523,232 @@ public class PartyService
             if (this.isInPartyMap(role)) {
                 this.leavePartyMap(role);
             }
-            if (newPartyId != null && newPartyId > 0) {
+            if (newPartyId != null && (int)newPartyId > 0) {
                 party = this.getParty(newPartyId);
                 this.joinParty(party, role);
             }
         }
     }
     
-    public void prohibitSpeaking(final Role role, final int id, final String name, final short hours) {
+    public void prohibitSpeaking(Role role, int id, String name, short hours) {
         if (role == null) {
             return;
         }
-        if (role.getRoleId().equals(id)) {
+        if (role.getRoleId().equals(Integer.valueOf(id))) {
             return;
         }
-        final Party party = this.getParty(role.getFaction());
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308);
+            MessagePusher.notify2Player(role, 308, new Object[0]);
             return;
         }
         if (!this.isDenyPermission(role)) {
-            MessagePusher.notify2Player(role, 335);
+            MessagePusher.notify2Player(role, 335, new Object[0]);
             return;
         }
-        if (this.isPermissionHigher(party, role.getRoleId(), id)) {
-            MessagePusher.notify2Player(role, 336);
+        if (this.isPermissionHigher(party, (int)role.getRoleId(), id)) {
+            MessagePusher.notify2Player(role, 336, new Object[0]);
             return;
         }
-        final int endTime = (int)((System.currentTimeMillis() + hours * 3600000L) / 1000L);
-        final PartyDeny partyDeny = new PartyDeny(endTime);
-        party.getDenyMap().put(id, partyDeny);
+        int endTime = (int)((System.currentTimeMillis() + (long)hours * 3600000L) / 1000L);
+        PartyDeny partyDeny = new PartyDeny(endTime);
+        party.getDenyMap().put(Integer.valueOf(id), partyDeny);
         party.save();
-        final String content = I18nIdDataPool.getI18nContent(337, name, hours);
+        String content = I18nIdDataPool.getI18nContent(337, name, Short.valueOf(hours));
         this.npcPartyChat(party, content);
         MessagePusher.pushMessage(role, new RespMsg("禁言成功"));
-        final Role targetRole = SpringUtils.getRoleService().getOnlinePlayer(id);
+        Role targetRole = SpringUtils.getRoleService().getOnlinePlayer(id);
         if (targetRole != null) {
-            final String mailTitle = I18nIdDataPool.getI18nContent(338);
-            I18nIdDataPool.getI18nContent(339, hours, hours);
+            String mailTitle = I18nIdDataPool.getI18nContent(338);
+            I18nIdDataPool.getI18nContent(339, Short.valueOf(hours), Short.valueOf(hours));
         }
+        return;
     }
     
-    private boolean isDenyPermission(final Role role) {
-        final byte permission = this.getPermission(role);
+    private boolean isDenyPermission(Role role) {
+        byte permission = this.getPermission(role);
         return permission == 1 || permission == 2;
     }
     
-    public byte getJob(final Role role) {
-        final Party party = this.getParty(role.getFaction());
+    public byte getJob(Role role) {
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
             return 0;
         }
-        final PartyMember partyMember = party.getMembers().get(role.getRoleId());
+        PartyMember partyMember = (PartyMember)party.getMembers().get(role.getRoleId());
         if (partyMember == null) {
             return 0;
         }
         return partyMember.getJob();
     }
     
-    public void changeJob(final Role role, final int id, final String name, final byte career) {
+    public void changeJob(Role role, int id, String name, byte career) {
         if (role == null) {
             return;
         }
-        if (role.getRoleId() == id) {
+        if ((int)role.getRoleId() == id) {
             return;
         }
-        final Party party = this.getParty(role.getFaction());
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308);
+            MessagePusher.notify2Player(role, 308, new Object[0]);
             return;
         }
         if (!this.isChangeJobPermission(role)) {
-            MessagePusher.notify2Player(role, 326);
+            MessagePusher.notify2Player(role, 326, new Object[0]);
             return;
         }
-        if (this.isPermissionHigher(party, role.getRoleId(), id)) {
-            MessagePusher.notify2Player(role, 327);
+        if (this.isPermissionHigher(party, (int)role.getRoleId(), id)) {
+            MessagePusher.notify2Player(role, 327, new Object[0]);
             return;
         }
-        final Byte jobId = PartyDataPool.partyCareer.get(career);
-        if (this.isExistPermission(party, jobId)) {
-            MessagePusher.notify2Player(role, 397);
+        Byte jobId = (Byte)PartyDataPool.partyCareer.get(Byte.valueOf(career));
+        if (this.isExistPermission(party, (byte)jobId)) {
+            MessagePusher.notify2Player(role, 397, new Object[0]);
             return;
         }
-        final String jobName = PartyDataPool.jobId2Names.get(jobId);
-        final String oldJobName = this.getPartyJob(party, id);
-        final long uid = SpringUtils.getPlayerService().getUidBy(id);
-        final RoleView roleView = new RoleView(uid);
-        final Role targetRole = roleView.getRole();
-        final PartyMember partyMember = party.getMembers().get(id);
-        partyMember.setJob(jobId);
+        String jobName = (String)PartyDataPool.jobId2Names.get(jobId);
+        String oldJobName = this.getPartyJob(party, Integer.valueOf(id));
+        long uid = SpringUtils.getPlayerService().getUidBy(id);
+        RoleView roleView = new RoleView(uid);
+        Role targetRole = roleView.getRole();
+        PartyMember partyMember = (PartyMember)party.getMembers().get(Integer.valueOf(id));
+        partyMember.setJob((byte)jobId);
         partyMember.save();
-        final RespPartyMembers respPartyMembers = this.getRespPartyMembers(party, role, new ReqPartyMembers());
+        RespPartyMembers respPartyMembers = this.getRespPartyMembers(party, role, new ReqPartyMembers());
         MessagePusher.pushMessage(role, respPartyMembers);
         MessagePusher.pushMessage(role, new RespMsg("任命成功"));
-        final String content = I18nIdDataPool.getI18nContent(328, role.getName(), name, oldJobName, jobName);
+        String content = I18nIdDataPool.getI18nContent(328, role.getName(), name, oldJobName, jobName);
         this.npcPartyChat(party, content);
         if (targetRole != null) {
-            final String mailTitle = I18nIdDataPool.getI18nContent(330);
+            String mailTitle = I18nIdDataPool.getI18nContent(330);
             I18nIdDataPool.getI18nContent(331, role.getName(), oldJobName, jobName);
         }
-        final String partyJob = this.getPartyJob(role);
+        String partyJob = this.getPartyJob(role);
         this.addPartyLog(party, 353, new String[] { partyJob, role.getRoleId().toString(), role.getName(), String.valueOf(roleView.getRoleId()), roleView.getName(), jobName });
         party.save();
+        return;
     }
     
-    private boolean isChangeJobPermission(final Role role) {
-        final byte permission = this.getPermission(role);
+    private boolean isChangeJobPermission(Role role) {
+        byte permission = this.getPermission(role);
         return permission == 1 || permission == 2;
     }
     
-    private boolean isPartyLeader(final Role role) {
-        final String partyJob = this.getPartyJob(role);
+    private boolean isPartyLeader(Role role) {
+        String partyJob = this.getPartyJob(role);
         return "帮主".equals(partyJob);
     }
     
-    private boolean isInParty(final Party party, final int roleId) {
-        return party != null && party.getMembers().containsKey(roleId);
+    private boolean isInParty(Party party, int roleId) {
+        return party != null && party.getMembers().containsKey(Integer.valueOf(roleId));
     }
     
-    public void cancelProhibitSpeaking(final Role role, final int id, final String name) {
+    public void cancelProhibitSpeaking(Role role, int id, String name) {
         if (role == null) {
             return;
         }
-        final Party party = this.getParty(role.getFaction());
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
             return;
         }
         if (!this.isInParty(party, id)) {
-            MessagePusher.notify2Player(role, 308);
+            MessagePusher.notify2Player(role, 308, new Object[0]);
             return;
         }
         if (!this.isDenyPermission(role)) {
             MessagePusher.notify2Player(role, 340, "解除禁言");
             return;
         }
-        party.getDenyMap().remove(id);
+        party.getDenyMap().remove(Integer.valueOf(id));
         party.save();
-        final String content = I18nIdDataPool.getI18nContent(341, name);
+        String content = I18nIdDataPool.getI18nContent(341, name);
         this.npcPartyChat(party, content);
         MessagePusher.pushMessage(role, new RespMsg("解除禁言成功"));
-        final Role targetRole = SpringUtils.getRoleService().getOnlinePlayer(id);
+        Role targetRole = SpringUtils.getRoleService().getOnlinePlayer(id);
         if (targetRole != null) {
-            final String mailTitle = I18nIdDataPool.getI18nContent(338);
+            String mailTitle = I18nIdDataPool.getI18nContent(338);
             I18nIdDataPool.getI18nContent(342);
         }
+        return;
     }
     
-    public void getPartyLog(final Role role) {
+    public void getPartyLog(Role role) {
         MessagePusher.pushMessage(role, this.getLog(role));
     }
     
-    private RespPartyLog getLog(final Role role) {
-        final RespPartyLog respPartyLog = new RespPartyLog();
-        final Party party = this.getParty(role);
+    private RespPartyLog getLog(Role role) {
+        RespPartyLog respPartyLog = new RespPartyLog();
+        Party party = this.getParty(role);
         if (party == null) {
             return respPartyLog;
         }
-        final List<PartyLog> logs = new ArrayList<PartyLog>(party.getLogs());
+        List<PartyLog> logs = new ArrayList(party.getLogs());
         logs.sort(Comparator.comparing(PartyLog::getTime).reversed());
-        final Map<Integer, List<LogInfo>> map = new HashMap<Integer, List<LogInfo>>();
-        for (final PartyLog log : logs) {
-            final int time = TimeUtil.dayInMillis(TimeUtil.stampToDate((long)(log.getTime() * 1000.0)));
-            List<LogInfo> strings = map.get(time);
+        Map<Integer, List<LogInfo>> map = new HashMap();
+        for (PartyLog log : logs) {
+            int time = TimeUtil.dayInMillis(TimeUtil.stampToDate((long)((double)log.getTime() * 1000.0)));
+            List<LogInfo> strings = (List)map.get(Integer.valueOf(time));
             if (strings == null) {
-                if (map.size() >= 3) {
+                if (map.size() < 3) {
+                    strings = new ArrayList<>();
+                }
+                else {
                     break;
                 }
-                strings = new ArrayList<LogInfo>();
             }
-            final String content = I18nIdDataPool.getI18nContent(log.getTkId(), (Object[])log.getArgs());
+            String content = I18nIdDataPool.getI18nContent(log.getTkId(), (Object[])log.getArgs());
             strings.add(new LogInfo(content));
-            map.put(time, strings);
+            map.put(Integer.valueOf(time), strings);
         }
-        final List<PartyLogInfo> list = new ArrayList<PartyLogInfo>();
-        for (final Integer key : map.keySet()) {
-            final PartyLogInfo partyLogInfo = new PartyLogInfo();
-            partyLogInfo.setTime(key);
-            partyLogInfo.setList(map.get(key));
+        List<PartyLogInfo> list = new ArrayList<>();
+        for (Integer key : map.keySet()) {
+            PartyLogInfo partyLogInfo = new PartyLogInfo();
+            partyLogInfo.setTime((int)key);
+            partyLogInfo.setList((List)map.get(key));
             list.add(partyLogInfo);
         }
         respPartyLog.setList(list);
         return respPartyLog;
     }
     
-    public void rename(final Role role, final String name) {
+    public void rename(Role role, String name) {
         if (role == null) {
             return;
         }
-        final Party party = this.getParty(role.getFaction());
+        Party party = this.getParty(role.getFaction());
         if (party == null) {
-            MessagePusher.notify2Player(role, 319);
+            MessagePusher.notify2Player(role, 319, new Object[0]);
             return;
         }
         if (!this.isPartyLeader(role)) {
-            MessagePusher.notify2Player(role, 345);
+            MessagePusher.notify2Player(role, 345, new Object[0]);
             return;
         }
-        final boolean check = this.checkPartyName(role, name);
+        boolean check = this.checkPartyName(role, name);
         if (!check) {
             return;
         }
         this.doRename(party, name);
+        return;
     }
     
-    private void doRename(final Party party, final String name) {
+    private void doRename(Party party, String name) {
         PartyDataPool.partyName2Id.remove(party.getName());
         party.setName(name);
         party.save();
         PartyDataPool.partyName2Id.put(party.getName(), party.getSerial());
     }
     
-    private void addPartyLog(final Party party, final int i18nId, final String[] args) {
-        party.getLogs().add(new PartyLog(i18nId, args, party.getSerial()));
-        final int size = party.getLogs().size();
+    private void addPartyLog(Party party, int i18nId, String[] args) {
+        party.getLogs().add(new PartyLog(i18nId, args, (int)party.getSerial()));
+        int size = party.getLogs().size();
         if (size > 50) {
             for (int i = 0, loop = size - 50; i < loop; ++i) {
                 party.getLogs().remove(0);
@@ -1730,31 +1757,31 @@ public class PartyService
         party.save();
     }
     
-    private String getPartyJobName(final PartyMember partyMember) {
+    private String getPartyJobName(PartyMember partyMember) {
         if (partyMember == null) {
             return null;
         }
-        return PartyDataPool.jobId2Names.get(partyMember.getJob());
+        return (String)PartyDataPool.jobId2Names.get(Byte.valueOf(partyMember.getJob()));
     }
     
-    private boolean checkPartyName(final Role role, final String name) {
-        if (StringUtils.isBlank((CharSequence)name)) {
-            MessagePusher.notify2Player(role, 348);
+    private boolean checkPartyName(Role role, String name) {
+        if (StringUtils.isBlank(name)) {
+            MessagePusher.notify2Player(role, 348, new Object[0]);
             return false;
         }
         if (name.length() < 2) {
-            MessagePusher.notify2Player(role, 346);
+            MessagePusher.notify2Player(role, 346, new Object[0]);
             return false;
         }
         if (name.length() > 6) {
-            MessagePusher.notify2Player(role, 347);
+            MessagePusher.notify2Player(role, 347, new Object[0]);
             return false;
         }
         if (this.isPartyNameExist(name)) {
-            MessagePusher.notify2Player(role, 301);
+            MessagePusher.notify2Player(role, 301, new Object[0]);
             return false;
         }
-        final List<String> set = WordDisposePool.checkDirtyWords(name);
+        List<String> set = WordDisposePool.checkDirtyWords(name);
         if (set.size() >= 1) {
             MessagePusher.pushMessage(role, new RespMsg("帮派名存在敏感词。"));
             return false;
@@ -1762,44 +1789,45 @@ public class PartyService
         return true;
     }
     
-    public void sendPartyMail(final Role role, final String title, final String mailMsg) {
+    public void sendPartyMail(Role role, String title, String mailMsg) {
         if (role == null) {
             return;
         }
         MessagePusher.pushMessage(role, new RespMsg("公告已发送。"));
+        return;
     }
     
-    private boolean isSendMailPermission(final Role role) {
-        final byte permission = this.getPermission(role);
+    private boolean isSendMailPermission(Role role) {
+        byte permission = this.getPermission(role);
         return permission == 1 || permission == 2;
     }
     
-    private boolean isManager(final String jobName) {
+    private boolean isManager(String jobName) {
         return Const.MANAGER_JOBS.contains(jobName);
     }
     
-    public boolean isChatDeny(final Role role) {
-        final Party party = this.getParty(role);
+    public boolean isChatDeny(Role role) {
+        Party party = this.getParty(role);
         return party == null || party.getDenyMap().containsKey(role.getRoleId());
     }
     
-    public long getChatDenyEndTime(final Role role) {
-        final Party party = this.getParty(role);
+    public long getChatDenyEndTime(Role role) {
+        Party party = this.getParty(role);
         if (party == null) {
             return 0L;
         }
-        final PartyDeny partyDeny = party.getDenyMap().get(role.getRoleId());
+        PartyDeny partyDeny = (PartyDeny)party.getDenyMap().get(role.getRoleId());
         if (partyDeny == null) {
             return 0L;
         }
-        return partyDeny.getEndTime();
+        return (long)partyDeny.getEndTime();
     }
     
     public void check() {
         Party party = null;
-        final Set<Integer> ids = PartyDataPool.partyMap.keySet();
-        for (final Integer id : ids) {
-            party = PartyDataPool.partyMap.get(id);
+        Set<Integer> ids = PartyDataPool.partyMap.keySet();
+        for (Integer id : ids) {
+            party = (Party)PartyDataPool.partyMap.get(id);
             if (party == null) {
                 continue;
             }
@@ -1807,97 +1835,103 @@ public class PartyService
         }
     }
     
-    private void checkParty(final Party party) {
+    private void checkParty(Party party) {
         if (party == null) {
             return;
         }
         this.checkChatDeny(party);
         this.redBagHandler.checkPartyRedBag(party);
+        return;
     }
     
-    private void checkChatDeny(final Party party) {
-        final long now = System.currentTimeMillis();
+    private void checkChatDeny(Party party) {
+        long now = System.currentTimeMillis();
         PartyDeny partyDeny = null;
-        final Set<Integer> ids = party.getDenyMap().keySet();
+        Set<Integer> ids = party.getDenyMap().keySet();
         List<Integer> del = null;
-        for (final Integer id : ids) {
-            partyDeny = party.getDenyMap().get(id);
+        for (Integer id : ids) {
+            partyDeny = (PartyDeny)party.getDenyMap().get(id);
             if (partyDeny == null) {
                 continue;
             }
-            if (now <= partyDeny.getEndTime() * 1000L) {
+            if (now > (long)partyDeny.getEndTime() * 1000L) {
+                if (del == null) {
+                    del = new ArrayList<>();
+                }
+                del.add(id);
+            }
+            else {
                 continue;
             }
-            if (del == null) {
-                del = new ArrayList<Integer>();
-            }
-            del.add(id);
         }
         if (del != null) {
-            for (final Integer id : del) {
+            for (Integer id : del) {
                 party.getDenyMap().remove(id);
                 party.save();
             }
         }
     }
     
-    private PartyMember getPartyMember(final Party party, final String name) {
+    private PartyMember getPartyMember(Party party, String name) {
         if (party == null || name == null) {
             return null;
         }
-        final Collection<PartyMember> memberObjects = party.getMembers().values();
-        for (final PartyMember partyMember : memberObjects) {
+        Collection<PartyMember> memberObjects = party.getMembers().values();
+        for (PartyMember partyMember : memberObjects) {
             if (name.equals(partyMember.getName())) {
                 return partyMember;
             }
+            continue;
         }
         return null;
     }
     
-    public int getTitle(final PartyMember partyMember) {
-        return PartyDataPool.jobId2TitleSerial.get(partyMember.getJob());
+    public int getTitle(PartyMember partyMember) {
+        return (int)PartyDataPool.jobId2TitleSerial.get(Byte.valueOf(partyMember.getJob()));
     }
     
-    private boolean isHaveJoinRequest(final Party party) {
+    private boolean isHaveJoinRequest(Party party) {
         return party != null && party.getReqJoin() != null && party.getReqJoin().size() > 0;
     }
     
-    public void addConstruction(final Party party, final long value) {
+    public void addConstruction(Party party, long value) {
         if (value <= 0L || party == null) {
             return;
         }
         party.setCapital(party.getCapital() + value);
         party.save();
+        return;
     }
     
-    public void substractCapital(final Role role, final int value) {
+    public void substractCapital(Role role, int value) {
         if (role == null) {
             return;
         }
         if (value <= 0) {
             return;
         }
-        final Party party = this.getParty(role);
+        Party party = this.getParty(role);
         if (party == null) {
             return;
         }
-        final long before = party.getCapital();
-        long current = before - value;
+        long before = party.getCapital();
+        long current = before - (long)value;
         if (current < 0L) {
             current = 0L;
         }
         party.setCapital(current);
         party.save();
+        return;
     }
     
-    public short getMemberCount(final Party party) {
+    public short getMemberCount(Party party) {
         if (party != null && party.getMembers() != null) {
             return (short)party.getMembers().size();
         }
         return 0;
     }
     
-    public int getPartyMaxMembers(final int level) {
+    public int getPartyMaxMembers(int level) {
         int maxMembers = 0;
         if (level == 1) {
             maxMembers = 150;
@@ -1926,77 +1960,81 @@ public class PartyService
         return maxMembers;
     }
     
-    private PartyMember getMemberByName(final Party party, final String name) {
+    private PartyMember getMemberByName(Party party, String name) {
         if (party == null) {
             return null;
         }
-        final Collection<PartyMember> values = party.getMembers().values();
-        for (final PartyMember partyMember : values) {
+        Collection<PartyMember> values = party.getMembers().values();
+        for (PartyMember partyMember : values) {
             if (partyMember.getName().equals(name)) {
                 return partyMember;
             }
+            continue;
         }
         return null;
     }
     
-    public void handleLogout(final Role role) {
-        final Party party = this.getParty(role);
+    public void handleLogout(Role role) {
+        Party party = this.getParty(role);
         if (party == null) {
             return;
         }
-        final PartyMember partyMember = this.getPartyMember(party, role);
+        PartyMember partyMember = this.getPartyMember(party, role);
         if (partyMember == null) {
             return;
         }
-        final long now = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
         partyMember.setLastOnlineTime((int)(now / 1000L));
+        return;
     }
     
-    public void handleRoleChange(final Role role, final String currName) {
-        if (role.getFaction() <= 0) {
+    public void handleRoleChange(Role role, String currName) {
+        if ((int)role.getFaction() <= 0) {
             return;
         }
-        final Party party = this.getParty(role);
+        Party party = this.getParty(role);
         if (party == null) {
             return;
         }
-        final PartyMember partyMember = this.getPartyMember(party, role);
+        PartyMember partyMember = this.getPartyMember(party, role);
         if (partyMember != null) {
             if (currName != null) {
                 partyMember.setName(currName);
             }
-            partyMember.setRoleSerial(role.getSerial());
+            partyMember.setRoleSerial((int)role.getSerial());
             partyMember.save();
         }
         if (role.getRoleId().equals(party.getMasterId()) && currName != null) {
             party.setMasterName(currName);
             party.save();
         }
+        return;
     }
     
-    public void handleRoleLevelUpEvent(final Role role) {
-        final Party party = this.getParty(role);
+    public void handleRoleLevelUpEvent(Role role) {
+        Party party = this.getParty(role);
         if (party == null) {
             return;
         }
-        final PartyMember partyMember = this.getPartyMember(party, role);
+        PartyMember partyMember = this.getPartyMember(party, role);
         if (partyMember != null) {
             partyMember.setRei(role.getRelive().byteValue());
             partyMember.setLevel(role.getLevel().shortValue());
-            partyMember.setGrade(role.getRelive() * 1000 + role.getLevel());
+            partyMember.setGrade((int)role.getRelive() * 1000 + (int)role.getLevel());
             partyMember.save();
         }
+        return;
     }
     
-    public void updatePartyTask(final Role role, final int count, final long calculate) {
-        final Party party = this.getParty(role);
+    public void updatePartyTask(Role role, int count, long calculate) {
+        Party party = this.getParty(role);
         if (party == null) {
             return;
         }
-        final PartyMember member = party.getMembers().get(role.getRoleId());
+        PartyMember member = (PartyMember)party.getMembers().get(role.getRoleId());
         if (member != null) {
-            final int millis = TimeUtil.dayInMillis(TimeUtil.when());
-            PartyTask partyTask = member.getPartyTaskList().stream().filter(e -> e.getTime() == millis).findFirst().orElse(null);
+            int millis = TimeUtil.dayInMillis(TimeUtil.when());
+            PartyTask partyTask = (PartyTask)member.getPartyTaskList().stream().filter(e -> e.getTime() == millis).findFirst().orElse(null);
             if (partyTask == null) {
                 partyTask = new PartyTask();
                 member.getPartyTaskList().add(partyTask);
@@ -2005,14 +2043,15 @@ public class PartyService
             partyTask.setCount(count);
             member.setContribute(member.getContribute() + calculate);
             member.save();
-            this.addConstruction(party, BigDecimalUtil.decimalScaleDown(0, 36 + (party.getLevel() - 1) * 18).longValue() * 2L);
+            this.addConstruction(party, BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Integer.valueOf(36 + (party.getLevel() - 1) * 18)).longValue() * 2L);
         }
+        return;
     }
     
     public void resetPartyTask() {
-        final int millis = TimeUtil.dayInMillis(TimeUtil.when());
-        for (final Party party : PartyDataPool.partyMap.values()) {
-            for (final PartyMember member : party.getMembers().values()) {
+        int millis = TimeUtil.dayInMillis(TimeUtil.when());
+        for (Party party : PartyDataPool.partyMap.values()) {
+            for (PartyMember member : party.getMembers().values()) {
                 member.getPartyTaskList().removeIf(e -> e.getTime() < millis);
                 member.save();
             }
@@ -2020,37 +2059,41 @@ public class PartyService
     }
     
     public void updateActivation() {
-        final int week = TimeUtil.getWeek();
-        final int millis = TimeUtil.dayInMillis(TimeUtil.when());
-        for (final Party party : PartyDataPool.partyMap.values()) {
-            final int size = party.getMembers().size();
+        int week = TimeUtil.getWeek();
+        int millis = TimeUtil.dayInMillis(TimeUtil.when());
+        for (Party party : PartyDataPool.partyMap.values()) {
+            int size = party.getMembers().size();
             int online = 0;
-            for (final PartyMember member : party.getMembers().values()) {
+            for (PartyMember member : party.getMembers().values()) {
                 if (this.roleService.isOnline(member.getRoleId())) {
                     ++online;
                 }
                 else {
-                    final Role player = this.roleService.getPlayer(member.getRoleId());
-                    if (player == null) {
-                        continue;
-                    }
-                    if (player.getOfLineTime() > 0L) {
-                        final int time = TimeUtil.dayInMillis(TimeUtil.stampToDate(player.getOfLineTime()));
-                        if (time < millis) {
-                            continue;
+                    Role player = this.roleService.getPlayer(member.getRoleId());
+                    if (player != null) {
+                        if ((long)player.getOfLineTime() > 0L) {
+                            int time = TimeUtil.dayInMillis(TimeUtil.stampToDate((long)player.getOfLineTime()));
+                            if (time >= millis) {
+                                ++online;
+                            }
+                            else {
+                                continue;
+                            }
                         }
-                        ++online;
+                        else {
+                            ++online;
+                        }
                     }
                     else {
-                        ++online;
+                        continue;
                     }
                 }
             }
-            final String divide = BigDecimalUtil.divide(String.valueOf(online), String.valueOf(size));
-            party.getOnlineRate().add((int)(Double.valueOf(divide) * 100.0));
+            String divide = BigDecimalUtil.divide(String.valueOf(online), String.valueOf(size));
+            party.getOnlineRate().add(Integer.valueOf((int)((double)Double.valueOf(divide) * 100.0)));
             if (party.getOnlineRate().size() >= 3) {
-                final int sum = party.getOnlineRate().stream().mapToInt(Integer::valueOf).sum();
-                party.setActive(BigDecimalUtil.decimalScaleBig(0, sum / 3).shortValue());
+                int sum = party.getOnlineRate().stream().mapToInt(Integer::valueOf).sum();
+                party.setActive(BigDecimalUtil.decimalScaleBig(Integer.valueOf(0), Integer.valueOf(sum / 3)).shortValue());
                 party.getOnlineRate().clear();
             }
             party.save();
@@ -2061,43 +2104,49 @@ public class PartyService
     }
     
     public void mergeParty() {
-        final StopWatch stopWatch = new StopWatch();
+        StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        final Map<Integer, Party> map = new HashMap<Integer, Party>();
-        for (final Party party : PartyDataPool.partyMap.values()) {
+        Map<Integer, Party> map = new HashMap();
+        for (Party party : PartyDataPool.partyMap.values()) {
             if (party.getActive() < 30) {
                 map.put(party.getSerial(), party);
             }
+            else {
+                continue;
+            }
         }
-        final int joinTime = (int)(System.currentTimeMillis() / 1000L);
-        final List<Party> list = PartyDataPool.partyMap.values().stream().sorted(Comparator.comparing(Party::getActive, Comparator.reverseOrder())).collect(Collectors.toList());
-        for (final Party party2 : map.values()) {
-            for (final PartyMember value : party2.getMembers().values()) {
+        int joinTime = (int)(System.currentTimeMillis() / 1000L);
+        List<Party> list = (List)PartyDataPool.partyMap.values().stream().sorted(Comparator.comparing(Party::getActive, Comparator.reverseOrder())).collect(Collectors.toList());
+        for (Party party2 : map.values()) {
+            for (PartyMember value : party2.getMembers().values()) {
                 int serial = 0;
                 for (int i = 0; i < list.size(); ++i) {
-                    final Party p = list.get(i);
+                    Party p = (Party)list.get(i);
                     if (this.isPartyFull(p)) {
                         list.removeIf(e -> e.getSerial().equals(p.getSerial()));
                     }
                     else {
-                        serial = p.getSerial();
-                        final Map<Integer, PartyMember> members = p.getMembers();
-                        value.setSerial(p.getSerial());
+                        serial = (int)p.getSerial();
+                        Map<Integer, PartyMember> members = p.getMembers();
+                        value.setSerial((int)p.getSerial());
                         value.setJob((byte)10);
                         value.setPartyTaskList(new ArrayList<>());
                         value.setJoinTime(joinTime);
                         value.save();
-                        members.put(value.getRoleId(), value);
+                        members.put(Integer.valueOf(value.getRoleId()), value);
                     }
                 }
-                final Role player = this.roleService.getPlayer(value.getRoleId());
+                Role player = this.roleService.getPlayer(value.getRoleId());
                 if (player != null) {
                     if (serial == 0) {
                         value.setDelete(true);
                         value.save();
                     }
-                    player.setFaction(serial);
+                    player.setFaction(Integer.valueOf(serial));
                     player.save();
+                }
+                else {
+                    continue;
                 }
             }
             party2.setDelete(true);
@@ -2105,11 +2154,11 @@ public class PartyService
             PartyDataPool.partyMap.remove(party2.getSerial());
         }
         stopWatch.stop();
-        this.logger.error("合并帮派，耗時{}毫秒", stopWatch.getTime());
+        this.logger.error("合并帮派，耗時{}毫秒", Long.valueOf(stopWatch.getTime()));
     }
     
-    public void clearParty(final Role role) {
-        role.setFaction(0);
+    public void clearParty(Role role) {
+        role.setFaction(Integer.valueOf(0));
         this.roleService.refreshParty(role);
         this.delPartyTitle(role);
         role.save();

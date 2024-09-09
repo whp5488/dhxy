@@ -1,4 +1,3 @@
-
 package com.kitty.cross.login.cmessage;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,11 +9,14 @@ public class G2CLoginCross extends Message
     private byte type;
     private String playerJson;
     
+    public G2CLoginCross() {
+    }
+    
     public byte getType() {
         return this.type;
     }
     
-    public void setType(final byte type) {
+    public void setType(byte type) {
         this.type = type;
     }
     
@@ -22,7 +24,7 @@ public class G2CLoginCross extends Message
         return this.playerJson;
     }
     
-    public void setPlayerJson(final String playerJson) {
+    public void setPlayerJson(String playerJson) {
         this.playerJson = playerJson;
     }
 }

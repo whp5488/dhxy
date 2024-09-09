@@ -1,4 +1,3 @@
-
 package com.kitty.cross.login.model;
 
 public class CrossInfo
@@ -7,6 +6,9 @@ public class CrossInfo
     private String fromIp;
     private boolean isCross;
     private int crossType;
+    
+    public CrossInfo() {
+    }
     
     public int getFromServer() {
         return this.fromServer;
@@ -48,24 +50,16 @@ public class CrossInfo
         if (!(o instanceof CrossInfo)) {
             return false;
         }
-        final CrossInfo other = (CrossInfo)o;
+        CrossInfo other = (CrossInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getFromServer() != other.getFromServer()) {
             return false;
         }
-        final Object this$fromIp = this.getFromIp();
-        final Object other$fromIp = other.getFromIp();
-        if (this$fromIp == null) {
-            if (other$fromIp == null) {
-                return this.isCross() == other.isCross() && this.getCrossType() == other.getCrossType();
-            }
-        }
-        else if (this$fromIp.equals(other$fromIp)) {
-            return this.isCross() == other.isCross() && this.getCrossType() == other.getCrossType();
-        }
-        return false;
+        Object this$fromIp = this.getFromIp();
+        Object other$fromIp = other.getFromIp();
+        return ((this$fromIp != null) ? this$fromIp.equals(other$fromIp) : (other$fromIp == null)) && this.isCross() == other.isCross() && this.getCrossType() == other.getCrossType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -74,10 +68,10 @@ public class CrossInfo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getFromServer();
-        final Object $fromIp = this.getFromIp();
+        Object $fromIp = this.getFromIp();
         result = result * 59 + (($fromIp == null) ? 43 : $fromIp.hashCode());
         result = result * 59 + (this.isCross() ? 79 : 97);
         result = result * 59 + this.getCrossType();

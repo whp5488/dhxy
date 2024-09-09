@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqControlPartyChannel extends Message
     private int id;
     private String name;
     private byte type;
+    
+    public ReqControlPartyChannel() {
+    }
     
     public int getId() {
         return this.id;
@@ -43,24 +45,16 @@ public class ReqControlPartyChannel extends Message
         if (!(o instanceof ReqControlPartyChannel)) {
             return false;
         }
-        final ReqControlPartyChannel other = (ReqControlPartyChannel)o;
+        ReqControlPartyChannel other = (ReqControlPartyChannel)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -69,10 +63,10 @@ public class ReqControlPartyChannel extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getType();
         return result;
@@ -80,6 +74,6 @@ public class ReqControlPartyChannel extends Message
     
     @Override
     public String toString() {
-        return "ReqControlPartyChannel(id=" + this.getId() + ", name=" + this.getName() + ", type=" + this.getType() + ")";
+        return "ReqControlPartyChannel(id=" + this.getId() + ", name=" + this.getName() + ", type=" + (int)this.getType() + ")";
     }
 }

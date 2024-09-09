@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -77,34 +76,18 @@ public class ReqQueryPartys extends Message
         if (!(o instanceof ReqQueryPartys)) {
             return false;
         }
-        final ReqQueryPartys other = (ReqQueryPartys)o;
+        ReqQueryPartys other = (ReqQueryPartys)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0065: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0065;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$para = this.getPara();
-        final Object other$para = other.getPara();
-        if (this$para == null) {
-            if (other$para == null) {
-                return this.getPage() == other.getPage() && this.getSize() == other.getSize() && this.getSort() == other.getSort() && this.getWay() == other.getWay();
-            }
-        }
-        else if (this$para.equals(other$para)) {
-            return this.getPage() == other.getPage() && this.getSize() == other.getSize() && this.getSort() == other.getSort() && this.getWay() == other.getWay();
-        }
-        return false;
+        Object this$para = this.getPara();
+        Object other$para = other.getPara();
+        return ((this$para != null) ? this$para.equals(other$para) : (other$para == null)) && this.getPage() == other.getPage() && this.getSize() == other.getSize() && this.getSort() == other.getSort() && this.getWay() == other.getWay();
     }
     
     protected boolean canEqual(final Object other) {
@@ -113,11 +96,11 @@ public class ReqQueryPartys extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $para = this.getPara();
+        Object $para = this.getPara();
         result = result * 59 + (($para == null) ? 43 : $para.hashCode());
         result = result * 59 + this.getPage();
         result = result * 59 + this.getSize();
@@ -128,6 +111,6 @@ public class ReqQueryPartys extends Message
     
     @Override
     public String toString() {
-        return "ReqQueryPartys(type=" + this.getType() + ", para=" + this.getPara() + ", page=" + this.getPage() + ", size=" + this.getSize() + ", sort=" + this.getSort() + ", way=" + this.getWay() + ")";
+        return "ReqQueryPartys(type=" + this.getType() + ", para=" + this.getPara() + ", page=" + (int)this.getPage() + ", size=" + (int)this.getSize() + ", sort=" + (int)this.getSort() + ", way=" + (int)this.getWay() + ")";
     }
 }

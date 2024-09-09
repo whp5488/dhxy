@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.equip.domain.WearEquip;
 import com.kitty.system.game.equip.service.EquipService;
 import com.kitty.system.common.data.DataGlobalFunc;
@@ -29,62 +27,62 @@ public class ComprehensiveStrengthSource implements Serializable
     private List<Integer> special_icon;
     private List<FiedValue> list;
     
-    public ComprehensiveStrengthSource(final int roleId) {
+    public ComprehensiveStrengthSource(int roleId) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = roleId;
     }
     
-    public ComprehensiveStrengthSource(final Role role, final Map<String, Integer> map) {
+    public ComprehensiveStrengthSource(Role role, Map<String, Integer> map) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
-        this.roleId = role.getRoleId();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
+        this.roleId = (int)role.getRoleId();
         this.roleName = role.getName();
-        this.race = role.getRace();
-        this.serial = role.getSerial();
-        this.skillScore = map.get("skillScore");
-        this.petScore = map.get("petScore");
-        this.wearEquipScore = map.get("wearEquipScore");
+        this.race = (int)role.getRace();
+        this.serial = (int)role.getSerial();
+        this.skillScore = (int)map.get("skillScore");
+        this.petScore = (int)map.get("petScore");
+        this.wearEquipScore = (int)map.get("wearEquipScore");
         this.totalRepair = this.skillScore + this.petScore + this.wearEquipScore;
         this.rests(role);
     }
     
-    public void rests(final Role role) {
-        final EquipService equipService = SpringUtils.getEquipService();
+    public void rests(Role role) {
+        EquipService equipService = SpringUtils.getEquipService();
         this.weapon = role.getWeaponIcon();
         this.light_effect = equipService.getWearEffect(role);
-        final List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
             this.gem = DataGlobalFunc.getWeaponGemNum(wearEquips);
         }
         this.list = SpringUtils.getRoleService().deyList(role.getColor());
     }
     
-    public void setSkillScore(final int skillScore) {
+    public void setSkillScore(int skillScore) {
         this.skillScore = skillScore;
         this.totalRepair = this.skillScore + this.petScore + this.wearEquipScore;
     }
     
-    public void setPetScore(final int petScore) {
+    public void setPetScore(int petScore) {
         this.petScore = petScore;
         this.totalRepair = this.skillScore + this.petScore + this.wearEquipScore;
     }
     
-    public void setWearEquipScore(final int wearEquipScore) {
+    public void setWearEquipScore(int wearEquipScore) {
         this.wearEquipScore = wearEquipScore;
         this.totalRepair = this.skillScore + this.petScore + this.wearEquipScore;
     }
     
     @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof ComprehensiveStrengthSource) {
-            final ComprehensiveStrengthSource comprehensiveStrengthSource = (ComprehensiveStrengthSource)obj;
+    public boolean equals(Object obj) {
+        if ((obj instanceof ComprehensiveStrengthSource)) {
+            ComprehensiveStrengthSource comprehensiveStrengthSource = (ComprehensiveStrengthSource)obj;
             return this.roleId == comprehensiveStrengthSource.getRoleId();
         }
         return false;
@@ -93,7 +91,7 @@ public class ComprehensiveStrengthSource implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
-        final int prime = 31;
+        int prime = 31;
         result = this.getRoleId() * prime;
         return result;
     }
@@ -190,13 +188,12 @@ public class ComprehensiveStrengthSource implements Serializable
         this.list = list;
     }
     
-    @ConstructorProperties({ "roleId", "roleName", "race", "serial", "skillScore", "petScore", "wearEquipScore", "totalRepair", "weapon", "gem", "light_effect", "special_icon", "list" })
     public ComprehensiveStrengthSource(final int roleId, final String roleName, final int race, final int serial, final int skillScore, final int petScore, final int wearEquipScore, final int totalRepair, final int weapon, final int gem, final List<Integer> light_effect, final List<Integer> special_icon, final List<FiedValue> list) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = roleId;
         this.roleName = roleName;
         this.race = race;
@@ -215,8 +212,8 @@ public class ComprehensiveStrengthSource implements Serializable
     public ComprehensiveStrengthSource() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 }

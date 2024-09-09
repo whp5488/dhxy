@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.instruct.handler;
 
 import com.kitty.system.game.partner.domain.Partner;
@@ -10,16 +9,20 @@ import com.kitty.system.game.instruct.inter.NcFather;
 
 public class PartnerHandler implements NcFather
 {
+    public PartnerHandler() {
+    }
+    
     @Override
-    public void handle(final Role role, final String code) {
-        if (SpringUtils.getBean(ServerService.class).getType() == 1) {
+    public void handle(Role role, String code) {
+        if (((ServerService)SpringUtils.getBean(ServerService.class)).getType() == 1) {
             return;
         }
         if (code == null && !code.matches("^[0-9]+$")) {
             return;
         }
-        final PartnerService bean = SpringUtils.getBean(PartnerService.class);
-        final Partner partner = bean.addPartner(role, Integer.parseInt(code));
+        PartnerService bean = (PartnerService)SpringUtils.getBean(PartnerService.class);
+        Partner partner = bean.addPartner(role, Integer.valueOf(Integer.parseInt(code)));
         bean.loadPartner(role, partner);
+        return;
     }
 }

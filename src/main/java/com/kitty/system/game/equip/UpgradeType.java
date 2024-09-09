@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip;
 
 public interface UpgradeType
@@ -24,4 +23,12 @@ public interface UpgradeType
     public static final int PET_EQUIP_COMPOSE = 19;
     public static final int PET_EQUIP_DISCONNECT = 20;
     public static final int PET_EQUIP_DISPLACE = 21;
+    public static final int TRAIN_SEAL_BUY = 22;
+    public static final int TRAIN_SEAL_PRE_REFINE = 23;
+    public static final int TRAIN_SEAL_REFINE = 24;
+    public static final int TRAIN_SEAL_REFINE_REPLACE = 25;
+    public static final int MIND_LEARN = 26;
+    public static final int MIND_PRE_REFINE = 27;
+    public static final int MIND_REFINE = 28;
+    public static final int MIND_REFINE_REPLACE = 29;
 }

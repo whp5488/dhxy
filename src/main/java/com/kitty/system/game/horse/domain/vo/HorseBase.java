@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.horse.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.util.IdentityHashMap;
 import java.io.Serializable;
 
@@ -52,7 +50,7 @@ public class HorseBase implements Serializable
         if (!(o instanceof HorseBase)) {
             return false;
         }
-        final HorseBase other = (HorseBase)o;
+        HorseBase other = (HorseBase)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -65,17 +63,9 @@ public class HorseBase implements Serializable
         if (this.getScore() != other.getScore()) {
             return false;
         }
-        final Object this$skill = this.getSkill();
-        final Object other$skill = other.getSkill();
-        if (this$skill == null) {
-            if (other$skill == null) {
-                return true;
-            }
-        }
-        else if (this$skill.equals(other$skill)) {
-            return true;
-        }
-        return false;
+        Object this$skill = this.getSkill();
+        Object other$skill = other.getSkill();
+        return (this$skill != null) ? this$skill.equals(other$skill) : (other$skill == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -84,12 +74,12 @@ public class HorseBase implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getGrow_up();
         result = result * 59 + this.getMove_sp();
         result = result * 59 + this.getScore();
-        final Object $skill = this.getSkill();
+        Object $skill = this.getSkill();
         result = result * 59 + (($skill == null) ? 43 : $skill.hashCode());
         return result;
     }
@@ -99,10 +89,9 @@ public class HorseBase implements Serializable
         return "HorseBase(grow_up=" + this.getGrow_up() + ", move_sp=" + this.getMove_sp() + ", score=" + this.getScore() + ", skill=" + this.getSkill() + ")";
     }
     
-    @ConstructorProperties({ "grow_up", "move_sp", "score", "skill" })
     public HorseBase(final int grow_up, final int move_sp, final int score, final IdentityHashMap<Integer, Long> skill) {
         this.score = 0;
-        this.skill = new IdentityHashMap<Integer, Long>(3);
+        this.skill = new IdentityHashMap(3);
         this.grow_up = grow_up;
         this.move_sp = move_sp;
         this.score = score;
@@ -111,6 +100,6 @@ public class HorseBase implements Serializable
     
     public HorseBase() {
         this.score = 0;
-        this.skill = new IdentityHashMap<Integer, Long>(3);
+        this.skill = new IdentityHashMap(3);
     }
 }

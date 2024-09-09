@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.Iterator;
@@ -8,11 +7,14 @@ import java.util.List;
 
 public class RateRandomNumber
 {
-    public static double produceRandomNumber(final double min, final double max) {
-        return RandomUtil.getRandomDouble(min, max);
+    public RateRandomNumber() {
     }
     
-    public static double produceRateRandomNumber(final double min, final double max, final List<Double> separates, final List<Integer> percents) {
+    public static double produceRandomNumber(double min, double max) {
+        return RandomUtil.getRandomDouble(Double.valueOf(min), Double.valueOf(max));
+    }
+    
+    public static double produceRateRandomNumber(double min, double max, List<Double> separates, List<Integer> percents) {
         if (min == 0.0 && max == 0.0) {
             return 0.0;
         }
@@ -26,41 +28,44 @@ public class RateRandomNumber
             throw new IllegalArgumentException("分割数字的个数加1必须等于百分比个数");
         }
         int totalPercent = 0;
-        for (final Integer p : percents) {
-            if (p < 0 || p > 100) {
+        for (Integer p : percents) {
+            if ((int)p < 0 || (int)p > 100) {
                 throw new IllegalArgumentException("百分比必须在[0,100]之间");
             }
-            totalPercent += p;
+            totalPercent += (int)p;
         }
         if (totalPercent != 100) {
             throw new IllegalArgumentException("百分比之和必须为100");
         }
-        for (final double s : separates) {
+        for (double s : separates) {
             if (s <= min || s >= max) {
                 throw new IllegalArgumentException("分割数值必须在(min,max)之间");
             }
+            continue;
         }
-        final int rangeCount = separates.size() + 1;
-        final List<Range> ranges = new ArrayList<Range>();
+        int rangeCount = separates.size() + 1;
+        List<RateRandomNumber.Range> ranges = new ArrayList<>();
         int scopeMax = 0;
         for (int i = 0; i < rangeCount; ++i) {
-            final Range range = new Range();
-            range.min = ((i == 0) ? min : separates.get(i - 1));
-            range.max = ((i == rangeCount - 1) ? max : separates.get(i));
-            range.percent = percents.get(i);
+            RateRandomNumber.Range range = new RateRandomNumber.Range();
+            range.min = ((i == 0) ? min : ((double)separates.get(i - 1)));
+            range.max = ((i == rangeCount - 1) ? max : ((double)separates.get(i)));
+            range.percent = (int)percents.get(i);
             range.percentScopeMin = scopeMax + 1;
             range.percentScopeMax = range.percentScopeMin + (range.percent - 1);
             scopeMax = range.percentScopeMax;
             ranges.add(range);
         }
         double r = min;
-        final int randomInt = RandomUtils.nextInt(1, 101);
-        for (int j = 0; j < ranges.size(); ++j) {
-            final Range range2 = ranges.get(j);
+        int randomInt = RandomUtils.nextInt(1, 101);
+        int j = 0;
+        while (j < ranges.size()) {
+            RateRandomNumber.Range range2 = (RateRandomNumber.Range)ranges.get(j);
             if (range2.percentScopeMin <= randomInt && randomInt <= range2.percentScopeMax) {
                 r = produceRandomNumber(range2.min, range2.max);
                 break;
             }
+            ++j;
         }
         return r;
     }

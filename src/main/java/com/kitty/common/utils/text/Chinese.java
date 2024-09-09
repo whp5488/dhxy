@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.text;
 
 import java.util.List;
@@ -24,20 +23,20 @@ public enum Chinese
     private char cValue;
     private int aValue;
     
-    private Chinese(final char cValue, final int aValue) {
+    private Chinese(char cValue, int aValue) {
         this.cValue = cValue;
         this.aValue = aValue;
     }
     
-    public static Integer getAFromC(final String cValue) {
+    public static Integer getAFromC(String cValue) {
         int length = cValue.length() - 1;
         int total = 0;
         while (length >= 0) {
-            final char chinese = cValue.charAt(length);
-            final int arabic = c2a(chinese);
+            char chinese = cValue.charAt(length);
+            int arabic = c2a(chinese);
             if (arabic >= 10 && length - 1 >= 0) {
                 --length;
-                final int arabicValue = c2a(cValue.charAt(length));
+                int arabicValue = c2a(cValue.charAt(length));
                 total += arabic * arabicValue;
                 --length;
             }
@@ -46,29 +45,29 @@ public enum Chinese
                 --length;
             }
         }
-        return total;
+        return Integer.valueOf(total);
     }
     
     public static String getCFromA(int aValue) {
         if (aValue == 0) {
             return String.valueOf(Chinese.LING.cValue);
         }
-        final StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         int count = 0;
-        final List<Integer> arrayList = new ArrayList<Integer>(10);
+        List<Integer> arrayList = new ArrayList(10);
         while (aValue > 0) {
-            final int remainder = aValue % 10;
-            arrayList.add(remainder);
+            int remainder = aValue % 10;
+            arrayList.add(Integer.valueOf(remainder));
             aValue /= 10;
         }
         int index = 0;
         boolean start = true;
         while (index < arrayList.size()) {
-            final int currentValue = arrayList.get(index);
+            int currentValue = (int)arrayList.get(index);
             if (count > 0 && currentValue != 0) {
-                stringBuilder.insert(0, a2c((int)Math.pow(10.0, count)));
+                stringBuilder.insert(0, a2c((int)Math.pow(10.0, (double)count)));
             }
-            final char c = a2c(currentValue);
+            char c = a2c(currentValue);
             if (currentValue != 0) {
                 if (start) {
                     start = false;
@@ -88,20 +87,30 @@ public enum Chinese
         return stringBuilder.toString();
     }
     
-    static int c2a(final char cValue) {
-        for (final Chinese c : values()) {
+    static int c2a(char cValue) {
+        Chinese[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            Chinese c = values[i];
             if (c.cValue == cValue) {
                 return c.aValue;
             }
+            ++i;
         }
         return 0;
     }
     
-    static char a2c(final int aValue) {
-        for (final Chinese c : values()) {
+    static char a2c(int aValue) {
+        Chinese[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            Chinese c = values[i];
             if (c.aValue == aValue) {
                 return c.cValue;
             }
+            ++i;
         }
         return ' ';
     }

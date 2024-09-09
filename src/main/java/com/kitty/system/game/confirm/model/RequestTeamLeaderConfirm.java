@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.model;
 
 import com.kitty.system.enums.confirm.ConfirmType;
@@ -13,7 +12,7 @@ public class RequestTeamLeaderConfirm extends RoleConfirm
         return ConfirmType.REQUEST_TEAM_LEADER;
     }
     
-    public RequestTeamLeaderConfirm(final int requestId) {
+    public RequestTeamLeaderConfirm(int requestId) {
         this.agree = false;
         this.requestId = requestId;
     }
@@ -26,7 +25,7 @@ public class RequestTeamLeaderConfirm extends RoleConfirm
         return this.agree;
     }
     
-    public void setAgree(final boolean agree) {
+    public void setAgree(boolean agree) {
         this.agree = agree;
     }
 }

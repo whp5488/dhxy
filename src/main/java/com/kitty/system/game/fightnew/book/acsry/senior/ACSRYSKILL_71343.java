@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -12,27 +11,31 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_71343 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_71343() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
-        if (SKILLATTR.SKILLATTR_SLEEP.getValue() == skill.getType() && target.getStatusValue(1004) > 0 && effecter.isPlayer()) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 71343);
-            skillRecord.setT(target.getId());
-            target.getStatusMap().setv("1004perpetrator", (Object)("71343_" + effecter.getId()));
+        if (SKILLATTR.SKILLATTR_SLEEP.getValue() == (int)skill.getType() && target.getStatusValue(1004) > 0 && effecter.isPlayer()) {
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 71343);
+            skillRecord.setT((long)(int)target.getId());
+            target.getStatusMap().setv("1004perpetrator", "71343_" + effecter.getId());
         }
+        return;
     }
 }

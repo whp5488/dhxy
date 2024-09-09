@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.map.model;
 
 import java.io.Serializable;
@@ -9,11 +8,11 @@ public class GroupMapParam
     private Role role;
     private Serializable groupKey;
     
-    public GroupMapParam(final Role role) {
+    public GroupMapParam(Role role) {
         this.role = role;
     }
     
-    public GroupMapParam(final Serializable groupKey) {
+    public GroupMapParam(Serializable groupKey) {
         this.groupKey = groupKey;
     }
     

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -68,7 +67,7 @@ public class RespCaIcon extends Message
         if (!(o instanceof RespCaIcon)) {
             return false;
         }
-        final RespCaIcon other = (RespCaIcon)o;
+        RespCaIcon other = (RespCaIcon)o;
         return other.canEqual(this) && this.getRound() == other.getRound() && this.getCurrentSession() == other.getCurrentSession() && this.getTotalSession() == other.getTotalSession() && this.getState() == other.getState() && this.getTime() == other.getTime();
     }
     
@@ -78,7 +77,7 @@ public class RespCaIcon extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRound();
         result = result * 59 + this.getCurrentSession();
@@ -90,6 +89,6 @@ public class RespCaIcon extends Message
     
     @Override
     public String toString() {
-        return "RespCaIcon(round=" + this.getRound() + ", currentSession=" + this.getCurrentSession() + ", totalSession=" + this.getTotalSession() + ", state=" + this.getState() + ", time=" + this.getTime() + ")";
+        return "RespCaIcon(round=" + (int)this.getRound() + ", currentSession=" + (int)this.getCurrentSession() + ", totalSession=" + (int)this.getTotalSession() + ", state=" + (int)this.getState() + ", time=" + this.getTime() + ")";
     }
 }

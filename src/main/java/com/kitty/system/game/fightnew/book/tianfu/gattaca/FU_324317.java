@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -13,35 +12,39 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_324317 extends TianFuProcessor
 {
+    public FU_324317() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
-        final NutMap map = NutMap.NEW();
-        final double percenta = 0.5 * tianFuAddition.getTianFuLevel() / 100.0;
-        final double percentb = 0.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
-        final double percentc = 0.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_FY.getDist()), (Object)percenta);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HL.getDist()), (Object)percenta);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HS.getDist()), (Object)percenta);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_YW.getDist()), (Object)percenta);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), (Object)percentb);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), (Object)percentb);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), (Object)percentb);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), (Object)percentb);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_SS.getDist()), (Object)percentb);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), (Object)percentb);
-        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_ZS.getDist()), (Object)percentc);
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
+        NutMap map = NutMap.NEW();
+        double percenta = 0.5 * (double)tianFuAddition.getTianFuLevel() / 100.0;
+        double percentb = 0.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+        double percentc = 0.5 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_FY.getDist()), Double.valueOf(percenta));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HL.getDist()), Double.valueOf(percenta));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HS.getDist()), Double.valueOf(percenta));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_YW.getDist()), Double.valueOf(percenta));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), Double.valueOf(percentb));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), Double.valueOf(percentb));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), Double.valueOf(percentb));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), Double.valueOf(percentb));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_SS.getDist()), Double.valueOf(percentb));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), Double.valueOf(percentb));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_ZS.getDist()), Double.valueOf(percentc));
+        map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_D.getDist()), Double.valueOf(percentb));
         return map;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap wearInstantlyTakeEffect(final Role role, final Pet pet, final TianFuAddition tianFuAddition, final Object... obj) {
-        final NutMap map = NutMap.NEW();
-        map.setv(String.valueOf(PRO_DICT_TYPE.MP_PCT.getDist()), (Object)(-0.1));
+    public NutMap wearInstantlyTakeEffect(Role role, Pet pet, TianFuAddition tianFuAddition, Object... obj) {
+        NutMap map = NutMap.NEW();
+        map.setv(String.valueOf(PRO_DICT_TYPE.MP_PCT.getDist()), Double.valueOf(-0.1));
         return map;
     }
 }

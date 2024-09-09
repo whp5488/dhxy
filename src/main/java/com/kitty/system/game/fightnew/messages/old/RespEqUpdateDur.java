@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages.old;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,21 +33,13 @@ public class RespEqUpdateDur extends Message
         if (!(o instanceof RespEqUpdateDur)) {
             return false;
         }
-        final RespEqUpdateDur other = (RespEqUpdateDur)o;
+        RespEqUpdateDur other = (RespEqUpdateDur)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getDur() == other.getDur();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getDur() == other.getDur();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getDur() == other.getDur();
     }
     
     protected boolean canEqual(final Object other) {
@@ -58,9 +48,9 @@ public class RespEqUpdateDur extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getDur();
         return result;
@@ -71,7 +61,6 @@ public class RespEqUpdateDur extends Message
         return "RespEqUpdateDur(id=" + this.getId() + ", dur=" + this.getDur() + ")";
     }
     
-    @ConstructorProperties({ "id", "dur" })
     public RespEqUpdateDur(final String id, final int dur) {
         this.id = id;
         this.dur = dur;

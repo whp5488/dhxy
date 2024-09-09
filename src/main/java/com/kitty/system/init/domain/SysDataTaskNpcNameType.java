@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.List;
@@ -12,6 +11,9 @@ public class SysDataTaskNpcNameType
     private String key;
     @Column("value")
     private List<String> value;
+    
+    public SysDataTaskNpcNameType() {
+    }
     
     public String getKey() {
         return this.key;
@@ -37,34 +39,18 @@ public class SysDataTaskNpcNameType
         if (!(o instanceof SysDataTaskNpcNameType)) {
             return false;
         }
-        final SysDataTaskNpcNameType other = (SysDataTaskNpcNameType)o;
+        SysDataTaskNpcNameType other = (SysDataTaskNpcNameType)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$key = this.getKey();
-        final Object other$key = other.getKey();
-        Label_0065: {
-            if (this$key == null) {
-                if (other$key == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$key.equals(other$key)) {
-                break Label_0065;
-            }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (!((this$key != null) ? this$key.equals(other$key) : (other$key == null))) {
             return false;
         }
-        final Object this$value = this.getValue();
-        final Object other$value = other.getValue();
-        if (this$value == null) {
-            if (other$value == null) {
-                return true;
-            }
-        }
-        else if (this$value.equals(other$value)) {
-            return true;
-        }
-        return false;
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        return (this$value != null) ? this$value.equals(other$value) : (other$value == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -73,11 +59,11 @@ public class SysDataTaskNpcNameType
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $key = this.getKey();
+        Object $key = this.getKey();
         result = result * 59 + (($key == null) ? 43 : $key.hashCode());
-        final Object $value = this.getValue();
+        Object $value = this.getValue();
         result = result * 59 + (($value == null) ? 43 : $value.hashCode());
         return result;
     }

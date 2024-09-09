@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -20,6 +19,9 @@ public class SysDataGradeAward implements Serializable
     @Column("award")
     @Default("[]")
     private List<Param> award;
+    
+    public SysDataGradeAward() {
+    }
     
     public int getGrade() {
         return this.grade;
@@ -45,24 +47,16 @@ public class SysDataGradeAward implements Serializable
         if (!(o instanceof SysDataGradeAward)) {
             return false;
         }
-        final SysDataGradeAward other = (SysDataGradeAward)o;
+        SysDataGradeAward other = (SysDataGradeAward)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getGrade() != other.getGrade()) {
             return false;
         }
-        final Object this$award = this.getAward();
-        final Object other$award = other.getAward();
-        if (this$award == null) {
-            if (other$award == null) {
-                return true;
-            }
-        }
-        else if (this$award.equals(other$award)) {
-            return true;
-        }
-        return false;
+        Object this$award = this.getAward();
+        Object other$award = other.getAward();
+        return (this$award != null) ? this$award.equals(other$award) : (other$award == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -71,10 +65,10 @@ public class SysDataGradeAward implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getGrade();
-        final Object $award = this.getAward();
+        Object $award = this.getAward();
         result = result * 59 + (($award == null) ? 43 : $award.hashCode());
         return result;
     }

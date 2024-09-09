@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.modules;
 
 public interface NotifyModules

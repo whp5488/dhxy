@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.plug.facade;
 
 import com.kitty.system.game.plug.message.ReqPlugCease;
@@ -20,30 +19,36 @@ public class PlugController
     @Autowired
     private PlugService plugService;
     
+    public PlugController() {
+    }
+    
     @EventHandler({ EventType.MOVE })
-    public void handleMoveEvent(final MoveEvent moveEvent) {
-        final Role role = moveEvent.getRole();
+    public void handleMoveEvent(MoveEvent moveEvent) {
+        Role role = moveEvent.getRole();
         if (role == null) {
             return;
         }
         this.plugService.plugTreasureMap(role);
+        return;
     }
     
     @RequestMapping
-    public void plugExecute(final IoSession session, final ReqPlugExecuteTreasure reqPlugExecuteTreasure) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void plugExecute(IoSession session, ReqPlugExecuteTreasure reqPlugExecuteTreasure) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.plugService.plugExecute(role, reqPlugExecuteTreasure);
+        return;
     }
     
     @RequestMapping
-    public void plugCease(final IoSession session, final ReqPlugCease reqPlugCease) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void plugCease(IoSession session, ReqPlugCease reqPlugCease) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.plugService.stopPlugExecute(role, reqPlugCease.getList());
+        return;
     }
 }

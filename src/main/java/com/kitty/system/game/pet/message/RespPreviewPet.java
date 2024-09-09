@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.pet.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -44,47 +42,23 @@ public class RespPreviewPet extends Message
         if (!(o instanceof RespPreviewPet)) {
             return false;
         }
-        final RespPreviewPet other = (RespPreviewPet)o;
+        RespPreviewPet other = (RespPreviewPet)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$petId = this.getPetId();
-        final Object other$petId = other.getPetId();
-        Label_0065: {
-            if (this$petId == null) {
-                if (other$petId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$petId.equals(other$petId)) {
-                break Label_0065;
-            }
+        Object this$petId = this.getPetId();
+        Object other$petId = other.getPetId();
+        if (!((this$petId != null) ? this$petId.equals(other$petId) : (other$petId == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0102: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0102;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$color = this.getColor();
-        final Object other$color = other.getColor();
-        if (this$color == null) {
-            if (other$color == null) {
-                return true;
-            }
-        }
-        else if (this$color.equals(other$color)) {
-            return true;
-        }
-        return false;
+        Object this$color = this.getColor();
+        Object other$color = other.getColor();
+        return (this$color != null) ? this$color.equals(other$color) : (other$color == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -93,13 +67,13 @@ public class RespPreviewPet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $petId = this.getPetId();
+        Object $petId = this.getPetId();
         result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $color = this.getColor();
+        Object $color = this.getColor();
         result = result * 59 + (($color == null) ? 43 : $color.hashCode());
         return result;
     }
@@ -109,9 +83,8 @@ public class RespPreviewPet extends Message
         return "RespPreviewPet(petId=" + this.getPetId() + ", type=" + this.getType() + ", color=" + this.getColor() + ")";
     }
     
-    @ConstructorProperties({ "petId", "type", "color" })
     public RespPreviewPet(final Integer petId, final Integer type, final String color) {
-        this.type = 0;
+        this.type = Integer.valueOf(0);
         this.color = "";
         this.petId = petId;
         this.type = type;
@@ -119,7 +92,7 @@ public class RespPreviewPet extends Message
     }
     
     public RespPreviewPet() {
-        this.type = 0;
+        this.type = Integer.valueOf(0);
         this.color = "";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.drivebeasts;
 
 import com.kitty.system.game.fightnew.bean.TianFuObject;
@@ -15,31 +14,34 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_323304 extends TianFuProcessor
 {
+    public FU_323304() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (fight.getRound() > 5 || fight.isPvp() != 1 || !effector.isPet() || effector.getType() != 8) {
             return null;
         }
-        final FightObject theTarget = fight.queryFightObject(effector.getTargetId());
+        FightObject theTarget = fight.queryFightObject(Integer.valueOf(effector.getTargetId()));
         if (!theTarget.isPlayer() && !theTarget.isPartner()) {
             return null;
         }
-        final FightObject host = fight.queryFightObject(effector.getHostId());
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)host).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 323304);
+        FightObject host = fight.queryFightObject(Integer.valueOf(effector.getHostId()));
+        DayInCeFight dayInCeFight = ((PlayerFightObject)host).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 323304);
         if (tianFuObject == null) {
             return null;
         }
-        FightParamPool.addSkillRecord(fight, 7, effector.getId(), 323304);
-        final double percenta = (45.0 + 2.5 * tianFuObject.getLevel()) * (1.0 + dayInCeFight.getLevel() * 0.002) / 100.0;
-        final double percentb = 5.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-        effector.getBeAttackedMap().setv(String.valueOf(OTHER_SKILL_DICT_TYPE.DRUG_SHARE_PERCENT.getDist()), (Object)percenta);
-        effector.getBeAttackedMap().setv(String.valueOf(OTHER_SKILL_DICT_TYPE.DRUG_SHARE_CHANGE_PERCENT.getDist()), (Object)percentb);
+        FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 323304);
+        double percenta = (45.0 + 2.5 * (double)tianFuObject.getLevel()) * (1.0 + (double)dayInCeFight.getLevel() * 0.002) / 100.0;
+        double percentb = 5.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+        effector.getBeAttackedMap().setv(String.valueOf(OTHER_SKILL_DICT_TYPE.DRUG_SHARE_PERCENT.getDist()), Double.valueOf(percenta));
+        effector.getBeAttackedMap().setv(String.valueOf(OTHER_SKILL_DICT_TYPE.DRUG_SHARE_CHANGE_PERCENT.getDist()), Double.valueOf(percentb));
         return null;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.reflect;
 
 import org.slf4j.LoggerFactory;
@@ -7,10 +6,10 @@ import java.lang.reflect.Type;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Modifier;
 import org.apache.commons.lang3.Validate;
-import org.apache.poi.ss.usermodel.DateUtil;
 import com.kitty.common.utils.DateUtils;
-import java.util.Date;
+import org.apache.poi.ss.usermodel.DateUtil;
 import com.kitty.common.utils.text.Convert;
+import java.util.Date;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import org.apache.commons.lang3.StringUtils;
@@ -23,32 +22,35 @@ public class ReflectUtils
     private static final String CGLIB_CLASS_SEPARATOR = "$$";
     private static Logger logger;
     
-    public static <E> E invokeGetter(final Object obj, final String propertyName) {
+    public ReflectUtils() {
+    }
+    
+    public static <E> E invokeGetter(Object obj, String propertyName) {
         Object object = obj;
-        for (final String name : StringUtils.split(propertyName, ".")) {
-            final String getterMethodName = "get" + StringUtils.capitalize(name);
+        for (String name : StringUtils.split(propertyName, ".")) {
+            String getterMethodName = "get" + StringUtils.capitalize(name);
             object = invokeMethod(object, getterMethodName, new Class[0], new Object[0]);
         }
         return (E)object;
     }
     
-    public static <E> void invokeSetter(final Object obj, final String propertyName, final E value) {
+    public static <E> void invokeSetter(Object obj, String propertyName, E value) {
         Object object = obj;
-        final String[] names = StringUtils.split(propertyName, ".");
+        String[] names = StringUtils.split(propertyName, ".");
         for (int i = 0; i < names.length; ++i) {
             if (i < names.length - 1) {
-                final String getterMethodName = "get" + StringUtils.capitalize(names[i]);
+                String getterMethodName = "get" + StringUtils.capitalize(names[i]);
                 object = invokeMethod(object, getterMethodName, new Class[0], new Object[0]);
             }
             else {
-                final String setterMethodName = "set" + StringUtils.capitalize(names[i]);
+                String setterMethodName = "set" + StringUtils.capitalize(names[i]);
                 invokeMethodByName(object, setterMethodName, new Object[] { value });
             }
         }
     }
     
     public static <E> E getFieldValue(final Object obj, final String fieldName) {
-        final Field field = getAccessibleField(obj, fieldName);
+        Field field = getAccessibleField(obj, fieldName);
         if (field == null) {
             ReflectUtils.logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
             return null;
@@ -57,14 +59,14 @@ public class ReflectUtils
         try {
             result = (E)field.get(obj);
         }
-        catch (final IllegalAccessException e) {
+        catch (IllegalAccessException e) {
             ReflectUtils.logger.error("不可能抛出的异常{}", e.getMessage());
         }
         return result;
     }
     
     public static <E> void setFieldValue(final Object obj, final String fieldName, final E value) {
-        final Field field = getAccessibleField(obj, fieldName);
+        Field field = getAccessibleField(obj, fieldName);
         if (field == null) {
             ReflectUtils.logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
             return;
@@ -72,16 +74,17 @@ public class ReflectUtils
         try {
             field.set(obj, value);
         }
-        catch (final IllegalAccessException e) {
+        catch (IllegalAccessException e) {
             ReflectUtils.logger.error("不可能抛出的异常: {}", e.getMessage());
         }
+        return;
     }
     
     public static <E> E invokeMethod(final Object obj, final String methodName, final Class<?>[] parameterTypes, final Object[] args) {
         if (obj == null || methodName == null) {
             return null;
         }
-        final Method method = getAccessibleMethod(obj, methodName, parameterTypes);
+        Method method = getAccessibleMethod(obj, methodName, parameterTypes);
         if (method == null) {
             ReflectUtils.logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
             return null;
@@ -89,25 +92,25 @@ public class ReflectUtils
         try {
             return (E)method.invoke(obj, args);
         }
-        catch (final Exception e) {
-            final String msg = "method: " + method + ", obj: " + obj + ", args: " + args + "";
+        catch (Exception e) {
+            String msg = "method: " + method + ", obj: " + obj + ", args: " + args + "";
             throw convertReflectionExceptionToUnchecked(msg, e);
         }
     }
     
     public static <E> E invokeMethodByName(final Object obj, final String methodName, final Object[] args) {
-        final Method method = getAccessibleMethodByName(obj, methodName, args.length);
+        Method method = getAccessibleMethodByName(obj, methodName, args.length);
         if (method == null) {
             ReflectUtils.logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + methodName + "] 方法 ");
             return null;
         }
         try {
-            final Class<?>[] cs = method.getParameterTypes();
+            Class<?>[] cs = method.getParameterTypes();
             for (int i = 0; i < cs.length; ++i) {
                 if (args[i] != null && !args[i].getClass().equals(cs[i])) {
                     if (cs[i] == String.class) {
                         args[i] = Convert.toStr(args[i]);
-                        if (StringUtils.endsWith((CharSequence)args[i], ".0")) {
+                        if (StringUtils.endsWith((String)args[i], ".0")) {
                             args[i] = StringUtils.substringBefore((String)args[i], ".0");
                         }
                     }
@@ -124,7 +127,7 @@ public class ReflectUtils
                         args[i] = Convert.toFloat(args[i]);
                     }
                     else if (cs[i] == Date.class) {
-                        if (args[i] instanceof String) {
+                        if ((args[i] instanceof String)) {
                             args[i] = DateUtils.parseDate(args[i]);
                         }
                         else {
@@ -138,8 +141,8 @@ public class ReflectUtils
             }
             return (E)method.invoke(obj, args);
         }
-        catch (final Exception e) {
-            final String msg = "method: " + method + ", obj: " + obj + ", args: " + args + "";
+        catch (Exception e) {
+            String msg = "method: " + method + ", obj: " + obj + ", args: " + args + "";
             throw convertReflectionExceptionToUnchecked(msg, e);
         }
     }
@@ -148,17 +151,16 @@ public class ReflectUtils
         if (obj == null) {
             return null;
         }
-        Validate.notBlank((CharSequence)fieldName, "fieldName can't be blank");
+        Validate.notBlank(fieldName, "fieldName can't be blank", new Object[0]);
         Class<?> superClass = obj.getClass();
         while (superClass != Object.class) {
             try {
-                final Field field = superClass.getDeclaredField(fieldName);
+                Field field = superClass.getDeclaredField(fieldName);
                 makeAccessible(field);
                 return field;
             }
-            catch (final NoSuchFieldException e) {
+            catch (NoSuchFieldException e) {
                 superClass = superClass.getSuperclass();
-                continue;
             }
         }
         return null;
@@ -168,47 +170,49 @@ public class ReflectUtils
         if (obj == null) {
             return null;
         }
-        Validate.notBlank((CharSequence)methodName, "methodName can't be blank");
+        Validate.notBlank(methodName, "methodName can't be blank", new Object[0]);
         Class<?> searchType = obj.getClass();
         while (searchType != Object.class) {
             try {
-                final Method method = searchType.getDeclaredMethod(methodName, parameterTypes);
+                Method method = searchType.getDeclaredMethod(methodName, parameterTypes);
                 makeAccessible(method);
                 return method;
             }
-            catch (final NoSuchMethodException e) {
+            catch (NoSuchMethodException e) {
                 searchType = searchType.getSuperclass();
-                continue;
             }
         }
         return null;
     }
     
-    public static Method getAccessibleMethodByName(final Object obj, final String methodName, final int argsNum) {
+    public static Method getAccessibleMethodByName(final Object obj, final String methodName, int argsNum) {
         if (obj == null) {
             return null;
         }
-        Validate.notBlank((CharSequence)methodName, "methodName can't be blank");
+        Validate.notBlank(methodName, "methodName can't be blank", new Object[0]);
         for (Class<?> searchType = obj.getClass(); searchType != Object.class; searchType = searchType.getSuperclass()) {
-            final Method[] declaredMethods;
-            final Method[] methods = declaredMethods = searchType.getDeclaredMethods();
-            for (final Method method : declaredMethods) {
+            Method[] methods = searchType.getDeclaredMethods();
+            int length = methods.length;
+            int i = 0;
+            while (i < length) {
+                Method method = methods[i];
                 if (method.getName().equals(methodName) && method.getParameterTypes().length == argsNum) {
                     makeAccessible(method);
                     return method;
                 }
+                ++i;
             }
         }
         return null;
     }
     
-    public static void makeAccessible(final Method method) {
+    public static void makeAccessible(Method method) {
         if ((!Modifier.isPublic(method.getModifiers()) || !Modifier.isPublic(method.getDeclaringClass().getModifiers())) && !method.isAccessible()) {
             method.setAccessible(true);
         }
     }
     
-    public static void makeAccessible(final Field field) {
+    public static void makeAccessible(Field field) {
         if ((!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers()) || Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
             field.setAccessible(true);
         }
@@ -219,12 +223,12 @@ public class ReflectUtils
     }
     
     public static Class getClassGenricType(final Class clazz, final int index) {
-        final Type genType = clazz.getGenericSuperclass();
+        Type genType = clazz.getGenericSuperclass();
         if (!(genType instanceof ParameterizedType)) {
             ReflectUtils.logger.debug(clazz.getSimpleName() + "'s superclass not ParameterizedType");
             return Object.class;
         }
-        final Type[] params = ((ParameterizedType)genType).getActualTypeArguments();
+        Type[] params = ((ParameterizedType)genType).getActualTypeArguments();
         if (index >= params.length || index < 0) {
             ReflectUtils.logger.debug("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: " + params.length);
             return Object.class;
@@ -236,13 +240,13 @@ public class ReflectUtils
         return (Class)params[index];
     }
     
-    public static Class<?> getUserClass(final Object instance) {
+    public static Class<?> getUserClass(Object instance) {
         if (instance == null) {
             throw new RuntimeException("Instance must not be null");
         }
-        final Class clazz = instance.getClass();
+        Class clazz = instance.getClass();
         if (clazz != null && clazz.getName().contains("$$")) {
-            final Class<?> superClass = clazz.getSuperclass();
+            Class<?> superClass = clazz.getSuperclass();
             if (superClass != null && !Object.class.equals(superClass)) {
                 return superClass;
             }
@@ -250,11 +254,11 @@ public class ReflectUtils
         return clazz;
     }
     
-    public static RuntimeException convertReflectionExceptionToUnchecked(final String msg, final Exception e) {
+    public static RuntimeException convertReflectionExceptionToUnchecked(String msg, Exception e) {
         if (e instanceof IllegalAccessException || e instanceof IllegalArgumentException || e instanceof NoSuchMethodException) {
             return new IllegalArgumentException(msg, e);
         }
-        if (e instanceof InvocationTargetException) {
+        if ((e instanceof InvocationTargetException)) {
             return new RuntimeException(msg, ((InvocationTargetException)e).getTargetException());
         }
         return new RuntimeException(msg, e);

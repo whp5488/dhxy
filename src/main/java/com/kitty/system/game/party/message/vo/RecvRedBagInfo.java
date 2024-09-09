@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message.vo;
 
 public class RecvRedBagInfo
@@ -6,6 +5,9 @@ public class RecvRedBagInfo
     private String name;
     private int coin;
     private int time;
+    
+    public RecvRedBagInfo() {
+    }
     
     public String getName() {
         return this.name;

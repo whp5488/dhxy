@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat;
 
 import com.kitty.system.game.instruct.inter.NcFather;
@@ -30,25 +29,27 @@ public class Dispatcher
         this.logger = LoggerFactory.getLogger(Dispatcher.class);
     }
     
-    public boolean dispatch(final Role player, final String command) {
+    public boolean dispatch(Role player, String command) {
         return this.dispatchOther(player, command);
     }
     
-    private boolean dispatchOther(final Role player, final String command) {
-        final String[] args = command.split("==");
-        final String params = args[0];
+    private boolean dispatchOther(Role player, String command) {
+        String[] args = command.split("==");
+        String params = args[0];
         if (!params.startsWith("@")) {
             return false;
         }
-        final InstructService instructService = SpringUtils.getBean(InstructService.class);
-        final NcFather gmFather = instructService.getInstruct().get(params);
-        if (gmFather == null) {
+        InstructService instructService = (InstructService)SpringUtils.getBean(InstructService.class);
+        NcFather gmFather = (NcFather)instructService.getInstruct().get(params);
+        if (gmFather != null) {
+            if (this.serverService.getType() == 1) {
+                return true;
+            }
+            gmFather.handle(player, args[1].trim());
             return true;
         }
-        if (this.serverService.getType() == 1) {
+        else {
             return true;
         }
-        gmFather.handle(player, args[1].trim());
-        return true;
     }
 }

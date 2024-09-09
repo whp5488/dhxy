@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.dict;
 
 public interface FightParamDict
@@ -68,5 +67,9 @@ public interface FightParamDict
     public static final String attaClearStatus = "attaClearStatus";
     public static final String attaStatusMap = "attaStatusMap";
     public static final String guardTarget = "guardTarget";
+    public static final String objId = "objId";
+    public static final String round = "round";
+    public static final String isCoerceExit = "isCoerceExit";
+    public static final String isTriggerSupportPet = "isTriggerSupportPet";
     public static final String fallDownList = "fallDownList";
 }

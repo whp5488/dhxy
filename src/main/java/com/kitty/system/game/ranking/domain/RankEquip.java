@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.domain;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class RankEquip implements Serializable
@@ -42,7 +40,7 @@ public class RankEquip implements Serializable
         if (!(o instanceof RankEquip)) {
             return false;
         }
-        final RankEquip other = (RankEquip)o;
+        RankEquip other = (RankEquip)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -52,17 +50,9 @@ public class RankEquip implements Serializable
         if (this.getS() != other.getS()) {
             return false;
         }
-        final Object this$n = this.getN();
-        final Object other$n = other.getN();
-        if (this$n == null) {
-            if (other$n == null) {
-                return true;
-            }
-        }
-        else if (this$n.equals(other$n)) {
-            return true;
-        }
-        return false;
+        Object this$n = this.getN();
+        Object other$n = other.getN();
+        return (this$n != null) ? this$n.equals(other$n) : (other$n == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -71,12 +61,12 @@ public class RankEquip implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final long $i = this.getI();
+        long $i = this.getI();
         result = result * 59 + (int)($i >>> 32 ^ $i);
         result = result * 59 + this.getS();
-        final Object $n = this.getN();
+        Object $n = this.getN();
         result = result * 59 + (($n == null) ? 43 : $n.hashCode());
         return result;
     }
@@ -86,7 +76,6 @@ public class RankEquip implements Serializable
         return "RankEquip(i=" + this.getI() + ", s=" + this.getS() + ", n=" + this.getN() + ")";
     }
     
-    @ConstructorProperties({ "i", "s", "n" })
     public RankEquip(final long i, final int s, final String n) {
         this.i = i;
         this.s = s;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqConfirmResult extends Message
 {
     private String select;
+    
+    public ReqConfirmResult() {
+    }
     
     public String getSelect() {
         return this.select;
@@ -25,21 +27,13 @@ public class ReqConfirmResult extends Message
         if (!(o instanceof ReqConfirmResult)) {
             return false;
         }
-        final ReqConfirmResult other = (ReqConfirmResult)o;
+        ReqConfirmResult other = (ReqConfirmResult)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$select = this.getSelect();
-        final Object other$select = other.getSelect();
-        if (this$select == null) {
-            if (other$select == null) {
-                return true;
-            }
-        }
-        else if (this$select.equals(other$select)) {
-            return true;
-        }
-        return false;
+        Object this$select = this.getSelect();
+        Object other$select = other.getSelect();
+        return (this$select != null) ? this$select.equals(other$select) : (other$select == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqConfirmResult extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $select = this.getSelect();
+        Object $select = this.getSelect();
         result = result * 59 + (($select == null) ? 43 : $select.hashCode());
         return result;
     }

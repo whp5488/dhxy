@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.skill.domain;
 
 import java.util.HashMap;
@@ -10,7 +9,7 @@ public class SkillBox implements Serializable
     private Map<Integer, RoleSkill> skills;
     
     public SkillBox() {
-        this.skills = new HashMap<Integer, RoleSkill>();
+        this.skills = new HashMap();
     }
     
     public Map<Integer, RoleSkill> getSkills() {
@@ -29,21 +28,13 @@ public class SkillBox implements Serializable
         if (!(o instanceof SkillBox)) {
             return false;
         }
-        final SkillBox other = (SkillBox)o;
+        SkillBox other = (SkillBox)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$skills = this.getSkills();
-        final Object other$skills = other.getSkills();
-        if (this$skills == null) {
-            if (other$skills == null) {
-                return true;
-            }
-        }
-        else if (this$skills.equals(other$skills)) {
-            return true;
-        }
-        return false;
+        Object this$skills = this.getSkills();
+        Object other$skills = other.getSkills();
+        return (this$skills != null) ? this$skills.equals(other$skills) : (other$skills == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -52,9 +43,9 @@ public class SkillBox implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $skills = this.getSkills();
+        Object $skills = this.getSkills();
         result = result * 59 + (($skills == null) ? 43 : $skills.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import com.google.common.collect.Lists;
@@ -77,6 +76,10 @@ public enum CONVERT_DICT
     BURN_HURT("伤害加深", "DamageIncrease", PRO_DICT_TYPE.BURN_HURT.getDist()), 
     MAGIC_HIT_RATIO("法术命中", "SpellHitRate", PRO_DICT_TYPE.MAGIC_HIT_RATIO.getDist()), 
     SH_DK("伤害抵抗", "DamageReduce", PRO_DICT_TYPE.SH_DK.getDist()), 
+    K_FY_LMT("抗封印上限", "SealDefMaxLmt", PRO_DICT_TYPE.K_FY_LMT.getDist()), 
+    K_HS_LMT("抗昏睡上限", "SleepDefMaxLmt", PRO_DICT_TYPE.K_HS_LMT.getDist()), 
+    K_HL_LMT("抗混乱上限", "DisorderDefMaxLmt", PRO_DICT_TYPE.K_HL_LMT.getDist()), 
+    K_YW_LMT("抗遗忘上限", "ForgetDefMaxLmt", PRO_DICT_TYPE.K_YW_LMT.getDist()), 
     SHOCK_EXTENT("反震程度", "ReshockLevel", PRO_DICT_TYPE.SHOCK_EXTENT.getDist()), 
     RISE_D("加强毒", "PoisonEhan", PRO_DICT_TYPE.RISE_D.getDist()), 
     RISE_HL("加强混乱", "DisorderEhan", PRO_DICT_TYPE.RISE_HL.getDist()), 
@@ -102,42 +105,57 @@ public enum CONVERT_DICT
     private int pro;
     
     public static List<Integer> toList() {
-        final List list = Lists.newArrayList();
-        for (final CONVERT_DICT n : values()) {
-            list.add(n.getPro());
+        List<Integer> list = Lists.newArrayList();
+        for (CONVERT_DICT n : values()) {
+            list.add(Integer.valueOf(n.getPro()));
         }
         return list;
     }
     
-    public static int getDist(final String dist) {
+    public static int getDist(String dist) {
         int pro = -1;
-        for (final CONVERT_DICT n : values()) {
+        CONVERT_DICT[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            CONVERT_DICT n = values[i];
             if (n.dist.equals(dist)) {
                 pro = n.pro;
                 break;
             }
+            ++i;
         }
         return pro;
     }
     
-    public static String getName(final String dist) {
+    public static String getName(String dist) {
         String name = null;
-        for (final CONVERT_DICT n : values()) {
+        CONVERT_DICT[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            CONVERT_DICT n = values[i];
             if (n.dist.equals(dist)) {
                 name = n.getName();
                 break;
             }
+            ++i;
         }
         return name;
     }
     
-    public static String getPro(final int pro) {
+    public static String getPro(int pro) {
         String dist = null;
-        for (final CONVERT_DICT n : values()) {
+        CONVERT_DICT[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            CONVERT_DICT n = values[i];
             if (pro == n.pro) {
                 dist = n.dist;
                 break;
             }
+            ++i;
         }
         return dist;
     }

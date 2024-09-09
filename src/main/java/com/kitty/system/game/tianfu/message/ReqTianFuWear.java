@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -36,7 +34,6 @@ public class ReqTianFuWear extends Message
         this.grid = grid;
     }
     
-    @ConstructorProperties({ "type", "id", "grid" })
     public ReqTianFuWear(final byte type, final String id, final short grid) {
         this.type = type;
         this.id = id;

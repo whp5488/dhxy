@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqQlkRanking extends Message
 {
     private short qlkType;
+    
+    public ReqQlkRanking() {
+    }
     
     public short getQlkType() {
         return this.qlkType;
@@ -25,7 +27,7 @@ public class ReqQlkRanking extends Message
         if (!(o instanceof ReqQlkRanking)) {
             return false;
         }
-        final ReqQlkRanking other = (ReqQlkRanking)o;
+        ReqQlkRanking other = (ReqQlkRanking)o;
         return other.canEqual(this) && this.getQlkType() == other.getQlkType();
     }
     
@@ -35,7 +37,7 @@ public class ReqQlkRanking extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getQlkType();
         return result;
@@ -43,6 +45,6 @@ public class ReqQlkRanking extends Message
     
     @Override
     public String toString() {
-        return "ReqQlkRanking(qlkType=" + this.getQlkType() + ")";
+        return "ReqQlkRanking(qlkType=" + (int)this.getQlkType() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import java.util.HashMap;
@@ -31,17 +30,17 @@ public enum FACTION_PRO_DICT
     private double gain;
     
     public static List<Integer> toList() {
-        final List list = Lists.newArrayList();
-        for (final FACTION_PRO_DICT n : values()) {
-            list.add(n.getPro());
+        List<Integer> list = Lists.newArrayList();
+        for (FACTION_PRO_DICT n : values()) {
+            list.add(Integer.valueOf(n.getPro()));
         }
         return list;
     }
     
     public static Map<Integer, Double> toMap() {
-        final Map<Integer, Double> map = new HashMap<Integer, Double>();
-        for (final FACTION_PRO_DICT n : values()) {
-            map.put(n.getPro(), n.getGain());
+        Map<Integer, Double> map = new HashMap();
+        for (FACTION_PRO_DICT n : values()) {
+            map.put(Integer.valueOf(n.getPro()), Double.valueOf(n.getGain()));
         }
         return map;
     }

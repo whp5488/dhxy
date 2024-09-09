@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.facade;
 
 import com.kitty.system.game.bag.message.ReqUseIncense;
@@ -20,60 +19,68 @@ public class BagController
     @Autowired
     private BagService bagService;
     
+    public BagController() {
+    }
+    
     @RequestMapping
-    public void itemUse(final IoSession session, final ReqItemUse reqItemUse) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void itemUse(IoSession session, ReqItemUse reqItemUse) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         if (reqItemUse.getNum() <= 0) {
             return;
         }
-        final int pos = reqItemUse.getPos();
+        int pos = reqItemUse.getPos();
         this.bagService.useItem(role, pos, reqItemUse.getNum());
+        return;
     }
     
     @RequestMapping
-    public void drugUse(final IoSession session, final ReqDrugUse drugUse) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void drugUse(IoSession session, ReqDrugUse drugUse) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.bagService.useDrug(role, drugUse);
+        return;
     }
     
     @RequestMapping
-    public void itemOperate(final IoSession session, final ReqOperateItem operateItem) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void itemOperate(IoSession session, ReqOperateItem operateItem) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.bagService.itemOperate(role, operateItem);
+        return;
     }
     
     @RequestMapping
-    public void exchange(final IoSession session, final ReqExchange reqExchange) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void exchange(IoSession session, ReqExchange reqExchange) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.bagService.exchange(role, reqExchange);
+        return;
     }
     
     @RequestMapping
-    public void useIncense(final IoSession session, final ReqUseIncense reqUseIncense) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void useIncense(IoSession session, ReqUseIncense reqUseIncense) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         Integer residueTimes = reqUseIncense.getResidueTimes();
         if (residueTimes == null) {
-            residueTimes = 0;
+            residueTimes = Integer.valueOf(0);
         }
         Integer serial = reqUseIncense.getSerial();
-        if (serial == null || serial <= 0) {
-            serial = 90005;
+        if (serial == null || (int)serial <= 0) {
+            serial = Integer.valueOf(90005);
         }
-        this.bagService.useIncense(role, serial, residueTimes);
+        this.bagService.useIncense(role, (int)serial, (int)residueTimes);
+        return;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.pojo.field;
 
 import com.kitty.system.game.ranking.pojo.PetRankingSource;
@@ -24,18 +23,18 @@ public class PetClassifyRankingField extends RankingField
     public PetClassifyRankingField() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
     
-    public PetClassifyRankingField(final PetRankingSource obj, final int index, final byte serverId) {
+    public PetClassifyRankingField(PetRankingSource obj, int index, byte serverId) {
         super(index, serverId);
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.petId = obj.getPetId();
         this.roleId = obj.getRoleId();
         this.roleName = obj.getRoleName();
@@ -145,24 +144,16 @@ public class PetClassifyRankingField extends RankingField
         if (!(o instanceof PetClassifyRankingField)) {
             return false;
         }
-        final PetClassifyRankingField other = (PetClassifyRankingField)o;
+        PetClassifyRankingField other = (PetClassifyRankingField)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getPetId() != other.getPetId()) {
             return false;
         }
-        final Object this$roleName = this.getRoleName();
-        final Object other$roleName = other.getRoleName();
-        Label_0078: {
-            if (this$roleName == null) {
-                if (other$roleName == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$roleName.equals(other$roleName)) {
-                break Label_0078;
-            }
+        Object this$roleName = this.getRoleName();
+        Object other$roleName = other.getRoleName();
+        if (!((this$roleName != null) ? this$roleName.equals(other$roleName) : (other$roleName == null))) {
             return false;
         }
         if (this.getPetSerial() != other.getPetSerial()) {
@@ -183,43 +174,19 @@ public class PetClassifyRankingField extends RankingField
         if (this.getGem() != other.getGem()) {
             return false;
         }
-        final Object this$light_effect = this.getLight_effect();
-        final Object other$light_effect = other.getLight_effect();
-        Label_0193: {
-            if (this$light_effect == null) {
-                if (other$light_effect == null) {
-                    break Label_0193;
-                }
-            }
-            else if (this$light_effect.equals(other$light_effect)) {
-                break Label_0193;
-            }
+        Object this$light_effect = this.getLight_effect();
+        Object other$light_effect = other.getLight_effect();
+        if (!((this$light_effect != null) ? this$light_effect.equals(other$light_effect) : (other$light_effect == null))) {
             return false;
         }
-        final Object this$special_icon = this.getSpecial_icon();
-        final Object other$special_icon = other.getSpecial_icon();
-        Label_0230: {
-            if (this$special_icon == null) {
-                if (other$special_icon == null) {
-                    break Label_0230;
-                }
-            }
-            else if (this$special_icon.equals(other$special_icon)) {
-                break Label_0230;
-            }
+        Object this$special_icon = this.getSpecial_icon();
+        Object other$special_icon = other.getSpecial_icon();
+        if (!((this$special_icon != null) ? this$special_icon.equals(other$special_icon) : (other$special_icon == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -228,10 +195,10 @@ public class PetClassifyRankingField extends RankingField
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetId();
-        final Object $roleName = this.getRoleName();
+        Object $roleName = this.getRoleName();
         result = result * 59 + (($roleName == null) ? 43 : $roleName.hashCode());
         result = result * 59 + this.getPetSerial();
         result = result * 59 + this.getScore();
@@ -239,11 +206,11 @@ public class PetClassifyRankingField extends RankingField
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getWeapon();
         result = result * 59 + this.getGem();
-        final Object $light_effect = this.getLight_effect();
+        Object $light_effect = this.getLight_effect();
         result = result * 59 + (($light_effect == null) ? 43 : $light_effect.hashCode());
-        final Object $special_icon = this.getSpecial_icon();
+        Object $special_icon = this.getSpecial_icon();
         result = result * 59 + (($special_icon == null) ? 43 : $special_icon.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

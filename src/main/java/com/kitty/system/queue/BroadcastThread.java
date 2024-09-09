@@ -1,4 +1,3 @@
-
 package com.kitty.system.queue;
 
 import com.kitty.logs.LoggerUtils;
@@ -29,16 +28,16 @@ public class BroadcastThread
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("broadcast-service").newThread(new Worker()).start();
+        new NamedThreadFactory("broadcast-service").newThread(new BroadcastThread.Worker()).start();
         BroadcastThread.instance = this;
     }
     
-    public void add2Queue(final RespChat entity) {
+    public void add2Queue(RespChat entity) {
         this.queue.add(entity);
     }
     
-    public void add2Queue(final String msg) {
-        final RespChat res = new RespChat();
+    public void add2Queue(String msg) {
+        RespChat res = new RespChat();
         res.setMsg(msg);
         res.setType(19);
         this.queue.add(res);
@@ -50,11 +49,11 @@ public class BroadcastThread
         public void run() {
             while (BroadcastThread.this.run.get()) {
                 try {
-                    final RespChat take = BroadcastThread.this.queue.take();
+                    RespChat take = BroadcastThread.this.queue.take();
                     SenderUtils.pushChatMessage(take);
                     Thread.sleep(10000L);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("系统播报异常", e);
                 }
             }

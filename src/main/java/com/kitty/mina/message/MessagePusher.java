@@ -1,4 +1,3 @@
-
 package com.kitty.mina.message;
 
 import com.kitty.system.common.message.RespNotifyMiscEx;
@@ -12,69 +11,78 @@ import com.kitty.system.game.role.domain.Role;
 
 public class MessagePusher
 {
-    public static void pushMessage(final Role role, final Message message) {
+    public MessagePusher() {
+    }
+    
+    public static void pushMessage(Role role, Message message) {
         if (role == null) {
             return;
         }
-        pushMessage(role.getId(), message);
+        pushMessage((long)role.getId(), message);
+        return;
     }
     
-    public static void pushMessages(final Role role, final Message... messages) {
+    public static void pushMessages(Role role, Message... messages) {
         if (role == null) {
             return;
         }
-        for (final Message message : messages) {
-            pushMessage(role.getId(), message);
+        for (Message message : messages) {
+            pushMessage((long)role.getId(), message);
         }
+        return;
     }
     
-    public static void pushMessage(final long playerId, final Message message) {
-        final IoSession session = SessionUtils.getSessionBy(playerId);
+    public static void pushMessage(long playerId, Message message) {
+        IoSession session = SessionUtils.getSessionBy(playerId);
         pushMessage(session, message);
     }
     
-    public static void pushMessage(final IoSession session, final Message message) {
+    public static void pushMessage(IoSession session, Message message) {
         if (session == null || message == null || session.isClosing()) {
             return;
         }
         session.write(message);
+        return;
     }
     
-    public static void notify2Player(final IoSession session, final int i18nId, final Object... args) {
-        final P_I18nId idResource = I18nIdDataPool.ids.get(i18nId);
+    public static void notify2Player(IoSession session, int i18nId, Object... args) {
+        P_I18nId idResource = (P_I18nId)I18nIdDataPool.ids.get(Integer.valueOf(i18nId));
         if (idResource != null) {
-            final String content = String.format(idResource.getContent(), args);
+            String content = String.format(idResource.getContent(), args);
             pushMessage(session, new RespMsg(content));
         }
     }
     
-    public static void notify2Player(final Role role, final int i18nId, final Object... args) {
+    public static void notify2Player(Role role, int i18nId, Object... args) {
         if (role == null) {
             return;
         }
-        final IoSession session = SessionUtils.getSessionBy(role.getId());
+        IoSession session = SessionUtils.getSessionBy((long)role.getId());
         notify2Player(session, i18nId, args);
+        return;
     }
     
-    public static void notify2Lb(final Role role, final int i18nId, final Object... args) {
+    public static void notify2Lb(Role role, int i18nId, Object... args) {
         if (role == null) {
             return;
         }
-        final P_I18nId idResource = I18nIdDataPool.ids.get(i18nId);
+        P_I18nId idResource = (P_I18nId)I18nIdDataPool.ids.get(Integer.valueOf(i18nId));
         if (idResource != null) {
-            final String content = String.format(idResource.getContent(), args);
+            String content = String.format(idResource.getContent(), args);
             SpringUtils.getBroadcastThread().add2Queue(content);
         }
+        return;
     }
     
-    public static void notify2Misc(final Role role, final boolean flag, final int i18nId, final Object... args) {
+    public static void notify2Misc(Role role, boolean flag, int i18nId, Object... args) {
         if (role == null) {
             return;
         }
-        final P_I18nId idResource = I18nIdDataPool.ids.get(i18nId);
+        P_I18nId idResource = (P_I18nId)I18nIdDataPool.ids.get(Integer.valueOf(i18nId));
         if (idResource != null) {
-            final String content = String.format(idResource.getContent(), args);
+            String content = String.format(idResource.getContent(), args);
             pushMessage(role, new RespNotifyMiscEx(role.getId(), content, flag));
         }
+        return;
     }
 }

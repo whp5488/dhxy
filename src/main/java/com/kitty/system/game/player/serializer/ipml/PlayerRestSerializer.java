@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.serializer.ipml;
 
 import com.kitty.system.game.player.bean.PlayerRest;
@@ -10,20 +9,23 @@ import com.kitty.system.game.player.serializer.IPlayerPropSerializer;
 
 public class PlayerRestSerializer implements IPlayerPropSerializer
 {
+    public PlayerRestSerializer() {
+    }
+    
     @Override
-    public void serialize(final Role player) {
+    public void serialize(Role player) {
         if (player.getRest() != null) {
-            final String restJson = JsonUtils.object2String(player.getRest());
+            String restJson = JsonUtils.object2String(player.getRest());
             player.setRestJson(ZipUtil.compress(restJson));
         }
     }
     
     @Override
-    public void deserialize(final Role player) {
-        final String json = player.getRestJson();
-        if (StringUtils.isNotEmpty((CharSequence)json)) {
-            final String content = ZipUtil.uncompress(json);
-            player.setRest(JsonUtils.string2Object(content, PlayerRest.class));
+    public void deserialize(Role player) {
+        String json = player.getRestJson();
+        if (StringUtils.isNotEmpty(json)) {
+            String content = ZipUtil.uncompress(json);
+            player.setRest((PlayerRest)JsonUtils.string2Object(content, PlayerRest.class));
         }
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import java.util.Iterator;
@@ -19,15 +18,15 @@ public class RespAcsryEquip extends Message
     
     public RespAcsryEquip() {
         this.serial = 0;
-        this.list = new ArrayList<FieldProp>();
+        this.list = new ArrayList<>();
         this.productOrder = 0;
     }
     
-    public RespAcsryEquip(final BagEquip equip) {
+    public RespAcsryEquip(BagEquip equip) {
         this.serial = 0;
-        this.list = new ArrayList<FieldProp>();
+        this.list = new ArrayList<>();
         this.productOrder = 0;
-        for (final FiedEquip fiedEquip : equip.getField()) {
+        for (FiedEquip fiedEquip : equip.getField()) {
             this.list.add(new FieldProp(fiedEquip.getType(), fiedEquip.getValue()));
         }
         this.serial = equip.getType();

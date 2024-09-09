@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.HashMap;
@@ -276,7 +275,7 @@ public class SysDataMonster implements Serializable
         this.powerHp = new MonsterPower();
         this.powerAp = new MonsterPower();
         this.powerSp = new MonsterPower();
-        this.powerAttr = new HashMap<Integer, MonsterPower>();
+        this.powerAttr = new HashMap();
         this.vanish = 0;
         this.monsterType = -1;
     }
@@ -1161,326 +1160,134 @@ public class SysDataMonster implements Serializable
         if (!(o instanceof SysDataMonster)) {
             return false;
         }
-        final SysDataMonster other = (SysDataMonster)o;
+        SysDataMonster other = (SysDataMonster)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$close = this.getClose();
-        final Object other$close = other.getClose();
-        Label_0176: {
-            if (this$close == null) {
-                if (other$close == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$close.equals(other$close)) {
-                break Label_0176;
-            }
+        Object this$close = this.getClose();
+        Object other$close = other.getClose();
+        if (!((this$close != null) ? this$close.equals(other$close) : (other$close == null))) {
             return false;
         }
-        final Object this$skills = this.getSkills();
-        final Object other$skills = other.getSkills();
-        Label_0213: {
-            if (this$skills == null) {
-                if (other$skills == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$skills.equals(other$skills)) {
-                break Label_0213;
-            }
+        Object this$skills = this.getSkills();
+        Object other$skills = other.getSkills();
+        if (!((this$skills != null) ? this$skills.equals(other$skills) : (other$skills == null))) {
             return false;
         }
-        final Object this$judgedYe = this.getJudgedYe();
-        final Object other$judgedYe = other.getJudgedYe();
-        Label_0250: {
-            if (this$judgedYe == null) {
-                if (other$judgedYe == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$judgedYe.equals(other$judgedYe)) {
-                break Label_0250;
-            }
+        Object this$judgedYe = this.getJudgedYe();
+        Object other$judgedYe = other.getJudgedYe();
+        if (!((this$judgedYe != null) ? this$judgedYe.equals(other$judgedYe) : (other$judgedYe == null))) {
             return false;
         }
-        final Object this$pSkills = this.getPSkills();
-        final Object other$pSkills = other.getPSkills();
-        Label_0287: {
-            if (this$pSkills == null) {
-                if (other$pSkills == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$pSkills.equals(other$pSkills)) {
-                break Label_0287;
-            }
+        Object this$pSkills = this.getPSkills();
+        Object other$pSkills = other.getPSkills();
+        if (!((this$pSkills != null) ? this$pSkills.equals(other$pSkills) : (other$pSkills == null))) {
             return false;
         }
-        final Object this$shape = this.getShape();
-        final Object other$shape = other.getShape();
-        Label_0324: {
-            if (this$shape == null) {
-                if (other$shape == null) {
-                    break Label_0324;
-                }
-            }
-            else if (this$shape.equals(other$shape)) {
-                break Label_0324;
-            }
+        Object this$shape = this.getShape();
+        Object other$shape = other.getShape();
+        if (!((this$shape != null) ? this$shape.equals(other$shape) : (other$shape == null))) {
             return false;
         }
-        final Object this$fightTalk = this.getFightTalk();
-        final Object other$fightTalk = other.getFightTalk();
-        Label_0361: {
-            if (this$fightTalk == null) {
-                if (other$fightTalk == null) {
-                    break Label_0361;
-                }
-            }
-            else if (this$fightTalk.equals(other$fightTalk)) {
-                break Label_0361;
-            }
+        Object this$fightTalk = this.getFightTalk();
+        Object other$fightTalk = other.getFightTalk();
+        if (!((this$fightTalk != null) ? this$fightTalk.equals(other$fightTalk) : (other$fightTalk == null))) {
             return false;
         }
-        final Object this$isBoss = this.getIsBoss();
-        final Object other$isBoss = other.getIsBoss();
-        Label_0398: {
-            if (this$isBoss == null) {
-                if (other$isBoss == null) {
-                    break Label_0398;
-                }
-            }
-            else if (this$isBoss.equals(other$isBoss)) {
-                break Label_0398;
-            }
+        Object this$isBoss = this.getIsBoss();
+        Object other$isBoss = other.getIsBoss();
+        if (!((this$isBoss != null) ? this$isBoss.equals(other$isBoss) : (other$isBoss == null))) {
             return false;
         }
-        final Object this$hp = this.getHp();
-        final Object other$hp = other.getHp();
-        Label_0435: {
-            if (this$hp == null) {
-                if (other$hp == null) {
-                    break Label_0435;
-                }
-            }
-            else if (this$hp.equals(other$hp)) {
-                break Label_0435;
-            }
+        Object this$hp = this.getHp();
+        Object other$hp = other.getHp();
+        if (!((this$hp != null) ? this$hp.equals(other$hp) : (other$hp == null))) {
             return false;
         }
-        final Object this$mp = this.getMp();
-        final Object other$mp = other.getMp();
-        Label_0472: {
-            if (this$mp == null) {
-                if (other$mp == null) {
-                    break Label_0472;
-                }
-            }
-            else if (this$mp.equals(other$mp)) {
-                break Label_0472;
-            }
+        Object this$mp = this.getMp();
+        Object other$mp = other.getMp();
+        if (!((this$mp != null) ? this$mp.equals(other$mp) : (other$mp == null))) {
             return false;
         }
-        final Object this$ap = this.getAp();
-        final Object other$ap = other.getAp();
-        Label_0509: {
-            if (this$ap == null) {
-                if (other$ap == null) {
-                    break Label_0509;
-                }
-            }
-            else if (this$ap.equals(other$ap)) {
-                break Label_0509;
-            }
+        Object this$ap = this.getAp();
+        Object other$ap = other.getAp();
+        if (!((this$ap != null) ? this$ap.equals(other$ap) : (other$ap == null))) {
             return false;
         }
-        final Object this$sp = this.getSp();
-        final Object other$sp = other.getSp();
-        Label_0546: {
-            if (this$sp == null) {
-                if (other$sp == null) {
-                    break Label_0546;
-                }
-            }
-            else if (this$sp.equals(other$sp)) {
-                break Label_0546;
-            }
+        Object this$sp = this.getSp();
+        Object other$sp = other.getSp();
+        if (!((this$sp != null) ? this$sp.equals(other$sp) : (other$sp == null))) {
             return false;
         }
-        final Object this$wxJin = this.getWxJin();
-        final Object other$wxJin = other.getWxJin();
-        Label_0583: {
-            if (this$wxJin == null) {
-                if (other$wxJin == null) {
-                    break Label_0583;
-                }
-            }
-            else if (this$wxJin.equals(other$wxJin)) {
-                break Label_0583;
-            }
+        Object this$wxJin = this.getWxJin();
+        Object other$wxJin = other.getWxJin();
+        if (!((this$wxJin != null) ? this$wxJin.equals(other$wxJin) : (other$wxJin == null))) {
             return false;
         }
-        final Object this$wxMu = this.getWxMu();
-        final Object other$wxMu = other.getWxMu();
-        Label_0620: {
-            if (this$wxMu == null) {
-                if (other$wxMu == null) {
-                    break Label_0620;
-                }
-            }
-            else if (this$wxMu.equals(other$wxMu)) {
-                break Label_0620;
-            }
+        Object this$wxMu = this.getWxMu();
+        Object other$wxMu = other.getWxMu();
+        if (!((this$wxMu != null) ? this$wxMu.equals(other$wxMu) : (other$wxMu == null))) {
             return false;
         }
-        final Object this$wxShui = this.getWxShui();
-        final Object other$wxShui = other.getWxShui();
-        Label_0657: {
-            if (this$wxShui == null) {
-                if (other$wxShui == null) {
-                    break Label_0657;
-                }
-            }
-            else if (this$wxShui.equals(other$wxShui)) {
-                break Label_0657;
-            }
+        Object this$wxShui = this.getWxShui();
+        Object other$wxShui = other.getWxShui();
+        if (!((this$wxShui != null) ? this$wxShui.equals(other$wxShui) : (other$wxShui == null))) {
             return false;
         }
-        final Object this$wxHuo = this.getWxHuo();
-        final Object other$wxHuo = other.getWxHuo();
-        Label_0694: {
-            if (this$wxHuo == null) {
-                if (other$wxHuo == null) {
-                    break Label_0694;
-                }
-            }
-            else if (this$wxHuo.equals(other$wxHuo)) {
-                break Label_0694;
-            }
+        Object this$wxHuo = this.getWxHuo();
+        Object other$wxHuo = other.getWxHuo();
+        if (!((this$wxHuo != null) ? this$wxHuo.equals(other$wxHuo) : (other$wxHuo == null))) {
             return false;
         }
-        final Object this$wxTu = this.getWxTu();
-        final Object other$wxTu = other.getWxTu();
-        Label_0731: {
-            if (this$wxTu == null) {
-                if (other$wxTu == null) {
-                    break Label_0731;
-                }
-            }
-            else if (this$wxTu.equals(other$wxTu)) {
-                break Label_0731;
-            }
+        Object this$wxTu = this.getWxTu();
+        Object other$wxTu = other.getWxTu();
+        if (!((this$wxTu != null) ? this$wxTu.equals(other$wxTu) : (other$wxTu == null))) {
             return false;
         }
-        final Object this$levelMode = this.getLevelMode();
-        final Object other$levelMode = other.getLevelMode();
-        Label_0768: {
-            if (this$levelMode == null) {
-                if (other$levelMode == null) {
-                    break Label_0768;
-                }
-            }
-            else if (this$levelMode.equals(other$levelMode)) {
-                break Label_0768;
-            }
+        Object this$levelMode = this.getLevelMode();
+        Object other$levelMode = other.getLevelMode();
+        if (!((this$levelMode != null) ? this$levelMode.equals(other$levelMode) : (other$levelMode == null))) {
             return false;
         }
-        final Object this$grade = this.getGrade();
-        final Object other$grade = other.getGrade();
-        Label_0805: {
-            if (this$grade == null) {
-                if (other$grade == null) {
-                    break Label_0805;
-                }
-            }
-            else if (this$grade.equals(other$grade)) {
-                break Label_0805;
-            }
+        Object this$grade = this.getGrade();
+        Object other$grade = other.getGrade();
+        if (!((this$grade != null) ? this$grade.equals(other$grade) : (other$grade == null))) {
             return false;
         }
-        final Object this$des = this.getDes();
-        final Object other$des = other.getDes();
-        Label_0842: {
-            if (this$des == null) {
-                if (other$des == null) {
-                    break Label_0842;
-                }
-            }
-            else if (this$des.equals(other$des)) {
-                break Label_0842;
-            }
+        Object this$des = this.getDes();
+        Object other$des = other.getDes();
+        if (!((this$des != null) ? this$des.equals(other$des) : (other$des == null))) {
             return false;
         }
         if (Double.compare(this.getFsGjGl(), other.getFsGjGl()) != 0) {
             return false;
         }
-        final Object this$jnSld = this.getJnSld();
-        final Object other$jnSld = other.getJnSld();
-        Label_0895: {
-            if (this$jnSld == null) {
-                if (other$jnSld == null) {
-                    break Label_0895;
-                }
-            }
-            else if (this$jnSld.equals(other$jnSld)) {
-                break Label_0895;
-            }
+        Object this$jnSld = this.getJnSld();
+        Object other$jnSld = other.getJnSld();
+        if (!((this$jnSld != null) ? this$jnSld.equals(other$jnSld) : (other$jnSld == null))) {
             return false;
         }
         if (Double.compare(this.getLwGjGl(), other.getLwGjGl()) != 0) {
             return false;
         }
-        final Object this$escapeRound = this.getEscapeRound();
-        final Object other$escapeRound = other.getEscapeRound();
-        Label_0948: {
-            if (this$escapeRound == null) {
-                if (other$escapeRound == null) {
-                    break Label_0948;
-                }
-            }
-            else if (this$escapeRound.equals(other$escapeRound)) {
-                break Label_0948;
-            }
+        Object this$escapeRound = this.getEscapeRound();
+        Object other$escapeRound = other.getEscapeRound();
+        if (!((this$escapeRound != null) ? this$escapeRound.equals(other$escapeRound) : (other$escapeRound == null))) {
             return false;
         }
         if (Double.compare(this.getEscapeRatio(), other.getEscapeRatio()) != 0) {
@@ -1537,33 +1344,17 @@ public class SysDataMonster implements Serializable
         if (Double.compare(this.getPLjPro(), other.getPLjPro()) != 0) {
             return false;
         }
-        final Object this$pLjTimes = this.getPLjTimes();
-        final Object other$pLjTimes = other.getPLjTimes();
-        Label_1273: {
-            if (this$pLjTimes == null) {
-                if (other$pLjTimes == null) {
-                    break Label_1273;
-                }
-            }
-            else if (this$pLjTimes.equals(other$pLjTimes)) {
-                break Label_1273;
-            }
+        Object this$pLjTimes = this.getPLjTimes();
+        Object other$pLjTimes = other.getPLjTimes();
+        if (!((this$pLjTimes != null) ? this$pLjTimes.equals(other$pLjTimes) : (other$pLjTimes == null))) {
             return false;
         }
         if (Double.compare(this.getPWlFjPro(), other.getPWlFjPro()) != 0) {
             return false;
         }
-        final Object this$pWlFjTimes = this.getPWlFjTimes();
-        final Object other$pWlFjTimes = other.getPWlFjTimes();
-        Label_1326: {
-            if (this$pWlFjTimes == null) {
-                if (other$pWlFjTimes == null) {
-                    break Label_1326;
-                }
-            }
-            else if (this$pWlFjTimes.equals(other$pWlFjTimes)) {
-                break Label_1326;
-            }
+        Object this$pWlFjTimes = this.getPWlFjTimes();
+        Object other$pWlFjTimes = other.getPWlFjTimes();
+        if (!((this$pWlFjTimes != null) ? this$pWlFjTimes.equals(other$pWlFjTimes) : (other$pWlFjTimes == null))) {
             return false;
         }
         if (Double.compare(this.getKHunLuan(), other.getKHunLuan()) != 0) {
@@ -1644,30 +1435,14 @@ public class SysDataMonster implements Serializable
         if (this.getPos() != other.getPos()) {
             return false;
         }
-        final Object this$selectParameterList = this.getSelectParameterList();
-        final Object other$selectParameterList = other.getSelectParameterList();
-        Label_1776: {
-            if (this$selectParameterList == null) {
-                if (other$selectParameterList == null) {
-                    break Label_1776;
-                }
-            }
-            else if (this$selectParameterList.equals(other$selectParameterList)) {
-                break Label_1776;
-            }
+        Object this$selectParameterList = this.getSelectParameterList();
+        Object other$selectParameterList = other.getSelectParameterList();
+        if (!((this$selectParameterList != null) ? this$selectParameterList.equals(other$selectParameterList) : (other$selectParameterList == null))) {
             return false;
         }
-        final Object this$itemUseParameterList = this.getItemUseParameterList();
-        final Object other$itemUseParameterList = other.getItemUseParameterList();
-        Label_1813: {
-            if (this$itemUseParameterList == null) {
-                if (other$itemUseParameterList == null) {
-                    break Label_1813;
-                }
-            }
-            else if (this$itemUseParameterList.equals(other$itemUseParameterList)) {
-                break Label_1813;
-            }
+        Object this$itemUseParameterList = this.getItemUseParameterList();
+        Object other$itemUseParameterList = other.getItemUseParameterList();
+        if (!((this$itemUseParameterList != null) ? this$itemUseParameterList.equals(other$itemUseParameterList) : (other$itemUseParameterList == null))) {
             return false;
         }
         if (this.getAttr() != other.getAttr()) {
@@ -1754,56 +1529,24 @@ public class SysDataMonster implements Serializable
         if (Double.compare(this.getConWood(), other.getConWood()) != 0) {
             return false;
         }
-        final Object this$powerHp = this.getPowerHp();
-        final Object other$powerHp = other.getPowerHp();
-        Label_2292: {
-            if (this$powerHp == null) {
-                if (other$powerHp == null) {
-                    break Label_2292;
-                }
-            }
-            else if (this$powerHp.equals(other$powerHp)) {
-                break Label_2292;
-            }
+        Object this$powerHp = this.getPowerHp();
+        Object other$powerHp = other.getPowerHp();
+        if (!((this$powerHp != null) ? this$powerHp.equals(other$powerHp) : (other$powerHp == null))) {
             return false;
         }
-        final Object this$powerAp = this.getPowerAp();
-        final Object other$powerAp = other.getPowerAp();
-        Label_2329: {
-            if (this$powerAp == null) {
-                if (other$powerAp == null) {
-                    break Label_2329;
-                }
-            }
-            else if (this$powerAp.equals(other$powerAp)) {
-                break Label_2329;
-            }
+        Object this$powerAp = this.getPowerAp();
+        Object other$powerAp = other.getPowerAp();
+        if (!((this$powerAp != null) ? this$powerAp.equals(other$powerAp) : (other$powerAp == null))) {
             return false;
         }
-        final Object this$powerSp = this.getPowerSp();
-        final Object other$powerSp = other.getPowerSp();
-        Label_2366: {
-            if (this$powerSp == null) {
-                if (other$powerSp == null) {
-                    break Label_2366;
-                }
-            }
-            else if (this$powerSp.equals(other$powerSp)) {
-                break Label_2366;
-            }
+        Object this$powerSp = this.getPowerSp();
+        Object other$powerSp = other.getPowerSp();
+        if (!((this$powerSp != null) ? this$powerSp.equals(other$powerSp) : (other$powerSp == null))) {
             return false;
         }
-        final Object this$powerAttr = this.getPowerAttr();
-        final Object other$powerAttr = other.getPowerAttr();
-        if (this$powerAttr == null) {
-            if (other$powerAttr == null) {
-                return this.getVanish() == other.getVanish() && this.getMonsterType() == other.getMonsterType();
-            }
-        }
-        else if (this$powerAttr.equals(other$powerAttr)) {
-            return this.getVanish() == other.getVanish() && this.getMonsterType() == other.getMonsterType();
-        }
-        return false;
+        Object this$powerAttr = this.getPowerAttr();
+        Object other$powerAttr = other.getPowerAttr();
+        return ((this$powerAttr != null) ? this$powerAttr.equals(other$powerAttr) : (other$powerAttr == null)) && this.getVanish() == other.getVanish() && this.getMonsterType() == other.getMonsterType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -1812,218 +1555,218 @@ public class SysDataMonster implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $close = this.getClose();
+        Object $close = this.getClose();
         result = result * 59 + (($close == null) ? 43 : $close.hashCode());
-        final Object $skills = this.getSkills();
+        Object $skills = this.getSkills();
         result = result * 59 + (($skills == null) ? 43 : $skills.hashCode());
-        final Object $judgedYe = this.getJudgedYe();
+        Object $judgedYe = this.getJudgedYe();
         result = result * 59 + (($judgedYe == null) ? 43 : $judgedYe.hashCode());
-        final Object $pSkills = this.getPSkills();
+        Object $pSkills = this.getPSkills();
         result = result * 59 + (($pSkills == null) ? 43 : $pSkills.hashCode());
-        final Object $shape = this.getShape();
+        Object $shape = this.getShape();
         result = result * 59 + (($shape == null) ? 43 : $shape.hashCode());
-        final Object $fightTalk = this.getFightTalk();
+        Object $fightTalk = this.getFightTalk();
         result = result * 59 + (($fightTalk == null) ? 43 : $fightTalk.hashCode());
-        final Object $isBoss = this.getIsBoss();
+        Object $isBoss = this.getIsBoss();
         result = result * 59 + (($isBoss == null) ? 43 : $isBoss.hashCode());
-        final Object $hp = this.getHp();
+        Object $hp = this.getHp();
         result = result * 59 + (($hp == null) ? 43 : $hp.hashCode());
-        final Object $mp = this.getMp();
+        Object $mp = this.getMp();
         result = result * 59 + (($mp == null) ? 43 : $mp.hashCode());
-        final Object $ap = this.getAp();
+        Object $ap = this.getAp();
         result = result * 59 + (($ap == null) ? 43 : $ap.hashCode());
-        final Object $sp = this.getSp();
+        Object $sp = this.getSp();
         result = result * 59 + (($sp == null) ? 43 : $sp.hashCode());
-        final Object $wxJin = this.getWxJin();
+        Object $wxJin = this.getWxJin();
         result = result * 59 + (($wxJin == null) ? 43 : $wxJin.hashCode());
-        final Object $wxMu = this.getWxMu();
+        Object $wxMu = this.getWxMu();
         result = result * 59 + (($wxMu == null) ? 43 : $wxMu.hashCode());
-        final Object $wxShui = this.getWxShui();
+        Object $wxShui = this.getWxShui();
         result = result * 59 + (($wxShui == null) ? 43 : $wxShui.hashCode());
-        final Object $wxHuo = this.getWxHuo();
+        Object $wxHuo = this.getWxHuo();
         result = result * 59 + (($wxHuo == null) ? 43 : $wxHuo.hashCode());
-        final Object $wxTu = this.getWxTu();
+        Object $wxTu = this.getWxTu();
         result = result * 59 + (($wxTu == null) ? 43 : $wxTu.hashCode());
-        final Object $levelMode = this.getLevelMode();
+        Object $levelMode = this.getLevelMode();
         result = result * 59 + (($levelMode == null) ? 43 : $levelMode.hashCode());
-        final Object $grade = this.getGrade();
+        Object $grade = this.getGrade();
         result = result * 59 + (($grade == null) ? 43 : $grade.hashCode());
-        final Object $des = this.getDes();
+        Object $des = this.getDes();
         result = result * 59 + (($des == null) ? 43 : $des.hashCode());
-        final long $fsGjGl = Double.doubleToLongBits(this.getFsGjGl());
+        long $fsGjGl = Double.doubleToLongBits(this.getFsGjGl());
         result = result * 59 + (int)($fsGjGl >>> 32 ^ $fsGjGl);
-        final Object $jnSld = this.getJnSld();
+        Object $jnSld = this.getJnSld();
         result = result * 59 + (($jnSld == null) ? 43 : $jnSld.hashCode());
-        final long $lwGjGl = Double.doubleToLongBits(this.getLwGjGl());
+        long $lwGjGl = Double.doubleToLongBits(this.getLwGjGl());
         result = result * 59 + (int)($lwGjGl >>> 32 ^ $lwGjGl);
-        final Object $escapeRound = this.getEscapeRound();
+        Object $escapeRound = this.getEscapeRound();
         result = result * 59 + (($escapeRound == null) ? 43 : $escapeRound.hashCode());
-        final long $escapeRatio = Double.doubleToLongBits(this.getEscapeRatio());
+        long $escapeRatio = Double.doubleToLongBits(this.getEscapeRatio());
         result = result * 59 + (int)($escapeRatio >>> 32 ^ $escapeRatio);
-        final long $cEscapeRatio = Double.doubleToLongBits(this.getCEscapeRatio());
+        long $cEscapeRatio = Double.doubleToLongBits(this.getCEscapeRatio());
         result = result * 59 + (int)($cEscapeRatio >>> 32 ^ $cEscapeRatio);
-        final long $pdeFend = Double.doubleToLongBits(this.getPdeFend());
+        long $pdeFend = Double.doubleToLongBits(this.getPdeFend());
         result = result * 59 + (int)($pdeFend >>> 32 ^ $pdeFend);
-        final long $pPofangPro = Double.doubleToLongBits(this.getPPofangPro());
+        long $pPofangPro = Double.doubleToLongBits(this.getPPofangPro());
         result = result * 59 + (int)($pPofangPro >>> 32 ^ $pPofangPro);
-        final long $pPofang = Double.doubleToLongBits(this.getPPofang());
+        long $pPofang = Double.doubleToLongBits(this.getPPofang());
         result = result * 59 + (int)($pPofang >>> 32 ^ $pPofang);
-        final long $pFanZhen = Double.doubleToLongBits(this.getPFanZhen());
+        long $pFanZhen = Double.doubleToLongBits(this.getPFanZhen());
         result = result * 59 + (int)($pFanZhen >>> 32 ^ $pFanZhen);
-        final long $pFanZhenPro = Double.doubleToLongBits(this.getPFanZhenPro());
+        long $pFanZhenPro = Double.doubleToLongBits(this.getPFanZhenPro());
         result = result * 59 + (int)($pFanZhenPro >>> 32 ^ $pFanZhenPro);
-        final long $fPdeFend = Double.doubleToLongBits(this.getFPdeFend());
+        long $fPdeFend = Double.doubleToLongBits(this.getFPdeFend());
         result = result * 59 + (int)($fPdeFend >>> 32 ^ $fPdeFend);
-        final long $pAcc = Double.doubleToLongBits(this.getPAcc());
+        long $pAcc = Double.doubleToLongBits(this.getPAcc());
         result = result * 59 + (int)($pAcc >>> 32 ^ $pAcc);
-        final long $pSbl = Double.doubleToLongBits(this.getPSbl());
+        long $pSbl = Double.doubleToLongBits(this.getPSbl());
         result = result * 59 + (int)($pSbl >>> 32 ^ $pSbl);
-        final long $pKuangBao = Double.doubleToLongBits(this.getPKuangBao());
+        long $pKuangBao = Double.doubleToLongBits(this.getPKuangBao());
         result = result * 59 + (int)($pKuangBao >>> 32 ^ $pKuangBao);
-        final long $fengOdd = Double.doubleToLongBits(this.getFengOdd());
+        long $fengOdd = Double.doubleToLongBits(this.getFengOdd());
         result = result * 59 + (int)($fengOdd >>> 32 ^ $fengOdd);
-        final long $leiOdd = Double.doubleToLongBits(this.getLeiOdd());
+        long $leiOdd = Double.doubleToLongBits(this.getLeiOdd());
         result = result * 59 + (int)($leiOdd >>> 32 ^ $leiOdd);
-        final long $shuiOdd = Double.doubleToLongBits(this.getShuiOdd());
+        long $shuiOdd = Double.doubleToLongBits(this.getShuiOdd());
         result = result * 59 + (int)($shuiOdd >>> 32 ^ $shuiOdd);
-        final long $huoOdd = Double.doubleToLongBits(this.getHuoOdd());
+        long $huoOdd = Double.doubleToLongBits(this.getHuoOdd());
         result = result * 59 + (int)($huoOdd >>> 32 ^ $huoOdd);
-        final long $guiHuoOdd = Double.doubleToLongBits(this.getGuiHuoOdd());
+        long $guiHuoOdd = Double.doubleToLongBits(this.getGuiHuoOdd());
         result = result * 59 + (int)($guiHuoOdd >>> 32 ^ $guiHuoOdd);
-        final long $sanShiOdd = Double.doubleToLongBits(this.getSanShiOdd());
+        long $sanShiOdd = Double.doubleToLongBits(this.getSanShiOdd());
         result = result * 59 + (int)($sanShiOdd >>> 32 ^ $sanShiOdd);
-        final long $pLjPro = Double.doubleToLongBits(this.getPLjPro());
+        long $pLjPro = Double.doubleToLongBits(this.getPLjPro());
         result = result * 59 + (int)($pLjPro >>> 32 ^ $pLjPro);
-        final Object $pLjTimes = this.getPLjTimes();
+        Object $pLjTimes = this.getPLjTimes();
         result = result * 59 + (($pLjTimes == null) ? 43 : $pLjTimes.hashCode());
-        final long $pWlFjPro = Double.doubleToLongBits(this.getPWlFjPro());
+        long $pWlFjPro = Double.doubleToLongBits(this.getPWlFjPro());
         result = result * 59 + (int)($pWlFjPro >>> 32 ^ $pWlFjPro);
-        final Object $pWlFjTimes = this.getPWlFjTimes();
+        Object $pWlFjTimes = this.getPWlFjTimes();
         result = result * 59 + (($pWlFjTimes == null) ? 43 : $pWlFjTimes.hashCode());
-        final long $kHunLuan = Double.doubleToLongBits(this.getKHunLuan());
+        long $kHunLuan = Double.doubleToLongBits(this.getKHunLuan());
         result = result * 59 + (int)($kHunLuan >>> 32 ^ $kHunLuan);
-        final long $kFengYin = Double.doubleToLongBits(this.getKFengYin());
+        long $kFengYin = Double.doubleToLongBits(this.getKFengYin());
         result = result * 59 + (int)($kFengYin >>> 32 ^ $kFengYin);
-        final long $kHunShui = Double.doubleToLongBits(this.getKHunShui());
+        long $kHunShui = Double.doubleToLongBits(this.getKHunShui());
         result = result * 59 + (int)($kHunShui >>> 32 ^ $kHunShui);
-        final long $kZhongDu = Double.doubleToLongBits(this.getKZhongDu());
+        long $kZhongDu = Double.doubleToLongBits(this.getKZhongDu());
         result = result * 59 + (int)($kZhongDu >>> 32 ^ $kZhongDu);
-        final long $kYiWang = Double.doubleToLongBits(this.getKYiWang());
+        long $kYiWang = Double.doubleToLongBits(this.getKYiWang());
         result = result * 59 + (int)($kYiWang >>> 32 ^ $kYiWang);
-        final long $kGuiHuo = Double.doubleToLongBits(this.getKGuiHuo());
+        long $kGuiHuo = Double.doubleToLongBits(this.getKGuiHuo());
         result = result * 59 + (int)($kGuiHuo >>> 32 ^ $kGuiHuo);
-        final long $kSanShi = Double.doubleToLongBits(this.getKSanShi());
+        long $kSanShi = Double.doubleToLongBits(this.getKSanShi());
         result = result * 59 + (int)($kSanShi >>> 32 ^ $kSanShi);
-        final long $kShuaiRuo = Double.doubleToLongBits(this.getKShuaiRuo());
+        long $kShuaiRuo = Double.doubleToLongBits(this.getKShuaiRuo());
         result = result * 59 + (int)($kShuaiRuo >>> 32 ^ $kShuaiRuo);
-        final long $kZhenShe = Double.doubleToLongBits(this.getKZhenShe());
+        long $kZhenShe = Double.doubleToLongBits(this.getKZhenShe());
         result = result * 59 + (int)($kZhenShe >>> 32 ^ $kZhenShe);
-        final long $kFeng = Double.doubleToLongBits(this.getKFeng());
+        long $kFeng = Double.doubleToLongBits(this.getKFeng());
         result = result * 59 + (int)($kFeng >>> 32 ^ $kFeng);
-        final long $kHuo = Double.doubleToLongBits(this.getKHuo());
+        long $kHuo = Double.doubleToLongBits(this.getKHuo());
         result = result * 59 + (int)($kHuo >>> 32 ^ $kHuo);
-        final long $kShui = Double.doubleToLongBits(this.getKShui());
+        long $kShui = Double.doubleToLongBits(this.getKShui());
         result = result * 59 + (int)($kShui >>> 32 ^ $kShui);
-        final long $kLei = Double.doubleToLongBits(this.getKLei());
+        long $kLei = Double.doubleToLongBits(this.getKLei());
         result = result * 59 + (int)($kLei >>> 32 ^ $kLei);
-        final long $fkFeng = Double.doubleToLongBits(this.getFkFeng());
+        long $fkFeng = Double.doubleToLongBits(this.getFkFeng());
         result = result * 59 + (int)($fkFeng >>> 32 ^ $fkFeng);
-        final long $fkHuo = Double.doubleToLongBits(this.getFkHuo());
+        long $fkHuo = Double.doubleToLongBits(this.getFkHuo());
         result = result * 59 + (int)($fkHuo >>> 32 ^ $fkHuo);
-        final long $fkShui = Double.doubleToLongBits(this.getFkShui());
+        long $fkShui = Double.doubleToLongBits(this.getFkShui());
         result = result * 59 + (int)($fkShui >>> 32 ^ $fkShui);
-        final long $fkLei = Double.doubleToLongBits(this.getFkLei());
+        long $fkLei = Double.doubleToLongBits(this.getFkLei());
         result = result * 59 + (int)($fkLei >>> 32 ^ $fkLei);
-        final long $fkZhongDu = Double.doubleToLongBits(this.getFkZhongDu());
+        long $fkZhongDu = Double.doubleToLongBits(this.getFkZhongDu());
         result = result * 59 + (int)($fkZhongDu >>> 32 ^ $fkZhongDu);
-        final long $fkHunLuan = Double.doubleToLongBits(this.getFkHunLuan());
+        long $fkHunLuan = Double.doubleToLongBits(this.getFkHunLuan());
         result = result * 59 + (int)($fkHunLuan >>> 32 ^ $fkHunLuan);
-        final long $fkFengYin = Double.doubleToLongBits(this.getFkFengYin());
+        long $fkFengYin = Double.doubleToLongBits(this.getFkFengYin());
         result = result * 59 + (int)($fkFengYin >>> 32 ^ $fkFengYin);
-        final long $fkHunShui = Double.doubleToLongBits(this.getFkHunShui());
+        long $fkHunShui = Double.doubleToLongBits(this.getFkHunShui());
         result = result * 59 + (int)($fkHunShui >>> 32 ^ $fkHunShui);
-        final long $fkYiWang = Double.doubleToLongBits(this.getFkYiWang());
+        long $fkYiWang = Double.doubleToLongBits(this.getFkYiWang());
         result = result * 59 + (int)($fkYiWang >>> 32 ^ $fkYiWang);
-        final long $fkGuiHuo = Double.doubleToLongBits(this.getFkGuiHuo());
+        long $fkGuiHuo = Double.doubleToLongBits(this.getFkGuiHuo());
         result = result * 59 + (int)($fkGuiHuo >>> 32 ^ $fkGuiHuo);
-        final long $fkZhenShe = Double.doubleToLongBits(this.getFkZhenShe());
+        long $fkZhenShe = Double.doubleToLongBits(this.getFkZhenShe());
         result = result * 59 + (int)($fkZhenShe >>> 32 ^ $fkZhenShe);
-        final long $fkSanShi = Double.doubleToLongBits(this.getFkSanShi());
+        long $fkSanShi = Double.doubleToLongBits(this.getFkSanShi());
         result = result * 59 + (int)($fkSanShi >>> 32 ^ $fkSanShi);
         result = result * 59 + this.getPos();
-        final Object $selectParameterList = this.getSelectParameterList();
+        Object $selectParameterList = this.getSelectParameterList();
         result = result * 59 + (($selectParameterList == null) ? 43 : $selectParameterList.hashCode());
-        final Object $itemUseParameterList = this.getItemUseParameterList();
+        Object $itemUseParameterList = this.getItemUseParameterList();
         result = result * 59 + (($itemUseParameterList == null) ? 43 : $itemUseParameterList.hashCode());
         result = result * 59 + this.getAttr();
         result = result * 59 + this.getType();
-        final long $adAtkEhan = Double.doubleToLongBits(this.getAdAtkEhan());
+        long $adAtkEhan = Double.doubleToLongBits(this.getAdAtkEhan());
         result = result * 59 + (int)($adAtkEhan >>> 32 ^ $adAtkEhan);
-        final long $breakEhan = Double.doubleToLongBits(this.getBreakEhan());
+        long $breakEhan = Double.doubleToLongBits(this.getBreakEhan());
         result = result * 59 + (int)($breakEhan >>> 32 ^ $breakEhan);
-        final long $charmEhan = Double.doubleToLongBits(this.getCharmEhan());
+        long $charmEhan = Double.doubleToLongBits(this.getCharmEhan());
         result = result * 59 + (int)($charmEhan >>> 32 ^ $charmEhan);
-        final long $cureEhan = Double.doubleToLongBits(this.getCureEhan());
+        long $cureEhan = Double.doubleToLongBits(this.getCureEhan());
         result = result * 59 + (int)($cureEhan >>> 32 ^ $cureEhan);
-        final long $disorderEhan = Double.doubleToLongBits(this.getDisorderEhan());
+        long $disorderEhan = Double.doubleToLongBits(this.getDisorderEhan());
         result = result * 59 + (int)($disorderEhan >>> 32 ^ $disorderEhan);
-        final long $gfireEhan = Double.doubleToLongBits(this.getGfireEhan());
+        long $gfireEhan = Double.doubleToLongBits(this.getGfireEhan());
         result = result * 59 + (int)($gfireEhan >>> 32 ^ $gfireEhan);
-        final long $rainEhan = Double.doubleToLongBits(this.getRainEhan());
+        long $rainEhan = Double.doubleToLongBits(this.getRainEhan());
         result = result * 59 + (int)($rainEhan >>> 32 ^ $rainEhan);
-        final long $recoverEhan = Double.doubleToLongBits(this.getRecoverEhan());
+        long $recoverEhan = Double.doubleToLongBits(this.getRecoverEhan());
         result = result * 59 + (int)($recoverEhan >>> 32 ^ $recoverEhan);
-        final long $shockEhan = Double.doubleToLongBits(this.getShockEhan());
+        long $shockEhan = Double.doubleToLongBits(this.getShockEhan());
         result = result * 59 + (int)($shockEhan >>> 32 ^ $shockEhan);
-        final long $windEhan = Double.doubleToLongBits(this.getWindEhan());
+        long $windEhan = Double.doubleToLongBits(this.getWindEhan());
         result = result * 59 + (int)($windEhan >>> 32 ^ $windEhan);
-        final long $fireEhan = Double.doubleToLongBits(this.getFireEhan());
+        long $fireEhan = Double.doubleToLongBits(this.getFireEhan());
         result = result * 59 + (int)($fireEhan >>> 32 ^ $fireEhan);
-        final long $thunderEhan = Double.doubleToLongBits(this.getThunderEhan());
+        long $thunderEhan = Double.doubleToLongBits(this.getThunderEhan());
         result = result * 59 + (int)($thunderEhan >>> 32 ^ $thunderEhan);
-        final long $poisonEhan = Double.doubleToLongBits(this.getPoisonEhan());
+        long $poisonEhan = Double.doubleToLongBits(this.getPoisonEhan());
         result = result * 59 + (int)($poisonEhan >>> 32 ^ $poisonEhan);
-        final long $sealEhan = Double.doubleToLongBits(this.getSealEhan());
+        long $sealEhan = Double.doubleToLongBits(this.getSealEhan());
         result = result * 59 + (int)($sealEhan >>> 32 ^ $sealEhan);
-        final long $sleepEhan = Double.doubleToLongBits(this.getSleepEhan());
+        long $sleepEhan = Double.doubleToLongBits(this.getSleepEhan());
         result = result * 59 + (int)($sleepEhan >>> 32 ^ $sleepEhan);
-        final long $forgetEhan = Double.doubleToLongBits(this.getForgetEhan());
+        long $forgetEhan = Double.doubleToLongBits(this.getForgetEhan());
         result = result * 59 + (int)($forgetEhan >>> 32 ^ $forgetEhan);
-        final long $adDefEhan = Double.doubleToLongBits(this.getAdDefEhan());
+        long $adDefEhan = Double.doubleToLongBits(this.getAdDefEhan());
         result = result * 59 + (int)($adDefEhan >>> 32 ^ $adDefEhan);
-        final long $adSpdEhan = Double.doubleToLongBits(this.getAdSpdEhan());
+        long $adSpdEhan = Double.doubleToLongBits(this.getAdSpdEhan());
         result = result * 59 + (int)($adSpdEhan >>> 32 ^ $adSpdEhan);
-        final long $sweepEhan = Double.doubleToLongBits(this.getSweepEhan());
+        long $sweepEhan = Double.doubleToLongBits(this.getSweepEhan());
         result = result * 59 + (int)($sweepEhan >>> 32 ^ $sweepEhan);
-        final long $thudEhan = Double.doubleToLongBits(this.getThudEhan());
+        long $thudEhan = Double.doubleToLongBits(this.getThudEhan());
         result = result * 59 + (int)($thudEhan >>> 32 ^ $thudEhan);
-        final long $sanshiEhan = Double.doubleToLongBits(this.getSanshiEhan());
+        long $sanshiEhan = Double.doubleToLongBits(this.getSanshiEhan());
         result = result * 59 + (int)($sanshiEhan >>> 32 ^ $sanshiEhan);
-        final long $conFire = Double.doubleToLongBits(this.getConFire());
+        long $conFire = Double.doubleToLongBits(this.getConFire());
         result = result * 59 + (int)($conFire >>> 32 ^ $conFire);
-        final long $conGold = Double.doubleToLongBits(this.getConGold());
+        long $conGold = Double.doubleToLongBits(this.getConGold());
         result = result * 59 + (int)($conGold >>> 32 ^ $conGold);
-        final long $conSoil = Double.doubleToLongBits(this.getConSoil());
+        long $conSoil = Double.doubleToLongBits(this.getConSoil());
         result = result * 59 + (int)($conSoil >>> 32 ^ $conSoil);
-        final long $conWater = Double.doubleToLongBits(this.getConWater());
+        long $conWater = Double.doubleToLongBits(this.getConWater());
         result = result * 59 + (int)($conWater >>> 32 ^ $conWater);
-        final long $conWood = Double.doubleToLongBits(this.getConWood());
+        long $conWood = Double.doubleToLongBits(this.getConWood());
         result = result * 59 + (int)($conWood >>> 32 ^ $conWood);
-        final Object $powerHp = this.getPowerHp();
+        Object $powerHp = this.getPowerHp();
         result = result * 59 + (($powerHp == null) ? 43 : $powerHp.hashCode());
-        final Object $powerAp = this.getPowerAp();
+        Object $powerAp = this.getPowerAp();
         result = result * 59 + (($powerAp == null) ? 43 : $powerAp.hashCode());
-        final Object $powerSp = this.getPowerSp();
+        Object $powerSp = this.getPowerSp();
         result = result * 59 + (($powerSp == null) ? 43 : $powerSp.hashCode());
-        final Object $powerAttr = this.getPowerAttr();
+        Object $powerAttr = this.getPowerAttr();
         result = result * 59 + (($powerAttr == null) ? 43 : $powerAttr.hashCode());
         result = result * 59 + this.getVanish();
         result = result * 59 + this.getMonsterType();
@@ -2032,6 +1775,6 @@ public class SysDataMonster implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataMonster(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", close=" + this.getClose() + ", skills=" + this.getSkills() + ", judgedYe=" + this.getJudgedYe() + ", pSkills=" + this.getPSkills() + ", shape=" + this.getShape() + ", fightTalk=" + this.getFightTalk() + ", isBoss=" + this.getIsBoss() + ", hp=" + this.getHp() + ", mp=" + this.getMp() + ", ap=" + this.getAp() + ", sp=" + this.getSp() + ", wxJin=" + this.getWxJin() + ", wxMu=" + this.getWxMu() + ", wxShui=" + this.getWxShui() + ", wxHuo=" + this.getWxHuo() + ", wxTu=" + this.getWxTu() + ", levelMode=" + this.getLevelMode() + ", grade=" + this.getGrade() + ", des=" + this.getDes() + ", fsGjGl=" + this.getFsGjGl() + ", jnSld=" + this.getJnSld() + ", lwGjGl=" + this.getLwGjGl() + ", escapeRound=" + this.getEscapeRound() + ", escapeRatio=" + this.getEscapeRatio() + ", cEscapeRatio=" + this.getCEscapeRatio() + ", pdeFend=" + this.getPdeFend() + ", pPofangPro=" + this.getPPofangPro() + ", pPofang=" + this.getPPofang() + ", pFanZhen=" + this.getPFanZhen() + ", pFanZhenPro=" + this.getPFanZhenPro() + ", fPdeFend=" + this.getFPdeFend() + ", pAcc=" + this.getPAcc() + ", pSbl=" + this.getPSbl() + ", pKuangBao=" + this.getPKuangBao() + ", fengOdd=" + this.getFengOdd() + ", leiOdd=" + this.getLeiOdd() + ", shuiOdd=" + this.getShuiOdd() + ", huoOdd=" + this.getHuoOdd() + ", guiHuoOdd=" + this.getGuiHuoOdd() + ", sanShiOdd=" + this.getSanShiOdd() + ", pLjPro=" + this.getPLjPro() + ", pLjTimes=" + this.getPLjTimes() + ", pWlFjPro=" + this.getPWlFjPro() + ", pWlFjTimes=" + this.getPWlFjTimes() + ", kHunLuan=" + this.getKHunLuan() + ", kFengYin=" + this.getKFengYin() + ", kHunShui=" + this.getKHunShui() + ", kZhongDu=" + this.getKZhongDu() + ", kYiWang=" + this.getKYiWang() + ", kGuiHuo=" + this.getKGuiHuo() + ", kSanShi=" + this.getKSanShi() + ", kShuaiRuo=" + this.getKShuaiRuo() + ", kZhenShe=" + this.getKZhenShe() + ", kFeng=" + this.getKFeng() + ", kHuo=" + this.getKHuo() + ", kShui=" + this.getKShui() + ", kLei=" + this.getKLei() + ", fkFeng=" + this.getFkFeng() + ", fkHuo=" + this.getFkHuo() + ", fkShui=" + this.getFkShui() + ", fkLei=" + this.getFkLei() + ", fkZhongDu=" + this.getFkZhongDu() + ", fkHunLuan=" + this.getFkHunLuan() + ", fkFengYin=" + this.getFkFengYin() + ", fkHunShui=" + this.getFkHunShui() + ", fkYiWang=" + this.getFkYiWang() + ", fkGuiHuo=" + this.getFkGuiHuo() + ", fkZhenShe=" + this.getFkZhenShe() + ", fkSanShi=" + this.getFkSanShi() + ", pos=" + this.getPos() + ", selectParameterList=" + this.getSelectParameterList() + ", itemUseParameterList=" + this.getItemUseParameterList() + ", attr=" + this.getAttr() + ", type=" + this.getType() + ", adAtkEhan=" + this.getAdAtkEhan() + ", breakEhan=" + this.getBreakEhan() + ", charmEhan=" + this.getCharmEhan() + ", cureEhan=" + this.getCureEhan() + ", disorderEhan=" + this.getDisorderEhan() + ", gfireEhan=" + this.getGfireEhan() + ", rainEhan=" + this.getRainEhan() + ", recoverEhan=" + this.getRecoverEhan() + ", shockEhan=" + this.getShockEhan() + ", windEhan=" + this.getWindEhan() + ", fireEhan=" + this.getFireEhan() + ", thunderEhan=" + this.getThunderEhan() + ", poisonEhan=" + this.getPoisonEhan() + ", sealEhan=" + this.getSealEhan() + ", sleepEhan=" + this.getSleepEhan() + ", forgetEhan=" + this.getForgetEhan() + ", adDefEhan=" + this.getAdDefEhan() + ", adSpdEhan=" + this.getAdSpdEhan() + ", sweepEhan=" + this.getSweepEhan() + ", thudEhan=" + this.getThudEhan() + ", sanshiEhan=" + this.getSanshiEhan() + ", conFire=" + this.getConFire() + ", conGold=" + this.getConGold() + ", conSoil=" + this.getConSoil() + ", conWater=" + this.getConWater() + ", conWood=" + this.getConWood() + ", powerHp=" + this.getPowerHp() + ", powerAp=" + this.getPowerAp() + ", powerSp=" + this.getPowerSp() + ", powerAttr=" + this.getPowerAttr() + ", vanish=" + this.getVanish() + ", monsterType=" + this.getMonsterType() + ")";
+        return "SysDataMonster(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", close=" + this.getClose() + ", skills=" + this.getSkills() + ", judgedYe=" + this.getJudgedYe() + ", pSkills=" + this.getPSkills() + ", shape=" + this.getShape() + ", fightTalk=" + this.getFightTalk() + ", isBoss=" + this.getIsBoss() + ", hp=" + this.getHp() + ", mp=" + this.getMp() + ", ap=" + this.getAp() + ", sp=" + this.getSp() + ", wxJin=" + this.getWxJin() + ", wxMu=" + this.getWxMu() + ", wxShui=" + this.getWxShui() + ", wxHuo=" + this.getWxHuo() + ", wxTu=" + this.getWxTu() + ", levelMode=" + this.getLevelMode() + ", grade=" + this.getGrade() + ", des=" + this.getDes() + ", fsGjGl=" + this.getFsGjGl() + ", jnSld=" + this.getJnSld() + ", lwGjGl=" + this.getLwGjGl() + ", escapeRound=" + this.getEscapeRound() + ", escapeRatio=" + this.getEscapeRatio() + ", cEscapeRatio=" + this.getCEscapeRatio() + ", pdeFend=" + this.getPdeFend() + ", pPofangPro=" + this.getPPofangPro() + ", pPofang=" + this.getPPofang() + ", pFanZhen=" + this.getPFanZhen() + ", pFanZhenPro=" + this.getPFanZhenPro() + ", fPdeFend=" + this.getFPdeFend() + ", pAcc=" + this.getPAcc() + ", pSbl=" + this.getPSbl() + ", pKuangBao=" + this.getPKuangBao() + ", fengOdd=" + this.getFengOdd() + ", leiOdd=" + this.getLeiOdd() + ", shuiOdd=" + this.getShuiOdd() + ", huoOdd=" + this.getHuoOdd() + ", guiHuoOdd=" + this.getGuiHuoOdd() + ", sanShiOdd=" + this.getSanShiOdd() + ", pLjPro=" + this.getPLjPro() + ", pLjTimes=" + this.getPLjTimes() + ", pWlFjPro=" + this.getPWlFjPro() + ", pWlFjTimes=" + this.getPWlFjTimes() + ", kHunLuan=" + this.getKHunLuan() + ", kFengYin=" + this.getKFengYin() + ", kHunShui=" + this.getKHunShui() + ", kZhongDu=" + this.getKZhongDu() + ", kYiWang=" + this.getKYiWang() + ", kGuiHuo=" + this.getKGuiHuo() + ", kSanShi=" + this.getKSanShi() + ", kShuaiRuo=" + this.getKShuaiRuo() + ", kZhenShe=" + this.getKZhenShe() + ", kFeng=" + this.getKFeng() + ", kHuo=" + this.getKHuo() + ", kShui=" + this.getKShui() + ", kLei=" + this.getKLei() + ", fkFeng=" + this.getFkFeng() + ", fkHuo=" + this.getFkHuo() + ", fkShui=" + this.getFkShui() + ", fkLei=" + this.getFkLei() + ", fkZhongDu=" + this.getFkZhongDu() + ", fkHunLuan=" + this.getFkHunLuan() + ", fkFengYin=" + this.getFkFengYin() + ", fkHunShui=" + this.getFkHunShui() + ", fkYiWang=" + this.getFkYiWang() + ", fkGuiHuo=" + this.getFkGuiHuo() + ", fkZhenShe=" + this.getFkZhenShe() + ", fkSanShi=" + this.getFkSanShi() + ", pos=" + this.getPos() + ", selectParameterList=" + this.getSelectParameterList() + ", itemUseParameterList=" + this.getItemUseParameterList() + ", attr=" + (int)this.getAttr() + ", type=" + this.getType() + ", adAtkEhan=" + this.getAdAtkEhan() + ", breakEhan=" + this.getBreakEhan() + ", charmEhan=" + this.getCharmEhan() + ", cureEhan=" + this.getCureEhan() + ", disorderEhan=" + this.getDisorderEhan() + ", gfireEhan=" + this.getGfireEhan() + ", rainEhan=" + this.getRainEhan() + ", recoverEhan=" + this.getRecoverEhan() + ", shockEhan=" + this.getShockEhan() + ", windEhan=" + this.getWindEhan() + ", fireEhan=" + this.getFireEhan() + ", thunderEhan=" + this.getThunderEhan() + ", poisonEhan=" + this.getPoisonEhan() + ", sealEhan=" + this.getSealEhan() + ", sleepEhan=" + this.getSleepEhan() + ", forgetEhan=" + this.getForgetEhan() + ", adDefEhan=" + this.getAdDefEhan() + ", adSpdEhan=" + this.getAdSpdEhan() + ", sweepEhan=" + this.getSweepEhan() + ", thudEhan=" + this.getThudEhan() + ", sanshiEhan=" + this.getSanshiEhan() + ", conFire=" + this.getConFire() + ", conGold=" + this.getConGold() + ", conSoil=" + this.getConSoil() + ", conWater=" + this.getConWater() + ", conWood=" + this.getConWood() + ", powerHp=" + this.getPowerHp() + ", powerAp=" + this.getPowerAp() + ", powerSp=" + this.getPowerSp() + ", powerAttr=" + this.getPowerAttr() + ", vanish=" + this.getVanish() + ", monsterType=" + this.getMonsterType() + ")";
     }
 }

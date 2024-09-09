@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightnew.bean.TianFuObject;
@@ -20,73 +19,76 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_321501 extends TianFuProcessor
 {
+    public FU_321501() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill roleSkill = (RoleSkill)args[1];
-        if (roleSkill == null || roleSkill.getSkillId() == null || roleSkill.getSkillId() < 1) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill roleSkill = (RoleSkill)args[1];
+        if (roleSkill == null || roleSkill.getSkillId() == null || (int)roleSkill.getSkillId() < 1) {
             return null;
         }
-        final SysSkill sysSkill = SkillDataPool.skillMap.get(roleSkill.getSkillId());
+        SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(roleSkill.getSkillId());
         if (sysSkill == null) {
             return null;
         }
-        final double lifePercent = effector.getCurrLife() / effector.getMaxLife();
+        double lifePercent = (double)(effector.getCurrLife() / effector.getMaxLife());
         if (lifePercent >= 1.0) {
             return null;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 321501);
-        final double percent = 1.0 - lifePercent;
-        final boolean flag = SkillAi.canAffectOnPro(percent);
-        final Double percenta = this.getPercent(effector);
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 321501);
+        double percent = 1.0 - lifePercent;
+        boolean flag = SkillAi.canAffectOnPro(percent);
+        Double percenta = this.getPercent(effector);
         if (percenta == null) {
             return null;
         }
-        if (flag && (30001 == sysSkill.getSerial() || 30002 == sysSkill.getSerial())) {
+        if (flag && (30001 == (int)sysSkill.getSerial() || 30002 == (int)sysSkill.getSerial())) {
             this.installProperty(effector, PRO_DICT_TYPE.K_HL.getDist(), percenta);
-            skillRecord.setT(effector.getId());
+            skillRecord.setT((long)(int)effector.getId());
         }
-        else if (flag && (30003 == sysSkill.getSerial() || 30004 == sysSkill.getSerial())) {
+        else if (flag && (30003 == (int)sysSkill.getSerial() || 30004 == (int)sysSkill.getSerial())) {
             this.installProperty(effector, PRO_DICT_TYPE.K_HS.getDist(), percenta);
-            skillRecord.setT(effector.getId());
+            skillRecord.setT((long)(int)effector.getId());
         }
-        else if (flag && (30005 == sysSkill.getSerial() || 30006 == sysSkill.getSerial())) {
+        else if (flag && (30005 == (int)sysSkill.getSerial() || 30006 == (int)sysSkill.getSerial())) {
             this.installProperty(effector, PRO_DICT_TYPE.K_FY.getDist(), percenta);
-            skillRecord.setT(effector.getId());
+            skillRecord.setT((long)(int)effector.getId());
         }
-        else if (flag && (30029 == sysSkill.getSerial() || 30030 == sysSkill.getSerial())) {
+        else if (flag && (30029 == (int)sysSkill.getSerial() || 30030 == (int)sysSkill.getSerial())) {
             this.installProperty(effector, PRO_DICT_TYPE.K_YW.getDist(), percenta);
-            skillRecord.setT(effector.getId());
+            skillRecord.setT((long)(int)effector.getId());
         }
         return null;
     }
     
-    private Double getPercent(final FightObject effector) {
+    private Double getPercent(FightObject effector) {
         if (!effector.isPlayer()) {
             return null;
         }
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 321501);
+        DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 321501);
         if (tianFuObject == null) {
             return null;
         }
-        final double percent = 0.3 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-        return percent;
+        double percent = 0.3 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+        return Double.valueOf(percent);
     }
     
-    private void installProperty(final FightObject effector, final int dist, final Double percenta) {
-        final String distStr = String.valueOf(dist);
+    private void installProperty(FightObject effector, int dist, Double percenta) {
+        String distStr = String.valueOf(dist);
         double property = effector.getPropertyMap().getDouble(distStr);
         if (property > 0.0) {
-            property += percenta;
+            property += (double)percenta;
         }
         else {
-            property = percenta;
+            property = (double)percenta;
         }
-        effector.getPropertyMap().setv(distStr, (Object)property);
+        effector.getPropertyMap().setv(distStr, Double.valueOf(property));
     }
 }

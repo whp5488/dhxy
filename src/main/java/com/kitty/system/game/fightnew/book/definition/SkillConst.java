@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.definition;
 
 import java.util.Arrays;
@@ -213,10 +212,10 @@ public interface SkillConst
     public static final int[] beforeActionSkillPVP = { 81018, 81019, 82005, 82007, 82008, 82009, 82011, 84004, 84005, 81028 };
     public static final int[] beforeActionSkillNPVP = { 82005, 82007 };
     public static final int[][] skillStatus = { { 81018, 2012 }, { 81019, 2011 }, { 81028, 2038 }, { 82005, 2042 }, { 82007, 2103 }, { 82008, 2041 }, { 82009, 2043 }, { 82011, 2104 }, { 84004, 2046 }, { 84005, 2045 } };
-    public static final Integer[] beforeActionSkillOnlyOnce = { 82009, 82011, 81028 };
-    public static final List<Integer> assistSkills = Arrays.asList(80001, 81020);
-
-    static List<Integer> getPetBeSkills() {
-        return Arrays.asList(83040);
+    public static final Integer[] beforeActionSkillOnlyOnce = { Integer.valueOf(82009), Integer.valueOf(82011), Integer.valueOf(81028) };
+    public static final List<Integer> assistSkills = Arrays.asList(Integer.valueOf(80001), Integer.valueOf(81020));
+    
+    public static List<Integer> getPetBeSkills() {
+        return Arrays.asList(Integer.valueOf(83040));
     }
 }

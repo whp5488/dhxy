@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages.vo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.fightnew.model.RefreshPet;
 import java.util.List;
 import java.io.Serializable;
@@ -99,7 +97,6 @@ public class ExcuteFightParam implements Serializable
         this.targetParams = targetParams;
     }
     
-    @ConstructorProperties({ "type", "skillId", "colorId", "attaId", "roleId", "petList", "combatAddObjects", "hfType", "attaParams", "targetParams" })
     public ExcuteFightParam(final int type, final int skillId, final byte colorId, final int attaId, final long roleId, final List<RefreshPet> petList, final List<CombatAddObject> combatAddObjects, final byte hfType, final List<ExcuteFightObjectParam> attaParams, final List<ExcuteFightObjectParam> targetParams) {
         this.skillId = -1;
         this.colorId = 0;

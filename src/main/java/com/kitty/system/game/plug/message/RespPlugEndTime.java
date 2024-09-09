@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.plug.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -26,7 +24,7 @@ public class RespPlugEndTime extends Message
         if (!(o instanceof RespPlugEndTime)) {
             return false;
         }
-        final RespPlugEndTime other = (RespPlugEndTime)o;
+        RespPlugEndTime other = (RespPlugEndTime)o;
         return other.canEqual(this) && this.getPlugEndTime() == other.getPlugEndTime();
     }
     
@@ -36,7 +34,7 @@ public class RespPlugEndTime extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPlugEndTime();
         return result;
@@ -47,7 +45,6 @@ public class RespPlugEndTime extends Message
         return "RespPlugEndTime(plugEndTime=" + this.getPlugEndTime() + ")";
     }
     
-    @ConstructorProperties({ "plugEndTime" })
     public RespPlugEndTime(final int plugEndTime) {
         this.plugEndTime = 0;
         this.plugEndTime = plugEndTime;

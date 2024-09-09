@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -36,7 +34,6 @@ public class ReqReturnAnimationPredictTime extends Message
         this.predictTime = predictTime;
     }
     
-    @ConstructorProperties({ "fightId", "round", "predictTime" })
     public ReqReturnAnimationPredictTime(final int fightId, final int round, final int predictTime) {
         this.fightId = fightId;
         this.round = round;

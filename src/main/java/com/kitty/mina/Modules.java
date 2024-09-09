@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 public interface Modules
@@ -12,15 +11,15 @@ public interface Modules
     public static final int CMD_ASK_SERVER_TIME = 41008;
     public static final int CMD_L_ACCOUNT = 9040;
     public static final int CMD_L_REQUEST_LINE_INFO = 45144;
-    public static final int CMD_LOGIN = 12290;
+    public static final int CMD_LOGIN = 1833;
     public static final int CMD_ECHO = 4274;
-    public static final int CMD_CREATE_NEW_CHAR = 8284;
-    public static final int CMD_LOAD_EXISTED_CHAR = 4192;
-    public static final int CMD_TELEPORT = 32768;
+    public static final int CMD_CREATE_NEW_CHAR = 9005;
+    public static final int CMD_LOAD_EXISTED_CHAR = 26890;
+    public static final int CMD_TELEPORT = 22568;
     public static final int CMD_MULTI_MOVE_TO = 61634;
-    public static final int CMD_ENTER_ROOM = 4144;
+    public static final int CMD_ENTER_ROOM = 5155;
     public static final int CMD_LOGOUT = 4;
-    public static final int CMD_OPEN_MENU = 4150;
+    public static final int CMD_OPEN_MENU = 3520;
     public static final int MSG_EQ_UPDATE_DUR = 222;
     public static final int CMD_CHAT_EX = 16482;
     public static final int CMD_APPLY = 8236;
@@ -235,6 +234,19 @@ public interface Modules
     public static final int CMD_MAGIC_BOX_LOTTO = 45389;
     public static final int MSG_ZHEN_LU_COMPOSE_INFO = 20680;
     public static final int MSG_ZHEN_LU_CASE_PET = 20681;
+    public static final int MSG_TRAIN = 20167;
+    public static final int MSG_TRAIN_SEAL = 20168;
+    public static final int MSG_PRE_UPGRADE_SEAL = 20169;
+    public static final int MSG_TRAIN_REFINE = 20170;
+    public static final int MSG_MAGIC_CIRCLE = 20171;
+    public static final int CMD_UP_TRAIN_GRADE = 20172;
+    public static final int CMD_TRAIN_PERFECT = 20173;
+    public static final int CMD_UPGRADE_SEAL = 20200;
+    public static final int CMD_MAGIC_CIRCLE = 20201;
+    public static final int CMD_CHANGE_SEAL = 20202;
+    public static final int CMD_UPGRADE_MIND = 20300;
+    public static final int MSG_PRE_UPGRADE_MIND = 20301;
+    public static final int MSG_MIND = 20302;
     public static final int MSG_C_FRIENDS = 65019;
     public static final int MSG_C_OPPONENTS = 65017;
     public static final int MSG_C_ADD_FRIEND = 64995;

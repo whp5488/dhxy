@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.friend.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.friend.message.vo.Pla;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -37,24 +35,16 @@ public class RespFriend extends Message
         if (!(o instanceof RespFriend)) {
             return false;
         }
-        final RespFriend other = (RespFriend)o;
+        RespFriend other = (RespFriend)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -63,20 +53,19 @@ public class RespFriend extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespFriend(type=" + this.getType() + ", list=" + this.getList() + ")";
+        return "RespFriend(type=" + (int)this.getType() + ", list=" + this.getList() + ")";
     }
     
-    @ConstructorProperties({ "type", "list" })
     public RespFriend(final byte type, final List<Pla> list) {
         this.type = 0;
         this.type = type;

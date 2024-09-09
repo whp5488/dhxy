@@ -1,9 +1,7 @@
-
 package com.kitty.system.game.fightRecord.service;
 
 import org.nutz.dao.sql.Sql;
 import org.nutz.dao.Sqls;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
 import com.kitty.system.game.fightRecord.domain.FightSkillRecord;
 import com.kitty.system.game.fightRecord.message.RespFightRecords;
@@ -16,14 +14,11 @@ import com.kitty.record.domain.FightRecord;
 import org.springframework.data.domain.Sort;
 import com.kitty.system.game.fightnew.utils.FightMessageUtil;
 import com.kitty.record.domain.FightRecordData;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.ObjectOutputStream;
 import java.io.ByteArrayOutputStream;
 import com.kitty.mina.message.Message;
@@ -44,135 +39,147 @@ public class FightRecordService
     @Autowired
     private IdWorker idWorker;
     
-    public void saveRecord(final Fight fight, final Message message, final String sendRoleIds) {
+    public FightRecordService() {
     }
     
-    private byte[] encode(final Message message) {
-        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    public void saveRecord(Fight fight, Message message, String sendRoleIds) {
+    }
+    
+    private byte[] encode(Message message) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
-            final ObjectOutputStream out = new ObjectOutputStream(bos);
+            ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(message);
-            final byte[] bytes = bos.toByteArray();
+            byte[] bytes = bos.toByteArray();
             return bytes;
         }
-        catch (final IOException e) {
+        catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
     
-    private Message decode(final byte[] bytes) {
-        final ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+    private Message decode(byte[] bytes) {
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         try {
-            final ObjectInputStream in = new ObjectInputStream(bis);
-            final Message msg = (Message)in.readObject();
+            ObjectInputStream in = new ObjectInputStream(bis);
+            Message msg = (Message)in.readObject();
             return msg;
         }
-        catch (final IOException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
-        catch (final ClassNotFoundException e2) {
+        catch (ClassNotFoundException e2) {
             e2.printStackTrace();
         }
         return null;
     }
     
-    public void playerInFight(final long roleId, final long recordId) {
-        final Query query = new Query();
-        query.addCriteria((CriteriaDefinition)Criteria.where("id").is((Object)recordId));
-        final FightRecordData fightRecordData = (FightRecordData)this.mongoTemplate.findOne(query, (Class)FightRecordData.class, "fightRecordData");
+    public void playerInFight(long roleId, long recordId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(Long.valueOf(recordId)));
+        FightRecordData fightRecordData = (FightRecordData)this.mongoTemplate.findOne(query, FightRecordData.class, "fightRecordData");
         if (fightRecordData != null) {
-            final Message msg = this.decode(fightRecordData.getMsgData());
+            Message msg = this.decode(fightRecordData.getMsgData());
             if (msg != null) {
                 FightMessageUtil.sendFightPackage(roleId, msg);
             }
         }
     }
     
-    public void playerFightMsg(final long roleId, final long recordId, final short round) {
+    public void playerFightMsg(long roleId, long recordId, short round) {
         Query query = new Query();
-        query.addCriteria((CriteriaDefinition)Criteria.where("recordId").is((Object)recordId));
-        query.addCriteria((CriteriaDefinition)Criteria.where("round").is((Object)round));
-        query.with(new Sort(Sort.Direction.ASC, new String[] { "createTime" }));
-        final List<FightRecord> records = this.mongoTemplate.find(query, (Class)FightRecord.class, "fightRecord");
+        query.addCriteria(Criteria.where("recordId").is(Long.valueOf(recordId)));
+        query.addCriteria(Criteria.where("round").is(Short.valueOf(round)));
+        query.with(Sort.by(Sort.Direction.ASC, "createTime"));
+        List<FightRecord> records = this.mongoTemplate.find(query, FightRecord.class, "fightRecord");
         if (records != null && records.size() > 0) {
-            for (final FightRecord record : records) {
+            for (FightRecord record : records) {
                 query = new Query();
-                query.addCriteria((CriteriaDefinition)Criteria.where("id").is((Object)record.getId()));
-                final FightRecordData fightRecordData = (FightRecordData)this.mongoTemplate.findOne(query, (Class)FightRecordData.class, "fightRecordData");
+                query.addCriteria(Criteria.where("id").is(record.getId()));
+                FightRecordData fightRecordData = (FightRecordData)this.mongoTemplate.findOne(query, FightRecordData.class, "fightRecordData");
                 if (fightRecordData != null) {
-                    final Message msg = this.decode(fightRecordData.getMsgData());
-                    if (msg == null) {
+                    Message msg = this.decode(fightRecordData.getMsgData());
+                    if (msg != null) {
+                        FightMessageUtil.sendFightPackage(roleId, msg);
+                    }
+                    else {
                         continue;
                     }
-                    FightMessageUtil.sendFightPackage(roleId, msg);
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    public void getPlayerFightRecord(final Role role, final byte type, final long objId) {
-        final Query query = new Query();
-        query.addCriteria((CriteriaDefinition)Criteria.where("type").is((Object)1));
+    public void getPlayerFightRecord(Role role, byte type, long objId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("type").is(Integer.valueOf(1)));
         if (type == 1) {
-            query.addCriteria((CriteriaDefinition)Criteria.where("fightId").is((Object)objId));
+            query.addCriteria(Criteria.where("fightId").is(Long.valueOf(objId)));
+        }
+        else if (type == 2) {
+            query.addCriteria(Criteria.where("roleIds").regex(".*?" + objId + ".*"));
         }
         else {
-            if (type != 2) {
-                return;
-            }
-            query.addCriteria((CriteriaDefinition)Criteria.where("roleIds").regex(".*?" + objId + ".*"));
+            return;
         }
-        final List<FightRecord> list = this.mongoTemplate.find(query, (Class)FightRecord.class, "fightRecord");
-        final List<MiniFightRecord> returnList = new ArrayList<MiniFightRecord>();
-        for (final FightRecord record : list) {
-            final MiniFightRecord miniFightRecord = new MiniFightRecord(record);
+        List<FightRecord> list = this.mongoTemplate.find(query, FightRecord.class, "fightRecord");
+        List<MiniFightRecord> returnList = new ArrayList<>();
+        for (FightRecord record : list) {
+            MiniFightRecord miniFightRecord = new MiniFightRecord(record);
             returnList.add(miniFightRecord);
         }
         if (returnList != null && returnList.size() > 0) {
-            final RespFightRecords respFightRecords = new RespFightRecords(String.valueOf(objId), returnList);
-            FightMessageUtil.sendFightPackage(role.getId(), respFightRecords);
+            RespFightRecords respFightRecords = new RespFightRecords(String.valueOf(objId), returnList);
+            FightMessageUtil.sendFightPackage((long)role.getId(), respFightRecords);
         }
     }
     
-    public FightSkillRecord testGetFightSkillRecord(final long recordId) {
-        final FightSkillRecord fightSkillRecord = (FightSkillRecord)this.dao.fetch(FightSkillRecord.class, Cnd.where("id", "=", recordId));
+    public FightSkillRecord testGetFightSkillRecord(long recordId) {
+        FightSkillRecord fightSkillRecord = (FightSkillRecord)this.dao.fetch(FightSkillRecord.class, Cnd.where("id", "=", Long.valueOf(recordId)));
         return fightSkillRecord;
     }
     
-    public List<FightSkillRecord> testGetFightSkillRecords(final long startTime, final long endTime, final long roleId) {
-        final Sql sql = Sqls.create("select * from (select * from fight_skill_record where time < " + endTime + " and time > " + startTime + ") t");
+    public List<FightSkillRecord> testGetFightSkillRecords(long startTime, long endTime, long roleId) {
+        Sql sql = Sqls.create("select * from (select * from fight_skill_record where time < " + endTime + " and time > " + startTime + ") t");
         sql.setCallback(Sqls.callback.entities());
         sql.setEntity(this.dao.getEntity(FightSkillRecord.class));
         this.dao.execute(sql);
-        final List<FightSkillRecord> list = sql.getList(FightSkillRecord.class);
-        final List<FightSkillRecord> returnList = new ArrayList<FightSkillRecord>();
+        List<FightSkillRecord> list = sql.getList(FightSkillRecord.class);
+        List<FightSkillRecord> returnList = new ArrayList<>();
         if (list != null && list.size() > 0) {
-            for (final FightSkillRecord fightSkillRecord : list) {
+            for (FightSkillRecord fightSkillRecord : list) {
                 fightSkillRecord.doAfterInit();
                 if (fightSkillRecord.getDataM().contains(roleId + "")) {
                     returnList.add(fightSkillRecord);
                 }
+                else {
+                    continue;
+                }
             }
+            return returnList;
         }
         return returnList;
     }
     
-    public List<FightSkillRecord> testGetFightSkillRecordsNew(final long startTime, final long endTime, final long roleId) {
-        final Sql sql = Sqls.create("select * from fight_skill_record where time < " + endTime + " and time > " + startTime + " and role_ids like '%" + roleId + "%'");
+    public List<FightSkillRecord> testGetFightSkillRecordsNew(long startTime, long endTime, long roleId) {
+        Sql sql = Sqls.create("select * from fight_skill_record where time < " + endTime + " and time > " + startTime + " and role_ids like '%" + roleId + "%'");
         sql.setCallback(Sqls.callback.entities());
         sql.setEntity(this.dao.getEntity(FightSkillRecord.class));
         this.dao.execute(sql);
-        final List<FightSkillRecord> list = sql.getList(FightSkillRecord.class);
-        for (final FightSkillRecord fightSkillRecord : list) {
+        List<FightSkillRecord> list = sql.getList(FightSkillRecord.class);
+        for (FightSkillRecord fightSkillRecord : list) {
             fightSkillRecord.doAfterInit();
         }
         return list;
     }
     
     public void clearFightRecordScheduled() {
-        final long time = System.currentTimeMillis() - 172800000L;
-        final Query query = new Query(Criteria.where("createTime").lt(time));
+        long time = System.currentTimeMillis() - 172800000L;
+        Query query = new Query(Criteria.where("createTime").lt(Long.valueOf(time)));
         this.mongoTemplate.remove(query, FightRecord.class);
         this.mongoTemplate.remove(query, FightRecordData.class);
         this.mongoTemplate.remove(query, FightSkillRecord.class);

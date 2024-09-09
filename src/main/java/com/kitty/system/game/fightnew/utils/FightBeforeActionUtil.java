@@ -1,8 +1,6 @@
-
 package com.kitty.system.game.fightnew.utils;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
-import java.util.Collection;
 import java.util.Arrays;
 import com.kitty.system.enums.war.itempro.def.PET_PASSIVE_SKILL_TRIGGER_DICT;
 import com.kitty.system.game.skill.pool.SkillDataPool;
@@ -14,73 +12,77 @@ import java.util.Optional;
 import com.kitty.system.game.fightnew.book.definition.SkillConst;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.function.Function;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import com.kitty.system.game.fightnew.book.pet.PetPassiveSkillUtil;
-import java.util.stream.Collector;
+import com.kitty.system.game.fightnew.FightObject;
 import java.util.stream.Collectors;
 import com.kitty.system.enums.war.wardef.LOGIC;
-import com.kitty.system.game.fightnew.FightObject;
 import java.util.List;
 import com.kitty.system.game.fightnew.bean.Fight;
 
 public class FightBeforeActionUtil
 {
-    public static void beforeAction(final Fight fight) {
+    public FightBeforeActionUtil() {
+    }
+    
+    public static void beforeAction(Fight fight) {
         try {
             excuteBeforeAction(fight);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    private static void excuteBeforeAction(final Fight fight) {
-        final List<FightObject> listA = fight.getListA().stream().filter(obj -> LOGIC.LOGICTYPE_PET.getValue() == obj.getLogic() && !obj.isFallDown()).collect(Collectors.toList());
-        final List<FightObject> listB = fight.getListB().stream().filter(obj -> LOGIC.LOGICTYPE_PET.getValue() == obj.getLogic() && !obj.isFallDown()).collect(Collectors.toList());
-        final Map<Integer, List<Integer>> mapActionA = getActionSkill(fight, listA);
-        final Map<Integer, List<Integer>> mapActionB = getActionSkill(fight, listB);
+    private static void excuteBeforeAction(Fight fight) {
+        List<FightObject> listA = (List)fight.getListA().stream().filter(obj -> LOGIC.LOGICTYPE_PET.getValue() == obj.getLogic() && !obj.isFallDown()).collect(Collectors.toList());
+        List<FightObject> listB = (List)fight.getListB().stream().filter(obj -> LOGIC.LOGICTYPE_PET.getValue() == obj.getLogic() && !obj.isFallDown()).collect(Collectors.toList());
+        Map<Integer, List<Integer>> mapActionA = getActionSkill(fight, listA);
+        Map<Integer, List<Integer>> mapActionB = getActionSkill(fight, listB);
         if (mapActionA != null) {
-            final List<FightObject> targets = fight.getTargetSide(listA.get(0).getId());
+            List<FightObject> targets = fight.getTargetSide((int)((FightObject)listA.get(0)).getId());
             excuteSendAction(fight, targets, mapActionA);
         }
         if (mapActionB != null) {
-            final List<FightObject> targets = fight.getTargetSide(listB.get(0).getId());
+            List<FightObject> targets = fight.getTargetSide((int)((FightObject)listB.get(0)).getId());
             excuteSendAction(fight, targets, mapActionB);
         }
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             if (fightObject.getLogic() == LOGIC.LOGICTYPE_PET.getValue()) {
                 PetPassiveSkillUtil.enteringSideAction(fight, fightObject);
+            }
+            else {
+                continue;
             }
         }
     }
     
-    public static Map<Integer, List<Integer>> getActionSkill(final Fight fight, List<FightObject> petList) {
-        petList = petList.stream().sorted(Comparator.comparing(FightObject::getSpeed).reversed()).collect(Collectors.toList());
+    public static Map<Integer, List<Integer>> getActionSkill(Fight fight, List<FightObject> petList) {
+        petList = (List)petList.stream().sorted(Comparator.comparing(FightObject::getSpeed).reversed()).collect(Collectors.toList());
         if (petList.size() > 0) {
-            final Map<Integer, List<Integer>> petSkillMap = new LinkedHashMap<Integer, List<Integer>>();
+            Map<Integer, List<Integer>> petSkillMap = new LinkedHashMap();
             petList.stream().forEach(pet -> {
-                final List<Integer> listAction = new ArrayList<Integer>();
-                pet.getSkillIds().stream().filter(skill -> -1 != skill.getSkillId()).forEach(skill -> {
+                List<Integer> listAction = new ArrayList<>();
+                pet.getSkillIds().stream().filter(skill -> -1 != (int)skill.getSkillId()).forEach(skill -> {
                     if (fight.isPvp() == 1) {
-                        final int[] beforeActionSkillPVP = SkillConst.beforeActionSkillPVP;
-                        int i = 0;
-                        for (int length = beforeActionSkillPVP.length; i < length; ++i) {
-                            final int beforeSkill = beforeActionSkillPVP[i];
-                            if (beforeSkill == skill.getSkillId()) {
-                                listAction.add(beforeSkill);
+                        int[] beforeActionSkillPVP = SkillConst.beforeActionSkillPVP;
+                        int j = 0;
+                        for (int length2 = beforeActionSkillPVP.length; j < length2; ++j) {
+                            int beforeSkill2 = beforeActionSkillPVP[j];
+                            if (beforeSkill2 == (int)skill.getSkillId()) {
+                                listAction.add(Integer.valueOf(beforeSkill2));
                             }
                         }
                     }
                     else {
-                        final int[] beforeActionSkillNPVP = SkillConst.beforeActionSkillNPVP;
-                        int j = 0;
-                        for (int length2 = beforeActionSkillNPVP.length; j < length2; ++j) {
-                            final int beforeSkill2 = beforeActionSkillNPVP[j];
-                            if (beforeSkill2 == skill.getSkillId()) {
-                                listAction.add(beforeSkill2);
+                        int[] beforeActionSkillNPVP = SkillConst.beforeActionSkillNPVP;
+                        int i = 0;
+                        for (int length = beforeActionSkillNPVP.length; i < length; ++i) {
+                            int beforeSkill = beforeActionSkillNPVP[i];
+                            if (beforeSkill == (int)skill.getSkillId()) {
+                                listAction.add(Integer.valueOf(beforeSkill));
                             }
                         }
                     }
@@ -98,42 +100,44 @@ public class FightBeforeActionUtil
         return null;
     }
     
-    public static void excuteSendAction(final Fight fight, final List<FightObject> targets, final Map<Integer, List<Integer>> mapAction) {
-        final FightObject target = getTargetForPos(targets, 3);
+    public static void excuteSendAction(Fight fight, List<FightObject> targets, Map<Integer, List<Integer>> mapAction) {
+        FightObject target = getTargetForPos(targets, 3);
         if (target == null) {
             return;
         }
         sendAction(fight, target, mapAction);
+        return;
     }
     
-    public static FightObject getTargetForPos(final List<FightObject> targets, final int pos) {
+    public static FightObject getTargetForPos(List<FightObject> targets, int pos) {
         FightObject target = null;
-        final Optional<FightObject> first = targets.stream().filter(obj -> obj.getPos() % 10000 == pos).findFirst();
+        Optional<FightObject> first = targets.stream().filter(obj -> obj.getPos() % 10000 == pos).findFirst();
         if (first.isPresent()) {
-            target = first.get();
+            target = (FightObject)first.get();
         }
         if (target == null && targets != null && targets.size() > 0) {
-            target = targets.get(0);
+            target = (FightObject)targets.get(0);
+            return target;
         }
         return target;
     }
     
-    private static void sendAction(final Fight fight, final FightObject target, final Map<Integer, List<Integer>> mapAction) {
-        final BeforeActionSkill beforeActionSkillMy = fight.getBeforeActionMap().get(!target.isASide());
-        final BeforeActionSkill beforeActionSkill = fight.getBeforeActionMap().get(target.isASide());
-        final BeforeActionSkill beforeActionSkill2 = assembleAction(fight, mapAction, target, beforeActionSkillMy, beforeActionSkill, fight.getActionParam().getActionDetailParams());
+    private static void sendAction(Fight fight, FightObject target, Map<Integer, List<Integer>> mapAction) {
+        BeforeActionSkill beforeActionSkillMy = (BeforeActionSkill)fight.getBeforeActionMap().get(Boolean.valueOf(!target.isASide()));
+        BeforeActionSkill beforeActionSkill = (BeforeActionSkill)fight.getBeforeActionMap().get(Boolean.valueOf(target.isASide()));
+        BeforeActionSkill beforeActionSkill2 = assembleAction(fight, mapAction, target, beforeActionSkillMy, beforeActionSkill, fight.getActionParam().getActionDetailParams());
         saveBeforeActionSkill(fight, target, beforeActionSkill2.getRoleSkillMap(), beforeActionSkill2.getSkills());
     }
     
-    public static BeforeActionSkill assembleAction(final Fight fight, final Map<Integer, List<Integer>> mapAction, final FightObject target, final BeforeActionSkill beforeActionSkillMy, final BeforeActionSkill beforeActionSkill, final List<ActionDetailParam> actionDetailParams) {
+    public static BeforeActionSkill assembleAction(Fight fight, Map<Integer, List<Integer>> mapAction, FightObject target, BeforeActionSkill beforeActionSkillMy, BeforeActionSkill beforeActionSkill, List<ActionDetailParam> actionDetailParams) {
         boolean flag = true;
-        final List<Integer> skillIdList = new ArrayList<Integer>();
-        final Map<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
-        for (final Map.Entry<Integer, List<Integer>> entry : mapAction.entrySet()) {
-            final List<Integer> skillIds = new ArrayList<Integer>();
-            final Integer key = entry.getKey();
-            for (final Integer skill : entry.getValue()) {
-                final SysPetSkill petSkill = SkillDataPool.petSkillMap.get(skill);
+        List<Integer> skillIdList = new ArrayList<>();
+        Map<Integer, List<Integer>> map = new HashMap();
+        for (Map.Entry<Integer, List<Integer>> entry : mapAction.entrySet()) {
+            List<Integer> skillIds = new ArrayList<>();
+            Integer key = (Integer)entry.getKey();
+            for (Integer skill : entry.getValue()) {
+                SysPetSkill petSkill = (SysPetSkill)SkillDataPool.petSkillMap.get(skill);
                 if (petSkill == null) {
                     continue;
                 }
@@ -144,57 +148,62 @@ public class FightBeforeActionUtil
                     flag = false;
                 }
                 if (Arrays.asList(SkillConst.beforeActionSkillOnlyOnce).contains(skill)) {
-                    if (81028 == skill) {
-                        if (skillIdList.contains(82009)) {
+                    if (81028 == (int)skill) {
+                        if (skillIdList.contains(Integer.valueOf(82009))) {
                             continue;
                         }
-                        if (beforeActionSkillMy != null && beforeActionSkillMy.getSkills().contains(82009)) {
+                        if (beforeActionSkillMy != null && beforeActionSkillMy.getSkills().contains(Integer.valueOf(82009))) {
                             continue;
                         }
                     }
-                    if (82009 == skill) {
-                        if (skillIdList.contains(81028)) {
-                            final Integer petId = deleteAction(map, 81028);
-                            if (petId != 0) {
-                                sendCancelActionExcute(actionDetailParams, petId, 81028);
+                    if (82009 == (int)skill) {
+                        if (skillIdList.contains(Integer.valueOf(81028))) {
+                            Integer petId = deleteAction(map, Integer.valueOf(81028));
+                            if ((int)petId != 0) {
+                                sendCancelActionExcute(actionDetailParams, petId, Integer.valueOf(81028));
                             }
                         }
-                        if (beforeActionSkill != null && beforeActionSkill.isPassiveAction() && beforeActionSkill.getSkills().contains(81028)) {
-                            final Integer petId = deleteAction(beforeActionSkill.getRoleSkillMap(), 81028);
-                            if (petId != 0) {
-                                sendCancelActionExcute(actionDetailParams, petId, 81028);
+                        if (beforeActionSkill != null && beforeActionSkill.isPassiveAction() && beforeActionSkill.getSkills().contains(Integer.valueOf(81028))) {
+                            Integer petId = deleteAction(beforeActionSkill.getRoleSkillMap(), Integer.valueOf(81028));
+                            if ((int)petId != 0) {
+                                sendCancelActionExcute(actionDetailParams, petId, Integer.valueOf(81028));
                             }
                         }
-                        if (beforeActionSkillMy != null && beforeActionSkillMy.getSkills().contains(81028)) {
-                            final Integer petId = deleteAction(beforeActionSkillMy.getRoleSkillMap(), 81028);
-                            if (petId != 0) {
-                                sendCancelActionExcute(actionDetailParams, petId, 81028);
+                        if (beforeActionSkillMy != null && beforeActionSkillMy.getSkills().contains(Integer.valueOf(81028))) {
+                            Integer petId = deleteAction(beforeActionSkillMy.getRoleSkillMap(), Integer.valueOf(81028));
+                            if ((int)petId != 0) {
+                                sendCancelActionExcute(actionDetailParams, petId, Integer.valueOf(81028));
                             }
                         }
                     }
                 }
                 skillIds.add(skill);
                 skillIdList.add(skill);
-                if (!flag) {
+                if (flag) {
+                    if (Arrays.asList(SkillConst.beforeActionSkillOnlyOnce).contains(skill) && beforeActionSkillMy != null && beforeActionSkillMy.isPassiveAction() && beforeActionSkillMy.getSkills().contains(skill)) {
+                        continue;
+                    }
+                    sendActionExcute(fight.queryFightObject(key), actionDetailParams, (int)skill, target.getId());
+                }
+                else {
                     continue;
                 }
-                if (Arrays.asList(SkillConst.beforeActionSkillOnlyOnce).contains(skill) && beforeActionSkillMy != null && beforeActionSkillMy.isPassiveAction() && beforeActionSkillMy.getSkills().contains(skill)) {
-                    continue;
-                }
-                sendActionExcute(fight.queryFightObject(key), actionDetailParams, skill, target.getId());
             }
             if (skillIds.size() > 0) {
                 map.put(key, skillIds);
             }
+            else {
+                continue;
+            }
         }
-        final BeforeActionSkill beforeActionSkillReturn = new BeforeActionSkill();
+        BeforeActionSkill beforeActionSkillReturn = new BeforeActionSkill();
         beforeActionSkillReturn.setSkills(skillIdList);
         beforeActionSkillReturn.setRoleSkillMap(map);
         return beforeActionSkillReturn;
     }
     
-    public static void saveBeforeActionSkill(final Fight fight, final FightObject target, final Map<Integer, List<Integer>> map, final List<Integer> skillIdList) {
-        BeforeActionSkill beforeActionSkill = fight.getBeforeActionMap().get(target.isASide());
+    public static void saveBeforeActionSkill(Fight fight, FightObject target, Map<Integer, List<Integer>> map, List<Integer> skillIdList) {
+        BeforeActionSkill beforeActionSkill = (BeforeActionSkill)fight.getBeforeActionMap().get(Boolean.valueOf(target.isASide()));
         if (beforeActionSkill == null || !beforeActionSkill.isPassiveAction()) {
             beforeActionSkill = new BeforeActionSkill();
             beforeActionSkill.setRoleSkillMap(map);
@@ -207,21 +216,21 @@ public class FightBeforeActionUtil
         beforeActionSkill.setASide(target.isASide());
         beforeActionSkill.setRound(1);
         beforeActionSkill.setPassiveAction(true);
-        fight.getBeforeActionMap().put(target.isASide(), beforeActionSkill);
+        fight.getBeforeActionMap().put(Boolean.valueOf(target.isASide()), beforeActionSkill);
     }
     
-    public static void sendActionExcute(final FightObject effector, final List<ActionDetailParam> actionDetailParams, final int skill, final Integer targetId) {
-        ActionParamUtils.advanceNotice(effector, actionDetailParams, targetId, skill);
+    public static void sendActionExcute(FightObject effector, List<ActionDetailParam> actionDetailParams, int skill, Integer targetId) {
+        ActionParamUtils.advanceNotice(effector, actionDetailParams, (int)targetId, skill);
     }
     
-    public static Integer deleteAction(final Map<Integer, List<Integer>> map, final Integer skillId) {
+    public static Integer deleteAction(Map<Integer, List<Integer>> map, Integer skillId) {
         if (map != null && map.size() > 0) {
-            final List<Integer> removeList = new ArrayList<Integer>();
-            Integer petId = 0;
+            List<Integer> removeList = new ArrayList<>();
+            Integer petId = Integer.valueOf(0);
             int index = 0;
-            for (final Map.Entry<Integer, List<Integer>> entryTemp : map.entrySet()) {
-                final List<Integer> valueTemp = entryTemp.getValue();
-                final Integer keyTemp = entryTemp.getKey();
+            for (Map.Entry<Integer, List<Integer>> entryTemp : map.entrySet()) {
+                List<Integer> valueTemp = (List)entryTemp.getValue();
+                Integer keyTemp = (Integer)entryTemp.getKey();
                 if (valueTemp != null && valueTemp.size() > 0 && valueTemp.contains(skillId)) {
                     valueTemp.remove(skillId);
                     if (index == 0) {
@@ -232,23 +241,28 @@ public class FightBeforeActionUtil
                 if (valueTemp == null || valueTemp.size() <= 0) {
                     removeList.add(keyTemp);
                 }
+                else {
+                    continue;
+                }
             }
-            for (final Integer removeObj : removeList) {
+            for (Integer removeObj : removeList) {
                 map.remove(removeObj);
             }
             return petId;
         }
-        return 0;
+        return Integer.valueOf(0);
     }
     
-    public static void sendCancelActionExcute(final List<ActionDetailParam> actionDetailParams, final Integer actorId, final Integer skill) {
+    public static void sendCancelActionExcute(List<ActionDetailParam> actionDetailParams, Integer actorId, Integer skill) {
         if (actionDetailParams != null) {
             int removeIndex = -1;
-            for (int i = 0; i < actionDetailParams.size(); ++i) {
-                if (actionDetailParams.get(i).getType() == 33 && actionDetailParams.get(i).getAttackerId() == actorId && actionDetailParams.get(i).getSkillSerial() == skill) {
+            int i = 0;
+            while (i < actionDetailParams.size()) {
+                if (((ActionDetailParam)actionDetailParams.get(i)).getType() == 33 && ((ActionDetailParam)actionDetailParams.get(i)).getAttackerId() == (int)actorId && ((ActionDetailParam)actionDetailParams.get(i)).getSkillSerial() == (int)skill) {
                     removeIndex = i;
                     break;
                 }
+                ++i;
             }
             if (removeIndex != -1) {
                 actionDetailParams.remove(removeIndex);

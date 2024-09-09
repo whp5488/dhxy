@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.partner.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -11,6 +10,9 @@ public class ReqFeedPartner extends Message
     private int param;
     private String type;
     private int num;
+    
+    public ReqFeedPartner() {
+    }
     
     public int getPartnerId() {
         return this.partnerId;
@@ -52,7 +54,7 @@ public class ReqFeedPartner extends Message
         if (!(o instanceof ReqFeedPartner)) {
             return false;
         }
-        final ReqFeedPartner other = (ReqFeedPartner)o;
+        ReqFeedPartner other = (ReqFeedPartner)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -62,17 +64,9 @@ public class ReqFeedPartner extends Message
         if (this.getParam() != other.getParam()) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        if (this$type == null) {
-            if (other$type == null) {
-                return this.getNum() == other.getNum();
-            }
-        }
-        else if (this$type.equals(other$type)) {
-            return this.getNum() == other.getNum();
-        }
-        return false;
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        return ((this$type != null) ? this$type.equals(other$type) : (other$type == null)) && this.getNum() == other.getNum();
     }
     
     protected boolean canEqual(final Object other) {
@@ -81,11 +75,11 @@ public class ReqFeedPartner extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPartnerId();
         result = result * 59 + this.getParam();
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
         result = result * 59 + this.getNum();
         return result;

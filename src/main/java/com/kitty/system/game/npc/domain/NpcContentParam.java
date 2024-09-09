@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.domain;
 
 import com.kitty.system.game.vo.Npc;
@@ -9,7 +8,7 @@ public class NpcContentParam
     private Role role;
     private Npc npc;
     
-    public NpcContentParam(final Role role, final Npc npc) {
+    public NpcContentParam(Role role, Npc npc) {
         this.role = role;
         this.npc = npc;
     }

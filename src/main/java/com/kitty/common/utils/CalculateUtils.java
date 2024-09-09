@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import javax.script.ScriptEngine;
@@ -8,15 +7,18 @@ import java.math.BigDecimal;
 
 public class CalculateUtils
 {
-    public static BigDecimal calculate(final String str) {
-        final ScriptEngineManager manager = new ScriptEngineManager();
-        final ScriptEngine engine = manager.getEngineByName("js");
+    public CalculateUtils() {
+    }
+    
+    public static BigDecimal calculate(String str) {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("js");
         Object result = null;
         try {
             result = engine.eval(str);
             return new BigDecimal(result.toString());
         }
-        catch (final ScriptException e) {
+        catch (ScriptException e) {
             e.printStackTrace();
             return new BigDecimal(0);
         }

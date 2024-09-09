@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.client;
 
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -13,7 +12,7 @@ class C2SSessionFactory extends BasePooledObjectFactory<CCSession>
     int port;
     CMessageDispatcher dispatcher;
     
-    public C2SSessionFactory(final String ip, final int port) {
+    public C2SSessionFactory(String ip, int port) {
         this.ip = ip;
         this.port = port;
         this.dispatcher = BaseCMessageDispatcher.getInstance();
@@ -23,7 +22,7 @@ class C2SSessionFactory extends BasePooledObjectFactory<CCSession>
         return this.ip;
     }
     
-    public void setIp(final String ip) {
+    public void setIp(String ip) {
         this.ip = ip;
     }
     
@@ -31,17 +30,17 @@ class C2SSessionFactory extends BasePooledObjectFactory<CCSession>
         return this.port;
     }
     
-    public void setPort(final int port) {
+    public void setPort(int port) {
         this.port = port;
     }
     
     public CCSession create() throws Exception {
-        final CCSession session = CCSession.valueOf(this.ip, this.port, this.dispatcher);
+        CCSession session = CCSession.valueOf(this.ip, this.port, this.dispatcher);
         session.buildConnection();
         return session;
     }
     
-    public PooledObject<CCSession> wrap(final CCSession obj) {
-        return (PooledObject<CCSession>)new DefaultPooledObject(obj);
+    public PooledObject<CCSession> wrap(CCSession obj) {
+        return new DefaultPooledObject(obj);
     }
 }

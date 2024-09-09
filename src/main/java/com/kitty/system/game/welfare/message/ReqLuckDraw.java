@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,11 +9,14 @@ public class ReqLuckDraw extends Message
     private byte type;
     private byte classify;
     
+    public ReqLuckDraw() {
+    }
+    
     public byte getType() {
         return this.type;
     }
     
-    public void setType(final byte type) {
+    public void setType(byte type) {
         this.type = type;
     }
     
@@ -22,7 +24,7 @@ public class ReqLuckDraw extends Message
         return this.classify;
     }
     
-    public void setClassify(final byte classify) {
+    public void setClassify(byte classify) {
         this.classify = classify;
     }
 }

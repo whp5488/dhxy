@@ -1,4 +1,3 @@
-
 package com.kitty.mina.task;
 
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,11 @@ public class MessageTask extends AbstractDistributeTask
     private Method method;
     private Object[] params;
     
-    public static MessageTask valueOf(final int distributeKey, final Object handler, final Method method, final Object[] params, final Message message) {
-        final MessageTask msgTask = new MessageTask();
+    public MessageTask() {
+    }
+    
+    public static MessageTask valueOf(int distributeKey, Object handler, Method method, Object[] params, Message message) {
+        MessageTask msgTask = new MessageTask();
         msgTask.distributeKey = distributeKey;
         msgTask.handler = handler;
         msgTask.method = method;
@@ -30,9 +32,9 @@ public class MessageTask extends AbstractDistributeTask
         try {
             this.method.invoke(this.handler, this.params);
         }
-        catch (final Throwable e) {
+        catch (Throwable e) {
             e.printStackTrace();
-            MessageTask.logger.error("message task execute failed=协议=={}，异常={}", this.message.getModule(), this.message);
+            MessageTask.logger.error("message task execute failed=协议=={}，异常={}", Integer.valueOf(this.message.getModule()), this.message);
         }
     }
     

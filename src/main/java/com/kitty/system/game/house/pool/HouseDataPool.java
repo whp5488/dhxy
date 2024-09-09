@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.house.pool;
 
 import java.util.ArrayList;
@@ -19,21 +18,27 @@ public class HouseDataPool
     public static Map<Integer, SysDataFurniture> furnitureMap;
     public static List<Integer> house;
     
+    public HouseDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         HouseDataPool.furnitureMap = initService.initFurniture();
-        for (final SysDataFurniture furniture : HouseDataPool.furnitureMap.values()) {
+        for (SysDataFurniture furniture : HouseDataPool.furnitureMap.values()) {
             if (furniture.getClassify() == HouseFurniture.MOTIF.getType()) {
-                HouseDataPool.house.add(furniture.getSerial());
+                HouseDataPool.house.add(Integer.valueOf(furniture.getSerial()));
                 MapDataPool.MAP_KEY_GENERATE.put(Integer.valueOf(furniture.getSerial()), role -> role.getRoleId());
-                HouseDataPool.house.add(furniture.getHouse());
+                HouseDataPool.house.add(Integer.valueOf(furniture.getHouse()));
                 MapDataPool.MAP_KEY_GENERATE.put(Integer.valueOf(furniture.getHouse()), role -> role.getRoleId());
+            }
+            else {
+                continue;
             }
         }
     }
     
     static {
-        HouseDataPool.furnitureMap = new HashMap<Integer, SysDataFurniture>();
-        HouseDataPool.house = new ArrayList<Integer>();
+        HouseDataPool.furnitureMap = new HashMap();
+        HouseDataPool.house = new ArrayList<>();
     }
 }

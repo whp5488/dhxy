@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import java.util.ArrayList;
@@ -15,8 +14,8 @@ public class RespHgPrepare extends Message
     private List<HgPrepare> receiver;
     
     public RespHgPrepare() {
-        this.initiator = new ArrayList<HgPrepare>(5);
-        this.receiver = new ArrayList<HgPrepare>(5);
+        this.initiator = new ArrayList(5);
+        this.receiver = new ArrayList(5);
     }
     
     public int getTime() {
@@ -51,37 +50,21 @@ public class RespHgPrepare extends Message
         if (!(o instanceof RespHgPrepare)) {
             return false;
         }
-        final RespHgPrepare other = (RespHgPrepare)o;
+        RespHgPrepare other = (RespHgPrepare)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getTime() != other.getTime()) {
             return false;
         }
-        final Object this$initiator = this.getInitiator();
-        final Object other$initiator = other.getInitiator();
-        Label_0078: {
-            if (this$initiator == null) {
-                if (other$initiator == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$initiator.equals(other$initiator)) {
-                break Label_0078;
-            }
+        Object this$initiator = this.getInitiator();
+        Object other$initiator = other.getInitiator();
+        if (!((this$initiator != null) ? this$initiator.equals(other$initiator) : (other$initiator == null))) {
             return false;
         }
-        final Object this$receiver = this.getReceiver();
-        final Object other$receiver = other.getReceiver();
-        if (this$receiver == null) {
-            if (other$receiver == null) {
-                return true;
-            }
-        }
-        else if (this$receiver.equals(other$receiver)) {
-            return true;
-        }
-        return false;
+        Object this$receiver = this.getReceiver();
+        Object other$receiver = other.getReceiver();
+        return (this$receiver != null) ? this$receiver.equals(other$receiver) : (other$receiver == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -90,12 +73,12 @@ public class RespHgPrepare extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTime();
-        final Object $initiator = this.getInitiator();
+        Object $initiator = this.getInitiator();
         result = result * 59 + (($initiator == null) ? 43 : $initiator.hashCode());
-        final Object $receiver = this.getReceiver();
+        Object $receiver = this.getReceiver();
         result = result * 59 + (($receiver == null) ? 43 : $receiver.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -20,6 +19,9 @@ public class SysDataTaskReward implements Serializable
     private List<Param> rewards;
     @Column("type")
     private int type;
+    
+    public SysDataTaskReward() {
+    }
     
     public String getSerial() {
         return this.serial;
@@ -53,34 +55,18 @@ public class SysDataTaskReward implements Serializable
         if (!(o instanceof SysDataTaskReward)) {
             return false;
         }
-        final SysDataTaskReward other = (SysDataTaskReward)o;
+        SysDataTaskReward other = (SysDataTaskReward)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0065: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0065;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$rewards = this.getRewards();
-        final Object other$rewards = other.getRewards();
-        if (this$rewards == null) {
-            if (other$rewards == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$rewards.equals(other$rewards)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$rewards = this.getRewards();
+        Object other$rewards = other.getRewards();
+        return ((this$rewards != null) ? this$rewards.equals(other$rewards) : (other$rewards == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -89,11 +75,11 @@ public class SysDataTaskReward implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $rewards = this.getRewards();
+        Object $rewards = this.getRewards();
         result = result * 59 + (($rewards == null) ? 43 : $rewards.hashCode());
         result = result * 59 + this.getType();
         return result;

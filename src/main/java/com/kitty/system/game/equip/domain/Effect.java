@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.domain;
 
 import com.kitty.common.db.Db4CommonService;
@@ -26,7 +25,7 @@ public class Effect extends BaseEntity<Long>
         this.part = 0;
     }
     
-    public Effect(final Long id, final long rId, final int serial, final byte state, final int time, final byte part) {
+    public Effect(Long id, long rId, int serial, byte state, int time, byte part) {
         this.part = 0;
         this.id = id;
         this.rId = rId;

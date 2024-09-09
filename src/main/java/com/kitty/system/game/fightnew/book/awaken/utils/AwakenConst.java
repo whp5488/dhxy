@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.utils;
 
 public interface AwakenConst

@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.Random;
@@ -7,22 +6,25 @@ public class RandomUtil
 {
     private static Random rand;
     
-    public static int round(final Integer min, final Integer max) {
-        if (min < 0 || max < 0) {
-            return BigDecimalUtil.decimalScaleIntegerDown(0, getRandomDouble((double)min, (double)max));
-        }
-        return RandomUtil.rand.nextInt(max - min + 1) + min;
+    public RandomUtil() {
     }
     
-    public static double getRandomDouble(final Double begin, final Double end) {
-        if (begin.equals(end)) {
-            return begin;
+    public static int round(Integer min, Integer max) {
+        if ((int)min < 0 || (int)max < 0) {
+            return BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(getRandomDouble(Double.valueOf((double)min), Double.valueOf((double)max))));
         }
-        final Double rtn = begin + Math.random() * (end - begin);
+        return RandomUtil.rand.nextInt((int)max - (int)min + 1) + (int)min;
+    }
+    
+    public static double getRandomDouble(Double begin, Double end) {
+        if (begin.equals(end)) {
+            return (double)begin;
+        }
+        Double rtn = Double.valueOf((double)begin + (double)Double.valueOf(Math.random() * ((double)end - (double)begin)));
         if (rtn.equals(begin) || rtn.equals(end)) {
             return getRandomDouble(begin, end);
         }
-        return rtn;
+        return (double)rtn;
     }
     
     static {

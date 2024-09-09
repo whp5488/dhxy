@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.horse.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -53,7 +51,7 @@ public class ReqUpgradeHorse extends Message
         if (!(o instanceof ReqUpgradeHorse)) {
             return false;
         }
-        final ReqUpgradeHorse other = (ReqUpgradeHorse)o;
+        ReqUpgradeHorse other = (ReqUpgradeHorse)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -66,17 +64,9 @@ public class ReqUpgradeHorse extends Message
         if (this.getRests() != other.getRests()) {
             return false;
         }
-        final Object this$param = this.getParam();
-        final Object other$param = other.getParam();
-        if (this$param == null) {
-            if (other$param == null) {
-                return true;
-            }
-        }
-        else if (this$param.equals(other$param)) {
-            return true;
-        }
-        return false;
+        Object this$param = this.getParam();
+        Object other$param = other.getParam();
+        return (this$param != null) ? this$param.equals(other$param) : (other$param == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -85,22 +75,21 @@ public class ReqUpgradeHorse extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getOperationType();
         result = result * 59 + this.getRests();
-        final Object $param = this.getParam();
+        Object $param = this.getParam();
         result = result * 59 + (($param == null) ? 43 : $param.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqUpgradeHorse(type=" + this.getType() + ", operationType=" + this.getOperationType() + ", rests=" + this.getRests() + ", param=" + this.getParam() + ")";
+        return "ReqUpgradeHorse(type=" + (int)this.getType() + ", operationType=" + (int)this.getOperationType() + ", rests=" + this.getRests() + ", param=" + this.getParam() + ")";
     }
     
-    @ConstructorProperties({ "type", "operationType", "rests", "param" })
     public ReqUpgradeHorse(final short type, final byte operationType, final int rests, final String param) {
         this.operationType = 0;
         this.rests = 0;

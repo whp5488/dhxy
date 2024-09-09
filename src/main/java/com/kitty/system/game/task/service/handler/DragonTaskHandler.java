@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.service.handler;
 
 import com.kitty.common.utils.BigDecimalUtil;
@@ -20,7 +19,6 @@ import java.util.Random;
 import com.kitty.system.game.activity.model.product.ActivityType;
 import com.kitty.system.common.data.DataGlobalFunc;
 import com.kitty.system.game.vo.Npc;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.config.TaskSet;
@@ -48,43 +46,45 @@ public class DragonTaskHandler extends TaskHandler
     }
     
     @Override
-    public void canSubmitTask(final Role role, final TaskSet taskSet) {
-        final int submitNpc = taskSet.getSubmitNpc();
+    public void canSubmitTask(Role role, TaskSet taskSet) {
+        int submitNpc = taskSet.getSubmitNpc();
         if (submitNpc > 0) {
-            final Npc npc = this.mapService.getNpc(submitNpc);
+            Npc npc = this.mapService.getNpc(submitNpc);
             if (npc != null) {
-                final boolean b = this.npcService.canClickNpc(role, npc);
+                boolean b = this.npcService.canClickNpc(role, npc);
                 if (!b) {
                     MessagePusher.pushMessage(role, new RespMsg("请前往" + npc.getName() + "处提交任务"));
                     return;
                 }
             }
         }
-        final int submitCondition = taskSet.getSubmitCondition();
+        int submitCondition = taskSet.getSubmitCondition();
         if (submitCondition > 0 && !this.taskService.condition(role, taskSet, (byte)1)) {
             return;
         }
-        final boolean flag = this.taskService.delItemTaskEvent(role, taskSet);
+        boolean flag = this.taskService.delItemTaskEvent(role, taskSet);
         if (flag) {
             this.taskService.updateSingleTargetProgress(role, taskSet);
         }
+        return;
     }
     
-    public void acceptSchoolTask(final Role role, final Npc npc) {
-        final String content = this.getNpcContentNotAccept(role);
+    public void acceptSchoolTask(Role role, Npc npc) {
+        String content = this.getNpcContentNotAccept(role);
         if (content != null) {
             MessagePusher.pushMessage(role, new RespMsg(content));
             return;
         }
         this.acceptTask(role);
+        return;
     }
     
-    public String getNpcContentNotAccept(final Role role) {
-        final String msg = DataGlobalFunc.needGradeJudge(0, 60, role.getRelive(), role.getLevel(), "你的#<R>角色等级#不足");
+    public String getNpcContentNotAccept(Role role) {
+        String msg = DataGlobalFunc.needGradeJudge(0, 60, (int)role.getRelive(), (int)role.getLevel(), "你的#<R>角色等级#不足");
         if (msg != null) {
             return msg;
         }
-        final boolean isHave = this.activityService.isHaveRemainCount(role, ActivityType.DRAGON);
+        boolean isHave = this.activityService.isHaveRemainCount(role, ActivityType.DRAGON);
         if (!isHave) {
             return "你今日为端午节做了很多事，辛苦你了，前去休息吧";
         }
@@ -94,93 +94,95 @@ public class DragonTaskHandler extends TaskHandler
         return null;
     }
     
-    public void acceptTask(final Role role) {
+    public void acceptTask(Role role) {
         if (!this.canAcceptTask(role)) {
             return;
         }
-        final TaskSet randTaskSet = this.getRandomSchoolTask(role);
+        TaskSet randTaskSet = this.getRandomSchoolTask(role);
         if (randTaskSet == null) {
             return;
         }
-        this.acceptTask(role, randTaskSet, -1);
+        super.acceptTask(role, randTaskSet, -1);
+        return;
     }
     
-    private TaskSet getRandomSchoolTask(final Role role) {
-        final Random random = new Random();
-        final List<SysDataTaskDragon> taskList = TaskDataPool.taskDragonList;
-        final int index = random.nextInt(taskList.size());
-        final Integer taskId = taskList.get(index).getSerial();
-        final TaskSet taskSet = this.taskService.getTaskSet(taskId);
+    private TaskSet getRandomSchoolTask(Role role) {
+        Random random = new Random();
+        List<SysDataTaskDragon> taskList = TaskDataPool.taskDragonList;
+        int index = random.nextInt(taskList.size());
+        Integer taskId = Integer.valueOf(((SysDataTaskDragon)taskList.get(index)).getSerial());
+        TaskSet taskSet = this.taskService.getTaskSet((int)taskId);
         return taskSet;
     }
     
-    private boolean canAcceptTask(final Role role) {
-        final boolean isHave = this.activityService.isHaveRemainCount(role, ActivityType.DRAGON);
+    private boolean canAcceptTask(Role role) {
+        boolean isHave = this.activityService.isHaveRemainCount(role, ActivityType.DRAGON);
         return isHave && !this.isAcceptedSchoolTask(role) && !this.isWaitGiveUpCD(role);
     }
     
-    public boolean isAcceptedSchoolTask(final Role role) {
-        final List<TaskSet> taskList = this.taskService.getAcceptedTaskListMatchTaskType(role, TaskType.DRAGON);
+    public boolean isAcceptedSchoolTask(Role role) {
+        List<TaskSet> taskList = this.taskService.getAcceptedTaskListMatchTaskType(role, TaskType.DRAGON);
         return taskList != null && !taskList.isEmpty();
     }
     
-    private boolean isWaitGiveUpCD(final Role role) {
-        final long giveUpTime = role.getTask().getGiveUpTime(TaskType.DRAGON);
+    private boolean isWaitGiveUpCD(Role role) {
+        long giveUpTime = role.getTask().getGiveUpTime(TaskType.DRAGON);
         return giveUpTime > 0L && System.currentTimeMillis() - giveUpTime < 300000L;
     }
     
     @Override
-    public TaskInfo getTaskInfo(final Role role, final TaskSet taskSet) {
-        final TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
+    public TaskInfo getTaskInfo(Role role, TaskSet taskSet) {
+        TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
         if (this.taskService.isMatchTaskType(taskSet, TaskType.DRAGON)) {
-            final int step = role.getTaskProgress().getFinishCounts().getInt(ActivityType.DRAGON.getActivityId(), 0) + 1;
+            int step = role.getTaskProgress().getFinishCounts().getInt(ActivityType.DRAGON.getActivityId(), 0) + 1;
             taskInfo.setCounter((short)step);
+            return taskInfo;
         }
         return taskInfo;
     }
     
     @Override
-    public boolean canGiveUpTask(final Role role, final TaskSet taskSet) {
+    public boolean canGiveUpTask(Role role, TaskSet taskSet) {
         return true;
     }
     
     @Override
-    public void endTaskTips(final Role role) {
+    public void endTaskTips(Role role) {
     }
     
     @Override
-    public void giveReward(final Role role, final TaskSet taskSet) {
-        final int step = role.getTaskProgress().getFinishCounts().getInt(ActivityType.DRAGON.getActivityId(), 0) + 1;
-        this.roleService.addExp(role, calculate(role.getLevel(), role.getRelive(), 1, 1), "任务", true);
-        final Integer combatPet = role.getExtendBox().getCombatPet();
-        if (combatPet > 0) {
-            final Pet pet = this.petService.selectPet(role).get(combatPet);
-            this.petService.addExp(role, pet, calculate(pet.getPetLv(), pet.getRebirth(), 1, 2), true);
+    public void giveReward(Role role, TaskSet taskSet) {
+        int step = role.getTaskProgress().getFinishCounts().getInt(ActivityType.DRAGON.getActivityId(), 0) + 1;
+        this.roleService.addExp(role, calculate((int)role.getLevel(), (int)role.getRelive(), 1, 1), "任务", true);
+        Integer combatPet = role.getExtendBox().getCombatPet();
+        if ((int)combatPet > 0) {
+            Pet pet = (Pet)this.petService.selectPet(role).get(combatPet);
+            this.petService.addExp(role, pet, calculate((int)pet.getPetLv(), (int)pet.getRebirth(), 1, 2), true);
         }
-        this.roleService.addCurrency(role, Const.RESTYPE_COIN, calculate(role.getLevel(), role.getRelive(), 1, 3), "任务", true, false);
+        this.roleService.addCurrency(role, Const.RESTYPE_COIN, Long.valueOf(calculate((int)role.getLevel(), (int)role.getRelive(), 1, 3)), "任务", true, false);
         this.addActivityCount(role, taskSet);
-        final List<Param> list = JsonUtils.string2Collection(taskSet.getTaskReward(), List.class, Param.class);
+        List<Param> list = (List)JsonUtils.string2Collection(taskSet.getTaskReward(), List.class, Param.class);
         if (list != null) {
-            SpringUtils.getBean(BagService.class).sendReward(role, list, "", 0);
+            ((BagService)SpringUtils.getBean(BagService.class)).sendReward(role, list, "", 0);
         }
         if (step >= ActivityType.DRAGON.getTotalCount()) {
-            final int round = RandomUtil.round(0, TaskDataPool.dragonRewardList.size() - 1);
-            final Param param = TaskDataPool.dragonRewardList.get(round);
-            final boolean flag = SkillAi.canAffectOnPro(param.getR() / 1000.0);
+            int round = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(TaskDataPool.dragonRewardList.size() - 1));
+            Param param = (Param)TaskDataPool.dragonRewardList.get(round);
+            boolean flag = SkillAi.canAffectOnPro((double)(int)param.getR() / 1000.0);
             if (flag) {
-                SpringUtils.getBean(BagService.class).addGoods(role, param.getK(), param.getV(), 0, true, true, "端午最后一环");
+                ((BagService)SpringUtils.getBean(BagService.class)).addGoods(role, (int)param.getK(), (int)param.getV(), 0, true, true, "端午最后一环");
             }
         }
     }
     
-    private void addActivityCount(final Role role, final TaskSet taskSet) {
+    private void addActivityCount(Role role, TaskSet taskSet) {
         if (this.activityService.isHaveRemainCount(role, ActivityType.DRAGON)) {
-            final int step = 1;
+            int step = 1;
             this.activityService.addFinishCount(role, ActivityType.DRAGON, step);
-            final ActivityLivenessSet activityLivenessSet = ActivityDataPool.activityLivenessSetMapByType.get(ActivityType.DRAGON);
+            ActivityLivenessSet activityLivenessSet = (ActivityLivenessSet)ActivityDataPool.activityLivenessSetMapByType.get(ActivityType.DRAGON);
             if (activityLivenessSet != null && activityLivenessSet.getPerLiveness() < 1.0f) {
-                final int c = (int)(1.0f / activityLivenessSet.getPerLiveness());
-                final int anInt = role.getTaskProgress().getFinishCounts().getInt(ActivityType.DRAGON.getActivityId(), 1) - 1;
+                int c = (int)(1.0f / activityLivenessSet.getPerLiveness());
+                int anInt = role.getTaskProgress().getFinishCounts().getInt(ActivityType.DRAGON.getActivityId(), 1) - 1;
                 if (anInt % c == 0) {
                     this.activationTips(role, step);
                 }
@@ -188,18 +190,18 @@ public class DragonTaskHandler extends TaskHandler
         }
     }
     
-    private static long calculate(final int grade, final int rei, final int cnt, final int type) {
-        final double fold = ActivityType.DRAGON.getFold();
+    private static long calculate(int grade, int rei, int cnt, int type) {
+        double fold = ActivityType.DRAGON.getFold();
         double exp = 0.0;
         if (type == 1) {
-            exp = 1.6E7 * (1.0 + (grade + rei * 15.0) / 140.0 * 2.5) / 30.0 / 28.13 * (0.2 + 0.1 * cnt + Math.pow(cnt, 0.45)) * 1.5;
+            exp = 1.6E7 * (1.0 + ((double)grade + (double)rei * 15.0) / 140.0 * 2.5) / 30.0 / 28.13 * (0.2 + 0.1 * (double)cnt + Math.pow((double)cnt, 0.45)) * 1.5;
         }
         else if (type == 2) {
-            exp = 1.6E7 * (1.0 + (grade + rei * 15.0) / 140.0 * 2.5) / 30.0 / 28.13 * (0.2 + 0.1 * cnt + Math.pow(cnt, 0.45)) * 1.5 * 1.2;
+            exp = 1.6E7 * (1.0 + ((double)grade + (double)rei * 15.0) / 140.0 * 2.5) / 30.0 / 28.13 * (0.2 + 0.1 * (double)cnt + Math.pow((double)cnt, 0.45)) * 1.5 * 1.2;
         }
         else if (type == 3) {
-            return BigDecimalUtil.decimalScaleDown(0, 7109.847138286527 * (0.2 + 0.1 * cnt + Math.pow(cnt, 0.45))).longValue();
+            return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(7109.847138286527 * (0.2 + 0.1 * (double)cnt + Math.pow((double)cnt, 0.45)))).longValue();
         }
-        return BigDecimalUtil.decimalScaleDown(0, (fold > 1.0) ? (exp * fold) : exp).longValue();
+        return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf((fold > 1.0) ? (exp * fold) : exp)).longValue();
     }
 }

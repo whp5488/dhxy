@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.domain.vo;
 
 import java.io.Serializable;
@@ -54,7 +53,7 @@ public class RecordHallQuestion implements Serializable
         if (!(o instanceof RecordHallQuestion)) {
             return false;
         }
-        final RecordHallQuestion other = (RecordHallQuestion)o;
+        RecordHallQuestion other = (RecordHallQuestion)o;
         return other.canEqual(this) && this.getS() == other.getS() && this.getQ() == other.getQ() && this.getT() == other.getT() && this.getR() == other.getR();
     }
     
@@ -64,7 +63,7 @@ public class RecordHallQuestion implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getS();
         result = result * 59 + this.getQ();
@@ -75,6 +74,6 @@ public class RecordHallQuestion implements Serializable
     
     @Override
     public String toString() {
-        return "RecordHallQuestion(s=" + this.getS() + ", q=" + this.getQ() + ", t=" + this.getT() + ", r=" + this.getR() + ")";
+        return "RecordHallQuestion(s=" + this.getS() + ", q=" + this.getQ() + ", t=" + this.getT() + ", r=" + (int)this.getR() + ")";
     }
 }

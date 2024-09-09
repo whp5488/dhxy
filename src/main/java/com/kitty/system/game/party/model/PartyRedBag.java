@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model;
 
 import com.kitty.common.thread.IdGenerator;
@@ -20,7 +19,7 @@ public class PartyRedBag
     public PartyRedBag() {
     }
     
-    public PartyRedBag(final long senderUid, final String senderName, final short silver, final short count, final String msg) {
+    public PartyRedBag(long senderUid, String senderName, short silver, short count, String msg) {
         this.id = IdGenerator.getNextId();
         this.silver = silver;
         this.count = count;

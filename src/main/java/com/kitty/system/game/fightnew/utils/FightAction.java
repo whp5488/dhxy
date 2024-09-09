@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.utils;
 
 public interface FightAction

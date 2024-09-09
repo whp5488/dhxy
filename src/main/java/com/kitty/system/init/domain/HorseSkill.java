@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -35,6 +34,9 @@ public class HorseSkill
     @Comment("是否初始化加载，0=否，1=是")
     @Column("is_fight_initialize_load")
     private boolean isFightInitializeLoad;
+    
+    public HorseSkill() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -116,7 +118,7 @@ public class HorseSkill
         if (!(o instanceof HorseSkill)) {
             return false;
         }
-        final HorseSkill other = (HorseSkill)o;
+        HorseSkill other = (HorseSkill)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -141,17 +143,9 @@ public class HorseSkill
         if (this.getSeat() != other.getSeat()) {
             return false;
         }
-        final Object this$triggerType = this.getTriggerType();
-        final Object other$triggerType = other.getTriggerType();
-        if (this$triggerType == null) {
-            if (other$triggerType == null) {
-                return this.isFightInitializeLoad() == other.isFightInitializeLoad();
-            }
-        }
-        else if (this$triggerType.equals(other$triggerType)) {
-            return this.isFightInitializeLoad() == other.isFightInitializeLoad();
-        }
-        return false;
+        Object this$triggerType = this.getTriggerType();
+        Object other$triggerType = other.getTriggerType();
+        return ((this$triggerType != null) ? this$triggerType.equals(other$triggerType) : (other$triggerType == null)) && this.isFightInitializeLoad() == other.isFightInitializeLoad();
     }
     
     protected boolean canEqual(final Object other) {
@@ -160,19 +154,19 @@ public class HorseSkill
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final long $seatWeightOne = Double.doubleToLongBits(this.getSeatWeightOne());
+        long $seatWeightOne = Double.doubleToLongBits(this.getSeatWeightOne());
         result = result * 59 + (int)($seatWeightOne >>> 32 ^ $seatWeightOne);
-        final long $seatWeightTow = Double.doubleToLongBits(this.getSeatWeightTow());
+        long $seatWeightTow = Double.doubleToLongBits(this.getSeatWeightTow());
         result = result * 59 + (int)($seatWeightTow >>> 32 ^ $seatWeightTow);
-        final long $seatWeightThree = Double.doubleToLongBits(this.getSeatWeightThree());
+        long $seatWeightThree = Double.doubleToLongBits(this.getSeatWeightThree());
         result = result * 59 + (int)($seatWeightThree >>> 32 ^ $seatWeightThree);
         result = result * 59 + this.getRarity();
         result = result * 59 + this.getType();
         result = result * 59 + this.getSeat();
-        final Object $triggerType = this.getTriggerType();
+        Object $triggerType = this.getTriggerType();
         result = result * 59 + (($triggerType == null) ? 43 : $triggerType.hashCode());
         result = result * 59 + (this.isFightInitializeLoad() ? 79 : 97);
         return result;
@@ -180,6 +174,6 @@ public class HorseSkill
     
     @Override
     public String toString() {
-        return "HorseSkill(serial=" + this.getSerial() + ", seatWeightOne=" + this.getSeatWeightOne() + ", seatWeightTow=" + this.getSeatWeightTow() + ", seatWeightThree=" + this.getSeatWeightThree() + ", rarity=" + this.getRarity() + ", type=" + this.getType() + ", seat=" + this.getSeat() + ", triggerType=" + this.getTriggerType() + ", isFightInitializeLoad=" + this.isFightInitializeLoad() + ")";
+        return "HorseSkill(serial=" + this.getSerial() + ", seatWeightOne=" + this.getSeatWeightOne() + ", seatWeightTow=" + this.getSeatWeightTow() + ", seatWeightThree=" + this.getSeatWeightThree() + ", rarity=" + (int)this.getRarity() + ", type=" + (int)this.getType() + ", seat=" + (int)this.getSeat() + ", triggerType=" + this.getTriggerType() + ", isFightInitializeLoad=" + this.isFightInitializeLoad() + ")";
     }
 }

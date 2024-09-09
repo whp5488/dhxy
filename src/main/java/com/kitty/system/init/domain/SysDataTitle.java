@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -18,6 +17,9 @@ public class SysDataTitle implements Serializable
     @Comment("过期（秒）-1.自定义 0.为永久")
     @Column("expire")
     private int expire;
+    
+    public SysDataTitle() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -51,24 +53,16 @@ public class SysDataTitle implements Serializable
         if (!(o instanceof SysDataTitle)) {
             return false;
         }
-        final SysDataTitle other = (SysDataTitle)o;
+        SysDataTitle other = (SysDataTitle)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getExpire() == other.getExpire();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getExpire() == other.getExpire();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getExpire() == other.getExpire();
     }
     
     protected boolean canEqual(final Object other) {
@@ -77,10 +71,10 @@ public class SysDataTitle implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getExpire();
         return result;

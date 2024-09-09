@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.interfaced;
 
 public interface BagType

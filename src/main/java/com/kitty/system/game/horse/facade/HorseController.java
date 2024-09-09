@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.horse.facade;
 
 import com.kitty.system.game.horse.message.ReqMountControlPet;
@@ -30,39 +29,42 @@ public class HorseController
     }
     
     @EventHandler({ EventType.FIGHT_END })
-    public void handleFightEndEvent(final FightEndEvent fightEndEvent) {
+    public void handleFightEndEvent(FightEndEvent fightEndEvent) {
         this.horseService.vitDispose(fightEndEvent.getRole());
     }
     
     @RequestMapping
-    public void upgrade(final IoSession session, final ReqUpgradeHorse reqUpgradeHorse) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void upgrade(IoSession session, ReqUpgradeHorse reqUpgradeHorse) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.horseService.upgrade(role, reqUpgradeHorse);
+        return;
     }
     
     @RequestMapping
-    public void changeName(final IoSession session, final ReqSetMountName reqSetMountName) {
+    public void changeName(IoSession session, ReqSetMountName reqSetMountName) {
         this.horseService.changeName(session, reqSetMountName);
     }
     
     @RequestMapping
-    public void rideMount(final IoSession session, final ReqRideMount reqRideMount) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void rideMount(IoSession session, ReqRideMount reqRideMount) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.horseService.rideMount(role, reqRideMount.getMountId(), reqRideMount.getType());
+        return;
     }
     
     @RequestMapping
-    public void controlPet(final IoSession session, final ReqMountControlPet mountControlPet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void controlPet(IoSession session, ReqMountControlPet mountControlPet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.horseService.controlPet(role, mountControlPet);
+        return;
     }
 }

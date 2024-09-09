@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.equip.service.EquipService;
 import com.kitty.system.common.data.DataGlobalFunc;
 import com.kitty.common.utils.spring.SpringUtils;
@@ -29,23 +27,23 @@ public class WeaponsRankingSource implements Serializable
     private List<Integer> special_icon;
     private List<FiedValue> list;
     
-    public WeaponsRankingSource(final Long wearEquipId) {
+    public WeaponsRankingSource(Long wearEquipId) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.wearEquipId = wearEquipId;
     }
     
-    public WeaponsRankingSource(final WearEquip wearEquip, final Role role, final int score) {
+    public WeaponsRankingSource(WearEquip wearEquip, Role role, int score) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.wearEquipId = wearEquip.getId();
-        this.roleId = role.getRoleId();
+        this.roleId = (int)role.getRoleId();
         this.weaponsSerial = wearEquip.getType();
         this.weaponsName = wearEquip.getName();
         this.score = score;
@@ -53,14 +51,14 @@ public class WeaponsRankingSource implements Serializable
         this.rests(role);
     }
     
-    public void rests(final Role role) {
+    public void rests(Role role) {
         this.race = (byte)(int)role.getRace();
         this.roleName = role.getName();
-        this.serial = role.getSerial();
-        final EquipService equipService = SpringUtils.getEquipService();
+        this.serial = (int)role.getSerial();
+        EquipService equipService = SpringUtils.getEquipService();
         this.weapon = role.getWeaponIcon();
         this.light_effect = equipService.getWearEffect(role);
-        final List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
             this.gem = DataGlobalFunc.getWeaponGemNum(wearEquips);
         }
@@ -68,9 +66,9 @@ public class WeaponsRankingSource implements Serializable
     }
     
     @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof WeaponsRankingSource) {
-            final WeaponsRankingSource weaponsRankingSource = (WeaponsRankingSource)obj;
+    public boolean equals(Object obj) {
+        if ((obj instanceof WeaponsRankingSource)) {
+            WeaponsRankingSource weaponsRankingSource = (WeaponsRankingSource)obj;
             return this.wearEquipId.equals(weaponsRankingSource.getWearEquipId());
         }
         return false;
@@ -79,7 +77,7 @@ public class WeaponsRankingSource implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
-        final int prime = 31;
+        int prime = 31;
         result = this.wearEquipId.hashCode() * prime;
         return result;
     }
@@ -196,13 +194,12 @@ public class WeaponsRankingSource implements Serializable
         this.list = list;
     }
     
-    @ConstructorProperties({ "wearEquipId", "roleId", "roleName", "serial", "race", "weaponsSerial", "weaponsName", "score", "equipType", "weapon", "gem", "light_effect", "special_icon", "list" })
     public WeaponsRankingSource(final Long wearEquipId, final int roleId, final String roleName, final int serial, final byte race, final int weaponsSerial, final String weaponsName, final int score, final byte equipType, final int weapon, final int gem, final List<Integer> light_effect, final List<Integer> special_icon, final List<FiedValue> list) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.wearEquipId = wearEquipId;
         this.roleId = roleId;
         this.roleName = roleName;
@@ -222,8 +219,8 @@ public class WeaponsRankingSource implements Serializable
     public WeaponsRankingSource() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 }

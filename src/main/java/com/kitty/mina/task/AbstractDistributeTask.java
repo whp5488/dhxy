@@ -1,4 +1,3 @@
-
 package com.kitty.mina.task;
 
 public abstract class AbstractDistributeTask implements DistributeTask
@@ -6,6 +5,9 @@ public abstract class AbstractDistributeTask implements DistributeTask
     protected int distributeKey;
     private long startMillis;
     private long endMillis;
+    
+    public AbstractDistributeTask() {
+    }
     
     @Override
     public String getName() {

@@ -1,4 +1,3 @@
-
 package com.kitty.mina.annotation;
 
 import java.lang.annotation.RetentionPolicy;
@@ -11,5 +10,5 @@ import java.lang.annotation.Documented;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IntegerField {
-    int value() default 0;
+    public abstract int value() default 0;
 }

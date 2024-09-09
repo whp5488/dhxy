@@ -1,4 +1,3 @@
-
 package com.kitty.mina.message;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -23,10 +22,13 @@ import java.io.Serializable;
 @JsonSubTypes({ @JsonSubTypes.Type(value = RespUpdate.class, name = "65527"), @JsonSubTypes.Type(value = RespSyncMessage.class, name = "64977"), @JsonSubTypes.Type(value = RespCombatFriends.class, name = "65019"), @JsonSubTypes.Type(value = RespCombatOpponets.class, name = "65017"), @JsonSubTypes.Type(value = RespFightCommandInfo.class, name = "36889"), @JsonSubTypes.Type(value = RespMsg.class, name = "8165"), @JsonSubTypes.Type(value = RespRoundDataEnd.class, name = "65000"), @JsonSubTypes.Type(value = RespNotifyMiscEx.class, name = "20481"), @JsonSubTypes.Type(value = RespEndCombat.class, name = "3581"), @JsonSubTypes.Type(value = RespCombatAddOpponent.class, name = "64993"), @JsonSubTypes.Type(value = RespCombatAddFriend.class, name = "64995") })
 public abstract class Message implements Serializable
 {
+    public Message() {
+    }
+    
     @JsonIgnore
     @JsonProperty("module")
     public int getModule() {
-        final MessageMeta annotation = this.getClass().getAnnotation(MessageMeta.class);
+        MessageMeta annotation = (MessageMeta)this.getClass().getAnnotation(MessageMeta.class);
         if (annotation != null) {
             return annotation.module();
         }

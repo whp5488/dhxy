@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.bean;
 
 import java.util.HashSet;
@@ -10,7 +9,7 @@ public class PlayerRoles implements Serializable
     private Set<Long> list;
     
     public PlayerRoles() {
-        this.list = new HashSet<Long>();
+        this.list = new HashSet();
     }
     
     public Set<Long> getList() {
@@ -29,21 +28,13 @@ public class PlayerRoles implements Serializable
         if (!(o instanceof PlayerRoles)) {
             return false;
         }
-        final PlayerRoles other = (PlayerRoles)o;
+        PlayerRoles other = (PlayerRoles)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -52,9 +43,9 @@ public class PlayerRoles implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

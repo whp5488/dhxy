@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.domain;
 
 import com.kitty.system.game.player.PlayerProfile;
@@ -17,9 +16,9 @@ public class RoleInfo
     private byte drill;
     private String marking;
     
-    public RoleInfo(final PlayerProfile profile) {
+    public RoleInfo(PlayerProfile profile) {
         this.sole = String.valueOf(profile.getId());
-        this.id = profile.getRoleId();
+        this.id = (int)profile.getRoleId();
         this.name = profile.getName();
         this.sex = profile.getSex();
         this.level = (short)profile.getLevel();
@@ -128,37 +127,21 @@ public class RoleInfo
         if (!(o instanceof RoleInfo)) {
             return false;
         }
-        final RoleInfo other = (RoleInfo)o;
+        RoleInfo other = (RoleInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$sole = this.getSole();
-        final Object other$sole = other.getSole();
-        Label_0065: {
-            if (this$sole == null) {
-                if (other$sole == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$sole.equals(other$sole)) {
-                break Label_0065;
-            }
+        Object this$sole = this.getSole();
+        Object other$sole = other.getSole();
+        if (!((this$sole != null) ? this$sole.equals(other$sole) : (other$sole == null))) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0115: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0115;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getSex() != other.getSex()) {
@@ -182,17 +165,9 @@ public class RoleInfo
         if (this.getDrill() != other.getDrill()) {
             return false;
         }
-        final Object this$marking = this.getMarking();
-        final Object other$marking = other.getMarking();
-        if (this$marking == null) {
-            if (other$marking == null) {
-                return true;
-            }
-        }
-        else if (this$marking.equals(other$marking)) {
-            return true;
-        }
-        return false;
+        Object this$marking = this.getMarking();
+        Object other$marking = other.getMarking();
+        return (this$marking != null) ? this$marking.equals(other$marking) : (other$marking == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -201,12 +176,12 @@ public class RoleInfo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $sole = this.getSole();
+        Object $sole = this.getSole();
         result = result * 59 + (($sole == null) ? 43 : $sole.hashCode());
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSex();
         result = result * 59 + this.getLevel();
@@ -215,13 +190,13 @@ public class RoleInfo
         result = result * 59 + this.getIcon();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getDrill();
-        final Object $marking = this.getMarking();
+        Object $marking = this.getMarking();
         result = result * 59 + (($marking == null) ? 43 : $marking.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RoleInfo(sole=" + this.getSole() + ", id=" + this.getId() + ", name=" + this.getName() + ", sex=" + this.getSex() + ", level=" + this.getLevel() + ", relive=" + this.getRelive() + ", race=" + this.getRace() + ", icon=" + this.getIcon() + ", serial=" + this.getSerial() + ", drill=" + this.getDrill() + ", marking=" + this.getMarking() + ")";
+        return "RoleInfo(sole=" + this.getSole() + ", id=" + this.getId() + ", name=" + this.getName() + ", sex=" + (int)this.getSex() + ", level=" + (int)this.getLevel() + ", relive=" + (int)this.getRelive() + ", race=" + (int)this.getRace() + ", icon=" + (int)this.getIcon() + ", serial=" + this.getSerial() + ", drill=" + (int)this.getDrill() + ", marking=" + this.getMarking() + ")";
     }
 }

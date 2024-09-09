@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.pool;
 
 import java.util.HashMap;
@@ -48,8 +47,11 @@ public class EquipDataPool
     public static Map<String, SysAboveAttrLib> above_attr_lib;
     public static List<SysPurifyAttr> purify;
     
+    public EquipDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         initNewBieEq(initService);
         initSeniorBieEq(initService);
         initMagicalBieEq(initService);
@@ -67,102 +69,108 @@ public class EquipDataPool
         initPetAcsryAttrLib(initService);
     }
     
-    public static void initNewBieEq(final InitService initService) {
+    public static void initNewBieEq(InitService initService) {
         EquipDataPool.newBieEq = initService.initNewBieEq();
     }
     
-    public static void initSeniorBieEq(final InitService initService) {
+    public static void initSeniorBieEq(InitService initService) {
         EquipDataPool.seniorBieEq = initService.initSeniorBieEq();
     }
     
-    public static void initMagicalBieEq(final InitService initService) {
+    public static void initMagicalBieEq(InitService initService) {
         EquipDataPool.magicalBieEq = initService.initMagicalBieEq();
-        for (final Integer key : EquipDataPool.magicalBieEq.keySet()) {
-            final SysMagicalBieEq bieEq = EquipDataPool.magicalBieEq.get(key);
+        for (Integer key : EquipDataPool.magicalBieEq.keySet()) {
+            SysMagicalBieEq bieEq = (SysMagicalBieEq)EquipDataPool.magicalBieEq.get(key);
             if (DataGlobalFunc.getPj(bieEq.getSerial()) == 1) {
                 EquipDataPool.lowMagicalBieEq.add(bieEq);
             }
-        }
-    }
-    
-    public static void initSinBieEq(final InitService initService) {
-        EquipDataPool.sinBieEq = initService.initSinBieEq();
-        for (final Integer key : EquipDataPool.sinBieEq.keySet()) {
-            final SysSinBieEq bieEq = EquipDataPool.sinBieEq.get(key);
-            if (DataGlobalFunc.getPj(bieEq.getSerial()) == 1) {
-                EquipDataPool.lowSinBieEq.add(bieEq);
+            else {
+                continue;
             }
         }
     }
     
-    public static void initRefine(final InitService initService) {
+    public static void initSinBieEq(InitService initService) {
+        EquipDataPool.sinBieEq = initService.initSinBieEq();
+        for (Integer key : EquipDataPool.sinBieEq.keySet()) {
+            SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(key);
+            if (DataGlobalFunc.getPj(bieEq.getSerial()) == 1) {
+                EquipDataPool.lowSinBieEq.add(bieEq);
+            }
+            else {
+                continue;
+            }
+        }
+    }
+    
+    public static void initRefine(InitService initService) {
         EquipDataPool.refineList = initService.initRefine();
     }
     
-    public static void initAboveAttrLib(final InitService initService) {
+    public static void initAboveAttrLib(InitService initService) {
         EquipDataPool.above_attr_lib = initService.initAboveAttrLib();
     }
     
-    public static void initPurify(final InitService initService) {
+    public static void initPurify(InitService initService) {
         EquipDataPool.purify = initService.initPurify();
     }
     
-    public static void initAcsry(final InitService initService) {
+    public static void initAcsry(InitService initService) {
         EquipDataPool.acsryMap = initService.initAcsry();
     }
     
-    public static void initAcsryAIdentify(final InitService initService) {
+    public static void initAcsryAIdentify(InitService initService) {
         EquipDataPool.acsryAIdentifyMap = initService.initAcsryAIdentify();
     }
     
-    public static void initAcsrySuit(final InitService initService) {
+    public static void initAcsrySuit(InitService initService) {
         EquipDataPool.acsrySuitMap = initService.initAcsrySuit();
     }
     
-    public static void initAcsrySuitColor(final InitService initService) {
+    public static void initAcsrySuitColor(InitService initService) {
         EquipDataPool.acsrySuitColorMap = initService.initAcsrySuitColor();
     }
     
-    public static void initAcsryAttr(final InitService initService) {
+    public static void initAcsryAttr(InitService initService) {
         EquipDataPool.acsryAttrMap = initService.initAcsryAttr();
-        for (final String dict : EquipDataPool.acsryAttrMap.keySet()) {
-            final SysDataAcsryAttr acsryAttr = EquipDataPool.acsryAttrMap.get(dict);
-            final List<Lottery> list = new ArrayList<Lottery>();
-            acsryAttr.getProp().forEach(obj -> list.add(new Lottery(obj.getSerial(), "", obj.getProp() * 1.0)));
+        for (String dict : EquipDataPool.acsryAttrMap.keySet()) {
+            SysDataAcsryAttr acsryAttr = (SysDataAcsryAttr)EquipDataPool.acsryAttrMap.get(dict);
+            List<Lottery> list = new ArrayList<>();
+            acsryAttr.getProp().forEach(obj -> list.add(new Lottery(Integer.valueOf(obj.getSerial()), "", Double.valueOf(obj.getProp() * 1.0))));
             EquipDataPool.acsryAttrLotteryMap.put(dict, list);
         }
     }
     
-    public static void initPetAcsry(final InitService initService) {
+    public static void initPetAcsry(InitService initService) {
         EquipDataPool.petAcsryMap = initService.initPetAcsry();
     }
     
-    public static void initPetAcsryAdvAttrLib(final InitService initService) {
+    public static void initPetAcsryAdvAttrLib(InitService initService) {
         EquipDataPool.petAcsryAdvAttrLibMap = initService.initPetAcsryAdvAttrLib();
     }
     
-    public static void initPetAcsryAttrLib(final InitService initService) {
+    public static void initPetAcsryAttrLib(InitService initService) {
         EquipDataPool.petAcsryAttrLibMap = initService.initPetAcsryAttrLib();
     }
     
     static {
-        EquipDataPool.newBieEq = new HashMap<Integer, SysNewBieEq>();
-        EquipDataPool.seniorBieEq = new HashMap<Integer, SysSeniorBieEq>();
-        EquipDataPool.magicalBieEq = new HashMap<Integer, SysMagicalBieEq>();
-        EquipDataPool.lowMagicalBieEq = new ArrayList<SysMagicalBieEq>();
-        EquipDataPool.sinBieEq = new HashMap<Integer, SysSinBieEq>();
-        EquipDataPool.lowSinBieEq = new ArrayList<SysSinBieEq>();
-        EquipDataPool.acsryMap = new HashMap<Integer, SysDataAcsry>();
-        EquipDataPool.acsryAIdentifyMap = new HashMap<String, SysDataAcsryIdentify>();
-        EquipDataPool.acsryAttrMap = new HashMap<String, SysDataAcsryAttr>();
-        EquipDataPool.acsrySuitMap = new HashMap<String, SysDataAcsrySuit>();
-        EquipDataPool.acsryAttrLotteryMap = new HashMap<String, List<Lottery>>();
-        EquipDataPool.acsrySuitColorMap = new HashMap<String, Map<Integer, SysDataAcsrySuitColor>>();
-        EquipDataPool.petAcsryMap = new HashMap<Integer, SysPetAcsry>();
-        EquipDataPool.petAcsryAdvAttrLibMap = new HashMap<Integer, SysPetAcsryAdvAttrLib>();
-        EquipDataPool.petAcsryAttrLibMap = new HashMap<String, SysPetAcsryAttrLib>();
-        EquipDataPool.refineList = new ArrayList<SysRefine>();
-        EquipDataPool.above_attr_lib = new HashMap<String, SysAboveAttrLib>();
-        EquipDataPool.purify = new ArrayList<SysPurifyAttr>();
+        EquipDataPool.newBieEq = new HashMap();
+        EquipDataPool.seniorBieEq = new HashMap();
+        EquipDataPool.magicalBieEq = new HashMap();
+        EquipDataPool.lowMagicalBieEq = new ArrayList<>();
+        EquipDataPool.sinBieEq = new HashMap();
+        EquipDataPool.lowSinBieEq = new ArrayList<>();
+        EquipDataPool.acsryMap = new HashMap();
+        EquipDataPool.acsryAIdentifyMap = new HashMap();
+        EquipDataPool.acsryAttrMap = new HashMap();
+        EquipDataPool.acsrySuitMap = new HashMap();
+        EquipDataPool.acsryAttrLotteryMap = new HashMap();
+        EquipDataPool.acsrySuitColorMap = new HashMap();
+        EquipDataPool.petAcsryMap = new HashMap();
+        EquipDataPool.petAcsryAdvAttrLibMap = new HashMap();
+        EquipDataPool.petAcsryAttrLibMap = new HashMap();
+        EquipDataPool.refineList = new ArrayList<>();
+        EquipDataPool.above_attr_lib = new HashMap();
+        EquipDataPool.purify = new ArrayList<>();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message.vo;
 
 import java.io.Serializable;
@@ -12,7 +11,7 @@ public class PetEquipCard implements Serializable
     public PetEquipCard() {
     }
     
-    public PetEquipCard(final long id, final int serial, final byte pj) {
+    public PetEquipCard(long id, int serial, byte pj) {
         this.id = String.valueOf(id);
         this.serial = serial;
         this.pj = pj;
@@ -50,21 +49,13 @@ public class PetEquipCard implements Serializable
         if (!(o instanceof PetEquipCard)) {
             return false;
         }
-        final PetEquipCard other = (PetEquipCard)o;
+        PetEquipCard other = (PetEquipCard)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getSerial() == other.getSerial() && this.getPj() == other.getPj();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getSerial() == other.getSerial() && this.getPj() == other.getPj();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getSerial() == other.getSerial() && this.getPj() == other.getPj();
     }
     
     protected boolean canEqual(final Object other) {
@@ -73,9 +64,9 @@ public class PetEquipCard implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getPj();
@@ -84,6 +75,6 @@ public class PetEquipCard implements Serializable
     
     @Override
     public String toString() {
-        return "PetEquipCard(id=" + this.getId() + ", serial=" + this.getSerial() + ", pj=" + this.getPj() + ")";
+        return "PetEquipCard(id=" + this.getId() + ", serial=" + this.getSerial() + ", pj=" + (int)this.getPj() + ")";
     }
 }

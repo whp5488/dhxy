@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -21,10 +20,10 @@ public class GiftBagRecord extends BaseEntity<Long>
     
     @Override
     public Long getId() {
-        return this.id;
+        return Long.valueOf(this.id);
     }
     
-    public void setId(final long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
@@ -32,7 +31,7 @@ public class GiftBagRecord extends BaseEntity<Long>
         return this.rId;
     }
     
-    public void setrId(final long rId) {
+    public void setrId(long rId) {
         this.rId = rId;
     }
     
@@ -40,7 +39,7 @@ public class GiftBagRecord extends BaseEntity<Long>
         return this.name;
     }
     
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -48,14 +47,14 @@ public class GiftBagRecord extends BaseEntity<Long>
         return this.time;
     }
     
-    public void setTime(final int time) {
+    public void setTime(int time) {
         this.time = time;
     }
     
     public GiftBagRecord() {
     }
     
-    public GiftBagRecord(final long rId, final String name) {
+    public GiftBagRecord(long rId, String name) {
         this.rId = rId;
         this.name = name;
         this.time = new Long(System.currentTimeMillis() / 1000L).intValue();

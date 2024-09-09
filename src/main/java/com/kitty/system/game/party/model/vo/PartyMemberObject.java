@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model.vo;
 
 public class PartyMemberObject
@@ -147,24 +146,16 @@ public class PartyMemberObject
         if (!(o instanceof PartyMemberObject)) {
             return false;
         }
-        final PartyMemberObject other = (PartyMemberObject)o;
+        PartyMemberObject other = (PartyMemberObject)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getRei() != other.getRei()) {
@@ -194,17 +185,9 @@ public class PartyMemberObject
         if (this.getPartyTask() != other.getPartyTask()) {
             return false;
         }
-        final Object this$contribute = this.getContribute();
-        final Object other$contribute = other.getContribute();
-        if (this$contribute == null) {
-            if (other$contribute == null) {
-                return this.getLastOnlineTime() == other.getLastOnlineTime() && this.getOnLineStatus() == other.getOnLineStatus();
-            }
-        }
-        else if (this$contribute.equals(other$contribute)) {
-            return this.getLastOnlineTime() == other.getLastOnlineTime() && this.getOnLineStatus() == other.getOnLineStatus();
-        }
-        return false;
+        Object this$contribute = this.getContribute();
+        Object other$contribute = other.getContribute();
+        return ((this$contribute != null) ? this$contribute.equals(other$contribute) : (other$contribute == null)) && this.getLastOnlineTime() == other.getLastOnlineTime() && this.getOnLineStatus() == other.getOnLineStatus();
     }
     
     protected boolean canEqual(final Object other) {
@@ -213,10 +196,10 @@ public class PartyMemberObject
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getRei();
         result = result * 59 + this.getLevel();
@@ -227,7 +210,7 @@ public class PartyMemberObject
         result = result * 59 + this.getThisBangBtl();
         result = result * 59 + this.getWeekEcType();
         result = result * 59 + this.getPartyTask();
-        final Object $contribute = this.getContribute();
+        Object $contribute = this.getContribute();
         result = result * 59 + (($contribute == null) ? 43 : $contribute.hashCode());
         result = result * 59 + this.getLastOnlineTime();
         result = result * 59 + this.getOnLineStatus();
@@ -236,6 +219,6 @@ public class PartyMemberObject
     
     @Override
     public String toString() {
-        return "PartyMemberObject(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ", roleSerial=" + this.getRoleSerial() + ", job=" + this.getJob() + ", joinTime=" + this.getJoinTime() + ", weekBangBtl=" + this.getWeekBangBtl() + ", thisBangBtl=" + this.getThisBangBtl() + ", weekEcType=" + this.getWeekEcType() + ", partyTask=" + this.getPartyTask() + ", contribute=" + this.getContribute() + ", lastOnlineTime=" + this.getLastOnlineTime() + ", onLineStatus=" + this.getOnLineStatus() + ")";
+        return "PartyMemberObject(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ", roleSerial=" + this.getRoleSerial() + ", job=" + (int)this.getJob() + ", joinTime=" + this.getJoinTime() + ", weekBangBtl=" + this.getWeekBangBtl() + ", thisBangBtl=" + this.getThisBangBtl() + ", weekEcType=" + this.getWeekEcType() + ", partyTask=" + this.getPartyTask() + ", contribute=" + this.getContribute() + ", lastOnlineTime=" + this.getLastOnlineTime() + ", onLineStatus=" + (int)this.getOnLineStatus() + ")";
     }
 }

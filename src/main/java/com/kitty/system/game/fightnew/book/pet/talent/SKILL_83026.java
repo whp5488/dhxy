@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.talent;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -18,18 +17,21 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_83026 extends SkillProcessor
 {
+    public SKILL_83026() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         int count = 1;
         if (AwakenSkillUtils.skillIntensifyBoolean(fight, effector, 31506)) {
             ++count;
@@ -38,15 +40,15 @@ public class SKILL_83026 extends SkillProcessor
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill skill = effector.getSkillBy(83026);
-        final Effect effect = new Effect();
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(83026));
+        Effect effect = new Effect();
         if (skill != null) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 83026);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 83026);
             if (!target.isFrozen()) {
-                final int time = 2;
-                final double persent = BigDecimalUtil.decimalScaleObjectDown(3, (0.1 + 16.0 * (effector.getRelive() * 0.5 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-                final int dist = PRO_DICT_TYPE.BURN_HURT.getDist();
+                int time = 2;
+                double persent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf((0.1 + 16.0 * ((double)effector.getRelive() * 0.5 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+                int dist = PRO_DICT_TYPE.BURN_HURT.getDist();
                 ImbueUtil.addOrUpdStatus(target.getImbueMap(), 2070, dist, time, persent);
                 effect.setType(2070);
                 effect.setTime(time);
@@ -55,19 +57,22 @@ public class SKILL_83026 extends SkillProcessor
                 effect.setType(2070);
                 effect.setTime(0);
             }
-            skillRecord.setT(target.getId());
+            skillRecord.setT((long)(int)target.getId());
+            return effect;
         }
-        return effect;
+        else {
+            return effect;
+        }
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 4300;
     }
     
     @Override
-    public boolean excuteSkillCool(final Fight fight, final FightObject effector, final Object... args) {
-        effector.getSkillCoolMap().setv(String.valueOf(83026), (Object)5);
+    public boolean excuteSkillCool(Fight fight, FightObject effector, Object... args) {
+        effector.getSkillCoolMap().setv(String.valueOf(83026), Integer.valueOf(5));
         return true;
     }
 }

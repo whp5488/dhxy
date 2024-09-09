@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.ca;
 
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class CaSet
         this.sustain = 90;
         this.pkValue = 3;
         this.period = 5;
-        this.award = new HashMap<>();
+        this.award = new HashMap();
     }
     
     public void setMinLevel(final int minLevel) {

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -7,6 +6,9 @@ import com.kitty.mina.message.Message;
 @MessageMeta(module = 45229)
 public class ReqTraceGo extends Message
 {
+    public ReqTraceGo() {
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
@@ -15,7 +17,7 @@ public class ReqTraceGo extends Message
         if (!(o instanceof ReqTraceGo)) {
             return false;
         }
-        final ReqTraceGo other = (ReqTraceGo)o;
+        ReqTraceGo other = (ReqTraceGo)o;
         return other.canEqual(this);
     }
     
@@ -25,7 +27,7 @@ public class ReqTraceGo extends Message
     
     @Override
     public int hashCode() {
-        final int result = 1;
+        int result = 1;
         return result;
     }
     

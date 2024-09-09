@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.common.utils.CodeUtils;
@@ -13,7 +12,7 @@ public class ReqVerificationCode extends Message
     public ReqVerificationCode() {
     }
     
-    public ReqVerificationCode(final String mobile) {
+    public ReqVerificationCode(String mobile) {
         this.mobile = CodeUtils.phoneMask(mobile);
     }
     

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class RespTempFriendState extends Message
 {
     private String gid;
     private int online;
+    
+    public RespTempFriendState() {
+    }
     
     public String getGid() {
         return this.gid;
@@ -34,21 +36,13 @@ public class RespTempFriendState extends Message
         if (!(o instanceof RespTempFriendState)) {
             return false;
         }
-        final RespTempFriendState other = (RespTempFriendState)o;
+        RespTempFriendState other = (RespTempFriendState)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$gid = this.getGid();
-        final Object other$gid = other.getGid();
-        if (this$gid == null) {
-            if (other$gid == null) {
-                return this.getOnline() == other.getOnline();
-            }
-        }
-        else if (this$gid.equals(other$gid)) {
-            return this.getOnline() == other.getOnline();
-        }
-        return false;
+        Object this$gid = this.getGid();
+        Object other$gid = other.getGid();
+        return ((this$gid != null) ? this$gid.equals(other$gid) : (other$gid == null)) && this.getOnline() == other.getOnline();
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,9 +51,9 @@ public class RespTempFriendState extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $gid = this.getGid();
+        Object $gid = this.getGid();
         result = result * 59 + (($gid == null) ? 43 : $gid.hashCode());
         result = result * 59 + this.getOnline();
         return result;

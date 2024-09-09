@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message.vo;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,15 +9,15 @@ public class RespLookonChannelMessage extends Message
     private String sender;
     private String msg;
     
-    public RespLookonChannelMessage(final String msg) {
+    public RespLookonChannelMessage(String msg) {
         this.msg = msg;
     }
     
-    public void setMsg(final String msg) {
+    public void setMsg(String msg) {
         this.msg = msg;
     }
     
-    public void setSender(final String sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.facade;
 
 import com.kitty.system.game.email.message.ReqEmaiLPickUpGoods;
@@ -18,54 +17,59 @@ public class EmailController
     @Autowired
     private EmailService emailService;
     
+    public EmailController() {
+    }
+    
     @RequestMapping
-    public void getEmailList(final IoSession session, final ReqEmailList reqEmailList) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getEmailList(IoSession session, ReqEmailList reqEmailList) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.emailService.getEmailList(role);
+        return;
     }
     
     @RequestMapping
-    public void getEmailDetail(final IoSession session, final ReqEmailDetail reqEmailDetail) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getEmailDetail(IoSession session, ReqEmailDetail reqEmailDetail) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final String emailIdStr = reqEmailDetail.getEmailId();
-        final byte isSystem = reqEmailDetail.getIsSystem();
+        String emailIdStr = reqEmailDetail.getEmailId();
+        byte isSystem = reqEmailDetail.getIsSystem();
         if (emailIdStr != null) {
             try {
-                final long emailId = Long.parseLong(emailIdStr);
+                long emailId = Long.parseLong(emailIdStr);
                 if (emailId > 0L) {
-                    this.emailService.getEmailDetail(role, emailId, isSystem);
+                    this.emailService.getEmailDetail(role, Long.valueOf(emailId), isSystem);
                 }
             }
-            catch (final NumberFormatException e) {
+            catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
+        return;
     }
     
     @RequestMapping
-    public void pickUpGoods(final IoSession session, final ReqEmaiLPickUpGoods reqEmaiLPickUpGoods) {
-        final String emailIdStr = reqEmaiLPickUpGoods.getEmailId();
+    public void pickUpGoods(IoSession session, ReqEmaiLPickUpGoods reqEmaiLPickUpGoods) {
+        String emailIdStr = reqEmaiLPickUpGoods.getEmailId();
         long emailId = -1L;
         try {
             emailId = Long.parseLong(emailIdStr);
         }
-        catch (final NumberFormatException e) {
+        catch (NumberFormatException e) {
             return;
         }
-        final Role role = SessionUtils.getRoleBySession(session);
+        Role role = SessionUtils.getRoleBySession(session);
         if (emailId > 0L && role != null) {
-            final byte type = reqEmaiLPickUpGoods.getType();
+            byte type = reqEmaiLPickUpGoods.getType();
             if (type == 0) {
-                this.emailService.deleteEmail(role, emailId);
+                this.emailService.deleteEmail(role, Long.valueOf(emailId));
             }
             else if (type == 1) {
-                this.emailService.pickUpGoods(role, emailId);
+                this.emailService.pickUpGoods(role, Long.valueOf(emailId));
             }
         }
     }

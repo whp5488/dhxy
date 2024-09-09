@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.partner;
 
 public enum FeedPartnerType
@@ -7,7 +6,7 @@ public enum FeedPartnerType
     
     private String type;
     
-    private FeedPartnerType(final String type) {
+    private FeedPartnerType(String type) {
         this.type = type;
     }
     

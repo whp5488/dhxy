@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.pool;
 
 import com.kitty.system.game.vo.FiedEquip;
@@ -11,10 +10,8 @@ import com.alibaba.fastjson.parser.Feature;
 import java.util.HashMap;
 import com.alibaba.fastjson.TypeReference;
 import java.util.logging.Logger;
-import java.util.Collection;
 import com.kitty.common.utils.JsonUtils;
 import com.kitty.system.init.service.InitService;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.init.domain.vo.Param;
@@ -65,21 +62,18 @@ public class WelfareDataPool
     public static List<Param> firstRechargeGift;
     public static Map<Integer, List<Param>> creationRoleMap;
     
+    public WelfareDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         WelfareDataPool.newDistrictMap = initService.initNewDistrict();
         WelfareDataPool.gradeAwardMap = initService.initGradeAward();
         WelfareDataPool.chargeMap = initService.initCharge();
         WelfareDataPool.exchangeMap = initService.initExchange();
-        final List<SysDataChargeAward> chargeAwardList = initService.initChargeAward();
-        WelfareDataPool.chargeAwardMap = chargeAwardList.stream().filter(e -> {
-            final boolean b = e.getType() == 0;
-            return b;
-        }).collect(Collectors.toMap(SysDataChargeAward::getSerial, SysDataChargeAward -> SysDataChargeAward));
-        WelfareDataPool.dayChargeAwardMap = chargeAwardList.stream().filter(e -> {
-            final boolean b2 = e.getType() == 1;
-            return b2;
-        }).collect(Collectors.toMap(SysDataChargeAward::getSerial, SysDataChargeAward -> SysDataChargeAward));
+        List<SysDataChargeAward> chargeAwardList = initService.initChargeAward();
+        WelfareDataPool.chargeAwardMap = (Map)chargeAwardList.stream().filter(e -> e.getType() == 0).collect(Collectors.toMap(SysDataChargeAward::getSerial, SysDataChargeAward -> SysDataChargeAward));
+        WelfareDataPool.dayChargeAwardMap = (Map)chargeAwardList.stream().filter(e -> e.getType() == 1).collect(Collectors.toMap(SysDataChargeAward::getSerial, SysDataChargeAward -> SysDataChargeAward));
         WelfareDataPool.prizeDrawMap = initService.initPrizeDraw();
         loadGiftBag(initService);
         initUpgrade(initService);
@@ -91,157 +85,133 @@ public class WelfareDataPool
         initMagicBoxConsume();
     }
     
-    public static void init(final Map<String, String> map) {
-        final String first = map.get("first_recharge");
+    public static void init(Map<String, String> map) {
+        String first = (String)map.get("first_recharge");
         if (first != null) {
             try {
-                final List<Param> list = JsonUtils.string2Collection(first, List.class, Param.class);
+                List<Param> list = (List)JsonUtils.string2Collection(first, List.class, Param.class);
                 WelfareDataPool.firstRechargeGift.addAll(list);
             }
-            catch (final Exception e) {
+            catch (Exception e) {
                 Logger.getLogger("首冲奖励初始化异常");
             }
         }
-        final String creationRole = map.get("creation_role");
+        String creationRole = (String)map.get("creation_role");
         if (creationRole != null) {
             try {
-                WelfareDataPool.creationRoleMap.putAll((Map<? extends Integer, ? extends List<Param>>)JSON.parseObject(creationRole, (TypeReference)new TypeReference<HashMap<Integer, List<Param>>>() {}, new Feature[0]));
+                WelfareDataPool.creationRoleMap.putAll((Map)JSON.parseObject(creationRole, new TypeReference<HashMap<Integer, List<Param>>>() {}, new Feature[0]));
             }
-            catch (final Exception e2) {
+            catch (Exception e2) {
                 Logger.getLogger("创建角色奖励初始化异常");
             }
         }
     }
     
-    public static void loadGiftBag(final InitService initService) {
+    public static void loadGiftBag(InitService initService) {
         WelfareDataPool.giftBagMap = initService.initGiftBag();
     }
     
-    public static void initUpgrade(final InitService initService) {
+    public static void initUpgrade(InitService initService) {
         WelfareDataPool.data_upgrade = initService.initUpgrade();
     }
     
-    public static void initLuckDraw(final InitService initService) {
+    public static void initLuckDraw(InitService initService) {
         WelfareDataPool.luckDraw = initService.initLuckDraw();
     }
     
-    public static void initLottery(final InitService initService) {
+    public static void initLottery(InitService initService) {
         WelfareDataPool.lottery = initService.initLottery();
     }
     
-    public static void initLotterySuper(final InitService initService) {
+    public static void initLotterySuper(InitService initService) {
         WelfareDataPool.lotterySuper = initService.initLotterySuper();
     }
     
-    public static void initLotteryRare(final InitService initService) {
+    public static void initLotteryRare(InitService initService) {
         WelfareDataPool.lotteryRare = initService.initLotteryRare();
     }
     
-    public static void initMagicBox(final InitService initService) {
-        final List<SysDataMagicBox> list = initService.initMagicBox();
-        for (final SysDataMagicBox magicBox : list) {
-            List<SysDataMagicBox> sysDataMagicBoxes = WelfareDataPool.magicBoxMap.get(magicBox.getAffiliation());
+    public static void initMagicBox(InitService initService) {
+        List<SysDataMagicBox> list = initService.initMagicBox();
+        for (SysDataMagicBox magicBox : list) {
+            List<SysDataMagicBox> sysDataMagicBoxes = (List)WelfareDataPool.magicBoxMap.get(Integer.valueOf(magicBox.getAffiliation()));
             if (sysDataMagicBoxes == null) {
                 sysDataMagicBoxes = new ArrayList<>();
             }
             sysDataMagicBoxes.add(magicBox);
-            WelfareDataPool.magicBoxMap.put(magicBox.getAffiliation(), sysDataMagicBoxes);
+            WelfareDataPool.magicBoxMap.put(Integer.valueOf(magicBox.getAffiliation()), sysDataMagicBoxes);
         }
     }
     
     public static void initMagicBoxConsume() {
-        final HashMap<Byte, Item> mapQl = new HashMap<>();
-        mapQl.put((byte)0, new Item(93046, 2));
-        mapQl.put((byte)1, new Item(93047, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21067, mapQl);
-
-        final HashMap<Byte, Item> mapNs = new HashMap<>();
-        mapNs.put((byte)0, new Item(93049, 2));
-        mapNs.put((byte)1, new Item(93050, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21064, mapNs);
-
-        final HashMap<Byte, Item> mapXw = new HashMap<>();
-        mapXw.put((byte)0, new Item(90051, 2));
-        mapXw.put((byte)1, new Item(90057, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21069, mapXw);
-
-        final HashMap<Byte, Item> mapHxy = new HashMap<>();
-        mapHxy.put((byte)0, new Item(90049, 2));
-        mapHxy.put((byte)1, new Item(90055, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21053, mapHxy);
-
-        final HashMap<Byte, Item> mapFs = new HashMap<>();
-        mapFs.put((byte)0, new Item(90050, 2));
-        mapFs.put((byte)1, new Item(90056, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21059, mapFs);
-
-        final HashMap<Byte, Item> mapNsg = new HashMap<>();
-        mapNsg.put((byte)0, new Item(90046, 2));
-        mapNsg.put((byte)1, new Item(90052, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21013, mapNsg);
-
-        final HashMap<Byte, Item> mapSnw = new HashMap<>();
-        mapSnw.put((byte)0, new Item(90047, 2));
-        mapSnw.put((byte)1, new Item(90053, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21027, mapSnw);
-
-        final HashMap<Byte, Item> mapFh = new HashMap<>();
-        mapFh.put((byte)0, new Item(90048, 2));
-        mapFh.put((byte)1, new Item(90054, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21037, mapFh);
-
-        final HashMap<Byte, Item> mapL = new HashMap<>();
-        mapL.put((byte)0, new Item(93052, 2));
-        mapL.put((byte)1, new Item(93053, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21061, mapL);
-
-        final HashMap<Byte, Item> mapZy = new HashMap<>();
-        mapZy.put((byte)0, new Item(93055, 2));
-        mapZy.put((byte)1, new Item(93056, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21076, mapZy);
-
-        final HashMap<Byte, Item> mapLt = new HashMap<>();
-        mapLt.put((byte)0, new Item(93058, 2));
-        mapLt.put((byte)1, new Item(93059, 1));
-        WelfareDataPool.magicBoxConsumeMap.put(21077, mapLt);
+        HashMap<Byte, Item> mapXw = new HashMap();
+        mapXw.put(Byte.valueOf((byte)0), new Item(Integer.valueOf(90051), Integer.valueOf(2)));
+        mapXw.put(Byte.valueOf((byte)1), new Item(Integer.valueOf(90057), Integer.valueOf(1)));
+        WelfareDataPool.magicBoxConsumeMap.put(Integer.valueOf(21069), mapXw);
+        HashMap<Byte, Item> mapHxy = new HashMap();
+        mapHxy.put(Byte.valueOf((byte)0), new Item(Integer.valueOf(90049), Integer.valueOf(2)));
+        mapHxy.put(Byte.valueOf((byte)1), new Item(Integer.valueOf(90055), Integer.valueOf(1)));
+        WelfareDataPool.magicBoxConsumeMap.put(Integer.valueOf(21053), mapHxy);
+        HashMap<Byte, Item> mapFs = new HashMap();
+        mapFs.put(Byte.valueOf((byte)0), new Item(Integer.valueOf(90050), Integer.valueOf(2)));
+        mapFs.put(Byte.valueOf((byte)1), new Item(Integer.valueOf(90056), Integer.valueOf(1)));
+        WelfareDataPool.magicBoxConsumeMap.put(Integer.valueOf(21059), mapFs);
+        HashMap<Byte, Item> mapNsg = new HashMap();
+        mapNsg.put(Byte.valueOf((byte)0), new Item(Integer.valueOf(90046), Integer.valueOf(2)));
+        mapNsg.put(Byte.valueOf((byte)1), new Item(Integer.valueOf(90052), Integer.valueOf(1)));
+        WelfareDataPool.magicBoxConsumeMap.put(Integer.valueOf(21013), mapNsg);
+        HashMap<Byte, Item> mapSnw = new HashMap();
+        mapSnw.put(Byte.valueOf((byte)0), new Item(Integer.valueOf(90047), Integer.valueOf(2)));
+        mapSnw.put(Byte.valueOf((byte)1), new Item(Integer.valueOf(90053), Integer.valueOf(1)));
+        WelfareDataPool.magicBoxConsumeMap.put(Integer.valueOf(21027), mapSnw);
+        HashMap<Byte, Item> mapFh = new HashMap();
+        mapFh.put(Byte.valueOf((byte)0), new Item(Integer.valueOf(90048), Integer.valueOf(2)));
+        mapFh.put(Byte.valueOf((byte)1), new Item(Integer.valueOf(90054), Integer.valueOf(1)));
+        WelfareDataPool.magicBoxConsumeMap.put(Integer.valueOf(21037), mapFh);
     }
     
-    public static List<SysDataLotterySuper> createRandoms(final int n) {
-        final Map<Integer, String> map = new HashMap<>();
-        final List<SysDataLotterySuper> news = new ArrayList<SysDataLotterySuper>();
+    public static List<SysDataLotterySuper> createRandoms(int n) {
+        Map<Integer, String> map = new HashMap();
+        List<SysDataLotterySuper> news = new ArrayList<>();
         if (WelfareDataPool.lotterySuper.size() <= n) {
             return WelfareDataPool.lotterySuper;
         }
         while (map.size() < n) {
-            final int random = (int)(Math.random() * WelfareDataPool.lotterySuper.size());
-            if (!map.containsKey(random)) {
-                map.put(random, "");
+            int random = (int)(Math.random() * (double)WelfareDataPool.lotterySuper.size());
+            if (!map.containsKey(Integer.valueOf(random))) {
+                map.put(Integer.valueOf(random), "");
                 news.add(WelfareDataPool.lotterySuper.get(random));
+            }
+            else {
+                continue;
             }
         }
         return news;
     }
     
-    public static List<SysDataLotteryRare> createRareRandoms(final int n) {
-        final Map<Integer, String> map = new HashMap<>();
-        final List<SysDataLotteryRare> news = new ArrayList<>();
+    public static List<SysDataLotteryRare> createRareRandoms(int n) {
+        Map<Integer, String> map = new HashMap();
+        List<SysDataLotteryRare> news = new ArrayList<>();
         if (WelfareDataPool.lotteryRare.size() <= n) {
             return WelfareDataPool.lotteryRare;
         }
         while (map.size() < n) {
-            final int random = (int)(Math.random() * WelfareDataPool.lotteryRare.size());
-            if (!map.containsKey(random)) {
-                map.put(random, "-");
+            int random = (int)(Math.random() * (double)WelfareDataPool.lotteryRare.size());
+            if (!map.containsKey(Integer.valueOf(random))) {
+                map.put(Integer.valueOf(random), "-");
                 news.add(WelfareDataPool.lotteryRare.get(random));
+            }
+            else {
+                continue;
             }
         }
         return news;
     }
     
-    public static int getLotterySuperEquip(int serial, final int race) {
-        final FiedEquip info = EquipDistKind.getInfo(serial);
+    public static int getLotterySuperEquip(int serial, int race) {
+        FiedEquip info = EquipDistKind.getInfo(Integer.valueOf(serial));
         if (info != null) {
-            final int random = DataGlobalFunc.randomEquip(info.getType(), info.getValue(), race);
+            int random = DataGlobalFunc.randomEquip((int)info.getType(), (int)info.getValue(), race);
             if (random > 0) {
                 serial = random;
             }
@@ -260,22 +230,22 @@ public class WelfareDataPool
         WelfareDataPool.FIVE_PRIZE_DRAW = 22500L;
         WelfareDataPool.ONCE_LUCK_DRAW = 1L;
         WelfareDataPool.TEN_LUCK_DRAW = 10L;
-        WelfareDataPool.newDistrictMap = new HashMap<>();
-        WelfareDataPool.gradeAwardMap = new HashMap<>();
-        WelfareDataPool.chargeAwardMap = new HashMap<>();
-        WelfareDataPool.dayChargeAwardMap = new HashMap<>();
-        WelfareDataPool.chargeMap = new HashMap<>();
-        WelfareDataPool.exchangeMap = new HashMap<>();
+        WelfareDataPool.newDistrictMap = new HashMap();
+        WelfareDataPool.gradeAwardMap = new HashMap();
+        WelfareDataPool.chargeAwardMap = new HashMap();
+        WelfareDataPool.dayChargeAwardMap = new HashMap();
+        WelfareDataPool.chargeMap = new HashMap();
+        WelfareDataPool.exchangeMap = new HashMap();
         WelfareDataPool.prizeDrawMap = new ArrayList<>();
-        WelfareDataPool.magicBoxMap = new HashMap<>();
-        WelfareDataPool.magicBoxConsumeMap = new HashMap<>();
-        WelfareDataPool.giftBagMap = new HashMap<>();
-        WelfareDataPool.data_upgrade = new HashMap<>();
+        WelfareDataPool.magicBoxMap = new HashMap();
+        WelfareDataPool.magicBoxConsumeMap = new HashMap();
+        WelfareDataPool.giftBagMap = new HashMap();
+        WelfareDataPool.data_upgrade = new HashMap();
         WelfareDataPool.luckDraw = new ArrayList<>();
         WelfareDataPool.lottery = new ArrayList<>();
         WelfareDataPool.lotterySuper = new ArrayList<>();
         WelfareDataPool.lotteryRare = new ArrayList<>();
         WelfareDataPool.firstRechargeGift = new ArrayList<>();
-        WelfareDataPool.creationRoleMap = new HashMap<>();
+        WelfareDataPool.creationRoleMap = new HashMap();
     }
 }

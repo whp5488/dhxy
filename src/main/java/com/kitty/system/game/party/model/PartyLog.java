@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model;
 
 import com.kitty.common.thread.IdGenerator;
@@ -24,12 +23,12 @@ public class PartyLog extends BaseEntity<Long>
     public PartyLog() {
     }
     
-    public PartyLog(final int id, final String[] args, final int serial) {
+    public PartyLog(int id, String[] args, int serial) {
         this((int)(System.currentTimeMillis() / 1000L), id, args, serial);
     }
     
-    public PartyLog(final int time, final int tkId, final String[] args, final int serial) {
-        this.id = IdGenerator.getNextId();
+    public PartyLog(int time, int tkId, String[] args, int serial) {
+        this.id = Long.valueOf(IdGenerator.getNextId());
         this.time = time;
         this.tkId = tkId;
         this.args = args;

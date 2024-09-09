@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Comment;
@@ -25,6 +24,9 @@ public class SysGiftItemOpen implements Serializable
     @Comment("概率")
     @Column("ratio")
     private double ratio;
+    
+    public SysGiftItemOpen() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -74,60 +76,28 @@ public class SysGiftItemOpen implements Serializable
         if (!(o instanceof SysGiftItemOpen)) {
             return false;
         }
-        final SysGiftItemOpen other = (SysGiftItemOpen)o;
+        SysGiftItemOpen other = (SysGiftItemOpen)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$giftSerial = this.getGiftSerial();
-        final Object other$giftSerial = other.getGiftSerial();
-        Label_0102: {
-            if (this$giftSerial == null) {
-                if (other$giftSerial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$giftSerial.equals(other$giftSerial)) {
-                break Label_0102;
-            }
+        Object this$giftSerial = this.getGiftSerial();
+        Object other$giftSerial = other.getGiftSerial();
+        if (!((this$giftSerial != null) ? this$giftSerial.equals(other$giftSerial) : (other$giftSerial == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0139: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0139;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$num = this.getNum();
-        final Object other$num = other.getNum();
-        if (this$num == null) {
-            if (other$num == null) {
-                return Double.compare(this.getRatio(), other.getRatio()) == 0;
-            }
-        }
-        else if (this$num.equals(other$num)) {
-            return Double.compare(this.getRatio(), other.getRatio()) == 0;
-        }
-        return false;
+        Object this$num = this.getNum();
+        Object other$num = other.getNum();
+        return ((this$num != null) ? this$num.equals(other$num) : (other$num == null)) && Double.compare(this.getRatio(), other.getRatio()) == 0;
     }
     
     protected boolean canEqual(final Object other) {
@@ -136,17 +106,17 @@ public class SysGiftItemOpen implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $giftSerial = this.getGiftSerial();
+        Object $giftSerial = this.getGiftSerial();
         result = result * 59 + (($giftSerial == null) ? 43 : $giftSerial.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $num = this.getNum();
+        Object $num = this.getNum();
         result = result * 59 + (($num == null) ? 43 : $num.hashCode());
-        final long $ratio = Double.doubleToLongBits(this.getRatio());
+        long $ratio = Double.doubleToLongBits(this.getRatio());
         result = result * 59 + (int)($ratio >>> 32 ^ $ratio);
         return result;
     }

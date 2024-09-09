@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -13,35 +12,41 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_71363 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_71363() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         List<Integer> clearStatusList = null;
         try {
             clearStatusList = (List)args[2];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        if (clearStatusList != null && clearStatusList.contains(1004)) {
-            final double percent = 0.25;
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 71363);
-            final boolean flagF = SkillAi.canAffectOnPro(percent);
+        if (clearStatusList != null && clearStatusList.contains(Integer.valueOf(1004))) {
+            double percent = 0.25;
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 71363);
+            boolean flagF = SkillAi.canAffectOnPro(percent);
             if (flagF) {
                 target.setStatus(1003, 1);
-                final FightObjectParam targetParam = actionDetailParam.gainTargetParam(target.getId(), false);
-                if (targetParam != null) {
-                    targetParam.getStatusMap().put(1003, 1);
-                    skillRecord.setT(target.getId());
+                FightObjectParam targetParam2 = actionDetailParam.gainTargetParam((int)target.getId(), false);
+                if (targetParam2 != null) {
+                    targetParam2.getStatusMap().put(Integer.valueOf(1003), Integer.valueOf(1));
+                    skillRecord.setT((long)(int)target.getId());
                 }
                 return;
             }
-            final boolean flagC = SkillAi.canAffectOnPro(percent);
-            if (flagC) {
-                target.setStatus(1002, 1);
-                final FightObjectParam targetParam2 = actionDetailParam.gainTargetParam(target.getId(), false);
-                if (targetParam2 != null) {
-                    targetParam2.getStatusMap().put(1002, 1);
-                    skillRecord.setT(target.getId());
+            else {
+                boolean flagC = SkillAi.canAffectOnPro(percent);
+                if (flagC) {
+                    target.setStatus(1002, 1);
+                    FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)target.getId(), false);
+                    if (targetParam != null) {
+                        targetParam.getStatusMap().put(Integer.valueOf(1002), Integer.valueOf(1));
+                        skillRecord.setT((long)(int)target.getId());
+                    }
+                    return;
                 }
             }
         }

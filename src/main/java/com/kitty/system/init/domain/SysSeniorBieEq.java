@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -53,6 +52,9 @@ public class SysSeniorBieEq implements Serializable
     private int canMerge;
     @Column("attr_factor")
     private double AttrFactor;
+    
+    public SysSeniorBieEq() {
+    }
     
     public int getId() {
         return this.id;
@@ -230,56 +232,32 @@ public class SysSeniorBieEq implements Serializable
         if (!(o instanceof SysSeniorBieEq)) {
             return false;
         }
-        final SysSeniorBieEq other = (SysSeniorBieEq)o;
+        SysSeniorBieEq other = (SysSeniorBieEq)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0128: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0128;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
         if (this.getBaseScore() != other.getBaseScore()) {
             return false;
         }
-        final Object this$desc = this.getDesc();
-        final Object other$desc = other.getDesc();
-        Label_0178: {
-            if (this$desc == null) {
-                if (other$desc == null) {
-                    break Label_0178;
-                }
-            }
-            else if (this$desc.equals(other$desc)) {
-                break Label_0178;
-            }
+        Object this$desc = this.getDesc();
+        Object other$desc = other.getDesc();
+        if (!((this$desc != null) ? this$desc.equals(other$desc) : (other$desc == null))) {
             return false;
         }
         if (this.getPos() != other.getPos()) {
@@ -309,17 +287,9 @@ public class SysSeniorBieEq implements Serializable
         if (this.getNeedRei() != other.getNeedRei()) {
             return false;
         }
-        final Object this$ownerRole = this.getOwnerRole();
-        final Object other$ownerRole = other.getOwnerRole();
-        if (this$ownerRole == null) {
-            if (other$ownerRole == null) {
-                return this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge() && Double.compare(this.getAttrFactor(), other.getAttrFactor()) == 0;
-            }
-        }
-        else if (this$ownerRole.equals(other$ownerRole)) {
-            return this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge() && Double.compare(this.getAttrFactor(), other.getAttrFactor()) == 0;
-        }
-        return false;
+        Object this$ownerRole = this.getOwnerRole();
+        Object other$ownerRole = other.getOwnerRole();
+        return ((this$ownerRole != null) ? this$ownerRole.equals(other$ownerRole) : (other$ownerRole == null)) && this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge() && Double.compare(this.getAttrFactor(), other.getAttrFactor()) == 0;
     }
     
     protected boolean canEqual(final Object other) {
@@ -328,16 +298,16 @@ public class SysSeniorBieEq implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSerial();
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
         result = result * 59 + this.getBaseScore();
-        final Object $desc = this.getDesc();
+        Object $desc = this.getDesc();
         result = result * 59 + (($desc == null) ? 43 : $desc.hashCode());
         result = result * 59 + this.getPos();
         result = result * 59 + this.getMaxEmbedGemCnt();
@@ -348,13 +318,13 @@ public class SysSeniorBieEq implements Serializable
         result = result * 59 + this.getNeedMj();
         result = result * 59 + this.getNeedGrade();
         result = result * 59 + this.getNeedRei();
-        final Object $ownerRole = this.getOwnerRole();
+        Object $ownerRole = this.getOwnerRole();
         result = result * 59 + (($ownerRole == null) ? 43 : $ownerRole.hashCode());
         result = result * 59 + this.getRace();
         result = result * 59 + this.getSex();
         result = result * 59 + this.getShape();
         result = result * 59 + this.getCanMerge();
-        final long $AttrFactor = Double.doubleToLongBits(this.getAttrFactor());
+        long $AttrFactor = Double.doubleToLongBits(this.getAttrFactor());
         result = result * 59 + (int)($AttrFactor >>> 32 ^ $AttrFactor);
         return result;
     }

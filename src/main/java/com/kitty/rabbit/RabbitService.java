@@ -1,4 +1,3 @@
-
 package com.kitty.rabbit;
 
 import org.slf4j.LoggerFactory;
@@ -19,8 +18,11 @@ public class RabbitService
     @Autowired
     private RabbitAdmin rabbitAdmin;
     
-    public void sendMessage(final String msg, final Integer time) {
-        this.rabbitTemplate.convertAndSend("player.delay.exchange", "player_delay", (Object)msg, message -> {
+    public RabbitService() {
+    }
+    
+    public void sendMessage(String msg, Integer time) {
+        this.rabbitTemplate.convertAndSend("player.delay.exchange", "player_delay", msg, message -> {
             message.getMessageProperties().setExpiration(time + "");
             return message;
         });

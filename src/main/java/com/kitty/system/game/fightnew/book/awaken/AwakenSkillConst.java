@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken;
 
 import java.util.Arrays;
@@ -73,75 +72,75 @@ public interface AwakenSkillConst
     public static final int AWAKENSKILL_31512 = 51512;
     public static final int AWAKENSKILL_31516 = 31516;
     
-    static List<Integer> getAdditionSkills() {
-        return Arrays.asList(31303, 31305, 31307, 31310, 31313, 31315, 31316, 31317, 31318, 31319, 31320, 31323, 31324, 31325, 31327, 31418, 31421, 31424, 31509, 31514);
+    public static List<Integer> getAdditionSkills() {
+        return Arrays.asList(Integer.valueOf(31303), Integer.valueOf(31305), Integer.valueOf(31307), Integer.valueOf(31310), Integer.valueOf(31313), Integer.valueOf(31315), Integer.valueOf(31316), Integer.valueOf(31317), Integer.valueOf(31318), Integer.valueOf(31319), Integer.valueOf(31320), Integer.valueOf(31323), Integer.valueOf(31324), Integer.valueOf(31325), Integer.valueOf(31327), Integer.valueOf(31418), Integer.valueOf(31421), Integer.valueOf(31424), Integer.valueOf(31509), Integer.valueOf(31514));
     }
     
-    static List<Integer> getRoundStartSkills() {
-        return Arrays.asList(31301, 31302, 31306, 31321, 31322, 31405, 31517);
+    public static List<Integer> getRoundStartSkills() {
+        return Arrays.asList(Integer.valueOf(31301), Integer.valueOf(31302), Integer.valueOf(31306), Integer.valueOf(31321), Integer.valueOf(31322), Integer.valueOf(31405), Integer.valueOf(31517));
     }
     
-    static List<Integer> getMagicAttackEndSkills() {
-        return Arrays.asList(31308, 31413, 31415, 31515);
+    public static List<Integer> getMagicAttackEndSkills() {
+        return Arrays.asList(Integer.valueOf(31308), Integer.valueOf(31413), Integer.valueOf(31415), Integer.valueOf(31515));
     }
     
-    static List<Integer> getMagicAttackEndOtherSkills() {
-        return Arrays.asList(31406, 31514);
+    public static List<Integer> getMagicAttackEndOtherSkills() {
+        return Arrays.asList(Integer.valueOf(31406), Integer.valueOf(31514));
     }
     
-    static List<Integer> getBeforePhysicalAttackSkills() {
-        return Arrays.asList(31422, 31502);
+    public static List<Integer> getBeforePhysicalAttackSkills() {
+        return Arrays.asList(Integer.valueOf(31422), Integer.valueOf(31502));
     }
     
-    static List<Integer> getPhyAttackEndSkills() {
-        return Arrays.asList(31312, 31419, 31504, 31513);
+    public static List<Integer> getPhyAttackEndSkills() {
+        return Arrays.asList(Integer.valueOf(31312), Integer.valueOf(31419), Integer.valueOf(31504), Integer.valueOf(31513));
     }
     
-    static List<Integer> getBeforeDoActionSkills() {
-        return Arrays.asList(31510);
+    public static List<Integer> getBeforeDoActionSkills() {
+        return Arrays.asList(Integer.valueOf(31510));
     }
     
-    static List<Integer> getReviveSkills() {
-        return Arrays.asList(31401);
+    public static List<Integer> getReviveSkills() {
+        return Arrays.asList(Integer.valueOf(31401));
     }
     
-    static List<Integer> getIsGuardSkills() {
-        return Arrays.asList(31402);
+    public static List<Integer> getIsGuardSkills() {
+        return Arrays.asList(Integer.valueOf(31402));
     }
     
-    static List<Integer> getCountRecoverBloodEndSkills() {
-        return Arrays.asList(31404);
+    public static List<Integer> getCountRecoverBloodEndSkills() {
+        return Arrays.asList(Integer.valueOf(31404));
     }
     
-    static List<Integer> getEnteringSideSkills() {
-        return Arrays.asList(31408, 31416, 31509, 31511, 31516);
+    public static List<Integer> getEnteringSideSkills() {
+        return Arrays.asList(Integer.valueOf(31408), Integer.valueOf(31416), Integer.valueOf(31509), Integer.valueOf(31511), Integer.valueOf(31516));
     }
     
-    static List<Integer> getSufferHarmSkills() {
-        return Arrays.asList(31412, 31505, 31503);
+    public static List<Integer> getSufferHarmSkills() {
+        return Arrays.asList(Integer.valueOf(31412), Integer.valueOf(31505), Integer.valueOf(31503));
     }
     
-    static List<Integer> getEnterFightSkills() {
-        return Arrays.asList(31414, 31507);
+    public static List<Integer> getEnterFightSkills() {
+        return Arrays.asList(Integer.valueOf(31414), Integer.valueOf(31507));
     }
     
-    static List<Integer> getExitSideSkills() {
-        return Arrays.asList(31507);
+    public static List<Integer> getExitSideSkills() {
+        return Arrays.asList(Integer.valueOf(31507));
     }
     
-    static List<Integer> getSkillIntensifyTMSkills() {
-        return Arrays.asList(31407, 31426);
+    public static List<Integer> getSkillIntensifyTMSkills() {
+        return Arrays.asList(Integer.valueOf(31407), Integer.valueOf(31426));
     }
     
-    default List<Integer> getStatusOverSkills() {
-        return Arrays.asList(31514);
+    public static List<Integer> getStatusOverSkills() {
+        return Arrays.asList(Integer.valueOf(31514));
     }
     
-    static List<Integer> getChangeHurtSkills() {
-        return Arrays.asList(51512);
+    public static List<Integer> getChangeHurtSkills() {
+        return Arrays.asList(Integer.valueOf(51512));
     }
     
-    static List<Integer> getUseDrugSkills() {
-        return Arrays.asList(31311);
+    public static List<Integer> getUseDrugSkills() {
+        return Arrays.asList(Integer.valueOf(31311));
     }
 }

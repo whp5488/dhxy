@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.facade;
 
 import com.kitty.system.game.pk.message.ReqPrisonerRelease;
@@ -23,42 +22,47 @@ public class PkController
     @Autowired
     PkService pkService;
     
+    public PkController() {
+    }
+    
     @EventHandler({ EventType.ENTER_MAP })
-    public void handleEnterMapEvent(final EnterMapEvent enterMapEvent) {
-        final Role role = enterMapEvent.getRole();
+    public void handleEnterMapEvent(EnterMapEvent enterMapEvent) {
+        Role role = enterMapEvent.getRole();
         this.pkService.checkEnterMap(role);
     }
     
     @RequestMapping
-    public void searchRole(final IoSession session, final ReqSearchRole searchRole) {
+    public void searchRole(IoSession session, ReqSearchRole searchRole) {
         this.pkService.searchRole(session, searchRole.getName());
     }
     
     @RequestMapping
-    public void traceRole(final IoSession session, final ReqTraceRole traceRole) {
+    public void traceRole(IoSession session, ReqTraceRole traceRole) {
         this.pkService.traceRole(session, traceRole.getRoleId());
     }
     
     @RequestMapping
-    public void traceGo(final IoSession session, final ReqTraceGo traceGo) {
+    public void traceGo(IoSession session, ReqTraceGo traceGo) {
         this.pkService.traceGo(session);
     }
     
     @RequestMapping
-    public void releaseInfo(final IoSession session, final ReqReleaseInfo reqReleaseInfo) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void releaseInfo(IoSession session, ReqReleaseInfo reqReleaseInfo) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.pkService.releaseInfo(role, reqReleaseInfo.getId());
+        return;
     }
     
     @RequestMapping
-    public void confirmReleasePrisoner(final IoSession session, final ReqPrisonerRelease reqPrisonerRelease) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void confirmReleasePrisoner(IoSession session, ReqPrisonerRelease reqPrisonerRelease) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.pkService.confirmReleasePrisoner(role, reqPrisonerRelease.getId());
+        return;
     }
 }

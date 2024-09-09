@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqMagicBoxInfo extends Message
 {
     private int affiliation;
+    
+    public ReqMagicBoxInfo() {
+    }
     
     public int getAffiliation() {
         return this.affiliation;

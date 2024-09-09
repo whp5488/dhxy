@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.mirror.model;
 
 import java.util.ArrayList;
@@ -24,6 +23,9 @@ public class RoleMirror
     private String partyName;
     private String title;
     private String message;
+    
+    public RoleMirror() {
+    }
     
     public void setId(final long id) {
         this.id = id;

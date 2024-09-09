@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.regex.Matcher;
@@ -8,11 +7,14 @@ public final class NumberUtil
 {
     private static Pattern NUMBER_PATTERN;
     
-    public static boolean booleanValue(final Object object) {
-        return booleaneValue(object, Boolean.FALSE);
+    public NumberUtil() {
     }
     
-    public static boolean booleaneValue(final Object object, final boolean defaultValue) {
+    public static boolean booleanValue(Object object) {
+        return booleaneValue(object, (boolean)Boolean.FALSE);
+    }
+    
+    public static boolean booleaneValue(Object object, boolean defaultValue) {
         if (object == null) {
             return defaultValue;
         }
@@ -20,18 +22,18 @@ public final class NumberUtil
             return (boolean)object;
         }
         try {
-            return Boolean.valueOf(object.toString());
+            return (boolean)Boolean.valueOf(object.toString());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static byte byteValue(final Object object) {
-        return byteValue(object, Byte.valueOf("0"));
+    public static byte byteValue(Object object) {
+        return byteValue(object, (byte)Byte.valueOf("0"));
     }
     
-    public static byte byteValue(final Object object, final byte defaultValue) {
+    public static byte byteValue(Object object, byte defaultValue) {
         if (object == null) {
             return defaultValue;
         }
@@ -39,18 +41,18 @@ public final class NumberUtil
             return (byte)object;
         }
         try {
-            return Byte.valueOf(object.toString());
+            return (byte)Byte.valueOf(object.toString());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static short shortValue(final Object object) {
+    public static short shortValue(Object object) {
         return shortValue(object, (short)0);
     }
     
-    public static short shortValue(final Object object, final short defaultValue) {
+    public static short shortValue(Object object, short defaultValue) {
         if (object == null) {
             return defaultValue;
         }
@@ -58,18 +60,18 @@ public final class NumberUtil
             return (short)object;
         }
         try {
-            return Short.valueOf(object.toString());
+            return (short)Short.valueOf(object.toString());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static int intValue(final Object object) {
+    public static int intValue(Object object) {
         return intValue(object, 0);
     }
     
-    public static int intValue(final Object object, final int defaultValue) {
+    public static int intValue(Object object, int defaultValue) {
         if (object == null) {
             return defaultValue;
         }
@@ -77,18 +79,18 @@ public final class NumberUtil
             return (int)object;
         }
         try {
-            return Integer.valueOf(object.toString());
+            return (int)Integer.valueOf(object.toString());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static long longValue(final Object object) {
+    public static long longValue(Object object) {
         return longValue(object, 0L);
     }
     
-    public static long longValue(final Object object, final long defaultValue) {
+    public static long longValue(Object object, long defaultValue) {
         if (object == null) {
             return defaultValue;
         }
@@ -96,18 +98,18 @@ public final class NumberUtil
             return (long)object;
         }
         try {
-            return Long.valueOf(object.toString());
+            return (long)Long.valueOf(object.toString());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static double doubleValue(final Object object) {
+    public static double doubleValue(Object object) {
         return doubleValue(object, 0.0);
     }
     
-    public static double doubleValue(final Object object, final double defaultValue) {
+    public static double doubleValue(Object object, double defaultValue) {
         if (object == null) {
             return defaultValue;
         }
@@ -115,9 +117,9 @@ public final class NumberUtil
             return (double)(long)object;
         }
         try {
-            return Double.valueOf(object.toString());
+            return (double)Double.valueOf(object.toString());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
@@ -127,11 +129,11 @@ public final class NumberUtil
             return false;
         }
         str = str.replace(".", "");
-        final Matcher isNum = NumberUtil.NUMBER_PATTERN.matcher(str);
+        Matcher isNum = NumberUtil.NUMBER_PATTERN.matcher(str);
         return isNum.matches();
     }
     
-    public static int median(final int a, final int b) {
+    public static int median(int a, int b) {
         return (a & b) + ((a ^ b) >> 1);
     }
     

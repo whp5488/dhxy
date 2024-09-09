@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -116,7 +115,7 @@ public class RespGangWarsIcon extends Message
         if (!(o instanceof RespGangWarsIcon)) {
             return false;
         }
-        final RespGangWarsIcon other = (RespGangWarsIcon)o;
+        RespGangWarsIcon other = (RespGangWarsIcon)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -126,17 +125,9 @@ public class RespGangWarsIcon extends Message
         if (this.getMax() != other.getMax()) {
             return false;
         }
-        final Object this$sideName = this.getSideName();
-        final Object other$sideName = other.getSideName();
-        Label_0091: {
-            if (this$sideName == null) {
-                if (other$sideName == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$sideName.equals(other$sideName)) {
-                break Label_0091;
-            }
+        Object this$sideName = this.getSideName();
+        Object other$sideName = other.getSideName();
+        if (!((this$sideName != null) ? this$sideName.equals(other$sideName) : (other$sideName == null))) {
             return false;
         }
         if (this.getSideLife() != other.getSideLife()) {
@@ -145,17 +136,9 @@ public class RespGangWarsIcon extends Message
         if (this.getSideGrade() != other.getSideGrade()) {
             return false;
         }
-        final Object this$enemyName = this.getEnemyName();
-        final Object other$enemyName = other.getEnemyName();
-        if (this$enemyName == null) {
-            if (other$enemyName == null) {
-                return this.getEnemyLife() == other.getEnemyLife() && this.getEnemyGrade() == other.getEnemyGrade() && this.getStance() == other.getStance() && this.getTime() == other.getTime();
-            }
-        }
-        else if (this$enemyName.equals(other$enemyName)) {
-            return this.getEnemyLife() == other.getEnemyLife() && this.getEnemyGrade() == other.getEnemyGrade() && this.getStance() == other.getStance() && this.getTime() == other.getTime();
-        }
-        return false;
+        Object this$enemyName = this.getEnemyName();
+        Object other$enemyName = other.getEnemyName();
+        return ((this$enemyName != null) ? this$enemyName.equals(other$enemyName) : (other$enemyName == null)) && this.getEnemyLife() == other.getEnemyLife() && this.getEnemyGrade() == other.getEnemyGrade() && this.getStance() == other.getStance() && this.getTime() == other.getTime();
     }
     
     protected boolean canEqual(final Object other) {
@@ -164,15 +147,15 @@ public class RespGangWarsIcon extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getState();
         result = result * 59 + this.getMax();
-        final Object $sideName = this.getSideName();
+        Object $sideName = this.getSideName();
         result = result * 59 + (($sideName == null) ? 43 : $sideName.hashCode());
         result = result * 59 + this.getSideLife();
         result = result * 59 + this.getSideGrade();
-        final Object $enemyName = this.getEnemyName();
+        Object $enemyName = this.getEnemyName();
         result = result * 59 + (($enemyName == null) ? 43 : $enemyName.hashCode());
         result = result * 59 + this.getEnemyLife();
         result = result * 59 + this.getEnemyGrade();
@@ -183,6 +166,6 @@ public class RespGangWarsIcon extends Message
     
     @Override
     public String toString() {
-        return "RespGangWarsIcon(state=" + this.getState() + ", max=" + this.getMax() + ", sideName=" + this.getSideName() + ", sideLife=" + this.getSideLife() + ", sideGrade=" + this.getSideGrade() + ", enemyName=" + this.getEnemyName() + ", enemyLife=" + this.getEnemyLife() + ", enemyGrade=" + this.getEnemyGrade() + ", stance=" + this.getStance() + ", time=" + this.getTime() + ")";
+        return "RespGangWarsIcon(state=" + (int)this.getState() + ", max=" + (int)this.getMax() + ", sideName=" + this.getSideName() + ", sideLife=" + (int)this.getSideLife() + ", sideGrade=" + (int)this.getSideGrade() + ", enemyName=" + this.getEnemyName() + ", enemyLife=" + (int)this.getEnemyLife() + ", enemyGrade=" + (int)this.getEnemyGrade() + ", stance=" + (int)this.getStance() + ", time=" + this.getTime() + ")";
     }
 }

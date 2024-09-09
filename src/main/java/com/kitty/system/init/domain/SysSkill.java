@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.Arrays;
@@ -60,6 +59,9 @@ public class SysSkill implements Serializable
     @Comment("位置")
     @Column("pos")
     private Integer pos;
+    
+    public SysSkill() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -189,141 +191,61 @@ public class SysSkill implements Serializable
         if (!(o instanceof SysSkill)) {
             return false;
         }
-        final SysSkill other = (SysSkill)o;
+        SysSkill other = (SysSkill)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getIcon() != other.getIcon()) {
             return false;
         }
-        final Object this$attr = this.getAttr();
-        final Object other$attr = other.getAttr();
-        Label_0189: {
-            if (this$attr == null) {
-                if (other$attr == null) {
-                    break Label_0189;
-                }
-            }
-            else if (this$attr.equals(other$attr)) {
-                break Label_0189;
-            }
+        Object this$attr = this.getAttr();
+        Object other$attr = other.getAttr();
+        if (!((this$attr != null) ? this$attr.equals(other$attr) : (other$attr == null))) {
             return false;
         }
-        final Object this$step = this.getStep();
-        final Object other$step = other.getStep();
-        Label_0226: {
-            if (this$step == null) {
-                if (other$step == null) {
-                    break Label_0226;
-                }
-            }
-            else if (this$step.equals(other$step)) {
-                break Label_0226;
-            }
+        Object this$step = this.getStep();
+        Object other$step = other.getStep();
+        if (!((this$step != null) ? this$step.equals(other$step) : (other$step == null))) {
             return false;
         }
-        final Object this$race = this.getRace();
-        final Object other$race = other.getRace();
-        Label_0263: {
-            if (this$race == null) {
-                if (other$race == null) {
-                    break Label_0263;
-                }
-            }
-            else if (this$race.equals(other$race)) {
-                break Label_0263;
-            }
+        Object this$race = this.getRace();
+        Object other$race = other.getRace();
+        if (!((this$race != null) ? this$race.equals(other$race) : (other$race == null))) {
             return false;
         }
-        final Object this$sex = this.getSex();
-        final Object other$sex = other.getSex();
-        Label_0300: {
-            if (this$sex == null) {
-                if (other$sex == null) {
-                    break Label_0300;
-                }
-            }
-            else if (this$sex.equals(other$sex)) {
-                break Label_0300;
-            }
+        Object this$sex = this.getSex();
+        Object other$sex = other.getSex();
+        if (!((this$sex != null) ? this$sex.equals(other$sex) : (other$sex == null))) {
             return false;
         }
-        final Object this$initiative = this.getInitiative();
-        final Object other$initiative = other.getInitiative();
-        Label_0337: {
-            if (this$initiative == null) {
-                if (other$initiative == null) {
-                    break Label_0337;
-                }
-            }
-            else if (this$initiative.equals(other$initiative)) {
-                break Label_0337;
-            }
+        Object this$initiative = this.getInitiative();
+        Object other$initiative = other.getInitiative();
+        if (!((this$initiative != null) ? this$initiative.equals(other$initiative) : (other$initiative == null))) {
             return false;
         }
-        final Object this$targetType = this.getTargetType();
-        final Object other$targetType = other.getTargetType();
-        Label_0374: {
-            if (this$targetType == null) {
-                if (other$targetType == null) {
-                    break Label_0374;
-                }
-            }
-            else if (this$targetType.equals(other$targetType)) {
-                break Label_0374;
-            }
+        Object this$targetType = this.getTargetType();
+        Object other$targetType = other.getTargetType();
+        if (!((this$targetType != null) ? this$targetType.equals(other$targetType) : (other$targetType == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0411: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0411;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0411;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
         if (Double.compare(this.getHitRatio(), other.getHitRatio()) != 0) {
@@ -332,30 +254,14 @@ public class SysSkill implements Serializable
         if (!Arrays.equals(this.getPower(), other.getPower())) {
             return false;
         }
-        final Object this$coverSkillSerials = this.getCoverSkillSerials();
-        final Object other$coverSkillSerials = other.getCoverSkillSerials();
-        Label_0480: {
-            if (this$coverSkillSerials == null) {
-                if (other$coverSkillSerials == null) {
-                    break Label_0480;
-                }
-            }
-            else if (this$coverSkillSerials.equals(other$coverSkillSerials)) {
-                break Label_0480;
-            }
+        Object this$coverSkillSerials = this.getCoverSkillSerials();
+        Object other$coverSkillSerials = other.getCoverSkillSerials();
+        if (!((this$coverSkillSerials != null) ? this$coverSkillSerials.equals(other$coverSkillSerials) : (other$coverSkillSerials == null))) {
             return false;
         }
-        final Object this$pos = this.getPos();
-        final Object other$pos = other.getPos();
-        if (this$pos == null) {
-            if (other$pos == null) {
-                return true;
-            }
-        }
-        else if (this$pos.equals(other$pos)) {
-            return true;
-        }
-        return false;
+        Object this$pos = this.getPos();
+        Object other$pos = other.getPos();
+        return (this$pos != null) ? this$pos.equals(other$pos) : (other$pos == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -364,35 +270,35 @@ public class SysSkill implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getIcon();
-        final Object $attr = this.getAttr();
+        Object $attr = this.getAttr();
         result = result * 59 + (($attr == null) ? 43 : $attr.hashCode());
-        final Object $step = this.getStep();
+        Object $step = this.getStep();
         result = result * 59 + (($step == null) ? 43 : $step.hashCode());
-        final Object $race = this.getRace();
+        Object $race = this.getRace();
         result = result * 59 + (($race == null) ? 43 : $race.hashCode());
-        final Object $sex = this.getSex();
+        Object $sex = this.getSex();
         result = result * 59 + (($sex == null) ? 43 : $sex.hashCode());
-        final Object $initiative = this.getInitiative();
+        Object $initiative = this.getInitiative();
         result = result * 59 + (($initiative == null) ? 43 : $initiative.hashCode());
-        final Object $targetType = this.getTargetType();
+        Object $targetType = this.getTargetType();
         result = result * 59 + (($targetType == null) ? 43 : $targetType.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final long $hitRatio = Double.doubleToLongBits(this.getHitRatio());
+        long $hitRatio = Double.doubleToLongBits(this.getHitRatio());
         result = result * 59 + (int)($hitRatio >>> 32 ^ $hitRatio);
         result = result * 59 + Arrays.hashCode(this.getPower());
-        final Object $coverSkillSerials = this.getCoverSkillSerials();
+        Object $coverSkillSerials = this.getCoverSkillSerials();
         result = result * 59 + (($coverSkillSerials == null) ? 43 : $coverSkillSerials.hashCode());
-        final Object $pos = this.getPos();
+        Object $pos = this.getPos();
         result = result * 59 + (($pos == null) ? 43 : $pos.hashCode());
         return result;
     }

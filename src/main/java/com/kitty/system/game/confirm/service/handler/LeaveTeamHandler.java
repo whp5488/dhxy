@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.service.handler;
 
 import com.kitty.system.game.team.service.TeamService;
@@ -15,22 +14,26 @@ public class LeaveTeamHandler extends ConfirmHandler
 {
     private static final String select = "1";
     
+    public LeaveTeamHandler() {
+    }
+    
     @Override
-    public void handleConfirmResult(final Role role, final ReqConfirmResult reqConfirmResult) {
-        final LeaveTeamConfirm leaveTeamConfirm = (LeaveTeamConfirm)role.getConfirm();
-        final int type = leaveTeamConfirm.getType();
+    public void handleConfirmResult(Role role, ReqConfirmResult reqConfirmResult) {
+        LeaveTeamConfirm leaveTeamConfirm = (LeaveTeamConfirm)role.getConfirm();
+        int type = leaveTeamConfirm.getType();
         if ("1".equals(reqConfirmResult.getSelect()) && type == 1) {
             this.at(role);
         }
     }
     
-    public void at(final Role role) {
-        if (!SpringUtils.getBean(AtWillHandler.class).isLeave(role)) {
+    public void at(Role role) {
+        if (!((AtWillHandler)SpringUtils.getBean(AtWillHandler.class)).isLeave(role)) {
             return;
         }
-        role.pushTempCache("at_leave", true);
-        final TeamService teamService = SpringUtils.getTeamService();
+        role.pushTempCache("at_leave", Boolean.valueOf(true));
+        TeamService teamService = SpringUtils.getTeamService();
         teamService.leave(role, true);
-        role.pushTempCache("at_leave", false);
+        role.pushTempCache("at_leave", Boolean.valueOf(false));
+        return;
     }
 }

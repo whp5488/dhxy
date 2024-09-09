@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.handler.time;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,8 +13,6 @@ import com.kitty.mina.task.ThreadLocalUtil;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.Collection;
-import java.io.Serializable;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.cache.RedisService;
 import com.kitty.system.init.domain.vo.Move;
@@ -59,39 +56,42 @@ public abstract class FightActivityHandler extends ActivityHandler
     protected MonsterService monsterService;
     private static Map<Integer, List<Position>> usedPotions;
     
-    protected abstract String getNpcContent(final Role p0, final Npc p1);
+    public FightActivityHandler() {
+    }
     
-    protected abstract String getNpcContentNotFight(final Role p0, final Npc p1);
+    protected abstract String getNpcContent(Role role, Npc npc);
     
-    protected abstract void doStartFight(final Role p0, final Npc p1);
+    protected abstract String getNpcContentNotFight(Role role, Npc bossNpc);
     
-    protected abstract int getFightType(final Role p0);
+    protected abstract void doStartFight(Role role, Npc bossNpc);
     
-    protected abstract Npc getBossNpc(final int p0);
+    protected abstract int getFightType(Role role);
     
-    protected abstract void clearNpcAfterWin(final Role p0, final FightEndEvent p1, final Npc p2);
+    protected abstract Npc getBossNpc(int npcId);
     
-    protected abstract void giveReward(final Role p0, final FightEndEvent p1, final Npc p2);
+    protected abstract void clearNpcAfterWin(Role role, FightEndEvent fightEndEvent, Npc bossNpc);
     
-    protected abstract void clearNpcTimeOut(final Npc p0);
+    protected abstract void giveReward(Role role, FightEndEvent fightEndEvent, Npc bossNpc);
     
-    protected Position getRandomPosition(final int mapId) {
-        final Move move = SpringUtils.getBean(RedisService.class).get("move_" + mapId, Move.class);
+    protected abstract void clearNpcTimeOut(Npc npc);
+    
+    protected Position getRandomPosition(int mapId) {
+        Move move = (Move)((RedisService)SpringUtils.getBean(RedisService.class)).get("move_" + mapId, Move.class);
         if (move != null) {
-            final List<String> list = move.getList();
-            final List<Position> positions = this.getUsedPositions(mapId);
+            List<String> list = move.getList();
+            List<Position> positions = this.getUsedPositions(mapId);
             if (positions != null) {
                 if (list.size() == positions.size()) {
                     positions.clear();
-                    this.logger.error("{}位置已经使用完，位置总数量为:{}。开始重置!!", mapId, list.size());
+                    this.logger.error("{}位置已经使用完，位置总数量为:{}。开始重置!!", Integer.valueOf(mapId), Integer.valueOf(list.size()));
                 }
                 list.removeAll(positions);
             }
-            final int index = ThreadLocalRandom.current().nextInt(list.size());
-            final String str = list.get(index);
-            final String[] split = str.split(",");
+            int index = ThreadLocalRandom.current().nextInt(list.size());
+            String str = (String)list.get(index);
+            String[] split = str.split(",");
             if (split.length > 1) {
-                final Position position = new Position(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+                Position position = new Position(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
                 this.recordPosition(mapId, position);
                 return position;
             }
@@ -99,55 +99,54 @@ public abstract class FightActivityHandler extends ActivityHandler
         return null;
     }
     
-    private void recordPosition(final int mapId, final Position position) {
-        List<Position> positions = FightActivityHandler.usedPotions.get(mapId);
+    private void recordPosition(int mapId, Position position) {
+        List<Position> positions = (List)FightActivityHandler.usedPotions.get(Integer.valueOf(mapId));
         if (positions == null) {
-            positions = Collections.synchronizedList(new ArrayList<Position>());
-            FightActivityHandler.usedPotions.put(mapId, positions);
+            positions = Collections.synchronizedList(new ArrayList<>());
+            FightActivityHandler.usedPotions.put(Integer.valueOf(mapId), positions);
         }
         positions.add(position);
     }
     
-    private List<Position> getUsedPositions(final int mapId) {
-        return FightActivityHandler.usedPotions.get(mapId);
+    private List<Position> getUsedPositions(int mapId) {
+        return (List)FightActivityHandler.usedPotions.get(Integer.valueOf(mapId));
     }
     
-    protected void removeUsedPosition(final int mapId, final int x, final int y) {
-        final List<Position> positions = FightActivityHandler.usedPotions.get(mapId);
-        positions.removeIf(e -> e.getX().equals(x) && e.getY().equals(y));
+    protected void removeUsedPosition(int mapId, int x, int y) {
+        List<Position> positions = (List)FightActivityHandler.usedPotions.get(Integer.valueOf(mapId));
+        positions.removeIf(e -> e.getX().equals(Integer.valueOf(x)) && e.getY().equals(Integer.valueOf(y)));
     }
     
-    public void sendNpcContent(final Role role, final Npc npc) {
-        final String content = this.getNpcContent(role, npc);
+    public void sendNpcContent(Role role, Npc npc) {
+        String content = this.getNpcContent(role, npc);
         this.sendNpcContent(role, npc, content);
     }
     
-    public void sendNpcContent(final Role role, final Npc npc, final String content) {
+    public void sendNpcContent(Role role, Npc npc, String content) {
         this.npcService.sendNpcContent(role, npc, content, null);
     }
     
-    public void startFight(final Role role, final Npc npc) {
+    public void startFight(Role role, Npc npc) {
         if (role == null) {
             return;
         }
-        final String content = this.getNpcContentNotFight(role, npc);
+        String content = this.getNpcContentNotFight(role, npc);
         if (content != null) {
             this.sendNpcContent(role, npc, content);
             return;
         }
-        if (this.isSetInFight()) {
-            if (!npc.getInFight().compareAndSet(false, true)) {
-                return;
-            }
+        if (this.isSetInFight() && !npc.getInFight().compareAndSet(false, true)) {
+            return;
         }
         try {
             this.doStartFight(role, npc);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.setNotInFight(npc);
             this.logger.error("请求战斗数据错误");
             e.printStackTrace();
         }
+        return;
     }
     
     public boolean isSetInFight() {
@@ -155,11 +154,11 @@ public abstract class FightActivityHandler extends ActivityHandler
     }
     
     @Override
-    public void handleFightEnd(final FightEndEvent fightEndEvent) {
+    public void handleFightEnd(FightEndEvent fightEndEvent) {
         ThreadLocalUtil.addLocalTask(fightEndEvent.getRole(), () -> this.doFightEnd(fightEndEvent.getRole(), fightEndEvent));
     }
     
-    public void doFightEnd(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightEnd(Role role, FightEndEvent fightEndEvent) {
         try {
             if (this.teamService.isInTeam(role) && !this.teamService.isTeamLeader(role)) {
                 return;
@@ -186,33 +185,33 @@ public abstract class FightActivityHandler extends ActivityHandler
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
-            LoggerUtils.error(role.getId() + "|" + this.getClass().getSimpleName() + "|" + fightEndEvent.getStatus());
-            final Npc npc = this.getBossNpc(fightEndEvent.getNpcId());
+            LoggerUtils.error(role.getId() + "|" + this.getClass().getSimpleName() + "|" + (int)fightEndEvent.getStatus(), new Object[0]);
+            Npc npc = this.getBossNpc(fightEndEvent.getNpcId());
             if (npc != null) {
                 this.setNotInFight(npc);
             }
             else {
-                this.logger.error("战斗结束异常，获取战斗Npc数据为空，战斗类型：{}，NPC-ID：{}", fightEndEvent.getFightType(), fightEndEvent.getNpcId());
+                this.logger.error("战斗结束异常，获取战斗Npc数据为空，战斗类型：{}，NPC-ID：{}", Integer.valueOf(fightEndEvent.getFightType()), Integer.valueOf(fightEndEvent.getNpcId()));
             }
         }
     }
     
-    private boolean isMatchFightType(final Role role, final int fightType) {
+    private boolean isMatchFightType(Role role, int fightType) {
         return this.getFightType(role) == fightType;
     }
     
-    public void doFightWin(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightWin(Role role, FightEndEvent fightEndEvent) {
         if (!this.isMatchFightType(role, fightEndEvent.getFightType())) {
             return;
         }
-        final Npc bossNpc = this.getBossNpc(fightEndEvent.getNpcId());
+        Npc bossNpc = this.getBossNpc(fightEndEvent.getNpcId());
         if (bossNpc == null) {
             return;
         }
         if (this.teamService.isInTeam(role)) {
-            final Team team = this.teamService.getTeam(role.getRoleId());
+            Team team = this.teamService.getTeam((int)role.getRoleId());
             this.doFightWinForTeam(team, fightEndEvent, bossNpc);
         }
         else {
@@ -220,65 +219,63 @@ public abstract class FightActivityHandler extends ActivityHandler
         }
         this.clearNpcAfterWin(role, fightEndEvent, bossNpc);
         this.setNotInFight(bossNpc);
+        return;
     }
     
-    public void doFightWinForTeam(final Team team, final FightEndEvent fightEndEvent, final Npc bossNpc) {
-        final int leaderRoleId = team.getLeaderRoleId();
-        final List<Member> members = team.getList();
+    public void doFightWinForTeam(Team team, FightEndEvent fightEndEvent, Npc bossNpc) {
+        int leaderRoleId = team.getLeaderRoleId();
+        List<Member> members = team.getList();
         for (int i = 0; i < members.size(); ++i) {
-            final Member member = members.get(i);
-            if (member != null) {
-                if (member.isInTeam()) {
-                    if (leaderRoleId != member.getRoleId()) {
-                        final Role memberRole = this.roleService.getPlayer(member.getRoleId());
-                        if (memberRole != null) {
-                            ThreadLocalUtil.addLocalTask(memberRole, () -> this.doFightWinForSingle(memberRole, fightEndEvent, bossNpc));
-                        }
-                    }
+            Member member = (Member)members.get(i);
+            if (member != null && member.isInTeam() && leaderRoleId != (int)member.getRoleId()) {
+                Role memberRole = this.roleService.getPlayer((int)member.getRoleId());
+                if (memberRole != null) {
+                    ThreadLocalUtil.addLocalTask(memberRole, () -> this.doFightWinForSingle(memberRole, fightEndEvent, bossNpc));
                 }
             }
         }
-        final Role role = this.roleService.getPlayer(leaderRoleId);
+        Role role = this.roleService.getPlayer(leaderRoleId);
         if (role != null) {
             this.doFightWinForSingle(role, fightEndEvent, bossNpc);
         }
     }
     
-    public void doFightWinForSingle(final Role role, final FightEndEvent fightEndEvent, final Npc npc) {
+    public void doFightWinForSingle(Role role, FightEndEvent fightEndEvent, Npc npc) {
         try {
             this.giveReward(role, fightEndEvent, npc);
             role.popTempCache("drop_monster_name");
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void doFightFail(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightFail(Role role, FightEndEvent fightEndEvent) {
         this.fail(role, fightEndEvent);
     }
     
-    public void doFightRunAway(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightRunAway(Role role, FightEndEvent fightEndEvent) {
         this.fail(role, fightEndEvent);
     }
     
-    public void doFightMaxRound(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightMaxRound(Role role, FightEndEvent fightEndEvent) {
         this.fail(role, fightEndEvent);
     }
     
-    private void fail(final Role role, final FightEndEvent fightEndEvent) {
-        final Npc npc = this.getBossNpc(fightEndEvent.getNpcId());
+    private void fail(Role role, FightEndEvent fightEndEvent) {
+        Npc npc = this.getBossNpc(fightEndEvent.getNpcId());
         if (npc == null) {
             return;
         }
         this.setNotInFight(npc);
-        final int currentTime = (int)(System.currentTimeMillis() / 1000L);
+        int currentTime = (int)(System.currentTimeMillis() / 1000L);
         if (npc.getEndTime() > 0 && currentTime > npc.getEndTime()) {
             this.clearNpcTimeOut(npc);
         }
+        return;
     }
     
-    public void setNotInFight(final Npc npc) {
+    public void setNotInFight(Npc npc) {
         if (npc != null) {
             npc.getInFight().set(false);
             npc.setFightId(-1);
@@ -286,8 +283,8 @@ public abstract class FightActivityHandler extends ActivityHandler
     }
     
     @Override
-    public void handleRoleExpire(final Role role) {
-        final Fight fight = SpringUtils.getFightNewService().getFightByRoleId(role.getRoleId());
+    public void handleRoleExpire(Role role) {
+        Fight fight = SpringUtils.getFightNewService().getFightByRoleId((int)role.getRoleId());
         if (fight == null) {
             return;
         }
@@ -300,76 +297,80 @@ public abstract class FightActivityHandler extends ActivityHandler
             npc = SpringUtils.getMapService().getNpc(fight.getNpcId());
         }
         this.doRoleExpire(role, fight, npc);
+        return;
     }
     
-    public List<Role> beFightOutTeam(final Role role, final Team team, final FightEndEvent fightEndEvent) {
-        final List<Role> objects = new ArrayList<Role>();
-        final Role rA = fightEndEvent.getRolesA().stream().filter(e -> e.getId().equals(role.getId())).findFirst().orElse(null);
+    public List<Role> beFightOutTeam(Role role, Team team, FightEndEvent fightEndEvent) {
+        List<Role> objects = new ArrayList<>();
+        Role rA = (Role)fightEndEvent.getRolesA().stream().filter(e -> e.getId().equals(role.getId())).findFirst().orElse(null);
         if (rA != null) {
-            final List<Member> list = team.getList();
+            List<Member> list = team.getList();
             for (int i = 0; i < fightEndEvent.getRolesA().size(); ++i) {
-                final Role fightRole = fightEndEvent.getRolesA().get(i);
-                final Member member = list.stream().filter(e -> e.getId().equals(fightRole.getId())).findFirst().orElse(null);
+                Role fightRole = (Role)fightEndEvent.getRolesA().get(i);
+                Member member = (Member)list.stream().filter(e -> e.getId().equals(fightRole.getId())).findFirst().orElse(null);
                 if (member == null) {
                     objects.add(fightRole);
                 }
             }
         }
-        final Role rB = fightEndEvent.getRolesB().stream().filter(e -> e.getId().equals(role.getId())).findFirst().orElse(null);
-        if (rB != null) {}
+        Role rB = (Role)fightEndEvent.getRolesB().stream().filter(e -> e.getId().equals(role.getId())).findFirst().orElse(null);
         return objects;
     }
     
-    public void doRoleExpire(final Role role, final Fight fight, final Npc npc) {
-        final TeamService teamService = SpringUtils.getTeamService();
+    public void doRoleExpire(Role role, Fight fight, Npc npc) {
+        TeamService teamService = SpringUtils.getTeamService();
         if (teamService.getTeamCount(role) <= 1 && npc != null) {
             if (npc.isInFight()) {
                 this.setNotInFight(npc);
             }
-            final int currentTime = (int)(System.currentTimeMillis() / 1000L);
+            int currentTime = (int)(System.currentTimeMillis() / 1000L);
             if (npc.getEndTime() > 0 && currentTime > npc.getEndTime()) {
                 this.clearNpcTimeOut(npc);
             }
         }
     }
     
-    public List<Integer> calculateFloat(final int level, final int need) {
-        final List<Integer> list = new ArrayList<Integer>();
+    public List<Integer> calculateFloat(int level, int need) {
+        List<Integer> list = new ArrayList<>();
         for (int i = 1; i <= 15; ++i) {
-            list.add(level + i);
+            list.add(Integer.valueOf(level + i));
             if (level - i >= need) {
-                list.add(level - i);
+                list.add(Integer.valueOf(level - i));
             }
         }
         return list;
     }
     
-    public List<Integer> scope(final int scene, final List<Integer> list) {
-        final List<Integer> newList = new ArrayList<Integer>();
-        final List<Integer> levelList = MapDataPool.levelScopeMap.get(scene);
+    public List<Integer> scope(int scene, List<Integer> list) {
+        List<Integer> newList = new ArrayList<>();
+        List<Integer> levelList = (List)MapDataPool.levelScopeMap.get(Integer.valueOf(scene));
         if (levelList != null) {
-            for (final Integer key : list) {
+            for (Integer key : list) {
                 if (levelList.contains(key)) {
                     newList.add(key);
                 }
+                else {
+                    continue;
+                }
             }
+            return newList;
         }
         return newList;
     }
     
-    public List<SysSkill> createSkill(final Integer race, final Integer sex) {
-        final Map<Integer, Map<Integer, List<SysSkill>>> mapMap = SkillDataPool.groupSkillMap.get(race);
-        final Map<Integer, List<SysSkill>> listMap = mapMap.get(sex);
-        final Integer[] keys = listMap.keySet().toArray(new Integer[0]);
-        final int random = (int)Math.random() * keys.length;
-        final Integer randomKey = keys[random];
-        final List<SysSkill> skills = listMap.get(randomKey);
+    public List<SysSkill> createSkill(Integer race, Integer sex) {
+        Map<Integer, Map<Integer, List<SysSkill>>> mapMap = (Map)SkillDataPool.groupSkillMap.get(race);
+        Map<Integer, List<SysSkill>> listMap = (Map)mapMap.get(sex);
+        Integer[] keys = (Integer[])listMap.keySet().toArray(new Integer[0]);
+        int random = (int)Math.random() * keys.length;
+        Integer randomKey = keys[random];
+        List<SysSkill> skills = (List)listMap.get(randomKey);
         return skills;
     }
     
-    public int getBossCount(final Role role) {
-        final int allCount = 10;
-        int teamCount = SpringUtils.getBean(TeamService.class).getTeamCount(role);
+    public int getBossCount(Role role) {
+        int allCount = 10;
+        int teamCount = ((TeamService)SpringUtils.getBean(TeamService.class)).getTeamCount(role);
         if (teamCount == 0) {
             teamCount = 1;
         }
@@ -378,13 +379,13 @@ public abstract class FightActivityHandler extends ActivityHandler
             count = allCount;
         }
         else {
-            final int minCount = 4 + teamCount;
+            int minCount = 4 + teamCount;
             count = ThreadLocalRandom.current().nextInt(allCount - minCount + 1) + minCount;
         }
         return count;
     }
     
     static {
-        FightActivityHandler.usedPotions = new ConcurrentHashMap<Integer, List<Position>>();
+        FightActivityHandler.usedPotions = new ConcurrentHashMap();
     }
 }

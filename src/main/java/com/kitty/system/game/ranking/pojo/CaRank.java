@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.activity.model.user.ca.vo.CaCache;
 import com.kitty.system.game.activity.model.user.ca.CaRankRecord;
 import java.io.Serializable;
@@ -17,7 +15,7 @@ public class CaRank implements Serializable
     private int rank;
     private String server;
     
-    public CaRank(final CaRankRecord record) {
+    public CaRank(CaRankRecord record) {
         this.roleId = record.getRoleId();
         this.name = record.getName();
         this.serial = record.getSerial();
@@ -27,7 +25,7 @@ public class CaRank implements Serializable
         this.rank = record.getFullRank();
     }
     
-    public CaRank(final CaCache caCache, final String server) {
+    public CaRank(CaCache caCache, String server) {
         this.roleId = caCache.getRoleId();
         this.name = caCache.getName();
         this.serial = caCache.getSerial();
@@ -109,24 +107,16 @@ public class CaRank implements Serializable
         if (!(o instanceof CaRank)) {
             return false;
         }
-        final CaRank other = (CaRank)o;
+        CaRank other = (CaRank)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
@@ -144,17 +134,9 @@ public class CaRank implements Serializable
         if (this.getRank() != other.getRank()) {
             return false;
         }
-        final Object this$server = this.getServer();
-        final Object other$server = other.getServer();
-        if (this$server == null) {
-            if (other$server == null) {
-                return true;
-            }
-        }
-        else if (this$server.equals(other$server)) {
-            return true;
-        }
-        return false;
+        Object this$server = this.getServer();
+        Object other$server = other.getServer();
+        return (this$server != null) ? this$server.equals(other$server) : (other$server == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -163,27 +145,26 @@ public class CaRank implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getRelive();
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getScore();
         result = result * 59 + this.getRank();
-        final Object $server = this.getServer();
+        Object $server = this.getServer();
         result = result * 59 + (($server == null) ? 43 : $server.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "CaRank(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", serial=" + this.getSerial() + ", relive=" + this.getRelive() + ", level=" + this.getLevel() + ", score=" + this.getScore() + ", rank=" + this.getRank() + ", server=" + this.getServer() + ")";
+        return "CaRank(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", serial=" + this.getSerial() + ", relive=" + (int)this.getRelive() + ", level=" + (int)this.getLevel() + ", score=" + this.getScore() + ", rank=" + this.getRank() + ", server=" + this.getServer() + ")";
     }
     
-    @ConstructorProperties({ "roleId", "name", "serial", "relive", "level", "score", "rank", "server" })
     public CaRank(final int roleId, final String name, final int serial, final byte relive, final short level, final int score, final int rank, final String server) {
         this.roleId = roleId;
         this.name = name;

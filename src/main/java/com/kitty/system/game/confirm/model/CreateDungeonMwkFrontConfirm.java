@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.model;
 
 import com.kitty.system.enums.confirm.ConfirmType;
@@ -11,7 +10,7 @@ public class CreateDungeonMwkFrontConfirm extends RoleConfirm
     private ScheduledFuture<?> schedule;
     private String type;
     
-    public CreateDungeonMwkFrontConfirm(final Map<Integer, Short> ballotResults, final ScheduledFuture<?> schedule, final String type) {
+    public CreateDungeonMwkFrontConfirm(Map<Integer, Short> ballotResults, ScheduledFuture<?> schedule, String type) {
         this.type = type;
         this.schedule = schedule;
         this.ballotResults = ballotResults;

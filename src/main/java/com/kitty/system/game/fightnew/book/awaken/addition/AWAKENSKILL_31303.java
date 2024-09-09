@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.addition;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -10,31 +9,34 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31303 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31303() {
+    }
+    
     @Override
-    public NutMap additionSuit(final Role role, final Pet pet, final Object... args) {
-        final byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
+    public NutMap additionSuit(Role role, Pet pet, Object... args) {
+        byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
         if (suitLevParam > 0) {
-            final double percent = this.getPercent(suitLevParam);
-            final NutMap map = NutMap.NEW();
-            map.put(String.valueOf(PRO_DICT_TYPE.K_H.getDist()), (Object)percent);
+            double percent = this.getPercent((short)suitLevParam);
+            NutMap map = NutMap.NEW();
+            map.put(String.valueOf(PRO_DICT_TYPE.K_H.getDist()), Double.valueOf(percent));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap additionAwaken(final Role role, final Pet pet, final Object... args) {
-        final short awaken = pet.getAwaken();
+    public NutMap additionAwaken(Role role, Pet pet, Object... args) {
+        short awaken = pet.getAwaken();
         if (awaken > 0) {
-            final double percent = this.getPercent(awaken);
-            final NutMap map = NutMap.NEW();
-            map.put(String.valueOf(PRO_DICT_TYPE.K_H.getDist()), (Object)percent);
+            double percent = this.getPercent(awaken);
+            NutMap map = NutMap.NEW();
+            map.put(String.valueOf(PRO_DICT_TYPE.K_H.getDist()), Double.valueOf(percent));
             return map;
         }
         return null;
     }
     
-    private double getPercent(final short lev) {
-        return 20 * lev / 20.0 / 100.0;
+    private double getPercent(short lev) {
+        return (double)(20 * lev) / 20.0 / 100.0;
     }
 }

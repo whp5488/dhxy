@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.domain.vo;
 
 import java.io.Serializable;
@@ -16,7 +15,7 @@ public class AssistParam implements Serializable
         return this.petId;
     }
     
-    public void setPetId(final Integer petId) {
+    public void setPetId(Integer petId) {
         this.petId = petId;
     }
     
@@ -24,7 +23,7 @@ public class AssistParam implements Serializable
         return this.isTrigger;
     }
     
-    public void setTrigger(final boolean trigger) {
+    public void setTrigger(boolean trigger) {
         this.isTrigger = trigger;
     }
 }

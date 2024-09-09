@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.three.normal;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -13,30 +12,33 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_63020 extends HorseSkillProcessor
 {
+    public HORSESKILL_63020() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         double percentb = (20.0 * HorseSkillUtils.getPercent(horseSkillParam) + 0.1) / 100.0;
         percentb = HorseSkillUtils.getMathRoundPercent(percentb);
         if (percentb != 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.MISS_RATIO.getDist()), (Object)percentb);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.MISS_RATIO.getDist()), Double.valueOf(percentb));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
         double percenta = (15.0 * HorseSkillUtils.getPercent(horseSkillParam) + 0.1) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         if (percenta != 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.HP_PCT.getDist()), (Object)percenta);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.HP_PCT.getDist()), Double.valueOf(percenta));
             return map;
         }
         return null;

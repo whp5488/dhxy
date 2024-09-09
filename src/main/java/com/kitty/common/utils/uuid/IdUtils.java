@@ -1,8 +1,10 @@
-
 package com.kitty.common.utils.uuid;
 
 public class IdUtils
 {
+    public IdUtils() {
+    }
+    
     public static String randomUUID() {
         return UUID.randomUUID().toString();
     }

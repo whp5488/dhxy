@@ -1,8 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
-import java.util.Collection;
 import java.util.ArrayList;
 import com.kitty.system.game.fightnew.messages.vo.SkillCool;
 import com.kitty.system.game.fightnew.model.AutoFightSkillParam;
@@ -20,16 +17,16 @@ public class RespRoundStartParam extends Message
     private List<AutoFightSkillParam> autoFightSkillParams;
     private List<SkillCool> skillCools;
     
-    public void addSkillCools(final List<SkillCool> cools) {
+    public void addSkillCools(List<SkillCool> cools) {
         if (this.skillCools == null) {
-            this.skillCools = new ArrayList<SkillCool>();
+            this.skillCools = new ArrayList<>();
         }
         this.skillCools.addAll(cools);
     }
     
-    public void addAutoFightSkillParam(final AutoFightSkillParam autoFightSkillParam) {
+    public void addAutoFightSkillParam(AutoFightSkillParam autoFightSkillParam) {
         if (this.autoFightSkillParams == null) {
-            this.autoFightSkillParams = new ArrayList<AutoFightSkillParam>();
+            this.autoFightSkillParams = new ArrayList<>();
         }
         this.autoFightSkillParams.add(autoFightSkillParam);
     }
@@ -82,7 +79,6 @@ public class RespRoundStartParam extends Message
         return this.skillCools;
     }
     
-    @ConstructorProperties({ "objId", "round", "startTime", "isAutoFight", "autoFightSkillParams", "skillCools" })
     public RespRoundStartParam(final int objId, final int round, final String startTime, final boolean isAutoFight, final List<AutoFightSkillParam> autoFightSkillParams, final List<SkillCool> skillCools) {
         this.isAutoFight = false;
         this.objId = objId;

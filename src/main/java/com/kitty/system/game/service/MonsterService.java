@@ -1,10 +1,9 @@
-
 package com.kitty.system.game.service;
 
+import com.kitty.system.init.domain.vo.SkillParameter;
 import java.util.Iterator;
 import com.kitty.system.enums.war.wardef.STAR_PERCENT;
 import com.kitty.system.game.fightnew.book.monster.MonsterSkillUtils;
-import com.kitty.system.init.domain.vo.SkillParameter;
 import com.kitty.listener.EventType;
 import com.kitty.listener.annotation.EventHandler;
 import com.kitty.system.game.fightnew.utils.SkillAi;
@@ -19,15 +18,14 @@ import com.kitty.system.game.team.domain.Member;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.game.fightnew.service.FightNewService;
 import java.util.Map;
-import java.util.Collection;
+import com.kitty.system.init.domain.SysDataMonster;
+import com.kitty.system.init.domain.SysGuajiWar;
 import com.kitty.system.init.domain.SysWarRole;
 import java.util.Random;
 import com.kitty.system.game.fightnew.pool.FightDataPool;
-import com.kitty.system.init.domain.SysGuajiWar;
 import java.util.List;
 import com.kitty.system.game.map.pool.MapDataPool;
 import com.kitty.system.init.domain.SysGuajiMap;
-import com.kitty.system.init.domain.SysDataMonster;
 import java.util.ArrayList;
 import com.kitty.system.game.role.domain.Role;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,34 +42,34 @@ public class MonsterService
     
     public MonsterService() {
         this.logger = LoggerFactory.getLogger(MonsterService.class);
-        this.monsterTimes = new ConcurrentHashMap<Integer, Integer>();
+        this.monsterTimes = new ConcurrentHashMap();
     }
     
-    public int updateMonsterTime(final int roleId) {
-        final int pre = this.monsterTimes.getOrDefault(roleId, 0);
-        this.monsterTimes.put(roleId, pre + 1);
+    public int updateMonsterTime(int roleId) {
+        int pre = (int)this.monsterTimes.getOrDefault(Integer.valueOf(roleId), Integer.valueOf(0));
+        this.monsterTimes.put(Integer.valueOf(roleId), Integer.valueOf(pre + 1));
         return pre + 1;
     }
     
-    public void flushMonsterTime(final int roleId) {
-        this.monsterTimes.remove(roleId);
+    public void flushMonsterTime(int roleId) {
+        this.monsterTimes.remove(Integer.valueOf(roleId));
     }
     
-    public Object[] getMapMonster(final Role role, final int mapId) {
-        final Object[] objs = new Object[2];
-        final List<SysDataMonster> list = new ArrayList<SysDataMonster>();
+    public Object[] getMapMonster(Role role, int mapId) {
+        Object[] objs = new Object[2];
+        List<SysDataMonster> list = new ArrayList<>();
         Integer warRoleSerial = null;
-        final SysGuajiMap sysGuajiMap = MapDataPool.guaJiMap.get(mapId);
+        SysGuajiMap sysGuajiMap = (SysGuajiMap)MapDataPool.guaJiMap.get(Integer.valueOf(mapId));
         if (sysGuajiMap != null) {
-            final Integer warDataId = sysGuajiMap.getWarDataId();
-            final List<SysGuajiWar> wars = FightDataPool.data_guaji_war_list.get(warDataId);
+            Integer warDataId = sysGuajiMap.getWarDataId();
+            List<SysGuajiWar> wars = (List)FightDataPool.data_guaji_war_list.get(warDataId);
             if (wars != null && wars.size() > 0) {
-                final Random random = new Random();
-                final int index = random.nextInt(wars.size());
-                final SysWarRole warRole = FightDataPool.data_war_role.get(wars.get(index).getSerial());
+                Random random = new Random();
+                int index = random.nextInt(wars.size());
+                SysWarRole warRole = (SysWarRole)FightDataPool.data_war_role.get(((SysGuajiWar)wars.get(index)).getSerial());
                 warRoleSerial = warRole.getSerial();
                 if (warRole != null && warRole.getMonster() != null && warRole.getMonster().size() > 0) {
-                    final List<SysDataMonster> monsters = this.getMonstersByWarRandom(FightDataPool.data_monster, warRole, role);
+                    List<SysDataMonster> monsters = this.getMonstersByWarRandom(FightDataPool.data_monster, warRole, role);
                     list.addAll(monsters);
                 }
             }
@@ -81,79 +79,81 @@ public class MonsterService
         return objs;
     }
     
-    public List<SysDataMonster> getMonstersByWarRandom(final Map<Integer, SysDataMonster> data_monster, final SysWarRole warRole, final Role role) {
-        final List<SysDataMonster> list = new ArrayList<SysDataMonster>();
-        final Team team = SpringUtils.getBean(FightNewService.class).getRoleFightTeam(role);
-        Integer monsterLevel = role.getRelive() * 1000 + role.getLevel();
+    public List<SysDataMonster> getMonstersByWarRandom(Map<Integer, SysDataMonster> data_monster, SysWarRole warRole, Role role) {
+        List<SysDataMonster> list = new ArrayList<>();
+        Team team = ((FightNewService)SpringUtils.getBean(FightNewService.class)).getRoleFightTeam(role);
+        Integer monsterLevel = Integer.valueOf((int)role.getRelive() * 1000 + (int)role.getLevel());
         if (team != null) {
-            final List<Member> listTeam = team.getList();
-            final RoleService roleService = SpringUtils.getRoleService();
+            List<Member> listTeam = team.getList();
+            RoleService roleService = SpringUtils.getRoleService();
             int lvCount = 0;
             for (int i = 0; i < listTeam.size(); ++i) {
-                final Member member = listTeam.get(i);
-                final Role teamRole = roleService.getPlayerBy(member.getRoleId());
-                lvCount += teamRole.getRelive() * 1000 + teamRole.getLevel();
+                Member member = (Member)listTeam.get(i);
+                Role teamRole = roleService.getPlayerBy((int)member.getRoleId());
+                lvCount += (int)teamRole.getRelive() * 1000 + (int)teamRole.getLevel();
             }
-            monsterLevel = lvCount / listTeam.size();
+            monsterLevel = Integer.valueOf(lvCount / listTeam.size());
         }
-        final Random random = new Random();
-        final byte[] monsters = { 6, 7, 8, 9, 10 };
-        final byte count = monsters[random.nextInt(monsters.length)];
-        final List<Integer> poss = Const.poss;
+        Random random = new Random();
+        byte[] monsters = { 6, 7, 8, 9, 10 };
+        byte count = monsters[random.nextInt(monsters.length)];
+        List<Integer> poss = Const.poss;
         for (int j = 0; j < count; ++j) {
-            final int monsterIndex = random.nextInt(warRole.getMonster().size());
-            final SysDataMonster monster = data_monster.get(warRole.getMonster().get(monsterIndex).getSerial());
-            final SysDataMonster dataMonster = new SysDataMonster();
+            int monsterIndex = random.nextInt(warRole.getMonster().size());
+            SysDataMonster monster = (SysDataMonster)data_monster.get(((Monster)warRole.getMonster().get(monsterIndex)).getSerial());
+            SysDataMonster dataMonster = new SysDataMonster();
             BeanUtils.copyBeanProp(dataMonster, monster);
-            final int pos = poss.get(j);
+            int pos = (int)poss.get(j);
             dataMonster.setPos(pos);
-            DataGlobalFunc.createMonster(monsterLevel, dataMonster);
+            DataGlobalFunc.createMonster((int)monsterLevel, dataMonster);
             list.add(dataMonster);
         }
         return list;
     }
     
-    public List<SysDataMonster> getMonsters(final Map<Integer, SysDataMonster> data_monster, final SysWarRole warRole) {
-        final List<SysDataMonster> list = new ArrayList<SysDataMonster>();
+    public List<SysDataMonster> getMonsters(Map<Integer, SysDataMonster> data_monster, SysWarRole warRole) {
+        List<SysDataMonster> list = new ArrayList<>();
         for (int i = 0; i < warRole.getMonster().size(); ++i) {
-            final SysDataMonster monster = data_monster.get(warRole.getMonster().get(i).getSerial());
-            monster.setPos(warRole.getMonster().get(i).getPos());
-            final SysDataMonster dataMonster = new SysDataMonster();
+            SysDataMonster monster = (SysDataMonster)data_monster.get(((Monster)warRole.getMonster().get(i)).getSerial());
+            monster.setPos((int)((Monster)warRole.getMonster().get(i)).getPos());
+            SysDataMonster dataMonster = new SysDataMonster();
             BeanUtils.copyBeanProp(dataMonster, monster);
             list.add(dataMonster);
         }
         if (warRole != null && warRole.getSpecialType() > 0) {
             this.specialMonsterFight(list, data_monster, warRole);
+            return list;
         }
         return list;
     }
     
     @EventHandler({ EventType.MOVE })
-    public void handleMoveEvent(final MoveEvent moveEvent) {
-        final Role role = moveEvent.getRole();
+    public void handleMoveEvent(MoveEvent moveEvent) {
+        Role role = moveEvent.getRole();
         if (role == null) {
             return;
         }
-        final boolean flag = SkillAi.canAffectOnPro(0.1);
-        final long theTime = System.currentTimeMillis() / 1000L;
-        final Integer incenseExpireTime = role.getExpireTimeMap().get("incenseExpireTime");
-        if (flag && theTime <= incenseExpireTime) {
-            if (role.getLevel() < 33) {
+        boolean flag = SkillAi.canAffectOnPro(0.1);
+        long theTime = System.currentTimeMillis() / 1000L;
+        Integer incenseExpireTime = (Integer)role.getExpireTimeMap().get("incenseExpireTime");
+        if (flag && theTime <= (long)(int)incenseExpireTime) {
+            if ((int)role.getLevel() < 33) {
                 return;
             }
-            final MonsterService monsterService = SpringUtils.getBean(MonsterService.class);
-            final Object[] objs = monsterService.getMapMonster(role, role.getPos().getMapId());
-            final List<SysDataMonster> mapMonster = (List<SysDataMonster>)objs[1];
+            MonsterService monsterService = (MonsterService)SpringUtils.getBean(MonsterService.class);
+            Object[] objs = monsterService.getMapMonster(role, (int)role.getPos().getMapId());
+            List<SysDataMonster> mapMonster = (List)objs[1];
             if (mapMonster == null || mapMonster.size() <= 0) {
                 return;
             }
-            final Team team = SpringUtils.getBean(FightNewService.class).getRoleFightTeam(role);
-            SpringUtils.getBean(FightNewService.class).enterFieldFight(team, role);
-            monsterService.flushMonsterTime(role.getRoleId());
+            Team team = ((FightNewService)SpringUtils.getBean(FightNewService.class)).getRoleFightTeam(role);
+            ((FightNewService)SpringUtils.getBean(FightNewService.class)).enterFieldFight(team, role);
+            monsterService.flushMonsterTime((int)role.getRoleId());
         }
+        return;
     }
     
-    private void specialMonsterFight(final List<SysDataMonster> list, final Map<Integer, SysDataMonster> data_monster, final SysWarRole warRole) {
+    private void specialMonsterFight(List<SysDataMonster> list, Map<Integer, SysDataMonster> data_monster, SysWarRole warRole) {
         switch (warRole.getSpecialType()) {
             case 1: {
                 this.star18Excute(list, data_monster, warRole);
@@ -162,54 +162,60 @@ public class MonsterService
         }
     }
     
-    private void star18Excute(final List<SysDataMonster> list, final Map<Integer, SysDataMonster> data_monster, final SysWarRole warRole) {
+    private void star18Excute(List<SysDataMonster> list, Map<Integer, SysDataMonster> data_monster, SysWarRole warRole) {
         if (list != null && list.size() > 0) {
             SysDataMonster dataMonster = null;
-            for (final SysDataMonster sysDataMonster : list) {
+            for (SysDataMonster sysDataMonster : list) {
                 if (sysDataMonster.getPos() == 10003) {
                     dataMonster = sysDataMonster;
                     break;
                 }
+                continue;
             }
             if (dataMonster != null) {
-                final ArrayList<SkillParameter> skills = dataMonster.getSkills();
-                dataMonster.setSkills(new ArrayList<SkillParameter>());
+                ArrayList<SkillParameter> skills = dataMonster.getSkills();
+                dataMonster.setSkills(new ArrayList<>());
                 dataMonster.getSkills().addAll(skills);
                 MonsterSkillUtils.addSkill(dataMonster, 30042, "骑马");
                 MonsterSkillUtils.addSkill(dataMonster, 30043, "摄魂大法");
             }
         }
-        final List<Integer> poss = new ArrayList<Integer>() {
+        List<Integer> poss = new ArrayList<Integer>() {
             {
-                this.add(10001);
-                this.add(10002);
-                this.add(10004);
-                this.add(10005);
+                this.add(Integer.valueOf(10001));
+                this.add(Integer.valueOf(10002));
+                this.add(Integer.valueOf(10004));
+                this.add(Integer.valueOf(10005));
             }
         };
         int i = poss.size() - 1;
     Block_7:
         while (true) {
-            for (final STAR_PERCENT starPercent : STAR_PERCENT.values()) {
+            STAR_PERCENT[] values = STAR_PERCENT.values();
+            int length = values.length;
+            int j = 0;
+            while (j < length) {
+                STAR_PERCENT starPercent = values[j];
                 if (i < 0) {
                     break Block_7;
                 }
                 boolean flag = SkillAi.canAffectOnPro(starPercent.getPercent());
                 if (flag) {
-                    final SysDataMonster sysDataMonster2 = data_monster.get(starPercent.getSerial());
+                    SysDataMonster sysDataMonster2 = (SysDataMonster)data_monster.get(Integer.valueOf(starPercent.getSerial()));
                     if (sysDataMonster2 != null) {
-                        final SysDataMonster dataMonster2 = new SysDataMonster();
+                        SysDataMonster dataMonster2 = new SysDataMonster();
                         BeanUtils.copyBeanProp(dataMonster2, sysDataMonster2);
-                        dataMonster2.setPos(poss.get(i));
+                        dataMonster2.setPos((int)poss.get(i));
                         list.add(dataMonster2);
                         poss.remove(i);
                         --i;
                         flag = false;
                     }
                 }
+                ++j;
             }
         }
-        final SysDataMonster dataMonsterPet = MonsterSkillUtils.getStar18SelectPet();
+        SysDataMonster dataMonsterPet = MonsterSkillUtils.getStar18SelectPet();
         if (dataMonsterPet != null) {
             dataMonsterPet.setPos(10103);
             dataMonsterPet.setName(dataMonsterPet.getDes());

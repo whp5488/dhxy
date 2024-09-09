@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages.vo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.common.enter.FiedValue;
 import java.util.List;
 
@@ -26,7 +24,6 @@ public class FightObjectAttr
         this.attrs = attrs;
     }
     
-    @ConstructorProperties({ "objId", "attrs" })
     public FightObjectAttr(final int objId, final List<FiedValue> attrs) {
         this.objId = objId;
         this.attrs = attrs;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -61,6 +60,9 @@ public class SysDataTaskLoop implements Serializable
     @Comment("是否动态创建：10.否（0） 11.是（1）")
     @Column("kind")
     private byte kind;
+    
+    public SysDataTaskLoop() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -182,7 +184,7 @@ public class SysDataTaskLoop implements Serializable
         if (!(o instanceof SysDataTaskLoop)) {
             return false;
         }
-        final SysDataTaskLoop other = (SysDataTaskLoop)o;
+        SysDataTaskLoop other = (SysDataTaskLoop)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -207,82 +209,34 @@ public class SysDataTaskLoop implements Serializable
         if (this.getSubmitCondition() != other.getSubmitCondition()) {
             return false;
         }
-        final Object this$addTaskEvent = this.getAddTaskEvent();
-        final Object other$addTaskEvent = other.getAddTaskEvent();
-        Label_0156: {
-            if (this$addTaskEvent == null) {
-                if (other$addTaskEvent == null) {
-                    break Label_0156;
-                }
-            }
-            else if (this$addTaskEvent.equals(other$addTaskEvent)) {
-                break Label_0156;
-            }
+        Object this$addTaskEvent = this.getAddTaskEvent();
+        Object other$addTaskEvent = other.getAddTaskEvent();
+        if (!((this$addTaskEvent != null) ? this$addTaskEvent.equals(other$addTaskEvent) : (other$addTaskEvent == null))) {
             return false;
         }
-        final Object this$finishTaskEvent = this.getFinishTaskEvent();
-        final Object other$finishTaskEvent = other.getFinishTaskEvent();
-        Label_0193: {
-            if (this$finishTaskEvent == null) {
-                if (other$finishTaskEvent == null) {
-                    break Label_0193;
-                }
-            }
-            else if (this$finishTaskEvent.equals(other$finishTaskEvent)) {
-                break Label_0193;
-            }
+        Object this$finishTaskEvent = this.getFinishTaskEvent();
+        Object other$finishTaskEvent = other.getFinishTaskEvent();
+        if (!((this$finishTaskEvent != null) ? this$finishTaskEvent.equals(other$finishTaskEvent) : (other$finishTaskEvent == null))) {
             return false;
         }
-        final Object this$askEvent = this.getAskEvent();
-        final Object other$askEvent = other.getAskEvent();
-        Label_0230: {
-            if (this$askEvent == null) {
-                if (other$askEvent == null) {
-                    break Label_0230;
-                }
-            }
-            else if (this$askEvent.equals(other$askEvent)) {
-                break Label_0230;
-            }
+        Object this$askEvent = this.getAskEvent();
+        Object other$askEvent = other.getAskEvent();
+        if (!((this$askEvent != null) ? this$askEvent.equals(other$askEvent) : (other$askEvent == null))) {
             return false;
         }
-        final Object this$taskType = this.getTaskType();
-        final Object other$taskType = other.getTaskType();
-        Label_0267: {
-            if (this$taskType == null) {
-                if (other$taskType == null) {
-                    break Label_0267;
-                }
-            }
-            else if (this$taskType.equals(other$taskType)) {
-                break Label_0267;
-            }
+        Object this$taskType = this.getTaskType();
+        Object other$taskType = other.getTaskType();
+        if (!((this$taskType != null) ? this$taskType.equals(other$taskType) : (other$taskType == null))) {
             return false;
         }
-        final Object this$taskReward = this.getTaskReward();
-        final Object other$taskReward = other.getTaskReward();
-        Label_0304: {
-            if (this$taskReward == null) {
-                if (other$taskReward == null) {
-                    break Label_0304;
-                }
-            }
-            else if (this$taskReward.equals(other$taskReward)) {
-                break Label_0304;
-            }
+        Object this$taskReward = this.getTaskReward();
+        Object other$taskReward = other.getTaskReward();
+        if (!((this$taskReward != null) ? this$taskReward.equals(other$taskReward) : (other$taskReward == null))) {
             return false;
         }
-        final Object this$dstNpc = this.getDstNpc();
-        final Object other$dstNpc = other.getDstNpc();
-        if (this$dstNpc == null) {
-            if (other$dstNpc == null) {
-                return this.getKind() == other.getKind();
-            }
-        }
-        else if (this$dstNpc.equals(other$dstNpc)) {
-            return this.getKind() == other.getKind();
-        }
-        return false;
+        Object this$dstNpc = this.getDstNpc();
+        Object other$dstNpc = other.getDstNpc();
+        return ((this$dstNpc != null) ? this$dstNpc.equals(other$dstNpc) : (other$dstNpc == null)) && this.getKind() == other.getKind();
     }
     
     protected boolean canEqual(final Object other) {
@@ -291,7 +245,7 @@ public class SysDataTaskLoop implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNextTaskSerial();
@@ -300,17 +254,17 @@ public class SysDataTaskLoop implements Serializable
         result = result * 59 + this.getNeedFight();
         result = result * 59 + this.getGetCondition();
         result = result * 59 + this.getSubmitCondition();
-        final Object $addTaskEvent = this.getAddTaskEvent();
+        Object $addTaskEvent = this.getAddTaskEvent();
         result = result * 59 + (($addTaskEvent == null) ? 43 : $addTaskEvent.hashCode());
-        final Object $finishTaskEvent = this.getFinishTaskEvent();
+        Object $finishTaskEvent = this.getFinishTaskEvent();
         result = result * 59 + (($finishTaskEvent == null) ? 43 : $finishTaskEvent.hashCode());
-        final Object $askEvent = this.getAskEvent();
+        Object $askEvent = this.getAskEvent();
         result = result * 59 + (($askEvent == null) ? 43 : $askEvent.hashCode());
-        final Object $taskType = this.getTaskType();
+        Object $taskType = this.getTaskType();
         result = result * 59 + (($taskType == null) ? 43 : $taskType.hashCode());
-        final Object $taskReward = this.getTaskReward();
+        Object $taskReward = this.getTaskReward();
         result = result * 59 + (($taskReward == null) ? 43 : $taskReward.hashCode());
-        final Object $dstNpc = this.getDstNpc();
+        Object $dstNpc = this.getDstNpc();
         result = result * 59 + (($dstNpc == null) ? 43 : $dstNpc.hashCode());
         result = result * 59 + this.getKind();
         return result;
@@ -318,6 +272,6 @@ public class SysDataTaskLoop implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataTaskLoop(serial=" + this.getSerial() + ", nextTaskSerial=" + this.getNextTaskSerial() + ", submitNpc=" + this.getSubmitNpc() + ", giveUp=" + this.getGiveUp() + ", needFight=" + this.getNeedFight() + ", getCondition=" + this.getGetCondition() + ", submitCondition=" + this.getSubmitCondition() + ", addTaskEvent=" + this.getAddTaskEvent() + ", finishTaskEvent=" + this.getFinishTaskEvent() + ", askEvent=" + this.getAskEvent() + ", taskType=" + this.getTaskType() + ", taskReward=" + this.getTaskReward() + ", dstNpc=" + this.getDstNpc() + ", kind=" + this.getKind() + ")";
+        return "SysDataTaskLoop(serial=" + this.getSerial() + ", nextTaskSerial=" + this.getNextTaskSerial() + ", submitNpc=" + this.getSubmitNpc() + ", giveUp=" + this.getGiveUp() + ", needFight=" + this.getNeedFight() + ", getCondition=" + this.getGetCondition() + ", submitCondition=" + this.getSubmitCondition() + ", addTaskEvent=" + this.getAddTaskEvent() + ", finishTaskEvent=" + this.getFinishTaskEvent() + ", askEvent=" + this.getAskEvent() + ", taskType=" + this.getTaskType() + ", taskReward=" + this.getTaskReward() + ", dstNpc=" + this.getDstNpc() + ", kind=" + (int)this.getKind() + ")";
     }
 }

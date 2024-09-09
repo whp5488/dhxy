@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqPrisonerRelease extends Message
 {
     private int id;
+    
+    public ReqPrisonerRelease() {
+    }
     
     public int getId() {
         return this.id;

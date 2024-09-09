@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.tianfu.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqDayInCeUpgrade extends Message
 {
     private Integer addLevel;
+    
+    public ReqDayInCeUpgrade() {
+    }
     
     public Integer getAddLevel() {
         return this.addLevel;
@@ -25,21 +27,13 @@ public class ReqDayInCeUpgrade extends Message
         if (!(o instanceof ReqDayInCeUpgrade)) {
             return false;
         }
-        final ReqDayInCeUpgrade other = (ReqDayInCeUpgrade)o;
+        ReqDayInCeUpgrade other = (ReqDayInCeUpgrade)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$addLevel = this.getAddLevel();
-        final Object other$addLevel = other.getAddLevel();
-        if (this$addLevel == null) {
-            if (other$addLevel == null) {
-                return true;
-            }
-        }
-        else if (this$addLevel.equals(other$addLevel)) {
-            return true;
-        }
-        return false;
+        Object this$addLevel = this.getAddLevel();
+        Object other$addLevel = other.getAddLevel();
+        return (this$addLevel != null) ? this$addLevel.equals(other$addLevel) : (other$addLevel == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqDayInCeUpgrade extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $addLevel = this.getAddLevel();
+        Object $addLevel = this.getAddLevel();
         result = result * 59 + (($addLevel == null) ? 43 : $addLevel.hashCode());
         return result;
     }

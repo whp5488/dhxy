@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.inter;
 
 public interface ChatConst

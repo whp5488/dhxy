@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.normal;
 
 import java.util.Arrays;
@@ -28,70 +27,74 @@ public class SKILL_80020 extends SkillProcessor
 {
     static final List<String> terms;
     
+    public SKILL_80020() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public void normalAttack(final Fight fight, final FightObject effector, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void normalAttack(Fight fight, FightObject effector, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         if (actionDetailParam == null) {
             return;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 80020);
-        final double percent = BigDecimalUtil.decimalScaleObjectDown(3, (0.1 + 3.0 * (effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-        final boolean flag = SkillAi.canAffectOnPro(percent);
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 80020);
+        double percent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf((0.1 + 3.0 * ((double)effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+        boolean flag = SkillAi.canAffectOnPro(percent);
         if (flag) {
             int oldHurt = (int)args[0];
-            final RoleSkill skill = effector.getSkillBy(80020);
-            final SysPetSkill sysSkill = SkillDataPool.petSkillMap.get(80020);
+            RoleSkill skill = effector.getSkillBy(Integer.valueOf(80020));
+            SysPetSkill sysSkill = (SysPetSkill)SkillDataPool.petSkillMap.get(Integer.valueOf(80020));
             int proficient = 1;
             if (skill.getProficient() != null) {
-                proficient = skill.getProficient();
+                proficient = (int)skill.getProficient();
             }
-            final double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
-            final double kx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_SS.getDist());
-            final double hkx = effector.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_SS.getDist());
-            final double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_SS.getDist());
-            final double hurt = sysSkill.getPower()[0] * effector.getLevel() * (Math.pow(proficient, 0.4) * 2.8853998118144273 / 100.0 + 1.0);
-            final double wx = SkillFunc.getWuXingKeZhiXiuZheng(effector, target, fight.getType());
-            final int harm = SkillCompute.computePetSkillDamage(hurt, kx, hkx, extra, weak, wx);
+            double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
+            double kx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_SS.getDist());
+            double hkx = effector.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_SS.getDist());
+            double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_SS.getDist());
+            double hurt = sysSkill.getPower()[0] * (double)effector.getLevel() * (Math.pow((double)proficient, 0.4) * 2.8853998118144273 / 100.0 + 1.0);
+            double wx = SkillFunc.getWuXingKeZhiXiuZheng(effector, target, fight.getType());
+            int harm = (int)SkillCompute.computePetSkillDamage(hurt, kx, hkx, extra, weak, wx);
             int reduceLife;
             oldHurt = (reduceLife = oldHurt + harm);
             if (reduceLife > target.getCurrLife()) {
                 reduceLife = target.getCurrLife();
             }
-            final FightObjectParam targetReduce = ActionParamUtils.changeLifeForTarget(fight, target, 1, -reduceLife, 1);
+            FightObjectParam targetReduce = ActionParamUtils.changeLifeForTarget(fight, target, 1, -reduceLife, 1);
             targetReduce.addDamageType(115);
             actionDetailParam.getTargetParamList().add(targetReduce);
-            final FightObject unit = SkillAi.effectProBass(fight, effector, 1, SKILL_80020.terms);
-            final int life = Math.min(unit.getCurrLife() + BigDecimalUtil.decimalScaleIntegerDown(0, oldHurt * 0.03), unit.getMaxLife());
-            final int addLife = life - unit.getCurrLife();
+            FightObject unit = SkillAi.effectProBass(fight, effector, Integer.valueOf(1), SKILL_80020.terms);
+            int life = Math.min(unit.getCurrLife() + BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf((double)oldHurt * 0.03)), unit.getMaxLife());
+            int addLife = life - unit.getCurrLife();
             if (addLife > 0) {
-                final FightObjectParam targetAdd = ActionParamUtils.changeLifeForTarget(fight, unit, 1, addLife, 1);
+                FightObjectParam targetAdd = ActionParamUtils.changeLifeForTarget(fight, unit, 1, addLife, 1);
                 actionDetailParam.getTargetParamList().add(targetAdd);
             }
-            skillRecord.setT(unit.getId());
+            skillRecord.setT((long)(int)unit.getId());
         }
+        return;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     

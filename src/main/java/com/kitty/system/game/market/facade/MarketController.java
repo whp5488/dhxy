@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.facade;
 
 import com.kitty.system.game.market.message.ReqGoodInfo;
@@ -16,18 +15,21 @@ public class MarketController
     @Autowired
     private MarketService marketService;
     
+    public MarketController() {
+    }
+    
     @RequestMapping
-    public void upShell(final IoSession session, final ReqSetStallGoods reqSetStallGoods) {
+    public void upShell(IoSession session, ReqSetStallGoods reqSetStallGoods) {
         this.marketService.upShell(session, reqSetStallGoods);
     }
     
     @RequestMapping
-    public void buyGoods(final IoSession session, final ReqBuyFromStall reqBuyFromStall) {
+    public void buyGoods(IoSession session, ReqBuyFromStall reqBuyFromStall) {
         this.marketService.buyGoods(session, reqBuyFromStall);
     }
     
     @RequestMapping
-    public void goodsInfo(final IoSession session, final ReqGoodInfo reqGoodInfo) {
+    public void goodsInfo(IoSession session, ReqGoodInfo reqGoodInfo) {
         this.marketService.goodsInfo(session, reqGoodInfo);
     }
 }

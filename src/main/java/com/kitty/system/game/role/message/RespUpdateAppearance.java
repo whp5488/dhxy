@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import java.util.ArrayList;
@@ -40,8 +39,8 @@ public class RespUpdateAppearance extends Message
         this.vip = 0;
         this.moveSpeed = 0;
         this.portrait = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
         this.fly_type = 0;
     }
     

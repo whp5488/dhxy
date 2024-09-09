@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqUseIncense extends Message
 {
     private Integer serial;
     private Integer residueTimes;
+    
+    public ReqUseIncense() {
+    }
     
     public Integer getSerial() {
         return this.serial;

@@ -1,4 +1,3 @@
-
 package com.kitty.cxf.utlis;
 
 import org.apache.mina.core.future.CloseFuture;
@@ -14,26 +13,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class Promote
 {
+    public Promote() {
+    }
+    
     public void closeSession(final IoSession session) {
         if (session == null) {
             return;
         }
         final Logger logger = LoggerFunction.MONOIOR.getLogger();
-        final Role role = SessionUtils.getRoleBySession(session);
+        Role role = SessionUtils.getRoleBySession(session);
         try {
             final String name = (role != null) ? role.getName() : "";
             if (session.isConnected() && !session.isClosing()) {
-                final CloseFuture future = session.closeNow();
-                future.addListener((IoFutureListener)new IoFutureListener<IoFuture>() {
-                    public void operationComplete(final IoFuture future) {
-                        logger.error("session[{}] closed complete,player[{}]", (Object)session.getId(), (Object)name);
+                CloseFuture future = session.closeNow();
+                future.addListener(new IoFutureListener<IoFuture>() {
+                    public void operationComplete(IoFuture future) {
+                        logger.error("session[{}] closed complete,player[{}]", Long.valueOf(session.getId()), name);
                     }
                 });
             }
         }
-        catch (final Exception e) {
-            logger.error("session[{}] closed complete exception, player[{}]", (Object)session.getId(), (Object)role.getName());
+        catch (Exception e) {
+            logger.error("session[{}] closed complete exception, player[{}]", Long.valueOf(session.getId()), role.getName());
             e.getMessage();
         }
+        return;
     }
 }

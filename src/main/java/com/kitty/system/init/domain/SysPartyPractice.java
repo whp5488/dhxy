@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -16,6 +15,9 @@ public class SysPartyPractice implements Serializable
     private int coin;
     @Column("need")
     private int need;
+    
+    public SysPartyPractice() {
+    }
     
     public int getLevel() {
         return this.level;
@@ -57,7 +59,7 @@ public class SysPartyPractice implements Serializable
         if (!(o instanceof SysPartyPractice)) {
             return false;
         }
-        final SysPartyPractice other = (SysPartyPractice)o;
+        SysPartyPractice other = (SysPartyPractice)o;
         return other.canEqual(this) && this.getLevel() == other.getLevel() && this.getTribute() == other.getTribute() && this.getCoin() == other.getCoin() && this.getNeed() == other.getNeed();
     }
     
@@ -67,7 +69,7 @@ public class SysPartyPractice implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getTribute();

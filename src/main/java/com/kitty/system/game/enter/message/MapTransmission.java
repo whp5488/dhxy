@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 public class MapTransmission
@@ -9,7 +8,7 @@ public class MapTransmission
     private Integer dir;
     
     public MapTransmission() {
-        this.dir = 5;
+        this.dir = Integer.valueOf(5);
     }
     
     public String getName() {
@@ -52,60 +51,28 @@ public class MapTransmission
         if (!(o instanceof MapTransmission)) {
             return false;
         }
-        final MapTransmission other = (MapTransmission)o;
+        MapTransmission other = (MapTransmission)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0065: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0065;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$X = this.getX();
-        final Object other$X = other.getX();
-        Label_0102: {
-            if (this$X == null) {
-                if (other$X == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$X.equals(other$X)) {
-                break Label_0102;
-            }
+        Object this$X = this.getX();
+        Object other$X = other.getX();
+        if (!((this$X != null) ? this$X.equals(other$X) : (other$X == null))) {
             return false;
         }
-        final Object this$Y = this.getY();
-        final Object other$Y = other.getY();
-        Label_0139: {
-            if (this$Y == null) {
-                if (other$Y == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$Y.equals(other$Y)) {
-                break Label_0139;
-            }
+        Object this$Y = this.getY();
+        Object other$Y = other.getY();
+        if (!((this$Y != null) ? this$Y.equals(other$Y) : (other$Y == null))) {
             return false;
         }
-        final Object this$dir = this.getDir();
-        final Object other$dir = other.getDir();
-        if (this$dir == null) {
-            if (other$dir == null) {
-                return true;
-            }
-        }
-        else if (this$dir.equals(other$dir)) {
-            return true;
-        }
-        return false;
+        Object this$dir = this.getDir();
+        Object other$dir = other.getDir();
+        return (this$dir != null) ? this$dir.equals(other$dir) : (other$dir == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -114,15 +81,15 @@ public class MapTransmission
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $X = this.getX();
+        Object $X = this.getX();
         result = result * 59 + (($X == null) ? 43 : $X.hashCode());
-        final Object $Y = this.getY();
+        Object $Y = this.getY();
         result = result * 59 + (($Y == null) ? 43 : $Y.hashCode());
-        final Object $dir = this.getDir();
+        Object $dir = this.getDir();
         result = result * 59 + (($dir == null) ? 43 : $dir.hashCode());
         return result;
     }

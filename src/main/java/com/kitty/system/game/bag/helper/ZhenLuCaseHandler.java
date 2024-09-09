@@ -1,13 +1,11 @@
-
 package com.kitty.system.game.bag.helper;
 
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.system.game.pet.service.PetService;
-import com.kitty.system.game.bag.message.RespZhenLuCasePet;
-import com.kitty.mina.message.Message;
-import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.common.data.DataGlobalFunc;
+import com.kitty.mina.message.MessagePusher;
+import com.kitty.system.game.bag.message.RespZhenLuCasePet;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.game.pet.pool.PetDataPool;
 import com.kitty.system.init.domain.SysPet;
@@ -22,40 +20,43 @@ import org.springframework.stereotype.Component;
 @Component("ZhenLuCase")
 public class ZhenLuCaseHandler extends BagHandler
 {
+    public ZhenLuCaseHandler() {
+    }
+    
     @Override
-    public String acceptOperate(final Role role, final Integer pos, final Integer num, final String param) {
-        final int serial = Integer.valueOf(param);
-        final SysOtherItem otherItem = ItemDataPool.data_other_item.get(pos);
+    public String acceptOperate(Role role, Integer pos, Integer num, String param) {
+        int serial = (int)Integer.valueOf(param);
+        SysOtherItem otherItem = (SysOtherItem)ItemDataPool.data_other_item.get(pos);
         if (otherItem.getParam() == null || otherItem.getParam().isEmpty()) {
             return null;
         }
-        final List<Item> list = JsonUtils.string2Collection(otherItem.getParam(), List.class, Item.class);
-        final Item item = list.stream().filter(e -> e.getItem().equals(serial)).findFirst().orElse(null);
+        List<Item> list = (List)JsonUtils.string2Collection(otherItem.getParam(), List.class, Item.class);
+        Item item = (Item)list.stream().filter(e -> e.getItem().equals(Integer.valueOf(serial))).findFirst().orElse(null);
         if (item == null) {
             return null;
         }
-        final SysPet sysPet = PetDataPool.petMap.get(item.getItem());
+        SysPet sysPet = (SysPet)PetDataPool.petMap.get(item.getItem());
         if (sysPet == null) {
             return null;
         }
-        final PetService petService = SpringUtils.getPetService();
-        final boolean flag = petService.canGetPet(role, sysPet, false);
+        PetService petService = SpringUtils.getPetService();
+        boolean flag = petService.canGetPet(role, sysPet, false);
         if (!flag) {
             return null;
         }
-        final Integer integer = this.bagService.consumeBagGoods(role, otherItem.getSerial(), item.getNum(), true, true, "珍露兑换");
+        Integer integer = this.bagService.consumeBagGoods(role, (int)otherItem.getSerial(), (int)item.getNum(), true, true, "珍露兑换");
         if (integer != null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg(String.format("缺少#<II%d>##<%s>[%s]#X%d", otherItem.getSerial(), DataGlobalFunc.getColours(otherItem.getItemPJ(), true), otherItem.getName(), integer)));
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg(String.format("缺少#<II%d>##<%s>[%s]#X%d", otherItem.getSerial(), DataGlobalFunc.getColours((int)otherItem.getItemPJ(), true), otherItem.getName(), integer)));
             return null;
         }
-        final Pet pet = petService.addPet(role, sysPet, 0, "珍露兑换");
+        Pet pet = petService.addPet(role, sysPet, 0, "珍露兑换");
         if (pet != null) {
             petService.loadPet(role, pet);
         }
         else {
-            this.logger.error("珍露兑换宠物失败，道具编号 = {}，合成宠物编号 = {}", (Object)otherItem.getSerial(), (Object)sysPet.getSerial());
+            this.logger.error("珍露兑换宠物失败，道具编号 = {}，合成宠物编号 = {}", otherItem.getSerial(), sysPet.getSerial());
         }
-        MessagePusher.pushMessage(role.getId(), new RespZhenLuCasePet(pet));
+        MessagePusher.pushMessage((long)role.getId(), new RespZhenLuCasePet(pet));
         return null;
     }
 }

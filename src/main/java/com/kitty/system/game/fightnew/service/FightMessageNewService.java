@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.service;
 
 import com.kitty.system.game.fightnew.messages.vo.SkillCool;
@@ -14,8 +13,8 @@ import java.util.HashMap;
 import com.kitty.system.common.enter.FiedValue;
 import com.kitty.system.game.fightnew.messages.vo.CombatAddObject;
 import com.kitty.system.game.fightnew.model.RefreshPet;
-import com.kitty.system.game.fightnew.model.FightObjectParam;
 import com.kitty.system.game.fightnew.messages.vo.ExcuteFightObjectParam;
+import com.kitty.system.game.fightnew.model.FightObjectParam;
 import java.util.ArrayList;
 import com.kitty.system.game.fightnew.messages.vo.ExcuteFightParam;
 import com.kitty.system.game.fightnew.model.ActionDetailParam;
@@ -66,12 +65,12 @@ public class FightMessageNewService
         this.logger = LoggerFactory.getLogger(FightMessageNewService.class);
     }
     
-    public AutoFightSkillParam selfAuto(final FightObject fightObject, final Fight fight) {
+    public AutoFightSkillParam selfAuto(FightObject fightObject, Fight fight) {
         if (fightObject.getAutoFight() == 1) {
             try {
-                final AutoFightSkillParam autoFightSkillParam = new AutoFightSkillParam();
-                autoFightSkillParam.setObjId(fightObject.getId());
-                final SkillAutoPicker autoPicker = this.fightNewService.getAutoObject(fightObject, fight);
+                AutoFightSkillParam autoFightSkillParam = new AutoFightSkillParam();
+                autoFightSkillParam.setObjId((int)fightObject.getId());
+                SkillAutoPicker autoPicker = this.fightNewService.getAutoObject(fightObject, fight);
                 autoFightSkillParam.setSkillId(autoPicker.getSkillId());
                 byte type = 0;
                 if (autoPicker.isDef()) {
@@ -83,46 +82,46 @@ public class FightMessageNewService
                 else {
                     type = (byte)autoPicker.getType();
                 }
-                autoFightSkillParam.setAction(type);
+                autoFightSkillParam.setAction((int)type);
                 if (fightObject.isPlayer() && RACE.RACE_LONG.getValue() == fightObject.getRace()) {
-                    final Map<String, Object> autoFightSet = fightObject.getRole().getExtendBox().getAutoFightSet();
+                    Map<String, Object> autoFightSet = fightObject.getRole().getExtendBox().getAutoFightSet();
                     if (autoFightSet != null) {
-                        final Integer born = (Integer)autoFightSet.get("born");
+                        Integer born = (Integer)autoFightSet.get("born");
                         if (born != null) {
-                            autoFightSkillParam.setBorn(born);
+                            autoFightSkillParam.setBorn((int)born);
                         }
                     }
                 }
                 return autoFightSkillParam;
             }
-            catch (final Exception e) {
-                this.logger.error("进战斗发送自动战斗状态报错==={}", (Object)Lang.getStackTrace((Throwable)e));
+            catch (Exception e) {
+                this.logger.error("进战斗发送自动战斗状态报错==={}", Lang.getStackTrace(e));
             }
         }
         return null;
     }
     
-    public ReqFightHandle autoFightOne(final Fight fight, final FightObject fightObject) {
+    public ReqFightHandle autoFightOne(Fight fight, FightObject fightObject) {
         try {
             if (fight.isOver()) {
                 return null;
             }
-            final IoSession session = fightObject.getSession();
+            IoSession session = fightObject.getSession();
             if (session == null) {
-                final ReqFightHandle reqFightHandle = new ReqFightHandle();
+                ReqFightHandle reqFightHandle = new ReqFightHandle();
                 reqFightHandle.setRound(fight.getRound());
                 reqFightHandle.setAutoFight(1);
-                reqFightHandle.setAttackerId(fightObject.getId());
+                reqFightHandle.setAttackerId((int)fightObject.getId());
                 reqFightHandle.setType(0);
                 reqFightHandle.setSkillId(0);
                 reqFightHandle.setTargetId(0);
                 return reqFightHandle;
             }
-            final ReqFightHandle reqFightHandle = new ReqFightHandle();
+            ReqFightHandle reqFightHandle = new ReqFightHandle();
             reqFightHandle.setAutoFight(1);
             reqFightHandle.setRound(fight.getRound());
-            reqFightHandle.setAttackerId(fightObject.getId());
-            final SkillAutoPicker autoPicker = this.fightNewService.getAutoObject(fightObject, fight);
+            reqFightHandle.setAttackerId((int)fightObject.getId());
+            SkillAutoPicker autoPicker = this.fightNewService.getAutoObject(fightObject, fight);
             reqFightHandle.setTargetId(autoPicker.getTargetId());
             reqFightHandle.setSkillId(autoPicker.getSkillId());
             if (autoPicker.isDef()) {
@@ -137,10 +136,10 @@ public class FightMessageNewService
                 reqFightHandle.setType(0);
                 return reqFightHandle;
             }
-            final RoleSkill roleSkill = fightObject.getSkillBy(reqFightHandle.getSkillId());
+            RoleSkill roleSkill = fightObject.getSkillBy(Integer.valueOf(reqFightHandle.getSkillId()));
             if (roleSkill != null) {
                 reqFightHandle.setType(7);
-                reqFightHandle.setSkillId(roleSkill.getSkillId());
+                reqFightHandle.setSkillId((int)roleSkill.getSkillId());
                 return reqFightHandle;
             }
             reqFightHandle.setType(0);
@@ -148,25 +147,25 @@ public class FightMessageNewService
             reqFightHandle.setTargetId(0);
             return reqFightHandle;
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error("定时战斗报错={}", e);
-            final ReqFightHandle reqFightHandle = new ReqFightHandle();
+            ReqFightHandle reqFightHandle = new ReqFightHandle();
             reqFightHandle.setRound(fight.getRound());
             reqFightHandle.setAutoFight(1);
-            reqFightHandle.setAttackerId(fightObject.getId());
+            reqFightHandle.setAttackerId((int)fightObject.getId());
             reqFightHandle.setType(1);
             reqFightHandle.setSkillId(0);
-            reqFightHandle.setTargetId(fightObject.getId());
+            reqFightHandle.setTargetId((int)fightObject.getId());
             return reqFightHandle;
         }
     }
     
-    public RespFightShouting fightShouting(final FightObject fightObject, final String type) {
+    public RespFightShouting fightShouting(FightObject fightObject, String type) {
         try {
             if (fightObject == null) {
                 return null;
             }
-            final List<NutMap> fightMsg = fightObject.getFightMsg();
+            List<NutMap> fightMsg = fightObject.getFightMsg();
             if (fightMsg == null || fightMsg.size() <= 0) {
                 return null;
             }
@@ -177,141 +176,199 @@ public class FightMessageNewService
                     return null;
                 }
             }
-            final int id = fightObject.getId();
+            int id = (int)fightObject.getId();
             String content = null;
-            switch (type) {
-                case "战斗出场": {
-                    for (final NutMap nutMap : fightMsg) {
+            int n = -1;
+            switch (type.hashCode()) {
+                case 773777215: {
+                    if (type.equals("战斗出场")) {
+                        n = 0;
+                        break;
+                    }
+                    break;
+                }
+                case 889606: {
+                    if (type.equals("法攻")) {
+                        n = 1;
+                        break;
+                    }
+                    break;
+                }
+                case 812075: {
+                    if (type.equals("挨打")) {
+                        n = 2;
+                        break;
+                    }
+                    break;
+                }
+                case 616650109: {
+                    if (type.equals("主人倒地")) {
+                        n = 3;
+                        break;
+                    }
+                    break;
+                }
+                case 636163707: {
+                    if (type.equals("使用药品")) {
+                        n = 4;
+                        break;
+                    }
+                    break;
+                }
+            }
+            switch (n) {
+                case 0: {
+                    for (NutMap nutMap : fightMsg) {
                         if (nutMap.getInt("type") == 1) {
                             content = nutMap.getString("msg");
                         }
+                        else {
+                            continue;
+                        }
                     }
                     break;
                 }
-                case "法攻": {
-                    for (final NutMap nutMap : fightMsg) {
+                case 1: {
+                    for (NutMap nutMap : fightMsg) {
                         if (nutMap.getInt("type") == 2) {
                             content = nutMap.getString("msg");
                         }
+                        else {
+                            continue;
+                        }
                     }
                     break;
                 }
-                case "挨打": {
-                    for (final NutMap nutMap : fightMsg) {
+                case 2: {
+                    for (NutMap nutMap : fightMsg) {
                         if (nutMap.getInt("type") == 3) {
                             content = nutMap.getString("msg");
                         }
+                        else {
+                            continue;
+                        }
                     }
                     break;
                 }
-                case "主人倒地": {
-                    for (final NutMap nutMap : fightMsg) {
+                case 3: {
+                    for (NutMap nutMap : fightMsg) {
                         if (nutMap.getInt("type") == 4) {
                             content = nutMap.getString("msg");
                         }
-                    }
-                    break;
-                }
-                case "使用药品": {
-                    for (final NutMap nutMap : fightMsg) {
-                        if (nutMap.getInt("type") == 5) {
-                            content = nutMap.getString("msg");
+                        else {
+                            continue;
                         }
                     }
                     break;
                 }
+                case 4: {
+                    for (NutMap nutMap : fightMsg) {
+                        if (nutMap.getInt("type") == 5) {
+                            content = nutMap.getString("msg");
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                }
             }
-            if (Strings.isEmpty((CharSequence)content)) {
+            if (Strings.isEmpty(content)) {
                 return null;
             }
-            final RespFightShouting respFightShouting = new RespFightShouting();
+            RespFightShouting respFightShouting = new RespFightShouting();
             respFightShouting.setId(id);
             respFightShouting.setMsg(content);
             return respFightShouting;
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error("", e);
             return null;
         }
     }
     
-    public RespFightShouting fightShouting(final FightObject fightObject, final String msg, final int showTime, final int msgDelayTime) {
-        final RespFightShouting fightShouting = new RespFightShouting();
-        fightShouting.setId(fightObject.getId());
+    public RespFightShouting fightShouting(FightObject fightObject, String msg, int showTime, int msgDelayTime) {
+        RespFightShouting fightShouting = new RespFightShouting();
+        fightShouting.setId((int)fightObject.getId());
         fightShouting.setMsg(msg);
         fightShouting.setShow_time(showTime);
         fightShouting.setMsgDelayTime(msgDelayTime);
         return fightShouting;
     }
     
-    public NutMap poisonOrRecoverActionParam(final Fight fight, final FightObject fightObject) {
-        final boolean poison = fightObject.getTempCache("poison", false);
-        final boolean recover = fightObject.getTempCache("recover", false);
-        final boolean alive = fightObject.getTempCache("alive", false);
-        final int poisonValue = fightObject.getTempCache("poisonValue", 0);
-        final int recoverLife = fightObject.getTempCache("recoverLife", 0);
-        final int recoverMana = fightObject.getTempCache("recoverManaValue", 0);
+    public NutMap poisonOrRecoverActionParam(Fight fight, FightObject fightObject) {
+        boolean poison = (boolean)fightObject.getTempCache("poison", Boolean.valueOf(false));
+        boolean recover = (boolean)fightObject.getTempCache("recover", Boolean.valueOf(false));
+        boolean alive = (boolean)fightObject.getTempCache("alive", Boolean.valueOf(false));
+        int poisonValue = (int)fightObject.getTempCache("poisonValue", Integer.valueOf(0));
+        int recoverLife = (int)fightObject.getTempCache("recoverLife", Integer.valueOf(0));
+        int recoverMana = (int)fightObject.getTempCache("recoverManaValue", Integer.valueOf(0));
         if (recover) {
-            final NutMap map = NutMap.NEW();
-            map.setv("currLife", (Object)fightObject.getCurrLife());
-            map.setv("changeLife", (Object)recoverLife);
+            NutMap map = NutMap.NEW();
+            map.setv("currLife", Integer.valueOf(fightObject.getCurrLife()));
+            map.setv("changeLife", Integer.valueOf(recoverLife));
             if (recoverMana > 0) {
-                map.setv("currMana", (Object)fightObject.getCurrMana());
-                map.setv("changeMana", (Object)recoverMana);
+                map.setv("currMana", Integer.valueOf(fightObject.getCurrMana()));
+                map.setv("changeMana", Integer.valueOf(recoverMana));
             }
-            map.setv("missed", (Object)2);
+            map.setv("missed", Integer.valueOf(2));
             return map;
         }
-        if (poison && alive) {
-            final NutMap map = NutMap.NEW();
+        else if (poison && alive) {
+            NutMap map = NutMap.NEW();
             if (!fightObject.isFrozen()) {
-                map.setv("currLife", (Object)fightObject.getCurrLife());
-                map.setv("changeLife", (Object)(-poisonValue));
-                map.setv("missed", (Object)1);
+                map.setv("currLife", Integer.valueOf(fightObject.getCurrLife()));
+                map.setv("changeLife", Integer.valueOf(-poisonValue));
+                map.setv("missed", Integer.valueOf(1));
+                return map;
             }
-            else {
-                fightObject.removeStatus(1005);
-                map.setv("clearStatus", (Object)1005);
-                map.setv("missed", (Object)2);
-            }
+            fightObject.removeStatus(1005);
+            map.setv("clearStatus", Integer.valueOf(1005));
+            map.setv("missed", Integer.valueOf(2));
             return map;
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
-    public RespExcuteFight excuteSendFightMsg(final Fight fight) {
-        final ActionParam actionParam = fight.getActionParam();
-        final int fightRound = actionParam.getFightRound();
-        final List<ActionDetailParam> actionDetailParams = actionParam.getActionDetailParams();
+    public RespExcuteFight excuteSendFightMsg(Fight fight) {
+        ActionParam actionParam = fight.getActionParam();
+        int fightRound = actionParam.getFightRound();
+        List<ActionDetailParam> actionDetailParams = actionParam.getActionDetailParams();
         if (actionDetailParams != null && actionDetailParams.size() > 0) {
-            final RespExcuteFight respExcuteFight = new RespExcuteFight();
+            RespExcuteFight respExcuteFight = new RespExcuteFight();
             respExcuteFight.setRound(fightRound);
-            final List<ExcuteFightParam> excuteFightParams = this.getExcuteFightParams(actionDetailParams);
+            List<ExcuteFightParam> excuteFightParams = this.getExcuteFightParams(actionDetailParams);
             if (excuteFightParams.size() > 0) {
                 respExcuteFight.setExcuteFightParams(excuteFightParams);
             }
             respExcuteFight.setEndTime(String.valueOf(System.currentTimeMillis()));
             return respExcuteFight;
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
-    public List<ExcuteFightParam> getExcuteFightParams(final List<ActionDetailParam> actionDetailParams) {
-        final List<ExcuteFightParam> excuteFightParams = new ArrayList<ExcuteFightParam>();
-        for (final ActionDetailParam actionDetailParam : actionDetailParams) {
-            final ExcuteFightParam excuteFightParam = this.getExcuteParam(actionDetailParam);
+    public List<ExcuteFightParam> getExcuteFightParams(List<ActionDetailParam> actionDetailParams) {
+        List<ExcuteFightParam> excuteFightParams = new ArrayList<>();
+        for (ActionDetailParam actionDetailParam : actionDetailParams) {
+            ExcuteFightParam excuteFightParam = this.getExcuteParam(actionDetailParam);
             if (excuteFightParam != null) {
                 excuteFightParams.add(excuteFightParam);
+            }
+            else {
+                continue;
             }
         }
         return excuteFightParams;
     }
     
-    private ExcuteFightParam getExcuteParam(final ActionDetailParam actionDetailParam) {
+    private ExcuteFightParam getExcuteParam(ActionDetailParam actionDetailParam) {
         if (actionDetailParam == null) {
             return null;
         }
-        final ExcuteFightParam excuteFightParam = new ExcuteFightParam();
+        ExcuteFightParam excuteFightParam = new ExcuteFightParam();
         if (actionDetailParam.getType() != -1) {
             excuteFightParam.setType(actionDetailParam.getType());
         }
@@ -328,32 +385,35 @@ public class FightMessageNewService
         if (actionDetailParam.getRoleId() != 0L) {
             excuteFightParam.setRoleId(actionDetailParam.getRoleId());
         }
-        final List<RefreshPet> petList = actionDetailParam.getPetList();
+        List<RefreshPet> petList = actionDetailParam.getPetList();
         if (petList != null && petList.size() > 0) {
             excuteFightParam.setPetList(petList);
         }
-        final List<CombatAddObject> combatAddObjects = actionDetailParam.getCombatAddObjects();
+        List<CombatAddObject> combatAddObjects = actionDetailParam.getCombatAddObjects();
         if (combatAddObjects != null && combatAddObjects.size() > 0) {
             excuteFightParam.setCombatAddObjects(combatAddObjects);
         }
-        final List<FightObjectParam> targetParams = actionDetailParam.getTargetParamList();
+        List<FightObjectParam> targetParams = actionDetailParam.getTargetParamList();
         if (targetParams.size() > 0) {
-            final List<ExcuteFightObjectParam> targetExcuteParams = new ArrayList<ExcuteFightObjectParam>();
-            for (final FightObjectParam targetParam : targetParams) {
+            List<ExcuteFightObjectParam> targetExcuteParams = new ArrayList<>();
+            for (FightObjectParam targetParam : targetParams) {
                 if (targetParam != null) {
-                    final ExcuteFightObjectParam excuteFightObjectParam = this.excuteParamTarget(targetParam);
+                    ExcuteFightObjectParam excuteFightObjectParam = this.excuteParamTarget(targetParam);
                     targetExcuteParams.add(excuteFightObjectParam);
+                }
+                else {
+                    continue;
                 }
             }
             if (targetExcuteParams.size() > 0) {
                 excuteFightParam.setTargetParams(targetExcuteParams);
             }
         }
-        final List<FightObjectParam> attackerParam = actionDetailParam.getAttackerParam();
+        List<FightObjectParam> attackerParam = actionDetailParam.getAttackerParam();
         if (attackerParam != null && attackerParam.size() > 0) {
-            final FightObjectParam fightObjectParam = attackerParam.get(0);
-            final ExcuteFightObjectParam attaParam = new ExcuteFightObjectParam();
-            final List<FiedValue> fiedValues = this.getFiedValues(fightObjectParam, false);
+            FightObjectParam fightObjectParam = (FightObjectParam)attackerParam.get(0);
+            ExcuteFightObjectParam attaParam = new ExcuteFightObjectParam();
+            List<FiedValue> fiedValues = this.getFiedValues(fightObjectParam, false);
             if (fiedValues != null) {
                 attaParam.setFiedValues(fiedValues);
             }
@@ -361,8 +421,8 @@ public class FightMessageNewService
                 attaParam.setDamageType(fightObjectParam.getDamageType());
             }
             if (fightObjectParam.getStatusMap() != null && fightObjectParam.getStatusMap().size() > 0) {
-                final List<Integer> statusList = new ArrayList<Integer>();
-                for (final Map.Entry<Integer, Integer> entry : fightObjectParam.getStatusMap().entrySet()) {
+                List<Integer> statusList = new ArrayList<>();
+                for (Map.Entry<Integer, Integer> entry : fightObjectParam.getStatusMap().entrySet()) {
                     statusList.add(entry.getKey());
                     statusList.add(entry.getValue());
                 }
@@ -374,16 +434,19 @@ public class FightMessageNewService
                 attaParam.setClearStatus(fightObjectParam.getClearStatus());
             }
             if (excuteFightParam.getAttaParams() == null) {
-                excuteFightParam.setAttaParams(new ArrayList<ExcuteFightObjectParam>());
+                excuteFightParam.setAttaParams(new ArrayList<>());
             }
             excuteFightParam.getAttaParams().add(attaParam);
+            return excuteFightParam;
         }
-        return excuteFightParam;
+        else {
+            return excuteFightParam;
+        }
     }
     
-    public ExcuteFightObjectParam excuteParamTarget(final FightObjectParam targetParam) {
-        final ExcuteFightObjectParam excuteFightObjectParam = new ExcuteFightObjectParam();
-        final List<FiedValue> fiedValues = this.getFiedValues(targetParam, true);
+    public ExcuteFightObjectParam excuteParamTarget(FightObjectParam targetParam) {
+        ExcuteFightObjectParam excuteFightObjectParam = new ExcuteFightObjectParam();
+        List<FiedValue> fiedValues = this.getFiedValues(targetParam, true);
         if (fiedValues != null) {
             excuteFightObjectParam.setFiedValues(fiedValues);
         }
@@ -391,8 +454,8 @@ public class FightMessageNewService
             excuteFightObjectParam.setDamageType(targetParam.getDamageType());
         }
         if (targetParam.getStatusMap() != null && targetParam.getStatusMap().size() > 0) {
-            final List<Integer> statusList = new ArrayList<Integer>();
-            for (final Map.Entry<Integer, Integer> entry : targetParam.getStatusMap().entrySet()) {
+            List<Integer> statusList = new ArrayList<>();
+            for (Map.Entry<Integer, Integer> entry : targetParam.getStatusMap().entrySet()) {
                 statusList.add(entry.getKey());
                 statusList.add(entry.getValue());
             }
@@ -402,80 +465,81 @@ public class FightMessageNewService
         }
         if (targetParam.getClearStatus() != null && targetParam.getClearStatus().size() > 0) {
             excuteFightObjectParam.setClearStatus(targetParam.getClearStatus());
+            return excuteFightObjectParam;
         }
         return excuteFightObjectParam;
     }
     
-    public List<FiedValue> getFiedValues(final FightObjectParam targetParam, final boolean isTarget) {
-        final List<FiedValue> fiedValues = new ArrayList<FiedValue>();
-        fiedValues.add(new FiedValue("targetId", (byte)3, targetParam.getObjId()));
+    public List<FiedValue> getFiedValues(FightObjectParam targetParam, boolean isTarget) {
+        List<FiedValue> fiedValues = new ArrayList<>();
+        fiedValues.add(new FiedValue("targetId", (byte)3, Integer.valueOf(targetParam.getObjId())));
         int isHit = 1;
         if (!targetParam.isHit()) {
             isHit = 0;
         }
         if (isTarget) {
-            fiedValues.add(new FiedValue("isHit", (byte)1, isHit));
+            fiedValues.add(new FiedValue("isHit", (byte)1, Integer.valueOf(isHit)));
         }
         else if (4 == targetParam.getType()) {
-            fiedValues.add(new FiedValue("isHit", (byte)1, isHit));
+            fiedValues.add(new FiedValue("isHit", (byte)1, Integer.valueOf(isHit)));
         }
         if (targetParam.getChangeLife() != 0) {
-            final FiedValue fiedValue = new FiedValue("changeHp", (byte)3, targetParam.getChangeLife());
+            FiedValue fiedValue = new FiedValue("changeHp", (byte)3, Integer.valueOf(targetParam.getChangeLife()));
             fiedValues.add(fiedValue);
         }
         if (targetParam.getChangeMana() != 0) {
-            final FiedValue fiedValue = new FiedValue("changeMp", (byte)3, targetParam.getChangeMana());
+            FiedValue fiedValue = new FiedValue("changeMp", (byte)3, Integer.valueOf(targetParam.getChangeMana()));
             fiedValues.add(fiedValue);
         }
         if (isTarget) {
             if (targetParam.getChangeLife() != 0) {
-                fiedValues.add(new FiedValue("currHp", (byte)3, targetParam.getCurrentLife()));
+                fiedValues.add(new FiedValue("currHp", (byte)3, Integer.valueOf(targetParam.getCurrentLife())));
             }
         }
         else {
-            fiedValues.add(new FiedValue("currHp", (byte)3, targetParam.getCurrentLife()));
+            fiedValues.add(new FiedValue("currHp", (byte)3, Integer.valueOf(targetParam.getCurrentLife())));
         }
         if (isTarget) {
             if (targetParam.getChangeMana() != 0) {
-                fiedValues.add(new FiedValue("currMp", (byte)3, targetParam.getCurrentMana()));
+                fiedValues.add(new FiedValue("currMp", (byte)3, Integer.valueOf(targetParam.getCurrentMana())));
             }
         }
         else {
-            fiedValues.add(new FiedValue("currMp", (byte)3, targetParam.getCurrentMana()));
+            fiedValues.add(new FiedValue("currMp", (byte)3, Integer.valueOf(targetParam.getCurrentMana())));
         }
         if (targetParam.getMaxLife() != 0) {
-            final FiedValue fiedValue = new FiedValue("maxHp", (byte)3, targetParam.getMaxLife());
+            FiedValue fiedValue = new FiedValue("maxHp", (byte)3, Integer.valueOf(targetParam.getMaxLife()));
             fiedValues.add(fiedValue);
         }
         if (targetParam.getMaxMana() != 0) {
-            final FiedValue fiedValue = new FiedValue("maxMp", (byte)3, targetParam.getMaxMana());
+            FiedValue fiedValue = new FiedValue("maxMp", (byte)3, Integer.valueOf(targetParam.getMaxMana()));
             fiedValues.add(fiedValue);
         }
         if (targetParam.getSpecialStatus() > 0) {
-            fiedValues.add(new FiedValue("specialStatus", (byte)3, targetParam.getSpecialStatus()));
+            fiedValues.add(new FiedValue("specialStatus", (byte)3, Integer.valueOf(targetParam.getSpecialStatus())));
         }
         if (targetParam.getGuardTarget() > 0) {
-            fiedValues.add(new FiedValue("guardTarget", (byte)3, targetParam.getGuardTarget()));
+            fiedValues.add(new FiedValue("guardTarget", (byte)3, Integer.valueOf(targetParam.getGuardTarget())));
         }
-        final RespFightShouting fightShouting = targetParam.getFightShouting();
+        RespFightShouting fightShouting = targetParam.getFightShouting();
         if (fightShouting != null) {
             if (fightShouting.getId() != 0) {
-                final FiedValue fiedValue = new FiedValue("msgTarget", (byte)3, fightShouting.getId());
+                FiedValue fiedValue = new FiedValue("msgTarget", (byte)3, Integer.valueOf(fightShouting.getId()));
                 fiedValues.add(fiedValue);
             }
             if (fightShouting.getChannel() != 0) {
-                final FiedValue fiedValue = new FiedValue("channel", (byte)2, fightShouting.getChannel());
+                FiedValue fiedValue = new FiedValue("channel", (byte)2, Short.valueOf(fightShouting.getChannel()));
                 fiedValues.add(fiedValue);
             }
             if (fightShouting.getMsg() != null && !"".equals(fightShouting.getMsg())) {
-                final FiedValue fiedValue = new FiedValue("msg", (byte)4, fightShouting.getMsg());
+                FiedValue fiedValue = new FiedValue("msg", (byte)4, fightShouting.getMsg());
                 fiedValues.add(fiedValue);
             }
             if (fightShouting.getShow_time() != -1) {
-                final FiedValue fiedValue = new FiedValue("msgST", (byte)3, fightShouting.getShow_time());
+                FiedValue fiedValue = new FiedValue("msgST", (byte)3, Integer.valueOf(fightShouting.getShow_time()));
                 fiedValues.add(fiedValue);
             }
-            final FiedValue fiedValue = new FiedValue("msgDelayTime", (byte)3, fightShouting.getMsgDelayTime());
+            FiedValue fiedValue = new FiedValue("msgDelayTime", (byte)3, Integer.valueOf(fightShouting.getMsgDelayTime()));
             fiedValues.add(fiedValue);
         }
         if (fiedValues.size() > 0) {
@@ -484,28 +548,28 @@ public class FightMessageNewService
         return null;
     }
     
-    public Map<Integer, Integer> sendFightObjectStatus(final Fight fight, final FightObject fightObject) {
-        final NutMap statusMap = fightObject.getStatusMap();
-        final List<Integer> removeList = new ArrayList<Integer>();
-        final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    public Map<Integer, Integer> sendFightObjectStatus(Fight fight, FightObject fightObject) {
+        NutMap statusMap = fightObject.getStatusMap();
+        List<Integer> removeList = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>();
         statusMap.forEach((key, value) -> {
             if (value instanceof Integer && key.matches("^[0-9]+$")) {
                 if ((int)value > 0) {
-                    map.put(Integer.parseInt(key), Integer.parseInt(String.valueOf(value)));
+                    map.put(Integer.valueOf(Integer.parseInt(key)), Integer.valueOf(Integer.parseInt(String.valueOf(value))));
                 }
                 else if (200 == Integer.parseInt(key)) {
-                    TianFuProcessor.queryProcessor(323301).otherExcute(fight, fightObject, false);
-                    map.put(Integer.parseInt(key), fightObject.getIcon());
-                    removeList.add(Integer.parseInt(key));
+                    TianFuProcessor.queryProcessor(Integer.valueOf(323301)).otherExcute(fight, fightObject, Boolean.valueOf(false));
+                    map.put(Integer.valueOf(Integer.parseInt(key)), Integer.valueOf(fightObject.getIcon()));
+                    removeList.add(Integer.valueOf(Integer.parseInt(key)));
                 }
             }
             return;
         });
         if (removeList.size() > 0) {
-            final Iterator<Integer> iterator = removeList.iterator();
+            Iterator<Integer> iterator = removeList.iterator();
             while (iterator.hasNext()) {
-                Integer key = iterator.next();
-                fightObject.removeStatus(key);
+            	Integer key = (Integer)iterator.next();
+                fightObject.removeStatus((int)key);
             }
         }
         if (map.size() > 0) {
@@ -519,56 +583,61 @@ public class FightMessageNewService
             @Override
             public void run() {
                 fight.cancelTask(fight.getTimeOutTask());
-                final TimeOutNewTask timeOut = new TimeOutNewTask(fight.getId());
-                final ScheduledFuture<?> timeOutTask = SchedulerManager.getInstance().schedule(timeOut, 30500L);
+                TimeOutNewTask timeOut = new TimeOutNewTask(fight.getId());
+                ScheduledFuture<?> timeOutTask = SchedulerManager.getInstance().schedule(timeOut, 30500L);
                 fight.setTimeOutTask(timeOutTask);
             }
         });
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             if (!fightObject.isDoAction() && fightObject.isPlayer()) {
-                final Role role = DataCache.ONLINE_ROLES.get(fightObject.getRole().getId());
-                if (role == null) {
+                Role role = (Role)DataCache.ONLINE_ROLES.get(fightObject.getRole().getId());
+                if (role != null) {
+                    this.fightNewService.autoFightOne(fight, fightObject);
+                    this.setRoundStartOther(fightObject, fight);
+                    PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+                    playerFightObject.setAnimationFinish(false);
+                }
+                else {
                     continue;
                 }
-                this.fightNewService.autoFightOne(fight, fightObject);
-                this.setRoundStartOther(fightObject, fight);
-                final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
-                playerFightObject.setAnimationFinish(false);
+            }
+            else {
+                continue;
             }
         }
         this.fightNewService.excuteRoundStartSend(fight);
         fight.setRoundType(1);
     }
     
-    public void setRoundStartOther(final FightObject fightObject, final Fight fight) {
+    public void setRoundStartOther(FightObject fightObject, Fight fight) {
         if (fightObject.isPlayer()) {
-            final RespRoundStartParam respRoundStartParam = this.fightNewService.getRespRoundStartParam(fight, fightObject.getId());
-            final List<SkillCool> cools = fightObject.getSkillCoolList();
+            RespRoundStartParam respRoundStartParam = this.fightNewService.getRespRoundStartParam(fight, (int)fightObject.getId());
+            List<SkillCool> cools = fightObject.getSkillCoolList();
             if (cools.size() > 0) {
                 respRoundStartParam.addSkillCools(cools);
             }
             if (fightObject.getAutoFight() == 1) {
                 respRoundStartParam.setAutoFight(true);
             }
-            final AutoFightSkillParam autoFightSkillParam = this.selfAuto(fightObject, fight);
+            AutoFightSkillParam autoFightSkillParam = this.selfAuto(fightObject, fight);
             if (autoFightSkillParam != null) {
                 respRoundStartParam.addAutoFightSkillParam(autoFightSkillParam);
             }
-            final FightObject petObject = fight.queryFightObject(fightObject.getFightPetId());
+            FightObject petObject = fight.queryFightObject(Integer.valueOf(fightObject.getFightPetId()));
             if (petObject != null) {
-                final List<SkillCool> petCools = petObject.getSkillCoolList();
+                List<SkillCool> petCools = petObject.getSkillCoolList();
                 if (petCools.size() > 0) {
                     respRoundStartParam.addSkillCools(petCools);
                 }
                 if (fightObject.getAutoFight() == 1) {
                     petObject.setAutoFight(1);
                 }
-                final AutoFightSkillParam autoFightSkillParamPet = this.selfAuto(petObject, fight);
+                AutoFightSkillParam autoFightSkillParamPet = this.selfAuto(petObject, fight);
                 if (autoFightSkillParamPet != null) {
                     respRoundStartParam.addAutoFightSkillParam(autoFightSkillParamPet);
                 }
             }
-            fight.getRespRoundStartParamMap().put(respRoundStartParam.getObjId(), respRoundStartParam);
+            fight.getRespRoundStartParamMap().put(Integer.valueOf(respRoundStartParam.getObjId()), respRoundStartParam);
         }
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.callback;
 
 import java.util.HashMap;
@@ -11,26 +10,29 @@ public abstract class CallbackHandler
 {
     private static Map<Integer, CallbackHandler> handlers;
     
+    public CallbackHandler() {
+    }
+    
     @PostConstruct
     private void init() {
         CallbackHandler.handlers.put(this.cmdType(), this);
     }
     
-    public abstract void onRequest(final SCSession p0, final CReqCallBack p1);
+    public abstract void onRequest(SCSession session, CReqCallBack req);
     
-    public void sendBack(final SCSession session, final CReqCallBack req, final Message response) {
-        final CRespCallBack callBack = CRespCallBack.valueOf(response);
+    public void sendBack(SCSession session, CReqCallBack req, Message response) {
+        CRespCallBack callBack = CRespCallBack.valueOf(response);
         callBack.setIndex(req.getIndex());
         session.sendMessage(callBack);
     }
     
     public abstract int cmdType();
     
-    public static CallbackHandler queryHandler(final int type) {
+    public static CallbackHandler queryHandler(int type) {
         return CallbackHandler.handlers.get(type);
     }
     
     static {
-        CallbackHandler.handlers = new HashMap<Integer, CallbackHandler>();
+        CallbackHandler.handlers = new HashMap<>();
     }
 }

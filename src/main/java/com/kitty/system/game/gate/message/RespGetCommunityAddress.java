@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class RespGetCommunityAddress extends Message
 {
     private String addr;
     
+    public RespGetCommunityAddress() {
+    }
+    
     public String getAddr() {
         return this.addr;
     }
     
-    public void setAddr(final String addr) {
+    public void setAddr(String addr) {
         this.addr = addr;
     }
 }

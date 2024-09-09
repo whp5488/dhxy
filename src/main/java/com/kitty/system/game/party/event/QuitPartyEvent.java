@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.event;
 
 import com.kitty.listener.EventType;
@@ -11,7 +10,7 @@ public class QuitPartyEvent extends BasePlayerEvent
     private Role role;
     private Party party;
     
-    public QuitPartyEvent(final EventType evtType, final Role role, final Party party) {
+    public QuitPartyEvent(EventType evtType, Role role, Party party) {
         super(evtType, role);
         this.role = role;
         this.party = party;

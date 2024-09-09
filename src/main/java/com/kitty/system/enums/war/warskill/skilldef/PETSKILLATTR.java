@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.warskill.skilldef;
 
 import com.google.common.collect.Lists;
@@ -33,20 +32,25 @@ public enum PETSKILLATTR
     private int value;
     private int type;
     
-    public static PETSKILLATTR getByValue(final int value) {
-        for (final PETSKILLATTR x : values()) {
+    public static PETSKILLATTR getByValue(int value) {
+        PETSKILLATTR[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            PETSKILLATTR x = values[i];
             if (x.getValue() == value) {
                 return x;
             }
+            ++i;
         }
         return null;
     }
     
     public static List<Integer> evade() {
-        final List list = Lists.newArrayList();
-        for (final PETSKILLATTR e : values()) {
+        List<Integer> list = Lists.newArrayList();
+        for (PETSKILLATTR e : values()) {
             if (e.getType() == 0) {
-                list.add(e.getValue());
+                list.add(Integer.valueOf(e.getValue()));
             }
         }
         return list;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.dict;
 
 public interface ReturnSuccessDict

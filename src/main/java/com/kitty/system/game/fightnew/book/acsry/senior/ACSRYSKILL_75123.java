@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -14,18 +13,21 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_75123 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_75123() {
+    }
+    
     @Override
-    public NutMap beforePhysicalAttack(final Fight fight, final FightObject effecter, final FightObject target, final Object... args) {
+    public NutMap beforePhysicalAttack(Fight fight, FightObject effecter, FightObject target, Object... args) {
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerTarget = (PlayerFightObject)effecter;
-            final List<Integer> acsrySkillList = playerTarget.getAcsrySkillList();
-            if (acsrySkillList.contains(75123)) {
-                final double percent = 0.4;
-                final boolean flag = SkillAi.canAffectOnPro(percent);
+            PlayerFightObject playerTarget = (PlayerFightObject)effecter;
+            List<Integer> acsrySkillList = playerTarget.getAcsrySkillList();
+            if (acsrySkillList.contains(Integer.valueOf(75123))) {
+                double percent = 0.4;
+                boolean flag = SkillAi.canAffectOnPro(percent);
                 if (flag) {
-                    final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 75123);
-                    skillRecord.setT(effecter.getId());
-                    effecter.getBeAttackedMap().setv(String.valueOf(OTHER_SKILL_DICT_TYPE.PHYSICAL_ATTACK_GSDN_HURT.getDist()), (Object)1.0);
+                    SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 75123);
+                    skillRecord.setT((long)(int)effecter.getId());
+                    effecter.getBeAttackedMap().setv(String.valueOf(OTHER_SKILL_DICT_TYPE.PHYSICAL_ATTACK_GSDN_HURT.getDist()), Double.valueOf(1.0));
                 }
             }
         }

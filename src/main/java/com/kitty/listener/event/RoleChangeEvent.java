@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -15,7 +14,7 @@ public class RoleChangeEvent extends BasePlayerEvent
     private String currName;
     private int type;
     
-    public RoleChangeEvent(final EventType evtType, final Role role, final String prevName, final String currName, final int type) {
+    public RoleChangeEvent(EventType evtType, Role role, String prevName, String currName, int type) {
         super(evtType, role);
         this.role = role;
         this.prevName = prevName;

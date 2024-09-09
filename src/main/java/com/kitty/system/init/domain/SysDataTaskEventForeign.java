@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import com.kitty.system.enums.task.TaskEvent;
@@ -28,6 +27,9 @@ public class SysDataTaskEventForeign implements Serializable
     @Comment("其他")
     @Column("other")
     private String other;
+    
+    public SysDataTaskEventForeign() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -85,24 +87,16 @@ public class SysDataTaskEventForeign implements Serializable
         if (!(o instanceof SysDataTaskEventForeign)) {
             return false;
         }
-        final SysDataTaskEventForeign other = (SysDataTaskEventForeign)o;
+        SysDataTaskEventForeign other = (SysDataTaskEventForeign)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0078: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0078;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
         if (this.getFacadeSerial() != other.getFacadeSerial()) {
@@ -114,17 +108,9 @@ public class SysDataTaskEventForeign implements Serializable
         if (this.getV() != other.getV()) {
             return false;
         }
-        final Object this$other = this.getOther();
-        final Object other$other = other.getOther();
-        if (this$other == null) {
-            if (other$other == null) {
-                return true;
-            }
-        }
-        else if (this$other.equals(other$other)) {
-            return true;
-        }
-        return false;
+        Object this$other = this.getOther();
+        Object other$other = other.getOther();
+        return (this$other != null) ? this$other.equals(other$other) : (other$other == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -133,15 +119,15 @@ public class SysDataTaskEventForeign implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
         result = result * 59 + this.getFacadeSerial();
         result = result * 59 + this.getK();
         result = result * 59 + this.getV();
-        final Object $other = this.getOther();
+        Object $other = this.getOther();
         result = result * 59 + (($other == null) ? 43 : $other.hashCode());
         return result;
     }

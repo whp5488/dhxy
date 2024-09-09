@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -28,6 +27,9 @@ public class SysHorse implements Serializable
     @Comment("坐骑位置")
     @Column("seat")
     private byte seat;
+    
+    public SysHorse() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -77,40 +79,24 @@ public class SysHorse implements Serializable
         if (!(o instanceof SysHorse)) {
             return false;
         }
-        final SysHorse other = (SysHorse)o;
+        SysHorse other = (SysHorse)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getNeedGrade() != other.getNeedGrade()) {
             return false;
         }
-        final Object this$needSerial = this.getNeedSerial();
-        final Object other$needSerial = other.getNeedSerial();
-        if (this$needSerial == null) {
-            if (other$needSerial == null) {
-                return this.getSeat() == other.getSeat();
-            }
-        }
-        else if (this$needSerial.equals(other$needSerial)) {
-            return this.getSeat() == other.getSeat();
-        }
-        return false;
+        Object this$needSerial = this.getNeedSerial();
+        Object other$needSerial = other.getNeedSerial();
+        return ((this$needSerial != null) ? this$needSerial.equals(other$needSerial) : (other$needSerial == null)) && this.getSeat() == other.getSeat();
     }
     
     protected boolean canEqual(final Object other) {
@@ -119,13 +105,13 @@ public class SysHorse implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getNeedGrade();
-        final Object $needSerial = this.getNeedSerial();
+        Object $needSerial = this.getNeedSerial();
         result = result * 59 + (($needSerial == null) ? 43 : $needSerial.hashCode());
         result = result * 59 + this.getSeat();
         return result;
@@ -133,6 +119,6 @@ public class SysHorse implements Serializable
     
     @Override
     public String toString() {
-        return "SysHorse(serial=" + this.getSerial() + ", name=" + this.getName() + ", needGrade=" + this.getNeedGrade() + ", needSerial=" + this.getNeedSerial() + ", seat=" + this.getSeat() + ")";
+        return "SysHorse(serial=" + this.getSerial() + ", name=" + this.getName() + ", needGrade=" + this.getNeedGrade() + ", needSerial=" + this.getNeedSerial() + ", seat=" + (int)this.getSeat() + ")";
     }
 }

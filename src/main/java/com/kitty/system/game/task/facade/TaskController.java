@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.facade;
 
 import com.kitty.system.game.task.message.ReqAskTaskFight;
@@ -6,7 +5,6 @@ import com.kitty.system.game.task.message.ReqUpTaskEvent;
 import com.kitty.mina.annotation.RequestMapping;
 import com.kitty.system.game.task.service.handler.TaskHandler;
 import com.kitty.system.game.config.TaskSet;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.mina.cache.SessionUtils;
@@ -39,68 +37,73 @@ public class TaskController
     }
     
     @EventHandler({ EventType.HEART_BEAT })
-    public void handleHeartBeat(final HeartBeatEvent heartBeatEvent) {
-        final Role role = heartBeatEvent.getRole();
+    public void handleHeartBeat(HeartBeatEvent heartBeatEvent) {
+        Role role = heartBeatEvent.getRole();
         if (role == null) {
             return;
         }
         TaskHelper.INSTANCE.getHandlers().values().forEach(taskHandler -> {
-            if (taskHandler instanceof TimeTaskHandler) {
+            if ((taskHandler instanceof TimeTaskHandler)) {
                 ((TimeTaskHandler)taskHandler).handleHeartBeat(role, heartBeatEvent.getPrevHeartTime());
             }
+            return;
         });
+        return;
     }
     
     @RequestMapping
-    public void taskSubmit(final IoSession session, final ReqTaskSubmit reqTaskSubmit) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void taskSubmit(IoSession session, ReqTaskSubmit reqTaskSubmit) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final boolean accepted = role.getTask().isAccepted(reqTaskSubmit.getTaskId());
+        boolean accepted = role.getTask().isAccepted(reqTaskSubmit.getTaskId());
         if (accepted) {
-            final TaskSet taskSet = this.taskService.getTaskSet(reqTaskSubmit.getTaskId());
+            TaskSet taskSet = this.taskService.getTaskSet(reqTaskSubmit.getTaskId());
             if (taskSet == null) {
-                this.logger.error("提交任务事件未获取任务异常：角色 = {}，任务编号 = {}", (Object)role.getRoleId(), (Object)reqTaskSubmit.getTaskId());
+                this.logger.error("提交任务事件未获取任务异常：角色 = {}，任务编号 = {}", role.getRoleId(), Integer.valueOf(reqTaskSubmit.getTaskId()));
                 return;
             }
-            final TaskHandler taskHandler = TaskHelper.INSTANCE.getTaskHandler(taskSet.getTaskType());
+            TaskHandler taskHandler = TaskHelper.INSTANCE.getTaskHandler(taskSet.getTaskType());
             if (taskHandler != null) {
                 try {
                     taskHandler.canSubmitTask(role, taskSet);
                 }
-                catch (final Exception e) {
-                    this.logger.error("提交任务事件任务异常：角色 = {}，任务编号 = {}", (Object)role.getRoleId(), (Object)reqTaskSubmit.getTaskId());
+                catch (Exception e) {
+                    this.logger.error("提交任务事件任务异常：角色 = {}，任务编号 = {}", role.getRoleId(), Integer.valueOf(reqTaskSubmit.getTaskId()));
                     e.printStackTrace();
                 }
             }
             else {
-                this.logger.error("提交任务事件未获取到任务处理类异常：角色 = {}，任务编号 = {}，任务类型：{}", new Object[] { role.getRoleId(), taskSet.getSerial(), taskSet.getTaskType() });
+                this.logger.error("提交任务事件未获取到任务处理类异常：角色 = {}，任务编号 = {}，任务类型：{}", new Object[] { role.getRoleId(), Integer.valueOf(taskSet.getSerial()), taskSet.getTaskType() });
             }
         }
         else {
             MessagePusher.pushMessage(role, new RespMsg("请先领取该任务，再进行提交"));
         }
+        return;
     }
     
     @RequestMapping
-    public void askUpEvent(final IoSession session, final ReqUpTaskEvent reqUpTaskEvent) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void askUpEvent(IoSession session, ReqUpTaskEvent reqUpTaskEvent) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.taskService.askUpEvent(role, reqUpTaskEvent);
+        return;
     }
     
     @RequestMapping
-    public void taskTriggerFight(final IoSession session, final ReqAskTaskFight reqAskTaskFight) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void taskTriggerFight(IoSession session, ReqAskTaskFight reqAskTaskFight) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final TaskSet taskSet = this.taskService.getTaskSet(reqAskTaskFight.getTaskId());
+        TaskSet taskSet = this.taskService.getTaskSet(reqAskTaskFight.getTaskId());
         if (taskSet != null) {
             this.taskService.taskTriggerFight(role, taskSet, reqAskTaskFight.getNpcId());
         }
+        return;
     }
 }

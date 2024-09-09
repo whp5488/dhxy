@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class RespGeneralNotify extends Message
 {
     private int notify;
     private String value;
+    
+    public RespGeneralNotify() {
+    }
     
     public int getNotify() {
         return this.notify;
@@ -34,24 +36,16 @@ public class RespGeneralNotify extends Message
         if (!(o instanceof RespGeneralNotify)) {
             return false;
         }
-        final RespGeneralNotify other = (RespGeneralNotify)o;
+        RespGeneralNotify other = (RespGeneralNotify)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getNotify() != other.getNotify()) {
             return false;
         }
-        final Object this$value = this.getValue();
-        final Object other$value = other.getValue();
-        if (this$value == null) {
-            if (other$value == null) {
-                return true;
-            }
-        }
-        else if (this$value.equals(other$value)) {
-            return true;
-        }
-        return false;
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        return (this$value != null) ? this$value.equals(other$value) : (other$value == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -60,10 +54,10 @@ public class RespGeneralNotify extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getNotify();
-        final Object $value = this.getValue();
+        Object $value = this.getValue();
         result = result * 59 + (($value == null) ? 43 : $value.hashCode());
         return result;
     }

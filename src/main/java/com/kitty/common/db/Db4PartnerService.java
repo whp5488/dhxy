@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import java.util.Iterator;
@@ -27,7 +26,7 @@ public class Db4PartnerService
     private final AtomicBoolean run;
     
     public Db4PartnerService() {
-        this.queue = new BlockingUniqueQueue<Partner>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -37,11 +36,11 @@ public class Db4PartnerService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-partner-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-partner-save-service").newThread(new Db4PartnerService.Worker()).start();
         Db4PartnerService.instance = this;
     }
     
-    public void add2Queue(final Partner entity) {
+    public void add2Queue(Partner entity) {
         this.queue.add(entity);
     }
     
@@ -49,13 +48,13 @@ public class Db4PartnerService
         return this.queue.size();
     }
     
-    private void saveToDb(final Partner entity) {
+    private void saveToDb(Partner entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -65,14 +64,14 @@ public class Db4PartnerService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Partner] 执行全部命令后关闭");
+        LoggerUtils.error("[db4Partner] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<Partner> it = this.queue.iterator();
+            Iterator<Partner> it = this.queue.iterator();
             while (it.hasNext()) {
-                final Partner partner = it.next();
+                Partner partner = (Partner)it.next();
                 it.remove();
                 this.saveToDb(partner);
             }
@@ -86,10 +85,10 @@ public class Db4PartnerService
             while (Db4PartnerService.this.run.get()) {
                 Partner entity = null;
                 try {
-                    entity = Db4PartnerService.this.queue.take();
+                    entity = (Partner)Db4PartnerService.this.queue.take();
                     Db4PartnerService.this.saveToDb(entity);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("存档异常", e);
                     e.printStackTrace();
                 }

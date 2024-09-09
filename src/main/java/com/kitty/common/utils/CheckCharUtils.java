@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.regex.Matcher;
@@ -8,12 +7,15 @@ public class CheckCharUtils
 {
     public static Pattern CHECK_EMOJI;
     
-    public static boolean checkQQNumber(final String word) {
-        final String reg = "[1-9][0-9]{5,15}";
-        final Pattern pattern = Pattern.compile(reg);
-        final Matcher matcher = pattern.matcher(word);
+    public CheckCharUtils() {
+    }
+    
+    public static boolean checkQQNumber(String word) {
+        String reg = "[1-9][0-9]{5,15}";
+        Pattern pattern = Pattern.compile(reg);
+        Matcher matcher = pattern.matcher(word);
         if (matcher.find()) {
-            final String group = matcher.group();
+            String group = matcher.group();
             return true;
         }
         return false;
@@ -75,27 +77,29 @@ public class CheckCharUtils
         return filterStr(name);
     }
     
-    public static String filterStr(final String str) {
-        final String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-        final Pattern p = Pattern.compile(regEx);
-        final Matcher m = p.matcher(str);
+    public static String filterStr(String str) {
+        String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
         return m.replaceAll("").trim();
     }
     
     public static String filterEmoji(String source) {
-        if (source == null) {
+        if (source != null) {
+            Pattern emoji = Pattern.compile("[🀀-🏿]|[🐀-🟿]|[☀-⟿]|[🤀-🧿]|[⌀-⏿]|[─-◿]|[℀-⇿]|[ -\u0fff]|[⬀-⯿]|[ⴆ]|[〰]", 66);
+            Matcher emojiMatcher = emoji.matcher(source);
+            if (emojiMatcher.find()) {
+                source = emojiMatcher.replaceAll("*");
+                return source;
+            }
             return source;
         }
-        final Pattern emoji = Pattern.compile("[🀀-🏿]|[🐀-🟿]|[☀-⟿]|[🤀-🧿]|[⌀-\u23ff]|[─-◿]|[℀-⇿]|[ -\u0fff]|[⬀-\u2bff]|[ⴆ]|[〰]", 66);
-        final Matcher emojiMatcher = emoji.matcher(source);
-        if (emojiMatcher.find()) {
-            source = emojiMatcher.replaceAll("*");
+        else {
             return source;
         }
-        return source;
     }
     
     static {
-        CheckCharUtils.CHECK_EMOJI = Pattern.compile("[🀀-🏿]|[🐀-🟿]|[☀-⟿]|[🤀-🧿]|[⌀-\u23ff]|[─-◿]|[℀-⇿]|[ -\u0fff]|[⬀-\u2bff]|[ⴆ]|[〰]", 66);
+        CheckCharUtils.CHECK_EMOJI = Pattern.compile("[🀀-🏿]|[🐀-🟿]|[☀-⟿]|[🤀-🧿]|[⌀-⏿]|[─-◿]|[℀-⇿]|[ -\u0fff]|[⬀-⯿]|[ⴆ]|[〰]", 66);
     }
 }

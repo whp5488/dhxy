@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.onlinemall.message.vo;
 
 import com.kitty.system.game.activity.domain.WeekTreasure;
@@ -16,7 +15,7 @@ public class WeekTreasureInfo implements Serializable
         this.share = 0;
     }
     
-    public WeekTreasureInfo(final WeekTreasure obj) {
+    public WeekTreasureInfo(WeekTreasure obj) {
         this.serial = 0;
         this.share = 0;
         this.id = String.valueOf(obj.getId());
@@ -65,34 +64,18 @@ public class WeekTreasureInfo implements Serializable
         if (!(o instanceof WeekTreasureInfo)) {
             return false;
         }
-        final WeekTreasureInfo other = (WeekTreasureInfo)o;
+        WeekTreasureInfo other = (WeekTreasureInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$rId = this.getRId();
-        final Object other$rId = other.getRId();
-        if (this$rId == null) {
-            if (other$rId == null) {
-                return this.getSerial() == other.getSerial() && this.getShare() == other.getShare();
-            }
-        }
-        else if (this$rId.equals(other$rId)) {
-            return this.getSerial() == other.getSerial() && this.getShare() == other.getShare();
-        }
-        return false;
+        Object this$rId = this.getRId();
+        Object other$rId = other.getRId();
+        return ((this$rId != null) ? this$rId.equals(other$rId) : (other$rId == null)) && this.getSerial() == other.getSerial() && this.getShare() == other.getShare();
     }
     
     protected boolean canEqual(final Object other) {
@@ -101,11 +84,11 @@ public class WeekTreasureInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $rId = this.getRId();
+        Object $rId = this.getRId();
         result = result * 59 + (($rId == null) ? 43 : $rId.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getShare();
@@ -114,6 +97,6 @@ public class WeekTreasureInfo implements Serializable
     
     @Override
     public String toString() {
-        return "WeekTreasureInfo(id=" + this.getId() + ", rId=" + this.getRId() + ", serial=" + this.getSerial() + ", share=" + this.getShare() + ")";
+        return "WeekTreasureInfo(id=" + this.getId() + ", rId=" + this.getRId() + ", serial=" + this.getSerial() + ", share=" + (int)this.getShare() + ")";
     }
 }

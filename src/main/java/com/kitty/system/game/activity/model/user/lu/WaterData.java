@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.lu;
 
 import java.util.HashMap;
@@ -41,11 +40,11 @@ public class WaterData
         this.startTime = null;
         this.endTime = null;
         this.pkDurationTime = 5400;
-        this.pkDataMap = new ConcurrentHashMap<Integer, WaterPkData>();
-        this.pkDataByLevel = new ConcurrentHashMap<String, List<WaterPkData>>();
-        this.pkDataList = new ArrayList<WaterPkData>();
-        this.failTeamIds = new ArrayList<Integer>();
-        this.matchTeamIds = new HashMap<Integer, Integer>();
+        this.pkDataMap = new ConcurrentHashMap();
+        this.pkDataByLevel = new ConcurrentHashMap();
+        this.pkDataList = new ArrayList<>();
+        this.failTeamIds = new ArrayList<>();
+        this.matchTeamIds = new HashMap();
     }
     
     public void setStage(final byte stage) {

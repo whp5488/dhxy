@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.account.domain;
 
 import java.util.Date;

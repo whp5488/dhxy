@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -22,23 +21,26 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81028 extends SkillProcessor
 {
+    public SKILL_81028() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81028);
-        final SysPetSkill petSkill = (SysPetSkill)args[0];
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81028);
+        SysPetSkill petSkill = (SysPetSkill)args[0];
         if (PetSkillEffectorUtil.checkCover(petSkill, fight, effector, null, false, args)) {
             return null;
         }
-        final double hurt = BigDecimalUtil.decimalScaleObjectDown(8, 3500.0 * (effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose()));
-        final ArrayList<FightObject> targetSide = fight.getAllFightObjects();
+        double hurt = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(8), Double.valueOf(3500.0 * ((double)effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())));
+        ArrayList<FightObject> targetSide = fight.getAllFightObjects();
         int i = 0;
-        final ActionDetailParam actionDetailParam = new ActionDetailParam(effector, 7, 81028, 0);
-        for (final FightObject targetObject : targetSide) {
+        ActionDetailParam actionDetailParam = new ActionDetailParam(effector, 7, 81028, 0);
+        for (FightObject targetObject : targetSide) {
             if (targetObject.isFallDown()) {
                 continue;
             }
@@ -53,43 +55,49 @@ public class SKILL_81028 extends SkillProcessor
             ++i;
             FightObjectParam targetParam = ActionParamUtils.changeLifeForTarget(fight, targetObject, i, -targethurt, 2);
             actionDetailParam.getTargetParamList().add(targetParam);
-            if (surplus >= 0) {
+            if (surplus < 0) {
+                int petId = targetObject.getFightPetId();
+                if (petId > 0) {
+                    FightObject petObject = fight.queryFightObject(Integer.valueOf(petId));
+                    if (petObject != null && !petObject.isFallDown()) {
+                        if (petObject.getCurrLife() + surplus < 0) {
+                            surplus = -petObject.getCurrLife();
+                        }
+                        ++i;
+                        targetParam = ActionParamUtils.changeLifeForTarget(fight, petObject, i, surplus, 2);
+                        actionDetailParam.getTargetParamList().add(targetParam);
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                else {
+                    continue;
+                }
+            }
+            else {
                 continue;
             }
-            final int petId = targetObject.getFightPetId();
-            if (petId <= 0) {
-                continue;
-            }
-            final FightObject petObject = fight.queryFightObject(petId);
-            if (petObject == null || petObject.isFallDown()) {
-                continue;
-            }
-            if (petObject.getCurrLife() + surplus < 0) {
-                surplus = -petObject.getCurrLife();
-            }
-            ++i;
-            targetParam = ActionParamUtils.changeLifeForTarget(fight, petObject, i, surplus, 2);
-            actionDetailParam.getTargetParamList().add(targetParam);
         }
         if (actionDetailParam.getTargetParamList().size() > 0) {
             fight.getActionParam().getActionDetailParams().add(actionDetailParam);
-            skillRecord.setT(actionDetailParam.getTargetParamList().get(0).getObjId());
+            skillRecord.setT((long)((FightObjectParam)actionDetailParam.getTargetParamList().get(0)).getObjId());
         }
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
 }

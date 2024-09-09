@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import java.util.ArrayList;
@@ -15,8 +14,8 @@ public class BeforeActionSkill
     private List<Integer> skills;
     
     public BeforeActionSkill() {
-        this.roleSkillMap = new LinkedHashMap<Integer, List<Integer>>();
-        this.skills = new ArrayList<Integer>();
+        this.roleSkillMap = new LinkedHashMap();
+        this.skills = new ArrayList<>();
     }
     
     public boolean isASide() {
@@ -67,7 +66,7 @@ public class BeforeActionSkill
         if (!(o instanceof BeforeActionSkill)) {
             return false;
         }
-        final BeforeActionSkill other = (BeforeActionSkill)o;
+        BeforeActionSkill other = (BeforeActionSkill)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -80,30 +79,14 @@ public class BeforeActionSkill
         if (this.getRound() != other.getRound()) {
             return false;
         }
-        final Object this$roleSkillMap = this.getRoleSkillMap();
-        final Object other$roleSkillMap = other.getRoleSkillMap();
-        Label_0104: {
-            if (this$roleSkillMap == null) {
-                if (other$roleSkillMap == null) {
-                    break Label_0104;
-                }
-            }
-            else if (this$roleSkillMap.equals(other$roleSkillMap)) {
-                break Label_0104;
-            }
+        Object this$roleSkillMap = this.getRoleSkillMap();
+        Object other$roleSkillMap = other.getRoleSkillMap();
+        if (!((this$roleSkillMap != null) ? this$roleSkillMap.equals(other$roleSkillMap) : (other$roleSkillMap == null))) {
             return false;
         }
-        final Object this$skills = this.getSkills();
-        final Object other$skills = other.getSkills();
-        if (this$skills == null) {
-            if (other$skills == null) {
-                return true;
-            }
-        }
-        else if (this$skills.equals(other$skills)) {
-            return true;
-        }
-        return false;
+        Object this$skills = this.getSkills();
+        Object other$skills = other.getSkills();
+        return (this$skills != null) ? this$skills.equals(other$skills) : (other$skills == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -112,14 +95,14 @@ public class BeforeActionSkill
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + (this.isASide() ? 79 : 97);
         result = result * 59 + (this.isPassiveAction() ? 79 : 97);
         result = result * 59 + this.getRound();
-        final Object $roleSkillMap = this.getRoleSkillMap();
+        Object $roleSkillMap = this.getRoleSkillMap();
         result = result * 59 + (($roleSkillMap == null) ? 43 : $roleSkillMap.hashCode());
-        final Object $skills = this.getSkills();
+        Object $skills = this.getSkills();
         result = result * 59 + (($skills == null) ? 43 : $skills.hashCode());
         return result;
     }

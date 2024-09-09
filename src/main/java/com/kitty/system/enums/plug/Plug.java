@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.plug;
 
 import org.apache.commons.compress.utils.Lists;
@@ -14,18 +13,23 @@ public enum Plug
     private String tips;
     
     public static List<Integer> toList() {
-        final List list = Lists.newArrayList();
-        for (final Plug n : values()) {
-            list.add(n.getSerial());
+        List<Integer> list = Lists.newArrayList();
+        for (Plug n : values()) {
+            list.add(Integer.valueOf(n.getSerial()));
         }
         return list;
     }
     
-    public static String getTips(final int serial) {
-        for (final Plug n : values()) {
+    public static String getTips(int serial) {
+        Plug[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            Plug n = values[i];
             if (serial == n.getSerial()) {
                 return n.getTips();
             }
+            ++i;
         }
         return null;
     }

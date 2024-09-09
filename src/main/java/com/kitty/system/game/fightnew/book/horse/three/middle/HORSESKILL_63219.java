@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.three.middle;
 
 import com.kitty.system.game.equip.domain.PetEquip;
@@ -19,32 +18,35 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_63219 extends HorseSkillProcessor
 {
+    public HORSESKILL_63219() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
         double percenta = (20.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         if (percenta != 0.0) {
-            final NutMap map = NutMap.NEW();
-            final Role player = SpringUtils.getRoleService().getPlayer(pet.getRoleId());
-            final List<PetEquip> equips = SpringUtils.getPetService().getPetEffective(player.getId(), pet);
-            if (pet.getMaxMana() > 0) {
-                final int petMana = CountUtils.getPetMana(pet, equips);
-                final int addLife = BigDecimalUtil.decimalScaleInteger(0, petMana * percenta);
-                map.setv(String.valueOf(PRO_DICT_TYPE.HP_CAP.getDist()), (Object)addLife);
+            NutMap map = NutMap.NEW();
+            Role player = SpringUtils.getRoleService().getPlayer((int)pet.getRoleId());
+            List<PetEquip> equips = SpringUtils.getPetService().getPetEffective((long)player.getId(), pet);
+            if ((int)pet.getMaxMana() > 0) {
+                int petMana = CountUtils.getPetMana(pet, equips);
+                int addLife = BigDecimalUtil.decimalScaleInteger(Integer.valueOf(0), Double.valueOf((double)petMana * percenta));
+                map.setv(String.valueOf(PRO_DICT_TYPE.HP_CAP.getDist()), Integer.valueOf(addLife));
             }
-            final int petLife = CountUtils.getPetLife(pet, equips);
-            final int addMana = BigDecimalUtil.decimalScaleInteger(0, petLife * percenta);
-            map.setv(String.valueOf(PRO_DICT_TYPE.MP_CAP.getDist()), (Object)addMana);
+            int petLife = CountUtils.getPetLife(pet, equips);
+            int addMana = BigDecimalUtil.decimalScaleInteger(Integer.valueOf(0), Double.valueOf((double)petLife * percenta));
+            map.setv(String.valueOf(PRO_DICT_TYPE.MP_CAP.getDist()), Integer.valueOf(addMana));
         }
         return null;
     }

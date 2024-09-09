@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.server;
 
 import com.kitty.mina.message.Message;
@@ -12,8 +11,11 @@ public class SCSession
     private int id;
     private static AtomicInteger idFactory;
     
-    public static SCSession valueOf(final IoSession wrapper) {
-        final SCSession cSession = new SCSession();
+    public SCSession() {
+    }
+    
+    public static SCSession valueOf(IoSession wrapper) {
+        SCSession cSession = new SCSession();
         cSession.wrapper = wrapper;
         cSession.clientIp = wrapper.getRemoteAddress().toString();
         cSession.id = SCSession.idFactory.incrementAndGet();
@@ -32,8 +34,8 @@ public class SCSession
         return this.clientIp;
     }
     
-    public void sendMessage(final Message message) {
-        this.wrapper.write((Object)message);
+    public void sendMessage(Message message) {
+        this.wrapper.write(message);
     }
     
     static {

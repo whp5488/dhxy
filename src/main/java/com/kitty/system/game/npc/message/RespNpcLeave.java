@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class RespNpcLeave extends Message
 {
     private int npcId;
+    
+    public RespNpcLeave() {
+    }
     
     public int getNpcId() {
         return this.npcId;
@@ -25,7 +27,7 @@ public class RespNpcLeave extends Message
         if (!(o instanceof RespNpcLeave)) {
             return false;
         }
-        final RespNpcLeave other = (RespNpcLeave)o;
+        RespNpcLeave other = (RespNpcLeave)o;
         return other.canEqual(this) && this.getNpcId() == other.getNpcId();
     }
     
@@ -35,7 +37,7 @@ public class RespNpcLeave extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getNpcId();
         return result;

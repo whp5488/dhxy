@@ -1,4 +1,3 @@
-
 package com.kitty.cross;
 
 public interface CrossCommands

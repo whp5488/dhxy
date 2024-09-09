@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -84,7 +83,7 @@ public class RespElseAppear extends Message
         if (!(o instanceof RespElseAppear)) {
             return false;
         }
-        final RespElseAppear other = (RespElseAppear)o;
+        RespElseAppear other = (RespElseAppear)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -100,30 +99,14 @@ public class RespElseAppear extends Message
         if (this.getS() != other.getS()) {
             return false;
         }
-        final Object this$n = this.getN();
-        final Object other$n = other.getN();
-        Label_0117: {
-            if (this$n == null) {
-                if (other$n == null) {
-                    break Label_0117;
-                }
-            }
-            else if (this$n.equals(other$n)) {
-                break Label_0117;
-            }
+        Object this$n = this.getN();
+        Object other$n = other.getN();
+        if (!((this$n != null) ? this$n.equals(other$n) : (other$n == null))) {
             return false;
         }
-        final Object this$t = this.getT();
-        final Object other$t = other.getT();
-        if (this$t == null) {
-            if (other$t == null) {
-                return this.getC() == other.getC();
-            }
-        }
-        else if (this$t.equals(other$t)) {
-            return this.getC() == other.getC();
-        }
-        return false;
+        Object this$t = this.getT();
+        Object other$t = other.getT();
+        return ((this$t != null) ? this$t.equals(other$t) : (other$t == null)) && this.getC() == other.getC();
     }
     
     protected boolean canEqual(final Object other) {
@@ -132,15 +115,15 @@ public class RespElseAppear extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getX();
         result = result * 59 + this.getY();
         result = result * 59 + this.getS();
-        final Object $n = this.getN();
+        Object $n = this.getN();
         result = result * 59 + (($n == null) ? 43 : $n.hashCode());
-        final Object $t = this.getT();
+        Object $t = this.getT();
         result = result * 59 + (($t == null) ? 43 : $t.hashCode());
         result = result * 59 + this.getC();
         return result;
@@ -148,6 +131,6 @@ public class RespElseAppear extends Message
     
     @Override
     public String toString() {
-        return "RespElseAppear(id=" + this.getId() + ", x=" + this.getX() + ", y=" + this.getY() + ", s=" + this.getS() + ", n=" + this.getN() + ", t=" + this.getT() + ", c=" + this.getC() + ")";
+        return "RespElseAppear(id=" + this.getId() + ", x=" + (int)this.getX() + ", y=" + (int)this.getY() + ", s=" + (int)this.getS() + ", n=" + this.getN() + ", t=" + this.getT() + ", c=" + (int)this.getC() + ")";
     }
 }

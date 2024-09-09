@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.pool;
 
 import java.util.HashMap;
@@ -18,23 +17,26 @@ public class ExpDataPool
     public static Map<Integer, SysSkillUpGradeConsume> skillUpGradeConsume;
     public static Map<Integer, SysPartyPractice> partyPractice;
     
+    public ExpDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
-        final Map<String, Map<Integer, SysLevelExp>> levelExpMap = initService.initLevelExp();
-        ExpDataPool.heroLevelExpMap = levelExpMap.get("heroMap");
-        ExpDataPool.petLevelExpMap = levelExpMap.get("petMap");
-        ExpDataPool.partnerLevelExpMap = levelExpMap.get("partnerMap");
-        ExpDataPool.horseLevelExpMap = levelExpMap.get("horseMap");
+        InitService initService = SpringUtils.getInitService();
+        Map<String, Map<Integer, SysLevelExp>> levelExpMap = initService.initLevelExp();
+        ExpDataPool.heroLevelExpMap = (Map)levelExpMap.get("heroMap");
+        ExpDataPool.petLevelExpMap = (Map)levelExpMap.get("petMap");
+        ExpDataPool.partnerLevelExpMap = (Map)levelExpMap.get("partnerMap");
+        ExpDataPool.horseLevelExpMap = (Map)levelExpMap.get("horseMap");
         ExpDataPool.skillUpGradeConsume = initService.initSkillUpGradeConsume();
         ExpDataPool.partyPractice = initService.initPartyPractice();
     }
     
     static {
-        ExpDataPool.heroLevelExpMap = new HashMap<Integer, SysLevelExp>();
-        ExpDataPool.petLevelExpMap = new HashMap<Integer, SysLevelExp>();
-        ExpDataPool.partnerLevelExpMap = new HashMap<Integer, SysLevelExp>();
-        ExpDataPool.horseLevelExpMap = new HashMap<Integer, SysLevelExp>();
-        ExpDataPool.skillUpGradeConsume = new HashMap<Integer, SysSkillUpGradeConsume>();
-        ExpDataPool.partyPractice = new HashMap<Integer, SysPartyPractice>();
+        ExpDataPool.heroLevelExpMap = new HashMap();
+        ExpDataPool.petLevelExpMap = new HashMap();
+        ExpDataPool.partnerLevelExpMap = new HashMap();
+        ExpDataPool.horseLevelExpMap = new HashMap();
+        ExpDataPool.skillUpGradeConsume = new HashMap();
+        ExpDataPool.partyPractice = new HashMap();
     }
 }

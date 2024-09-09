@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.handler;
 
 import com.kitty.system.game.role.domain.Role;
@@ -24,8 +23,8 @@ public abstract class FeedPetHandler
         this.logger = LoggerFunction.FEED_PET.getLogger();
         this.petService = SpringUtils.getPetService();
         this.roleService = SpringUtils.getRoleService();
-        this.bagService = SpringUtils.getBean(BagService.class);
+        this.bagService = (BagService)SpringUtils.getBean(BagService.class);
     }
     
-    public abstract String acceptFeed(final Pet p0, final Role p1, final Integer p2, final String p3, final int p4, final Object... p5);
+    public abstract String acceptFeed(Pet pet, Role role, Integer param, String type, int count, Object... args);
 }

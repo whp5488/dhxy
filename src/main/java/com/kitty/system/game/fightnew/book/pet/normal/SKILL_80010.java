@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.normal;
 
 import java.util.Arrays;
@@ -22,46 +21,49 @@ public class SKILL_80010 extends SkillProcessor
 {
     static final List<String> terms;
     
+    public SKILL_80010() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 80010);
-        final double percent = BigDecimalUtil.decimalScaleObjectDown(3, (0.1 + 2.0 * (effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-        final boolean flag = SkillAi.canAffectOnPro(percent);
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 80010);
+        double percent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf((0.1 + 2.0 * ((double)effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+        boolean flag = SkillAi.canAffectOnPro(percent);
         if (flag) {
-            final FightObject unit = SkillAi.effectProBass(fight, effector, 2, SKILL_80010.terms, false);
+            FightObject unit = SkillAi.effectProBass(fight, effector, Integer.valueOf(2), SKILL_80010.terms, false);
             if (unit != null) {
-                final double probability = BigDecimalUtil.decimalScaleObjectDown(3, unit.getCurrMana() / (double)unit.getMaxMana());
+                double probability = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf((double)unit.getCurrMana() / (double)unit.getMaxMana()));
                 if (probability >= 0.3) {
                     return null;
                 }
-                int addMana = (int)(unit.getMaxMana() * 0.5);
+                int addMana = (int)((double)unit.getMaxMana() * 0.5);
                 if (addMana + unit.getCurrMana() > unit.getMaxMana()) {
                     addMana = unit.getMaxMana() - unit.getCurrMana();
                 }
                 ActionParamUtils.changeMana(fight, effector, unit, 7, 80010, 2, addMana);
-                skillRecord.setT(unit.getId());
+                skillRecord.setT((long)(int)unit.getId());
             }
         }
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     

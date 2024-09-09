@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import com.kitty.system.init.domain.vo.Param;
@@ -31,6 +30,9 @@ public class SysDataThreeScopeDemon implements Serializable
     @Column("award")
     @Default("[]")
     private List<Param> award;
+    
+    public SysDataThreeScopeDemon() {
+    }
     
     public int getId() {
         return this.id;
@@ -104,37 +106,21 @@ public class SysDataThreeScopeDemon implements Serializable
         if (!(o instanceof SysDataThreeScopeDemon)) {
             return false;
         }
-        final SysDataThreeScopeDemon other = (SysDataThreeScopeDemon)o;
+        SysDataThreeScopeDemon other = (SysDataThreeScopeDemon)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$title = this.getTitle();
-        final Object other$title = other.getTitle();
-        Label_0115: {
-            if (this$title == null) {
-                if (other$title == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$title.equals(other$title)) {
-                break Label_0115;
-            }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (!((this$title != null) ? this$title.equals(other$title) : (other$title == null))) {
             return false;
         }
         if (this.getGrade() != other.getGrade()) {
@@ -146,30 +132,14 @@ public class SysDataThreeScopeDemon implements Serializable
         if (this.getNum() != other.getNum()) {
             return false;
         }
-        final Object this$war = this.getWar();
-        final Object other$war = other.getWar();
-        Label_0192: {
-            if (this$war == null) {
-                if (other$war == null) {
-                    break Label_0192;
-                }
-            }
-            else if (this$war.equals(other$war)) {
-                break Label_0192;
-            }
+        Object this$war = this.getWar();
+        Object other$war = other.getWar();
+        if (!((this$war != null) ? this$war.equals(other$war) : (other$war == null))) {
             return false;
         }
-        final Object this$award = this.getAward();
-        final Object other$award = other.getAward();
-        if (this$award == null) {
-            if (other$award == null) {
-                return true;
-            }
-        }
-        else if (this$award.equals(other$award)) {
-            return true;
-        }
-        return false;
+        Object this$award = this.getAward();
+        Object other$award = other.getAward();
+        return (this$award != null) ? this$award.equals(other$award) : (other$award == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -178,20 +148,20 @@ public class SysDataThreeScopeDemon implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $title = this.getTitle();
+        Object $title = this.getTitle();
         result = result * 59 + (($title == null) ? 43 : $title.hashCode());
         result = result * 59 + this.getGrade();
         result = result * 59 + this.getScene();
-        final long $num = this.getNum();
+        long $num = this.getNum();
         result = result * 59 + (int)($num >>> 32 ^ $num);
-        final Object $war = this.getWar();
+        Object $war = this.getWar();
         result = result * 59 + (($war == null) ? 43 : $war.hashCode());
-        final Object $award = this.getAward();
+        Object $award = this.getAward();
         result = result * 59 + (($award == null) ? 43 : $award.hashCode());
         return result;
     }

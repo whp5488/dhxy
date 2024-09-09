@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.book.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class PetSkillAction implements Serializable
@@ -34,7 +32,6 @@ public class PetSkillAction implements Serializable
         this.targetId = targetId;
     }
     
-    @ConstructorProperties({ "petId", "skillId", "targetId" })
     public PetSkillAction(final int petId, final int skillId, final int targetId) {
         this.petId = petId;
         this.skillId = skillId;

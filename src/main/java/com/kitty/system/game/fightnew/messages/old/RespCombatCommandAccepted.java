@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages.old;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -38,7 +37,7 @@ public class RespCombatCommandAccepted extends Message
         if (!(o instanceof RespCombatCommandAccepted)) {
             return false;
         }
-        final RespCombatCommandAccepted other = (RespCombatCommandAccepted)o;
+        RespCombatCommandAccepted other = (RespCombatCommandAccepted)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getResult() == other.getResult();
     }
     
@@ -48,7 +47,7 @@ public class RespCombatCommandAccepted extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getResult();

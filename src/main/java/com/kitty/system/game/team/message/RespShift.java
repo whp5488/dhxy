@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -11,6 +10,9 @@ public class RespShift extends Message
     private int x;
     private int y;
     private int mapid;
+    
+    public RespShift() {
+    }
     
     public int getId() {
         return this.id;
@@ -52,7 +54,7 @@ public class RespShift extends Message
         if (!(o instanceof RespShift)) {
             return false;
         }
-        final RespShift other = (RespShift)o;
+        RespShift other = (RespShift)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getX() == other.getX() && this.getY() == other.getY() && this.getMapid() == other.getMapid();
     }
     
@@ -62,7 +64,7 @@ public class RespShift extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getX();

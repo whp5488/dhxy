@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.intensify;
 
 import com.kitty.system.game.fightnew.book.awaken.utils.AwakenSkillEffectUtils;
@@ -9,8 +8,11 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31506 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31506() {
+    }
+    
     @Override
-    public NutMap skillIntensify(final Fight fight, final PetFightObject petFightObject, final Object... args) {
+    public NutMap skillIntensify(Fight fight, PetFightObject petFightObject, Object... args) {
         return AwakenSkillEffectUtils.getPercentDouble(petFightObject, 50.0, 20.0);
     }
 }

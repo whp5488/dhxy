@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.wardef;
 
 public enum WarInstruct
@@ -32,9 +31,9 @@ public enum WarInstruct
     private byte num;
     private byte length;
     
-    public static byte getLength(final short serial, final byte index) {
+    public static byte getLength(short serial, byte index) {
         byte length = 0;
-        for (final WarInstruct war : values()) {
+        for (WarInstruct war : values()) {
             if (war.getSerial() == serial && index <= war.getNum()) {
                 length = war.getLength();
             }

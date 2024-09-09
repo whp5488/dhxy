@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.talent;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -14,9 +13,12 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_83007 extends SkillProcessor
 {
+    public SKILL_83007() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
-        final double percent = BigDecimalUtil.decimalScaleDouble(2, (0.1 + 4.0 * (addition.getRei() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(addition.getLv(), addition.getRei(), addition.getExperience())) / 100.0);
+    public NutMap addition(Addition addition, Object... args) {
+        double percent = BigDecimalUtil.decimalScaleDouble(Integer.valueOf(2), Double.valueOf((0.1 + 4.0 * ((double)addition.getRei() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(addition.getLv()), Integer.valueOf(addition.getRei()), addition.getExperience())) / 100.0));
         double hitRatio = addition.getPropertyMap().getDouble(String.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()));
         if (hitRatio > 0.0) {
             hitRatio += percent;
@@ -24,7 +26,7 @@ public class SKILL_83007 extends SkillProcessor
         else {
             hitRatio = percent;
         }
-        addition.getPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()), (Object)hitRatio);
+        addition.getPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()), Double.valueOf(hitRatio));
         double rageRatio = addition.getPropertyMap().getDouble(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()));
         if (rageRatio > 0.0) {
             rageRatio += percent;
@@ -32,27 +34,27 @@ public class SKILL_83007 extends SkillProcessor
         else {
             rageRatio = percent;
         }
-        addition.getPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), (Object)rageRatio);
+        addition.getPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), Double.valueOf(rageRatio));
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
 }

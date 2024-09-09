@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.intensify;
 
 import org.nutz.lang.util.NutMap;
@@ -14,17 +13,21 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31502 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31502() {
+    }
+    
     @Override
-    public void beforePhysicalAttack(final Fight fight, final FightObject effector, final Object... args) {
-        final NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 30.0, 20.0);
+    public void beforePhysicalAttack(Fight fight, FightObject effector, Object... args) {
+        NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 30.0, 20.0);
         if (map == null) {
             return;
         }
-        final double percent = map.getDouble("percent");
+        double percent = map.getDouble("percent");
         if (percent > 0.0 && SkillAi.canAffectOnPro(percent)) {
-            final int phyAttack = CountUtils.getPhyAttack(effector);
-            final double phyA = phyAttack * 1.0 / effector.getPhyPower();
-            ImbueUtil.addRound(effector.getImbueMap(), PRO_DICT_TYPE.RISE_ATTACK.getDist(), 1, phyA);
+            int phyAttack = CountUtils.getPhyAttack(effector);
+            double phyA = (double)phyAttack * 1.0 / (double)effector.getPhyPower();
+            ImbueUtil.addRound(effector.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.RISE_ATTACK.getDist()), 1, phyA);
         }
+        return;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.at;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class AtWillData
         this.startTime = null;
         this.endTime = null;
         this.pkDurationTime = 5400;
-        this.pkDataList = new ArrayList<AtWillPkData>();
+        this.pkDataList = new ArrayList<>();
     }
     
     public void setStage(final byte stage) {

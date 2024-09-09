@@ -1,7 +1,5 @@
-
 package com.kitty.cross.login.service;
 
-import com.kitty.mina.message.Message;
 import com.kitty.cross.login.cmessage.G2CLeaveCross;
 import com.kitty.mina.cache.DataCache;
 import com.kitty.common.utils.JsonUtils;
@@ -14,13 +12,16 @@ import com.kitty.cross.core.callback.CallbackHandler;
 @Component
 public class LogoutCallBackHandler extends CallbackHandler
 {
+    public LogoutCallBackHandler() {
+    }
+    
     @Override
-    public void onRequest(final SCSession session, final CReqCallBack req) {
-        final String authJson = req.getParams().get("auth");
-        final String account = req.getParams().get("account");
-        final LoginAuth loginAuth = JsonUtils.string2Object(authJson, LoginAuth.class);
+    public void onRequest(SCSession session, CReqCallBack req) {
+        String authJson = (String)req.getParams().get("auth");
+        String account = (String)req.getParams().get("account");
+        LoginAuth loginAuth = (LoginAuth)JsonUtils.string2Object(authJson, LoginAuth.class);
         DataCache.LOGIN_AUTH_MAP.put(account, loginAuth);
-        final G2CLeaveCross resp = new G2CLeaveCross();
+        G2CLeaveCross resp = new G2CLeaveCross();
         this.sendBack(session, req, resp);
     }
     

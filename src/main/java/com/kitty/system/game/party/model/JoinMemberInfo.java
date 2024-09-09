@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model;
 
 public class JoinMemberInfo
@@ -8,6 +7,9 @@ public class JoinMemberInfo
     private short serial;
     private byte rei;
     private short level;
+    
+    public JoinMemberInfo() {
+    }
     
     public int getId() {
         return this.id;
@@ -57,24 +59,16 @@ public class JoinMemberInfo
         if (!(o instanceof JoinMemberInfo)) {
             return false;
         }
-        final JoinMemberInfo other = (JoinMemberInfo)o;
+        JoinMemberInfo other = (JoinMemberInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getSerial() == other.getSerial() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getSerial() == other.getSerial() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getSerial() == other.getSerial() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
     }
     
     protected boolean canEqual(final Object other) {
@@ -83,10 +77,10 @@ public class JoinMemberInfo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getRei();
@@ -96,6 +90,6 @@ public class JoinMemberInfo
     
     @Override
     public String toString() {
-        return "JoinMemberInfo(id=" + this.getId() + ", name=" + this.getName() + ", serial=" + this.getSerial() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ")";
+        return "JoinMemberInfo(id=" + this.getId() + ", name=" + this.getName() + ", serial=" + (int)this.getSerial() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ")";
     }
 }

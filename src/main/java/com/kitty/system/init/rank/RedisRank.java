@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.rank;
 
 import java.util.LinkedHashMap;
@@ -16,17 +15,20 @@ import java.util.Map;
 
 public class RedisRank
 {
-    public static void initRank(final Map<Long, Role> map) {
-        final RedisService redisService = SpringUtils.getBean(RedisService.class);
+    public RedisRank() {
+    }
+    
+    public static void initRank(Map<Long, Role> map) {
+        RedisService redisService = (RedisService)SpringUtils.getBean(RedisService.class);
         WearEquip equip = null;
-        for (final WearEquip wearEquip : RankingList.wearEquips) {
-            final Role role = map.get(wearEquip.getRId());
+        for (WearEquip wearEquip : RankingList.wearEquips) {
+            Role role = (Role)map.get(Long.valueOf(wearEquip.getRId()));
             equip = wearEquip;
-            redisService.zAdd("rank:equip:" + wearEquip.getPosition(), DataGlobalFunc.getEquipScore(wearEquip), new RankEquip(wearEquip.getRId(), wearEquip.getType(), role.getName()));
+            redisService.zAdd("rank:equip:" + wearEquip.getPosition(), (double)DataGlobalFunc.getEquipScore(wearEquip), new RankEquip(wearEquip.getRId(), wearEquip.getType(), role.getName()));
         }
-        redisService.zRem("rank:equip:" + equip.getPosition(), new RankEquip(equip.getRId(), equip.getType(), map.get(equip.getRId()).getName()));
-        final LinkedHashMap<RankEquip, Double> rangeWithScore = redisService.zReverseRangeWithScore("rank:equip" + ADORN.WEAPON, RankEquip.class, 0, 100);
-        for (final Map.Entry<RankEquip, Double> entry : rangeWithScore.entrySet()) {
+        redisService.zRem("rank:equip:" + equip.getPosition(), new RankEquip(equip.getRId(), equip.getType(), ((Role)map.get(Long.valueOf(equip.getRId()))).getName()));
+        LinkedHashMap<RankEquip, Double> rangeWithScore = redisService.zReverseRangeWithScore("rank:equip" + ADORN.WEAPON, RankEquip.class, 0, 100);
+        for (Map.Entry<RankEquip, Double> entry : rangeWithScore.entrySet()) {
             System.out.println(entry.getValue() + "---" + entry.getKey());
         }
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import java.util.ArrayList;
@@ -10,9 +9,9 @@ import org.apache.mina.core.session.IoSession;
 import com.kitty.system.game.role.domain.Role;
 import com.kitty.system.game.pet.domain.vo.PetSkill;
 import java.util.Optional;
-import com.kitty.system.game.fightnew.utils.FightUtils;
 import com.kitty.system.game.skill.pool.SkillDataPool;
 import com.kitty.system.init.domain.SysPetSkill;
+import com.kitty.system.game.fightnew.utils.FightUtils;
 import com.kitty.system.game.skill.domain.RoleSkill;
 import java.util.Iterator;
 import com.kitty.system.game.pet.pool.PetDataPool;
@@ -39,50 +38,50 @@ public class PetFightObject extends FightObject
     private Map<Integer, AcsryPetSkillParam> acsryPetSkillMap;
     private Map<Integer, HorseSkillParam> horseSkillMap;
     
-    public PetFightObject(final Pet pet, final FightObject master) {
-        this.acsryPetSkillMap = new HashMap<Integer, AcsryPetSkillParam>();
-        this.horseSkillMap = new HashMap<Integer, HorseSkillParam>();
+    public PetFightObject(Pet pet, FightObject master) {
+        this.acsryPetSkillMap = new HashMap();
+        this.horseSkillMap = new HashMap();
         this.master = master;
         Map<String, Object> autoSet = pet.getAutoFightSet();
         if (autoSet == null) {
-            autoSet = (Map<String, Object>)PetFightObject.publicAutoSet;
+            autoSet = PetFightObject.publicAutoSet;
         }
         this.setId(pet.getPetId());
-        this.setIcon(pet.getShape());
+        this.setIcon((int)pet.getShape());
         this.setName(pet.getPetName());
-        this.setRelive(pet.getRebirth());
-        this.setLevel(pet.getPetLv());
+        this.setRelive((int)pet.getRebirth());
+        this.setLevel((int)pet.getPetLv());
         this.setClose(pet.getPetClose());
-        this.setPos(SkillFunc.getPetPosByMasterPos(master.getPos()));
+        this.setPos((int)SkillFunc.getPetPosByMasterPos(Integer.valueOf(master.getPos())));
         this.setLogic(LOGIC.LOGICTYPE_PET.getValue());
-        this.setSerial(pet.getPetType());
+        this.setSerial((int)pet.getPetType());
         this.setFightMsg(pet.getMsgMap());
         this.setSpeed(CountUtils.countPetSpeed(pet, true));
-        this.setPhyPower(CountUtils.countPetPhyPower(pet, SpringUtils.getPetService().getPetEffective(this.getRole().getId(), pet)));
-        this.setMaxLife(pet.getMaxLife());
-        this.setMaxMana(pet.getMaxMana());
-        this.setCurrMana(pet.getCurrMana());
+        this.setPhyPower(CountUtils.countPetPhyPower(pet, SpringUtils.getPetService().getPetEffective((long)this.getRole().getId(), pet)));
+        this.setMaxLife((int)pet.getMaxLife());
+        this.setMaxMana((int)pet.getMaxMana());
+        this.setCurrMana((int)pet.getCurrMana());
         this.setCurrLife(pet.getCurrLife());
         this.pet = pet;
         this.setASide(master.isASide());
-        this.setHostId(master.getId());
-        this.setTargetId(pet.getPetId());
+        this.setHostId((int)master.getId());
+        this.setTargetId((int)pet.getPetId());
         if (autoSet.size() > 0) {
-            final int type = Integer.valueOf(String.valueOf(autoSet.get("type")));
-            final int autoSkillId = Integer.valueOf(String.valueOf(autoSet.get("skillId")));
+            int type = (int)Integer.valueOf(String.valueOf(autoSet.get("type")));
+            int autoSkillId = (int)Integer.valueOf(String.valueOf(autoSet.get("skillId")));
             this.setType(type);
             this.setSkillId(autoSkillId);
             this.setAutoFightType(type);
             this.setAutoSkillId(autoSkillId);
-            this.setAction(Integer.valueOf(autoSet.getOrDefault("action", 0).toString()));
+            this.setAction((int)Integer.valueOf(autoSet.getOrDefault("action", Integer.valueOf(0)).toString()));
             if (autoSet.get("target") != null && !"".equals(autoSet.get("target"))) {
-                final String target = String.valueOf(autoSet.get("target"));
-                this.setTargetId(Integer.valueOf(target));
-                this.setAutoTarget(Integer.valueOf(target));
+                String target = String.valueOf(autoSet.get("target"));
+                this.setTargetId((int)Integer.valueOf(target));
+                this.setAutoTarget((int)Integer.valueOf(target));
             }
         }
         this.setSkillIds(SkillFunc.initPetSkill(pet.getSkills()));
-        this.setHorseSkillMap(SkillFunc.initHorseSkill(master.getRole().getId(), pet.getHorse()));
+        this.setHorseSkillMap(SkillFunc.initHorseSkill((long)master.getRole().getId(), pet.getHorse()));
         this.setPropertyMap(CountUtils.proFieldValues(pet));
         CountUtils.restProFieldValue(this.getRole(), pet, this.getPropertyMap(), this.getAcsryPetSkillMap());
         HorseSkillUtils.countHorseSkillGain(this.getPropertyMap(), this.getHorseSkillMap());
@@ -93,62 +92,66 @@ public class PetFightObject extends FightObject
     public void color() {
         if (this.pet.getColorList() != null && this.pet.getColorList().size() > 0) {
             byte currentColor = 0;
-            for (final Map<String, Byte> map : this.pet.getColorList()) {
-                if (map.get("is_use") == 1) {
-                    currentColor = map.get("color");
+            for (Map<String, Byte> map : this.pet.getColorList()) {
+                if ((byte)map.get("is_use") == 1) {
+                    currentColor = (byte)map.get("color");
                     break;
                 }
+                continue;
             }
-            this.getColorMap().setv("currHut", currentColor);
+            this.getColorMap().setv("currHut", Byte.valueOf(currentColor));
         }
-        final byte acc = SpringUtils.getPetService().isOrnament(this.getRole().getId(), PetDataPool.petMap.get(this.pet.getPetType()), this.pet);
-        this.getColorMap().setv("acc", acc);
+        byte acc = SpringUtils.getPetService().isOrnament((long)this.getRole().getId(), (SysPet)PetDataPool.petMap.get(this.pet.getPetType()), this.pet);
+        this.getColorMap().setv("acc", Byte.valueOf(acc));
         if (this.pet.getAccColor() != null && this.pet.getAccColor().size() > 0) {
-            for (final Byte key : this.pet.getAccColor().keySet()) {
-                if (this.pet.getAccColor().get(key) == 1) {
+            for (Byte key : this.pet.getAccColor().keySet()) {
+                if ((byte)this.pet.getAccColor().get(key) == 1) {
                     this.getColorMap().setv("currAccHut", key);
                     break;
                 }
+                continue;
             }
         }
         if (this.pet.getAccColorTwo() != null && this.pet.getAccColorTwo().size() > 0) {
-            for (final Byte key : this.pet.getAccColorTwo().keySet()) {
-                if (this.pet.getAccColorTwo().get(key) == 1) {
+            for (Byte key : this.pet.getAccColorTwo().keySet()) {
+                if ((byte)this.pet.getAccColorTwo().get(key) == 1) {
                     this.getColorMap().setv("currAccHut2", key);
                     break;
                 }
+                continue;
             }
         }
         if (this.pet.getBrandNew() != null && this.pet.getBrandNew().size() > 0) {
-            for (final Integer key2 : this.pet.getBrandNew().keySet()) {
-                if (this.pet.getBrandNew().get(key2) == 1) {
+            for (Integer key2 : this.pet.getBrandNew().keySet()) {
+                if ((byte)this.pet.getBrandNew().get(key2) == 1) {
                     this.getColorMap().setv("hf", key2);
                     break;
                 }
+                continue;
             }
         }
     }
     
     @Override
-    public RoleSkill getSkillBy(final Integer skillId) {
+    public RoleSkill getSkillBy(Integer skillId) {
         if (String.valueOf(skillId).length() == 5) {
-            final Optional<PetSkill> anyPetSkill = this.pet.getSkills().stream().filter(skill -> skill.getSerial() == skillId).findAny();
-            if (anyPetSkill.isPresent()) {
-                final SysPetSkill petSkill = SkillDataPool.petSkillMap.get(skillId);
+            Optional<PetSkill> anyPetSkill2 = this.pet.getSkills().stream().filter(skill -> skill.getSerial() == (int)skillId).findAny();
+            if (anyPetSkill2.isPresent()) {
+                SysPetSkill petSkill = (SysPetSkill)SkillDataPool.petSkillMap.get(skillId);
                 if (petSkill == null) {
                     return null;
                 }
-                final RoleSkill roleSkill = new RoleSkill();
+                RoleSkill roleSkill = new RoleSkill();
                 roleSkill.setSkillId(petSkill.getSerial());
                 roleSkill.setType(petSkill.getAttr());
                 return roleSkill;
             }
         }
         else if (String.valueOf(skillId).length() == 6) {
-            final String hostSkillId = String.valueOf(skillId).substring(0, 5);
-            final Optional<PetSkill> anyPetSkill2 = this.pet.getSkills().stream().filter(skill -> skill.getSerial() == Integer.parseInt(hostSkillId)).findAny();
-            if (anyPetSkill2.isPresent()) {
-                return FightUtils.getPetRoleSkill(skillId);
+            String hostSkillId = String.valueOf(skillId).substring(0, 5);
+            Optional<PetSkill> anyPetSkill = this.pet.getSkills().stream().filter(skill -> skill.getSerial() == Integer.parseInt(hostSkillId)).findAny();
+            if (anyPetSkill.isPresent()) {
+                return FightUtils.getPetRoleSkill((int)skillId);
             }
         }
         return null;
@@ -161,12 +164,12 @@ public class PetFightObject extends FightObject
     
     @Override
     public int getHostId() {
-        return this.master.getId();
+        return (int)this.master.getId();
     }
     
     @Override
     public long getHostUid() {
-        return this.master.getRole().getId();
+        return (long)this.master.getRole().getId();
     }
     
     @Override
@@ -176,50 +179,52 @@ public class PetFightObject extends FightObject
     
     @Override
     public FightMember asFightMember() {
-        final FightMember fightMember = new FightMember();
-        fightMember.setId(this.getId());
+        FightMember fightMember = new FightMember();
+        fightMember.setId((int)this.getId());
         fightMember.setHost(this.getHostId());
         fightMember.setIcon(this.getIcon());
         fightMember.setSerial(this.getSerial());
         fightMember.setPosition(this.getPos());
         fightMember.setList(this.asFieldValues());
-        final List<Integer> statusList = super.getStatusList();
+        List<Integer> statusList = super.getStatusList();
         if (statusList != null) {
             fightMember.setStatusList(statusList);
+            return fightMember;
         }
         return fightMember;
     }
     
     @Override
     public List<FiedValue> asFieldValues() {
-        final ArrayList<FiedValue> fiedValues = new ArrayList<FiedValue>();
-        fiedValues.add(new FiedValue("hostId", (byte)3, this.getHostId()));
+        ArrayList<FiedValue> fiedValues = new ArrayList<>();
+        fiedValues.add(new FiedValue("hostId", (byte)3, Integer.valueOf(this.getHostId())));
         fiedValues.add(new FiedValue("name", (byte)4, this.getName()));
-        fiedValues.add(new FiedValue("maxLife", (byte)3, this.getMaxLife()));
-        fiedValues.add(new FiedValue("maxMana", (byte)3, this.getMaxMana()));
-        fiedValues.add(new FiedValue("currLife", (byte)3, this.getCurrLife()));
-        fiedValues.add(new FiedValue("currMana", (byte)3, this.getCurrMana()));
+        fiedValues.add(new FiedValue("maxLife", (byte)3, Integer.valueOf(this.getMaxLife())));
+        fiedValues.add(new FiedValue("maxMana", (byte)3, Integer.valueOf(this.getMaxMana())));
+        fiedValues.add(new FiedValue("currLife", (byte)3, Integer.valueOf(this.getCurrLife())));
+        fiedValues.add(new FiedValue("currMana", (byte)3, Integer.valueOf(this.getCurrMana())));
         fiedValues.add(new FiedValue("rei", (byte)3, this.pet.getRebirth()));
         fiedValues.add(new FiedValue("lv", (byte)3, this.pet.getPetLv()));
-        final int currHut = this.colorMap.getInt("currHut", -1);
+        int currHut = this.colorMap.getInt("currHut", -1);
         if (currHut > 0) {
-            fiedValues.add(new FiedValue("currHut", (byte)2, (short)currHut));
+            fiedValues.add(new FiedValue("currHut", (byte)2, Short.valueOf((short)currHut)));
         }
-        final int currAcc = this.colorMap.getInt("acc", 0);
+        int currAcc = this.colorMap.getInt("acc", 0);
         if (currAcc > 0) {
-            fiedValues.add(new FiedValue("acc", (byte)1, (byte)currAcc));
+            fiedValues.add(new FiedValue("acc", (byte)1, Byte.valueOf((byte)currAcc)));
         }
-        final int currAccHut = this.colorMap.getInt("currAccHut", -1);
+        int currAccHut = this.colorMap.getInt("currAccHut", -1);
         if (currAccHut > 0) {
-            fiedValues.add(new FiedValue("currAccHut", (byte)2, (short)currAccHut));
+            fiedValues.add(new FiedValue("currAccHut", (byte)2, Short.valueOf((short)currAccHut)));
         }
-        final int currAccHut2 = this.colorMap.getInt("currAccHut2", -1);
+        int currAccHut2 = this.colorMap.getInt("currAccHut2", -1);
         if (currAccHut2 > 0) {
-            fiedValues.add(new FiedValue("currAccHut2", (byte)2, (short)currAccHut2));
+            fiedValues.add(new FiedValue("currAccHut2", (byte)2, Short.valueOf((short)currAccHut2)));
         }
-        final int hf = this.colorMap.getInt("hf", -1);
+        int hf = this.colorMap.getInt("hf", -1);
         if (hf > 0) {
-            fiedValues.add(new FiedValue("hf", (byte)2, (short)hf));
+            fiedValues.add(new FiedValue("hf", (byte)2, Short.valueOf((short)hf)));
+            return fiedValues;
         }
         return fiedValues;
     }
@@ -247,8 +252,8 @@ public class PetFightObject extends FightObject
     }
     
     static {
-        (publicAutoSet = NutMap.NEW()).setv("type", 1);
-        PetFightObject.publicAutoSet.setv("action", 1);
+        (publicAutoSet = NutMap.NEW()).setv("type", Integer.valueOf(1));
+        PetFightObject.publicAutoSet.setv("action", Integer.valueOf(1));
         PetFightObject.publicAutoSet.setv("list", new ArrayList<>());
     }
 }

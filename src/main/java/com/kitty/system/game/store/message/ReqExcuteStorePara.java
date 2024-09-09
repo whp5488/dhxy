@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.store.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -36,7 +34,6 @@ public class ReqExcuteStorePara extends Message
         this.pos = pos;
     }
     
-    @ConstructorProperties({ "type", "storeType", "pos" })
     public ReqExcuteStorePara(final byte type, final byte storeType, final String pos) {
         this.storeType = 0;
         this.type = type;

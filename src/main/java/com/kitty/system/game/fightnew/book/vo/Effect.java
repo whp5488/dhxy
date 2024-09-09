@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.vo;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class Effect
         this.isTargetHit = true;
     }
     
-    public Effect(final int type, final int hurt) {
+    public Effect(int type, int hurt) {
         this.type = 0;
         this.time = 0;
         this.hurt = 0;
@@ -34,7 +33,7 @@ public class Effect
         this.hurt = hurt;
     }
     
-    public Effect(final int type, final int time, final int hurt, final double hit, final List<FiedValue> list) {
+    public Effect(int type, int time, int hurt, double hit, List<FiedValue> list) {
         this.type = 0;
         this.time = 0;
         this.hurt = 0;
@@ -49,7 +48,7 @@ public class Effect
     
     public List<FiedValue> getOrCreateList() {
         if (this.list == null) {
-            this.list = new ArrayList<FiedValue>();
+            this.list = new ArrayList<>();
         }
         return this.list;
     }
@@ -126,7 +125,7 @@ public class Effect
         if (!(o instanceof Effect)) {
             return false;
         }
-        final Effect other = (Effect)o;
+        Effect other = (Effect)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -145,43 +144,19 @@ public class Effect
         if (this.isTargetHit() != other.isTargetHit()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        Label_0133: {
-            if (this$list == null) {
-                if (other$list == null) {
-                    break Label_0133;
-                }
-            }
-            else if (this$list.equals(other$list)) {
-                break Label_0133;
-            }
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        if (!((this$list != null) ? this$list.equals(other$list) : (other$list == null))) {
             return false;
         }
-        final Object this$otherType = this.getOtherType();
-        final Object other$otherType = other.getOtherType();
-        Label_0170: {
-            if (this$otherType == null) {
-                if (other$otherType == null) {
-                    break Label_0170;
-                }
-            }
-            else if (this$otherType.equals(other$otherType)) {
-                break Label_0170;
-            }
+        Object this$otherType = this.getOtherType();
+        Object other$otherType = other.getOtherType();
+        if (!((this$otherType != null) ? this$otherType.equals(other$otherType) : (other$otherType == null))) {
             return false;
         }
-        final Object this$SkillId = this.getSkillId();
-        final Object other$SkillId = other.getSkillId();
-        if (this$SkillId == null) {
-            if (other$SkillId == null) {
-                return true;
-            }
-        }
-        else if (this$SkillId.equals(other$SkillId)) {
-            return true;
-        }
-        return false;
+        Object this$SkillId = this.getSkillId();
+        Object other$SkillId = other.getSkillId();
+        return (this$SkillId != null) ? this$SkillId.equals(other$SkillId) : (other$SkillId == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -190,19 +165,19 @@ public class Effect
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getTime();
         result = result * 59 + this.getHurt();
-        final long $hit = Double.doubleToLongBits(this.getHit());
+        long $hit = Double.doubleToLongBits(this.getHit());
         result = result * 59 + (int)($hit >>> 32 ^ $hit);
         result = result * 59 + (this.isTargetHit() ? 79 : 97);
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
-        final Object $otherType = this.getOtherType();
+        Object $otherType = this.getOtherType();
         result = result * 59 + (($otherType == null) ? 43 : $otherType.hashCode());
-        final Object $SkillId = this.getSkillId();
+        Object $SkillId = this.getSkillId();
         result = result * 59 + (($SkillId == null) ? 43 : $SkillId.hashCode());
         return result;
     }

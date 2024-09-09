@@ -1,7 +1,5 @@
-
 package com.kitty.system.init.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class MonsterPower implements Serializable
@@ -42,7 +40,7 @@ public class MonsterPower implements Serializable
         if (!(o instanceof MonsterPower)) {
             return false;
         }
-        final MonsterPower other = (MonsterPower)o;
+        MonsterPower other = (MonsterPower)o;
         return other.canEqual(this) && Double.compare(this.getA(), other.getA()) == 0 && Double.compare(this.getB(), other.getB()) == 0 && Double.compare(this.getC(), other.getC()) == 0;
     }
     
@@ -52,13 +50,13 @@ public class MonsterPower implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final long $a = Double.doubleToLongBits(this.getA());
+        long $a = Double.doubleToLongBits(this.getA());
         result = result * 59 + (int)($a >>> 32 ^ $a);
-        final long $b = Double.doubleToLongBits(this.getB());
+        long $b = Double.doubleToLongBits(this.getB());
         result = result * 59 + (int)($b >>> 32 ^ $b);
-        final long $c = Double.doubleToLongBits(this.getC());
+        long $c = Double.doubleToLongBits(this.getC());
         result = result * 59 + (int)($c >>> 32 ^ $c);
         return result;
     }
@@ -68,7 +66,6 @@ public class MonsterPower implements Serializable
         return "MonsterPower(a=" + this.getA() + ", b=" + this.getB() + ", c=" + this.getC() + ")";
     }
     
-    @ConstructorProperties({ "a", "b", "c" })
     public MonsterPower(final double a, final double b, final double c) {
         this.a = a;
         this.b = b;

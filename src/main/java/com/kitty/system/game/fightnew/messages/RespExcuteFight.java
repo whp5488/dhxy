@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages;
 
 import com.kitty.system.game.fightnew.messages.vo.ExcuteFightParam;
@@ -12,6 +11,9 @@ public class RespExcuteFight extends Message
     private int round;
     private String endTime;
     private List<ExcuteFightParam> excuteFightParams;
+    
+    public RespExcuteFight() {
+    }
     
     public int getRound() {
         return this.round;

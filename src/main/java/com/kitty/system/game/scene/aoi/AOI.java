@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.scene.aoi;
 
 import java.util.Set;
@@ -9,23 +8,26 @@ public abstract class AOI
 {
     private int id;
     
-    public abstract void enter(final Role p0);
+    public AOI() {
+    }
     
-    public abstract void leave(final long p0);
+    public abstract void enter(Role role);
     
-    public abstract void move(final Role p0);
+    public abstract void leave(long uid);
     
-    public abstract void goTo(final Role p0);
+    public abstract void move(Role role);
     
-    public abstract void sendMessages(final Role p0, final Message... p1);
+    public abstract void goTo(Role role);
     
-    public abstract void giveAppear(final Role p0, final Set<Long> p1);
+    public abstract void sendMessages(Role role, Message... messages);
+    
+    public abstract void giveAppear(Role role, Set<Long> enters);
     
     public int getId() {
         return this.id;
     }
     
-    public void setId(final int id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

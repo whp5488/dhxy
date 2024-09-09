@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.callback;
 
 import java.util.Base64;
@@ -19,10 +18,10 @@ public class CReqCallBack extends Message
     private String data;
     
     public CReqCallBack() {
-        this.params = new HashMap<String, String>();
+        this.params = new HashMap<>();
     }
     
-    public void addParam(final String key, final String value) {
+    public void addParam(String key, String value) {
         this.params.put(key, value);
     }
     
@@ -30,7 +29,7 @@ public class CReqCallBack extends Message
         return this.index;
     }
     
-    public void setIndex(final int index) {
+    public void setIndex(int index) {
         this.index = index;
     }
     
@@ -38,7 +37,7 @@ public class CReqCallBack extends Message
         return this.cmd;
     }
     
-    public void setCmd(final int cmd) {
+    public void setCmd(int cmd) {
         this.cmd = cmd;
     }
     
@@ -46,17 +45,17 @@ public class CReqCallBack extends Message
         return this.data;
     }
     
-    public void setData(final String data) {
+    public void setData(String data) {
         this.data = data;
     }
     
     public void serialize() {
-        final String json = JsonUtils.object2String(this.params);
+        String json = JsonUtils.object2String(this.params);
         this.data = Base64.getEncoder().encodeToString(json.getBytes());
     }
     
     public void deserialize() {
-        final byte[] json = Base64.getDecoder().decode(this.data);
+        byte[] json = Base64.getDecoder().decode(this.data);
         this.params = JsonUtils.string2Map(new String(json), String.class, String.class);
     }
     

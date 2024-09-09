@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.loadobj;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -23,48 +22,52 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_322502 extends TianFuProcessor
 {
+    public FU_322502() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public void attackOver(final Fight fight, final FightObject effector, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effector, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         if (!target.isPlayer()) {
             return;
         }
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)target).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322502);
+        DayInCeFight dayInCeFight = ((PlayerFightObject)target).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322502);
         if (tianFuObject == null) {
             return;
         }
-        final RoleSkill roleSkill = (RoleSkill)args[0];
+        RoleSkill roleSkill = (RoleSkill)args[0];
         if (roleSkill == null) {
             return;
         }
-        if ((target.isFallDown() || SKILLATTR.SKILLATTR_CONFUSE.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_ICE.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_SLEEP.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_YIWANG.getValue() == roleSkill.getType()) && effector.getStatusValue(1016) <= 0) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 322502);
-            final Optional<FightObject> optional = fight.getMySide(effector.getId()).stream().filter(obj -> obj.getSkillCoolMap().getInt(String.valueOf(322502)) > 0).findFirst();
+        if ((target.isFallDown() || SKILLATTR.SKILLATTR_CONFUSE.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_ICE.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_SLEEP.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_YIWANG.getValue() == (int)roleSkill.getType()) && effector.getStatusValue(1016) <= 0) {
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 322502);
+            Optional<FightObject> optional = fight.getMySide((int)effector.getId()).stream().filter(obj -> obj.getSkillCoolMap().getInt(String.valueOf(322502)) > 0).findFirst();
             if (optional.isPresent()) {
                 return;
             }
-            final boolean flag = SkillAi.canAffectOnPro(0.2);
+            boolean flag = SkillAi.canAffectOnPro(0.2);
             if (flag) {
-                final double percenta = 2.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-                final int reduceSpeed = (int)(percenta * effector.getSpeed());
-                final String dist = String.valueOf(PRO_DICT_TYPE.RISE_SPEED.getDist());
-                final int time = 3;
-                ImbueUtil.addOrUpdStatus(effector.getImbueMap(), 1016, PRO_DICT_TYPE.RISE_SPEED.getDist(), time, -reduceSpeed);
-                effector.getSkillCoolMap().setv(String.valueOf(322502), (Object)6);
-                final FightObjectParam targetParam = actionDetailParam.gainTargetParam(effector.getId(), true);
-                targetParam.getStatusMap().put(1016, time);
-                skillRecord.setT(target.getId());
+                double percenta = 2.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+                int reduceSpeed = (int)(percenta * (double)effector.getSpeed());
+                String dist = String.valueOf(PRO_DICT_TYPE.RISE_SPEED.getDist());
+                int time = 3;
+                ImbueUtil.addOrUpdStatus(effector.getImbueMap(), 1016, PRO_DICT_TYPE.RISE_SPEED.getDist(), time, (double)(-reduceSpeed));
+                effector.getSkillCoolMap().setv(String.valueOf(322502), Integer.valueOf(6));
+                FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)effector.getId(), true);
+                targetParam.getStatusMap().put(Integer.valueOf(1016), Integer.valueOf(time));
+                skillRecord.setT((long)(int)target.getId());
             }
         }
+        return;
     }
 }

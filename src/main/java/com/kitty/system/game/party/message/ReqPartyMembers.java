@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -79,7 +78,7 @@ public class ReqPartyMembers extends Message
         if (!(o instanceof ReqPartyMembers)) {
             return false;
         }
-        final ReqPartyMembers other = (ReqPartyMembers)o;
+        ReqPartyMembers other = (ReqPartyMembers)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -95,30 +94,14 @@ public class ReqPartyMembers extends Message
         if (this.getWay() != other.getWay()) {
             return false;
         }
-        final Object this$para = this.getPara();
-        final Object other$para = other.getPara();
-        Label_0117: {
-            if (this$para == null) {
-                if (other$para == null) {
-                    break Label_0117;
-                }
-            }
-            else if (this$para.equals(other$para)) {
-                break Label_0117;
-            }
+        Object this$para = this.getPara();
+        Object other$para = other.getPara();
+        if (!((this$para != null) ? this$para.equals(other$para) : (other$para == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -127,21 +110,21 @@ public class ReqPartyMembers extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPage();
         result = result * 59 + this.getSize();
         result = result * 59 + this.getSort();
         result = result * 59 + this.getWay();
-        final Object $para = this.getPara();
+        Object $para = this.getPara();
         result = result * 59 + (($para == null) ? 43 : $para.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqPartyMembers(page=" + this.getPage() + ", size=" + this.getSize() + ", sort=" + this.getSort() + ", way=" + this.getWay() + ", para=" + this.getPara() + ", list=" + this.getList() + ")";
+        return "ReqPartyMembers(page=" + (int)this.getPage() + ", size=" + (int)this.getSize() + ", sort=" + (int)this.getSort() + ", way=" + (int)this.getWay() + ", para=" + this.getPara() + ", list=" + this.getList() + ")";
     }
 }

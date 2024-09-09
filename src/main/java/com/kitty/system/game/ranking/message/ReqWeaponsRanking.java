@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqWeaponsRanking extends Message
 {
     private byte race;
     private byte equipType;
+    
+    public ReqWeaponsRanking() {
+    }
     
     public byte getRace() {
         return this.race;
@@ -34,7 +36,7 @@ public class ReqWeaponsRanking extends Message
         if (!(o instanceof ReqWeaponsRanking)) {
             return false;
         }
-        final ReqWeaponsRanking other = (ReqWeaponsRanking)o;
+        ReqWeaponsRanking other = (ReqWeaponsRanking)o;
         return other.canEqual(this) && this.getRace() == other.getRace() && this.getEquipType() == other.getEquipType();
     }
     
@@ -44,7 +46,7 @@ public class ReqWeaponsRanking extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRace();
         result = result * 59 + this.getEquipType();
@@ -53,6 +55,6 @@ public class ReqWeaponsRanking extends Message
     
     @Override
     public String toString() {
-        return "ReqWeaponsRanking(race=" + this.getRace() + ", equipType=" + this.getEquipType() + ")";
+        return "ReqWeaponsRanking(race=" + (int)this.getRace() + ", equipType=" + (int)this.getEquipType() + ")";
     }
 }

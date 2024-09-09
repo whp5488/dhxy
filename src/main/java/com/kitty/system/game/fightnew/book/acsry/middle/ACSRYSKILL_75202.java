@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -9,31 +8,34 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_75202 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_75202() {
+    }
+    
     @Override
-    public NutMap addition(final Role role, final Object... args) {
+    public NutMap addition(Role role, Object... args) {
         try {
-            final List<Integer> acsrySkillList = (List<Integer>)args[0];
+            List<Integer> acsrySkillList = (List)args[0];
             if (acsrySkillList == null || acsrySkillList.size() < 0) {
                 return null;
             }
-            if (acsrySkillList.contains(75203)) {
+            if (acsrySkillList.contains(Integer.valueOf(75203))) {
                 return null;
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return null;
         }
-        final NutMap map = NutMap.NEW();
-        final double reducePercent = -0.05;
-        map.setv(String.valueOf(PRO_DICT_TYPE.K_FY.getDist()), (Object)reducePercent);
-        map.setv(String.valueOf(PRO_DICT_TYPE.K_HL.getDist()), (Object)reducePercent);
-        map.setv(String.valueOf(PRO_DICT_TYPE.K_HS.getDist()), (Object)reducePercent);
-        map.setv(String.valueOf(PRO_DICT_TYPE.K_YW.getDist()), (Object)reducePercent);
-        final double addPercent = 0.05;
-        map.setv(PRO_DICT_TYPE.K_FY.getDist() + "_" + 119, (Object)addPercent);
-        map.setv(PRO_DICT_TYPE.K_HL.getDist() + "_" + 119, (Object)addPercent);
-        map.setv(PRO_DICT_TYPE.K_HS.getDist() + "_" + 119, (Object)addPercent);
-        map.setv(PRO_DICT_TYPE.K_YW.getDist() + "_" + 119, (Object)addPercent);
+        NutMap map = NutMap.NEW();
+        double reducePercent = -0.05;
+        map.setv(String.valueOf(PRO_DICT_TYPE.K_FY.getDist()), Double.valueOf(reducePercent));
+        map.setv(String.valueOf(PRO_DICT_TYPE.K_HL.getDist()), Double.valueOf(reducePercent));
+        map.setv(String.valueOf(PRO_DICT_TYPE.K_HS.getDist()), Double.valueOf(reducePercent));
+        map.setv(String.valueOf(PRO_DICT_TYPE.K_YW.getDist()), Double.valueOf(reducePercent));
+        double addPercent = 0.05;
+        map.setv(PRO_DICT_TYPE.K_FY.getDist() + "_" + 119, Double.valueOf(addPercent));
+        map.setv(PRO_DICT_TYPE.K_HL.getDist() + "_" + 119, Double.valueOf(addPercent));
+        map.setv(PRO_DICT_TYPE.K_HS.getDist() + "_" + 119, Double.valueOf(addPercent));
+        map.setv(PRO_DICT_TYPE.K_YW.getDist() + "_" + 119, Double.valueOf(addPercent));
         return map;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -15,6 +14,9 @@ public class SysPurifyAttr implements Serializable
     private int lowerBound;
     @Column("upper_bound")
     private int upperBound;
+    
+    public SysPurifyAttr() {
+    }
     
     public String getDict() {
         return this.dict;
@@ -48,21 +50,13 @@ public class SysPurifyAttr implements Serializable
         if (!(o instanceof SysPurifyAttr)) {
             return false;
         }
-        final SysPurifyAttr other = (SysPurifyAttr)o;
+        SysPurifyAttr other = (SysPurifyAttr)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        if (this$dict == null) {
-            if (other$dict == null) {
-                return this.getLowerBound() == other.getLowerBound() && this.getUpperBound() == other.getUpperBound();
-            }
-        }
-        else if (this$dict.equals(other$dict)) {
-            return this.getLowerBound() == other.getLowerBound() && this.getUpperBound() == other.getUpperBound();
-        }
-        return false;
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        return ((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null)) && this.getLowerBound() == other.getLowerBound() && this.getUpperBound() == other.getUpperBound();
     }
     
     protected boolean canEqual(final Object other) {
@@ -71,9 +65,9 @@ public class SysPurifyAttr implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
         result = result * 59 + this.getLowerBound();
         result = result * 59 + this.getUpperBound();

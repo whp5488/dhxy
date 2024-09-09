@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightnew.FightObject;
@@ -11,16 +10,19 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_324314 extends TianFuProcessor
 {
+    public FU_324314() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
-        final NutMap map = NutMap.NEW();
-        final double percenta = 1.0 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
-        map.setv(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), (Object)percenta);
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
+        NutMap map = NutMap.NEW();
+        double percenta = 1.0 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+        map.setv(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), Double.valueOf(percenta));
         return map;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
 }

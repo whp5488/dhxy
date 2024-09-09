@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqChangeTeamLeader extends Message
 {
     private int roleId;
+    
+    public ReqChangeTeamLeader() {
+    }
     
     public int getRoleId() {
         return this.roleId;
@@ -25,7 +27,7 @@ public class ReqChangeTeamLeader extends Message
         if (!(o instanceof ReqChangeTeamLeader)) {
             return false;
         }
-        final ReqChangeTeamLeader other = (ReqChangeTeamLeader)o;
+        ReqChangeTeamLeader other = (ReqChangeTeamLeader)o;
         return other.canEqual(this) && this.getRoleId() == other.getRoleId();
     }
     
@@ -35,7 +37,7 @@ public class ReqChangeTeamLeader extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         return result;

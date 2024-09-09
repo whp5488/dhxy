@@ -1,4 +1,3 @@
-
 package com.kitty.system.admin.domain;
 
 import java.io.Serializable;
@@ -15,7 +14,7 @@ public class BriefHorse implements Serializable
         return this.id;
     }
     
-    public void setId(final int id) {
+    public void setId(int id) {
         this.id = id;
     }
     
@@ -23,7 +22,7 @@ public class BriefHorse implements Serializable
         return this.seat;
     }
     
-    public void setSeat(final byte seat) {
+    public void setSeat(byte seat) {
         this.seat = seat;
     }
     
@@ -31,7 +30,7 @@ public class BriefHorse implements Serializable
         return this.growUp;
     }
     
-    public void setGrowUp(final int growUp) {
+    public void setGrowUp(int growUp) {
         this.growUp = growUp;
     }
     
@@ -39,7 +38,7 @@ public class BriefHorse implements Serializable
         return this.move;
     }
     
-    public void setMove(final int move) {
+    public void setMove(int move) {
         this.move = move;
     }
     
@@ -47,14 +46,14 @@ public class BriefHorse implements Serializable
         return this.skills;
     }
     
-    public void setSkills(final String skills) {
+    public void setSkills(String skills) {
         this.skills = skills;
     }
     
     public BriefHorse() {
     }
     
-    public BriefHorse(final int id, final byte seat, final int growUp, final int move, final String skills) {
+    public BriefHorse(int id, byte seat, int growUp, int move, String skills) {
         this.id = id;
         this.seat = seat;
         this.growUp = growUp;

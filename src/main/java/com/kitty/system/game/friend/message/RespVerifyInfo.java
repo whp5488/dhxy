@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message;
 
 import com.kitty.system.common.enter.FiedValue;
@@ -19,7 +18,7 @@ public class RespVerifyInfo extends Message
     public RespVerifyInfo() {
     }
     
-    public RespVerifyInfo(final String id, final String name, final byte rei, final short level, final int serial) {
+    public RespVerifyInfo(String id, String name, byte rei, short level, int serial) {
         this.id = id;
         this.name = name;
         this.rei = rei;
@@ -27,7 +26,7 @@ public class RespVerifyInfo extends Message
         this.serial = serial;
     }
     
-    public RespVerifyInfo(final String id, final String name, final byte rei, final short level, final int serial, final List<FiedValue> rests) {
+    public RespVerifyInfo(String id, String name, byte rei, short level, int serial, List<FiedValue> rests) {
         this.id = id;
         this.name = name;
         this.rei = rei;
@@ -92,34 +91,18 @@ public class RespVerifyInfo extends Message
         if (!(o instanceof RespVerifyInfo)) {
             return false;
         }
-        final RespVerifyInfo other = (RespVerifyInfo)o;
+        RespVerifyInfo other = (RespVerifyInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getRei() != other.getRei()) {
@@ -131,17 +114,9 @@ public class RespVerifyInfo extends Message
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$rests = this.getRests();
-        final Object other$rests = other.getRests();
-        if (this$rests == null) {
-            if (other$rests == null) {
-                return true;
-            }
-        }
-        else if (this$rests.equals(other$rests)) {
-            return true;
-        }
-        return false;
+        Object this$rests = this.getRests();
+        Object other$rests = other.getRests();
+        return (this$rests != null) ? this$rests.equals(other$rests) : (other$rests == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -150,22 +125,22 @@ public class RespVerifyInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getRei();
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getSerial();
-        final Object $rests = this.getRests();
+        Object $rests = this.getRests();
         result = result * 59 + (($rests == null) ? 43 : $rests.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespVerifyInfo(id=" + this.getId() + ", name=" + this.getName() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ", serial=" + this.getSerial() + ", rests=" + this.getRests() + ")";
+        return "RespVerifyInfo(id=" + this.getId() + ", name=" + this.getName() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ", serial=" + this.getSerial() + ", rests=" + this.getRests() + ")";
     }
 }

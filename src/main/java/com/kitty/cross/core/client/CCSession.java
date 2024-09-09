@@ -1,14 +1,9 @@
-
 package com.kitty.cross.core.client;
 
 import org.apache.mina.core.future.ConnectFuture;
-import java.net.SocketAddress;
 import java.net.InetSocketAddress;
-import org.apache.mina.core.service.IoHandler;
 import com.kitty.mina.message.Message;
 import org.apache.mina.core.service.IoHandlerAdapter;
-import org.apache.mina.core.filterchain.IoFilter;
-import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import com.kitty.cross.core.codec.CrossSerializerHelper;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
@@ -25,8 +20,11 @@ public class CCSession
     private CMessageDispatcher dispatcher;
     private IoSession wrapper;
     
-    public static CCSession valueOf(final String ip, final int port, final CMessageDispatcher dispatcher) {
-        final CCSession cSession = new CCSession();
+    public CCSession() {
+    }
+    
+    public static CCSession valueOf(String ip, int port, CMessageDispatcher dispatcher) {
+        CCSession cSession = new CCSession();
         cSession.ipAddr = ip;
         cSession.port = port;
         cSession.id = CCSession.idFactory.getAndIncrement();
@@ -35,21 +33,21 @@ public class CCSession
     }
     
     public void buildConnection() {
-        final NioSocketConnector connector = new NioSocketConnector();
+        NioSocketConnector connector = new NioSocketConnector();
         connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(CrossSerializerHelper.getInstance().getCodecFactory()));
         connector.setHandler(new IoHandlerAdapter() {
-            public void exceptionCaught(final IoSession session, final Throwable cause) throws Exception {
+            public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
             }
             
-            public void messageReceived(final IoSession session, final Object data) throws Exception {
-                final Message message = (Message)data;
+            public void messageReceived(IoSession session, Object data) throws Exception {
+                Message message = (Message)data;
                 CCSession.this.dispatcher.clientDispatch(CCSession.this, message);
             }
         });
         System.out.println("开始连接跨服服务器端口" + this.port);
-        final ConnectFuture future = connector.connect(new InetSocketAddress(this.port));
+        ConnectFuture future = connector.connect(new InetSocketAddress(this.port));
         future.awaitUninterruptibly();
-        final IoSession session = future.getSession();
+        IoSession session = future.getSession();
         this.wrapper = session;
     }
     
@@ -69,7 +67,7 @@ public class CCSession
         return this.id;
     }
     
-    public void sendMessage(final Message message) {
+    public void sendMessage(Message message) {
         this.wrapper.write(message);
     }
     

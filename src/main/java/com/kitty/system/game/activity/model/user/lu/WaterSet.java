@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.lu;
 
 import java.util.HashMap;
@@ -28,25 +27,25 @@ public class WaterSet
         this.minTeamMemberCount = 1;
         this.signUpTime = "19:40:00";
         this.startTime = "20:00:00";
-        this.dayOfWeek = new ArrayList<String>();
+        this.dayOfWeek = new ArrayList<>();
         this.score = 50;
         this.feats = 200;
         this.sustain = 150;
         this.pkValue = 3;
         this.period = 5;
-        this.award = new HashMap<Byte, List<Param>>();
+        this.award = new HashMap();
         this.rankExtraScore = new NutConcurrentMap();
     }
     
     public void initRankExtraScore() {
         int basics = 160;
         for (int i = 0; i < 16; ++i) {
-            this.rankExtraScore.setv(i + 1 + "_SCORE", basics);
+            this.rankExtraScore.setv(i + 1 + "_SCORE", Integer.valueOf(basics));
             basics -= 10;
         }
         basics = 1200;
         for (int i = 0; i < 12; ++i) {
-            this.rankExtraScore.setv(i + 1 + "_FEATS", basics);
+            this.rankExtraScore.setv(i + 1 + "_FEATS", Integer.valueOf(basics));
             basics -= 100;
         }
     }

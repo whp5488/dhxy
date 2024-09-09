@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -74,7 +73,7 @@ public class RespEnterMap extends Message
         if (!(o instanceof RespEnterMap)) {
             return false;
         }
-        final RespEnterMap other = (RespEnterMap)o;
+        RespEnterMap other = (RespEnterMap)o;
         return other.canEqual(this) && this.getMapId() == other.getMapId() && this.getPosX() == other.getPosX() && this.getPosY() == other.getPosY() && this.getDir() == other.getDir() && this.getSafeZone() == other.getSafeZone() && this.getIsTaskWalk() == other.getIsTaskWalk();
     }
     
@@ -84,7 +83,7 @@ public class RespEnterMap extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getMapId();
         result = result * 59 + this.getPosX();
@@ -97,6 +96,6 @@ public class RespEnterMap extends Message
     
     @Override
     public String toString() {
-        return "RespEnterMap(mapId=" + this.getMapId() + ", posX=" + this.getPosX() + ", posY=" + this.getPosY() + ", dir=" + this.getDir() + ", safeZone=" + this.getSafeZone() + ", isTaskWalk=" + this.getIsTaskWalk() + ")";
+        return "RespEnterMap(mapId=" + this.getMapId() + ", posX=" + this.getPosX() + ", posY=" + this.getPosY() + ", dir=" + this.getDir() + ", safeZone=" + (int)this.getSafeZone() + ", isTaskWalk=" + (int)this.getIsTaskWalk() + ")";
     }
 }

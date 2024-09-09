@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.product;
 
 public class ActivityLivenessSet
@@ -8,7 +7,7 @@ public class ActivityLivenessSet
     private float perLiveness;
     private int maxLiveness;
     
-    public ActivityLivenessSet(final String name, final ActivityType activityType, final float perLiveness, final int maxLiveness) {
+    public ActivityLivenessSet(String name, ActivityType activityType, float perLiveness, int maxLiveness) {
         this.name = name;
         this.activityType = activityType;
         this.perLiveness = perLiveness;

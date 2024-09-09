@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.one.senior;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -13,19 +12,22 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_61109 extends HorseSkillProcessor
 {
+    public HORSESKILL_61109() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
-        final double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
+        double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
         double percentb = (7.0 * percent + 0.2) / 100.0;
         double percentd = (15.0 * percent + 0.2) / 100.0;
         percentb = HorseSkillUtils.getMathRoundPercent(percentb);
         percentd = HorseSkillUtils.getMathRoundPercent(percentd);
-        final NutMap map = NutMap.NEW();
+        NutMap map = NutMap.NEW();
         if (percentb != 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), (Object)percentb);
+            map.setv(String.valueOf(PRO_DICT_TYPE.RAGE_RATIO.getDist()), Double.valueOf(percentb));
         }
         if (percentd != 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.CONQUER_EXTENT.getDist()), (Object)percentd);
+            map.setv(String.valueOf(PRO_DICT_TYPE.CONQUER_EXTENT.getDist()), Double.valueOf(percentd));
         }
         if (map.size() > 0) {
             return map;
@@ -34,18 +36,18 @@ public class HORSESKILL_61109 extends HorseSkillProcessor
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
-        final double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
+        double percent = HorseSkillUtils.getPercentSenior(horseSkillParam);
         double percenta = (8.0 * percent + 0.2) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         if (percenta != 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), (Object)percenta);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), Double.valueOf(percenta));
             return map;
         }
         return null;

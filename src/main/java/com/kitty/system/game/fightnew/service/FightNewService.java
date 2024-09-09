@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.service;
 
 import com.kitty.system.game.fightnew.messages.RespFightObjectAttr;
@@ -22,6 +21,7 @@ import com.kitty.listener.event.LoginEvent;
 import com.kitty.system.game.skill.pool.SkillDataPool;
 import com.kitty.system.init.domain.SysSkill;
 import com.kitty.system.game.fightnew.utils.FightRateUtil;
+import com.kitty.system.enums.war.itempro.mind.MIND;
 import com.kitty.system.game.fightnew.utils.SkillCompute;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,26 +38,25 @@ import com.kitty.common.model.Pos;
 import org.springframework.util.CollectionUtils;
 import com.kitty.system.game.service.MonsterService;
 import com.kitty.system.game.fightnew.factory.FightFactory;
-import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.partner.domain.Partner;
+import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.vo.utils.Const;
 import com.kitty.system.game.fightnew.bean.PetFightObject;
 import com.kitty.system.game.fightnew.messages.vo.FightMember;
 import java.util.concurrent.ScheduledFuture;
 import com.kitty.common.core.SchedulerManager;
 import com.kitty.system.game.fightnew.task.AutoChuShouNewTask;
-import com.kitty.system.game.fightnew.utils.SkillFunc;
 import java.util.Arrays;
 import com.kitty.system.game.fightnew.utils.SkillAi;
 import com.kitty.system.enums.war.warskill.skilldef.TARGETTYPE;
 import com.kitty.system.init.pool.ItemDataPool;
 import com.kitty.system.init.domain.SysDrug;
+import com.kitty.system.game.fightnew.utils.SkillFunc;
 import com.kitty.system.game.fightnew.book.vo.SkillAutoPicker;
 import com.kitty.system.game.enter.message.RespCombatOpponets;
 import com.kitty.system.game.enter.message.RespCombatFriends;
 import com.kitty.system.game.fightnew.model.LifeManaParam;
 import org.nutz.lang.util.NutMap;
-import com.kitty.listener.BaseGameEvent;
 import com.kitty.listener.event.FightEndEvent;
 import com.kitty.listener.EventType;
 import com.kitty.listener.EventDispatcher;
@@ -73,13 +72,12 @@ import com.kitty.system.game.fightnew.utils.FightUtils;
 import java.util.concurrent.TimeUnit;
 import com.kitty.system.game.fightnew.messages.old.RespFightShouting;
 import com.kitty.system.game.fightnew.model.FightObjectParam;
-import com.kitty.system.game.fightnew.model.MagicAttackParam;
 import com.kitty.system.game.fightnew.model.ActionDetailParam;
+import com.kitty.system.game.fightnew.model.MagicAttackParam;
 import com.kitty.system.game.fightnew.book.pet.utils.PetSkillEffectorUtil;
 import com.kitty.system.game.fightnew.book.pet.utils.PetTriggerPassiveSkill;
 import com.kitty.system.enums.war.itempro.def.PET_PASSIVE_SKILL_TRIGGER_DICT;
 import com.kitty.system.game.vo.utils.StatusConst;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import com.kitty.system.game.fightnew.model.BattleUnit;
 import com.kitty.system.game.fightnew.utils.SkillTargetPicker;
@@ -90,21 +88,18 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 import com.kitty.system.enums.war.wardef.RACE;
 import com.kitty.system.game.fightnew.bean.PartnerFightObject;
 import java.util.Collections;
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Map;
 import com.kitty.system.game.fightnew.model.ActionParam;
 import com.kitty.system.game.fightnew.book.pet.PetPassiveSkillUtil;
 import com.kitty.system.game.fightnew.utils.PassiveSkillUtils;
 import com.kitty.system.game.fightnew.utils.ActionParamUtils;
-import com.kitty.system.enums.war.wardef.FIGHT_TYPE;
 import com.kitty.system.game.skill.domain.RoleSkill;
+import com.kitty.system.enums.war.wardef.FIGHT_TYPE;
 import java.util.Random;
 import com.kitty.logs.LoggerUtils;
-import com.kitty.mina.message.Message;
 import com.kitty.system.game.fightnew.utils.FightMessageUtil;
 import com.kitty.system.game.fightnew.messages.RespInputInstruct;
-import com.kitty.system.game.fightnew.messages.old.RespFightCommandInfo;
 import com.kitty.system.game.fightnew.utils.MessageAssistUtil;
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.system.game.fightnew.bean.PlayerFightObject;
@@ -160,21 +155,21 @@ public class FightNewService
         this.logger = LoggerFunction.FIGHT.getLogger();
     }
     
-    public void whileSendStart(final Fight fight) {
+    public void whileSendStart(Fight fight) {
         FightBeforeActionUtil.beforeAction(fight);
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             if (fight.isPvp() == 1) {
                 fightObject.setAutoFight(0);
             }
-            final IoSession session = fightObject.getSession();
+            IoSession session = fightObject.getSession();
             if (session == null) {
                 continue;
             }
-            int objId = fightObject.getId();
+            int objId = (int)fightObject.getId();
             if (fightObject.isPet()) {
                 objId = fightObject.getHostId();
             }
-            final RespRoundStartParam respRoundStartParam = this.getRespRoundStartParam(fight, objId);
+            RespRoundStartParam respRoundStartParam = this.getRespRoundStartParam(fight, objId);
             RespFightInParam roleFightInParam = null;
             if (fightObject.isPlayer()) {
                 roleFightInParam = fight.getRoleFightInParam(fightObject.getRole());
@@ -185,14 +180,14 @@ public class FightNewService
             if (LOGIC.LOGICTYPE_PET.getValue() == fightObject.getLogic()) {
                 fight.excuteReduceRatio(fightObject, true);
             }
-            final List<SkillCool> cools = fightObject.getSkillCoolList();
+            List<SkillCool> cools = fightObject.getSkillCoolList();
             if (cools.size() > 0 && roleFightInParam != null) {
                 respRoundStartParam.addSkillCools(cools);
             }
-            final AutoFightSkillParam autoFightSkillParam = this.fightMessageNewService.selfAuto(fightObject, fight);
+            AutoFightSkillParam autoFightSkillParam = this.fightMessageNewService.selfAuto(fightObject, fight);
             if (autoFightSkillParam != null) {
                 if (fightObject.isPlayer()) {
-                    final FightObject petObject = fight.queryFightObject(fightObject.getFightPetId());
+                    FightObject petObject = fight.queryFightObject(Integer.valueOf(fightObject.getFightPetId()));
                     if (petObject != null) {
                         petObject.setAutoFight(1);
                     }
@@ -203,12 +198,12 @@ public class FightNewService
                 continue;
             }
             if (fightObject.getFightPetId() > 0 && fightObject.isPlayer()) {
-                final List<RefreshPet> refreshPets = this.getFightInParamPetList(fight, fightObject);
+                List<RefreshPet> refreshPets = this.getFightInParamPetList(fight, fightObject);
                 roleFightInParam.setPetList(refreshPets);
             }
-            final TianFuProcessor tianFuProcessor = TianFuProcessor.queryProcessor(324507);
-            tianFuProcessor.passive(fight, fightObject, null);
-            fight.getRespRoundStartParamMap().put(respRoundStartParam.getObjId(), respRoundStartParam);
+            TianFuProcessor tianFuProcessor = TianFuProcessor.queryProcessor(Integer.valueOf(324507));
+            tianFuProcessor.passive(fight, fightObject, null, new Object[0]);
+            fight.getRespRoundStartParamMap().put(Integer.valueOf(respRoundStartParam.getObjId()), respRoundStartParam);
         }
     }
     
@@ -222,15 +217,16 @@ public class FightNewService
             this.excuteFlee(fight);
         }
         this.clearFight(fight);
+        return;
     }
     
-    public void excuteFlee(final Fight fight) {
-        final List<Integer> fleeList = fight.getFleeList();
+    public void excuteFlee(Fight fight) {
+        List<Integer> fleeList = fight.getFleeList();
         if (fleeList != null && fleeList.size() > 0) {
             for (int i = fleeList.size() - 1; i >= 0; --i) {
-                final Integer fightObjectId = fleeList.get(i);
+                Integer fightObjectId = (Integer)fleeList.get(i);
                 this.deleteRoleFightData(fight, fightObjectId);
-                final Role role = this.roleService.getPlayer(fightObjectId);
+                Role role = this.roleService.getPlayer((int)fightObjectId);
                 if (role != null) {
                     this.broadcastService.sendTitleInfoNew(role);
                 }
@@ -242,19 +238,20 @@ public class FightNewService
         }
     }
     
-    public void checkRoundShouting(final Fight fight, final Role role) {
+    public void checkRoundShouting(Fight fight, Role role) {
         if (fight.getData() == null) {
             return;
         }
-        final List<String> roundStartTips = fight.getData().getAsList("fight_round_start_shouting", (Class)String.class);
+        List<String> roundStartTips = fight.getData().getAsList("fight_round_start_shouting", String.class);
         if (roundStartTips == null || roundStartTips.size() == 0) {
             return;
         }
-        final int roundStartShoutingPeriod = fight.getData().getInt("fight_round_start_shouting_period", 0);
+        int roundStartShoutingPeriod = fight.getData().getInt("fight_round_start_shouting_period", 0);
         if (roundStartShoutingPeriod > 0 && fight.getRound() % roundStartShoutingPeriod != 0) {
             return;
         }
-        final int remainRound = (fight.getRound() == 0) ? fight.getMaxRound() : (fight.getMaxRound() - fight.getRound() + 1);
+        int remainRound = (fight.getRound() == 0) ? fight.getMaxRound() : (fight.getMaxRound() - fight.getRound() + 1);
+        return;
     }
     
     public void doActionNew(final ReqFightHandle reqFightHandle) {
@@ -277,81 +274,86 @@ public class FightNewService
                 try {
                     FightNewService.this.fightDoAction(reqFightHandle, hostId, fight);
                 }
-                catch (final Exception e) {
-                    FightNewService.this.logger.error("战斗出手报错了战场ID[{}]出手id[{}}{}{}{}", new Object[] { fight.getId(), reqFightHandle.getAttackerId(), e.getMessage(), e.getStackTrace(), e });
+                catch (Exception e) {
+                    FightNewService.this.logger.error("战斗出手报错了战场ID[{}]出手id[{}}{}{}{}", new Object[] { Integer.valueOf(fight.getId()), Integer.valueOf(reqFightHandle.getAttackerId()), e.getMessage(), e.getStackTrace(), e });
                 }
             }
         });
+        return;
     }
     
-    public void animationPlayEnd(final Fight fight, final int roleId) {
+    public void animationPlayEnd(final Fight fight, int roleId) {
         fight.removeRoundFinishTask(roleId);
-        final FightObject fightObject = fight.queryFightObject(roleId);
+        FightObject fightObject = fight.queryFightObject(Integer.valueOf(roleId));
         if (fightObject == null) {
-            if (fight.getFleeList().contains(roleId)) {
+            if (fight.getFleeList().contains(Integer.valueOf(roleId))) {
                 this.excuteFlee(fight);
             }
             return;
         }
-        final PlayerFightObject playerObj = (PlayerFightObject)fightObject;
-        playerObj.setAnimationFinish(true);
-        boolean allAnimationEnd = true;
-        for (final FightObject object : fight.getAllFightObjects()) {
-            if (!object.isPlayer()) {
+        else {
+            PlayerFightObject playerObj = (PlayerFightObject)fightObject;
+            playerObj.setAnimationFinish(true);
+            boolean allAnimationEnd = true;
+            for (FightObject object : fight.getAllFightObjects()) {
+                if (!object.isPlayer()) {
+                    continue;
+                }
+                PlayerFightObject player = (PlayerFightObject)object;
+                if (!player.isAnimationFinish()) {
+                    allAnimationEnd = false;
+                    break;
+                }
                 continue;
             }
-            final PlayerFightObject player = (PlayerFightObject)object;
-            if (!player.isAnimationFinish()) {
-                allAnimationEnd = false;
-                break;
-            }
-        }
-        if (allAnimationEnd) {
-            if (fight.isOver()) {
-                this.fightExecutorService.addFightTask(fight, new FightingTask() {
-                    @Override
-                    public void run() {
-                        if (fight.isOver()) {
-                            try {
-                                FightNewService.this.quitFight(fight);
-                            }
-                            catch (final Exception e) {
-                                e.printStackTrace();
+            if (allAnimationEnd) {
+                if (fight.isOver()) {
+                    this.fightExecutorService.addFightTask(fight, new FightingTask() {
+                        @Override
+                        public void run() {
+                            if (fight.isOver()) {
+                                try {
+                                    FightNewService.this.quitFight(fight);
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-                    }
-                });
-                return;
+                    });
+                    return;
+                }
+                fight.setRound(fight.getRound() + 1);
+                for (FightObject object : fight.getAllFightObjects()) {
+                    object.setTargetId(0);
+                    object.setDoAction(false);
+                }
+                this.fightMessageNewService.excuteRoundEnd(fight);
             }
-            fight.setRound(fight.getRound() + 1);
-            for (final FightObject object : fight.getAllFightObjects()) {
-                object.setTargetId(0);
-                object.setDoAction(false);
-            }
-            this.fightMessageNewService.excuteRoundEnd(fight);
+            return;
         }
     }
     
-    private void fightDoAction(final ReqFightHandle reqFightHandle, final int hostId, final Fight fight) {
+    private void fightDoAction(ReqFightHandle reqFightHandle, int hostId, Fight fight) {
         if (fight.isOver()) {
             return;
         }
-        final FightObject fightObject = fight.queryFightObject(reqFightHandle.getAttackerId());
+        FightObject fightObject = fight.queryFightObject(Integer.valueOf(reqFightHandle.getAttackerId()));
         if (fightObject == null) {
             return;
         }
-        final Role role = fightObject.getRole();
+        Role role = fightObject.getRole();
         if (role == null) {
             return;
         }
         if (fightObject.isPlayer() && reqFightHandle.getType() == 3 && reqFightHandle.getSkillId() == 0) {
-            final int petId = reqFightHandle.getTargetId();
-            final Pet pet = this.petService.selectPet(role).get(petId);
+            int petId = reqFightHandle.getTargetId();
+            Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(petId));
             if (pet != null) {
-                final int petLevel = pet.getPetLv() + pet.getRebirth() * 1000;
-                final int roleLevle = role.getLevel() + role.getRelive() * 1000;
-                if (pet == null || petLevel - roleLevle > 10 || pet.getPetId().equals(fightObject.getFightPetId()) || FightExecutorNewService.PETID_ROLEID.get(petId) != null) {
-                    MessageAssistUtil.sendIsSuccess(role, fightObject.getId(), (byte)4, null);
+                int petLevel = (int)pet.getPetLv() + (int)pet.getRebirth() * 1000;
+                int roleLevle = (int)role.getLevel() + (int)role.getRelive() * 1000;
+                if (pet == null || petLevel - roleLevle > 10 || pet.getPetId().equals(Integer.valueOf(fightObject.getFightPetId())) || FightExecutorNewService.PETID_ROLEID.get(Integer.valueOf(petId)) != null) {
+                    MessageAssistUtil.sendIsSuccess(role, (int)fightObject.getId(), (byte)4, null);
                     return;
                 }
             }
@@ -365,23 +367,24 @@ public class FightNewService
         }
         this.updateDoActionStatus(fight, reqFightHandle.getAttackerId(), reqFightHandle.getTargetId(), reqFightHandle.getType(), reqFightHandle.getSkillId());
         this.monsterAI(fight);
-        MessageAssistUtil.sendIsSuccess(role, fightObject.getId(), (byte)1, null);
-        final RespInputInstruct respInputInstruct = new RespInputInstruct(fightObject.getId(), fightObject.getTargetId(), fightObject.getType(), fightObject.getSkillId(), 0);
+        MessageAssistUtil.sendIsSuccess(role, (int)fightObject.getId(), (byte)1, null);
+        RespInputInstruct respInputInstruct = new RespInputInstruct((int)fightObject.getId(), fightObject.getTargetId(), fightObject.getType(), fightObject.getSkillId(), 0);
         FightMessageUtil.sendFightPackage(fight, respInputInstruct);
         try {
             this.roundAction(fight);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             LoggerUtils.error("错误", e);
         }
+        return;
     }
     
-    private void monsterAI(final Fight fight) {
+    private void monsterAI(Fight fight) {
         if (fight.isPkFight()) {
             return;
         }
-        final Random random = new Random();
+        Random random = new Random();
         fight.getListB().forEach(attacker -> {
             if (!attacker.isDoAction()) {
                 if (fight.getData() != null && fight.getData().getBoolean("fight_guess_true", false)) {
@@ -391,20 +394,20 @@ public class FightNewService
                     attacker.setType(1);
                 }
                 else if (this.canUseLifeItem(fight)) {
-                    if (attacker.getCurrLife() < attacker.getMaxLife() * 0.2) {
+                    if ((double)attacker.getCurrLife() < (double)attacker.getMaxLife() * 0.2) {
                         attacker.setType(5);
                     }
                     else {
-                        final FightObject hostObject = fight.queryFightObject(attacker.getHostId());
+                        FightObject hostObject = fight.queryFightObject(Integer.valueOf(attacker.getHostId()));
                         if (hostObject != null && hostObject.isFallDown()) {
-                            attacker.setTargetId(hostObject.getId());
+                            attacker.setTargetId((int)hostObject.getId());
                             attacker.setType(5);
                         }
                         else {
                             attacker.setType((attacker.getSkillIds().size() == 0) ? 0 : 7);
                             if (attacker.getType() == 7) {
-                                final int index = random.nextInt(attacker.getSkillIds().size());
-                                attacker.setSkillId(attacker.getSkillIds().get(index).getSkillId());
+                                int index2 = random.nextInt(attacker.getSkillIds().size());
+                                attacker.setSkillId((int)((RoleSkill)attacker.getSkillIds().get(index2)).getSkillId());
                             }
                             else {
                                 attacker.setSkillId(0);
@@ -413,11 +416,11 @@ public class FightNewService
                     }
                 }
                 else if (fight.getType() != FIGHT_TYPE.MONSTER.getValue()) {
-                    final boolean canUseMagic = attacker.getSkillIds().size() > 0;
+                    boolean canUseMagic = attacker.getSkillIds().size() > 0;
                     attacker.setType(canUseMagic ? 7 : 0);
                     if (attacker.getType() == 7) {
-                        final int index2 = random.nextInt(attacker.getSkillIds().size());
-                        attacker.setSkillId(attacker.getSkillIds().get(index2).getSkillId());
+                        int index = random.nextInt(attacker.getSkillIds().size());
+                        attacker.setSkillId((int)((RoleSkill)attacker.getSkillIds().get(index)).getSkillId());
                     }
                     else {
                         attacker.setSkillId(0);
@@ -425,19 +428,21 @@ public class FightNewService
                 }
                 attacker.setDoAction(true);
             }
+            return;
         });
+        return;
     }
     
-    private void roundAction(final Fight fight) {
+    private void roundAction(Fight fight) {
         if (!fight.isStartFight()) {
             return;
         }
-        final ActionParam actionParam = ActionParamUtils.createActionParam(fight);
+        ActionParam actionParam = ActionParamUtils.createActionParam(fight);
         fight.setActionParam(actionParam);
         fight.setRoundType(2);
         fight.cancelTask(fight.getTimeOutTask());
         if (fight.getRound() >= fight.getMaxRound()) {
-            this.logger.error("最大回合数=={}", fight.getMaxRound());
+            this.logger.error("最大回合数=={}", Integer.valueOf(fight.getMaxRound()));
             boolean isReward = false;
             if (fight.isPvp() == 1) {
                 fight.setFightOverReason((byte)1);
@@ -447,31 +452,34 @@ public class FightNewService
             this.clearFight(fight);
             return;
         }
-        PassiveSkillUtils.roundStart(fight);
-        this.excuteRoundStartPoison(fight);
-        PetPassiveSkillUtil.roundStartPassive(fight);
-        PassiveSkillUtils.afterPrintCommand(fight);
-        this.actionStart(fight, fight.getAllFightObjects());
-        final Map<Integer, List<Integer>> clearStatusMap = this.excuteStatusReduce(fight);
-        PassiveSkillUtils.statusOver(fight, clearStatusMap);
-        PassiveSkillUtils.roundEnd(fight);
-        final boolean isRoundFinishTask = this.sendFightParams(fight, false);
-        this.besure(fight);
-        if (isRoundFinishTask) {
-            this.maxRoundTimer(fight, 180000L);
+        else {
+            PassiveSkillUtils.roundStart(fight);
+            this.excuteRoundStartPoison(fight);
+            PetPassiveSkillUtil.roundStartPassive(fight);
+            PassiveSkillUtils.afterPrintCommand(fight);
+            this.actionStart(fight, fight.getAllFightObjects());
+            Map<Integer, List<Integer>> clearStatusMap = this.excuteStatusReduce(fight);
+            PassiveSkillUtils.statusOver(fight, clearStatusMap);
+            PassiveSkillUtils.roundEnd(fight);
+            boolean isRoundFinishTask = this.sendFightParams(fight, false);
+            this.besure(fight);
+            if (isRoundFinishTask) {
+                this.maxRoundTimer(fight, 180000L);
+            }
+            fight.setRoundType(3);
+            return;
         }
-        fight.setRoundType(3);
     }
     
-    private void actionStart(final Fight fight, final List<FightObject> list) {
+    private void actionStart(Fight fight, List<FightObject> list) {
         if (fight.isOver()) {
             return;
         }
-        final List<FightObject> copyFightObjs = new ArrayList<FightObject>(list);
+        List<FightObject> copyFightObjs = new ArrayList(list);
         Collections.sort(copyFightObjs);
-        final Iterator<FightObject> it = copyFightObjs.iterator();
+        Iterator<FightObject> it = copyFightObjs.iterator();
         while (it.hasNext()) {
-            final FightObject next = it.next();
+            FightObject next = (FightObject)it.next();
             it.remove();
             if (next == null) {
                 continue;
@@ -491,7 +499,7 @@ public class FightNewService
                 }
                 this.doActionResult(next, fight);
             }
-            catch (final Exception e) {
+            catch (Exception e) {
                 e.printStackTrace();
             }
             break;
@@ -499,9 +507,10 @@ public class FightNewService
         if (copyFightObjs.size() > 0) {
             this.actionStart(fight, copyFightObjs);
         }
+        return;
     }
     
-    private void doActionResult(final FightObject attacker, final Fight fight) {
+    private void doActionResult(FightObject attacker, Fight fight) {
         if (attacker.isFallDown()) {
             return;
         }
@@ -509,7 +518,7 @@ public class FightNewService
             this.getMonsterActionType(fight, attacker);
         }
         if (attacker.isPartner() && attacker.getSkillId() == 0 && !attacker.isConfusion()) {
-            attacker.setSkillId(((PartnerFightObject)attacker).getFightSkillId());
+            attacker.setSkillId((int)((PartnerFightObject)attacker).getFightSkillId());
             attacker.setType(7);
         }
         int type = attacker.getType();
@@ -521,15 +530,15 @@ public class FightNewService
             type = 0;
         }
         if (attacker.getMorph() > 0 && attacker.getRace() == RACE.RACE_LONG.getValue()) {
-            final RoleSkill skill = attacker.getSkillBy(attacker.getMorph());
-            final SkillProcessor processor = SkillProcessor.queryProcessor(attacker.getMorph());
-            final SkillAction skillAction = new SkillAction(fight, attacker, skill, processor);
+            RoleSkill skill = attacker.getSkillBy(Integer.valueOf(attacker.getMorph()));
+            SkillProcessor processor = SkillProcessor.queryProcessor(Integer.valueOf(attacker.getMorph()));
+            SkillAction skillAction = new SkillAction(fight, attacker, skill, processor);
             skillAction.dragonMorph();
         }
         if (attacker.getStatusValue(1011) > 0 && type != 1) {
             attacker.removeStatus(1011);
-            final List<Integer> clearStatusList = new ArrayList<Integer>();
-            clearStatusList.add(1011);
+            List<Integer> clearStatusList = new ArrayList<>();
+            clearStatusList.add(Integer.valueOf(1011));
             ActionParamUtils.clearStatus(fight, attacker, attacker, 43, 0, 2, clearStatusList);
         }
         if (attacker.getStatusMap().getInt(String.valueOf(1019)) > 0) {
@@ -556,8 +565,8 @@ public class FightNewService
             this.flee(attacker, fight);
         }
         else if (type == 3) {
-            if (attacker instanceof MonsterFightObject) {
-                SpringUtils.getBean(FightMonsterNewService.class).selectMonster(fight, attacker);
+            if ((attacker instanceof MonsterFightObject)) {
+                ((FightMonsterNewService)SpringUtils.getBean(FightMonsterNewService.class)).selectMonster(fight, attacker);
             }
             else {
                 this.selectPet(attacker, fight);
@@ -572,75 +581,80 @@ public class FightNewService
             }
         }
         PetPassiveSkillUtil.deathExcute(fight);
+        return;
     }
     
-    private void defense(final FightObject fightObject, final Fight fight) {
+    private void defense(FightObject fightObject, Fight fight) {
         fightObject.recordAction(fight);
         PassiveSkillUtils.selfSellEnd(fight, fightObject);
         if (this.checkDeStatus(fight, fightObject)) {
             return;
         }
+        return;
     }
     
-    public void normalAttack(final FightObject attacker, final Fight fight) {
+    public void normalAttack(FightObject attacker, Fight fight) {
         attacker.setType(0);
         attacker.setSkillId(0);
         attacker.createFallDownList();
-        final boolean isConfusion = attacker.isConfusion();
+        boolean isConfusion = attacker.isConfusion();
         if (!isConfusion && this.checkDeStatus(fight, attacker)) {
             return;
         }
-        if (attacker.getId() == attacker.getTargetId()) {
+        if ((int)attacker.getId() == attacker.getTargetId()) {
             attacker.setTargetId(0);
         }
         attacker.recordAction(fight);
-        FightObject fightTarget = fight.queryFightObject(attacker.getTargetId());
+        FightObject fightTarget = fight.queryFightObject(Integer.valueOf(attacker.getTargetId()));
         if (fightTarget == null || fightTarget.isFallDown()) {
             fightTarget = this.getPhysicTarget(attacker, fight);
             if (fightTarget == null || fightTarget.isFallDown()) {
                 return;
             }
-            attacker.setTargetId(fightTarget.getId());
-            fightTarget = fight.queryFightObject(attacker.getTargetId());
+            attacker.setTargetId((int)fightTarget.getId());
+            fightTarget = fight.queryFightObject(Integer.valueOf(attacker.getTargetId()));
         }
-        final List<Integer> fightObjectIds = SkillTargetPicker.getFightObjectIds(fight, attacker, true);
+        List<Integer> fightObjectIds = SkillTargetPicker.getFightObjectIds(fight, attacker, true);
         if (!fightObjectIds.contains(fightTarget.getId())) {
             return;
         }
         if (isConfusion) {
-            final List<FightObject> arrayList = this.getConfusionFightTargets(attacker, fight);
+            List<FightObject> arrayList = this.getConfusionFightTargets(attacker, fight);
             if (arrayList.size() <= 0) {
                 return;
             }
-            final Random random = new Random();
-            final int index = random.nextInt(arrayList.size());
-            fightTarget = arrayList.get(index);
-            attacker.setTargetId(fightTarget.getId());
+            Random random = new Random();
+            int index = random.nextInt(arrayList.size());
+            fightTarget = (FightObject)arrayList.get(index);
+            attacker.setTargetId((int)fightTarget.getId());
         }
         if (fightTarget.isFallDown()) {
             return;
         }
         PassiveSkillUtils.beforePhysicalAttack(fight, attacker, fightTarget);
-        final BattleUnit battleUnit = new BattleUnit(fight, attacker, fightTarget);
+        BattleUnit battleUnit = new BattleUnit(fight, attacker, fightTarget);
         battleUnit.triggerPhysic();
         if (fightTarget.isFallDown()) {
-            attacker.addFallDownList(fightTarget.getId());
+            attacker.addFallDownList((int)fightTarget.getId());
         }
         PassiveSkillUtils.normalAttackAfter(fight, attacker, battleUnit.getTarget(), battleUnit.getActionDetailParam());
         PassiveSkillUtils.phyAttackEnd(fight, attacker, battleUnit, battleUnit.getActionDetailParam());
         fight.getActionParam().getActionDetailParams().add(battleUnit.getActionDetailParam());
         PassiveSkillUtils.sufferHarm(fight, battleUnit.getTarget(), battleUnit.getPhyHurt(), attacker);
-        final List<FightObject> fallDownObjs = fight.getAllFightObjects().stream().filter(obj -> obj.isFallDown() && obj.isPet()).collect(Collectors.toList());
-        for (final FightObject target : fallDownObjs) {
-            final List<Integer> statusList = new ArrayList<Integer>();
-            for (final int status : StatusConst.getPositiveStatus()) {
+        List<FightObject> fallDownObjs = (List)fight.getAllFightObjects().stream().filter(obj -> obj.isFallDown() && obj.isPet()).collect(Collectors.toList());
+        for (FightObject target : fallDownObjs) {
+            List<Integer> statusList = new ArrayList<>();
+            for (int status : StatusConst.getPositiveStatus()) {
                 if (target.getStatusValue(status) > 0) {
-                    statusList.add(status);
+                    statusList.add(Integer.valueOf(status));
+                }
+                else {
+                    continue;
                 }
             }
             PassiveSkillUtils.exitOrClearPositive(fight, attacker, target, statusList);
         }
-        this.checkOrderTarget(fight, Collections.singletonList(attacker.getTargetId()));
+        this.checkOrderTarget(fight, Collections.singletonList(Integer.valueOf(attacker.getTargetId())));
         if (fightTarget.isFallDown()) {
             this.checkGuessSuccess(fight);
             fight.onActorDie(fightTarget);
@@ -649,19 +663,20 @@ public class FightNewService
             fight.onActorDie(attacker);
         }
         PassiveSkillUtils.selfSellEnd(fight, attacker);
+        return;
     }
     
-    private void magicAttack(final FightObject attacker, final Fight fight) {
+    private void magicAttack(FightObject attacker, Fight fight) {
         if (this.checkDeStatus(fight, attacker)) {
             return;
         }
         attacker.recordAction(fight);
         attacker.createFallDownList();
-        final RoleSkill skill = attacker.getSkillBy(attacker.getSkillId());
+        RoleSkill skill = attacker.getSkillBy(Integer.valueOf(attacker.getSkillId()));
         if (skill != null) {
-            Integer targetsCount = 0;
+            Integer targetsCount = Integer.valueOf(0);
             if (LOGIC.LOGICTYPE_PET.getValue() == attacker.getLogic() || attacker.isMonster()) {
-                final boolean flag = PetTriggerPassiveSkill.checkSkillIsUsable(fight, attacker, skill.getSkillId(), PET_PASSIVE_SKILL_TRIGGER_DICT.INITIATIVE_SKILL.getValue());
+                boolean flag = PetTriggerPassiveSkill.checkSkillIsUsable(fight, attacker, skill.getSkillId(), PET_PASSIVE_SKILL_TRIGGER_DICT.INITIATIVE_SKILL.getValue());
                 if (!flag) {
                     if (attacker.isMonster()) {
                         this.setNormalAttack(fight, attacker);
@@ -669,13 +684,13 @@ public class FightNewService
                     return;
                 }
             }
-            final SkillProcessor processor = SkillProcessor.queryProcessor(skill.getSkillId());
+            SkillProcessor processor = SkillProcessor.queryProcessor(skill.getSkillId());
             if (processor == null) {
                 this.getSkillFail(fight, attacker, String.format("获取技能信息失败，未找到技能：%d", skill.getSkillId()));
                 return;
             }
             if (LOGIC.LOGICTYPE_PET.getValue() == attacker.getLogic() || attacker.isMonster()) {
-                final boolean flag2 = processor.isExcute(fight, attacker);
+                boolean flag2 = processor.isExcute(fight, attacker, new Object[0]);
                 if (!flag2) {
                     if (attacker.isMonster()) {
                         this.setNormalAttack(fight, attacker);
@@ -683,135 +698,141 @@ public class FightNewService
                     return;
                 }
             }
-            if (processor == null) {
-                this.getSkillFail(fight, attacker, String.format("获取技能信息失败，未找到技能：%d", skill.getSkillId()));
-                return;
-            }
-            targetsCount = processor.targetCount(fight, attacker);
-            final SkillAction skillAction = new SkillAction(fight, attacker, skill, processor);
-            List<Integer> targetList = new ArrayList<Integer>();
-            if (attacker.isPet()) {
-                targetList = processor.getTargetIds(fight, attacker);
-                if (targetList == null || targetList.size() <= 0) {
-                    targetList = skillAction.pickUpTargets(targetsCount);
+            if (processor != null) {
+                targetsCount = Integer.valueOf(processor.targetCount(fight, attacker, new Object[0]));
+                SkillAction skillAction = new SkillAction(fight, attacker, skill, processor);
+                List<Integer> targetList = new ArrayList<>();
+                if (attacker.isPet()) {
+                    targetList = processor.getTargetIds(fight, attacker);
+                    if (targetList == null || targetList.size() <= 0) {
+                        targetList = skillAction.pickUpTargets(targetsCount);
+                    }
+                    else {
+                        skillAction.setSkillTargets(targetList);
+                    }
                 }
                 else {
-                    skillAction.setSkillTargets(targetList);
+                    targetList = skillAction.pickUpTargets(targetsCount);
+                }
+                if (targetList.size() <= 0) {
+                    return;
+                }
+                FightObject mainTarget = fight.queryFightObject(Integer.valueOf(attacker.getTargetId()));
+                if (mainTarget == null || mainTarget.isFallDown() || mainTarget.isASide() == attacker.isASide()) {
+                    mainTarget = fight.queryFightObject((Integer)targetList.get(0));
+                    attacker.setTargetId((int)mainTarget.getId());
+                }
+                int life = processor.costLife(attacker);
+                if (life > 0) {
+                    if (attacker.getCurrLife() < life) {
+                        PetSkillEffectorUtil.sendMsg(fight, attacker, "气血不足！");
+                        return;
+                    }
+                    attacker.reduceHp(life);
+                }
+                int mana = processor.costMana(skill, attacker, fight);
+                mana = this.costMana(fight, attacker, skill, mana);
+                if (attacker.getCurrMana() >= mana) {
+                    boolean excuteSkillCool = processor.excuteSkillCool(fight, attacker, new Object[0]);
+                    if (!excuteSkillCool) {
+                        return;
+                    }
+                    PassiveSkillUtils.unitMagic(fight, attacker, processor, skill);
+                    if (attacker.isFallDown()) {
+                        return;
+                    }
+                    mana += PassiveSkillUtils.reduceMp(fight, attacker, mana);
+                    attacker.reduceMp(mana);
+                    if (PassiveSkillUtils.enemyFristMagic(fight, attacker, processor, skill)) {
+                        ActionDetailParam actionDetailParam = ActionParamUtils.createActionDetailParam((int)attacker.getId(), (int)attacker.getId(), 7, attacker.getSkillId());
+                        FightObjectParam attackerParam = actionDetailParam.gainAttackerParam();
+                        RespFightShouting fightShouting = ((FightMessageNewService)SpringUtils.getBean(FightMessageNewService.class)).fightShouting(attacker, "法攻");
+                        ActionParamUtils.updateObjectInfo(attacker, 7, attacker.getSkillId(), 2, fightShouting, attackerParam);
+                        fight.getActionParam().getActionDetailParams().add(actionDetailParam);
+                        return;
+                    }
+                    if (attacker.isFallDown()) {
+                        return;
+                    }
+                    skillAction.doMagicEffect();
+                    ActionDetailParam actionDetailParam = skillAction.fetchActionDetail();
+                    PassiveSkillUtils.magicAttackEnd(fight, attacker, skillAction.getMagicTargets(), skill, actionDetailParam);
+                    PassiveSkillUtils.friendMagic(fight, attacker, actionDetailParam);
+                    if (skillAction.getActionDetailParams().size() > 0) {
+                        fight.getActionParam().getActionDetailParams().addAll(skillAction.getActionDetailParams());
+                    }
+                    PassiveSkillUtils.excutePassiveSkill(fight, attacker, PET_PASSIVE_SKILL_TRIGGER_DICT.SELF_SELL_END.getValue(), new Object[0]);
+                    PassiveSkillUtils.magicAttackEndOther(fight, attacker, skill, skillAction.getMagicTargets());
+                    for (MagicAttackParam magicParam : skillAction.getMagicTargets()) {
+                        FightObject target = magicParam.getTarget();
+                        List<Integer> statusList = magicParam.getPositiveStatus();
+                        PassiveSkillUtils.exitOrClearPositive(fight, attacker, target, statusList);
+                    }
+                    this.checkOrderTarget(fight, targetList);
+                    if (attacker.isFallDown() && !fight.getDeadPetIds().contains(attacker.getId())) {
+                        fight.onActorDie(attacker);
+                    }
+                }
+                else if (attacker.isPlayer() || attacker.isPet()) {
+                    PetSkillEffectorUtil.sendMsg(fight, attacker, "法力不足！");
+                }
+                else if (attacker.isMonster()) {
+                    this.setNormalAttack(fight, attacker);
                 }
             }
             else {
-                targetList = skillAction.pickUpTargets(targetsCount);
-            }
-            if (targetList.size() <= 0) {
+                this.getSkillFail(fight, attacker, String.format("获取技能信息失败，未找到技能：%d", skill.getSkillId()));
                 return;
-            }
-            FightObject mainTarget = fight.queryFightObject(attacker.getTargetId());
-            if (mainTarget == null || mainTarget.isFallDown() || mainTarget.isASide() == attacker.isASide()) {
-                mainTarget = fight.queryFightObject(targetList.get(0));
-                attacker.setTargetId(mainTarget.getId());
-            }
-            final int life = processor.costLife(attacker);
-            if (life > 0) {
-                if (attacker.getCurrLife() < life) {
-                    PetSkillEffectorUtil.sendMsg(fight, attacker, "气血不足！");
-                    return;
-                }
-                attacker.reduceHp(life);
-            }
-            int mana = processor.costMana(skill, attacker, fight);
-            mana = this.costMana(fight, attacker, skill, mana);
-            if (attacker.getCurrMana() >= mana) {
-                final boolean excuteSkillCool = processor.excuteSkillCool(fight, attacker);
-                if (!excuteSkillCool) {
-                    return;
-                }
-                PassiveSkillUtils.unitMagic(fight, attacker, processor, skill);
-                if (attacker.isFallDown()) {
-                    return;
-                }
-                mana += PassiveSkillUtils.reduceMp(fight, attacker, mana);
-                attacker.reduceMp(mana);
-                if (PassiveSkillUtils.enemyFristMagic(fight, attacker, processor, skill)) {
-                    final ActionDetailParam actionDetailParam = ActionParamUtils.createActionDetailParam(attacker.getId(), attacker.getId(), 7, attacker.getSkillId());
-                    final FightObjectParam attackerParam = actionDetailParam.gainAttackerParam();
-                    final RespFightShouting fightShouting = SpringUtils.getBean(FightMessageNewService.class).fightShouting(attacker, "法攻");
-                    ActionParamUtils.updateObjectInfo(attacker, 7, attacker.getSkillId(), 2, fightShouting, attackerParam);
-                    fight.getActionParam().getActionDetailParams().add(actionDetailParam);
-                    return;
-                }
-                if (attacker.isFallDown()) {
-                    return;
-                }
-                skillAction.doMagicEffect();
-                final ActionDetailParam actionDetailParam = skillAction.fetchActionDetail();
-                PassiveSkillUtils.magicAttackEnd(fight, attacker, skillAction.getMagicTargets(), skill, actionDetailParam);
-                PassiveSkillUtils.friendMagic(fight, attacker, actionDetailParam);
-                if (skillAction.getActionDetailParams().size() > 0) {
-                    fight.getActionParam().getActionDetailParams().addAll(skillAction.getActionDetailParams());
-                }
-                PassiveSkillUtils.excutePassiveSkill(fight, attacker, PET_PASSIVE_SKILL_TRIGGER_DICT.SELF_SELL_END.getValue());
-                PassiveSkillUtils.magicAttackEndOther(fight, attacker, skill, skillAction.getMagicTargets());
-                for (final MagicAttackParam magicParam : skillAction.getMagicTargets()) {
-                    final FightObject target = magicParam.getTarget();
-                    final List<Integer> statusList = magicParam.getPositiveStatus();
-                    PassiveSkillUtils.exitOrClearPositive(fight, attacker, target, statusList);
-                }
-                this.checkOrderTarget(fight, targetList);
-                if (attacker.isFallDown() && !fight.getDeadPetIds().contains(attacker.getId())) {
-                    fight.onActorDie(attacker);
-                }
-            }
-            else if (attacker.isPlayer() || attacker.isPet()) {
-                PetSkillEffectorUtil.sendMsg(fight, attacker, "法力不足！");
-            }
-            else if (attacker.isMonster()) {
-                this.setNormalAttack(fight, attacker);
             }
         }
         else {
             this.getSkillFail(fight, attacker, "获取技能信息失败，objId:" + attacker.getId() + ",skillId:" + attacker.getSkillId());
         }
+        return;
     }
     
-    public int getHostId(final int petId) {
-        final Integer integer = FightExecutorNewService.PETID_ROLEID.get(petId);
-        return (integer == null) ? 0 : integer;
+    public int getHostId(int petId) {
+        Integer integer = (Integer)FightExecutorNewService.PETID_ROLEID.get(Integer.valueOf(petId));
+        return (integer == null) ? 0 : ((int)integer);
     }
     
-    public Fight getFightByRoleId(final int roleId) {
-        final Integer fightId = FightExecutorNewService.FIGHT_ROOMS.get(roleId);
+    public Fight getFightByRoleId(int roleId) {
+        Integer fightId = (Integer)FightExecutorNewService.FIGHT_ROOMS.get(Integer.valueOf(roleId));
         if (fightId == null) {
             return null;
         }
-        return this.getFight(fightId);
+        return this.getFight((int)fightId);
     }
     
-    public Fight getFight(final int fightId) {
-        return FightExecutorNewService.FIGHTS.get(fightId);
+    public Fight getFight(int fightId) {
+        return (Fight)FightExecutorNewService.FIGHTS.get(Integer.valueOf(fightId));
     }
     
-    public void resetDoActionStatus(final Fight fight, final ReqFightHandle reqFightHandle) {
-        final int hostId = this.getHostId(reqFightHandle.getAttackerId());
-        final FightObject hostObj = fight.queryFightObject(hostId);
+    public void resetDoActionStatus(Fight fight, ReqFightHandle reqFightHandle) {
+        int hostId = this.getHostId(reqFightHandle.getAttackerId());
+        FightObject hostObj = fight.queryFightObject(Integer.valueOf(hostId));
         if (hostObj != null) {
             hostObj.setDoAction(false);
         }
     }
     
-    private void updateDoActionStatus(final Fight fight, final int attackerId, final int targetId, final int actionType, final int skillId) {
-        final FightObject attacker = fight.queryFightObject(attackerId);
+    private void updateDoActionStatus(Fight fight, int attackerId, int targetId, int actionType, int skillId) {
+        FightObject attacker = fight.queryFightObject(Integer.valueOf(attackerId));
         if (attacker != null) {
             attacker.setSkillId(skillId);
             attacker.setTargetId(targetId);
             attacker.setType(actionType);
             attacker.setDoAction(true);
             if (attacker.isPlayer()) {
-                final List<FightObject> partners = fight.getMySide(attacker.getId()).stream().filter(obj -> obj.isPartner()).collect(Collectors.toList());
+                List<FightObject> partners = (List)fight.getMySide((int)attacker.getId()).stream().filter(obj -> obj.isPartner()).collect(Collectors.toList());
                 if (partners != null && partners.size() > 0) {
-                    for (final FightObject fightObject : partners) {
-                        if (attacker.getId().equals(fightObject.getHostId())) {
+                    for (FightObject fightObject : partners) {
+                        if (attacker.getId().equals(Integer.valueOf(fightObject.getHostId()))) {
                             fightObject.setDoAction(true);
                             fightObject.setType(7);
+                        }
+                        else {
+                            continue;
                         }
                     }
                 }
@@ -819,7 +840,7 @@ public class FightNewService
         }
     }
     
-    private boolean canUseLifeItem(final Fight fight) {
+    private boolean canUseLifeItem(Fight fight) {
         return fight.getType() == FIGHT_TYPE.STAR.getValue() || fight.getType() == FIGHT_TYPE.SUPER_BOSS.getValue();
     }
     
@@ -829,7 +850,7 @@ public class FightNewService
         this.serverService.getScheduledExecutorService().schedule(new Runnable() {
             @Override
             public void run() {
-                final Fight temp = FightNewService.this.getFight(fightId);
+                Fight temp = FightNewService.this.getFight(fightId);
                 if (temp != null && currRound == temp.getRound()) {
                     FightNewService.this.fightExecutorService.addFightTask(temp, new FightingTask() {
                         @Override
@@ -838,36 +859,39 @@ public class FightNewService
                                 FightNewService.this.quiteFightAll(fight, false);
                                 FightNewService.this.clearFight(fight);
                             }
-                            catch (final Exception e) {
-                                LoggerFunction.FIGHT.getLogger().error("timer定时器结束战斗==报错", (Throwable)e);
+                            catch (Exception e) {
+                                LoggerFunction.FIGHT.getLogger().error("timer定时器结束战斗==报错", e);
                             }
                         }
                     });
                 }
-                else if (currRound != temp.getRound()) {}
+                else {
+                    int val$currRound = currRound;
+                    temp.getRound();
+                }
             }
         }, 180L, TimeUnit.SECONDS);
     }
     
-    public void quiteFightAll(final Fight fight, final boolean isReward) {
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+    public void quiteFightAll(Fight fight, boolean isReward) {
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             this.quiteFight(fight, fightObject, isReward);
         }
     }
     
-    private void excuteSubstitutionQuite(final Fight fight, final boolean isReward) {
-        final Map<Boolean, List<Role>> rolesMap = FightUtils.substitutionQuiteFight(fight);
+    private void excuteSubstitutionQuite(Fight fight, boolean isReward) {
+        Map<Boolean, List<Role>> rolesMap = FightUtils.substitutionQuiteFight(fight);
         if (rolesMap != null) {
-            final List<Role> rolesA = rolesMap.get(true);
-            final List<Role> rolesB = rolesMap.get(true);
+            List<Role> rolesA = (List)rolesMap.get(Boolean.valueOf(true));
+            List<Role> rolesB = (List)rolesMap.get(Boolean.valueOf(true));
             this.excuteSubstitutionQuite(fight, rolesA, isReward, rolesB, true);
             this.excuteSubstitutionQuite(fight, rolesB, isReward, rolesA, false);
         }
     }
     
-    private void excuteSubstitutionQuite(final Fight fight, final List<Role> roles, final boolean isReward, final List<Role> rolesOther, final boolean isA) {
+    private void excuteSubstitutionQuite(Fight fight, List<Role> roles, boolean isReward, List<Role> rolesOther, boolean isA) {
         if (roles != null && roles.size() > 0) {
-            for (final Role role : roles) {
+            for (Role role : roles) {
                 if (isA) {
                     this.quiteFightSubstitution(fight, role, isReward, roles, rolesOther, isA);
                 }
@@ -878,52 +902,57 @@ public class FightNewService
         }
     }
     
-    public void quiteFight(final Fight fight, final FightObject fightObject, final boolean isReward) {
+    public void quiteFight(Fight fight, FightObject fightObject, boolean isReward) {
         if (!fightObject.isPlayer()) {
             return;
         }
-        final Role role = this.roleService.getPlayer(fightObject.getId());
+        Role role = this.roleService.getPlayer((int)fightObject.getId());
         role.setPrevFightEndTime(System.currentTimeMillis());
-        role.setCanFight(true);
-        final Integer fightId = FightExecutorNewService.FIGHT_ROOMS.get(fightObject.getId());
-        if (fightId != null && fight.getId() == fightId) {
-            FightExecutorNewService.FIGHT_ROOMS.remove(fightObject.getFightPetId());
+        role.setCanFight(Boolean.valueOf(true));
+        Integer fightId = (Integer)FightExecutorNewService.FIGHT_ROOMS.get(fightObject.getId());
+        if (fightId != null && fight.getId() == (int)fightId) {
+            FightExecutorNewService.FIGHT_ROOMS.remove(Integer.valueOf(fightObject.getFightPetId()));
             this.deleteRoleFightData(fight, fightObject.getId());
         }
         ThreadLocalUtil.addLocalTask(role, () -> this.playerQuitFight(fight, fightObject, isReward, role));
+        return;
     }
     
-    public void quiteFightSubstitution(final Fight fight, final Role role, final boolean isReward, final List<Role> rolesA, final List<Role> rolesB, final boolean isA) {
+    public void quiteFightSubstitution(Fight fight, Role role, boolean isReward, List<Role> rolesA, List<Role> rolesB, boolean isA) {
         ThreadLocalUtil.addLocalTask(role, () -> this.playerQuitFightSubstitution(fight, role, isReward, rolesA, rolesB, isA));
     }
     
-    public void clearFight(final Fight fight) {
+    public void clearFight(Fight fight) {
         if (fight == null) {
             return;
         }
         fight.destroy();
+        return;
     }
     
-    public void deleteRoleFightData(final Fight fight, final Integer roleId) {
-        final List<Integer> petIds = new ArrayList<Integer>();
-        for (final Map.Entry<Integer, Integer> entry : FightExecutorNewService.PETID_ROLEID.entrySet()) {
-            if (entry.getValue().equals(roleId)) {
+    public void deleteRoleFightData(Fight fight, Integer roleId) {
+        List<Integer> petIds = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : FightExecutorNewService.PETID_ROLEID.entrySet()) {
+            if (((Integer)entry.getValue()).equals(roleId)) {
                 petIds.add(entry.getKey());
             }
+            else {
+                continue;
+            }
         }
-        for (final Integer petId : petIds) {
+        for (Integer petId : petIds) {
             FightExecutorNewService.PETID_ROLEID.remove(petId);
         }
         fight.clearAstrictSkills();
-        final Integer fightId = FightExecutorNewService.FIGHT_ROOMS.get(roleId);
-        if (fightId.equals(fight.getId())) {
+        Integer fightId = (Integer)FightExecutorNewService.FIGHT_ROOMS.get(roleId);
+        if (fightId.equals(Integer.valueOf(fight.getId()))) {
             FightExecutorNewService.FIGHT_ROOMS.remove(roleId);
         }
-        final Team team = this.teamService.getTeam(roleId);
+        Team team = this.teamService.getTeam((int)roleId);
         if (team != null) {
-            final List<Member> members = team.getList().stream().filter(member -> member.isPartner() && member.getRoleId().equals(roleId)).collect(Collectors.toList());
+            List<Member> members = (List)team.getList().stream().filter(member -> member.isPartner() && member.getRoleId().equals(roleId)).collect(Collectors.toList());
             for (int i = 0; i < members.size(); ++i) {
-                Member member = members.get(i);
+            	Member member = (Member)members.get(i);
                 if (member.getRoleId().equals(roleId)) {
                     team.getList().remove(member);
                 }
@@ -931,32 +960,32 @@ public class FightNewService
         }
     }
     
-    private void playerQuitFight(final Fight fight, final FightObject fightObject, final boolean isReward, final Role role) {
+    private void playerQuitFight(Fight fight, FightObject fightObject, boolean isReward, Role role) {
         try {
-            final FightObject currPetObject = fight.queryFightObject(fightObject.getFightPetId());
+            FightObject currPetObject = fight.queryFightObject(Integer.valueOf(fightObject.getFightPetId()));
             Pet currPet = null;
             if (currPetObject != null) {
                 currPet = currPetObject.getPet();
             }
             else {
-                currPet = this.petService.selectPet(role).get(role.getExtendBox().getCombatPet());
+                currPet = (Pet)this.petService.selectPet(role).get(role.getExtendBox().getCombatPet());
             }
-            role.pushTempCache("fight_current_pet_id", (currPet != null) ? currPet.getId() : 0L);
-            role.setLastDead((fightObject.getCurrLife() > 0) ? 1 : 0);
+            role.pushTempCache("fight_current_pet_id", Long.valueOf((currPet != null) ? ((long)currPet.getId()) : 0L));
+            role.setLastDead((fightObject.getCurrLife() <= 0) ? 0 : 1);
             if (isReward) {
                 this.sendReward(fight, role, currPet);
             }
             this.fireEndEvent(fight, role, currPet);
             this.resetAfterLeaveFight(fight, fightObject);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
-            this.logger.error("退出战斗报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { fight.getId(), fightObject.getName(), e.getMessage() });
+            this.logger.error("退出战斗报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { Integer.valueOf(fight.getId()), fightObject.getName(), e.getMessage() });
         }
         finally {
-            final Integer fightId = FightExecutorNewService.FIGHT_ROOMS.get(role.getRoleId());
+            Integer fightId = (Integer)FightExecutorNewService.FIGHT_ROOMS.get(role.getRoleId());
             if (fightId == null) {
-                final RespEndCombat respEndCombat = new RespEndCombat();
+                RespEndCombat respEndCombat = new RespEndCombat();
                 MessagePusher.pushMessage(role, respEndCombat);
             }
             this.broadcastService.sendUpdateAppear(role);
@@ -964,23 +993,23 @@ public class FightNewService
         }
     }
     
-    private void playerQuitFightSubstitution(final Fight fight, final Role role, final boolean isReward, final List<Role> rolesA, final List<Role> rolesB, final boolean isA) {
+    private void playerQuitFightSubstitution(Fight fight, Role role, boolean isReward, List<Role> rolesA, List<Role> rolesB, boolean isA) {
         try {
-            final Pet currPet = this.petService.selectPet(role).get(role.getExtendBox().getCombatPet());
-            role.pushTempCache("fight_current_pet_id", (currPet != null) ? currPet.getId() : 0L);
+            Pet currPet = (Pet)this.petService.selectPet(role).get(role.getExtendBox().getCombatPet());
+            role.pushTempCache("fight_current_pet_id", Long.valueOf((currPet != null) ? ((long)currPet.getId()) : 0L));
             if (isReward) {
                 this.sendReward(fight, role, currPet);
             }
             this.fireEndEventSubstitution(fight, role, currPet, rolesA, rolesB, isA);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
-            this.logger.error("退出战斗报错了,战场ID=[{}],角色id=[{}],错误信息[{}]", new Object[] { fight.getId(), role.getId(), e.getMessage() });
+            this.logger.error("退出战斗报错了,战场ID=[{}],角色id=[{}],错误信息[{}]", new Object[] { Integer.valueOf(fight.getId()), role.getId(), e.getMessage() });
         }
         finally {
-            final Integer fightId = FightExecutorNewService.FIGHT_ROOMS.get(role.getRoleId());
+            Integer fightId = (Integer)FightExecutorNewService.FIGHT_ROOMS.get(role.getRoleId());
             if (fightId == null) {
-                final RespEndCombat respEndCombat = new RespEndCombat();
+                RespEndCombat respEndCombat = new RespEndCombat();
                 MessagePusher.pushMessage(role, respEndCombat);
             }
             this.broadcastService.sendUpdateAppear(role);
@@ -988,99 +1017,99 @@ public class FightNewService
         }
     }
     
-    private void sendReward(final Fight fight, final Role role, final Pet pet) {
+    private void sendReward(Fight fight, Role role, Pet pet) {
         try {
-            final FightRewardHandler handler = FightRewardHandler.queryHandler(fight.getRewardType());
-            if (fight.isWinner(role.getRoleId())) {
-                final RespNotifyMiscEx respNotifyMiscEx = new RespNotifyMiscEx(role.getId(), "战斗胜利", false);
+            FightRewardHandler handler = FightRewardHandler.queryHandler(fight.getRewardType());
+            if (fight.isWinner((int)role.getRoleId())) {
+                RespNotifyMiscEx respNotifyMiscEx = new RespNotifyMiscEx(role.getId(), "战斗胜利", false);
                 MessagePusher.pushMessage(role, respNotifyMiscEx);
                 if (handler != null) {
                     handler.sendReward(fight, role, pet);
                 }
             }
             else {
-                final RespNotifyMiscEx respNotifyMiscEx = new RespNotifyMiscEx(role.getId(), "战斗失败", false);
+                RespNotifyMiscEx respNotifyMiscEx = new RespNotifyMiscEx(role.getId(), "战斗失败", false);
                 MessagePusher.pushMessage(role, respNotifyMiscEx);
                 if (handler != null) {
                     handler.fightFailed(fight, role);
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error(e.getMessage(), e);
-            this.logger.error("退出战斗战斗结算时报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { fight.getId(), role.getName(), Lang.getStackTrace((Throwable)e) });
+            this.logger.error("退出战斗战斗结算时报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { Integer.valueOf(fight.getId()), role.getName(), Lang.getStackTrace(e) });
         }
     }
     
-    private void fireEndEvent(final Fight fight, final Role role, final Pet pet) {
+    private void fireEndEvent(Fight fight, Role role, Pet pet) {
         try {
             if (fight.getData() != null && fight.getData().getBoolean("fight_result_fail", false)) {
                 EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)2, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), 0));
                 return;
             }
             if (fight.getData() != null && fight.getData().getBoolean("fight_result_success", false)) {
-                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)1, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), (pet != null) ? pet.getPetId() : 0));
+                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)1, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), (pet != null) ? ((int)pet.getPetId()) : 0));
                 return;
             }
             if (fight.getRound() >= fight.getMaxRound()) {
                 EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)40, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), 0));
             }
-            else if (fight.isWinner(role.getRoleId())) {
-                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)1, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), (pet != null) ? pet.getPetId() : 0));
+            else if (fight.isWinner((int)role.getRoleId())) {
+                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)1, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), (pet != null) ? ((int)pet.getPetId()) : 0));
             }
             else {
                 EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)2, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), 0));
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error(e.getMessage(), e);
-            this.logger.error("退出战斗产生结束事件时报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { fight.getId(), role.getName(), e });
+            this.logger.error("退出战斗产生结束事件时报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { Integer.valueOf(fight.getId()), role.getName(), e });
         }
     }
     
-    private void fireEndEventSubstitution(final Fight fight, final Role role, final Pet pet, final List<Role> rolesA, final List<Role> rolesB, final boolean isA) {
+    private void fireEndEventSubstitution(Fight fight, Role role, Pet pet, List<Role> rolesA, List<Role> rolesB, boolean isA) {
         try {
             if (fight.getData() != null && fight.getData().getBoolean("fight_result_fail", false)) {
                 EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, (byte)2, 0, rolesA, rolesB));
                 return;
             }
             if (fight.getData() != null && fight.getData().getBoolean("fight_result_success", false)) {
-                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, (byte)1, (pet != null) ? pet.getPetId() : 0, rolesA, rolesB));
+                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, (byte)1, (pet != null) ? ((int)pet.getPetId()) : 0, rolesA, rolesB));
                 return;
             }
             if (fight.getRound() >= fight.getMaxRound()) {
                 EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, (byte)40, 0, rolesA, rolesB));
             }
-            else if (fight.isWinner(role.getRoleId(), isA)) {
-                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, (byte)1, (pet != null) ? pet.getPetId() : 0, rolesA, rolesB));
+            else if (fight.isWinner((int)role.getRoleId(), isA)) {
+                EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, (byte)1, (pet != null) ? ((int)pet.getPetId()) : 0, rolesA, rolesB));
             }
             else {
                 EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, (byte)2, 0, rolesA, rolesB));
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error(e.getMessage(), e);
-            this.logger.error("退出战斗产生结束事件时报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { fight.getId(), role.getName(), e });
+            this.logger.error("退出战斗产生结束事件时报错了,战场ID=[{}],角色名=[{}],错误信息[{}]", new Object[] { Integer.valueOf(fight.getId()), role.getName(), e });
         }
     }
     
-    private void resetAfterLeaveFight(final Fight fight, final FightObject fightObject) {
-        final Role role = this.roleService.getPlayer(fightObject.getId());
+    private void resetAfterLeaveFight(Fight fight, FightObject fightObject) {
+        Role role = this.roleService.getPlayer((int)fightObject.getId());
         int lastLife = fightObject.getCurrLife();
         int lastMana = fightObject.getCurrMana();
-        int maxLife = role.getMaxLife();
-        int maxMana = role.getMaxMana();
+        int maxLife = (int)role.getMaxLife();
+        int maxMana = (int)role.getMaxMana();
         int needLife = maxLife - lastLife;
-        long saveLife = role.getSaveLife();
+        long saveLife = (long)role.getSaveLife();
         int needMana = maxMana - lastMana;
-        long saveMna = role.getSaveMana();
+        long saveMna = (long)role.getSaveMana();
         if (saveLife >= 1L) {
-            if (saveLife >= needLife) {
+            if (saveLife >= (long)needLife) {
                 lastLife = maxLife;
-                saveLife -= needLife;
+                saveLife -= (long)needLife;
             }
             else {
-                lastLife += (int)saveLife;
+                lastLife = (int)((long)lastLife + saveLife);
                 saveLife = 0L;
             }
         }
@@ -1091,12 +1120,12 @@ public class FightNewService
             saveLife = 0L;
         }
         if (saveMna >= 1L) {
-            if (saveMna >= needMana) {
+            if (saveMna >= (long)needMana) {
                 lastMana = maxMana;
-                saveMna -= needMana;
+                saveMna -= (long)needMana;
             }
             else {
-                lastMana += (int)saveMna;
+                lastMana = (int)((long)lastMana + saveMna);
                 saveMna = 0L;
             }
         }
@@ -1106,34 +1135,34 @@ public class FightNewService
             }
             saveMna = 0L;
         }
-        role.setCurrLife(lastLife);
-        role.setCurrMana(lastMana);
+        role.setCurrLife(Integer.valueOf(lastLife));
+        role.setCurrMana(Integer.valueOf(lastMana));
         Map<String, Object> autoSet = role.getExtendBox().getAutoFightSet();
-        autoSet.put("type", fightObject.getAutoFightType());
-        autoSet.put("skillId", fightObject.getAutoSkillId());
-        autoSet.put("action", fightObject.getAction());
-        autoSet.put("target", fightObject.getAutoTarget());
+        autoSet.put("type", Integer.valueOf(fightObject.getAutoFightType()));
+        autoSet.put("skillId", Integer.valueOf(fightObject.getAutoSkillId()));
+        autoSet.put("action", Integer.valueOf(fightObject.getAction()));
+        autoSet.put("target", Integer.valueOf(fightObject.getAutoTarget()));
         int born = 0;
-        if (role.getRace() == RACE.RACE_LONG.getValue()) {
+        if ((int)role.getRace() == RACE.RACE_LONG.getValue()) {
             born = fightObject.getBorn();
         }
-        autoSet.put("born", born);
-        for (final Integer petId : fightObject.getYepFightPet()) {
-            final Pet pet = this.petService.selectPet(role).get(petId);
+        autoSet.put("born", Integer.valueOf(born));
+        for (Integer petId : fightObject.getYepFightPet()) {
+            Pet pet = (Pet)this.petService.selectPet(role).get(petId);
             if (pet != null) {
                 lastLife = pet.getCurrLife();
-                lastMana = pet.getCurrMana();
-                maxLife = pet.getMaxLife();
-                maxMana = pet.getMaxMana();
+                lastMana = (int)pet.getCurrMana();
+                maxLife = (int)pet.getMaxLife();
+                maxMana = (int)pet.getMaxMana();
                 needLife = maxLife - lastLife;
                 needMana = maxMana - lastMana;
                 if (saveLife >= 1L) {
-                    if (saveLife >= needLife) {
+                    if (saveLife >= (long)needLife) {
                         lastLife = maxLife;
-                        saveLife -= needLife;
+                        saveLife -= (long)needLife;
                     }
                     else {
-                        lastLife += (int)saveLife;
+                        lastLife = (int)((long)lastLife + saveLife);
                         saveLife = 0L;
                     }
                 }
@@ -1144,12 +1173,12 @@ public class FightNewService
                     saveLife = 0L;
                 }
                 if (saveMna >= 1L) {
-                    if (saveMna >= needMana) {
+                    if (saveMna >= (long)needMana) {
                         lastMana = maxMana;
-                        saveMna -= needMana;
+                        saveMna -= (long)needMana;
                     }
                     else {
-                        lastMana += (int)saveMna;
+                        lastMana = (int)((long)lastMana + saveMna);
                         saveMna = 0L;
                     }
                 }
@@ -1159,34 +1188,37 @@ public class FightNewService
                     }
                     saveMna = 0L;
                 }
-                pet.setCurrMana(lastMana);
+                pet.setCurrMana(Integer.valueOf(lastMana));
                 pet.setCurrLife(lastLife);
-                final FightObject petObject = fight.queryFightObject(petId);
+                FightObject petObject = fight.queryFightObject(petId);
                 if (petObject != null) {
-                    autoSet = (Map<String, Object>)NutMap.NEW();
-                    autoSet.put("type", petObject.getAutoFightType());
-                    autoSet.put("skillId", petObject.getAutoSkillId());
-                    autoSet.put("action", petObject.getAction());
-                    autoSet.put("target", petObject.getAutoTarget());
+                    autoSet = NutMap.NEW();
+                    autoSet.put("type", Integer.valueOf(petObject.getAutoFightType()));
+                    autoSet.put("skillId", Integer.valueOf(petObject.getAutoSkillId()));
+                    autoSet.put("action", Integer.valueOf(petObject.getAction()));
+                    autoSet.put("target", Integer.valueOf(petObject.getAutoTarget()));
                     pet.setAutoFightSet(autoSet);
                 }
-                final boolean once = fight.petDeadOnce(petId);
+                boolean once = fight.petDeadOnce((int)petId);
                 this.petService.refreshPetClose(role, pet, once, fight.getType());
             }
+            else {
+                continue;
+            }
         }
-        role.setSaveMana(saveMna);
-        role.setSaveLife(saveLife);
+        role.setSaveMana(Long.valueOf(saveMna));
+        role.setSaveLife(Long.valueOf(saveLife));
         this.roleService.checkReserve(role);
         this.roleService.refreshRoleInfo(role, true);
         role.save();
     }
     
-    public void fullLifeRoleAndPet(final Fight fight, final Role role) {
+    public void fullLifeRoleAndPet(Fight fight, Role role) {
         fight.getRoleFightInParam(role);
         this.fullHpAndMpOfRole(role);
-        final Integer combatPet = role.getExtendBox().getCombatPet();
-        if (combatPet >= 1) {
-            final Pet pet = this.petService.selectPet(role).get(combatPet);
+        Integer combatPet = role.getExtendBox().getCombatPet();
+        if ((int)combatPet >= 1) {
+            Pet pet = (Pet)this.petService.selectPet(role).get(combatPet);
             if (pet != null) {
                 fight.addPetFightInParam(role, pet);
                 this.fullHpAndMpOfPet(role, pet);
@@ -1195,99 +1227,97 @@ public class FightNewService
         role.save();
     }
     
-    private LifeManaParam fullHpAndMpOfRole(final Role role) {
-        final LifeManaParam lifeManaParam = new LifeManaParam();
-        final int maxLife = role.getMaxLife();
-        final int maxMana = role.getMaxMana();
-        if (role.getSaveLife() >= maxLife - role.getCurrLife()) {
-            role.setCurrLife(maxLife);
-            role.setSaveLife(role.getSaveLife() - (maxLife - role.getCurrLife()));
+    private LifeManaParam fullHpAndMpOfRole(Role role) {
+        LifeManaParam lifeManaParam = new LifeManaParam();
+        int maxLife = (int)role.getMaxLife();
+        int maxMana = (int)role.getMaxMana();
+        if ((long)role.getSaveLife() >= (long)(maxLife - (int)role.getCurrLife())) {
+            role.setCurrLife(Integer.valueOf(maxLife));
+            role.setSaveLife(Long.valueOf((long)role.getSaveLife() - (long)(maxLife - (int)role.getCurrLife())));
         }
         else {
-            role.setCurrLife(role.getCurrLife() + role.getSaveLife().intValue());
-            role.setSaveLife(0L);
+            role.setCurrLife(Integer.valueOf((int)role.getCurrLife() + role.getSaveLife().intValue()));
+            role.setSaveLife(Long.valueOf(0L));
         }
-        lifeManaParam.setCurrLife(role.getCurrLife());
+        lifeManaParam.setCurrLife((int)role.getCurrLife());
         lifeManaParam.setSaveLife(String.valueOf(role.getSaveLife()));
-        if (role.getSaveMana() >= maxMana - role.getCurrMana()) {
-            role.setSaveMana(role.getSaveMana() - (maxMana - role.getCurrMana()));
-            role.setCurrMana(maxMana);
+        if ((long)role.getSaveMana() >= (long)(maxMana - (int)role.getCurrMana())) {
+            role.setSaveMana(Long.valueOf((long)role.getSaveMana() - (long)(maxMana - (int)role.getCurrMana())));
+            role.setCurrMana(Integer.valueOf(maxMana));
         }
         else {
-            role.setCurrMana(role.getCurrMana() + role.getSaveMana().intValue());
-            role.setSaveMana(0L);
+            role.setCurrMana(Integer.valueOf((int)role.getCurrMana() + role.getSaveMana().intValue()));
+            role.setSaveMana(Long.valueOf(0L));
         }
-        lifeManaParam.setCurrMana(role.getCurrMana());
+        lifeManaParam.setCurrMana((int)role.getCurrMana());
         lifeManaParam.setSaveMana(String.valueOf(role.getSaveMana()));
         return lifeManaParam;
     }
     
-    public LifeManaParam fullHpAndMpOfPet(final Role role, final Pet pet) {
+    public LifeManaParam fullHpAndMpOfPet(Role role, Pet pet) {
         if (pet == null) {
             return null;
         }
-        final LifeManaParam lifeManaParam = new LifeManaParam();
-        if (role.getSaveLife() >= pet.getMaxLife() - pet.getCurrLife()) {
-            role.setSaveLife(role.getSaveLife() - (pet.getMaxLife() - pet.getCurrLife()));
-            pet.setCurrLife(pet.getMaxLife());
+        LifeManaParam lifeManaParam = new LifeManaParam();
+        if ((long)role.getSaveLife() >= (long)((int)pet.getMaxLife() - pet.getCurrLife())) {
+            role.setSaveLife(Long.valueOf((long)role.getSaveLife() - (long)((int)pet.getMaxLife() - pet.getCurrLife())));
+            pet.setCurrLife((int)pet.getMaxLife());
         }
         else {
-            pet.setCurrLife(role.getCurrLife() + role.getSaveLife().intValue());
-            role.setSaveLife(0L);
+            pet.setCurrLife((int)role.getCurrLife() + role.getSaveLife().intValue());
+            role.setSaveLife(Long.valueOf(0L));
         }
         lifeManaParam.setCurrLife(pet.getCurrLife());
         lifeManaParam.setSaveLife(String.valueOf(role.getSaveLife()));
-        if (role.getSaveMana() >= pet.getMaxMana() - pet.getCurrMana()) {
-            role.setSaveMana(role.getSaveMana() - (pet.getMaxMana() - pet.getCurrMana()));
+        if ((long)role.getSaveMana() >= (long)((int)pet.getMaxMana() - (int)pet.getCurrMana())) {
+            role.setSaveMana(Long.valueOf((long)role.getSaveMana() - (long)((int)pet.getMaxMana() - (int)pet.getCurrMana())));
             pet.setCurrMana(pet.getMaxMana());
         }
         else {
-            pet.setCurrMana(pet.getCurrMana() + role.getSaveMana().intValue());
-            role.setSaveMana(0L);
+            pet.setCurrMana(Integer.valueOf((int)pet.getCurrMana() + role.getSaveMana().intValue()));
+            role.setSaveMana(Long.valueOf(0L));
         }
-        lifeManaParam.setCurrMana(pet.getCurrMana());
+        lifeManaParam.setCurrMana((int)pet.getCurrMana());
         lifeManaParam.setSaveMana(String.valueOf(role.getSaveMana()));
         return lifeManaParam;
     }
     
-    public void checkAtFightStart(final Role role) {
-        if (role.getCurrLife() <= 0) {
-            role.setCurrLife(1);
+    public void checkAtFightStart(Role role) {
+        if ((int)role.getCurrLife() <= 0) {
+            role.setCurrLife(Integer.valueOf(1));
         }
     }
     
-    public void sendStartCombat(final Fight fight, final RespCombatFriends respCombatFriends, final RespCombatOpponets respCombatOpponets, final List<Member> members) {
+    public void sendStartCombat(Fight fight, RespCombatFriends respCombatFriends, RespCombatOpponets respCombatOpponets, List<Member> members) {
         if (fight != null) {
             for (int i = 0; i < members.size(); ++i) {
-                final Member member = members.get(i);
-                if (member.isInTeam()) {
-                    if (!member.isPartner()) {
-                        final Role tempRole = this.roleService.getPlayer(member.getId());
-                        if (tempRole == null) {
-                            this.logger.error("战斗开始未找到role=={}", member.getId());
+                Member member = (Member)members.get(i);
+                if (member.isInTeam() && !member.isPartner()) {
+                    Role tempRole = this.roleService.getPlayer((long)member.getId());
+                    if (tempRole == null) {
+                        this.logger.error("战斗开始未找到role=={}", member.getId());
+                    }
+                    else {
+                        RespFightInParam fightInParam = fight.getRoleFightInParam(tempRole);
+                        fightInParam.setFightType(fight.getType());
+                        if (fight.isPvp() == 1 && tempRole.getExtendBox().getAutoFight() == 1) {
+                            tempRole.getExtendBox().setAutoFight((byte)0);
                         }
-                        else {
-                            final RespFightInParam fightInParam = fight.getRoleFightInParam(tempRole);
-                            fightInParam.setFightType(fight.getType());
-                            if (fight.isPvp() == 1 && tempRole.getExtendBox().getAutoFight() == 1) {
-                                tempRole.getExtendBox().setAutoFight((byte)0);
-                            }
-                            fightInParam.setRespCombatFriends(respCombatFriends);
-                            fightInParam.setRespCombatOpponets(respCombatOpponets);
-                            this.broadcastService.sendTitleInfoNew(tempRole);
-                        }
+                        fightInParam.setRespCombatFriends(respCombatFriends);
+                        fightInParam.setRespCombatOpponets(respCombatOpponets);
+                        this.broadcastService.sendTitleInfoNew(tempRole);
                     }
                 }
             }
         }
     }
     
-    public byte getTitleInfo(final Role role) {
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        final Fight fight = this.getFightByRoleId(role.getRoleId());
+    public byte getTitleInfo(Role role) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        Fight fight = this.getFightByRoleId((int)role.getRoleId());
         String temp = "";
         if (team != null) {
-            if (team.isLeader(role.getRoleId())) {
+            if (team.isLeader((int)role.getRoleId())) {
                 if (team.getList().size() == 5) {
                     temp += "10";
                 }
@@ -1296,12 +1326,14 @@ public class FightNewService
                 }
             }
             else {
-                for (int i = 0; i < team.getList().size(); ++i) {
-                    final Member member = team.getList().get(i);
+                int i = 0;
+                while (i < team.getList().size()) {
+                    Member member = (Member)team.getList().get(i);
                     if (member.getRoleId().equals(role.getRoleId()) && member.isInTeam()) {
                         temp += "00";
                         break;
                     }
+                    ++i;
                 }
             }
         }
@@ -1314,86 +1346,88 @@ public class FightNewService
         else {
             temp += "0";
         }
-        if (role.getPkInfoBox().isRedName() && !role.getPos().getMapId().equals(1201)) {
+        if (role.getPkInfoBox().isRedName() && !role.getPos().getMapId().equals(Integer.valueOf(1201))) {
             temp += "1";
         }
         else {
             temp += "0";
         }
-        final byte test = Byte.parseByte(temp, 2);
+        byte test = Byte.parseByte(temp, 2);
         return test;
     }
     
-    public SkillAutoPicker getAutoObject(final FightObject attacker, final Fight fight) {
-        final SkillAutoPicker useResult = new SkillAutoPicker();
+    public SkillAutoPicker getAutoObject(FightObject attacker, Fight fight) {
+        SkillAutoPicker useResult = new SkillAutoPicker();
         int autoSkillId = 0;
         try {
             autoSkillId = attacker.getAutoSkillId();
-            final int autoType = attacker.getAutoFightType();
+            int autoType = attacker.getAutoFightType();
             useResult.setType(autoType);
             if (autoType == 5) {
-                final SysDrug drug = ItemDataPool.data_drug.get(autoSkillId);
+                SysDrug drug = (SysDrug)ItemDataPool.data_drug.get(Integer.valueOf(autoSkillId));
                 if (drug == null) {
-                    useResult.setDef(true).setSkillId(autoSkillId).setTargetId(attacker.getId());
+                    useResult.setDef(true).setSkillId(autoSkillId).setTargetId((int)attacker.getId());
                     return useResult;
                 }
                 useResult.setSkillId(autoSkillId);
                 if (attacker.getAutoTarget() > 0) {
-                    final FightObject target = fight.queryFightObject(attacker.getAutoTarget());
+                    FightObject target = fight.queryFightObject(Integer.valueOf(attacker.getAutoTarget()));
                     if (target != null) {
-                        useResult.setTargetId(target.getId());
+                        useResult.setTargetId((int)target.getId());
                         return useResult;
                     }
                 }
                 FightObject fightObject = null;
-                if (drug.getTargetType() == TARGETTYPE.ALL_OURS.getValue()) {
-                    if (drug.getShowClass() == 4) {
+                if ((int)drug.getTargetType() == TARGETTYPE.ALL_OURS.getValue()) {
+                    if ((int)drug.getShowClass() == 4) {
                         fightObject = SkillAi.certainStatusOrPro(fight, drug.getStatus(), attacker.isASide(), 4);
                     }
                     else {
                         fightObject = SkillAi.effectProBass(fight, attacker, drug.getShowClass(), Arrays.asList(new String[0]), false);
                     }
                     if (fightObject != null) {
-                        useResult.setTargetId(fightObject.getId());
+                        useResult.setTargetId((int)fightObject.getId());
+                        return useResult;
                     }
                     return useResult;
                 }
-                if (drug.getTargetType() == TARGETTYPE.ALL_ENEMY.getValue()) {
-                    final FightObject unit = SkillAi.certainStatusOrPro(fight, drug.getStatus(), !attacker.isASide(), 4);
+                else if ((int)drug.getTargetType() == TARGETTYPE.ALL_ENEMY.getValue()) {
+                    FightObject unit = SkillAi.certainStatusOrPro(fight, drug.getStatus(), !attacker.isASide(), 4);
                     if (unit != null) {
-                        useResult.setSkillId(autoSkillId).setTargetId(unit.getId());
+                        useResult.setSkillId(autoSkillId).setTargetId((int)unit.getId());
+                        return useResult;
                     }
                     return useResult;
                 }
             }
             else {
                 if (autoType == 1) {
-                    useResult.setDef(true).setSkillId(autoSkillId).setTargetId(attacker.getId());
+                    useResult.setDef(true).setSkillId(autoSkillId).setTargetId((int)attacker.getId());
                     return useResult;
                 }
                 if (autoType == 0) {
-                    final FightObject randTarget = SkillTargetPicker.getPhysicTarget(attacker, fight);
-                    if (randTarget != null) {
-                        return useResult.setSkillId(autoSkillId).setTargetId(randTarget.getId());
+                    FightObject randTarget2 = SkillTargetPicker.getPhysicTarget(attacker, fight);
+                    if (randTarget2 != null) {
+                        return useResult.setSkillId(autoSkillId).setTargetId((int)randTarget2.getId());
                     }
                     return useResult;
                 }
                 else {
-                    final RoleSkill roleSkill = attacker.getSkillBy(autoSkillId);
-                    final int autoTargetId = attacker.getAutoTarget();
-                    final FightObject autoTarget = fight.queryFightObject(autoTargetId);
+                    RoleSkill roleSkill = attacker.getSkillBy(Integer.valueOf(autoSkillId));
+                    int autoTargetId = attacker.getAutoTarget();
+                    FightObject autoTarget = fight.queryFightObject(Integer.valueOf(autoTargetId));
                     if (roleSkill == null) {
                         if (autoTarget != null && !autoTarget.isFallDown() && autoTarget.isASide() != attacker.isASide()) {
-                            return useResult.setSkillId(autoSkillId).setTargetId(autoTarget.getId());
+                            return useResult.setSkillId(autoSkillId).setTargetId((int)autoTarget.getId());
                         }
-                        final FightObject randTarget2 = SkillTargetPicker.getPhysicTarget(attacker, fight);
-                        if (randTarget2 != null) {
-                            return useResult.setSkillId(autoSkillId).setTargetId(randTarget2.getId());
+                        FightObject randTarget = SkillTargetPicker.getPhysicTarget(attacker, fight);
+                        if (randTarget != null) {
+                            return useResult.setSkillId(autoSkillId).setTargetId((int)randTarget.getId());
                         }
                         return useResult;
                     }
                     else {
-                        final int skillTargetSum = SkillFunc.getSkillTargeNum(roleSkill.getSkillId(), roleSkill.getProficient(), attacker.getSerial());
+                        int skillTargetSum = (int)SkillFunc.getSkillTargeNum(roleSkill.getSkillId(), roleSkill.getProficient(), Integer.valueOf(attacker.getSerial()));
                         if (autoTarget == null || autoTarget.isFallDown()) {
                             if (SkillFunc.isAssistSkill(roleSkill.getSkillId(), attacker.getLogic())) {
                                 getUseResult(fight, attacker, roleSkill, useResult, autoSkillId, skillTargetSum);
@@ -1404,14 +1438,14 @@ public class FightNewService
                         }
                         else if (SkillFunc.isAssistSkill(roleSkill.getSkillId(), attacker.getLogic())) {
                             if (autoTarget.isASide() == attacker.isASide()) {
-                                return useResult.setSkillId(autoSkillId).setTargetId(autoTarget.getId());
+                                return useResult.setSkillId(autoSkillId).setTargetId((int)autoTarget.getId());
                             }
                             getUseResult(fight, attacker, roleSkill, useResult, autoSkillId, skillTargetSum);
                             return useResult;
                         }
                         else {
                             if (autoTarget.isASide() != attacker.isASide()) {
-                                return useResult.setSkillId(autoSkillId).setTargetId(autoTarget.getId());
+                                return useResult.setSkillId(autoSkillId).setTargetId((int)autoTarget.getId());
                             }
                             getUseResult(fight, attacker, roleSkill, useResult, autoSkillId, skillTargetSum);
                             return useResult;
@@ -1420,174 +1454,173 @@ public class FightNewService
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error(e.getMessage(), e);
         }
         return useResult;
     }
     
-    public static void getUseResult(final Fight fight, final FightObject attacker, final RoleSkill roleSkill, final SkillAutoPicker useResult, final int skillId, final int skillTargetSum) {
+    public static void getUseResult(Fight fight, FightObject attacker, RoleSkill roleSkill, SkillAutoPicker useResult, int skillId, int skillTargetSum) {
         attacker.setTargetId(0);
-        attacker.setSkillId(roleSkill.getSkillId());
-        final List<Integer> targetListNew = SkillTargetPicker.getTargetListNew(attacker, skillTargetSum, fight);
+        attacker.setSkillId((int)roleSkill.getSkillId());
+        List<Integer> targetListNew = SkillTargetPicker.getTargetListNew(attacker, skillTargetSum, fight);
         if (targetListNew != null && targetListNew.size() > 0) {
-            final int tempRoleId = targetListNew.get(0);
+            int tempRoleId = (int)targetListNew.get(0);
             useResult.setSkillId(skillId).setTargetId(tempRoleId);
             return;
         }
         attacker.setTargetId(0);
-        attacker.setSkillId(roleSkill.getSkillId());
-        final int tempRoleId = 0;
+        attacker.setSkillId((int)roleSkill.getSkillId());
+        int tempRoleId = 0;
         useResult.setSkillId(skillId).setTargetId(tempRoleId);
+        return;
     }
     
-    public boolean isSameTeam(final FightObject attacker, final FightObject target) {
+    public boolean isSameTeam(FightObject attacker, FightObject target) {
         return attacker.isASide() == target.isASide();
     }
     
-    public void autoFightOne(final Fight fight, final FightObject attacker) {
+    public void autoFightOne(Fight fight, FightObject attacker) {
         this.autoFightOne(fight, attacker, 2500L);
     }
     
-    public void autoFightOne(final Fight fight, final FightObject attacker, final long delay) {
+    public void autoFightOne(Fight fight, FightObject attacker, long delay) {
         this.fightExecutorService.addFightTask(fight, () -> {
             try {
-                if (!fight.isOver()) {
-                    if (attacker.getAutoFight() == 1) {
-                        final ReqFightHandle reqFightHandle = this.fightMessageNewService.autoFightOne(fight, attacker);
-                        if (reqFightHandle == null) {
-                            this.logger.error("fight[{}], type[{}],{}出手动作为空", fight.getId(), fight.getType(), attacker);
-                        }
-                        else {
-                            final AutoChuShouNewTask autoTask = new AutoChuShouNewTask(reqFightHandle, fight);
-                            final ScheduledFuture<?> timeOut = SchedulerManager.getInstance().schedule(autoTask, delay);
-                            fight.addHostTask(reqFightHandle.getAttackerId(), timeOut);
-                            if (attacker.getFightPetId() > 0) {
-                                final FightObject petObject = fight.queryFightObject(attacker.getFightPetId());
-                                if (petObject != null) {
-                                    final ReqFightHandle reqFightHandle2 = this.fightMessageNewService.autoFightOne(fight, petObject);
-                                    if (reqFightHandle2 == null) {
-                                        this.logger.error("fight[{}], type[{}],{}出手动作为空", fight.getId(), fight.getType(), attacker);
-                                    }
-                                    else {
-                                        final AutoChuShouNewTask petAutoTask = new AutoChuShouNewTask(reqFightHandle2, fight);
-                                        final ScheduledFuture<?> petTimeOut = SchedulerManager.getInstance().schedule(petAutoTask, delay + 20L);
-                                        fight.addPetTask(reqFightHandle2.getAttackerId(), petTimeOut);
-                                    }
-                                }
+                if (fight.isOver()) {
+                    return;
+                }
+                if (attacker.getAutoFight() == 1) {
+                    ReqFightHandle reqFightHandle = this.fightMessageNewService.autoFightOne(fight, attacker);
+                    if (reqFightHandle == null) {
+                        this.logger.error("fight[{}], type[{}],{}出手动作为空", new Object[] { Integer.valueOf(fight.getId()), Integer.valueOf(fight.getType()), attacker });
+                        return;
+                    }
+                    AutoChuShouNewTask autoTask = new AutoChuShouNewTask(reqFightHandle, fight);
+                    ScheduledFuture<?> timeOut = SchedulerManager.getInstance().schedule(autoTask, delay);
+                    fight.addHostTask(reqFightHandle.getAttackerId(), timeOut);
+                    if (attacker.getFightPetId() > 0) {
+                        FightObject petObject = fight.queryFightObject(Integer.valueOf(attacker.getFightPetId()));
+                        if (petObject != null) {
+                            ReqFightHandle reqFightHandle2 = this.fightMessageNewService.autoFightOne(fight, petObject);
+                            if (reqFightHandle2 == null) {
+                                this.logger.error("fight[{}], type[{}],{}出手动作为空", new Object[] { Integer.valueOf(fight.getId()), Integer.valueOf(fight.getType()), attacker });
+                                return;
                             }
+                            AutoChuShouNewTask petAutoTask = new AutoChuShouNewTask(reqFightHandle2, fight);
+                            ScheduledFuture<?> petTimeOut = SchedulerManager.getInstance().schedule(petAutoTask, delay + 20L);
+                            fight.addPetTask(reqFightHandle2.getAttackerId(), petTimeOut);
                         }
                     }
                 }
             }
-            catch (final Exception e) {
-                this.logger.error("fight[{}], type[{}],自动战斗出错{}", fight.getId(), fight.getType(), e);
-                final ReqFightHandle reqFightHandle3 = new ReqFightHandle();
+            catch (Exception e) {
+                this.logger.error("fight[{}], type[{}],自动战斗出错{}", new Object[] { Integer.valueOf(fight.getId()), Integer.valueOf(fight.getType()), e });
+                ReqFightHandle reqFightHandle3 = new ReqFightHandle();
                 reqFightHandle3.setRound(fight.getRound());
                 reqFightHandle3.setAutoFight(1);
-                reqFightHandle3.setAttackerId(attacker.getId());
-                reqFightHandle3.setTargetId(attacker.getId());
+                reqFightHandle3.setAttackerId((int)attacker.getId());
+                reqFightHandle3.setTargetId((int)attacker.getId());
                 reqFightHandle3.setSkillId(0);
                 reqFightHandle3.setType(1);
-                final AutoChuShouNewTask autoTask2 = new AutoChuShouNewTask(reqFightHandle3, fight);
-                final ScheduledFuture<?> timeOut2 = SchedulerManager.getInstance().schedule(autoTask2, delay);
+                AutoChuShouNewTask autoTask2 = new AutoChuShouNewTask(reqFightHandle3, fight);
+                ScheduledFuture<?> timeOut2 = SchedulerManager.getInstance().schedule(autoTask2, delay);
                 fight.addHostTask(reqFightHandle3.getAttackerId(), timeOut2);
                 if (attacker.getFightPetId() > 0) {
-                    final FightObject petObject2 = fight.queryFightObject(attacker.getFightPetId());
+                    FightObject petObject2 = fight.queryFightObject(Integer.valueOf(attacker.getFightPetId()));
                     if (petObject2 != null) {
-                        final ReqFightHandle reqFightHandle4 = new ReqFightHandle();
+                        ReqFightHandle reqFightHandle4 = new ReqFightHandle();
                         reqFightHandle4.setAutoFight(1);
                         reqFightHandle4.setRound(fight.getRound());
-                        reqFightHandle4.setAttackerId(petObject2.getId());
-                        reqFightHandle4.setTargetId(petObject2.getId());
+                        reqFightHandle4.setAttackerId((int)petObject2.getId());
+                        reqFightHandle4.setTargetId((int)petObject2.getId());
                         reqFightHandle4.setSkillId(0);
                         reqFightHandle4.setType(1);
-                        final AutoChuShouNewTask petAutoTask2 = new AutoChuShouNewTask(reqFightHandle4, fight);
-                        final ScheduledFuture<?> petTimeOut2 = SchedulerManager.getInstance().schedule(petAutoTask2, delay + 20L);
+                        AutoChuShouNewTask petAutoTask2 = new AutoChuShouNewTask(reqFightHandle4, fight);
+                        ScheduledFuture<?> petTimeOut2 = SchedulerManager.getInstance().schedule(petAutoTask2, delay + 20L);
                         fight.addPetTask(reqFightHandle4.getAttackerId(), petTimeOut2);
                     }
                 }
             }
+            return;
         });
     }
     
-    public List<Member> loadTeamBattleInfo(final Team team, final List<FightMember> fightMemberA, final Fight battleground) {
-        final List<FightObject> memberListA = battleground.getListA();
+    public List<Member> loadTeamBattleInfo(Team team, List<FightMember> fightMemberA, Fight battleground) {
+        List<FightObject> memberListA = battleground.getListA();
         battleground.setListA(memberListA);
-        FightExecutorNewService.FIGHTS.put(battleground.getId(), battleground);
-        final List<Member> list = team.getList();
+        FightExecutorNewService.FIGHTS.put(Integer.valueOf(battleground.getId()), battleground);
+        List<Member> list = team.getList();
         int index = 1;
         int petIndex = 5;
         int customIndex = 0;
         int playerNum = 0;
         for (int i = list.size() - 1; i >= 0; --i) {
-            final Member member = list.get(i);
-            if (member.isInTeam()) {
-                if (!member.isPartner()) {
-                    final Role tmpRole = this.roleService.getPlayer(member.getId());
-                    FightExecutorNewService.FIGHT_ROOMS.put(member.getRoleId(), battleground.getId());
-                    this.fullLifeRoleAndPet(battleground, tmpRole);
-                    this.checkAtFightStart(tmpRole);
-                    FightObject fightObject = null;
-                    if (i == 0) {
-                        fightObject = new PlayerFightObject(tmpRole, 0, customIndex, true);
-                    }
-                    else {
-                        fightObject = new PlayerFightObject(tmpRole, index, customIndex, true);
-                    }
-                    memberListA.add(fightObject);
-                    final FightMember fightMember = fightObject.asFightMember();
-                    fightMemberA.add(fightMember);
-                    if (i != 0) {
-                        ++index;
-                    }
-                    ++playerNum;
-                    ++customIndex;
-                    final Pet pet = this.petService.selectPet(tmpRole).get(tmpRole.getExtendBox().getCombatPet());
-                    if (pet != null) {
-                        ++customIndex;
-                        final PetFightObject petFightObj = new PetFightObject(pet, fightObject);
-                        memberListA.add(petFightObj);
-                        final FightMember petFightMember = petFightObj.asFightMember();
-                        fightMemberA.add(petFightMember);
-                        FightExecutorNewService.PETID_ROLEID.put(pet.getPetId(), member.getRoleId());
-                        FightExecutorNewService.FIGHT_ROOMS.put(pet.getPetId(), battleground.getId());
-                    }
-                    ++petIndex;
+            Member member = (Member)list.get(i);
+            if (member.isInTeam() && !member.isPartner()) {
+                Role tmpRole = this.roleService.getPlayer((long)member.getId());
+                FightExecutorNewService.FIGHT_ROOMS.put(member.getRoleId(), Integer.valueOf(battleground.getId()));
+                this.fullLifeRoleAndPet(battleground, tmpRole);
+                this.checkAtFightStart(tmpRole);
+                FightObject fightObject = null;
+                if (i == 0) {
+                    fightObject = new PlayerFightObject(tmpRole, 0, customIndex, true);
                 }
+                else {
+                    fightObject = new PlayerFightObject(tmpRole, index, customIndex, true);
+                }
+                memberListA.add(fightObject);
+                FightMember fightMember = fightObject.asFightMember();
+                fightMemberA.add(fightMember);
+                if (i != 0) {
+                    ++index;
+                }
+                ++playerNum;
+                ++customIndex;
+                Pet pet = (Pet)this.petService.selectPet(tmpRole).get(tmpRole.getExtendBox().getCombatPet());
+                if (pet != null) {
+                    ++customIndex;
+                    PetFightObject petFightObj = new PetFightObject(pet, fightObject);
+                    memberListA.add(petFightObj);
+                    FightMember petFightMember = petFightObj.asFightMember();
+                    fightMemberA.add(petFightMember);
+                    FightExecutorNewService.PETID_ROLEID.put(pet.getPetId(), member.getRoleId());
+                    FightExecutorNewService.FIGHT_ROOMS.put(pet.getPetId(), Integer.valueOf(battleground.getId()));
+                }
+                ++petIndex;
             }
         }
-        if (!Const.not_partner.contains(battleground.getType()) && playerNum < 5 && team.getPartner() != null && team.getPartner().size() > 0) {
+        if (!Const.not_partner.contains(Integer.valueOf(battleground.getType())) && playerNum < 5 && team.getPartner() != null && team.getPartner().size() > 0) {
             int residueNum = 5 - playerNum;
-            for (final Member member2 : team.getPartner()) {
+            for (Member member2 : team.getPartner()) {
                 if (residueNum <= 0) {
                     break;
                 }
                 if (!member2.isInTeam()) {
                     continue;
                 }
-                final Role teamRole = this.roleService.getPlayer(member2.getRoleId());
+                Role teamRole = this.roleService.getPlayer((int)member2.getRoleId());
                 if (teamRole == null) {
                     continue;
                 }
-                final Map<Integer, Partner> partnerMap = DataCache.PARTNER_MAP.get(teamRole.getId());
+                Map<Integer, Partner> partnerMap = (Map)DataCache.PARTNER_MAP.get(teamRole.getId());
                 if (partnerMap == null) {
                     continue;
                 }
                 if (partnerMap.size() <= 0) {
                     continue;
                 }
-                final Partner partner = partnerMap.get(member2.getObjectId());
+                Partner partner = (Partner)partnerMap.get(member2.getObjectId());
                 if (partner == null) {
                     continue;
                 }
-                final FightObject hostFightObject = battleground.queryFightObject(member2.getRoleId());
+                FightObject hostFightObject = battleground.queryFightObject(member2.getRoleId());
                 if (hostFightObject == null) {
                     continue;
                 }
-                final FightObject partnerFightObject = new PartnerFightObject(partner, hostFightObject, index);
+                FightObject partnerFightObject = new PartnerFightObject(partner, hostFightObject, index);
                 memberListA.add(partnerFightObject);
-                final FightMember partnerFightMember = partnerFightObject.asFightMember();
+                FightMember partnerFightMember = partnerFightObject.asFightMember();
                 fightMemberA.add(partnerFightMember);
                 ++index;
                 --residueNum;
@@ -1596,7 +1629,7 @@ public class FightNewService
         return list;
     }
     
-    public Fight enterTeamPK(final List<Member> listA, final List<Member> listB, final Role role) {
+    public Fight enterTeamPK(List<Member> listA, List<Member> listB, Role role) {
         if (!this.canFight(role, listA)) {
             this.logger.error("无法战斗A：{}", role.getName());
             return null;
@@ -1610,19 +1643,19 @@ public class FightNewService
             return null;
         }
         synchronized (role.getCanFight()) {
-            if (!role.getCanFight()) {
+            if (!(boolean)role.getCanFight()) {
                 return null;
             }
-            role.setCanFight(false);
+            role.setCanFight(Boolean.valueOf(false));
         }
-        final int mapId = role.getPos().getMapId();
-        final Fight battleground = FightFactory.getFightFactory(FIGHT_TYPE.FORCE_PK.getValue()).create(mapId, FIGHT_TYPE.FORCE_PK.getValue(), listA, listB);
+        int mapId = (int)role.getPos().getMapId();
+        Fight battleground = FightFactory.getFightFactory(FIGHT_TYPE.FORCE_PK.getValue()).create(mapId, Integer.valueOf(FIGHT_TYPE.FORCE_PK.getValue()), listA, listB);
         battleground.setRewardType(FIGHT_TYPE.FORCE_PK.getValue());
         battleground.start();
         return battleground;
     }
     
-    public void enterFieldFight(final Team team, final Role role) {
+    public void enterFieldFight(Team team, Role role) {
         if (!this.canFight(role, team.getList())) {
             return;
         }
@@ -1630,31 +1663,32 @@ public class FightNewService
             return;
         }
         synchronized (role.getCanFight()) {
-            if (!role.getCanFight()) {
+            if (!(boolean)role.getCanFight()) {
                 return;
             }
-            role.setCanFight(false);
+            role.setCanFight(Boolean.valueOf(false));
         }
-        final Pos position = role.getPos();
-        final int mapId = position.getMapId();
-        final MonsterService monsterService = SpringUtils.getBean(MonsterService.class);
-        final Object[] objs = monsterService.getMapMonster(role, mapId);
-        final Integer warRoleSerial = (Integer)objs[0];
-        final List<SysDataMonster> monsters = (List<SysDataMonster>)objs[1];
+        Pos position = role.getPos();
+        int mapId = (int)position.getMapId();
+        MonsterService monsterService = (MonsterService)SpringUtils.getBean(MonsterService.class);
+        Object[] objs = monsterService.getMapMonster(role, mapId);
+        Integer warRoleSerial = (Integer)objs[0];
+        List<SysDataMonster> monsters = (List)objs[1];
         if (CollectionUtils.isEmpty(monsters)) {
             return;
         }
-        final Fight battleground = FightFactory.getFightFactory(FIGHT_TYPE.MONSTER.getValue()).create(mapId, team, role);
-        battleground.setRewardType(warRoleSerial);
+        Fight battleground = FightFactory.getFightFactory(FIGHT_TYPE.MONSTER.getValue()).create(mapId, team, role);
+        battleground.setRewardType((int)warRoleSerial);
         battleground.start();
+        return;
     }
     
-    public boolean canFight(final Role role, final List<Member> list) {
+    public boolean canFight(Role role, List<Member> list) {
         return !this.isInFight(role, list);
     }
     
-    public boolean isInFight(final Role role) {
-        final Team team = this.teamService.getTeam(role.getRoleId());
+    public boolean isInFight(Role role) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
         List<Member> memberList = Collections.emptyList();
         if (team != null) {
             memberList = team.getList();
@@ -1662,14 +1696,14 @@ public class FightNewService
         return this.isInFight(role, memberList);
     }
     
-    private boolean isInFight(final Role role, final List<Member> list) {
+    private boolean isInFight(Role role, List<Member> list) {
         if (role != null) {
-            final Fight fight = this.getFightByRoleId(role.getRoleId());
+            Fight fight = this.getFightByRoleId((int)role.getRoleId());
             if (fight != null) {
                 return false;
             }
             if (list != null) {
-                final Member member = list.stream().filter(e -> e.getId().equals(role.getId())).findFirst().orElse(null);
+                Member member = (Member)list.stream().filter(e -> e.getId().equals(role.getId())).findFirst().orElse(null);
                 if (member != null && !member.isInTeam() && fight == null) {
                     return false;
                 }
@@ -1679,68 +1713,73 @@ public class FightNewService
             }
         }
         if (list != null) {
-            for (int i = 0; i < list.size(); ++i) {
-                final Member member2 = list.get(i);
-                final Fight fight2 = this.getFightByRoleId(member2.getRoleId());
+            int i = 0;
+            while (i < list.size()) {
+                Member member2 = (Member)list.get(i);
+                Fight fight2 = this.getFightByRoleId((int)member2.getRoleId());
                 if (member2.isInTeam() && fight2 != null && !fight2.isOver()) {
                     return true;
                 }
+                ++i;
             }
         }
         return false;
     }
     
-    public void checkOrderTarget(final Fight fight, final List<Integer> targetList) {
+    public void checkOrderTarget(Fight fight, List<Integer> targetList) {
         if (fight.getData() != null && fight.getData().getBoolean("fight_order_target", false)) {
             String targetName = null;
-            final List<String> names = fight.getData().getAsList("fight_order_target_name", String.class);
-            final List<String> deadNames = fight.getData().getAsList("fight_order_target_dead_name", String.class);
+            List<String> names = fight.getData().getAsList("fight_order_target_name", String.class);
+            List<String> deadNames = fight.getData().getAsList("fight_order_target_dead_name", String.class);
             if (names.size() > deadNames.size()) {
-                targetName = names.get(deadNames.size());
+                targetName = (String)names.get(deadNames.size());
             }
-            for (final int targetId : targetList) {
-                final FightObject fightTarget = fight.queryFightObject(targetId);
+            for (int targetId : targetList) {
+                FightObject fightTarget = fight.queryFightObject(Integer.valueOf(targetId));
                 if (fightTarget.getName().equals(targetName)) {
                     fightTarget.setCurrLife(0);
                     deadNames.add(targetName);
                     if (names.size() == deadNames.size()) {
-                        fight.getData().setv("fight_result_success", true);
+                        fight.getData().setv("fight_result_success", Boolean.valueOf(true));
                         break;
                     }
+                    continue;
+                }
+                else {
                     continue;
                 }
             }
         }
     }
     
-    public void checkGuessSuccess(final Fight fight) {
+    public void checkGuessSuccess(Fight fight) {
         if (fight.getData() != null && fight.getData().getBoolean("fight_guess_true", false)) {
-            fight.getData().setv("fight_result_success", true);
+            fight.getData().setv("fight_result_success", Boolean.valueOf(true));
         }
     }
     
-    public CombatAddObject addPet2Fight(final int hostId, final Pet pet, final Fight fight, final int pos) {
-        final FightObject hostObject = fight.queryFightObject(hostId);
-        final LifeManaParam lifeManaParam = this.fullHpAndMpOfPet(hostObject.getRole(), pet);
-        final PetFightObject fightObject = new PetFightObject(pet, hostObject);
+    public CombatAddObject addPet2Fight(int hostId, Pet pet, Fight fight, int pos) {
+        FightObject hostObject = fight.queryFightObject(Integer.valueOf(hostId));
+        LifeManaParam lifeManaParam = this.fullHpAndMpOfPet(hostObject.getRole(), pet);
+        PetFightObject fightObject = new PetFightObject(pet, hostObject);
         fightObject.setComeRound(fight.getRound());
-        hostObject.setFightPetId(pet.getPetId());
+        hostObject.setFightPetId((int)pet.getPetId());
         fight.addFightObject(fightObject);
-        final CombatAddObject combatAddObject = new CombatAddObject();
-        combatAddObject.setId(pet.getPetId());
+        CombatAddObject combatAddObject = new CombatAddObject();
+        combatAddObject.setId((int)pet.getPetId());
         combatAddObject.setPosition(pos);
         combatAddObject.setHostId(hostId);
-        combatAddObject.setSerial(pet.getPetType());
+        combatAddObject.setSerial((int)pet.getPetType());
         combatAddObject.setCustomIcon(fightObject.getIcon());
         combatAddObject.setList(fightObject.asFieldValues());
         combatAddObject.addSkillIds(pet);
         return combatAddObject;
     }
     
-    public CombatAddObject addObject2Fight(final int hostId, final FightObject fightObject, final Fight fight) {
+    public CombatAddObject addObject2Fight(int hostId, FightObject fightObject, Fight fight) {
         fightObject.setComeRound(fight.getRound());
-        final CombatAddObject combatAddObject = new CombatAddObject();
-        combatAddObject.setId(fightObject.getId());
+        CombatAddObject combatAddObject = new CombatAddObject();
+        combatAddObject.setId((int)fightObject.getId());
         combatAddObject.setPosition(fightObject.getPos());
         combatAddObject.setHostId(hostId);
         combatAddObject.setSerial(fightObject.getSerial());
@@ -1750,13 +1789,16 @@ public class FightNewService
         return combatAddObject;
     }
     
-    private List<Integer> getFightObjectIds(final FightObject fightObject) {
-        final List<Integer> list = new ArrayList<Integer>();
-        final List<RoleSkill> skillIds = fightObject.getSkillIds();
+    private List<Integer> getFightObjectIds(FightObject fightObject) {
+        List<Integer> list = new ArrayList<>();
+        List<RoleSkill> skillIds = fightObject.getSkillIds();
         if (skillIds != null && skillIds.size() > 0) {
-            for (final RoleSkill roleSkill : skillIds) {
-                if (roleSkill != null && roleSkill.getSkillId() > 0) {
+            for (RoleSkill roleSkill : skillIds) {
+                if (roleSkill != null && (int)roleSkill.getSkillId() > 0) {
                     list.add(roleSkill.getSkillId());
+                }
+                else {
+                    continue;
                 }
             }
             return list;
@@ -1764,17 +1806,17 @@ public class FightNewService
         return null;
     }
     
-    private boolean isAstrictSkill(final Fight fight, final FightObject fightObject) {
+    private boolean isAstrictSkill(Fight fight, FightObject fightObject) {
         boolean isContinue = true;
-        final AstrictSkill astrictSkill = fight.getAstrictSkillMap().get(fightObject.isASide());
+        AstrictSkill astrictSkill = (AstrictSkill)fight.getAstrictSkillMap().get(Boolean.valueOf(fightObject.isASide()));
         if (astrictSkill != null) {
-            Integer count = astrictSkill.getSkillMap().get(fightObject.getSkillId());
+            Integer count = (Integer)astrictSkill.getSkillMap().get(Integer.valueOf(fightObject.getSkillId()));
             if (count == null) {
-                count = 0;
+                count = Integer.valueOf(0);
             }
-            if (count < astrictSkill.getTime()) {
-                ++count;
-                astrictSkill.getSkillMap().put(fightObject.getSkillId(), count);
+            if ((int)count < astrictSkill.getTime()) {
+                count = Integer.valueOf((int)count + 1);
+                astrictSkill.getSkillMap().put(Integer.valueOf(fightObject.getSkillId()), count);
                 isContinue = false;
             }
         }
@@ -1784,8 +1826,8 @@ public class FightNewService
         return isContinue;
     }
     
-    private void getMonsterActionType(final Fight fight, final FightObject attacker) {
-        final FightMonsterNewService fightMonsterNewService = SpringUtils.getBean(FightMonsterNewService.class);
+    private void getMonsterActionType(Fight fight, FightObject attacker) {
+        FightMonsterNewService fightMonsterNewService = (FightMonsterNewService)SpringUtils.getBean(FightMonsterNewService.class);
         if (fightMonsterNewService.checkSpecialExcute(fight, attacker)) {
             fightMonsterNewService.specialExcute(fight, attacker);
             return;
@@ -1812,42 +1854,44 @@ public class FightNewService
             attacker.setSkillId(0);
         }
         this.excuteMonsterPetSkill(attacker);
+        return;
     }
     
-    private void excuteMonsterPetSkill(final FightObject effector) {
+    private void excuteMonsterPetSkill(FightObject effector) {
         if (effector.getType() != 7) {
             return;
         }
         if (effector.getSkillId() == 83031) {
-            final int[] flzt = { 830311, 830312, 830313, 830314 };
-            final int round = RandomUtil.round(0, flzt.length - 1);
+            int[] flzt = { 830311, 830312, 830313, 830314 };
+            int round = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(flzt.length - 1));
             effector.setSkillId(flzt[round]);
         }
         if (effector.getSkillId() == 83034) {
-            final int[] yfly = { 830341, 830342, 830343, 830344, 830345 };
-            final int round = RandomUtil.round(0, yfly.length - 1);
+            int[] yfly = { 830341, 830342, 830343, 830344, 830345 };
+            int round = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(yfly.length - 1));
             effector.setSkillId(yfly[round]);
         }
+        return;
     }
     
-    public FightObject getPhysicTarget(final FightObject fightObject, final Fight fight) {
-        final FightObject target = fight.queryFightObject(fightObject.getTargetId());
+    public FightObject getPhysicTarget(FightObject fightObject, Fight fight) {
+        FightObject target = fight.queryFightObject(Integer.valueOf(fightObject.getTargetId()));
         if (target != null && !target.isFallDown() && !fightObject.getId().equals(target.getId())) {
             return target;
         }
-        final List<FightObject> selfList = SkillTargetPicker.getFightObjects(fight, fightObject, true);
+        List<FightObject> selfList = SkillTargetPicker.getFightObjects(fight, fightObject, true);
         if (selfList.size() <= 0) {
             return null;
         }
-        final Random random = new Random();
-        final int index = random.nextInt(selfList.size());
-        return selfList.get(index);
+        Random random = new Random();
+        int index = random.nextInt(selfList.size());
+        return (FightObject)selfList.get(index);
     }
     
-    public List<Integer> getTargetListNew(final FightObject fightObject, final int maxNum, final Fight fight) {
-        final RoleSkill skill = fightObject.getSkillBy(fightObject.getSkillId());
+    public List<Integer> getTargetListNew(FightObject fightObject, int maxNum, Fight fight) {
+        RoleSkill skill = fightObject.getSkillBy(Integer.valueOf(fightObject.getSkillId()));
         if (skill == null) {
-            this.logger.error("{}技能不存在", fightObject.getSkillId());
+            this.logger.error("{}技能不存在", Integer.valueOf(fightObject.getSkillId()));
             return Collections.emptyList();
         }
         if (SkillFunc.isAssistSkill(skill.getSkillId(), fightObject.getLogic())) {
@@ -1856,23 +1900,23 @@ public class FightNewService
         return SkillTargetPicker.getRandomAttackTarget(fight, fightObject, maxNum);
     }
     
-    private void getSacrificeJusticeExcute(final Fight fight, final FightObject attacker) {
+    private void getSacrificeJusticeExcute(Fight fight, FightObject attacker) {
         attacker.setType(0);
         attacker.setSkillId(0);
-        FightObject target = fight.queryFightObject(attacker.getTargetId());
+        FightObject target = fight.queryFightObject(Integer.valueOf(attacker.getTargetId()));
         if (target != null && attacker.isASide() == target.isASide()) {
-            final List<FightObject> selfList = SkillTargetPicker.getFightObjects(fight, attacker, true);
+            List<FightObject> selfList = SkillTargetPicker.getFightObjects(fight, attacker, true);
             if (selfList.size() <= 0) {
                 return;
             }
-            final Random random = new Random();
-            final int index = random.nextInt(selfList.size());
-            target = selfList.get(index);
-            attacker.setTargetId(target.getId());
+            Random random = new Random();
+            int index = random.nextInt(selfList.size());
+            target = (FightObject)selfList.get(index);
+            attacker.setTargetId((int)target.getId());
         }
     }
     
-    public boolean checkDeStatus(final Fight fight, final FightObject fightObject) {
+    public boolean checkDeStatus(Fight fight, FightObject fightObject) {
         if (fightObject.isConfusion()) {
             fightObject.setType(0);
             fightObject.setSkillId(0);
@@ -1895,17 +1939,16 @@ public class FightNewService
         if (fightObject.isFrozen()) {
             noAction = true;
         }
-        if (noAction) {}
         return noAction;
     }
     
-    private List<FightObject> getConfusionFightTargets(final FightObject fightObject, final Fight fight) {
-        final List<FightObject> result = new ArrayList<FightObject>();
-        final List<FightObject> firstTargets = SkillTargetPicker.getFightObjects(fight, fightObject, true);
-        final List<FightObject> secondTargets = SkillTargetPicker.getFightObjects(fight, fightObject, false);
-        final Optional<RoleSkill> any = fightObject.getSkillIds().stream().filter(obj -> obj.getSkillId().equals(83032)).findAny();
+    private List<FightObject> getConfusionFightTargets(FightObject fightObject, Fight fight) {
+        List<FightObject> result = new ArrayList<>();
+        List<FightObject> firstTargets = SkillTargetPicker.getFightObjects(fight, fightObject, true);
+        List<FightObject> secondTargets = SkillTargetPicker.getFightObjects(fight, fightObject, false);
+        Optional<RoleSkill> any = fightObject.getSkillIds().stream().filter(obj -> obj.getSkillId().equals(Integer.valueOf(83032))).findAny();
         if (any.isPresent()) {
-            for (final FightObject target : firstTargets) {
+            for (FightObject target : firstTargets) {
                 if (fightObject.getId().equals(target.getId())) {
                     continue;
                 }
@@ -1913,7 +1956,7 @@ public class FightNewService
             }
         }
         if (result.size() <= 0) {
-            for (final FightObject target : secondTargets) {
+            for (FightObject target : secondTargets) {
                 if (fightObject.getId().equals(target.getId())) {
                     continue;
                 }
@@ -1921,34 +1964,35 @@ public class FightNewService
             }
         }
         if (result.size() <= 0) {
-            for (final FightObject target : firstTargets) {
+            for (FightObject target : firstTargets) {
                 if (fightObject.getId().equals(target.getId())) {
                     continue;
                 }
                 result.add(target);
             }
+            return result;
         }
         return result;
     }
     
-    private void setNormalAttack(final Fight fight, final FightObject attacker) {
+    private void setNormalAttack(Fight fight, FightObject attacker) {
         attacker.setType(0);
         attacker.setSkillId(0);
         attacker.setTargetId(0);
         this.normalAttack(attacker, fight);
     }
     
-    public void getSkillFail(final Fight fight, final FightObject attacker, final String cause) {
+    public void getSkillFail(Fight fight, FightObject attacker, String cause) {
         attacker.setType(0);
         attacker.setSkillId(0);
         this.normalAttack(attacker, fight);
         this.logger.error("获取技能信息失败改变为普通攻击，原因{}", cause);
     }
     
-    private int costMana(final Fight fight, final FightObject attacker, final RoleSkill skill, int mana) {
+    private int costMana(Fight fight, FightObject attacker, RoleSkill skill, int mana) {
         if (attacker.isMonster()) {
-            final String skillStr = skill.getSkillId().toString();
-            final String skillStrFrist = skillStr.substring(0, 1);
+            String skillStr = skill.getSkillId().toString();
+            String skillStrFrist = skillStr.substring(0, 1);
             if ("3".equals(skillStrFrist) || "8".equals(skillStrFrist)) {
                 mana = 0;
             }
@@ -1957,7 +2001,7 @@ public class FightNewService
             mana = 0;
         }
         else if (attacker.isPlayer()) {
-            final int alterMp = PassiveSkillUtils.subtractMp(fight, attacker, mana);
+            int alterMp = PassiveSkillUtils.subtractMp(fight, attacker, mana);
             if (alterMp != 0) {
                 mana += alterMp;
             }
@@ -1965,55 +2009,57 @@ public class FightNewService
         return mana;
     }
     
-    public void useItem(final FightObject effector, final Fight fight) {
-        final int num = 1;
+    public void useItem(FightObject effector, Fight fight) {
+        int num = 1;
         if (this.checkDeStatus(fight, effector)) {
             return;
         }
         effector.recordAction(fight);
-        final SysDrug drug = ItemDataPool.data_drug.get(effector.getSkillId());
+        SysDrug drug = (SysDrug)ItemDataPool.data_drug.get(Integer.valueOf(effector.getSkillId()));
         if (drug == null) {
             return;
         }
-        if (effector.isPet() && (10027 == drug.getSerial() || 10028 == drug.getSerial())) {
+        if (effector.isPet() && (10027 == (int)drug.getSerial() || 10028 == (int)drug.getSerial())) {
             return;
         }
-        final Integer useType = drug.getUseType();
-        if (useType.equals(0)) {
+        Integer useType = drug.getUseType();
+        if (useType.equals(Integer.valueOf(0))) {
             return;
         }
-        FightObject target = fight.queryFightObject(effector.getTargetId());
+        FightObject target = fight.queryFightObject(Integer.valueOf(effector.getTargetId()));
         if (target == null) {
-            if (4 == drug.getShowClass()) {
+            if (4 != (int)drug.getShowClass()) {
+                List<FightObject> mySide = fight.getMySide((int)effector.getId());
+                Random random = new Random();
+                int i = random.nextInt(mySide.size());
+                FightObject fightObject = target = (FightObject)mySide.get(i);
+            }
+            else {
                 return;
             }
-            final List<FightObject> mySide = fight.getMySide(effector.getId());
-            final Random random = new Random();
-            final int i = random.nextInt(mySide.size());
-            final FightObject fightObject = target = mySide.get(i);
         }
         if (effector.getLogic() != LOGIC.LOGICTYPE_MONSTER.getValue()) {
-            final BagService bagService = SpringUtils.getBean(BagService.class);
-            final Role role = effector.getRole();
-            final Integer drugNum = bagService.consumeBagGoods(role, drug.getSerial(), num, true, true, "战斗");
+            BagService bagService = (BagService)SpringUtils.getBean(BagService.class);
+            Role role = effector.getRole();
+            Integer drugNum = bagService.consumeBagGoods(role, (int)drug.getSerial(), num, true, true, "战斗");
             if (drugNum != null) {
                 PetSkillEffectorUtil.sendMsg(fight, effector, "药品已用尽!");
                 return;
             }
         }
-        final List<FiedValue> passiveEffects = PassiveSkillUtils.useDrug(fight, effector, target, drug.getShowClass());
+        List<FiedValue> passiveEffects = PassiveSkillUtils.useDrug(fight, effector, target, (int)drug.getShowClass());
         DrugProcessor drugProcessor = null;
-        if (drug.getShowClass() == 4 || drug.getShowClass() == 5) {
+        if ((int)drug.getShowClass() == 4 || (int)drug.getShowClass() == 5) {
             drugProcessor = DrugProcessor.queryProcessor(drug.getSerial());
             if (drugProcessor == null) {
                 return;
             }
-            final boolean isExcute = drugProcessor.checkExcute(fight, effector, target, passiveEffects);
+            boolean isExcute = drugProcessor.checkExcute(fight, effector, target, passiveEffects);
             if (!isExcute) {
                 return;
             }
         }
-        switch (drug.getShowClass()) {
+        switch ((int)drug.getShowClass()) {
             case 1: {
                 this.useItemHP(fight, effector, target, drug, passiveEffects);
                 break;
@@ -2035,50 +2081,54 @@ public class FightNewService
                 break;
             }
         }
+        return;
     }
     
-    private void useItemHP(final Fight fight, final FightObject effector, final FightObject target, final SysDrug drug, final List<FiedValue> passiveEffects) {
-        final int oldLife = target.getCurrLife();
-        final int addHp = this.reduceHPMP(fight, true, target, drug, passiveEffects);
+    private void useItemHP(Fight fight, FightObject effector, FightObject target, SysDrug drug, List<FiedValue> passiveEffects) {
+        int oldLife = target.getCurrLife();
+        int addHp = this.reduceHPMP(fight, true, target, drug, passiveEffects);
         this.sendMsgHp(fight, effector, target, drug, oldLife, addHp);
         this.tianFuAddTarget(fight, effector, target, passiveEffects, drug, addHp, 0);
     }
     
-    private void useItemMP(final Fight fight, final FightObject effector, final FightObject target, final SysDrug drug, final List<FiedValue> passiveEffects) {
-        final int addMp = this.reduceHPMP(fight, false, target, drug, passiveEffects);
+    private void useItemMP(Fight fight, FightObject effector, FightObject target, SysDrug drug, List<FiedValue> passiveEffects) {
+        int addMp = this.reduceHPMP(fight, false, target, drug, passiveEffects);
         this.sendMsgMp(fight, effector, target, drug, addMp);
         this.tianFuAddTarget(fight, effector, target, passiveEffects, drug, 0, addMp);
     }
     
-    private void useItemHPMP(final Fight fight, final FightObject effector, final FightObject target, final SysDrug drug, final List<FiedValue> passiveEffects) {
-        final int addMp = this.reduceHPMP(fight, false, target, drug, passiveEffects);
-        final int oldLife = target.getCurrLife();
-        final int addHp = this.reduceHPMP(fight, true, target, drug, passiveEffects);
+    private void useItemHPMP(Fight fight, FightObject effector, FightObject target, SysDrug drug, List<FiedValue> passiveEffects) {
+        int addMp = this.reduceHPMP(fight, false, target, drug, passiveEffects);
+        int oldLife = target.getCurrLife();
+        int addHp = this.reduceHPMP(fight, true, target, drug, passiveEffects);
         boolean isRevive = false;
         if (oldLife <= 0) {
             isRevive = true;
         }
-        ActionParamUtils.changeHpMp(fight, effector, target, 5, drug.getSerial(), 2, addHp, addMp, isRevive);
+        ActionParamUtils.changeHpMp(fight, effector, target, 5, (int)drug.getSerial(), 2, addHp, addMp, isRevive);
     }
     
-    private int reduceHPMP(final Fight fight, final boolean isHP, final FightObject target, final SysDrug drug, final List<FiedValue> passiveEffects) {
+    private int reduceHPMP(Fight fight, boolean isHP, FightObject target, SysDrug drug, List<FiedValue> passiveEffects) {
         if (isHP) {
             int addHp = 0;
-            if (drug.getDrugAddHpValue() > 0) {
-                addHp = drug.getDrugAddHpValue();
+            if ((int)drug.getDrugAddHpValue() > 0) {
+                addHp = (int)drug.getDrugAddHpValue();
             }
-            else if (drug.getDrugAddHpPercent() > 0) {
-                addHp = target.getMaxLife() * drug.getDrugAddHpPercent() / 100;
+            else if ((int)drug.getDrugAddHpPercent() > 0) {
+                addHp = target.getMaxLife() * (int)drug.getDrugAddHpPercent() / 100;
             }
             if (passiveEffects != null && passiveEffects.size() > 0) {
                 int addPercentHp = 0;
-                for (final FiedValue fied : passiveEffects) {
+                for (FiedValue fied : passiveEffects) {
                     if (fied.getType().contains("hp") && fied.getType().contains("addPercent") && 5 == fied.getVT()) {
-                        final Double value = (Double)fied.getValue();
-                        if (value != null && value > 0.0) {
-                            addPercentHp += (int)(addHp * value);
+                        Double value = (Double)fied.getValue();
+                        if (value != null && (double)value > 0.0) {
+                            addPercentHp += (int)((double)addHp * (double)value);
                             break;
                         }
+                        continue;
+                    }
+                    else {
                         continue;
                     }
                 }
@@ -2089,62 +2139,70 @@ public class FightNewService
             addHp += PassiveSkillUtils.countRecoverBloodEnd(fight, target, addHp, null);
             return addHp;
         }
-        int addMp = 0;
-        if (drug.getDrugAddMpValue() > 0) {
-            addMp = drug.getDrugAddMpValue();
-        }
-        else if (drug.getDrugAddMpPercent() > 0) {
-            addMp = target.getMaxMana() * drug.getDrugAddMpPercent() / 100;
-        }
-        if (passiveEffects != null && passiveEffects.size() > 0) {
-            int addPercentMp = 0;
-            for (final FiedValue fied : passiveEffects) {
-                if (fied.getType().contains("mp") && fied.getType().contains("addPercent") && 5 == fied.getVT()) {
-                    final Double value = (Double)fied.getValue();
-                    if (value != null && value > 0.0) {
-                        addPercentMp += (int)(addMp * value);
-                        break;
+        else {
+            int addMp = 0;
+            if ((int)drug.getDrugAddMpValue() > 0) {
+                addMp = (int)drug.getDrugAddMpValue();
+            }
+            else if ((int)drug.getDrugAddMpPercent() > 0) {
+                addMp = target.getMaxMana() * (int)drug.getDrugAddMpPercent() / 100;
+            }
+            if (passiveEffects != null && passiveEffects.size() > 0) {
+                int addPercentMp = 0;
+                for (FiedValue fied : passiveEffects) {
+                    if (fied.getType().contains("mp") && fied.getType().contains("addPercent") && 5 == fied.getVT()) {
+                        Double value = (Double)fied.getValue();
+                        if (value != null && (double)value > 0.0) {
+                            addPercentMp += (int)((double)addMp * (double)value);
+                            break;
+                        }
+                        continue;
                     }
-                    continue;
+                    else {
+                        continue;
+                    }
+                }
+                if (addPercentMp > 0) {
+                    addMp += addPercentMp;
                 }
             }
-            if (addPercentMp > 0) {
-                addMp += addPercentMp;
-            }
+            addMp += PassiveSkillUtils.countRecoverMpEnd(fight, target, addMp);
+            return addMp;
         }
-        addMp += PassiveSkillUtils.countRecoverMpEnd(fight, target, addMp);
-        return addMp;
     }
     
-    private void tianFuAddTarget(final Fight fight, final FightObject effector, final FightObject target, final List<FiedValue> tianFuEffects, final SysDrug drug, final int addHp, final int addMp) {
+    private void tianFuAddTarget(Fight fight, FightObject effector, FightObject target, List<FiedValue> tianFuEffects, SysDrug drug, int addHp, int addMp) {
         if (tianFuEffects != null && tianFuEffects.size() > 0) {
             boolean flag = false;
             int targetId = 0;
-            for (final FiedValue fied : tianFuEffects) {
+            for (FiedValue fied : tianFuEffects) {
                 if ("addTarget".equals(fied.getType()) && 6 == fied.getVT()) {
                     flag = (boolean)fied.getValue();
                 }
                 if ("addTargetId".equals(fied.getType()) && 3 == fied.getVT() && fied.getValue() != null && String.valueOf(fied.getValue()).matches("^[0-9]+$")) {
                     targetId = (int)fied.getValue();
                 }
+                else {
+                    continue;
+                }
             }
             if (flag) {
                 if (addHp > 0) {
                     if (targetId == 0) {
                         if (target.isPet()) {
-                            final FightObject host = fight.queryFightObject(target.getHostId());
+                            FightObject host = fight.queryFightObject(Integer.valueOf(target.getHostId()));
                             this.addTargetHp(fight, effector, host, drug, addHp, addMp);
                         }
                         else if (target.isPlayer()) {
-                            final Optional<FightObject> petOptional = fight.getMySide(target.getId()).stream().filter(obj -> obj.isPet() && target.getId().equals(obj.getHostId())).findFirst();
+                            Optional<FightObject> petOptional = fight.getMySide((int)target.getId()).stream().filter(obj -> obj.isPet() && target.getId().equals(Integer.valueOf(obj.getHostId()))).findFirst();
                             if (petOptional.isPresent()) {
-                                final FightObject pet = petOptional.get();
+                                FightObject pet = (FightObject)petOptional.get();
                                 this.addTargetHp(fight, effector, pet, drug, addHp, addMp);
                             }
                         }
                     }
                     else {
-                        final FightObject newTarget = fight.queryFightObject(targetId);
+                        FightObject newTarget = fight.queryFightObject(Integer.valueOf(targetId));
                         this.addTargetHp(fight, effector, newTarget, drug, addHp, addMp);
                     }
                 }
@@ -2153,7 +2211,7 @@ public class FightNewService
                         this.addTargetMp(fight, effector, target, drug, addMp);
                     }
                     else {
-                        final FightObject newTarget = fight.queryFightObject(targetId);
+                        FightObject newTarget = fight.queryFightObject(Integer.valueOf(targetId));
                         this.sendMsgMp(fight, effector, newTarget, drug, addMp);
                     }
                 }
@@ -2161,97 +2219,100 @@ public class FightNewService
         }
     }
     
-    private void addTargetHp(final Fight fight, final FightObject effector, final FightObject newTarget, final SysDrug drug, final int addHp, final int addMp) {
+    private void addTargetHp(Fight fight, FightObject effector, FightObject newTarget, SysDrug drug, int addHp, int addMp) {
         boolean isRevive = false;
         if (newTarget.getCurrLife() <= 0) {
             isRevive = true;
         }
         if (addMp > 0) {
-            ActionParamUtils.changeHpMp(fight, effector, newTarget, 5, drug.getSerial(), 2, addHp, addMp, isRevive);
+            ActionParamUtils.changeHpMp(fight, effector, newTarget, 5, (int)drug.getSerial(), 2, addHp, addMp, isRevive);
         }
         else {
-            ActionParamUtils.changeLife(fight, effector, newTarget, 5, drug.getSerial(), 2, addHp, isRevive);
+            ActionParamUtils.changeLife(fight, effector, newTarget, 5, (int)drug.getSerial(), 2, addHp, isRevive);
         }
     }
     
-    private void addTargetMp(final Fight fight, final FightObject effector, final FightObject target, final SysDrug drug, final int addMp) {
+    private void addTargetMp(Fight fight, FightObject effector, FightObject target, SysDrug drug, int addMp) {
         if (target.isPet()) {
-            final FightObject host = fight.queryFightObject(target.getHostId());
+            FightObject host = fight.queryFightObject(Integer.valueOf(target.getHostId()));
             this.sendMsgMp(fight, effector, host, drug, addMp);
         }
         else if (target.isPlayer()) {
-            final Optional<FightObject> petOptional = fight.getMySide(target.getId()).stream().filter(obj -> obj.isPet() && target.getId().equals(obj.getHostId())).findFirst();
+            Optional<FightObject> petOptional = fight.getMySide((int)target.getId()).stream().filter(obj -> obj.isPet() && target.getId().equals(Integer.valueOf(obj.getHostId()))).findFirst();
             if (petOptional.isPresent()) {
-                final FightObject pet = petOptional.get();
+                FightObject pet = (FightObject)petOptional.get();
                 this.sendMsgMp(fight, effector, pet, drug, addMp);
             }
         }
     }
     
-    private void sendMsgHp(final Fight fight, final FightObject effector, final FightObject target, final SysDrug drug, final int oldLife, final int addHp) {
+    private void sendMsgHp(Fight fight, FightObject effector, FightObject target, SysDrug drug, int oldLife, int addHp) {
         boolean isRevive = false;
         if (oldLife <= 0) {
             isRevive = true;
         }
-        ActionParamUtils.changeLife(fight, effector, target, 5, drug.getSerial(), 2, addHp, isRevive);
+        ActionParamUtils.changeLife(fight, effector, target, 5, (int)drug.getSerial(), 2, addHp, isRevive);
     }
     
-    private void sendMsgMp(final Fight fight, final FightObject effector, final FightObject target, final SysDrug drug, final int addMp) {
-        ActionParamUtils.changeMana(fight, effector, target, 5, drug.getSerial(), 2, addMp);
+    private void sendMsgMp(Fight fight, FightObject effector, FightObject target, SysDrug drug, int addMp) {
+        ActionParamUtils.changeMana(fight, effector, target, 5, (int)drug.getSerial(), 2, addMp);
     }
     
-    private void flee(final FightObject fightObject, final Fight fight) {
+    private void flee(FightObject fightObject, Fight fight) {
         if (fightObject.isFallDown()) {
             return;
         }
         if (this.checkDeStatus(fight, fightObject)) {
             return;
         }
-        final Role role = this.roleService.getOnlinePlayer(fightObject.getRole().getId());
+        Role role = this.roleService.getOnlinePlayer((long)fightObject.getRole().getId());
         if (role == null) {
-            if (!(fightObject instanceof MonsterFightObject)) {
+            if ((fightObject instanceof MonsterFightObject)) {
+                FightMonsterNewService bean = (FightMonsterNewService)SpringUtils.getBean(FightMonsterNewService.class);
+                bean.monsterFlee(fightObject, fight);
+            }
+            else {
                 return;
             }
-            final FightMonsterNewService bean = SpringUtils.getBean(FightMonsterNewService.class);
-            bean.monsterFlee(fightObject, fight);
         }
         fightObject.recordAction(fight);
-        final ActionDetailParam actionDetailParam = new ActionDetailParam(fightObject, 4, 4, 0);
+        ActionDetailParam actionDetailParam = new ActionDetailParam(fightObject, 4, 4, 0);
         fight.getActionParam().getActionDetailParams().add(actionDetailParam);
-        final FightObjectParam attackerParam = actionDetailParam.gainAttackerParam();
+        FightObjectParam attackerParam = actionDetailParam.gainAttackerParam();
         if (!this.canFlee(fightObject, fight)) {
             attackerParam.setHit(false);
             return;
         }
         this.excuteTeamDisappear(fight, role, fightObject);
         fight.getFleeList().add(fightObject.getId());
-        fight.addExitRole(fightObject.isASide(), new FieldValue(2, fightObject.getId()));
-        role.setLastDead((fightObject.getCurrLife() > 0) ? 1 : 0);
+        fight.addExitRole(Boolean.valueOf(fightObject.isASide()), new FieldValue(2, (int)fightObject.getId()));
+        role.setLastDead((fightObject.getCurrLife() <= 0) ? 0 : 1);
         EventDispatcher.getInstance().fireEvent(new FightEndEvent(fight, EventType.FIGHT_END, role, fight.getId(), (byte)3, fight.getType(), fight.getBossReward(), fight.getTaskId(), fight.getNpcId(), 0));
         fight.removeFightObject(fightObject);
-        final FightObject petObject = fight.queryFightObject(fightObject.getFightPetId());
+        FightObject petObject = fight.queryFightObject(Integer.valueOf(fightObject.getFightPetId()));
         if (petObject != null) {
             fight.getFleeList().add(petObject.getId());
             fight.petDie(petObject);
         }
         role.save();
+        return;
     }
     
-    public void excuteTeamDisappear(final Fight fight, final Role role, final FightObject roleObject) {
+    public void excuteTeamDisappear(Fight fight, Role role, FightObject roleObject) {
         role.setPrevFightEndTime(System.currentTimeMillis());
-        role.setCanFight(true);
+        role.setCanFight(Boolean.valueOf(true));
         this.resetAfterLeaveFight(fight, roleObject);
-        final int teamCount = this.teamService.getTeamCount(role);
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        if (team != null && teamCount > 1 && !role.getRoleId().equals(team.getLeaderRoleId())) {
+        int teamCount = this.teamService.getTeamCount(role);
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        if (team != null && teamCount > 1 && !role.getRoleId().equals(Integer.valueOf(team.getLeaderRoleId()))) {
             this.teamService.leaveTemp(role, false);
         }
-        final List<FightObject> mySide = fight.getMySide(roleObject.getId());
+        List<FightObject> mySide = fight.getMySide((int)roleObject.getId());
         if (team != null) {
-            final Member member = team.getList().get(0);
+            Member member = (Member)team.getList().get(0);
             if (role.getRoleId().equals(member.getRoleId())) {
-                for (int i = mySide.size() - 1; i >= 0; --i) {
-                    final FightObject obj = mySide.get(i);
+                for (int j = mySide.size() - 1; j >= 0; --j) {
+                    FightObject obj = (FightObject)mySide.get(j);
                     if (obj.isPartner()) {
                         fight.removeFightObject(obj);
                     }
@@ -2259,16 +2320,16 @@ public class FightNewService
             }
         }
         else if (mySide != null && mySide.size() > 0) {
-            for (int j = mySide.size() - 1; j >= 0; --j) {
-                if (mySide.get(j).isPartner() && mySide.get(j).getHostId() == roleObject.getId()) {
-                    fight.removeFightObject(mySide.get(j));
+            for (int i = mySide.size() - 1; i >= 0; --i) {
+                if (((FightObject)mySide.get(i)).isPartner() && ((FightObject)mySide.get(i)).getHostId() == (int)roleObject.getId()) {
+                    fight.removeFightObject((FightObject)mySide.get(i));
                 }
             }
         }
     }
     
-    private boolean canFlee(final FightObject fightObject, final Fight fight) {
-        if (Const.not_flee.contains(fight.getType())) {
+    private boolean canFlee(FightObject fightObject, Fight fight) {
+        if (Const.not_flee.contains(Integer.valueOf(fight.getType()))) {
             return false;
         }
         int substractOdds = 0;
@@ -2281,59 +2342,60 @@ public class FightNewService
             }
             substractOdds = 20;
         }
-        final int rand = ThreadLocalRandom.current().nextInt(100);
-        final int odds = 100 - substractOdds;
+        int rand = ThreadLocalRandom.current().nextInt(100);
+        int odds = 100 - substractOdds;
         return rand < odds;
     }
     
-    public void selectPet(final FightObject fightObject, final Fight fight) {
+    public void selectPet(FightObject fightObject, Fight fight) {
         if (this.checkDeStatus(fight, fightObject)) {
             return;
         }
         fightObject.recordAction(fight);
-        final Integer roleId = FightExecutorNewService.PETID_ROLEID.get(fightObject.getTargetId());
+        Integer roleId = (Integer)FightExecutorNewService.PETID_ROLEID.get(Integer.valueOf(fightObject.getTargetId()));
         if (roleId != null) {
             return;
         }
-        final int oldPetId = fightObject.getFightPetId();
-        final int newPetId = fightObject.getTargetId();
-        final Role role = fightObject.getRole();
-        final Pet newPet = this.petService.selectPet(role).get(newPetId);
+        int oldPetId = fightObject.getFightPetId();
+        int newPetId = fightObject.getTargetId();
+        Role role = fightObject.getRole();
+        Pet newPet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(newPetId));
         if (newPet == null) {
             this.logger.error("未找到要召唤的的宠物id：" + newPetId + ",宠物的主人id：" + role.getId());
             return;
         }
-        final CombatAddObject combatAddObject = this.addPet2Fight(fightObject.getId(), newPet, fight, SkillFunc.getPetPosByMasterPos(fightObject.getPos()));
-        fightObject.setFightPetId(newPet.getPetId());
-        final FightObject delPet = fight.queryFightObject(oldPetId);
+        CombatAddObject combatAddObject = this.addPet2Fight((int)fightObject.getId(), newPet, fight, (int)SkillFunc.getPetPosByMasterPos(Integer.valueOf(fightObject.getPos())));
+        fightObject.setFightPetId((int)newPet.getPetId());
+        FightObject delPet = fight.queryFightObject(Integer.valueOf(oldPetId));
         FightUtils.excutePetDisappear(fight, fightObject, delPet);
-        final ActionDetailParam actionDetailParam = new ActionDetailParam(fightObject, 3, 0, newPet.getPetId());
-        final RefreshPet refreshPet = new RefreshPet();
-        final ArrayList<RefreshPet> refreshPets = new ArrayList<RefreshPet>();
+        ActionDetailParam actionDetailParam = new ActionDetailParam(fightObject, 3, 0, (int)newPet.getPetId());
+        RefreshPet refreshPet = new RefreshPet();
+        ArrayList<RefreshPet> refreshPets = new ArrayList<>();
         refreshPets.add(refreshPet);
-        refreshPet.setPetId(newPet.getPetId());
+        refreshPet.setPetId((int)newPet.getPetId());
         refreshPet.setType(1);
         actionDetailParam.setPetList(refreshPets);
-        actionDetailParam.setRoleId(role.getId());
+        actionDetailParam.setRoleId((long)role.getId());
         FightExecutorNewService.PETID_ROLEID.put(newPet.getPetId(), newPet.getRoleId());
-        FightExecutorNewService.FIGHT_ROOMS.put(newPet.getPetId(), fight.getId());
-        final List<CombatAddObject> list = new ArrayList<CombatAddObject>();
+        FightExecutorNewService.FIGHT_ROOMS.put(newPet.getPetId(), Integer.valueOf(fight.getId()));
+        List<CombatAddObject> list = new ArrayList<>();
         list.add(combatAddObject);
         actionDetailParam.setCombatAddObjects(list);
-        final RespFightShouting fightShouting = this.fightMessageNewService.fightShouting(fight.queryFightObject(newPet.getPetId()), "战斗出场");
-        final FightObjectParam fightObjectParam = actionDetailParam.gainTargetParam(newPetId, true);
+        RespFightShouting fightShouting = this.fightMessageNewService.fightShouting(fight.queryFightObject(newPet.getPetId()), "战斗出场");
+        FightObjectParam fightObjectParam = actionDetailParam.gainTargetParam(newPetId, true);
         fightObjectParam.setFightShouting(fightShouting);
         fight.getActionParam().getActionDetailParams().add(actionDetailParam);
-        PetPassiveSkillUtil.otherEnterBattle(fight, newPetId);
+        PetPassiveSkillUtil.otherEnterBattle(fight, Integer.valueOf(newPetId));
+        return;
     }
     
-    public void callbackPet(final FightObject fightObject, final Fight fight, final boolean isNoPassiveSkill) {
+    public void callbackPet(FightObject fightObject, Fight fight, boolean isNoPassiveSkill) {
         if (isNoPassiveSkill && this.checkDeStatus(fight, fightObject)) {
             return;
         }
         fightObject.recordAction(fight);
         boolean flag = false;
-        final FightObject target = fight.queryFightObject(fightObject.getTargetId());
+        FightObject target = fight.queryFightObject(Integer.valueOf(fightObject.getTargetId()));
         fightObject.setFightPetId(0);
         if (target != null && !target.isFallDown()) {
             target.setCurrLife(0);
@@ -2342,62 +2404,67 @@ public class FightNewService
             flag = true;
         }
         if (target != null) {
-            final List<Integer> statusList = new ArrayList<Integer>();
-            for (final int status : StatusConst.getPositiveStatus()) {
+            List<Integer> statusList = new ArrayList<>();
+            for (int status : StatusConst.getPositiveStatus()) {
                 if (target.getStatusValue(status) > 0) {
-                    statusList.add(status);
+                    statusList.add(Integer.valueOf(status));
+                }
+                else {
+                    continue;
                 }
             }
             PassiveSkillUtils.exitOrClearPositive(fight, fightObject, target, statusList);
             fight.excuteExitPassive(target);
         }
         if (target != null) {
-            ActionParamUtils.excuteDisappear(fight, fightObject, target.getId(), 12, 0, 2);
+            ActionParamUtils.excuteDisappear(fight, fightObject, (int)target.getId(), 12, 0, 2);
         }
         if (!flag) {
             PetSkillEffectorUtil.sendCancelAction(fight, target);
             fight.petDie(target);
         }
+        return;
     }
     
-    private void guard(final FightObject fightObject, final Fight fight) {
+    private void guard(FightObject fightObject, Fight fight) {
         fightObject.recordAction(fight);
-        PassiveSkillUtils.excutePassiveSkill(fight, fightObject, PET_PASSIVE_SKILL_TRIGGER_DICT.SELF_SELL_END.getValue());
+        PassiveSkillUtils.excutePassiveSkill(fight, fightObject, PET_PASSIVE_SKILL_TRIGGER_DICT.SELF_SELL_END.getValue(), new Object[0]);
         if (this.checkDeStatus(fight, fightObject)) {
             return;
         }
-        final TianFuProcessor tianFuProcessor = TianFuProcessor.queryProcessor(323304);
-        tianFuProcessor.passive(fight, fightObject, null);
+        TianFuProcessor tianFuProcessor = TianFuProcessor.queryProcessor(Integer.valueOf(323304));
+        tianFuProcessor.passive(fight, fightObject, null, new Object[0]);
+        return;
     }
     
-    private Map<Integer, List<Integer>> excuteStatusReduce(final Fight fight) {
+    private Map<Integer, List<Integer>> excuteStatusReduce(Fight fight) {
         boolean isHaveDie = false;
-        final Map<Integer, FightObject> dragonObjectMap = new HashMap<Integer, FightObject>();
-        final Map<Integer, List<Integer>> clearStatusMap = new HashMap<Integer, List<Integer>>();
-        final List<FightObjectParam> targetParamList = new ArrayList<FightObjectParam>();
+        Map<Integer, FightObject> dragonObjectMap = new HashMap();
+        Map<Integer, List<Integer>> clearStatusMap = new HashMap();
+        List<FightObjectParam> targetParamList = new ArrayList<>();
         int targetOrder = 1;
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
-            final List<Integer> list = new ArrayList<Integer>();
-            final int dict = 1022;
-            final String dist = String.valueOf(dict);
-            final NutMap statusMap = fightObject.getStatusMap();
+        for (FightObject fightObject : fight.getAllFightObjects()) {
+            List<Integer> list = new ArrayList<>();
+            int dict = 1022;
+            String dist = String.valueOf(dict);
+            NutMap statusMap = fightObject.getStatusMap();
             int recoverStatus = 0;
             if (statusMap.getInt(dist, 0) != 0) {
                 recoverStatus = dict;
             }
             NutMap recoverMap = null;
             if (statusMap.getInt(dist) > 0) {
-                final boolean dead = fightObject.isFallDown();
-                fightObject.pushTempCache("dead", dead);
+                boolean dead = fightObject.isFallDown();
+                fightObject.pushTempCache("dead", Boolean.valueOf(dead));
                 if (recoverStatus != 0 && !fightObject.isFrozen() && !fight.isOver()) {
                     int recoverValue = fightObject.getStatusSubMap().getInt(dict + "value");
                     if (recoverValue > 0) {
-                        fightObject.pushTempCache("recover", true);
+                        fightObject.pushTempCache("recover", Boolean.valueOf(true));
                         if (recoverValue > fightObject.getMaxLife() - fightObject.getCurrLife()) {
                             recoverValue = fightObject.getMaxLife() - fightObject.getCurrLife();
                         }
                         recoverValue += PassiveSkillUtils.countRecoverBloodEnd(fight, fightObject, recoverValue, null);
-                        fightObject.pushTempCache("recoverLife", recoverValue);
+                        fightObject.pushTempCache("recoverLife", Integer.valueOf(recoverValue));
                         fightObject.setCurrLife(fightObject.getCurrLife() + recoverValue);
                         if (fightObject.getMaxLife() < fightObject.getCurrLife()) {
                             fightObject.setCurrLife(fightObject.getMaxLife());
@@ -2406,53 +2473,53 @@ public class FightNewService
                             fightObject.getTempCache().remove("dead");
                         }
                     }
-                    fightObject.pushTempCache("recoverSkill", 0);
+                    fightObject.pushTempCache("recoverSkill", Integer.valueOf(0));
                     recoverMap = this.fightMessageNewService.poisonOrRecoverActionParam(fight, fightObject);
                     if (dead) {
                         fightObject.removeStatus(dict);
                         fightObject.removeStatusSub(dict + "value");
-                        list.add(dict);
+                        list.add(Integer.valueOf(dict));
                     }
                 }
             }
-            final List<Integer> statusResidueTimes = new ArrayList<Integer>();
-            for (final Map.Entry<String, Object> entry : statusMap.entrySet()) {
-                final String key = entry.getKey();
+            List<Integer> statusResidueTimes = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : statusMap.entrySet()) {
+                String key = (String)entry.getKey();
                 if (!key.matches("^[0-9]+$")) {
                     continue;
                 }
-                int value = (int) entry.getValue();
+                int value = (int)entry.getValue();
                 if (value > 0) {
-                    final Integer status = Integer.valueOf(key);
+                    Integer status = Integer.valueOf(key);
                     if (StatusConst.getControlStatus().contains(status)) {
                         if (PassiveSkillUtils.isUnlock(fight, fightObject, status)) {
                             continue;
                         }
-                        final double odds = statusMap.getDouble(key + "odds");
+                        double odds = statusMap.getDouble(key + "odds");
                         if (!SkillAi.canAffectOnPro(odds)) {
-                            statusMap.setv(key, 0);
+                            statusMap.setv(key, Integer.valueOf(0));
                             list.add(status);
                             PassiveSkillUtils.statusReduce(fight, fightObject, status);
                             continue;
                         }
                     }
                     if (--value <= 0) {
-                        if (status.equals(1023)) {
+                        if (status.equals(Integer.valueOf(1023))) {
                             dragonObjectMap.put(fightObject.getId(), fightObject);
                         }
                         list.add(status);
                         PassiveSkillUtils.statusReduce(fight, fightObject, status);
                         if (200 == Integer.parseInt(key)) {
                             statusResidueTimes.add(status);
-                            statusResidueTimes.add(value);
+                            statusResidueTimes.add(Integer.valueOf(value));
                         }
                     }
                     else {
                         statusResidueTimes.add(status);
-                        statusResidueTimes.add(value);
+                        statusResidueTimes.add(Integer.valueOf(value));
                     }
                 }
-                statusMap.put(key, value);
+                statusMap.put(key, Integer.valueOf(value));
             }
             clearStatusMap.put(fightObject.getId(), list);
             PassiveSkillUtils.excutePropertyChange(fightObject);
@@ -2463,10 +2530,10 @@ public class FightNewService
             if (list.size() > 0 || dragonObjectMap.size() > 0 || statusResidueTimes.size() > 0) {
                 if (targetParam == null) {
                     targetParam = new FightObjectParam();
-                    targetParam.setObjId(fightObject.getId());
+                    targetParam.setObjId((int)fightObject.getId());
                 }
                 if (dragonObjectMap.size() > 0) {
-                    final FightObject dragonObject = dragonObjectMap.get(fightObject.getId());
+                    FightObject dragonObject = (FightObject)dragonObjectMap.get(fightObject.getId());
                     if (dragonObject != null) {
                         this.dragonMorphRenew(dragonObject);
                         targetParam.setMaxLife(fightObject.getMaxLife());
@@ -2479,7 +2546,7 @@ public class FightNewService
                     targetParam.setClearStatus(list);
                 }
                 if (statusResidueTimes.size() > 0) {
-                    final Map<Integer, Integer> updateStatusMap = this.fightMessageNewService.sendFightObjectStatus(fight, fightObject);
+                    Map<Integer, Integer> updateStatusMap = this.fightMessageNewService.sendFightObjectStatus(fight, fightObject);
                     targetParam.setStatusMap(updateStatusMap);
                 }
             }
@@ -2492,52 +2559,63 @@ public class FightNewService
             if (fightObject.isFallDown()) {
                 isHaveDie = true;
             }
+            else {
+                continue;
+            }
         }
         if (targetParamList.size() > 0) {
-            final ActionDetailParam actionDetailParam = new ActionDetailParam(43, 0, 0, 0);
+            ActionDetailParam actionDetailParam = new ActionDetailParam(43, 0, 0, 0);
             actionDetailParam.getTargetParamList().addAll(targetParamList);
             fight.getActionParam().getActionDetailParams().add(actionDetailParam);
         }
         if (isHaveDie) {
             PetPassiveSkillUtil.deathExcute(fight);
+            return clearStatusMap;
         }
         return clearStatusMap;
     }
     
-    public void excuteRoundStartPoison(final Fight fight) {
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
-            final NutMap statusMap = fightObject.getStatusMap();
-            fightObject.pushTempCache("alive", !fightObject.isFallDown());
+    public void excuteRoundStartPoison(Fight fight) {
+        for (FightObject fightObject : fight.getAllFightObjects()) {
+            NutMap statusMap = fightObject.getStatusMap();
+            fightObject.pushTempCache("alive", Boolean.valueOf(!fightObject.isFallDown()));
             if (statusMap.getInt(String.valueOf(1005), 0) != 0 && !fightObject.isFrozen()) {
-                fightObject.pushTempCache("poison", true);
-                final NutMap nutMap = fightObject.getStatusSubMap();
+                fightObject.pushTempCache("poison", Boolean.valueOf(true));
+                NutMap nutMap = fightObject.getStatusSubMap();
                 Integer hurt = SkillCompute.computeSkillDamagePoisonFollowUp(nutMap);
-                hurt += PassiveSkillUtils.poisonReduceHp(fight, fightObject, hurt);
-                if (hurt < 1) {
-                    hurt = 1;
+                hurt = Integer.valueOf((int)hurt - (int)fightObject.getSelfAllTempPro(MIND.XS_DU.getDist()));
+                if ((int)hurt <= 0) {
+                    hurt = Integer.valueOf(1);
                 }
-                else if (hurt > fightObject.getCurrLife()) {
-                    hurt = fightObject.getCurrLife();
+                hurt = Integer.valueOf((int)hurt + PassiveSkillUtils.poisonReduceHp(fight, fightObject, (int)hurt));
+                if ((int)hurt < 1) {
+                    hurt = Integer.valueOf(1);
+                }
+                else if ((int)hurt > fightObject.getCurrLife()) {
+                    hurt = Integer.valueOf(fightObject.getCurrLife());
                 }
                 fightObject.pushTempCache("poisonValue", hurt);
-                fightObject.setCurrLife(fightObject.getCurrLife() - hurt);
+                fightObject.setCurrLife(fightObject.getCurrLife() - (int)hurt);
                 if (fightObject.isFallDown()) {
-                    final boolean revive = FightRateUtil.petCanRevive(fightObject);
-                    fightObject.pushTempCache("revive", revive);
+                    boolean revive = FightRateUtil.petCanRevive(fightObject);
+                    fightObject.pushTempCache("revive", Boolean.valueOf(revive));
                 }
-                fightObject.pushTempCache("poisonDead", fightObject.isFallDown());
-                final int round = fightObject.getStatusMap().getInt("1005_round") + 1;
-                fightObject.getStatusMap().setv("1005_round", (Object)round);
+                fightObject.pushTempCache("poisonDead", Boolean.valueOf(fightObject.isFallDown()));
+                int round = fightObject.getStatusMap().getInt("1005_round") + 1;
+                fightObject.getStatusMap().setv("1005_round", Integer.valueOf(round));
+            }
+            else {
+                continue;
             }
         }
-        final ActionDetailParam actionDetailParam = new ActionDetailParam(43, 0, 0, 0);
+        ActionDetailParam actionDetailParam = new ActionDetailParam(43, 0, 0, 0);
         boolean isHavePoison = false;
         boolean isHaveDie = false;
         int order = 1;
-        for (final FightObject fightObject2 : fight.getAllFightObjects()) {
-            final NutMap poisonMap = this.fightMessageNewService.poisonOrRecoverActionParam(fight, fightObject2);
+        for (FightObject fightObject2 : fight.getAllFightObjects()) {
+            NutMap poisonMap = this.fightMessageNewService.poisonOrRecoverActionParam(fight, fightObject2);
             if (poisonMap != null) {
-                final FightObjectParam target = this.getPoisonOrRecoverParam(fightObject2, poisonMap);
+                FightObjectParam target = this.getPoisonOrRecoverParam(fightObject2, poisonMap);
                 if (target != null) {
                     target.setOrder(order);
                     actionDetailParam.getTargetParamList().add(target);
@@ -2550,6 +2628,9 @@ public class FightNewService
             if (!isHaveDie && fightObject2.isFallDown()) {
                 isHaveDie = true;
             }
+            else {
+                continue;
+            }
         }
         if (isHavePoison) {
             fight.getActionParam().getActionDetailParams().add(actionDetailParam);
@@ -2557,13 +2638,13 @@ public class FightNewService
         if (isHaveDie) {
             PetPassiveSkillUtil.deathExcute(fight);
         }
-        for (final FightObject fightObject2 : fight.getAllFightObjects()) {
-            final boolean poisonDead = fightObject2.getTempCache("poisonDead", false);
-            final boolean dead = fightObject2.getTempCache("dead", false);
+        for (FightObject fightObject2 : fight.getAllFightObjects()) {
+            boolean poisonDead = (boolean)fightObject2.getTempCache("poisonDead", Boolean.valueOf(false));
+            boolean dead = (boolean)fightObject2.getTempCache("dead", Boolean.valueOf(false));
             if (dead || poisonDead) {
-                final boolean revive2 = fightObject2.getTempCache("revive", false);
+                boolean revive2 = (boolean)fightObject2.getTempCache("revive", Boolean.valueOf(false));
                 if (fightObject2.isMonster()) {
-                    final int monsterType = ((MonsterFightObject)fightObject2).getMonsterType();
+                    int monsterType = ((MonsterFightObject)fightObject2).getMonsterType();
                     if (monsterType != FIGHT_TYPE.STAR.getValue() && monsterType != FIGHT_TYPE.SEAL_DEMON.getValue() && monsterType != FIGHT_TYPE.THREE_SCOPE.getValue()) {
                         fight.removeFightObject(fightObject2);
                     }
@@ -2575,53 +2656,59 @@ public class FightNewService
             if (fightObject2.getTempCache() != null) {
                 fightObject2.getTempCache().clear();
             }
+            else {
+                continue;
+            }
         }
     }
     
-    private FightObjectParam getPoisonOrRecoverParam(final FightObject fightObject, final NutMap map) {
+    private FightObjectParam getPoisonOrRecoverParam(FightObject fightObject, NutMap map) {
         if (map != null) {
-            final FightObjectParam targetParam = new FightObjectParam();
-            targetParam.setObjId(fightObject.getId());
-            final int currLife = map.getInt("currLife", 0);
+            FightObjectParam targetParam = new FightObjectParam();
+            targetParam.setObjId((int)fightObject.getId());
+            int currLife = map.getInt("currLife", 0);
             if (currLife != 0) {
                 targetParam.setCurrentLife(currLife);
             }
             else {
                 targetParam.setCurrentLife(fightObject.getCurrLife());
             }
-            final int changeLife = map.getInt("changeLife", 0);
+            int changeLife = map.getInt("changeLife", 0);
             if (changeLife != 0) {
                 targetParam.setChangeLife(changeLife);
             }
-            final int currMana = map.getInt("currMana", 0);
+            int currMana = map.getInt("currMana", 0);
             if (currMana != 0) {
                 targetParam.setCurrentMana(currMana);
             }
             else {
                 targetParam.setCurrentMana(fightObject.getCurrMana());
             }
-            final int changeMana = map.getInt("changeMana", 0);
+            int changeMana = map.getInt("changeMana", 0);
             if (changeMana != 0) {
                 targetParam.setChangeMana(changeMana);
             }
-            final int missed = map.getInt("missed", -1);
+            int missed = map.getInt("missed", -1);
             if (missed != -1) {
                 targetParam.setMissed(missed);
+                return targetParam;
             }
             return targetParam;
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
-    public void dragonMorphRenew(final FightObject fightObject) {
-        final SysSkill sysSkill = SkillDataPool.skillMap.get(30041);
-        final double[] power = sysSkill.getPower();
-        final int life_gain = (int)(fightObject.getCurrLife() * power[0]);
-        final int currLife = life_gain + fightObject.getCurrLife();
-        final int mana_gain = (int)(fightObject.getCurrMana() * power[1]);
-        final int currMana = mana_gain + fightObject.getCurrMana();
-        final int maxLife = fightObject.getStatusSubMap().getInt("1023_max_life");
-        final int maxMana = fightObject.getStatusSubMap().getInt("1023_max_mana");
+    public void dragonMorphRenew(FightObject fightObject) {
+        SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(Integer.valueOf(30041));
+        double[] power = sysSkill.getPower();
+        int life_gain = (int)((double)fightObject.getCurrLife() * power[0]);
+        int currLife = life_gain + fightObject.getCurrLife();
+        int mana_gain = (int)((double)fightObject.getCurrMana() * power[1]);
+        int currMana = mana_gain + fightObject.getCurrMana();
+        int maxLife = fightObject.getStatusSubMap().getInt("1023_max_life");
+        int maxMana = fightObject.getStatusSubMap().getInt("1023_max_mana");
         fightObject.removeStatusSub("1023_max_life");
         fightObject.removeStatusSub("1023_max_mana");
         fightObject.setCurrLife((currLife > maxLife) ? maxLife : currLife);
@@ -2631,42 +2718,42 @@ public class FightNewService
     }
     
     @EventHandler({ EventType.LOGIN })
-    public void handleLoginEvent(final LoginEvent loginEvent) {
-        final Role role = loginEvent.getRole();
+    public void handleLoginEvent(LoginEvent loginEvent) {
+        Role role = loginEvent.getRole();
         this.enterFight(role);
     }
     
-    private void enterFight(final Role role) {
-        final Fight fight = this.getFightByRoleId(role.getRoleId());
+    private void enterFight(Role role) {
+        Fight fight = this.getFightByRoleId((int)role.getRoleId());
         if (fight == null) {
-            role.setCanFight(true);
+            role.setCanFight(Boolean.valueOf(true));
             return;
         }
         if (fight.isOver() && 3 != fight.getRoundType()) {
             FightExecutorNewService.FIGHT_ROOMS.remove(role.getRoleId());
             return;
         }
-        final FightObject roleObject = fight.queryFightObject(role.getRoleId());
+        FightObject roleObject = fight.queryFightObject(role.getRoleId());
         if (roleObject == null) {
-            role.setCanFight(true);
+            role.setCanFight(Boolean.valueOf(true));
             return;
         }
         if (2 == fight.getRoundType()) {
             try {
                 Thread.sleep(100L);
             }
-            catch (final InterruptedException e) {
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        final RoundParam roundParam = fight.getRoundParam();
+        RoundParam roundParam = fight.getRoundParam();
         RespExcuteFight respExcuteFight = null;
         boolean flag = false;
         RespFightInParam respFightInParam;
         RespRoundStartParam roundStartParam;
         if (3 == fight.getRoundType()) {
-            respFightInParam = FightParamPool.createRespFightInParam(false, fight.getId(), role.getRoleId(), roleObject.isASide());
-            roundStartParam = FightParamPool.getRespRoundStartParam(fight.getId(), role.getRoleId());
+            respFightInParam = FightParamPool.createRespFightInParam(false, fight.getId(), (int)role.getRoleId(), roleObject.isASide());
+            roundStartParam = FightParamPool.getRespRoundStartParam(fight.getId(), (int)role.getRoleId());
             respExcuteFight = FightParamPool.gainFightRoundParam(fight.getId()).getRespExcuteFight();
             flag = true;
         }
@@ -2679,87 +2766,93 @@ public class FightNewService
         }
         respFightInParam.setFightType(fight.getType());
         respFightInParam.setId(String.valueOf(fight.getId()));
-        FightMessageUtil.sendFightPackage(role.getId(), respFightInParam);
-        FightMessageUtil.sendFightPackage(role.getId(), roundStartParam);
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+        FightMessageUtil.sendFightPackage((long)role.getId(), respFightInParam);
+        FightMessageUtil.sendFightPackage((long)role.getId(), roundStartParam);
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             if (!fightObject.isMonster() && fightObject.isDoAction()) {
-                final RespInputInstruct respInputInstruct = new RespInputInstruct(fightObject.getId(), fightObject.getTargetId(), fightObject.getType(), fightObject.getSkillId(), 0);
-                FightMessageUtil.sendFightPackage(role.getId(), respInputInstruct);
+                RespInputInstruct respInputInstruct = new RespInputInstruct((int)fightObject.getId(), fightObject.getTargetId(), fightObject.getType(), fightObject.getSkillId(), 0);
+                FightMessageUtil.sendFightPackage((long)role.getId(), respInputInstruct);
+            }
+            else {
+                continue;
             }
         }
         if (flag) {
-            FightMessageUtil.sendFightPackage(role.getId(), respExcuteFight);
+            FightMessageUtil.sendFightPackage((long)role.getId(), respExcuteFight);
         }
         this.broadcastService.sendTitleInfoNew(role);
+        return;
     }
     
-    public RespFightInParam getRoundFightParam(final Role role, final Fight fight, final FightObject roleObject) {
-        final RespFightInParam respFightInParam = new RespFightInParam();
-        final FightObject petObject = fight.queryFightObject(roleObject.getFightPetId());
+    public RespFightInParam getRoundFightParam(Role role, Fight fight, FightObject roleObject) {
+        RespFightInParam respFightInParam = new RespFightInParam();
+        FightObject petObject = fight.queryFightObject(Integer.valueOf(roleObject.getFightPetId()));
         if (petObject != null) {
-            final Pet pet = petObject.getPet();
+            Pet pet = petObject.getPet();
             if (pet != null) {
-                final PetFightInParam petFightParam = fight.getPetFightParam(pet);
+                PetFightInParam petFightParam = fight.getPetFightParam(pet);
                 respFightInParam.addPetFightInParam(petFightParam);
             }
         }
-        final List<SkillParam> skillParams = fight.getSkillParams(role);
+        List<SkillParam> skillParams = fight.getSkillParams(role);
         if (skillParams != null) {
             respFightInParam.setSkillParams(skillParams);
         }
-        final List<RefreshPet> refreshPets = this.getFightInParamPetList(fight, roleObject);
+        List<RefreshPet> refreshPets = this.getFightInParamPetList(fight, roleObject);
         respFightInParam.setPetList(refreshPets);
-        final List<ExcuteFightParam> excuteFightParams = fight.getFightStatus();
+        List<ExcuteFightParam> excuteFightParams = fight.getFightStatus();
         if (excuteFightParams != null) {
             respFightInParam.setExcuteFightParams(excuteFightParams);
         }
         if (roleObject.isASide()) {
             respFightInParam.getRespCombatFriends().setList(this.getFightMemberList(fight.getListA()));
             respFightInParam.getRespCombatOpponets().setList(this.getFightMemberList(fight.getListB()));
+            return respFightInParam;
         }
-        else {
-            respFightInParam.getRespCombatFriends().setList(this.getFightMemberList(fight.getListB()));
-            respFightInParam.getRespCombatOpponets().setList(this.getFightMemberList(fight.getListA()));
-        }
+        respFightInParam.getRespCombatFriends().setList(this.getFightMemberList(fight.getListB()));
+        respFightInParam.getRespCombatOpponets().setList(this.getFightMemberList(fight.getListA()));
         return respFightInParam;
     }
     
-    public List<FightMember> getFightMemberList(final List<FightObject> fightObjs) {
-        final ArrayList<FightMember> members = new ArrayList<FightMember>();
-        for (final FightObject fightObject : fightObjs) {
-            final FightMember fightMember = fightObject.asFightMember();
+    public List<FightMember> getFightMemberList(List<FightObject> fightObjs) {
+        ArrayList<FightMember> members = new ArrayList<>();
+        for (FightObject fightObject : fightObjs) {
+            FightMember fightMember = fightObject.asFightMember();
             if (fightMember != null) {
                 if (fightObject.getLogic() == LOGIC.LOGICTYPE_MONSTER.getValue()) {
                     fightMember.setSerial(50000);
                 }
                 members.add(fightMember);
             }
+            else {
+                continue;
+            }
         }
         return members;
     }
     
-    public List<RefreshPet> getFightInParamPetList(final Fight fight, final FightObject fightObject) {
-        final FightObject petObject = fight.queryFightObject(fightObject.getFightPetId());
-        final List<RefreshPet> refreshPets = new ArrayList<RefreshPet>();
+    public List<RefreshPet> getFightInParamPetList(Fight fight, FightObject fightObject) {
+        FightObject petObject = fight.queryFightObject(Integer.valueOf(fightObject.getFightPetId()));
+        List<RefreshPet> refreshPets = new ArrayList<>();
         RefreshPet refreshPet = null;
         if (petObject != null) {
             refreshPet = new RefreshPet();
             refreshPets.add(refreshPet);
-            refreshPet.setPetId(petObject.getId());
+            refreshPet.setPetId((int)petObject.getId());
             refreshPet.setType(1);
         }
-        final Role role = fightObject.getRole();
+        Role role = fightObject.getRole();
         if (role != null) {
-            final Map<Integer, Pet> petMap = PetCache.PET_MAP.get(role.getId());
+            Map<Integer, Pet> petMap = (Map)PetCache.PET_MAP.get(role.getId());
             if (petMap != null && petMap.size() > 0) {
-                final Set<Integer> deadPetIds = fight.getDeadPetIds();
-                for (final Map.Entry<Integer, Pet> entry : petMap.entrySet()) {
-                    final Pet pet = entry.getValue();
-                    if (refreshPet != null && pet.getPetId().equals(refreshPet.getPetId())) {
+                Set<Integer> deadPetIds = fight.getDeadPetIds();
+                for (Map.Entry<Integer, Pet> entry : petMap.entrySet()) {
+                    Pet pet = (Pet)entry.getValue();
+                    if (refreshPet != null && pet.getPetId().equals(Integer.valueOf(refreshPet.getPetId()))) {
                         continue;
                     }
-                    final RefreshPet refreshPet2 = new RefreshPet();
-                    refreshPet2.setPetId(pet.getPetId());
+                    RefreshPet refreshPet2 = new RefreshPet();
+                    refreshPet2.setPetId((int)pet.getPetId());
                     if (deadPetIds.contains(pet.getPetId())) {
                         refreshPet2.setType(1);
                     }
@@ -2773,40 +2866,43 @@ public class FightNewService
         return refreshPets;
     }
     
-    public RespRoundStartParam getRespRoundStartParam(final Fight fight, final int objId) {
+    public RespRoundStartParam getRespRoundStartParam(Fight fight, int objId) {
         if (fight.getRespRoundStartParamMap().size() > 0) {
-            RespRoundStartParam respRoundStartParam = fight.getRespRoundStartParamMap().get(objId);
+            RespRoundStartParam respRoundStartParam = (RespRoundStartParam)fight.getRespRoundStartParamMap().get(Integer.valueOf(objId));
             if (respRoundStartParam == null) {
                 respRoundStartParam = new RespRoundStartParam();
                 respRoundStartParam.setObjId(objId);
                 respRoundStartParam.setRound(fight.getRound());
+                return respRoundStartParam;
             }
             return respRoundStartParam;
         }
-        RespRoundStartParam respRoundStartParam = new RespRoundStartParam();
-        respRoundStartParam.setObjId(objId);
-        respRoundStartParam.setRound(fight.getRound());
-        return respRoundStartParam;
+        else {
+            RespRoundStartParam respRoundStartParam = new RespRoundStartParam();
+            respRoundStartParam.setObjId(objId);
+            respRoundStartParam.setRound(fight.getRound());
+            return respRoundStartParam;
+        }
     }
     
-    public RespRoundStartParam getRoundStartParamAll(final Fight fight, final FightObject fightObject) {
-        final RespRoundStartParam respRoundStartParam = new RespRoundStartParam();
-        respRoundStartParam.setObjId(fightObject.getId());
+    public RespRoundStartParam getRoundStartParamAll(Fight fight, FightObject fightObject) {
+        RespRoundStartParam respRoundStartParam = new RespRoundStartParam();
+        respRoundStartParam.setObjId((int)fightObject.getId());
         respRoundStartParam.setAutoFight(fightObject.getAutoFight() == 1);
         respRoundStartParam.setRound(fight.getRound());
-        final AutoFightSkillParam autoFightSkillParam = this.fightMessageNewService.selfAuto(fightObject, fight);
+        AutoFightSkillParam autoFightSkillParam = this.fightMessageNewService.selfAuto(fightObject, fight);
         if (autoFightSkillParam != null) {
             respRoundStartParam.addAutoFightSkillParam(autoFightSkillParam);
         }
-        final List<SkillCool> cools = fightObject.getSkillCoolList();
+        List<SkillCool> cools = fightObject.getSkillCoolList();
         respRoundStartParam.addSkillCools(cools);
-        final FightObject petObject = fight.queryFightObject(fightObject.getFightPetId());
+        FightObject petObject = fight.queryFightObject(Integer.valueOf(fightObject.getFightPetId()));
         if (petObject != null) {
-            final List<SkillCool> petCools = petObject.getSkillCoolList();
+            List<SkillCool> petCools = petObject.getSkillCoolList();
             if (petCools.size() > 0) {
                 respRoundStartParam.addSkillCools(petCools);
             }
-            final AutoFightSkillParam autoFightSkillParamPet = this.fightMessageNewService.selfAuto(petObject, fight);
+            AutoFightSkillParam autoFightSkillParamPet = this.fightMessageNewService.selfAuto(petObject, fight);
             if (autoFightSkillParamPet != null) {
                 respRoundStartParam.addAutoFightSkillParam(autoFightSkillParamPet);
             }
@@ -2814,9 +2910,9 @@ public class FightNewService
         return respRoundStartParam;
     }
     
-    public void maxRoundTimer(final Fight fight, final long delay) {
+    public void maxRoundTimer(Fight fight, long delay) {
         if (fight != null && fight.getAllFightObjects() != null) {
-            for (final FightObject fightObject : fight.getAllFightObjects()) {
+            for (FightObject fightObject : fight.getAllFightObjects()) {
                 if (!fightObject.isPlayer()) {
                     continue;
                 }
@@ -2825,83 +2921,93 @@ public class FightNewService
         }
     }
     
-    public boolean sendFightParams(final Fight fight, final boolean isDistinguish) {
+    public boolean sendFightParams(Fight fight, boolean isDistinguish) {
         boolean flag = true;
-        final RespExcuteFight respExcuteFight = this.fightMessageNewService.excuteSendFightMsg(fight);
+        RespExcuteFight respExcuteFight = this.fightMessageNewService.excuteSendFightMsg(fight);
         if (respExcuteFight == null) {
             flag = false;
         }
-        final StringBuffer sendRoleSB = new StringBuffer("[");
-        final List<Long> playerList = fight.getActionParam().getPlayerList();
+        StringBuffer sendRoleSB = new StringBuffer("[");
+        List<Long> playerList = fight.getActionParam().getPlayerList();
         if (playerList != null && playerList.size() > 0) {
-            for (final Long playerId : playerList) {
-                final Role role = this.roleService.getPlayer(playerId);
+            for (Long playerId : playerList) {
+                Role role = this.roleService.getPlayer((long)playerId);
                 if (isDistinguish) {
                     this.excuteSubstitution(fight, role, respExcuteFight);
                 }
-                FightMessageUtil.sendFightPackage(playerId, respExcuteFight);
+                FightMessageUtil.sendFightPackage((long)playerId, respExcuteFight);
                 sendRoleSB.append(role.getRoleId() + ",");
                 if (!flag) {
-                    this.animationPlayEnd(fight, role.getRoleId());
+                    this.animationPlayEnd(fight, (int)role.getRoleId());
+                }
+                else {
+                    continue;
                 }
             }
         }
         FightParamPool.gainFightRoundParam(fight.getId()).setRespExcuteFight(respExcuteFight);
         if (fight.isWatchFightOnOff()) {
-            final FightSpectatorNewService fightSpectatorService = SpringUtils.getBean(FightSpectatorNewService.class);
-            SpringUtils.getBean(FightSpectatorExecutorNewService.class).addFightTask(fight.getId(), () -> fightSpectatorService.sendWatchFightData(fight, (byte)2));
+            FightSpectatorNewService fightSpectatorService = (FightSpectatorNewService)SpringUtils.getBean(FightSpectatorNewService.class);
+            ((FightSpectatorExecutorNewService)SpringUtils.getBean(FightSpectatorExecutorNewService.class)).addFightTask(fight.getId(), () -> fightSpectatorService.sendWatchFightData(fight, (byte)2));
         }
         sendRoleSB.deleteCharAt(sendRoleSB.length() - 1);
         sendRoleSB.append("]");
         this.fightRecordService.saveRecord(fight, respExcuteFight, sendRoleSB.toString());
-        fight.getActionParam().setActionDetailParams(new ArrayList<ActionDetailParam>());
+        fight.getActionParam().setActionDetailParams(new ArrayList<>());
         return flag;
     }
     
-    private void excuteSubstitution(final Fight fight, final Role role, final RespExcuteFight respExcuteFight) {
+    private void excuteSubstitution(Fight fight, Role role, RespExcuteFight respExcuteFight) {
         if (respExcuteFight.getExcuteFightParams() != null && respExcuteFight.getExcuteFightParams().size() > 0) {
-            for (final ExcuteFightParam excuteFightParam : respExcuteFight.getExcuteFightParams()) {
-                if (excuteFightParam.getType() == 2 && excuteFightParam.getCombatAddObjects() != null && excuteFightParam.getCombatAddObjects().size() > 0 && !fight.isSameCamp(excuteFightParam.getAttaId(), role.getRoleId())) {
-                    for (final CombatAddObject combatAddObject : excuteFightParam.getCombatAddObjects()) {
+            for (ExcuteFightParam excuteFightParam : respExcuteFight.getExcuteFightParams()) {
+                if (excuteFightParam.getType() == 2 && excuteFightParam.getCombatAddObjects() != null && excuteFightParam.getCombatAddObjects().size() > 0 && !fight.isSameCamp(excuteFightParam.getAttaId(), (int)role.getRoleId())) {
+                    for (CombatAddObject combatAddObject : excuteFightParam.getCombatAddObjects()) {
                         combatAddObject.setPosition(combatAddObject.getPosition() + 10000);
                     }
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    public void excuteRoundStartSend(final Fight fight) {
+    public void excuteRoundStartSend(Fight fight) {
         if (fight == null) {
             return;
         }
-        final Map<Integer, RespRoundStartParam> respRoundStartParamMap = fight.getRespRoundStartParamMap();
-        final long millis = System.currentTimeMillis();
-        final RoundParam roundParam = new RoundParam(fight.getRound());
+        Map<Integer, RespRoundStartParam> respRoundStartParamMap = fight.getRespRoundStartParamMap();
+        long millis = System.currentTimeMillis();
+        RoundParam roundParam = new RoundParam(fight.getRound());
         roundParam.setBeganTime(millis);
         fight.setRoundParam(roundParam);
         boolean isSaveRecord = true;
         RespRoundStartParam respRoundStartParamRecord = null;
-        final StringBuffer sendRoleSB = new StringBuffer("[");
-        for (final FightObject fightObject : fight.getAllFightObjects()) {
+        StringBuffer sendRoleSB = new StringBuffer("[");
+        for (FightObject fightObject : fight.getAllFightObjects()) {
             if (!fightObject.isPlayer()) {
                 continue;
             }
-            final Role role = fightObject.getRole();
+            Role role = fightObject.getRole();
             if (role == null) {
                 continue;
             }
-            final RespRoundStartParam respRoundStartParam = respRoundStartParamMap.get(fightObject.getId());
-            if (respRoundStartParam == null) {
+            RespRoundStartParam respRoundStartParam = (RespRoundStartParam)respRoundStartParamMap.get(fightObject.getId());
+            if (respRoundStartParam != null) {
+                respRoundStartParam.setStartTime(String.valueOf(millis));
+                FightMessageUtil.sendFightPackage((long)role.getId(), respRoundStartParam);
+                sendRoleSB.append(fightObject.getId() + ",");
+                if (isSaveRecord) {
+                    respRoundStartParamRecord = respRoundStartParam;
+                    isSaveRecord = false;
+                }
+                else {
+                    continue;
+                }
+            }
+            else {
                 continue;
             }
-            respRoundStartParam.setStartTime(String.valueOf(millis));
-            FightMessageUtil.sendFightPackage(role.getId(), respRoundStartParam);
-            sendRoleSB.append(fightObject.getId() + ",");
-            if (!isSaveRecord) {
-                continue;
-            }
-            respRoundStartParamRecord = respRoundStartParam;
-            isSaveRecord = false;
         }
         if (respRoundStartParamRecord != null) {
             if (sendRoleSB.length() > 5) {
@@ -2913,13 +3019,14 @@ public class FightNewService
         FightParamPool.gainFightRoundParam(fight.getId()).setRespRoundStartParamMap(respRoundStartParamMap);
         FightParamPool.addFightInParam(fight);
         if (fight.isWatchFightOnOff()) {
-            final FightSpectatorNewService fightSpectatorService = SpringUtils.getBean(FightSpectatorNewService.class);
-            SpringUtils.getBean(FightSpectatorExecutorNewService.class).addFightTask(fight.getId(), () -> fightSpectatorService.sendWatchFightData(fight, (byte)1));
+            FightSpectatorNewService fightSpectatorService = (FightSpectatorNewService)SpringUtils.getBean(FightSpectatorNewService.class);
+            ((FightSpectatorExecutorNewService)SpringUtils.getBean(FightSpectatorExecutorNewService.class)).addFightTask(fight.getId(), () -> fightSpectatorService.sendWatchFightData(fight, (byte)1));
         }
-        fight.setRespRoundStartParamMap(new HashMap<Integer, RespRoundStartParam>());
+        fight.setRespRoundStartParamMap(new HashMap());
+        return;
     }
     
-    public void excuteFightInSend(final Fight fight) {
+    public void excuteFightInSend(Fight fight) {
         if (fight == null || fight.getFightInParams() == null) {
             return;
         }
@@ -2929,13 +3036,13 @@ public class FightNewService
         }
         boolean isSaveRecord = true;
         RespFightInParam fightInParamRecord = null;
-        final StringBuffer sendRoleSB = new StringBuffer("[");
+        StringBuffer sendRoleSB = new StringBuffer("[");
         for (int i = 0; i < fight.getFightInParams().size(); ++i) {
-            final RespFightInParam fightInParam = fight.getFightInParams().get(i);
+            RespFightInParam fightInParam = (RespFightInParam)fight.getFightInParams().get(i);
             if (excuteFightParams != null) {
                 fightInParam.setExcuteFightParams(excuteFightParams);
             }
-            final long roleId = Long.parseLong(fightInParam.getId());
+            long roleId = Long.parseLong(fightInParam.getId());
             fightInParam.setId(String.valueOf(fight.getId()));
             FightMessageUtil.sendFightPackage(roleId, fightInParam);
             sendRoleSB.append(fightInParam.getRoleId() + ",");
@@ -2952,55 +3059,56 @@ public class FightNewService
             this.fightRecordService.saveRecord(fight, fightInParamRecord, sendRoleSB.toString());
         }
         fight.setActionParam(new ActionParam());
+        return;
     }
     
-    public List<Member> excuteMemberLeaveTemp(final Role role, final Team team) {
+    public List<Member> excuteMemberLeaveTemp(Role role, Team team) {
         List<Member> list = null;
-        final Optional<Member> memberOptional = team.getList().stream().filter(member -> member.getRoleId().equals(role.getRoleId()) && !member.isInTeam()).findFirst();
+        Optional<Member> memberOptional = team.getList().stream().filter(member -> member.getRoleId().equals(role.getRoleId()) && !member.isInTeam()).findFirst();
         if (memberOptional.isPresent()) {
-            Member member = memberOptional.get();
-            final Member newMember = new Member();
+        	Member member = (Member)memberOptional.get();
+            Member newMember = new Member();
             BeanUtils.copyProperties(member, newMember);
             newMember.setInTeam(true);
             list = new ArrayList<>();
             list.add(newMember);
+            return list;
         }
-        else {
-            list = team.getList();
-        }
+        list = team.getList();
         return list;
     }
     
-    public Team getRoleFightTeam(final Role role) {
-        Team team = this.teamService.getTeam(role.getRoleId());
+    public Team getRoleFightTeam(Role role) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
         if (!this.teamService.isInTeam(role)) {
-            final List<Member> arrayList = Collections.synchronizedList(new ArrayList<Member>());
-            final Member member = Member.valueOf(role);
+            List<Member> arrayList = Collections.synchronizedList(new ArrayList<>());
+            Member member = Member.valueOf(role);
             arrayList.add(member);
             team = new Team();
             team.setList(arrayList);
-            final ArrayList<Member> partnerMembers = SpringUtils.getBean(PartnerService.class).partner2Member(role);
+            ArrayList<Member> partnerMembers = ((PartnerService)SpringUtils.getBean(PartnerService.class)).partner2Member(role);
             team.setPartner(partnerMembers);
+            return team;
         }
         return team;
     }
     
-    public Map<String, Object> saveAutoFightSet(final Role role, final ReqAutoFightSetData reqAutoFightSetData) {
-        final int id = reqAutoFightSetData.getId();
-        final Map<String, Object> autoSet = new HashMap<String, Object>();
-        autoSet.put("action", reqAutoFightSetData.getAction());
-        autoSet.put("type", reqAutoFightSetData.getType());
-        autoSet.put("skillId", reqAutoFightSetData.getSkillId());
+    public Map<String, Object> saveAutoFightSet(Role role, ReqAutoFightSetData reqAutoFightSetData) {
+        int id = reqAutoFightSetData.getId();
+        Map<String, Object> autoSet = new HashMap();
+        autoSet.put("action", Integer.valueOf(reqAutoFightSetData.getAction()));
+        autoSet.put("type", Integer.valueOf(reqAutoFightSetData.getType()));
+        autoSet.put("skillId", Integer.valueOf(reqAutoFightSetData.getSkillId()));
         int born = 0;
-        if (role.getRace() == RACE.RACE_LONG.getValue()) {
+        if ((int)role.getRace() == RACE.RACE_LONG.getValue()) {
             born = reqAutoFightSetData.getBorn();
         }
-        autoSet.put("born", born);
-        if (role.getRoleId().equals(id)) {
+        autoSet.put("born", Integer.valueOf(born));
+        if (role.getRoleId().equals(Integer.valueOf(id))) {
             role.getExtendBox().setAutoFightSet(autoSet);
         }
         else {
-            final Pet pet = this.petService.selectPet(role).get(id);
+            Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(id));
             if (pet != null) {
                 pet.setAutoFightSet(autoSet);
             }
@@ -3009,30 +3117,34 @@ public class FightNewService
         return autoSet;
     }
     
-    public void getFightObjectAttrs(final Role role, final int fightId) {
-        final Fight fight = this.getFight(fightId);
+    public void getFightObjectAttrs(Role role, int fightId) {
+        Fight fight = this.getFight(fightId);
         if (fight == null) {
             return;
         }
-        final Map<Integer, Integer> map = PRO_DICT_TYPE.toMap();
-        final List<FightObjectAttr> list = new ArrayList<FightObjectAttr>();
-        for (final FightObject obj : fight.getAllFightObjects()) {
+        Map<Integer, Integer> map = PRO_DICT_TYPE.toMap();
+        List<FightObjectAttr> list = new ArrayList<>();
+        for (FightObject obj : fight.getAllFightObjects()) {
             if (obj != null) {
-                final List<FiedValue> attrs = new ArrayList<FiedValue>();
-                for (final Integer key : map.keySet()) {
-                    final double attr = obj.getSelfAllTempPro(key);
+                List<FiedValue> attrs = new ArrayList<>();
+                for (Integer key : map.keySet()) {
+                    double attr = obj.getSelfAllTempPro((int)key);
                     if (attr == 0.0) {
                         continue;
                     }
-                    attrs.add(new FiedValue(key.toString(), (byte)3, (int)(attr * 1000.0)));
+                    attrs.add(new FiedValue(key.toString(), (byte)3, Integer.valueOf((int)(attr * 1000.0))));
                 }
-                list.add(new FightObjectAttr(obj.getId(), attrs));
+                list.add(new FightObjectAttr((int)obj.getId(), attrs));
+            }
+            else {
+                continue;
             }
         }
         if (list.size() > 0) {
-            final RespFightObjectAttr respFightObjectAttr = new RespFightObjectAttr();
+            RespFightObjectAttr respFightObjectAttr = new RespFightObjectAttr();
             respFightObjectAttr.setList(list);
-            FightMessageUtil.sendFightPackage(role.getId(), respFightObjectAttr);
+            FightMessageUtil.sendFightPackage((long)role.getId(), respFightObjectAttr);
         }
+        return;
     }
 }

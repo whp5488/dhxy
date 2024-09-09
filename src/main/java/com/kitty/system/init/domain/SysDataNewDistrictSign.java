@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -17,6 +16,9 @@ public class SysDataNewDistrictSign
     @Column("content")
     @Default("[]")
     private List<Param> list;
+    
+    public SysDataNewDistrictSign() {
+    }
     
     public byte getDay() {
         return this.day;
@@ -42,24 +44,16 @@ public class SysDataNewDistrictSign
         if (!(o instanceof SysDataNewDistrictSign)) {
             return false;
         }
-        final SysDataNewDistrictSign other = (SysDataNewDistrictSign)o;
+        SysDataNewDistrictSign other = (SysDataNewDistrictSign)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getDay() != other.getDay()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -68,16 +62,16 @@ public class SysDataNewDistrictSign
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getDay();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "SysDataNewDistrictSign(day=" + this.getDay() + ", list=" + this.getList() + ")";
+        return "SysDataNewDistrictSign(day=" + (int)this.getDay() + ", list=" + this.getList() + ")";
     }
 }

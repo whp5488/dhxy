@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.model;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class AutoFightSkillParam implements Serializable
@@ -43,7 +41,6 @@ public class AutoFightSkillParam implements Serializable
         return this.born;
     }
     
-    @ConstructorProperties({ "objId", "action", "skillId", "born" })
     public AutoFightSkillParam(final int objId, final int action, final int skillId, final int born) {
         this.skillId = -1;
         this.born = 0;

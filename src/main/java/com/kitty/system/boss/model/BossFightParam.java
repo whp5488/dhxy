@@ -1,4 +1,3 @@
-
 package com.kitty.system.boss.model;
 
 import com.kitty.system.init.domain.SysDataMonster;
@@ -15,13 +14,13 @@ public class BossFightParam
     private boolean loadGuard;
     private byte specialMonsterType;
     
-    public BossFightParam(final List<SysDataMonster> bossParamList, final int fightType) {
+    public BossFightParam(List<SysDataMonster> bossParamList, int fightType) {
         this.loadGuard = true;
         this.bossParamList = bossParamList;
         this.fightType = fightType;
     }
     
-    public BossFightParam(final List<SysDataMonster> bossParamList, final int fightType, final int taskId, final int npcId) {
+    public BossFightParam(List<SysDataMonster> bossParamList, int fightType, int taskId, int npcId) {
         this.loadGuard = true;
         this.bossParamList = bossParamList;
         this.fightType = fightType;
@@ -33,7 +32,7 @@ public class BossFightParam
         return this.bossParamList;
     }
     
-    public void setBossParamList(final List<SysDataMonster> bossParamList) {
+    public void setBossParamList(List<SysDataMonster> bossParamList) {
         this.bossParamList = bossParamList;
     }
     

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.controller;
 
 import com.kitty.system.game.pet.message.ReqDisassembleYuanqidan;
@@ -15,7 +14,6 @@ import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.game.pet.message.ReqSetPetName;
 import com.kitty.system.game.equip.domain.PetEquip;
 import java.util.Map;
-import com.kitty.listener.BaseGameEvent;
 import com.kitty.listener.event.ranking.PetChangeEvent;
 import com.kitty.listener.EventType;
 import com.kitty.listener.EventDispatcher;
@@ -24,18 +22,17 @@ import com.kitty.record.RecordThread;
 import com.kitty.system.game.enter.message.RespDestroySucceed;
 import com.kitty.system.game.vo.utils.Const;
 import com.kitty.system.game.role.utils.RoleUtils;
-import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.role.domain.Domesticate;
+import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.safe.util.SafeUtil;
 import com.kitty.system.game.pet.message.ReqDropPet;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.pet.message.ReqSelectCurrentPet;
 import com.kitty.system.game.pet.message.ReqSetShapeTemp;
-import com.kitty.mina.message.Message;
+import com.kitty.system.game.pet.domain.PetBase;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.pet.message.RespConcisePet;
 import java.util.ArrayList;
-import com.kitty.system.game.pet.domain.PetBase;
 import java.util.List;
 import com.kitty.system.game.pet.message.ReqRequestUpgradeTaskPet;
 import com.kitty.system.game.pet.domain.Pet;
@@ -66,55 +63,55 @@ public class PetController
     }
     
     @RequestMapping
-    public void exChangePet(final IoSession session, final MetaPet metaPet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void exChangePet(IoSession session, MetaPet metaPet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.petService.onC2SGetPet(metaPet.getType(), role);
         }
     }
     
     @RequestMapping
-    public void feedPet(final IoSession session, final ReqFeedPet feedPet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void feedPet(IoSession session, ReqFeedPet feedPet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Pet pet = this.petService.selectPet(role).get(feedPet.getPetId());
+            Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(feedPet.getPetId()));
             if (pet != null) {
-                this.petService.feedPet(role, pet, feedPet.getParam(), feedPet.getType(), feedPet.getNum(), 3);
+                this.petService.feedPet(role, pet, feedPet.getParam(), feedPet.getType(), feedPet.getNum(), Integer.valueOf(3));
             }
         }
     }
     
     @RequestMapping
-    public void refinePetBase(final IoSession session, final ReqRequestUpgradeTaskPet requestUpgradeTaskPet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void refinePetBase(IoSession session, ReqRequestUpgradeTaskPet requestUpgradeTaskPet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Pet pet = this.petService.selectPet(role).get(requestUpgradeTaskPet.getPetId());
+            Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(requestUpgradeTaskPet.getPetId()));
             if (pet != null) {
-                List<PetBase> list = pet.getDarkBaseMap().get(requestUpgradeTaskPet.getParam());
+                List<PetBase> list = (List)pet.getDarkBaseMap().get(Integer.valueOf(requestUpgradeTaskPet.getParam()));
                 if (list == null) {
-                    list = new ArrayList<PetBase>();
+                    list = new ArrayList<>();
                 }
-                MessagePusher.pushMessage(session, new RespConcisePet(pet.getPetId(), list));
+                MessagePusher.pushMessage(session, new RespConcisePet((int)pet.getPetId(), list));
             }
         }
     }
     
     @RequestMapping
-    public void refineReplace(final IoSession session, final ReqSetShapeTemp reqSetShapeTemp) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void refineReplace(IoSession session, ReqSetShapeTemp reqSetShapeTemp) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.petService.refineReplace(role, reqSetShapeTemp);
         }
     }
     
     @RequestMapping
-    public void combatPet(final IoSession session, final ReqSelectCurrentPet reqSelectCurrentPet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void combatPet(IoSession session, ReqSelectCurrentPet reqSelectCurrentPet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Pet pet = this.petService.selectPet(role).get(reqSelectCurrentPet.getPetId());
+            Pet pet = (Pet)this.petService.selectPet(role).get(Integer.valueOf(reqSelectCurrentPet.getPetId()));
             if (pet != null) {
-                final int petLevel = pet.getPetLv() + pet.getRebirth() * 1000;
-                final int roleLevle = role.getLevel() + role.getRelive() * 1000;
+                int petLevel = (int)pet.getPetLv() + (int)pet.getRebirth() * 1000;
+                int roleLevle = (int)role.getLevel() + (int)role.getRelive() * 1000;
                 if (petLevel - roleLevle > 15) {
                     return;
                 }
@@ -129,39 +126,39 @@ public class PetController
     }
     
     @RequestMapping
-    public void giveUpPet(final IoSession session, final ReqDropPet reqDropPet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void giveUpPet(IoSession session, ReqDropPet reqDropPet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             if (!SafeUtil.isUnlock(role)) {
                 return;
             }
-            if (role.getExtendBox().getCombatPet().equals(reqDropPet.getPetId())) {
+            if (role.getExtendBox().getCombatPet().equals(Integer.valueOf(reqDropPet.getPetId()))) {
                 MessagePusher.pushMessage(session, new RespMsg("出战中的宠物不可以放生"));
             }
             else {
-                final Map<Integer, Pet> map = this.petService.selectPet(role);
-                final Pet pet = map.get(reqDropPet.getPetId());
+                Map<Integer, Pet> map = this.petService.selectPet(role);
+                Pet pet = (Pet)map.get(Integer.valueOf(reqDropPet.getPetId()));
                 if (pet != null) {
-                    final List<PetEquip> petWearEquip = this.bagService.getPetWearEquip(role.getId(), pet.getId());
+                    List<PetEquip> petWearEquip = this.bagService.getPetWearEquip((long)role.getId(), (long)pet.getId());
                     if (petWearEquip != null && petWearEquip.size() > 0) {
                         MessagePusher.pushMessage(session, new RespMsg(" 请卸下召唤兽佩饰后再试"));
                         return;
                     }
-                    final List<Domesticate> domesticateList = DataCache.DOMESTICATE_MAP.get(role.getId());
+                    List<Domesticate> domesticateList = (List)DataCache.DOMESTICATE_MAP.get(role.getId());
                     if (domesticateList != null) {
-                        final Domesticate domesticate = domesticateList.stream().filter(e -> pet.getId().equals(e.getRestsId())).findFirst().orElse(null);
+                        Domesticate domesticate = (Domesticate)domesticateList.stream().filter(e -> pet.getId().equals(Long.valueOf(e.getRestsId()))).findFirst().orElse(null);
                         if (domesticate != null) {
                             MessagePusher.pushMessage(session, new RespMsg(String.format("#<O>%s#处于驯养中，不可放生#<E:51>#", pet.getPetName())));
                             return;
                         }
                     }
-                    map.remove(reqDropPet.getPetId());
+                    map.remove(Integer.valueOf(reqDropPet.getPetId()));
                     RoleUtils.updateAssistList(role, pet.getPetId(), false);
                     MessagePusher.pushMessage(session, new RespDestroySucceed(Const.BUYBACK_TYPE_PET, String.valueOf(reqDropPet.getPetId())));
                     pet.setDelete(true);
                     pet.save();
                     role.save();
-                    RecordThread.getInstance().add2Queue(role.getId(), role.getRoleId(), (short)2, (byte)2, "放生宠物" + JsonUtils.object2String(pet), role.getMarking());
+                    RecordThread.getInstance().add2Queue((long)role.getId(), (int)role.getRoleId(), (short)2, (byte)2, "放生宠物" + JsonUtils.object2String(pet), role.getMarking());
                     EventDispatcher.getInstance().fireEvent(new PetChangeEvent(EventType.PET_SCORE_CHANGE, pet, petWearEquip));
                 }
                 else {
@@ -172,16 +169,16 @@ public class PetController
     }
     
     @RequestMapping
-    public void changeName(final IoSession session, final ReqSetPetName reqSetPetName) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void changeName(IoSession session, ReqSetPetName reqSetPetName) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Map<Integer, Pet> petMap = this.petService.selectPet(role);
-            final Pet pet = petMap.get(reqSetPetName.getPetId());
+            Map<Integer, Pet> petMap = this.petService.selectPet(role);
+            Pet pet = (Pet)petMap.get(reqSetPetName.getPetId());
             if (pet != null) {
                 if (!SpringUtils.getRoleService().canCreateRole(session, reqSetPetName.getName(), LOGIC.LOGICTYPE_PET.getValue())) {
                     return;
                 }
-                final String name = CheckCharUtils.replaceName(reqSetPetName.getName());
+                String name = CheckCharUtils.replaceName(reqSetPetName.getName());
                 pet.setPetName(name);
                 petMap.put(pet.getPetId(), pet);
                 this.petService.petInfo(role, pet);
@@ -195,10 +192,10 @@ public class PetController
     }
     
     @RequestMapping
-    public void assignCorrection(final IoSession session, final ReqAssignCorrection reqAssignCorrection) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void assignCorrection(IoSession session, ReqAssignCorrection reqAssignCorrection) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Pet pet = this.petService.selectPet(role).get(reqAssignCorrection.getPetId());
+            Pet pet = this.petService.selectPet(role).get(reqAssignCorrection.getPetId());
             if (pet != null) {
                 this.petService.assignCorrection(role, pet, reqAssignCorrection.getNutMap());
             }
@@ -209,10 +206,10 @@ public class PetController
     }
     
     @RequestMapping
-    public void restAssignCorrection(final IoSession session, final ReqRestAssignCorrection restAssignCorrection) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void restAssignCorrection(IoSession session, ReqRestAssignCorrection restAssignCorrection) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Pet pet = this.petService.selectPet(role).get(restAssignCorrection.getPetId());
+            Pet pet = (Pet)this.petService.selectPet(role).get(restAssignCorrection.getPetId());
             if (pet != null) {
                 this.petService.restAssignCorrection(role, pet, restAssignCorrection.getType());
             }
@@ -223,10 +220,10 @@ public class PetController
     }
     
     @RequestMapping
-    public void restAttribute(final IoSession session, final ReqRestAttributePet restAttributePet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void restAttribute(IoSession session, ReqRestAttributePet restAttributePet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Pet pet = this.petService.selectPet(role).get(restAttributePet.getPetId());
+            Pet pet = (Pet)this.petService.selectPet(role).get(restAttributePet.getPetId());
             if (pet != null) {
                 this.petService.restAttribute(role, pet, restAttributePet.getType());
             }
@@ -237,29 +234,29 @@ public class PetController
     }
     
     @RequestMapping
-    public void petFly(final IoSession session, final ReqPetFly reqPetFly) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void petFly(IoSession session, ReqPetFly reqPetFly) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.petService.petFly(role, reqPetFly);
         }
     }
     
     @RequestMapping
-    public void petFly(final IoSession session, final ReqPetFlyStarter reqPetFlyStarter) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void petFly(IoSession session, ReqPetFlyStarter reqPetFlyStarter) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.petService.petFlyStarter(role, reqPetFlyStarter);
         }
     }
     
     @RequestMapping
-    public void changeColor(final IoSession session, final ReqChangeColorPet reqChangeColorPet) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void changeColor(IoSession session, ReqChangeColorPet reqChangeColorPet) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final int petId = reqChangeColorPet.getPetId();
-        final byte colorSerial = reqChangeColorPet.getColorSerial();
+        int petId = reqChangeColorPet.getPetId();
+        byte colorSerial = reqChangeColorPet.getColorSerial();
         if (petId <= 0) {
             return;
         }
@@ -267,27 +264,30 @@ public class PetController
             return;
         }
         this.petService.changeColor(role, petId, colorSerial);
+        return;
     }
     
     @RequestMapping
-    public void cutAccColor(final IoSession session, final ReqPetCutAccColor reqPetCutAccColor) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void cutAccColor(IoSession session, ReqPetCutAccColor reqPetCutAccColor) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.petService.cutAccColor(role, reqPetCutAccColor);
+        return;
     }
     
     @RequestMapping
-    public void disassembleYuanqidan(final IoSession session, final ReqDisassembleYuanqidan reqDisassembleYuanqidan) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void disassembleYuanqidan(IoSession session, ReqDisassembleYuanqidan reqDisassembleYuanqidan) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final Integer serial = reqDisassembleYuanqidan.getSerial();
+        Integer serial = reqDisassembleYuanqidan.getSerial();
         if (serial == null) {
             return;
         }
         this.petService.disassembleYuanqidan(role, serial, reqDisassembleYuanqidan.getNum());
+        return;
     }
 }

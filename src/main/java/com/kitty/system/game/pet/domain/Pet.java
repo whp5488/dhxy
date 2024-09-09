@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.domain;
 
 import com.kitty.system.game.player.serializer.PetSerializerUtil;
@@ -176,31 +175,31 @@ public class Pet extends BaseEntity<Long>
     private PetCorrection correctionInfo;
     
     public Pet() {
-        this.petLv = 0;
-        this.rebirth = 0;
-        this.fpoint = 0;
+        this.petLv = Integer.valueOf(0);
+        this.rebirth = Integer.valueOf(0);
+        this.fpoint = Integer.valueOf(0);
         this.exp = 0L;
         this.petClose = 0L;
-        this.gg = 0;
-        this.lx = 0;
-        this.ll = 0;
-        this.mj = 0;
-        this.growthDan = 0;
-        this.lyn = 0;
-        this.bone = 0;
-        this.fly = 0;
+        this.gg = Integer.valueOf(0);
+        this.lx = Integer.valueOf(0);
+        this.ll = Integer.valueOf(0);
+        this.mj = Integer.valueOf(0);
+        this.growthDan = Integer.valueOf(0);
+        this.lyn = Integer.valueOf(0);
+        this.bone = Integer.valueOf(0);
+        this.fly = Integer.valueOf(0);
         this.flyStarter = 0;
-        this.msgMap = new ArrayList<NutMap>();
-        this.closeLimitMap = new HashMap<String, Integer>();
-        this.skills = new ArrayList<PetSkill>();
-        this.correction = new HashMap<Integer, Integer>();
-        this.autoAttrib = new HashMap<String, Integer>();
-        this.autoFightSet = new HashMap<String, Object>();
-        this.darkBaseMap = new HashMap<Integer, List<PetBase>>();
-        this.colorList = new ArrayList<Map<String, Byte>>();
-        this.accColor = new HashMap<Byte, Byte>();
-        this.accColorTwo = new HashMap<Byte, Byte>();
-        this.brandNew = new HashMap<Integer, Byte>();
+        this.msgMap = new ArrayList<>();
+        this.closeLimitMap = new HashMap();
+        this.skills = new ArrayList<>();
+        this.correction = new HashMap();
+        this.autoAttrib = new HashMap();
+        this.autoFightSet = new HashMap();
+        this.darkBaseMap = new HashMap();
+        this.colorList = new ArrayList<>();
+        this.accColor = new HashMap();
+        this.accColorTwo = new HashMap();
+        this.brandNew = new HashMap();
         this.awaken = 0;
         this.horse = 0L;
         this.bindTime = -1;
@@ -586,6 +585,6 @@ public class Pet extends BaseEntity<Long>
     
     @Override
     public String toString() {
-        return "Pet(id=" + this.getId() + ", roleId=" + this.getRoleId() + ", petId=" + this.getPetId() + ", shape=" + this.getShape() + ", petType=" + this.getPetType() + ", petName=" + this.getPetName() + ", petLv=" + this.getPetLv() + ", rebirth=" + this.getRebirth() + ", fpoint=" + this.getFpoint() + ", exp=" + this.getExp() + ", petClose=" + this.getPetClose() + ", gg=" + this.getGg() + ", lx=" + this.getLx() + ", ll=" + this.getLl() + ", mj=" + this.getMj() + ", currLife=" + this.getCurrLife() + ", maxLife=" + this.getMaxLife() + ", currMana=" + this.getCurrMana() + ", maxMana=" + this.getMaxMana() + ", score=" + this.getScore() + ", growthDan=" + this.getGrowthDan() + ", base=" + this.getBase() + ", isBase=" + this.getIsBase() + ", lyn=" + this.getLyn() + ", bone=" + this.getBone() + ", fly=" + this.getFly() + ", flyStarter=" + this.getFlyStarter() + ", correctionInfoJson=" + this.getCorrectionInfoJson() + ", msgMap=" + this.getMsgMap() + ", closeLimitMap=" + this.getCloseLimitMap() + ", skills=" + this.getSkills() + ", correction=" + this.getCorrection() + ", autoAttrib=" + this.getAutoAttrib() + ", autoFightSet=" + this.getAutoFightSet() + ", darkBaseMap=" + this.getDarkBaseMap() + ", colorList=" + this.getColorList() + ", accColor=" + this.getAccColor() + ", accColorTwo=" + this.getAccColorTwo() + ", brandNew=" + this.getBrandNew() + ", awaken=" + this.getAwaken() + ", horse=" + this.getHorse() + ", bindTime=" + this.getBindTime() + ", domesticate=" + this.getDomesticate() + ", petBase=" + this.getPetBase() + ", correctionInfo=" + this.getCorrectionInfo() + ")";
+        return "Pet(id=" + this.getId() + ", roleId=" + this.getRoleId() + ", petId=" + this.getPetId() + ", shape=" + this.getShape() + ", petType=" + this.getPetType() + ", petName=" + this.getPetName() + ", petLv=" + this.getPetLv() + ", rebirth=" + this.getRebirth() + ", fpoint=" + this.getFpoint() + ", exp=" + this.getExp() + ", petClose=" + this.getPetClose() + ", gg=" + this.getGg() + ", lx=" + this.getLx() + ", ll=" + this.getLl() + ", mj=" + this.getMj() + ", currLife=" + this.getCurrLife() + ", maxLife=" + this.getMaxLife() + ", currMana=" + this.getCurrMana() + ", maxMana=" + this.getMaxMana() + ", score=" + this.getScore() + ", growthDan=" + this.getGrowthDan() + ", base=" + this.getBase() + ", isBase=" + this.getIsBase() + ", lyn=" + this.getLyn() + ", bone=" + this.getBone() + ", fly=" + this.getFly() + ", flyStarter=" + this.getFlyStarter() + ", correctionInfoJson=" + this.getCorrectionInfoJson() + ", msgMap=" + this.getMsgMap() + ", closeLimitMap=" + this.getCloseLimitMap() + ", skills=" + this.getSkills() + ", correction=" + this.getCorrection() + ", autoAttrib=" + this.getAutoAttrib() + ", autoFightSet=" + this.getAutoFightSet() + ", darkBaseMap=" + this.getDarkBaseMap() + ", colorList=" + this.getColorList() + ", accColor=" + this.getAccColor() + ", accColorTwo=" + this.getAccColorTwo() + ", brandNew=" + this.getBrandNew() + ", awaken=" + (int)this.getAwaken() + ", horse=" + this.getHorse() + ", bindTime=" + this.getBindTime() + ", domesticate=" + (int)this.getDomesticate() + ", petBase=" + this.getPetBase() + ", correctionInfo=" + this.getCorrectionInfo() + ")";
     }
 }

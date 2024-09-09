@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.echo.facade;
 
 import com.kitty.mina.annotation.RequestMapping;
@@ -14,8 +13,11 @@ public class EnterController
     @Autowired
     EchoService echoService;
     
+    public EnterController() {
+    }
+    
     @RequestMapping
-    public void heart(final IoSession session, final ReqEcho reqEcho) {
+    public void heart(IoSession session, ReqEcho reqEcho) {
         this.echoService.heart(session);
     }
 }

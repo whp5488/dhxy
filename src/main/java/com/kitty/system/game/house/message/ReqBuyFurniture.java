@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.house.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqBuyFurniture extends Message
 {
     private int serial;
+    
+    public ReqBuyFurniture() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -25,7 +27,7 @@ public class ReqBuyFurniture extends Message
         if (!(o instanceof ReqBuyFurniture)) {
             return false;
         }
-        final ReqBuyFurniture other = (ReqBuyFurniture)o;
+        ReqBuyFurniture other = (ReqBuyFurniture)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial();
     }
     
@@ -35,7 +37,7 @@ public class ReqBuyFurniture extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         return result;

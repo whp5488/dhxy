@@ -1,10 +1,8 @@
-
 package com.kitty.common.thread;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.Executor;
 import org.slf4j.Logger;
@@ -17,10 +15,13 @@ public class ExecutorConfig
 {
     private static final Logger logger;
     
+    public ExecutorConfig() {
+    }
+    
     @Bean
     public Executor asyncServiceExecutor() {
         ExecutorConfig.logger.info("start asyncServiceExecutor");
-        final ThreadPoolTaskExecutor executor = new VisiableThreadPoolTaskExecutor();
+        ThreadPoolTaskExecutor executor = new VisiableThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
         executor.setMaxPoolSize(10);
         executor.setQueueCapacity(99999);

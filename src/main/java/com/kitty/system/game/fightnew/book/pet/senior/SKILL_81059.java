@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -16,18 +15,21 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81059 extends SkillProcessor
 {
+    public SKILL_81059() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
-        FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81059);
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
+        FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81059);
         if (args != null && args.length > 0) {
-            final boolean flag = (boolean)args[0];
-            double percent = BigDecimalUtil.decimalScaleObjectDown(3, (0.1 + 4.0 * (effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-            final double pval = AcsryPetSkillUtil.getPval(81059, effector);
+            boolean flag = (boolean)args[0];
+            double percent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf((0.1 + 4.0 * ((double)effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+            double pval = AcsryPetSkillUtil.getPval(81059, effector);
             if (pval > 0.0) {
                 percent += pval;
             }
@@ -37,17 +39,17 @@ public class SKILL_81059 extends SkillProcessor
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 0;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
 }

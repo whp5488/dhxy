@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqRequestUpgradeTaskPet extends Message
 {
     private int petId;
     private int param;
+    
+    public ReqRequestUpgradeTaskPet() {
+    }
     
     public int getPetId() {
         return this.petId;
@@ -34,7 +36,7 @@ public class ReqRequestUpgradeTaskPet extends Message
         if (!(o instanceof ReqRequestUpgradeTaskPet)) {
             return false;
         }
-        final ReqRequestUpgradeTaskPet other = (ReqRequestUpgradeTaskPet)o;
+        ReqRequestUpgradeTaskPet other = (ReqRequestUpgradeTaskPet)o;
         return other.canEqual(this) && this.getPetId() == other.getPetId() && this.getParam() == other.getParam();
     }
     
@@ -44,7 +46,7 @@ public class ReqRequestUpgradeTaskPet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetId();
         result = result * 59 + this.getParam();

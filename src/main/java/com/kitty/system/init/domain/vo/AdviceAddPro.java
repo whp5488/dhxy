@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain.vo;
 
 public class AdviceAddPro
@@ -9,6 +8,9 @@ public class AdviceAddPro
     private Integer ll;
     private Integer mj;
     private Integer use;
+    
+    public AdviceAddPro() {
+    }
     
     public String getTitle() {
         return this.title;
@@ -66,86 +68,38 @@ public class AdviceAddPro
         if (!(o instanceof AdviceAddPro)) {
             return false;
         }
-        final AdviceAddPro other = (AdviceAddPro)o;
+        AdviceAddPro other = (AdviceAddPro)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$title = this.getTitle();
-        final Object other$title = other.getTitle();
-        Label_0065: {
-            if (this$title == null) {
-                if (other$title == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$title.equals(other$title)) {
-                break Label_0065;
-            }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (!((this$title != null) ? this$title.equals(other$title) : (other$title == null))) {
             return false;
         }
-        final Object this$gg = this.getGg();
-        final Object other$gg = other.getGg();
-        Label_0102: {
-            if (this$gg == null) {
-                if (other$gg == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$gg.equals(other$gg)) {
-                break Label_0102;
-            }
+        Object this$gg = this.getGg();
+        Object other$gg = other.getGg();
+        if (!((this$gg != null) ? this$gg.equals(other$gg) : (other$gg == null))) {
             return false;
         }
-        final Object this$lx = this.getLx();
-        final Object other$lx = other.getLx();
-        Label_0139: {
-            if (this$lx == null) {
-                if (other$lx == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$lx.equals(other$lx)) {
-                break Label_0139;
-            }
+        Object this$lx = this.getLx();
+        Object other$lx = other.getLx();
+        if (!((this$lx != null) ? this$lx.equals(other$lx) : (other$lx == null))) {
             return false;
         }
-        final Object this$ll = this.getLl();
-        final Object other$ll = other.getLl();
-        Label_0176: {
-            if (this$ll == null) {
-                if (other$ll == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$ll.equals(other$ll)) {
-                break Label_0176;
-            }
+        Object this$ll = this.getLl();
+        Object other$ll = other.getLl();
+        if (!((this$ll != null) ? this$ll.equals(other$ll) : (other$ll == null))) {
             return false;
         }
-        final Object this$mj = this.getMj();
-        final Object other$mj = other.getMj();
-        Label_0213: {
-            if (this$mj == null) {
-                if (other$mj == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$mj.equals(other$mj)) {
-                break Label_0213;
-            }
+        Object this$mj = this.getMj();
+        Object other$mj = other.getMj();
+        if (!((this$mj != null) ? this$mj.equals(other$mj) : (other$mj == null))) {
             return false;
         }
-        final Object this$use = this.getUse();
-        final Object other$use = other.getUse();
-        if (this$use == null) {
-            if (other$use == null) {
-                return true;
-            }
-        }
-        else if (this$use.equals(other$use)) {
-            return true;
-        }
-        return false;
+        Object this$use = this.getUse();
+        Object other$use = other.getUse();
+        return (this$use != null) ? this$use.equals(other$use) : (other$use == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -154,19 +108,19 @@ public class AdviceAddPro
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $title = this.getTitle();
+        Object $title = this.getTitle();
         result = result * 59 + (($title == null) ? 43 : $title.hashCode());
-        final Object $gg = this.getGg();
+        Object $gg = this.getGg();
         result = result * 59 + (($gg == null) ? 43 : $gg.hashCode());
-        final Object $lx = this.getLx();
+        Object $lx = this.getLx();
         result = result * 59 + (($lx == null) ? 43 : $lx.hashCode());
-        final Object $ll = this.getLl();
+        Object $ll = this.getLl();
         result = result * 59 + (($ll == null) ? 43 : $ll.hashCode());
-        final Object $mj = this.getMj();
+        Object $mj = this.getMj();
         result = result * 59 + (($mj == null) ? 43 : $mj.hashCode());
-        final Object $use = this.getUse();
+        Object $use = this.getUse();
         result = result * 59 + (($use == null) ? 43 : $use.hashCode());
         return result;
     }

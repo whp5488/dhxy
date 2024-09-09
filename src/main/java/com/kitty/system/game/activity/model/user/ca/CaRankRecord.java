@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.ca;
 
 import com.kitty.common.db.Db4EventService;
@@ -39,7 +38,7 @@ public class CaRankRecord extends BaseEntity<Long>
         this.fullRank = 0;
     }
     
-    public CaRankRecord(final Long id, final long rId, final int roleId, final int serial, final String name) {
+    public CaRankRecord(Long id, long rId, int roleId, int serial, String name) {
         this.score = 1000;
         this.grade = 0;
         this.equipScore = 0;
@@ -51,7 +50,7 @@ public class CaRankRecord extends BaseEntity<Long>
         this.name = name;
     }
     
-    public CaRankRecord(final Long id, final long rId, final short score) {
+    public CaRankRecord(Long id, long rId, short score) {
         this.score = 1000;
         this.grade = 0;
         this.equipScore = 0;
@@ -61,7 +60,7 @@ public class CaRankRecord extends BaseEntity<Long>
         this.score = score;
     }
     
-    public CaRankRecord(final long rId, final short score) {
+    public CaRankRecord(long rId, short score) {
         this.score = 1000;
         this.grade = 0;
         this.equipScore = 0;

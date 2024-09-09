@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.substitution.handler;
 
 import java.util.Iterator;
@@ -11,18 +10,22 @@ import com.kitty.system.game.fightnew.substitution.SubstitutionHandler;
 
 public class CsSubstitutionHandler extends SubstitutionHandler
 {
+    public CsSubstitutionHandler() {
+    }
+    
     @Override
-    public Role getRole(final Fight fight, final boolean isA) {
+    public Role getRole(Fight fight, boolean isA) {
         if (isA) {
             boolean flag = true;
-            for (final FightObject obj : fight.getAllFightObjects()) {
-                if (obj.getId().equals(10022956)) {
+            for (FightObject obj : fight.getAllFightObjects()) {
+                if (obj.getId().equals(Integer.valueOf(10022956))) {
                     flag = false;
                     break;
                 }
+                continue;
             }
             if (flag) {
-                final Role role = SpringUtils.getBean(RoleService.class).getPlayer(10022956);
+                Role role = ((RoleService)SpringUtils.getBean(RoleService.class)).getPlayer(10022956);
                 return role;
             }
         }

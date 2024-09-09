@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.model.PartyDeny;
@@ -20,7 +19,7 @@ public class RespOpenPlayerInfo extends Message
         return this.flag;
     }
     
-    public void setFlag(final byte flag) {
+    public void setFlag(byte flag) {
         this.flag = flag;
     }
     
@@ -28,7 +27,7 @@ public class RespOpenPlayerInfo extends Message
         return this.denyList;
     }
     
-    public void setDenyList(final List<PartyDeny> denyList) {
+    public void setDenyList(List<PartyDeny> denyList) {
         this.denyList = denyList;
     }
 }

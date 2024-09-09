@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -15,74 +14,79 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_76322 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_76322() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         if (fight.isPvp() != 1) {
             return;
         }
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
-        if (SKILLATTR.SKILLATTR_HENGSAO.getValue() == skill.getType() && effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            if (playerFightObject.getAcsrySkillList().contains(76323)) {
+        if (SKILLATTR.SKILLATTR_HENGSAO.getValue() == (int)skill.getType() && effecter.isPlayer()) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(76323))) {
                 return;
             }
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 76322);
-            final int round = 2;
-            target.getOtherMap().setv("originalMaxLife", (Object)target.getMaxLife());
-            target.getStatusMap().setv(String.valueOf(8011), (Object)round);
-            target.getStatusMap().setv("8011perpetrator", (Object)("76322_" + effecter.getId()));
-            target.setMaxLife((int)(target.getMaxLife() * 0.9));
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 76322);
+            int round = 2;
+            target.getOtherMap().setv("originalMaxLife", Integer.valueOf(target.getMaxLife()));
+            target.getStatusMap().setv(String.valueOf(8011), Integer.valueOf(round));
+            target.getStatusMap().setv("8011perpetrator", "76322_" + effecter.getId());
+            target.setMaxLife((int)((double)target.getMaxLife() * 0.9));
             if (target.getMaxLife() < target.getCurrLife()) {
-                final int reduceLife = target.getMaxLife() - target.getCurrLife();
+                int reduceLife = target.getMaxLife() - target.getCurrLife();
                 if (reduceLife < 0) {
-                    final FightObjectParam targetParam = actionDetailParam.gainTargetParam(target.getId(), false);
+                    FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)target.getId(), false);
                     if (targetParam != null) {
-                        final FightObjectParam targetC = ActionParamUtils.changeLifeForTarget(fight, target, 1, reduceLife, 2);
+                        FightObjectParam targetC = ActionParamUtils.changeLifeForTarget(fight, target, 1, reduceLife, 2);
                         targetC.setMaxLife(target.getMaxLife());
                         targetC.addDamageType(300999);
                         actionDetailParam.getTargetParamList().add(targetC);
                     }
                 }
             }
-            skillRecord.setT(target.getId());
+            skillRecord.setT((long)(int)target.getId());
         }
+        return;
     }
     
     @Override
-    public void statusOver(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void statusOver(Fight fight, FightObject fightObject, Object... args) {
         Integer status = null;
         try {
             status = (Integer)args[0];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        if (status == null || 8011 != status) {
+        if (status == null || 8011 != (int)status) {
             return;
         }
-        final String perpetrator = fightObject.getStatusMap().getString("8011perpetrator");
+        String perpetrator = fightObject.getStatusMap().getString("8011perpetrator");
         if (perpetrator != null && perpetrator.contains(String.valueOf(76322))) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 76322);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 76322);
             fightObject.getStatusMap().unset("8011perpetrator");
-            final int maxLife = fightObject.getOtherMap().getInt("originalMaxLife", 0);
+            int maxLife = fightObject.getOtherMap().getInt("originalMaxLife", 0);
             if (maxLife > 0) {
                 fightObject.setMaxLife(maxLife);
-                skillRecord.setT(fightObject.getId());
+                skillRecord.setT((long)(int)fightObject.getId());
             }
         }
+        return;
     }
 }

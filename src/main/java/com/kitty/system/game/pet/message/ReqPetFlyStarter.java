@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqPetFlyStarter extends Message
 {
     private int petId;
     private byte starter;
+    
+    public ReqPetFlyStarter() {
+    }
     
     public int getPetId() {
         return this.petId;
@@ -34,7 +36,7 @@ public class ReqPetFlyStarter extends Message
         if (!(o instanceof ReqPetFlyStarter)) {
             return false;
         }
-        final ReqPetFlyStarter other = (ReqPetFlyStarter)o;
+        ReqPetFlyStarter other = (ReqPetFlyStarter)o;
         return other.canEqual(this) && this.getPetId() == other.getPetId() && this.getStarter() == other.getStarter();
     }
     
@@ -44,7 +46,7 @@ public class ReqPetFlyStarter extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetId();
         result = result * 59 + this.getStarter();
@@ -53,6 +55,6 @@ public class ReqPetFlyStarter extends Message
     
     @Override
     public String toString() {
-        return "ReqPetFlyStarter(petId=" + this.getPetId() + ", starter=" + this.getStarter() + ")";
+        return "ReqPetFlyStarter(petId=" + this.getPetId() + ", starter=" + (int)this.getStarter() + ")";
     }
 }

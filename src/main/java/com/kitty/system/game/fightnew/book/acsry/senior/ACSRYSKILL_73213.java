@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -12,41 +11,48 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_73213 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_73213() {
+    }
+    
     @Override
-    public void passive(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void passive(Fight fight, FightObject fightObject, Object... args) {
         if (fightObject.isFallDown()) {
             return;
         }
         if (fightObject.isPlayer()) {
             double baseLifePCT = 0.1;
-            final Role role = fightObject.getRole();
-            final Integer mj = role.getMj();
-            baseLifePCT += mj / 200 * 0.01;
+            Role role = fightObject.getRole();
+            Integer mj = role.getMj();
+            baseLifePCT += (double)((int)mj / 200) * 0.01;
             FightObject recordTarget = null;
-            for (final FightObject obj : fight.getMySide(fightObject.getId())) {
+            for (FightObject obj : fight.getMySide((int)fightObject.getId())) {
                 if (obj.getStatusValue(1010) > 0) {
                     if (obj.getMaxMana() <= obj.getCurrMana()) {
                         continue;
                     }
-                    final int unitId = obj.getStatusSubMap().getInt("1010target");
-                    if (fightObject.getId() != unitId) {
+                    int unitId = obj.getStatusSubMap().getInt("1010target");
+                    if ((int)fightObject.getId() != unitId) {
                         continue;
                     }
                     if (recordTarget == null) {
                         recordTarget = obj;
                     }
-                    final int oldMana = obj.getCurrMana();
-                    int addMana = (int)(obj.getMaxMana() * baseLifePCT);
+                    int oldMana = obj.getCurrMana();
+                    int addMana = (int)((double)obj.getMaxMana() * baseLifePCT);
                     if (addMana + oldMana > obj.getMaxMana()) {
                         addMana = obj.getMaxMana() - obj.getCurrMana();
                     }
                     ActionParamUtils.changeMana(fight, fightObject, obj, 7, 300999, 2, addMana);
                 }
+                else {
+                    continue;
+                }
             }
             if (recordTarget != null) {
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 73213);
-                skillRecord.setT(recordTarget.getId());
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 73213);
+                skillRecord.setT((long)(int)recordTarget.getId());
             }
         }
+        return;
     }
 }

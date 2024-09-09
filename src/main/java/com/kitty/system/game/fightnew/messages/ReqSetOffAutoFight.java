@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -18,7 +16,6 @@ public class ReqSetOffAutoFight extends Message
         this.autoFight = autoFight;
     }
     
-    @ConstructorProperties({ "autoFight" })
     public ReqSetOffAutoFight(final byte autoFight) {
         this.autoFight = autoFight;
     }

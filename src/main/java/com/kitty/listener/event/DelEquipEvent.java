@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -10,7 +9,7 @@ public class DelEquipEvent extends BasePlayerEvent
     private Role role;
     private long id;
     
-    public DelEquipEvent(final EventType evtType, final Role role, final long id) {
+    public DelEquipEvent(EventType evtType, Role role, long id) {
         super(evtType, role);
         this.role = role;
         this.id = id;

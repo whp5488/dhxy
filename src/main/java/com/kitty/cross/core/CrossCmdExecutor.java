@@ -1,9 +1,7 @@
-
 package com.kitty.cross.core;
 
 import com.kitty.cross.core.client.CCSession;
 import com.kitty.cross.core.server.SCSession;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.Executors;
 import com.kitty.common.thread.NamedThreadFactory;
 import java.util.concurrent.ExecutorService;
@@ -24,7 +22,7 @@ public class CrossCmdExecutor
         }
         synchronized (CrossCmdExecutor.class) {
             if (CrossCmdExecutor.self == null) {
-                final CrossCmdExecutor instance = new CrossCmdExecutor();
+                CrossCmdExecutor instance = new CrossCmdExecutor();
                 instance.init();
                 CrossCmdExecutor.self = instance;
             }
@@ -39,15 +37,15 @@ public class CrossCmdExecutor
         }
     }
     
-    public void addTask(final SCSession session, final Runnable task) {
-        final int sessionId = session.getId();
-        final int index = sessionId % this.services.length;
+    public void addTask(SCSession session, Runnable task) {
+        int sessionId = session.getId();
+        int index = sessionId % this.services.length;
         this.services[index].submit(task);
     }
     
-    public void addTask(final CCSession session, final Runnable task) {
-        final int sessionId = session.getId();
-        final int index = sessionId % this.services.length;
+    public void addTask(CCSession session, Runnable task) {
+        int sessionId = session.getId();
+        int index = sessionId % this.services.length;
         this.services[index].submit(task);
     }
     

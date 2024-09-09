@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.four.middle;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -19,56 +18,59 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_64301 extends HorseSkillProcessor
 {
+    public HORSESKILL_64301() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
         double percenta = this.getPercent(horseSkillParam) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         if (percenta != 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.SPEED_PCT.getDist()), (Object)percenta);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.SPEED_PCT.getDist()), Double.valueOf(percenta));
             return map;
         }
         return null;
     }
     
-    private double getPercent(final HorseSkillParam horseSkillParam) {
-        final double percent = (1.0E-4 * Math.pow(horseSkillParam.getGrowUp() / 1000.0 / (1.175 + 0.0013 * horseSkillParam.getLevel()) * (0.6 * horseSkillParam.getLevel() + 0.4 * horseSkillParam.getProficient() / 1000.0), 2.0) + 0.05 * (horseSkillParam.getGrowUp() / 1000.0 / (1.175 + 0.0013 * horseSkillParam.getLevel()) * (0.6 * horseSkillParam.getLevel() + 0.4 * horseSkillParam.getProficient() / 1000.0))) * 0.8 + 0.05;
+    private double getPercent(HorseSkillParam horseSkillParam) {
+        double percent = (1.0E-4 * Math.pow((double)horseSkillParam.getGrowUp() / 1000.0 / (1.175 + 0.0013 * (double)horseSkillParam.getLevel()) * (0.6 * (double)horseSkillParam.getLevel() + 0.4 * (double)horseSkillParam.getProficient() / 1000.0), 2.0) + 0.05 * ((double)horseSkillParam.getGrowUp() / 1000.0 / (1.175 + 0.0013 * (double)horseSkillParam.getLevel()) * (0.6 * (double)horseSkillParam.getLevel() + 0.4 * (double)horseSkillParam.getProficient() / 1000.0))) * 0.8 + 0.05;
         return percent;
     }
     
     @Override
-    public void attackOver(final Fight fight, final PetFightObject effector, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, PetFightObject effector, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         if (effector.isPet() && effector.getStatusValue(1010) <= 0) {
-            final HorseSkillParam horseSkillParam = effector.getHorseSkillMap().get(64301);
+            HorseSkillParam horseSkillParam = (HorseSkillParam)effector.getHorseSkillMap().get(Integer.valueOf(64301));
             if (horseSkillParam == null) {
                 return;
             }
             double percentb = (1.0 * HorseSkillUtils.getPercentMiddle(horseSkillParam) + 0.1) / 100.0;
             percentb = HorseSkillUtils.getMathRoundPercent(percentb);
-            final boolean flag = SkillAi.canAffectOnPro(percentb);
+            boolean flag = SkillAi.canAffectOnPro(percentb);
             if (!flag) {
                 return;
             }
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 64301);
-            final int cnt = (int)Math.floor(2 + horseSkillParam.getLevel() / 80);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 64301);
+            int cnt = (int)Math.floor((double)(2 + horseSkillParam.getLevel() / 80));
             double percentc = this.getPercent(horseSkillParam) / 100.0;
             percentc = HorseSkillUtils.getMathRoundPercent(percentc);
             ImbueUtil.addOrUpdStatus(effector.getImbueMap(), 1010, PRO_DICT_TYPE.RISE_SPEED.getDist(), cnt, percentc);
-            effector.getStatusMap().setv(String.valueOf(1010), (Object)cnt);
-            final FightObjectParam targetParam = actionDetailParam.gainTargetParam(effector.getId(), false);
+            effector.getStatusMap().setv(String.valueOf(1010), Integer.valueOf(cnt));
+            FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)effector.getId(), false);
             if (targetParam != null) {
-                targetParam.getStatusMap().put(1010, cnt);
-                skillRecord.setT(effector.getId());
+                targetParam.getStatusMap().put(Integer.valueOf(1010), Integer.valueOf(cnt));
+                skillRecord.setT((long)(int)effector.getId());
             }
         }
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.one.normal;
 
 import com.kitty.system.game.fightnew.FightObject;
@@ -12,21 +11,24 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_61018 extends HorseSkillProcessor
 {
+    public HORSESKILL_61018() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
-        final NutMap map = NutMap.NEW();
-        final double percent = HorseSkillUtils.getPercent(horseSkillParam);
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
+        NutMap map = NutMap.NEW();
+        double percent = HorseSkillUtils.getPercent(horseSkillParam);
         double percenta = (27.0 * percent + 0.1) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         if (percenta != 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()), (Object)percenta);
+            map.setv(String.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()), Double.valueOf(percenta));
             return map;
         }
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
 }

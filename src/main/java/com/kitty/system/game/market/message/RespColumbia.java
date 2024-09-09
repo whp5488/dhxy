@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.system.game.market.message.vo.Columbia;
@@ -12,6 +11,9 @@ public class RespColumbia extends Message
     private String para;
     private List<Columbia> list;
     private String price;
+    
+    public RespColumbia() {
+    }
     
     public String getPara() {
         return this.para;
@@ -45,47 +47,23 @@ public class RespColumbia extends Message
         if (!(o instanceof RespColumbia)) {
             return false;
         }
-        final RespColumbia other = (RespColumbia)o;
+        RespColumbia other = (RespColumbia)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$para = this.getPara();
-        final Object other$para = other.getPara();
-        Label_0065: {
-            if (this$para == null) {
-                if (other$para == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$para.equals(other$para)) {
-                break Label_0065;
-            }
+        Object this$para = this.getPara();
+        Object other$para = other.getPara();
+        if (!((this$para != null) ? this$para.equals(other$para) : (other$para == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        Label_0102: {
-            if (this$list == null) {
-                if (other$list == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$list.equals(other$list)) {
-                break Label_0102;
-            }
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        if (!((this$list != null) ? this$list.equals(other$list) : (other$list == null))) {
             return false;
         }
-        final Object this$price = this.getPrice();
-        final Object other$price = other.getPrice();
-        if (this$price == null) {
-            if (other$price == null) {
-                return true;
-            }
-        }
-        else if (this$price.equals(other$price)) {
-            return true;
-        }
-        return false;
+        Object this$price = this.getPrice();
+        Object other$price = other.getPrice();
+        return (this$price != null) ? this$price.equals(other$price) : (other$price == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -94,13 +72,13 @@ public class RespColumbia extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $para = this.getPara();
+        Object $para = this.getPara();
         result = result * 59 + (($para == null) ? 43 : $para.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
-        final Object $price = this.getPrice();
+        Object $price = this.getPrice();
         result = result * 59 + (($price == null) ? 43 : $price.hashCode());
         return result;
     }

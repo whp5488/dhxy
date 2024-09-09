@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.normal;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -8,9 +7,9 @@ import com.kitty.system.common.enter.FiedValue;
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
 import com.kitty.common.utils.BigDecimalUtil;
 import com.kitty.system.game.fightnew.book.pet.utils.PetSkillEffectorUtil;
+import com.kitty.system.init.domain.SysPetSkill;
 import com.kitty.system.enums.war.itempro.def.PET_PASSIVE_SKILL_TRIGGER_DICT;
 import com.kitty.system.game.fightnew.book.pet.utils.PetTriggerPassiveSkill;
-import com.kitty.system.init.domain.SysPetSkill;
 import java.util.Map;
 import com.kitty.system.game.fightnew.spectator.pool.FightParamPool;
 import com.kitty.system.game.fightnew.book.vo.Effect;
@@ -29,65 +28,65 @@ public class SKILL_80005 extends SkillProcessor
     }
     
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 80005);
-        final Map<Integer, SysPetSkill> sysPetSkillMap = PetTriggerPassiveSkill.data_pet_skill_maps.get(PET_PASSIVE_SKILL_TRIGGER_DICT.PASSIVE_TRIGGER_FOR_INITIATIVE_SKILL.getValue());
-        final SysPetSkill petSkill = sysPetSkillMap.get(80005);
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 80005);
+        Map<Integer, SysPetSkill> sysPetSkillMap = (Map)PetTriggerPassiveSkill.data_pet_skill_maps.get(PET_PASSIVE_SKILL_TRIGGER_DICT.PASSIVE_TRIGGER_FOR_INITIATIVE_SKILL.getValue());
+        SysPetSkill petSkill = (SysPetSkill)sysPetSkillMap.get(Integer.valueOf(80005));
         if (petSkill != null) {
-            final SysPetSkill sysPetSkill = PetSkillEffectorUtil.initiativeQueryCover(petSkill, effector.getSkillIds(), sysPetSkillMap);
-            if (sysPetSkill != null && 80005 != sysPetSkill.getSerial()) {
-                final SkillProcessor processor = SkillProcessor.queryProcessor(sysPetSkill.getSerial());
-                processor.changeVariate(this.reduce);
+            SysPetSkill sysPetSkill = PetSkillEffectorUtil.initiativeQueryCover(petSkill, effector.getSkillIds(), sysPetSkillMap);
+            if (sysPetSkill != null && 80005 != (int)sysPetSkill.getSerial()) {
+                SkillProcessor processor = SkillProcessor.queryProcessor(sysPetSkill.getSerial());
+                processor.changeVariate(Integer.valueOf(this.reduce));
                 return processor.effect(fight, effector, target, args);
             }
         }
         int lastHurt = 0;
-        final double percent = BigDecimalUtil.decimalScaleObjectDown(8, (10.1 + 2.0 * (effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-        final int hurt = (int)(this.reduce * percent);
+        double percent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(8), Double.valueOf((10.1 + 2.0 * ((double)effector.getRelive() * 0.4 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+        int hurt = (int)((double)this.reduce * percent);
         if (!target.isFrozen()) {
             lastHurt = PetSkillEffectorUtil.computeTMFGQMXLHurt(effector, target, hurt, 80005);
-            final double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
-            lastHurt += (int)(lastHurt * weak);
-            skillRecord.setT(target.getId());
+            double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
+            lastHurt = (int)((double)lastHurt + (double)lastHurt * weak);
+            skillRecord.setT((long)(int)target.getId());
         }
-        final Effect effect = new Effect(100000, 0);
-        final List<FiedValue> list = effect.getOrCreateList();
-        list.add(new FiedValue("mana", (byte)3, lastHurt));
+        Effect effect = new Effect(100000, 0);
+        List<FiedValue> list = effect.getOrCreateList();
+        list.add(new FiedValue("mana", (byte)3, Integer.valueOf(lastHurt)));
         return effect;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     
     @Override
-    public int costLife(final FightObject effector) {
+    public int costLife(FightObject effector) {
         if (effector.getCurrLife() >= 10000) {
-            final int hp = BigDecimalUtil.decimalScaleIntegerDown(0, effector.getCurrLife() * 0.95);
+            int hp = BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf((double)effector.getCurrLife() * 0.95));
             return this.reduce = hp;
         }
         return 10000;
     }
     
     @Override
-    public List<Integer> getTargetIds(final Fight fight, final FightObject effector) {
-        final List<Integer> list = PetTriggerPassiveSkill.getTMTargetIds(fight, effector, 80005);
+    public List<Integer> getTargetIds(Fight fight, FightObject effector) {
+        List<Integer> list = PetTriggerPassiveSkill.getTMTargetIds(fight, effector, 80005);
         return list;
     }
 }

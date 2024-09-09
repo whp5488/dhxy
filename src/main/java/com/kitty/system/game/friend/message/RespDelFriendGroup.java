@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.friend.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -26,21 +24,13 @@ public class RespDelFriendGroup extends Message
         if (!(o instanceof RespDelFriendGroup)) {
             return false;
         }
-        final RespDelFriendGroup other = (RespDelFriendGroup)o;
+        RespDelFriendGroup other = (RespDelFriendGroup)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return true;
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return true;
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return (this$id != null) ? this$id.equals(other$id) : (other$id == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -49,9 +39,9 @@ public class RespDelFriendGroup extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         return result;
     }
@@ -61,7 +51,6 @@ public class RespDelFriendGroup extends Message
         return "RespDelFriendGroup(id=" + this.getId() + ")";
     }
     
-    @ConstructorProperties({ "id" })
     public RespDelFriendGroup(final String id) {
         this.id = id;
     }

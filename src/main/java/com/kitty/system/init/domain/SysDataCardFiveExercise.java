@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -37,7 +36,7 @@ public class SysDataCardFiveExercise
         this.water = 0;
         this.fire = 0;
         this.soil = 0;
-        this.wx = 0;
+        this.wx = Integer.valueOf(0);
     }
     
     public int getGrade() {
@@ -104,7 +103,7 @@ public class SysDataCardFiveExercise
         if (!(o instanceof SysDataCardFiveExercise)) {
             return false;
         }
-        final SysDataCardFiveExercise other = (SysDataCardFiveExercise)o;
+        SysDataCardFiveExercise other = (SysDataCardFiveExercise)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -126,17 +125,9 @@ public class SysDataCardFiveExercise
         if (this.getSoil() != other.getSoil()) {
             return false;
         }
-        final Object this$wx = this.getWx();
-        final Object other$wx = other.getWx();
-        if (this$wx == null) {
-            if (other$wx == null) {
-                return true;
-            }
-        }
-        else if (this$wx.equals(other$wx)) {
-            return true;
-        }
-        return false;
+        Object this$wx = this.getWx();
+        Object other$wx = other.getWx();
+        return (this$wx != null) ? this$wx.equals(other$wx) : (other$wx == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -145,7 +136,7 @@ public class SysDataCardFiveExercise
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getGrade();
         result = result * 59 + this.getGold();
@@ -153,7 +144,7 @@ public class SysDataCardFiveExercise
         result = result * 59 + this.getWater();
         result = result * 59 + this.getFire();
         result = result * 59 + this.getSoil();
-        final Object $wx = this.getWx();
+        Object $wx = this.getWx();
         result = result * 59 + (($wx == null) ? 43 : $wx.hashCode());
         return result;
     }

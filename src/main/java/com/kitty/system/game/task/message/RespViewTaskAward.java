@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class RespViewTaskAward extends Message
     private List<FiedValue> list;
     
     public RespViewTaskAward() {
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
     }
     
     public int getSerial() {
@@ -41,24 +40,16 @@ public class RespViewTaskAward extends Message
         if (!(o instanceof RespViewTaskAward)) {
             return false;
         }
-        final RespViewTaskAward other = (RespViewTaskAward)o;
+        RespViewTaskAward other = (RespViewTaskAward)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -67,10 +58,10 @@ public class RespViewTaskAward extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.enter;
 
 import com.alibaba.fastjson.annotation.JSONField;
@@ -15,7 +14,7 @@ public class FiedValue implements Serializable
         return this.type;
     }
     
-    public void setType(final String type) {
+    public void setType(String type) {
         this.type = type;
     }
     
@@ -23,7 +22,7 @@ public class FiedValue implements Serializable
         return this.VT;
     }
     
-    public void setVT(final byte VT) {
+    public void setVT(byte VT) {
         this.VT = VT;
     }
     
@@ -31,14 +30,14 @@ public class FiedValue implements Serializable
         return this.value;
     }
     
-    public void setValue(final Object value) {
+    public void setValue(Object value) {
         this.value = value;
     }
     
     public FiedValue() {
     }
     
-    public FiedValue(final String type, final byte VT, final Object value) {
+    public FiedValue(String type, byte VT, Object value) {
         this.type = type;
         this.VT = VT;
         this.value = value;

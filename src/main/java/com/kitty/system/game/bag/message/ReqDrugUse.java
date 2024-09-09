@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqDrugUse extends Message
 {
     private int id;
     private int serial;
+    
+    public ReqDrugUse() {
+    }
     
     public int getId() {
         return this.id;
@@ -34,7 +36,7 @@ public class ReqDrugUse extends Message
         if (!(o instanceof ReqDrugUse)) {
             return false;
         }
-        final ReqDrugUse other = (ReqDrugUse)o;
+        ReqDrugUse other = (ReqDrugUse)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getSerial() == other.getSerial();
     }
     
@@ -44,7 +46,7 @@ public class ReqDrugUse extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();

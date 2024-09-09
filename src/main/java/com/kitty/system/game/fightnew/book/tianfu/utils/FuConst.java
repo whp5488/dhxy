@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.utils;
 
 import java.util.ArrayList;
@@ -139,22 +138,22 @@ public interface FuConst
     public static final int UP_LIMIT_PCT = 119;
     public static final int FU_SKILL_SERIAL = 300999;
     
-    default List<Integer> testEclude() {
-        final List<Integer> list = new ArrayList<Integer>() {
+    public static List<Integer> testEclude() {
+        List<Integer> list = new ArrayList<Integer>() {
             {
-                this.add(321302);
-                this.add(321305);
-                this.add(321502);
-                this.add(321503);
-                this.add(321504);
-                this.add(322501);
-                this.add(323301);
-                this.add(323402);
-                this.add(323205);
-                this.add(323304);
-                this.add(323501);
-                this.add(324505);
-                this.add(324507);
+                this.add(Integer.valueOf(321302));
+                this.add(Integer.valueOf(321305));
+                this.add(Integer.valueOf(321502));
+                this.add(Integer.valueOf(321503));
+                this.add(Integer.valueOf(321504));
+                this.add(Integer.valueOf(322501));
+                this.add(Integer.valueOf(323301));
+                this.add(Integer.valueOf(323402));
+                this.add(Integer.valueOf(323205));
+                this.add(Integer.valueOf(323304));
+                this.add(Integer.valueOf(323501));
+                this.add(Integer.valueOf(324505));
+                this.add(Integer.valueOf(324507));
             }
         };
         return list;

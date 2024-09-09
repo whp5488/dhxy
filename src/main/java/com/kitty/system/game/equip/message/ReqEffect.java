@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -7,6 +6,9 @@ import com.kitty.mina.message.Message;
 @MessageMeta(module = 41491)
 public class ReqEffect extends Message
 {
+    public ReqEffect() {
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
@@ -15,7 +17,7 @@ public class ReqEffect extends Message
         if (!(o instanceof ReqEffect)) {
             return false;
         }
-        final ReqEffect other = (ReqEffect)o;
+        ReqEffect other = (ReqEffect)o;
         return other.canEqual(this);
     }
     
@@ -25,7 +27,7 @@ public class ReqEffect extends Message
     
     @Override
     public int hashCode() {
-        final int result = 1;
+        int result = 1;
         return result;
     }
     

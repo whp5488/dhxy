@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.map.pool;
 
 import com.kitty.system.game.task.service.handler.dungeon.DungeonCmHandler;
@@ -33,8 +32,11 @@ public class MapDataPool
     public static Map<Integer, Function<Role, Serializable>> MAP_KEY_GENERATE;
     public static Set<Integer> NOT_CHANGE_MAPS;
     
+    public MapDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         MapDataPool.mapInfoMap = initService.initMapinfo();
         initMapInfo();
         initTrasfer(initService.initMapteleporter());
@@ -42,28 +44,28 @@ public class MapDataPool
     }
     
     public static void initMapInfo() {
-        for (final SysMapInfo value : MapDataPool.mapInfoMap.values()) {
-            final String scope = value.getLevelScope();
+        for (SysMapInfo value : MapDataPool.mapInfoMap.values()) {
+            String scope = value.getLevelScope();
             if (scope != null) {
-                final String[] split = scope.split("-");
+                String[] split = scope.split("-");
                 if (split.length < 2) {
                     continue;
                 }
-                final List<Integer> list = new ArrayList<>();
+                List<Integer> list = new ArrayList<>();
                 for (int i = Integer.valueOf(split[0]); i <= Integer.valueOf(split[1]); ++i) {
-                    list.add(i);
+                    list.add(Integer.valueOf(i));
                 }
                 MapDataPool.levelScopeMap.put(value.getMapSerial(), list);
             }
         }
     }
     
-    public static void initTrasfer(final List<SysMapTeleporter> list) {
-        final Map<Integer, HashSet<Integer>> mapId2Trasfer = new HashMap<>();
-        final Map<Integer, SysMapTeleporter> trasferId2TrasferMap = new HashMap<>(list.size());
-        for (final SysMapTeleporter transfer : list) {
+    public static void initTrasfer(List<SysMapTeleporter> list) {
+        Map<Integer, HashSet<Integer>> mapId2Trasfer = new HashMap();
+        Map<Integer, SysMapTeleporter> trasferId2TrasferMap = new HashMap(list.size());
+        for (SysMapTeleporter transfer : list) {
             trasferId2TrasferMap.put(transfer.getId(), transfer);
-            final Set<Integer> idSet = mapId2Trasfer.computeIfAbsent(transfer.getFromMapSerial(), k -> new HashSet());
+            Set<Integer> idSet = (Set)mapId2Trasfer.computeIfAbsent(transfer.getFromMapSerial(), k -> new HashSet());
             idSet.add(transfer.getId());
         }
         MapDataPool.mapId2TrasferIdSet = mapId2Trasfer;
@@ -71,17 +73,17 @@ public class MapDataPool
     }
     
     static {
-        MapDataPool.guaJiMap = new HashMap<>();
-        MapDataPool.mapInfoMap = new HashMap<>();
-        MapDataPool.levelScopeMap = new HashMap<>();
-        MapDataPool.MAP_KEY_GENERATE = new ConcurrentHashMap<>();
-        MapDataPool.NOT_CHANGE_MAPS = new HashSet<>();
-        (MapDataPool.polarMaps = new HashSet<>()).add(0);
-        MapDataPool.NOT_CHANGE_MAPS.add(DungeonMwkFront.DUNGEON_ENTER_MAP);
-        MapDataPool.NOT_CHANGE_MAPS.add(DungeonCmHandler.DUNGEON_ENTER_MAP);
-        MapDataPool.NOT_CHANGE_MAPS.add(3003);
-        MapDataPool.NOT_CHANGE_MAPS.add(3001);
-        MapDataPool.NOT_CHANGE_MAPS.add(3005);
-        MapDataPool.MAP_KEY_GENERATE.put(3005, role -> role.getVisible());
+        MapDataPool.guaJiMap = new HashMap();
+        MapDataPool.mapInfoMap = new HashMap();
+        MapDataPool.levelScopeMap = new HashMap();
+        MapDataPool.MAP_KEY_GENERATE = new ConcurrentHashMap();
+        MapDataPool.NOT_CHANGE_MAPS = new HashSet();
+        (MapDataPool.polarMaps = new HashSet()).add(Integer.valueOf(0));
+        MapDataPool.NOT_CHANGE_MAPS.add(Integer.valueOf(DungeonMwkFront.DUNGEON_ENTER_MAP));
+        MapDataPool.NOT_CHANGE_MAPS.add(Integer.valueOf(DungeonCmHandler.DUNGEON_ENTER_MAP));
+        MapDataPool.NOT_CHANGE_MAPS.add(Integer.valueOf(3003));
+        MapDataPool.NOT_CHANGE_MAPS.add(Integer.valueOf(3001));
+        MapDataPool.NOT_CHANGE_MAPS.add(Integer.valueOf(3005));
+        MapDataPool.MAP_KEY_GENERATE.put(Integer.valueOf(3005), Role::getVisible);
     }
 }

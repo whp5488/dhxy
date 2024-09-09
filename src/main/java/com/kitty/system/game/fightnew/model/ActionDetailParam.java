@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.model;
 
-import java.beans.ConstructorProperties;
 import java.util.Iterator;
 import java.util.Optional;
 import com.kitty.system.game.vo.FieldByte;
@@ -25,88 +23,89 @@ public class ActionDetailParam
     private List<CombatAddObject> combatAddObjects;
     private byte hfType;
     
-    public ActionDetailParam(final FightObject effector, final int type, final int skillSerial) {
+    public ActionDetailParam(FightObject effector, int type, int skillSerial) {
         this.type = -1;
         this.skillSerial = -1;
         this.colorId = 0;
-        this.targetParamList = new ArrayList<FightObjectParam>();
+        this.targetParamList = new ArrayList<>();
         this.type = type;
         this.skillSerial = skillSerial;
-        this.attackerId = effector.getId();
+        this.attackerId = (int)effector.getId();
         this.addHfType(effector, skillSerial);
     }
     
-    public ActionDetailParam(final FightObject effector, final int type, final int skillSerial, final int targetId) {
+    public ActionDetailParam(FightObject effector, int type, int skillSerial, int targetId) {
         this.type = -1;
         this.skillSerial = -1;
         this.colorId = 0;
-        this.targetParamList = new ArrayList<FightObjectParam>();
+        this.targetParamList = new ArrayList<>();
         this.type = type;
         this.skillSerial = skillSerial;
-        this.attackerId = effector.getId();
+        this.attackerId = (int)effector.getId();
         this.targetId = targetId;
         this.addHfType(effector, skillSerial);
     }
     
-    public ActionDetailParam(final int type, final int skillSerial, final int effectorId, final int targetId) {
+    public ActionDetailParam(int type, int skillSerial, int effectorId, int targetId) {
         this.type = -1;
         this.skillSerial = -1;
         this.colorId = 0;
-        this.targetParamList = new ArrayList<FightObjectParam>();
+        this.targetParamList = new ArrayList<>();
         this.type = type;
         this.skillSerial = skillSerial;
         this.attackerId = effectorId;
         this.targetId = targetId;
     }
     
-    public void addHfType(final FightObject effector, final int skillSerial) {
+    public void addHfType(FightObject effector, int skillSerial) {
         if (effector != null && skillSerial > 0) {
-            final Optional<RoleSkill> opt = effector.getSkillIds().stream().filter(obj -> obj.getSkillId().equals(skillSerial)).findFirst();
+            Optional<RoleSkill> opt = effector.getSkillIds().stream().filter(obj -> obj.getSkillId().equals(Integer.valueOf(skillSerial))).findFirst();
             if (opt.isPresent()) {
-                final RoleSkill roleSkill = opt.get();
+                RoleSkill roleSkill = (RoleSkill)opt.get();
                 if (roleSkill != null) {
-                    final List<FieldByte> effects = roleSkill.getEffects();
-                    for (final FieldByte fieldByte : effects) {
-                        if (fieldByte.getV() == 2 && fieldByte.getK() != null) {
-                            this.hfType = (byte)(fieldByte.getK() % 10);
+                    List<FieldByte> effects = roleSkill.getEffects();
+                    for (FieldByte fieldByte : effects) {
+                        if ((byte)fieldByte.getV() == 2 && fieldByte.getK() != null) {
+                            this.hfType = (byte)((int)fieldByte.getK() % 10);
                             break;
                         }
+                        continue;
                     }
                 }
             }
         }
     }
     
-    public void addAttackerParam(final FightObjectParam fightObjectParam) {
+    public void addAttackerParam(FightObjectParam fightObjectParam) {
         if (this.attackerParam == null) {
-            this.attackerParam = new ArrayList<FightObjectParam>();
+            this.attackerParam = new ArrayList<>();
         }
         this.attackerParam.add(fightObjectParam);
     }
     
     public FightObjectParam gainAttackerParam() {
-        FightObjectParam fightObjectParam;
         if (this.attackerParam == null || this.attackerParam.size() <= 0) {
-            this.attackerParam = new ArrayList<FightObjectParam>();
-            fightObjectParam = new FightObjectParam();
+            this.attackerParam = new ArrayList<>();
+            FightObjectParam fightObjectParam = new FightObjectParam();
             fightObjectParam.setType(this.type);
             fightObjectParam.setObjId(this.attackerId);
             this.addAttackerParam(fightObjectParam);
+            return fightObjectParam;
         }
-        else {
-            fightObjectParam = this.attackerParam.get(0);
-        }
+        FightObjectParam fightObjectParam = (FightObjectParam)this.attackerParam.get(0);
         return fightObjectParam;
     }
     
-    public FightObjectParam gainTargetParam(final int targetId, final boolean isCreate) {
+    public FightObjectParam gainTargetParam(int targetId, boolean isCreate) {
         FightObjectParam targetParam = null;
-        for (int i = this.targetParamList.size() - 1; i >= 0; --i) {
-            final FightObjectParam param = this.targetParamList.get(i);
+        int i = this.targetParamList.size() - 1;
+        while (i >= 0) {
+            FightObjectParam param = (FightObjectParam)this.targetParamList.get(i);
             if (param != null && targetId == param.getObjId()) {
                 targetParam = param;
                 break;
             }
+            --i;
         }
         if (isCreate && targetParam == null) {
             targetParam = new FightObjectParam();
@@ -114,17 +113,19 @@ public class ActionDetailParam
             targetParam.setOrder(++size);
             targetParam.setObjId(targetId);
             this.targetParamList.add(targetParam);
+            return targetParam;
         }
         return targetParam;
     }
     
-    public FightObjectParam gainTargetParamZ(final int targetId, final boolean isCreate) {
+    public FightObjectParam gainTargetParamZ(int targetId, boolean isCreate) {
         FightObjectParam targetParam = null;
-        for (final FightObjectParam param : this.targetParamList) {
+        for (FightObjectParam param : this.targetParamList) {
             if (param != null && targetId == param.getObjId()) {
                 targetParam = param;
                 break;
             }
+            continue;
         }
         if (isCreate && targetParam == null) {
             targetParam = new FightObjectParam();
@@ -132,23 +133,28 @@ public class ActionDetailParam
             targetParam.setOrder(++size);
             targetParam.setObjId(targetId);
             this.targetParamList.add(targetParam);
+            return targetParam;
         }
         return targetParam;
     }
     
-    public List<FightObjectParam> gainTargetParamList(final int targetId, final boolean isCreate) {
-        final List<FightObjectParam> targetParams = new ArrayList<FightObjectParam>();
-        for (final FightObjectParam param : this.targetParamList) {
+    public List<FightObjectParam> gainTargetParamList(int targetId, boolean isCreate) {
+        List<FightObjectParam> targetParams = new ArrayList<>();
+        for (FightObjectParam param : this.targetParamList) {
             if (param != null && targetId == param.getObjId()) {
                 targetParams.add(param);
             }
+            else {
+                continue;
+            }
         }
         if (isCreate && targetParams.size() <= 0) {
-            final FightObjectParam targetParam = new FightObjectParam();
+            FightObjectParam targetParam = new FightObjectParam();
             int size = this.targetParamList.size();
             targetParam.setOrder(++size);
             targetParam.setObjId(targetId);
             targetParams.add(targetParam);
+            return targetParams;
         }
         return targetParams;
     }
@@ -250,15 +256,14 @@ public class ActionDetailParam
         this.type = -1;
         this.skillSerial = -1;
         this.colorId = 0;
-        this.targetParamList = new ArrayList<FightObjectParam>();
+        this.targetParamList = new ArrayList<>();
     }
     
-    @ConstructorProperties({ "type", "skillSerial", "colorId", "attackerId", "roleId", "targetId", "attackerParam", "targetParamList", "petList", "combatAddObjects", "hfType" })
     public ActionDetailParam(final int type, final int skillSerial, final byte colorId, final int attackerId, final long roleId, final int targetId, final List<FightObjectParam> attackerParam, final List<FightObjectParam> targetParamList, final List<RefreshPet> petList, final List<CombatAddObject> combatAddObjects, final byte hfType) {
         this.type = -1;
         this.skillSerial = -1;
         this.colorId = 0;
-        this.targetParamList = new ArrayList<FightObjectParam>();
+        this.targetParamList = new ArrayList<>();
         this.type = type;
         this.skillSerial = skillSerial;
         this.colorId = colorId;

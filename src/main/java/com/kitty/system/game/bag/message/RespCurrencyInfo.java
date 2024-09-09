@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.system.game.role.domain.Role;
@@ -23,7 +22,7 @@ public class RespCurrencyInfo extends Message
     private String chargeScore;
     private String boundGold;
     
-    public RespCurrencyInfo(final Role role) {
+    public RespCurrencyInfo(Role role) {
         this.gold = String.valueOf(role.getGold());
         this.silver = String.valueOf(role.getSilver());
         this.coin = String.valueOf(role.getCoin());
@@ -160,190 +159,78 @@ public class RespCurrencyInfo extends Message
         if (!(o instanceof RespCurrencyInfo)) {
             return false;
         }
-        final RespCurrencyInfo other = (RespCurrencyInfo)o;
+        RespCurrencyInfo other = (RespCurrencyInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$gold = this.getGold();
-        final Object other$gold = other.getGold();
-        Label_0065: {
-            if (this$gold == null) {
-                if (other$gold == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$gold.equals(other$gold)) {
-                break Label_0065;
-            }
+        Object this$gold = this.getGold();
+        Object other$gold = other.getGold();
+        if (!((this$gold != null) ? this$gold.equals(other$gold) : (other$gold == null))) {
             return false;
         }
-        final Object this$silver = this.getSilver();
-        final Object other$silver = other.getSilver();
-        Label_0102: {
-            if (this$silver == null) {
-                if (other$silver == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$silver.equals(other$silver)) {
-                break Label_0102;
-            }
+        Object this$silver = this.getSilver();
+        Object other$silver = other.getSilver();
+        if (!((this$silver != null) ? this$silver.equals(other$silver) : (other$silver == null))) {
             return false;
         }
-        final Object this$coin = this.getCoin();
-        final Object other$coin = other.getCoin();
-        Label_0139: {
-            if (this$coin == null) {
-                if (other$coin == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$coin.equals(other$coin)) {
-                break Label_0139;
-            }
+        Object this$coin = this.getCoin();
+        Object other$coin = other.getCoin();
+        if (!((this$coin != null) ? this$coin.equals(other$coin) : (other$coin == null))) {
             return false;
         }
-        final Object this$guoScore = this.getGuoScore();
-        final Object other$guoScore = other.getGuoScore();
-        Label_0176: {
-            if (this$guoScore == null) {
-                if (other$guoScore == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$guoScore.equals(other$guoScore)) {
-                break Label_0176;
-            }
+        Object this$guoScore = this.getGuoScore();
+        Object other$guoScore = other.getGuoScore();
+        if (!((this$guoScore != null) ? this$guoScore.equals(other$guoScore) : (other$guoScore == null))) {
             return false;
         }
-        final Object this$bracScore = this.getBracScore();
-        final Object other$bracScore = other.getBracScore();
-        Label_0213: {
-            if (this$bracScore == null) {
-                if (other$bracScore == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$bracScore.equals(other$bracScore)) {
-                break Label_0213;
-            }
+        Object this$bracScore = this.getBracScore();
+        Object other$bracScore = other.getBracScore();
+        if (!((this$bracScore != null) ? this$bracScore.equals(other$bracScore) : (other$bracScore == null))) {
             return false;
         }
-        final Object this$naoScore = this.getNaoScore();
-        final Object other$naoScore = other.getNaoScore();
-        Label_0250: {
-            if (this$naoScore == null) {
-                if (other$naoScore == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$naoScore.equals(other$naoScore)) {
-                break Label_0250;
-            }
+        Object this$naoScore = this.getNaoScore();
+        Object other$naoScore = other.getNaoScore();
+        if (!((this$naoScore != null) ? this$naoScore.equals(other$naoScore) : (other$naoScore == null))) {
             return false;
         }
-        final Object this$diScore = this.getDiScore();
-        final Object other$diScore = other.getDiScore();
-        Label_0287: {
-            if (this$diScore == null) {
-                if (other$diScore == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$diScore.equals(other$diScore)) {
-                break Label_0287;
-            }
+        Object this$diScore = this.getDiScore();
+        Object other$diScore = other.getDiScore();
+        if (!((this$diScore != null) ? this$diScore.equals(other$diScore) : (other$diScore == null))) {
             return false;
         }
-        final Object this$arenaScore = this.getArenaScore();
-        final Object other$arenaScore = other.getArenaScore();
-        Label_0324: {
-            if (this$arenaScore == null) {
-                if (other$arenaScore == null) {
-                    break Label_0324;
-                }
-            }
-            else if (this$arenaScore.equals(other$arenaScore)) {
-                break Label_0324;
-            }
+        Object this$arenaScore = this.getArenaScore();
+        Object other$arenaScore = other.getArenaScore();
+        if (!((this$arenaScore != null) ? this$arenaScore.equals(other$arenaScore) : (other$arenaScore == null))) {
             return false;
         }
-        final Object this$longScore = this.getLongScore();
-        final Object other$longScore = other.getLongScore();
-        Label_0361: {
-            if (this$longScore == null) {
-                if (other$longScore == null) {
-                    break Label_0361;
-                }
-            }
-            else if (this$longScore.equals(other$longScore)) {
-                break Label_0361;
-            }
+        Object this$longScore = this.getLongScore();
+        Object other$longScore = other.getLongScore();
+        if (!((this$longScore != null) ? this$longScore.equals(other$longScore) : (other$longScore == null))) {
             return false;
         }
-        final Object this$niceScore = this.getNiceScore();
-        final Object other$niceScore = other.getNiceScore();
-        Label_0398: {
-            if (this$niceScore == null) {
-                if (other$niceScore == null) {
-                    break Label_0398;
-                }
-            }
-            else if (this$niceScore.equals(other$niceScore)) {
-                break Label_0398;
-            }
+        Object this$niceScore = this.getNiceScore();
+        Object other$niceScore = other.getNiceScore();
+        if (!((this$niceScore != null) ? this$niceScore.equals(other$niceScore) : (other$niceScore == null))) {
             return false;
         }
-        final Object this$helpScore = this.getHelpScore();
-        final Object other$helpScore = other.getHelpScore();
-        Label_0435: {
-            if (this$helpScore == null) {
-                if (other$helpScore == null) {
-                    break Label_0435;
-                }
-            }
-            else if (this$helpScore.equals(other$helpScore)) {
-                break Label_0435;
-            }
+        Object this$helpScore = this.getHelpScore();
+        Object other$helpScore = other.getHelpScore();
+        if (!((this$helpScore != null) ? this$helpScore.equals(other$helpScore) : (other$helpScore == null))) {
             return false;
         }
-        final Object this$featsScore = this.getFeatsScore();
-        final Object other$featsScore = other.getFeatsScore();
-        Label_0472: {
-            if (this$featsScore == null) {
-                if (other$featsScore == null) {
-                    break Label_0472;
-                }
-            }
-            else if (this$featsScore.equals(other$featsScore)) {
-                break Label_0472;
-            }
+        Object this$featsScore = this.getFeatsScore();
+        Object other$featsScore = other.getFeatsScore();
+        if (!((this$featsScore != null) ? this$featsScore.equals(other$featsScore) : (other$featsScore == null))) {
             return false;
         }
-        final Object this$chargeScore = this.getChargeScore();
-        final Object other$chargeScore = other.getChargeScore();
-        Label_0509: {
-            if (this$chargeScore == null) {
-                if (other$chargeScore == null) {
-                    break Label_0509;
-                }
-            }
-            else if (this$chargeScore.equals(other$chargeScore)) {
-                break Label_0509;
-            }
+        Object this$chargeScore = this.getChargeScore();
+        Object other$chargeScore = other.getChargeScore();
+        if (!((this$chargeScore != null) ? this$chargeScore.equals(other$chargeScore) : (other$chargeScore == null))) {
             return false;
         }
-        final Object this$boundGold = this.getBoundGold();
-        final Object other$boundGold = other.getBoundGold();
-        if (this$boundGold == null) {
-            if (other$boundGold == null) {
-                return true;
-            }
-        }
-        else if (this$boundGold.equals(other$boundGold)) {
-            return true;
-        }
-        return false;
+        Object this$boundGold = this.getBoundGold();
+        Object other$boundGold = other.getBoundGold();
+        return (this$boundGold != null) ? this$boundGold.equals(other$boundGold) : (other$boundGold == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -352,35 +239,35 @@ public class RespCurrencyInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $gold = this.getGold();
+        Object $gold = this.getGold();
         result = result * 59 + (($gold == null) ? 43 : $gold.hashCode());
-        final Object $silver = this.getSilver();
+        Object $silver = this.getSilver();
         result = result * 59 + (($silver == null) ? 43 : $silver.hashCode());
-        final Object $coin = this.getCoin();
+        Object $coin = this.getCoin();
         result = result * 59 + (($coin == null) ? 43 : $coin.hashCode());
-        final Object $guoScore = this.getGuoScore();
+        Object $guoScore = this.getGuoScore();
         result = result * 59 + (($guoScore == null) ? 43 : $guoScore.hashCode());
-        final Object $bracScore = this.getBracScore();
+        Object $bracScore = this.getBracScore();
         result = result * 59 + (($bracScore == null) ? 43 : $bracScore.hashCode());
-        final Object $naoScore = this.getNaoScore();
+        Object $naoScore = this.getNaoScore();
         result = result * 59 + (($naoScore == null) ? 43 : $naoScore.hashCode());
-        final Object $diScore = this.getDiScore();
+        Object $diScore = this.getDiScore();
         result = result * 59 + (($diScore == null) ? 43 : $diScore.hashCode());
-        final Object $arenaScore = this.getArenaScore();
+        Object $arenaScore = this.getArenaScore();
         result = result * 59 + (($arenaScore == null) ? 43 : $arenaScore.hashCode());
-        final Object $longScore = this.getLongScore();
+        Object $longScore = this.getLongScore();
         result = result * 59 + (($longScore == null) ? 43 : $longScore.hashCode());
-        final Object $niceScore = this.getNiceScore();
+        Object $niceScore = this.getNiceScore();
         result = result * 59 + (($niceScore == null) ? 43 : $niceScore.hashCode());
-        final Object $helpScore = this.getHelpScore();
+        Object $helpScore = this.getHelpScore();
         result = result * 59 + (($helpScore == null) ? 43 : $helpScore.hashCode());
-        final Object $featsScore = this.getFeatsScore();
+        Object $featsScore = this.getFeatsScore();
         result = result * 59 + (($featsScore == null) ? 43 : $featsScore.hashCode());
-        final Object $chargeScore = this.getChargeScore();
+        Object $chargeScore = this.getChargeScore();
         result = result * 59 + (($chargeScore == null) ? 43 : $chargeScore.hashCode());
-        final Object $boundGold = this.getBoundGold();
+        Object $boundGold = this.getBoundGold();
         result = result * 59 + (($boundGold == null) ? 43 : $boundGold.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.utils;
 
 import org.nutz.el.El;
@@ -30,11 +29,11 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
     private static final long serialVersionUID = 1L;
     private NutConcurrentMap _map;
     
-    public static NutConcurrentMap WRAP(final Map<String, Object> map) {
+    public static NutConcurrentMap WRAP(Map<String, Object> map) {
         if (null == map) {
             return null;
         }
-        if (map instanceof NutConcurrentMap) {
+        if ((map instanceof NutConcurrentMap)) {
             return (NutConcurrentMap)map;
         }
         return new NutConcurrentMap(map);
@@ -43,19 +42,19 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
     public NutConcurrentMap() {
     }
     
-    public NutConcurrentMap(final Map<String, Object> map) {
+    public NutConcurrentMap(Map<String, Object> map) {
         this.putAll(map);
     }
     
-    public NutConcurrentMap(final String json) {
-        this.putAll((Map<? extends String, ?>)Lang.map(json));
+    public NutConcurrentMap(String json) {
+        this.putAll(Lang.map(json));
     }
     
-    public NutConcurrentMap(final String key, final Object value) {
+    public NutConcurrentMap(String key, Object value) {
         this.put(key, value);
     }
     
-    public void setOrRemove(final String key, final Object v) {
+    public void setOrRemove(String key, Object v) {
         if (null == v) {
             this.remove(key);
         }
@@ -68,32 +67,32 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return new NutConcurrentMap();
     }
     
-    public static NutConcurrentMap WRAP(final String json) {
+    public static NutConcurrentMap WRAP(String json) {
         return new NutConcurrentMap(json);
     }
     
-    public boolean has(final String key) {
+    public boolean has(String key) {
         return null != this.get(key);
     }
     
-    public boolean is(final String key, final Object val) {
-        final Object obj = this.get(key);
+    public boolean is(String key, Object val) {
+        Object obj = this.get(key);
         return (null == obj && null == val) || (null != obj && null != val && obj.equals(val));
     }
     
     public NutConcurrentMap duplicate() {
-        final NutConcurrentMap map = new NutConcurrentMap();
+        NutConcurrentMap map = new NutConcurrentMap();
         map.putAll(this);
         return map;
     }
     
-    public NutConcurrentMap pick(final String... keys) {
+    public NutConcurrentMap pick(String... keys) {
         if (keys.length == 0) {
             return new NutConcurrentMap();
         }
-        final NutConcurrentMap re = new NutConcurrentMap();
-        for (final String key : keys) {
-            final Object val = this.get(key);
+        NutConcurrentMap re = new NutConcurrentMap();
+        for (String key : keys) {
+            Object val = this.get(key);
             if (null != val) {
                 re.put(key, val);
             }
@@ -101,115 +100,125 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return re;
     }
     
-    public NutConcurrentMap pickAndRemove(final String... keys) {
+    public NutConcurrentMap pickAndRemove(String... keys) {
         if (keys.length == 0) {
             return new NutConcurrentMap();
         }
-        final NutConcurrentMap re = new NutConcurrentMap();
-        for (final String key : keys) {
-            final Object val = this.remove(key);
+        NutConcurrentMap re = new NutConcurrentMap();
+        for (String key : keys) {
+            Object val = this.remove(key);
             re.put(key, val);
         }
         return re;
     }
     
-    public NutConcurrentMap pickBy(final String regex) {
-        if (Strings.isBlank((CharSequence)regex)) {
+    public NutConcurrentMap pickBy(String regex) {
+        if (Strings.isBlank(regex)) {
             return this.duplicate();
         }
-        final boolean isNot = regex.startsWith("!");
-        final Pattern p = Regex.getPattern(isNot ? regex.substring(1) : regex);
+        boolean isNot = regex.startsWith("!");
+        Pattern p = Regex.getPattern(isNot ? regex.substring(1) : regex);
         return this.pickBy(p, isNot);
     }
     
-    public NutConcurrentMap pickBy(final Pattern p, final boolean isNot) {
+    public NutConcurrentMap pickBy(Pattern p, boolean isNot) {
         if (null == p) {
             return isNot ? this.duplicate() : new NutConcurrentMap();
         }
-        final NutConcurrentMap re = new NutConcurrentMap();
-        for (final Map.Entry<String, Object> en : this.entrySet()) {
-            final String key = en.getKey();
-            final boolean matched = p.matcher(key).find();
+        NutConcurrentMap re = new NutConcurrentMap();
+        for (Map.Entry<String, Object> en : this.entrySet()) {
+            String key = (String)en.getKey();
+            boolean matched = p.matcher(key).find();
             if (matched) {
-                if (isNot) {
+                if (!isNot) {
+                    re.put(key, en.getValue());
+                }
+                else {
                     continue;
                 }
+            }
+            else if (isNot) {
                 re.put(key, en.getValue());
             }
             else {
-                if (!isNot) {
-                    continue;
-                }
-                re.put(key, en.getValue());
+                continue;
             }
         }
         return re;
     }
     
-    public NutConcurrentMap pickAndRemoveBy(final String regex) {
-        if (Strings.isBlank((CharSequence)regex)) {
+    public NutConcurrentMap pickAndRemoveBy(String regex) {
+        if (Strings.isBlank(regex)) {
             return new NutConcurrentMap();
         }
-        final boolean isNot = regex.startsWith("!");
-        final Pattern p = Pattern.compile(isNot ? regex.substring(1) : regex);
+        boolean isNot = regex.startsWith("!");
+        Pattern p = Pattern.compile(isNot ? regex.substring(1) : regex);
         return this.pickAndRemoveBy(p, isNot);
     }
     
-    public NutConcurrentMap pickAndRemoveBy(final Pattern p, final boolean isNot) {
-        if (null != p) {
-            final NutConcurrentMap re = new NutConcurrentMap();
-            final List<String> delKeys = new ArrayList<String>(this.size());
-            for (final Map.Entry<String, Object> en : this.entrySet()) {
-                final String key = en.getKey();
-                final boolean matched = p.matcher(key).find();
+    public NutConcurrentMap pickAndRemoveBy(Pattern p, boolean isNot) {
+        if (null == p) {
+            if (isNot) {
+                NutConcurrentMap re = this.duplicate();
+                this.clear();
+                return re;
+            }
+            return new NutConcurrentMap();
+        }
+        else {
+            NutConcurrentMap re = new NutConcurrentMap();
+            List<String> delKeys = new ArrayList(this.size());
+            for (Map.Entry<String, Object> en : this.entrySet()) {
+                String key = (String)en.getKey();
+                boolean matched = p.matcher(key).find();
                 if (matched) {
-                    if (isNot) {
+                    if (!isNot) {
+                        delKeys.add(key);
+                        re.put(key, en.getValue());
+                    }
+                    else {
                         continue;
                     }
+                }
+                else if (isNot) {
                     delKeys.add(key);
                     re.put(key, en.getValue());
                 }
                 else {
-                    if (!isNot) {
-                        continue;
-                    }
-                    delKeys.add(key);
-                    re.put(key, en.getValue());
+                    continue;
                 }
             }
-            for (final String key2 : delKeys) {
+            for (String key2 : delKeys) {
                 this.remove(key2);
             }
             return re;
         }
-        if (isNot) {
-            final NutConcurrentMap re = this.duplicate();
-            this.clear();
-            return re;
-        }
-        return new NutConcurrentMap();
     }
     
-    public NutConcurrentMap omit(final String... keys) {
-        final NutConcurrentMap re = new NutConcurrentMap();
-        for (final Map.Entry<String, Object> en : this.entrySet()) {
-            final String key = en.getKey();
-            if (!Lang.contains((Object[])keys, (Object)key)) {
+    public NutConcurrentMap omit(String... keys) {
+        NutConcurrentMap re = new NutConcurrentMap();
+        for (Map.Entry<String, Object> en : this.entrySet()) {
+            String key = (String)en.getKey();
+            if (!Lang.contains(keys, key)) {
                 re.put(key, en.getValue());
+            }
+            else {
+                continue;
             }
         }
         return re;
     }
     
-    public NutConcurrentMap putDefault(final String key, final Object dft) {
+    public NutConcurrentMap putDefault(String key, Object dft) {
         if (!this.has(key)) {
             this.put(key, dft);
+            return this;
         }
         return this;
     }
     
     @Override
-    public boolean containsValue(final Object value) {
+    public boolean containsValue(Object value) {
         if (null == this._map) {
             return super.containsValue(value);
         }
@@ -217,7 +226,7 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
     }
     
     @Override
-    public boolean containsKey(final Object key) {
+    public boolean containsKey(Object key) {
         if (null == this._map) {
             return super.containsKey(key);
         }
@@ -225,7 +234,7 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
     }
     
     @Override
-    public KeySetView<String, Object> keySet() {
+    public ConcurrentHashMap.KeySetView<String, Object> keySet() {
         return super.keySet();
     }
     
@@ -234,8 +243,8 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         if (null == this._map) {
             return super.values();
         }
-        final List<Object> vals = new LinkedList<Object>();
-        for (final String key : this.keySet()) {
+        List<Object> vals = new LinkedList();
+        for (String key : this.keySet()) {
             vals.add(this.get(key));
         }
         return vals;
@@ -246,7 +255,7 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         if (null == this._map) {
             return super.entrySet();
         }
-        final HashSet<Map.Entry<String, Object>> vals = new HashSet<Map.Entry<String, Object>>();
+        HashSet<Map.Entry<String, Object>> vals = new HashSet();
         vals.addAll(this._map.entrySet());
         vals.addAll(super.entrySet());
         return vals;
@@ -260,19 +269,19 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         }
     }
     
-    public NutConcurrentMap attach(final NutConcurrentMap map) {
+    public NutConcurrentMap attach(NutConcurrentMap map) {
         this._map = map;
         return this;
     }
     
     public NutConcurrentMap detach() {
-        final NutConcurrentMap re = this._map;
+        NutConcurrentMap re = this._map;
         this._map = null;
         return re;
     }
     
     @Override
-    public Object get(final Object key) {
+    public Object get(Object key) {
         if (this._map == null) {
             return super.get(key);
         }
@@ -282,190 +291,197 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return this._map.get(key);
     }
     
-    public Object get(final String key, final Object dft) {
-        final Object v = this.get(key);
+    public Object get(String key, Object dft) {
+        Object v = this.get(key);
         return (null == v) ? dft : v;
     }
     
-    public int getInt(final String key) {
+    public int getInt(String key) {
         return this.getInt(key, -1);
     }
     
-    public int getInt(final String key, final int dft) {
-        final Object v = this.get(key);
-        return (int)((null == v) ? dft : Castors.me().castTo(v, (Class)Integer.TYPE));
+    public int getInt(String key, int dft) {
+        Object v = this.get(key);
+        return (null == v) ? dft : ((int)Castors.me().castTo(v, Integer.TYPE));
     }
     
-    public float getFloat(final String key) {
+    public float getFloat(String key) {
         return this.getFloat(key, Float.NaN);
     }
     
-    public float getFloat(final String key, final float dft) {
-        final Object v = this.get(key);
-        return (float)((null == v) ? dft : Castors.me().castTo(v, (Class)Float.TYPE));
+    public float getFloat(String key, float dft) {
+        Object v = this.get(key);
+        return (null == v) ? dft : ((float)Castors.me().castTo(v, Float.TYPE));
     }
     
-    public long getLong(final String key) {
+    public long getLong(String key) {
         return this.getLong(key, -1L);
     }
     
-    public long getLong(final String key, final long dft) {
-        final Object v = this.get(key);
-        return (long)((null == v) ? dft : Castors.me().castTo(v, (Class)Long.TYPE));
+    public long getLong(String key, long dft) {
+        Object v = this.get(key);
+        return (null == v) ? dft : ((long)Castors.me().castTo(v, Long.TYPE));
     }
     
-    public double getDouble(final String key) {
+    public double getDouble(String key) {
         return this.getDouble(key, 0.0);
     }
     
-    public double getDouble(final String key, final double dft) {
-        final Object v = this.get(key);
-        return (double)((null == v) ? dft : Castors.me().castTo(v, (Class)Double.TYPE));
+    public double getDouble(String key, double dft) {
+        Object v = this.get(key);
+        return (null == v) ? dft : ((double)Castors.me().castTo(v, Double.TYPE));
     }
     
-    public boolean getBoolean(final String key) {
+    public boolean getBoolean(String key) {
         return this.getBoolean(key, false);
     }
     
-    public boolean getBoolean(final String key, final boolean dft) {
-        final Object v = this.get(key);
-        return (boolean)((null == v) ? dft : Castors.me().castTo(v, (Class)Boolean.TYPE));
+    public boolean getBoolean(String key, boolean dft) {
+        Object v = this.get(key);
+        return (null == v) ? dft : ((boolean)Castors.me().castTo(v, Boolean.TYPE));
     }
     
-    public String getString(final String key) {
+    public String getString(String key) {
         return this.getString(key, null);
     }
     
-    public String getString(final String key, final String dft) {
+    public String getString(String key, String dft) {
         Object v = this.get(key);
         if (v == null) {
             return dft;
         }
-        if (v instanceof CharSequence) {
+        if ((v instanceof CharSequence)) {
             return v.toString();
         }
-        if (v instanceof List) {
+        if ((v instanceof List)) {
             v = ((List)v).iterator().next();
         }
-        return (String)Castors.me().castTo(v, (Class)String.class);
+        return (String)Castors.me().castTo(v, String.class);
     }
     
-    public Date getTime(final String key) {
+    public Date getTime(String key) {
         return this.getTime(key, null);
     }
     
-    public Date getTime(final String key, final Date dft) {
-        final Object v = this.get(key);
-        return (Date)((null == v) ? dft : Castors.me().castTo(v, (Class)Date.class));
+    public Date getTime(String key, Date dft) {
+        Object v = this.get(key);
+        return (null == v) ? dft : ((Date)Castors.me().castTo(v, Date.class));
     }
     
-    public <T extends Enum<T>> T getEnum(final String key, final Class<T> classOfEnum) {
-        final String s = this.getString(key);
-        if (Strings.isBlank((CharSequence)s)) {
+    public <T extends Enum<T>> T getEnum(String key, Class<T> classOfEnum) {
+        String s = this.getString(key);
+        if (Strings.isBlank(s)) {
             return null;
         }
         return Enum.valueOf(classOfEnum, s);
     }
     
-    public boolean isEnum(final String key, final Enum<?>... eus) {
+    public boolean isEnum(String key, Enum<?>... eus) {
         if (null == eus || eus.length == 0) {
             return false;
         }
         try {
-            final Enum<?> v = this.getEnum(key, eus[0].getClass());
-            for (final Enum<?> eu : eus) {
+            Enum<?> v = this.getEnum(key, eus[0].getClass());
+            int length = eus.length;
+            int i = 0;
+            while (i < length) {
+                Enum<?> eu = eus[i];
                 if (!v.equals(eu)) {
                     return false;
                 }
+                ++i;
             }
             return true;
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return false;
         }
     }
     
-    public <T> T getAs(final String key, final Class<T> classOfT) {
-        return this.getAs(key, classOfT, (T)null);
+    public <T> T getAs(String key, Class<T> classOfT) {
+        return this.getAs(key, classOfT, null);
     }
     
-    public <T> T getAs(final String key, final Class<T> classOfT, final T dft) {
-        final Object v = this.get(key);
-        return (T)((null == v) ? dft : Castors.me().castTo(v, (Class)classOfT));
+    public <T> T getAs(String key, Class<T> classOfT, T dft) {
+        Object v = this.get(key);
+        return (null == v) ? dft : Castors.me().castTo(v, classOfT);
     }
     
-    public <T> List<T> getAsList(final String key, final Class<T> eleType) {
-        final Object v = this.get(key);
+    public <T> List<T> getAsList(String key, Class<T> eleType) {
+        Object v = this.get(key);
         if (null == v) {
             return null;
         }
-        final List list = (List)v;
-        final ListIterator it = list.listIterator();
+        List<T> list = (List)v;
+        ListIterator<T> it = list.listIterator();
         while (it.hasNext()) {
-            final Object ele = it.next();
+            Object ele = it.next();
             if (null != ele && !eleType.isAssignableFrom(ele.getClass())) {
-                final Object ele2 = Castors.me().castTo(ele, (Class)eleType);
+                T ele2 = Castors.me().castTo(ele, eleType);
                 it.set(ele2);
+            }
+            else {
+                continue;
             }
         }
         return list;
     }
     
-    public <T> List<T> getList(final String key, final Class<T> eleType) {
-        return this.getList(key, eleType, new ArrayList<T>());
+    public <T> List<T> getList(String key, final Class<T> eleType) {
+        return this.getList(key, eleType, new ArrayList<>());
     }
     
-    public <T> List<T> getList(final String key, final Class<T> eleType, final List<T> dft) {
-        final Object v = this.get(key);
+    public <T> List<T> getList(String key, final Class<T> eleType, List<T> dft) {
+        Object v = this.get(key);
         if (null == v) {
             return dft;
         }
-        if (v instanceof CharSequence) {
-            return Lang.list((T) new Object[] { Castors.me().castTo(v, eleType) });
+        if ((v instanceof CharSequence)) {
+            return (List)Lang.list(new Object[] { Castors.me().castTo(v, eleType) });
         }
-        final int len = Lang.eleSize(v);
-        final List<T> list = new ArrayList<T>(len);
-        Lang.each(v, (Each)new Each<Object>() {
-            public void invoke(final int index, final Object ele, final int length) {
+        int len = Lang.eleSize(v);
+        final List<T> list = new ArrayList(len);
+        Lang.each(v, new Each<Object>() {
+            public void invoke(int index, Object ele, int length) {
                 list.add(Castors.me().castTo(ele, eleType));
             }
         });
         return list;
     }
     
-    public <T> T[] getArray(final String key, final Class<T> eleType) {
+    public <T> T[] getArray(String key, Class<T> eleType) {
         return this.getArray(key, eleType, (T[])Array.newInstance(eleType, 0));
     }
     
-    public <T> T[] getArray(final String key, final Class<T> eleType, final T[] dft) {
-        final Object v = this.get(key);
+    public <T> T[] getArray(String key, final Class<T> eleType, T[] dft) {
+        Object v = this.get(key);
         if (null == v) {
             return dft;
         }
-        if (v instanceof CharSequence) {
-            return (T[])Lang.array(new Object[] { Castors.me().castTo(v, (Class)eleType) });
+        if ((v instanceof CharSequence)) {
+            return (T[])Lang.array(new Object[] { Castors.me().castTo(v, eleType) });
         }
-        final int len = Lang.eleSize(v);
+        int len = Lang.eleSize(v);
         final Object arr = Array.newInstance(eleType, len);
         final int[] i = { 0 };
-        Lang.each(v, (Each)new Each<Object>() {
-            public void invoke(final int index, final Object ele, final int length) {
+        Lang.each(v, new Each<Object>() {
+            public void invoke(int index, Object ele, int length) {
                 Array.set(arr, i[0]++, Castors.me().castTo(ele, eleType));
             }
         });
-        return (T[])arr;
+        return (T[])(Object[])arr;
     }
     
-    public NutConcurrentMap addv(final String key, final Object value) {
-        final Object obj = this.get(key);
+    public NutConcurrentMap addv(String key, Object value) {
+        Object obj = this.get(key);
         if (null == obj) {
             this.put(key, value);
         }
-        else if (obj instanceof List) {
+        else if ((obj instanceof List)) {
             ((List)obj).add(value);
         }
         else {
-            final List<Object> list = new LinkedList<Object>();
+            List<Object> list = new LinkedList();
             list.add(obj);
             list.add(value);
             this.put(key, list);
@@ -473,35 +489,35 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return this;
     }
     
-    public NutConcurrentMap addv2(final String key, final Object value) {
-        List<Object> list = (List<Object>)this.get(key);
+    public NutConcurrentMap addv2(String key, Object value) {
+        List<Object> list = (List)this.get(key);
         if (null == list) {
-            list = new LinkedList<Object>();
+            list = new LinkedList();
             this.put(key, list);
         }
         list.add(value);
         return this;
     }
     
-    public <T> NutConcurrentMap pushTo(final String key, final T... values) {
+    public <T> NutConcurrentMap pushTo(String key, T... values) {
         if (null != values && values.length > 0) {
-            final Object v = this.get(key);
+            Object v = this.get(key);
             if (null == v) {
-                final List<Object> list = new LinkedList<Object>();
-                for (final Object val : values) {
+                List<Object> list = new LinkedList();
+                for (Object val : values) {
                     list.add(val);
                 }
                 this.put(key, list);
             }
-            else if (v instanceof Collection) {
-                for (final Object val2 : values) {
+            else if ((v instanceof Collection)) {
+                for (Object val2 : values) {
                     ((Collection)v).add(val2);
                 }
             }
             else {
-                final List<Object> list = new LinkedList<Object>();
+                List<Object> list = new LinkedList();
                 list.add(v);
-                for (final Object val : values) {
+                for (Object val : values) {
                     list.add(val);
                 }
                 this.put(key, list);
@@ -510,19 +526,19 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return this;
     }
     
-    public NutConcurrentMap pushTo(final String key, final Collection<?> values) {
+    public NutConcurrentMap pushTo(String key, Collection<?> values) {
         if (null != values && values.size() > 0) {
-            final Object v = this.get(key);
+            Object v = this.get(key);
             if (null == v) {
-                final List<Object> list = new LinkedList<Object>();
+                List<Object> list = new LinkedList();
                 list.addAll(values);
                 this.put(key, list);
             }
-            else if (v instanceof Collection) {
+            else if ((v instanceof Collection)) {
                 ((Collection)v).addAll(values);
             }
             else {
-                final List<Object> list = new LinkedList<Object>();
+                List<Object> list = new LinkedList();
                 list.add(v);
                 list.addAll(values);
                 this.put(key, list);
@@ -532,28 +548,28 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
     }
     
     @Deprecated
-    public NutConcurrentMap putv(final String key, final Object value) {
+    public NutConcurrentMap putv(String key, Object value) {
         return this.addv(key, value);
     }
     
-    public NutConcurrentMap setv(final String key, final Object value) {
+    public NutConcurrentMap setv(String key, Object value) {
         this.put(key, value);
         return this;
     }
     
-    public void unset(final String key) {
+    public void unset(String key) {
         this.remove(key);
     }
     
-    public NutBean setAll(final Map<String, Object> map) {
+    public NutBean setAll(Map<String, Object> map) {
         this.putAll(map);
-        return (NutBean)this;
+        return this;
     }
     
-    public NutConcurrentMap setMap(final Map<?, ?> map, final boolean ignoreNullValue) {
-        for (final Map.Entry<?, ?> en : map.entrySet()) {
-            final Object key = en.getKey();
-            final Object val = en.getValue();
+    public NutConcurrentMap setMap(Map<?, ?> map, boolean ignoreNullValue) {
+        for (Map.Entry<?, ?> en : map.entrySet()) {
+            Object key = en.getKey();
+            Object val = en.getValue();
             if (null == key) {
                 continue;
             }
@@ -565,74 +581,80 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return this;
     }
     
-    public NutConcurrentMap mergeWith(final Map<String, Object> map) {
+    public NutConcurrentMap mergeWith(Map<String, Object> map) {
         return this.mergeWith(map, false);
     }
     
-    public NutConcurrentMap mergeWith(final Map<String, Object> map, final boolean onlyAbsent) {
-        for (final Map.Entry<String, Object> en : map.entrySet()) {
-            final String key = en.getKey();
-            final Object val = en.getValue();
-            if (null != key) {
-                if (null == val) {
-                    continue;
-                }
-                final Object myVal = this.get(key);
-                if (null != myVal && myVal instanceof Map && val instanceof Map) {
-                    final Map<String, Object> m0 = (Map<String, Object>)myVal;
-                    final Map<String, Object> m2 = (Map<String, Object>)val;
-                    final NutConcurrentMap m3 = WRAP(m0).mergeWith(m2, onlyAbsent);
-                    if (m3 == m0) {
-                        continue;
-                    }
+    public NutConcurrentMap mergeWith(Map<String, Object> map, boolean onlyAbsent) {
+        for (Map.Entry<String, Object> en : map.entrySet()) {
+            String key = (String)en.getKey();
+            Object val = en.getValue();
+            if (null == key) {
+                continue;
+            }
+            if (null == val) {
+                continue;
+            }
+            Object myVal = this.get(key);
+            if (null != myVal && myVal instanceof Map && val instanceof Map) {
+                Map<String, Object> m0 = (Map)myVal;
+                Map<String, Object> m2 = (Map)val;
+                NutConcurrentMap m3 = WRAP(m0).mergeWith(m2, onlyAbsent);
+                if (m3 != m0) {
                     this.put(key, m3);
                 }
-                else if (onlyAbsent) {
-                    this.setnx(key, val);
-                }
                 else {
-                    this.put(key, val);
+                    continue;
                 }
+            }
+            else if (onlyAbsent) {
+                this.setnx(key, val);
+            }
+            else {
+                this.put(key, val);
             }
         }
         return this;
     }
     
-    public NutConcurrentMap setnx(final String key, final Object val) {
+    public NutConcurrentMap setnx(String key, Object val) {
         if (!this.containsKey(key)) {
             this.setv(key, val);
+            return this;
         }
         return this;
     }
     
-    public NutConcurrentMap setnxAll(final Map<String, Object> map) {
+    public NutConcurrentMap setnxAll(Map<String, Object> map) {
         if (null != map && map.size() > 0) {
-            for (final Map.Entry<String, Object> en : map.entrySet()) {
-                this.setnx(en.getKey(), en.getValue());
+            for (Map.Entry<String, Object> en : map.entrySet()) {
+                this.setnx((String)en.getKey(), en.getValue());
             }
+            return this;
         }
         return this;
     }
     
-    public <T> T getOrBorn(final String key, final Borning<T> factory) {
+    public <T> T getOrBorn(String key, Borning<T> factory) {
         T t = (T)this.get(key);
         if (t == null) {
-            t = (T)factory.born(new Object[] { key });
+            t = factory.born(new Object[] { key });
             this.put(key, t);
+            return t;
         }
         return t;
     }
     
-    public boolean match(final Map<String, Object> map) {
+    public boolean match(Map<String, Object> map) {
         if (null == map) {
             return false;
         }
         if (this.size() == 0) {
             return true;
         }
-        for (final Map.Entry<String, Object> en : this.entrySet()) {
-            final String key = en.getKey();
-            final Object mtc = en.getValue();
+        for (Map.Entry<String, Object> en : this.entrySet()) {
+            String key = (String)en.getKey();
+            Object mtc = en.getValue();
             if (null == mtc) {
                 if (map.containsKey(key)) {
                     return false;
@@ -640,7 +662,7 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
                 continue;
             }
             else {
-                final Object val = map.get(key);
+                Object val = map.get(key);
                 if (!this.__match_val(mtc, val)) {
                     return false;
                 }
@@ -650,18 +672,21 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return true;
     }
     
-    private boolean __match_val(final Object mtc, final Object val) {
-        final Mirror<?> mi = (Mirror<?>)Mirror.me(mtc);
+    private boolean __match_val(final Object mtc, Object val) {
+        Mirror<?> mi = Mirror.me(mtc);
         if (null == val) {
-            return mi.isStringLike() && Strings.isEmpty((CharSequence)mtc.toString());
+            return mi.isStringLike() && Strings.isEmpty(mtc.toString());
         }
         Pattern regex = mi.is(Pattern.class) ? ((Pattern)mtc) : null;
         if (mi.isStringLike()) {
             final String s = mtc.toString();
-            if (!s.startsWith("^")) {
+            if (s.startsWith("^")) {
+                regex = Regex.getPattern(s);
+            }
+            else {
                 final boolean[] re = { false };
-                Lang.each(val, (Each)new Each<Object>() {
-                    public void invoke(final int index, final Object ele, final int length) {
+                Lang.each(val, new Each<Object>() {
+                    public void invoke(int index, Object ele, int length) {
                         if (null != ele && ele.equals(s)) {
                             re[0] = true;
                             Lang.Break();
@@ -670,13 +695,12 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
                 });
                 return re[0];
             }
-            regex = Regex.getPattern(s);
         }
         if (null != regex) {
             final boolean[] re2 = { false };
             final Pattern REG = regex;
-            Lang.each(val, (Each)new Each<Object>() {
-                public void invoke(final int index, final Object ele, final int length) {
+            Lang.each(val, new Each<Object>() {
+                public void invoke(int index, Object ele, int length) {
                     if (null != ele && REG.matcher(ele.toString()).matches()) {
                         re2[0] = true;
                         Lang.Break();
@@ -687,8 +711,8 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         }
         if (mi.isSimple()) {
             final boolean[] re2 = { false };
-            Lang.each(val, (Each)new Each<Object>() {
-                public void invoke(final int index, final Object ele, final int length) {
+            Lang.each(val, new Each<Object>() {
+                public void invoke(int index, Object ele, int length) {
                     if (null != ele && ele.equals(mtc)) {
                         re2[0] = true;
                         Lang.Break();
@@ -703,62 +727,62 @@ public class NutConcurrentMap extends ConcurrentHashMap<String, Object> implemen
         return false;
     }
     
-    public Object eval(final String el) {
+    public Object eval(String el) {
         return El.eval(Lang.context(this), el);
     }
     
-    public int evalInt(final String el) {
-        final Object obj = El.eval(Lang.context(this), el);
+    public int evalInt(String el) {
+        Object obj = El.eval(Lang.context(this), el);
         if (obj == null) {
             return 0;
         }
-        if (obj instanceof Number) {
+        if ((obj instanceof Number)) {
             return ((Number)obj).intValue();
         }
         return Integer.parseInt(obj.toString());
     }
     
-    public int intIncrement(final String key) {
+    public int intIncrement(String key) {
         return this.intIncrement(key, 1);
     }
     
-    public int intIncrement(final String key, final int number) {
+    public int intIncrement(String key, int number) {
         int val = this.getInt(key, 0);
         val += number;
-        this.setv(key, val);
+        this.setv(key, Integer.valueOf(val));
         return val;
     }
     
-    public int intDecrement(final String key) {
+    public int intDecrement(String key) {
         return this.intDecrement(key, 1);
     }
     
-    public int intDecrement(final String key, final int number) {
+    public int intDecrement(String key, int number) {
         int val = this.getInt(key, 0);
         val -= number;
-        this.setv(key, val);
+        this.setv(key, Integer.valueOf(val));
         return val;
     }
     
-    public long longIncrement(final String key) {
+    public long longIncrement(String key) {
         return this.longIncrement(key, 1L);
     }
     
-    public long longIncrement(final String key, final long number) {
+    public long longIncrement(String key, long number) {
         long val = this.getLong(key, 0L);
         val += number;
-        this.setv(key, val);
+        this.setv(key, Long.valueOf(val));
         return val;
     }
     
-    public long longDecrement(final String key) {
+    public long longDecrement(String key) {
         return this.longDecrement(key, 1L);
     }
     
-    public long longDecrement(final String key, final long number) {
+    public long longDecrement(String key, long number) {
         long val = this.getLong(key, 0L);
         val -= number;
-        this.setv(key, val);
+        this.setv(key, Long.valueOf(val));
         return val;
     }
 }

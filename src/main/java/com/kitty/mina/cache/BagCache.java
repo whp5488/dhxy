@@ -1,4 +1,3 @@
-
 package com.kitty.mina.cache;
 
 import com.kitty.system.game.store.domain.StoreEquip;
@@ -10,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface BagCache
 {
-    public static final ConcurrentHashMap<Long, Map<Long, BagGoods>> BAG_GOODS_MAP = new ConcurrentHashMap<Long, Map<Long, BagGoods>>();
-    public static final ConcurrentHashMap<Long, Map<Long, BagEquip>> BAG_EQUIP_MAP = new ConcurrentHashMap<Long, Map<Long, BagEquip>>();
-    public static final ConcurrentHashMap<Long, Map<Long, StoreGoods>> STORE_GOODS_MAP = new ConcurrentHashMap<Long, Map<Long, StoreGoods>>();
-    public static final ConcurrentHashMap<Long, Map<Long, StoreEquip>> STORE_EQUIP_MAP = new ConcurrentHashMap<Long, Map<Long, StoreEquip>>();
+    public static final ConcurrentHashMap<Long, Map<Long, BagGoods>> BAG_GOODS_MAP = new ConcurrentHashMap();
+    public static final ConcurrentHashMap<Long, Map<Long, BagEquip>> BAG_EQUIP_MAP = new ConcurrentHashMap();
+    public static final ConcurrentHashMap<Long, Map<Long, StoreGoods>> STORE_GOODS_MAP = new ConcurrentHashMap();
+    public static final ConcurrentHashMap<Long, Map<Long, StoreEquip>> STORE_EQUIP_MAP = new ConcurrentHashMap();
 }

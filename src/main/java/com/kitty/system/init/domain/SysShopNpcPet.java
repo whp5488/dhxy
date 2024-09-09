@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -30,6 +29,9 @@ public class SysShopNpcPet implements Serializable
     @Comment("折扣")
     @Column("discount")
     private int discount;
+    
+    public SysShopNpcPet() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -95,7 +97,7 @@ public class SysShopNpcPet implements Serializable
         if (!(o instanceof SysShopNpcPet)) {
             return false;
         }
-        final SysShopNpcPet other = (SysShopNpcPet)o;
+        SysShopNpcPet other = (SysShopNpcPet)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && this.getPrice() == other.getPrice() && this.getLvLimit() == other.getLvLimit() && this.getZsLimit() == other.getZsLimit() && this.getType() == other.getType() && this.getDiscount() == other.getDiscount();
     }
     
@@ -105,7 +107,7 @@ public class SysShopNpcPet implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();

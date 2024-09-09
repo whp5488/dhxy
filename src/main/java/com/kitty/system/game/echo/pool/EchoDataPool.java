@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.echo.pool;
 
 import com.kitty.system.game.role.service.TitleService;
@@ -13,8 +12,11 @@ public class EchoDataPool
 {
     public static List<EchoHandler> echoHandlers;
     
+    public EchoDataPool() {
+    }
+    
     static {
-        (EchoDataPool.echoHandlers = new ArrayList<EchoHandler>()).add(SpringUtils.getBean(CardService.class));
+        (EchoDataPool.echoHandlers = new ArrayList<>()).add(SpringUtils.getBean(CardService.class));
         EchoDataPool.echoHandlers.add(SpringUtils.getBean(GeneralService.class));
         EchoDataPool.echoHandlers.add(SpringUtils.getBean(TitleService.class));
     }

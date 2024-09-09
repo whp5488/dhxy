@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -32,7 +31,7 @@ public class DbBagGoodsService
     
     public DbBagGoodsService() {
         this.logger = LoggerFactory.getLogger(DbBagGoodsService.class);
-        this.queue = new BlockingUniqueQueue<BagGoods>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -42,11 +41,11 @@ public class DbBagGoodsService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-bag-goods-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-bag-goods-save-service").newThread(new DbBagGoodsService.Worker()).start();
         DbBagGoodsService.instance = this;
     }
     
-    public void add2Queue(final BagGoods entity) {
+    public void add2Queue(BagGoods entity) {
         this.queue.add(entity);
     }
     
@@ -54,13 +53,13 @@ public class DbBagGoodsService
         return this.queue.size();
     }
     
-    private void saveToDb(final BagGoods entity) {
+    private void saveToDb(BagGoods entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -70,14 +69,14 @@ public class DbBagGoodsService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[DbBagGoods] 执行全部命令后关闭");
+        LoggerUtils.error("[DbBagGoods] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<BagGoods> it = this.queue.iterator();
+            Iterator<BagGoods> it = this.queue.iterator();
             while (it.hasNext()) {
-                final BagGoods obj = it.next();
+                BagGoods obj = (BagGoods)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -91,18 +90,20 @@ public class DbBagGoodsService
             while (DbBagGoodsService.this.run.get()) {
                 BagGoods entity = null;
                 try {
-                    entity = DbBagGoodsService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (BagGoods)DbBagGoodsService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     DbBagGoodsService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("背包物品数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("背包物品数据持久化队列长度：" + DbBagGoodsService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("背包物品数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("背包物品数据持久化队列长度：" + DbBagGoodsService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     DbBagGoodsService.this.logger.error("背包物品存档异常", e);
                     e.printStackTrace();
                 }

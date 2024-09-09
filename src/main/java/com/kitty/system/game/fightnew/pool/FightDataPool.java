@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.pool;
 
 import java.util.HashMap;
@@ -23,8 +22,11 @@ public class FightDataPool
     public static Map<Integer, SysGuajiWar> data_guaji_war;
     public static Map<Integer, List<SysGuajiWar>> data_guaji_war_list;
     
+    public FightDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         initGuajiWar(initService);
         initWarRole(initService);
         initDataMonster(initService);
@@ -32,41 +34,41 @@ public class FightDataPool
         initWxOtherWarData(initService);
     }
     
-    public static void initGuajiWar(final InitService initService) {
+    public static void initGuajiWar(InitService initService) {
         FightDataPool.data_guaji_war = initService.initGuajiWar();
-        for (final Integer key : FightDataPool.data_guaji_war.keySet()) {
-            final SysGuajiWar war = FightDataPool.data_guaji_war.get(key);
-            List<SysGuajiWar> list = FightDataPool.data_guaji_war_list.get(war.getWarDataId());
+        for (Integer key : FightDataPool.data_guaji_war.keySet()) {
+            SysGuajiWar war = (SysGuajiWar)FightDataPool.data_guaji_war.get(key);
+            List<SysGuajiWar> list = (List)FightDataPool.data_guaji_war_list.get(war.getWarDataId());
             if (list == null) {
-                list = new ArrayList<SysGuajiWar>();
+                list = new ArrayList<>();
             }
             list.add(war);
             FightDataPool.data_guaji_war_list.put(war.getWarDataId(), list);
         }
     }
     
-    public static void initWarRole(final InitService initService) {
+    public static void initWarRole(InitService initService) {
         FightDataPool.data_war_role = initService.initWarRole();
     }
     
-    public static void initWxOtherWarData(final InitService initService) {
+    public static void initWxOtherWarData(InitService initService) {
         FightDataPool.data_wx_other_war_data = initService.initWxOtherWarData();
     }
     
-    public static void initDataMonster(final InitService initService) {
+    public static void initDataMonster(InitService initService) {
         FightDataPool.data_monster = initService.initDataMonster();
     }
     
-    public static void initMonsterPeripheral(final InitService initService) {
+    public static void initMonsterPeripheral(InitService initService) {
         FightDataPool.monsterPeripheralMap = initService.initMonsterPeripheral();
     }
     
     static {
-        FightDataPool.data_war_role = new HashMap<Integer, SysWarRole>();
-        FightDataPool.data_wx_other_war_data = new HashMap<Integer, SysWxOtherWarData>();
-        FightDataPool.data_monster = new HashMap<Integer, SysDataMonster>();
-        FightDataPool.monsterPeripheralMap = new HashMap<Integer, SysDataMonsterPeripheral>();
-        FightDataPool.data_guaji_war = new HashMap<Integer, SysGuajiWar>();
-        FightDataPool.data_guaji_war_list = new HashMap<Integer, List<SysGuajiWar>>();
+        FightDataPool.data_war_role = new HashMap();
+        FightDataPool.data_wx_other_war_data = new HashMap();
+        FightDataPool.data_monster = new HashMap();
+        FightDataPool.monsterPeripheralMap = new HashMap();
+        FightDataPool.data_guaji_war = new HashMap();
+        FightDataPool.data_guaji_war_list = new HashMap();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.helper;
 
 import com.kitty.system.game.role.domain.Role;
@@ -26,12 +25,12 @@ public abstract class BagHandler
     
     public BagHandler() {
         this.logger = LoggerFunction.ITEM_PARTNER.getLogger();
-        this.cardService = SpringUtils.getBean(CardService.class);
-        this.bagService = SpringUtils.getBean(BagService.class);
+        this.cardService = (CardService)SpringUtils.getBean(CardService.class);
+        this.bagService = (BagService)SpringUtils.getBean(BagService.class);
         this.roleService = SpringUtils.getRoleService();
         this.equipService = SpringUtils.getEquipService();
         this.broadcastThread = SpringUtils.getBroadcastThread();
     }
     
-    public abstract String acceptOperate(final Role p0, final Integer p1, final Integer p2, final String p3);
+    public abstract String acceptOperate(Role role, Integer pos, Integer num, String param);
 }

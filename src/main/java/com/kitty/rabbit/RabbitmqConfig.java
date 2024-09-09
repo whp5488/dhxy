@@ -1,4 +1,3 @@
-
 package com.kitty.rabbit;
 
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -23,12 +22,15 @@ public class RabbitmqConfig
     public static final String EXCHANGE_NAME = "exchange";
     public static final String ROUTING_KEY = "player";
     
+    public RabbitmqConfig() {
+    }
+    
     @Bean
     public Queue delayOrderQueue() {
-        final Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("x-dead-letter-exchange", "exchange");
         params.put("x-dead-letter-routing-key", "player");
-        return new Queue("player.delay.queue", true, false, false, (Map)params);
+        return new Queue("player.delay.queue", true, false, false, params);
     }
     
     @Bean
@@ -57,7 +59,7 @@ public class RabbitmqConfig
     }
     
     @Bean
-    public RabbitAdmin rabbitAdmin(final ConnectionFactory connectionFactory) {
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }
 }

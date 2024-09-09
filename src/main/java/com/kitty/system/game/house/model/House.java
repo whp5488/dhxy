@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.house.model;
 
 import com.kitty.common.db.Db4CommonService;
@@ -36,7 +35,7 @@ public class House extends BaseEntity<Long>
     public House() {
     }
     
-    public House(final Long id, final long rId, final String name, final int motif, final byte state) {
+    public House(Long id, long rId, String name, int motif, byte state) {
         this.id = id;
         this.rId = rId;
         this.name = name;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.system.common.enter.FiedValue;
@@ -85,37 +84,21 @@ public class RespAroundInfo extends Message
         if (!(o instanceof RespAroundInfo)) {
             return false;
         }
-        final RespAroundInfo other = (RespAroundInfo)o;
+        RespAroundInfo other = (RespAroundInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$inviteName = this.getInviteName();
-        final Object other$inviteName = other.getInviteName();
-        Label_0078: {
-            if (this$inviteName == null) {
-                if (other$inviteName == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$inviteName.equals(other$inviteName)) {
-                break Label_0078;
-            }
+        Object this$inviteName = this.getInviteName();
+        Object other$inviteName = other.getInviteName();
+        if (!((this$inviteName != null) ? this$inviteName.equals(other$inviteName) : (other$inviteName == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0115: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0115;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
@@ -124,30 +107,14 @@ public class RespAroundInfo extends Message
         if (this.getTeamMembersCount() != other.getTeamMembersCount()) {
             return false;
         }
-        final Object this$time = this.getTime();
-        final Object other$time = other.getTime();
-        Label_0178: {
-            if (this$time == null) {
-                if (other$time == null) {
-                    break Label_0178;
-                }
-            }
-            else if (this$time.equals(other$time)) {
-                break Label_0178;
-            }
+        Object this$time = this.getTime();
+        Object other$time = other.getTime();
+        if (!((this$time != null) ? this$time.equals(other$time) : (other$time == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -156,18 +123,18 @@ public class RespAroundInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
-        final Object $inviteName = this.getInviteName();
+        Object $inviteName = this.getInviteName();
         result = result * 59 + (($inviteName == null) ? 43 : $inviteName.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getTeamMembersCount();
-        final Object $time = this.getTime();
+        Object $time = this.getTime();
         result = result * 59 + (($time == null) ? 43 : $time.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

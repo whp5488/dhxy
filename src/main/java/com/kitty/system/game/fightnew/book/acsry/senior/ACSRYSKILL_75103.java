@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -12,17 +11,20 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_75103 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_75103() {
+    }
+    
     @Override
-    public NutMap afterPrintCommand(final Fight fight, final FightObject fightObject, final Object... args) {
+    public NutMap afterPrintCommand(Fight fight, FightObject fightObject, Object... args) {
         if (fightObject.isFallDown() && fightObject.getDieRound() <= fight.getRound() - 1) {
-            final double percent = 0.1;
-            final boolean flag = SkillAi.canAffectOnPro(percent);
+            double percent = 0.1;
+            boolean flag = SkillAi.canAffectOnPro(percent);
             if (flag) {
-                final double addHpPercent = 0.3;
-                final int addHp = (int)(fightObject.getMaxLife() * addHpPercent);
+                double addHpPercent = 0.3;
+                int addHp = (int)((double)fightObject.getMaxLife() * addHpPercent);
                 ActionParamUtils.changeLife(fight, fightObject, fightObject, 7, 300999, 2, addHp, true);
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 75103);
-                skillRecord.setT(fightObject.getId());
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 75103);
+                skillRecord.setT((long)(int)fightObject.getId());
             }
         }
         return null;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqPartyPracticeUpGrade extends Message
 {
     private int grade;
+    
+    public ReqPartyPracticeUpGrade() {
+    }
     
     public int getGrade() {
         return this.grade;
@@ -25,7 +27,7 @@ public class ReqPartyPracticeUpGrade extends Message
         if (!(o instanceof ReqPartyPracticeUpGrade)) {
             return false;
         }
-        final ReqPartyPracticeUpGrade other = (ReqPartyPracticeUpGrade)o;
+        ReqPartyPracticeUpGrade other = (ReqPartyPracticeUpGrade)o;
         return other.canEqual(this) && this.getGrade() == other.getGrade();
     }
     
@@ -35,7 +37,7 @@ public class ReqPartyPracticeUpGrade extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getGrade();
         return result;

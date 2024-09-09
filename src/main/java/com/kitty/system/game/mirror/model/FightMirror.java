@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.mirror.model;
 
 import org.nutz.dao.entity.annotation.ColType;

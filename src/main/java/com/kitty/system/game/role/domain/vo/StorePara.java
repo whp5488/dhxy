@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.domain.vo;
 
 import java.util.ArrayList;
@@ -22,9 +21,9 @@ public class StorePara implements Serializable
     private List<BagEquip> equips;
     
     public StorePara() {
-        this.rests = new ArrayList<FiedValue>();
-        this.goods = new ArrayList<Goods>();
-        this.equips = new ArrayList<BagEquip>();
+        this.rests = new ArrayList<>();
+        this.goods = new ArrayList<>();
+        this.equips = new ArrayList<>();
     }
     
     public int getT() {

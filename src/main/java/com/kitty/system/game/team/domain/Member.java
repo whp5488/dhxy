@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.domain;
 
 import com.kitty.system.game.partner.domain.Partner;
@@ -41,15 +40,15 @@ public class Member implements Serializable
         this.inTeamTemporary = true;
         this.isPartner = false;
         this.masquerade = 0;
-        this.pet = new ArrayList<FiedValue>();
+        this.pet = new ArrayList<>();
     }
     
-    public static Member valueOf(final Role role) {
-        final Member member = new Member();
+    public static Member valueOf(Role role) {
+        Member member = new Member();
         member.setId(role.getId());
         member.setRoleId(role.getRoleId());
         member.setName(role.getName());
-        member.setIcon(role.getIcon());
+        member.setIcon(Integer.valueOf(role.getIcon()));
         member.setWeaponIcon(role.getWeaponIcon());
         member.setLevel(role.getLevel().shortValue());
         member.setRelive(role.getRelive().byteValue());
@@ -57,10 +56,10 @@ public class Member implements Serializable
         member.setRace(role.getRace());
         member.setColor(role.getColor());
         member.setSerial(role.getSerial());
-        if (role.getExtendBox().getCombatPet() > 0) {
-            final Pet pet = SpringUtils.getPetService().selectPet(role).get(role.getExtendBox().getCombatPet());
+        if ((int)role.getExtendBox().getCombatPet() > 0) {
+            Pet pet = (Pet)SpringUtils.getPetService().selectPet(role).get(role.getExtendBox().getCombatPet());
             if (pet != null) {
-                final List<FiedValue> fieldValues = new ArrayList<FiedValue>();
+                List<FiedValue> fieldValues = new ArrayList<>();
                 fieldValues.add(new FiedValue("id", (byte)3, pet.getPetId()));
                 fieldValues.add(new FiedValue("level", (byte)3, pet.getPetLv()));
                 fieldValues.add(new FiedValue("relive", (byte)3, pet.getRebirth()));
@@ -68,19 +67,20 @@ public class Member implements Serializable
                 member.setPet(fieldValues);
             }
         }
-        final List<WearEquip> wearEquips = SpringUtils.getEquipService().getEquipValid(role, false);
+        List<WearEquip> wearEquips = SpringUtils.getEquipService().getEquipValid(role, false);
         if (wearEquips.size() > 0) {
-            final int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
+            int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
             member.setGem(num);
+            return member;
         }
         return member;
     }
     
-    public static void valueOf(final Role role, final Member member) {
+    public static void valueOf(Role role, Member member) {
         member.setId(role.getId());
         member.setRoleId(role.getRoleId());
         member.setName(role.getName());
-        member.setIcon(role.getIcon());
+        member.setIcon(Integer.valueOf(role.getIcon()));
         member.setWeaponIcon(role.getWeaponIcon());
         member.setLevel(role.getLevel().shortValue());
         member.setRelive(role.getRelive().byteValue());
@@ -88,24 +88,24 @@ public class Member implements Serializable
         member.setRace(role.getRace());
         member.setColor(role.getColor());
         member.setSerial(role.getSerial());
-        if (role.getExtendBox().getCombatPet() > 0) {
-            final Pet pet = SpringUtils.getPetService().selectPet(role).get(role.getExtendBox().getCombatPet());
-            final List<FiedValue> fieldValues = new ArrayList<FiedValue>();
+        if ((int)role.getExtendBox().getCombatPet() > 0) {
+            Pet pet = (Pet)SpringUtils.getPetService().selectPet(role).get(role.getExtendBox().getCombatPet());
+            List<FiedValue> fieldValues = new ArrayList<>();
             fieldValues.add(new FiedValue("id", (byte)3, pet.getPetId()));
             fieldValues.add(new FiedValue("level", (byte)3, pet.getPetLv()));
             fieldValues.add(new FiedValue("relive", (byte)3, pet.getRebirth()));
             fieldValues.add(new FiedValue("serial", (byte)3, pet.getPetType()));
             member.setPet(fieldValues);
         }
-        final List<WearEquip> wearEquips = SpringUtils.getEquipService().getEquipValid(role, false);
+        List<WearEquip> wearEquips = SpringUtils.getEquipService().getEquipValid(role, false);
         if (wearEquips.size() > 0) {
-            final int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
+            int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
             member.setGem(num);
         }
     }
     
-    public static Member valueOf(final Partner partner) {
-        final Member member = new Member();
+    public static Member valueOf(Partner partner) {
+        Member member = new Member();
         member.setId(partner.getId());
         member.setRoleId(partner.getRoleId());
         member.setName(partner.getPartnerName());
@@ -122,7 +122,7 @@ public class Member implements Serializable
     
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("{");
+        StringBuilder sb = new StringBuilder("{");
         sb.append("\"id\":").append(this.id);
         sb.append(",\"roleId\":").append(this.roleId);
         sb.append(",\"name\":\"").append(this.name).append('\"');

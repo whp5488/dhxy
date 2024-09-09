@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.domain;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class SysNpcInfo implements Serializable
     private Pos pos;
     
     public SysNpcInfo() {
-        this.npcTypes = new ArrayList<Integer>();
+        this.npcTypes = new ArrayList<>();
     }
     
     public Integer getId() {
@@ -161,144 +160,64 @@ public class SysNpcInfo implements Serializable
         if (!(o instanceof SysNpcInfo)) {
             return false;
         }
-        final SysNpcInfo other = (SysNpcInfo)o;
+        SysNpcInfo other = (SysNpcInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$shape = this.getShape();
-        final Object other$shape = other.getShape();
-        Label_0176: {
-            if (this$shape == null) {
-                if (other$shape == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$shape.equals(other$shape)) {
-                break Label_0176;
-            }
+        Object this$shape = this.getShape();
+        Object other$shape = other.getShape();
+        if (!((this$shape != null) ? this$shape.equals(other$shape) : (other$shape == null))) {
             return false;
         }
-        final Object this$posInfo = this.getPosInfo();
-        final Object other$posInfo = other.getPosInfo();
-        Label_0213: {
-            if (this$posInfo == null) {
-                if (other$posInfo == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$posInfo.equals(other$posInfo)) {
-                break Label_0213;
-            }
+        Object this$posInfo = this.getPosInfo();
+        Object other$posInfo = other.getPosInfo();
+        if (!((this$posInfo != null) ? this$posInfo.equals(other$posInfo) : (other$posInfo == null))) {
             return false;
         }
-        final Object this$talk = this.getTalk();
-        final Object other$talk = other.getTalk();
-        Label_0250: {
-            if (this$talk == null) {
-                if (other$talk == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$talk.equals(other$talk)) {
-                break Label_0250;
-            }
+        Object this$talk = this.getTalk();
+        Object other$talk = other.getTalk();
+        if (!((this$talk != null) ? this$talk.equals(other$talk) : (other$talk == null))) {
             return false;
         }
-        final Object this$npcTypes = this.getNpcTypes();
-        final Object other$npcTypes = other.getNpcTypes();
-        Label_0287: {
-            if (this$npcTypes == null) {
-                if (other$npcTypes == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$npcTypes.equals(other$npcTypes)) {
-                break Label_0287;
-            }
+        Object this$npcTypes = this.getNpcTypes();
+        Object other$npcTypes = other.getNpcTypes();
+        if (!((this$npcTypes != null) ? this$npcTypes.equals(other$npcTypes) : (other$npcTypes == null))) {
             return false;
         }
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$shipper = this.getShipper();
-        final Object other$shipper = other.getShipper();
-        Label_0337: {
-            if (this$shipper == null) {
-                if (other$shipper == null) {
-                    break Label_0337;
-                }
-            }
-            else if (this$shipper.equals(other$shipper)) {
-                break Label_0337;
-            }
+        Object this$shipper = this.getShipper();
+        Object other$shipper = other.getShipper();
+        if (!((this$shipper != null) ? this$shipper.equals(other$shipper) : (other$shipper == null))) {
             return false;
         }
         if (this.getClassify() != other.getClassify()) {
             return false;
         }
-        final Object this$period = this.getPeriod();
-        final Object other$period = other.getPeriod();
-        Label_0387: {
-            if (this$period == null) {
-                if (other$period == null) {
-                    break Label_0387;
-                }
-            }
-            else if (this$period.equals(other$period)) {
-                break Label_0387;
-            }
+        Object this$period = this.getPeriod();
+        Object other$period = other.getPeriod();
+        if (!((this$period != null) ? this$period.equals(other$period) : (other$period == null))) {
             return false;
         }
-        final Object this$pos = this.getPos();
-        final Object other$pos = other.getPos();
-        if (this$pos == null) {
-            if (other$pos == null) {
-                return true;
-            }
-        }
-        else if (this$pos.equals(other$pos)) {
-            return true;
-        }
-        return false;
+        Object this$pos = this.getPos();
+        Object other$pos = other.getPos();
+        return (this$pos != null) ? this$pos.equals(other$pos) : (other$pos == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -307,29 +226,29 @@ public class SysNpcInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $shape = this.getShape();
+        Object $shape = this.getShape();
         result = result * 59 + (($shape == null) ? 43 : $shape.hashCode());
-        final Object $posInfo = this.getPosInfo();
+        Object $posInfo = this.getPosInfo();
         result = result * 59 + (($posInfo == null) ? 43 : $posInfo.hashCode());
-        final Object $talk = this.getTalk();
+        Object $talk = this.getTalk();
         result = result * 59 + (($talk == null) ? 43 : $talk.hashCode());
-        final Object $npcTypes = this.getNpcTypes();
+        Object $npcTypes = this.getNpcTypes();
         result = result * 59 + (($npcTypes == null) ? 43 : $npcTypes.hashCode());
         result = result * 59 + this.getType();
-        final Object $shipper = this.getShipper();
+        Object $shipper = this.getShipper();
         result = result * 59 + (($shipper == null) ? 43 : $shipper.hashCode());
         result = result * 59 + this.getClassify();
-        final Object $period = this.getPeriod();
+        Object $period = this.getPeriod();
         result = result * 59 + (($period == null) ? 43 : $period.hashCode());
-        final Object $pos = this.getPos();
+        Object $pos = this.getPos();
         result = result * 59 + (($pos == null) ? 43 : $pos.hashCode());
         return result;
     }

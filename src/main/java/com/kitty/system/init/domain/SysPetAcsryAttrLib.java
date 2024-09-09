@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import com.kitty.system.init.domain.vo.Prop;
@@ -20,6 +19,9 @@ public class SysPetAcsryAttrLib
     @Column("prop_by_rarity")
     @Default("[]")
     private Map<Byte, List<Prop>> propByRarity;
+    
+    public SysPetAcsryAttrLib() {
+    }
     
     public String getDict() {
         return this.dict;
@@ -53,47 +55,23 @@ public class SysPetAcsryAttrLib
         if (!(o instanceof SysPetAcsryAttrLib)) {
             return false;
         }
-        final SysPetAcsryAttrLib other = (SysPetAcsryAttrLib)o;
+        SysPetAcsryAttrLib other = (SysPetAcsryAttrLib)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0065: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0065;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0102: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0102;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
-        final Object this$propByRarity = this.getPropByRarity();
-        final Object other$propByRarity = other.getPropByRarity();
-        if (this$propByRarity == null) {
-            if (other$propByRarity == null) {
-                return true;
-            }
-        }
-        else if (this$propByRarity.equals(other$propByRarity)) {
-            return true;
-        }
-        return false;
+        Object this$propByRarity = this.getPropByRarity();
+        Object other$propByRarity = other.getPropByRarity();
+        return (this$propByRarity != null) ? this$propByRarity.equals(other$propByRarity) : (other$propByRarity == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -102,13 +80,13 @@ public class SysPetAcsryAttrLib
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
-        final Object $propByRarity = this.getPropByRarity();
+        Object $propByRarity = this.getPropByRarity();
         result = result * 59 + (($propByRarity == null) ? 43 : $propByRarity.hashCode());
         return result;
     }

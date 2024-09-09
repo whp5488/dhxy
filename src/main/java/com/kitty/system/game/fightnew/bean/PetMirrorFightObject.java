@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import com.kitty.system.game.fightnew.utils.SkillFunc;
@@ -10,15 +9,15 @@ public class PetMirrorFightObject extends FightObject
 {
     private Pet pet;
     
-    public PetMirrorFightObject(final PetMirror petMirror, final int id, final FightObject master, final int pos, final boolean isASide) {
-        final Pet pet = new Pet();
-        pet.setPetId(id);
+    public PetMirrorFightObject(PetMirror petMirror, int id, FightObject master, int pos, boolean isASide) {
+        Pet pet = new Pet();
+        pet.setPetId(Integer.valueOf(id));
         pet.setPetName(petMirror.getName());
         this.pet = pet;
         this.setPos(pos);
         this.setName(petMirror.getName());
         this.setLevel(petMirror.getLevel());
-        this.setId(id);
+        this.setId(Integer.valueOf(id));
         this.setSpeed(petMirror.getSpeed());
         this.setPhyPower(petMirror.getPhyPower());
         this.setMaxLife(petMirror.getMaxLife());
@@ -26,7 +25,7 @@ public class PetMirrorFightObject extends FightObject
         this.setCurrLife(petMirror.getMaxLife());
         this.setIcon(petMirror.getIcon());
         this.setSkillIds(SkillFunc.initPetSkill(petMirror.getSkillIds()));
-        this.setHostId(master.getId());
+        this.setHostId((int)master.getId());
         this.setASide(isASide);
     }
     

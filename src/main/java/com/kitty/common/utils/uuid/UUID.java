@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.uuid;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,7 +14,7 @@ public final class UUID implements Serializable, Comparable<UUID>
     private final long mostSigBits;
     private final long leastSigBits;
     
-    private UUID(final byte[] data) {
+    private UUID(byte[] data) {
         long msb = 0L;
         long lsb = 0L;
         assert data.length == 16 : "data must be 16 bytes in length";
@@ -27,9 +26,10 @@ public final class UUID implements Serializable, Comparable<UUID>
         }
         this.mostSigBits = msb;
         this.leastSigBits = lsb;
+        return;
     }
     
-    public UUID(final long mostSigBits, final long leastSigBits) {
+    public UUID(long mostSigBits, long leastSigBits) {
         this.mostSigBits = mostSigBits;
         this.leastSigBits = leastSigBits;
     }
@@ -42,65 +42,65 @@ public final class UUID implements Serializable, Comparable<UUID>
         return randomUUID(true);
     }
     
-    public static UUID randomUUID(final boolean isSecure) {
-        final Random ng = isSecure ? Holder.numberGenerator : getRandom();
-        final byte[] randomBytes = new byte[16];
+    public static UUID randomUUID(boolean isSecure) {
+        Random ng = isSecure ? UUID.Holder.numberGenerator : getRandom();
+        byte[] randomBytes = new byte[16];
         ng.nextBytes(randomBytes);
-        final byte[] array = randomBytes;
-        final int n = 6;
+        byte[] array = randomBytes;
+        int n = 6;
         array[n] &= 0xF;
-        final byte[] array2 = randomBytes;
-        final int n2 = 6;
+        byte[] array2 = randomBytes;
+        int n2 = 6;
         array2[n2] |= 0x40;
-        final byte[] array3 = randomBytes;
-        final int n3 = 8;
+        byte[] array3 = randomBytes;
+        int n3 = 8;
         array3[n3] &= 0x3F;
-        final byte[] array4 = randomBytes;
-        final int n4 = 8;
-        array4[n4] |= (byte)128;
+        byte[] array4 = randomBytes;
+        int n4 = 8;
+        array4[n4] |= 0x80;
         return new UUID(randomBytes);
     }
     
-    public static UUID nameUUIDFromBytes(final byte[] name) {
+    public static UUID nameUUIDFromBytes(byte[] name) {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
         }
-        catch (final NoSuchAlgorithmException nsae) {
+        catch (NoSuchAlgorithmException nsae) {
             throw new InternalError("MD5 not supported");
         }
-        final byte[] digest;
-        final byte[] md5Bytes = digest = md.digest(name);
-        final int n = 6;
+        byte[] digest;
+        byte[] md5Bytes = digest = md.digest(name);
+        int n = 6;
         digest[n] &= 0xF;
-        final byte[] array = md5Bytes;
-        final int n2 = 6;
+        byte[] array = md5Bytes;
+        int n2 = 6;
         array[n2] |= 0x30;
-        final byte[] array2 = md5Bytes;
-        final int n3 = 8;
+        byte[] array2 = md5Bytes;
+        int n3 = 8;
         array2[n3] &= 0x3F;
-        final byte[] array3 = md5Bytes;
-        final int n4 = 8;
-        array3[n4] |= (byte)128;
+        byte[] array3 = md5Bytes;
+        int n4 = 8;
+        array3[n4] |= 0x80;
         return new UUID(md5Bytes);
     }
     
-    public static UUID fromString(final String name) {
-        final String[] components = name.split("-");
+    public static UUID fromString(String name) {
+        String[] components = name.split("-");
         if (components.length != 5) {
             throw new IllegalArgumentException("Invalid UUID string: " + name);
         }
         for (int i = 0; i < 5; ++i) {
             components[i] = "0x" + components[i];
         }
-        long mostSigBits = Long.decode(components[0]);
+        long mostSigBits = (long)Long.decode(components[0]);
         mostSigBits <<= 16;
-        mostSigBits |= Long.decode(components[1]);
+        mostSigBits |= (long)Long.decode(components[1]);
         mostSigBits <<= 16;
-        mostSigBits |= Long.decode(components[2]);
-        long leastSigBits = Long.decode(components[3]);
+        mostSigBits |= (long)Long.decode(components[2]);
+        long leastSigBits = (long)Long.decode(components[3]);
         leastSigBits <<= 48;
-        leastSigBits |= Long.decode(components[4]);
+        leastSigBits |= (long)Long.decode(components[4]);
         return new UUID(mostSigBits, leastSigBits);
     }
     
@@ -140,8 +140,8 @@ public final class UUID implements Serializable, Comparable<UUID>
         return this.toString(false);
     }
     
-    public String toString(final boolean isSimple) {
-        final StringBuilder builder = new StringBuilder(isSimple ? 32 : 36);
+    public String toString(boolean isSimple) {
+        StringBuilder builder = new StringBuilder(isSimple ? 32 : 36);
         builder.append(digits(this.mostSigBits >> 32, 8));
         if (!isSimple) {
             builder.append('-');
@@ -164,26 +164,26 @@ public final class UUID implements Serializable, Comparable<UUID>
     
     @Override
     public int hashCode() {
-        final long hilo = this.mostSigBits ^ this.leastSigBits;
+        long hilo = this.mostSigBits ^ this.leastSigBits;
         return (int)(hilo >> 32) ^ (int)hilo;
     }
     
     @Override
-    public boolean equals(final Object obj) {
+    public boolean equals(Object obj) {
         if (null == obj || obj.getClass() != UUID.class) {
             return false;
         }
-        final UUID id = (UUID)obj;
+        UUID id = (UUID)obj;
         return this.mostSigBits == id.mostSigBits && this.leastSigBits == id.leastSigBits;
     }
     
     @Override
-    public int compareTo(final UUID val) {
+    public int compareTo(UUID val) {
         return (this.mostSigBits < val.mostSigBits) ? -1 : ((this.mostSigBits > val.mostSigBits) ? 1 : ((this.leastSigBits < val.leastSigBits) ? -1 : ((this.leastSigBits > val.leastSigBits) ? 1 : 0)));
     }
     
-    private static String digits(final long val, final int digits) {
-        final long hi = 1L << digits * 4;
+    private static String digits(long val, int digits) {
+        long hi = 1L << digits * 4;
         return Long.toHexString(hi | (val & hi - 1L)).substring(1);
     }
     
@@ -191,14 +191,15 @@ public final class UUID implements Serializable, Comparable<UUID>
         if (this.version() != 1) {
             throw new UnsupportedOperationException("Not a time-based UUID");
         }
+        return;
     }
     
     public static SecureRandom getSecureRandom() {
         try {
             return SecureRandom.getInstance("SHA1PRNG");
         }
-        catch (final NoSuchAlgorithmException e) {
-            throw new UtilException((Throwable)e);
+        catch (NoSuchAlgorithmException e) {
+            throw new UtilException(e);
         }
     }
     

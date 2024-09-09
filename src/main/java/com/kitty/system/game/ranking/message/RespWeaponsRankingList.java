@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import java.util.ArrayList;
@@ -14,8 +13,8 @@ public class RespWeaponsRankingList extends Message
     private byte equipType;
     private List<WeaponsRankingField> weaponsRankingFields;
     
-    public RespWeaponsRankingList(final byte race, final byte equipType, final List<WeaponsRankingField> weaponsRankingFields) {
-        this.weaponsRankingFields = new ArrayList<WeaponsRankingField>(100);
+    public RespWeaponsRankingList(byte race, byte equipType, List<WeaponsRankingField> weaponsRankingFields) {
+        this.weaponsRankingFields = new ArrayList(100);
         this.race = race;
         this.equipType = equipType;
         this.weaponsRankingFields = weaponsRankingFields;
@@ -53,7 +52,7 @@ public class RespWeaponsRankingList extends Message
         if (!(o instanceof RespWeaponsRankingList)) {
             return false;
         }
-        final RespWeaponsRankingList other = (RespWeaponsRankingList)o;
+        RespWeaponsRankingList other = (RespWeaponsRankingList)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -63,17 +62,9 @@ public class RespWeaponsRankingList extends Message
         if (this.getEquipType() != other.getEquipType()) {
             return false;
         }
-        final Object this$weaponsRankingFields = this.getWeaponsRankingFields();
-        final Object other$weaponsRankingFields = other.getWeaponsRankingFields();
-        if (this$weaponsRankingFields == null) {
-            if (other$weaponsRankingFields == null) {
-                return true;
-            }
-        }
-        else if (this$weaponsRankingFields.equals(other$weaponsRankingFields)) {
-            return true;
-        }
-        return false;
+        Object this$weaponsRankingFields = this.getWeaponsRankingFields();
+        Object other$weaponsRankingFields = other.getWeaponsRankingFields();
+        return (this$weaponsRankingFields != null) ? this$weaponsRankingFields.equals(other$weaponsRankingFields) : (other$weaponsRankingFields == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -82,17 +73,17 @@ public class RespWeaponsRankingList extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRace();
         result = result * 59 + this.getEquipType();
-        final Object $weaponsRankingFields = this.getWeaponsRankingFields();
+        Object $weaponsRankingFields = this.getWeaponsRankingFields();
         result = result * 59 + (($weaponsRankingFields == null) ? 43 : $weaponsRankingFields.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespWeaponsRankingList(race=" + this.getRace() + ", equipType=" + this.getEquipType() + ", weaponsRankingFields=" + this.getWeaponsRankingFields() + ")";
+        return "RespWeaponsRankingList(race=" + (int)this.getRace() + ", equipType=" + (int)this.getEquipType() + ", weaponsRankingFields=" + this.getWeaponsRankingFields() + ")";
     }
 }

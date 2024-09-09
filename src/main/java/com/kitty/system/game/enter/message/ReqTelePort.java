@@ -1,10 +1,9 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
-@MessageMeta(module = 32768)
+@MessageMeta(module = 22568)
 public class ReqTelePort extends Message
 {
     private int mapId;
@@ -12,14 +11,14 @@ public class ReqTelePort extends Message
     private int y;
     private int isTaskWalk;
     
-    public ReqTelePort(final int mapId, final int x, final int y) {
+    public ReqTelePort(int mapId, int x, int y) {
         this.isTaskWalk = 0;
         this.mapId = mapId;
         this.x = x;
         this.y = y;
     }
     
-    public ReqTelePort(final int mapId, final int x, final int y, final int isTaskWalk) {
+    public ReqTelePort(int mapId, int x, int y, int isTaskWalk) {
         this.isTaskWalk = 0;
         this.mapId = mapId;
         this.x = x;
@@ -71,7 +70,7 @@ public class ReqTelePort extends Message
         if (!(o instanceof ReqTelePort)) {
             return false;
         }
-        final ReqTelePort other = (ReqTelePort)o;
+        ReqTelePort other = (ReqTelePort)o;
         return other.canEqual(this) && this.getMapId() == other.getMapId() && this.getX() == other.getX() && this.getY() == other.getY() && this.getIsTaskWalk() == other.getIsTaskWalk();
     }
     
@@ -81,7 +80,7 @@ public class ReqTelePort extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getMapId();
         result = result * 59 + this.getX();

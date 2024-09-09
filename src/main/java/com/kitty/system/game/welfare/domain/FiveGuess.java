@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.domain;
 
 import com.kitty.common.db.DbRecordService;
@@ -29,7 +28,7 @@ public class FiveGuess extends BaseEntity<Long>
     @Column("count")
     private short count;
     
-    public FiveGuess(final Long id, final long rId) {
+    public FiveGuess(Long id, long rId) {
         this.money = 0L;
         this.amount = 0;
         this.choice = 0;

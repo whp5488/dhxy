@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.talent;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -17,44 +16,50 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_83008 extends SkillProcessor
 {
+    public SKILL_83008() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final int time = 3;
-        final RoleSkill skill = effector.getSkillBy(83008);
-        final Effect e = new Effect();
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        int time = 3;
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(83008));
+        Effect e = new Effect();
         if (skill != null) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 83008);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 83008);
             if (!target.isFrozen()) {
-                final double percent = BigDecimalUtil.decimalScaleObjectDown(3, (0.1 + 5.0 * (effector.getRelive() * 0.6 + 1.0) * PetSkillEffectorUtil.getSuffix(effector.getLevel(), effector.getRelive(), effector.getClose())) / 100.0);
-                final int speed = target.getSpeed();
-                final int result = (int)Double.parseDouble(BigDecimalUtil.multiply(String.valueOf(speed), String.valueOf(percent)));
-                ImbueUtil.addOrUpdStatus(target.getImbueMap(), 1016, PRO_DICT_TYPE.RISE_SPEED.getDist(), time, -result);
+                double percent = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf((0.1 + 5.0 * ((double)effector.getRelive() * 0.6 + 1.0) * PetSkillEffectorUtil.getSuffix(Integer.valueOf(effector.getLevel()), Integer.valueOf(effector.getRelive()), effector.getClose())) / 100.0));
+                int speed = target.getSpeed();
+                int result = (int)Double.parseDouble(BigDecimalUtil.multiply(String.valueOf(speed), String.valueOf(percent)));
+                ImbueUtil.addOrUpdStatus(target.getImbueMap(), 1016, PRO_DICT_TYPE.RISE_SPEED.getDist(), time, (double)(-result));
                 e.setTime(time);
                 e.setType(1016);
             }
-            skillRecord.setT(target.getId());
+            skillRecord.setT((long)(int)target.getId());
+            return e;
         }
-        return e;
+        else {
+            return e;
+        }
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
-        final int level = PetSkillEffectorUtil.getExcuteLevel(args);
+    public int costMana(RoleSkill skill, Object... args) {
+        int level = PetSkillEffectorUtil.getExcuteLevel(args);
         return level * 22;
     }
 }

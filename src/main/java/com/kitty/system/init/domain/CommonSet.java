@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.ColType;
@@ -14,6 +13,9 @@ public class CommonSet
     @Column("s_value")
     @ColDefine(type = ColType.TEXT)
     private String value;
+    
+    public CommonSet() {
+    }
     
     public String getKey() {
         return this.key;

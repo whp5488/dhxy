@@ -1,9 +1,7 @@
-
 package com.kitty.system.game.task.service.handler;
 
 import com.kitty.system.game.task.message.vo.TaskInfo;
 import com.kitty.system.game.vo.Npc;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.enums.task.TaskType;
@@ -14,13 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class MainTaskHandler extends TaskHandler
 {
-    public void acceptFirstMainTask(final Role role) {
-        final TaskSet taskSet = this.taskService.getTaskSet(100001);
+    public MainTaskHandler() {
+    }
+    
+    public void acceptFirstMainTask(Role role) {
+        TaskSet taskSet = this.taskService.getTaskSet(100001);
         this.acceptTask(role, taskSet, -1);
     }
     
     @Override
-    public boolean resetTask(final Role role, final TaskSet taskSet) {
+    public boolean resetTask(Role role, TaskSet taskSet) {
         return false;
     }
     
@@ -30,33 +31,34 @@ public class MainTaskHandler extends TaskHandler
     }
     
     @Override
-    public void canSubmitTask(final Role role, final TaskSet taskSet) {
-        final int submitNpc = taskSet.getSubmitNpc();
+    public void canSubmitTask(Role role, TaskSet taskSet) {
+        int submitNpc = taskSet.getSubmitNpc();
         if (submitNpc > 0) {
-            final Npc npc = this.mapService.getNpc(submitNpc);
+            Npc npc = this.mapService.getNpc(submitNpc);
             if (npc != null) {
-                final boolean b = this.npcService.canClickNpc(role, npc);
+                boolean b = this.npcService.canClickNpc(role, npc);
                 if (!b) {
                     MessagePusher.pushMessage(role, new RespMsg("请前往" + npc.getName() + "处提交任务"));
                     return;
                 }
             }
         }
-        final int submitCondition = taskSet.getSubmitCondition();
+        int submitCondition = taskSet.getSubmitCondition();
         if (submitCondition > 0 && !this.taskService.condition(role, taskSet, (byte)1)) {
             return;
         }
         this.taskService.updateSingleTargetProgress(role, taskSet);
+        return;
     }
     
     @Override
-    public TaskInfo getTaskInfo(final Role role, final TaskSet taskSet) {
-        final TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
+    public TaskInfo getTaskInfo(Role role, TaskSet taskSet) {
+        TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
         return taskInfo;
     }
     
     @Override
-    public boolean canGiveUpTask(final Role role, final TaskSet taskSet) {
+    public boolean canGiveUpTask(Role role, TaskSet taskSet) {
         return false;
     }
 }

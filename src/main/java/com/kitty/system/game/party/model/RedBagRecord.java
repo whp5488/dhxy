@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.model;
 
 public class RedBagRecord
@@ -11,7 +10,7 @@ public class RedBagRecord
     public RedBagRecord() {
     }
     
-    public RedBagRecord(final long redBagId, final String senderName, final int coin) {
+    public RedBagRecord(long redBagId, String senderName, int coin) {
         this.redBagId = redBagId;
         this.senderName = senderName;
         this.coin = coin;

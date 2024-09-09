@@ -1,10 +1,8 @@
-
 package com.kitty.system.init.rank.thread;
 
 import java.util.Iterator;
 import com.kitty.system.game.ranking.util.RankingUtils;
 import com.kitty.system.game.ranking.RankingList;
-import java.util.Collection;
 import org.apache.commons.collections.CollectionUtils;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
@@ -21,7 +19,7 @@ public class RankEquipThread implements Runnable
     private Semaphore semaphore;
     private CountDownLatch countDownLatch;
     
-    public RankEquipThread(final int index, final List<Role> list, final Map<Long, List<WearEquip>> wearEquipMap, final CountDownLatch countDownLatch, final Semaphore semaphore) {
+    public RankEquipThread(int index, List<Role> list, Map<Long, List<WearEquip>> wearEquipMap, CountDownLatch countDownLatch, Semaphore semaphore) {
         this.index = 0;
         this.index = index;
         this.list = list;
@@ -32,12 +30,12 @@ public class RankEquipThread implements Runnable
     
     @Override
     public void run() {
-        if (!CollectionUtils.isEmpty((Collection)this.list)) {
+        if (!CollectionUtils.isEmpty(this.list)) {
             try {
                 this.semaphore.acquire();
                 this.list.stream().forEach(e -> this.neaten(e));
             }
-            catch (final InterruptedException e) {
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
             finally {
@@ -47,10 +45,10 @@ public class RankEquipThread implements Runnable
         this.countDownLatch.countDown();
     }
     
-    public void neaten(final Role role) {
-        final List<WearEquip> wearEquips = this.wearEquipMap.get(role.getId());
+    public void neaten(Role role) {
+        List<WearEquip> wearEquips = (List)this.wearEquipMap.get(role.getId());
         if (wearEquips != null) {
-            for (final WearEquip wearEquip : wearEquips) {
+            for (WearEquip wearEquip : wearEquips) {
                 wearEquip.doAfterInit();
                 RankingList.weaponsRankingSources.add(RankingUtils.createWeaponsRankingSource(role, wearEquip, 0));
             }

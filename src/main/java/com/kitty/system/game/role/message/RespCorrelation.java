@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.common.utils.CodeUtils;
@@ -13,7 +12,7 @@ public class RespCorrelation extends Message
     public RespCorrelation() {
     }
     
-    public RespCorrelation(final String mobile) {
+    public RespCorrelation(String mobile) {
         this.mobile = CodeUtils.phoneMask(mobile);
     }
     

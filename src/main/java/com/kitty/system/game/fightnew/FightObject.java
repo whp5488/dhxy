@@ -1,11 +1,8 @@
-
 package com.kitty.system.game.fightnew;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.fightnew.bean.Fight;
 import java.util.HashMap;
 import com.kitty.common.utils.BigDecimalUtil;
-import java.util.Collection;
 import com.kitty.system.common.enter.FiedValue;
 import com.kitty.system.enums.common.ADORN;
 import com.kitty.system.game.equip.domain.Effect;
@@ -88,27 +85,28 @@ public class FightObject implements Comparable<FightObject>
     protected Map<String, Object> tempCache;
     private NutMap roundController;
     private Map<Integer, List<Integer>> roundUseSkillMap;
+    private List<Integer> normalAttackObjs;
     
-    public void setType(final int type) {
+    public void setType(int type) {
         this.type = type;
     }
     
-    public Object getTempCacheValue(final String key) {
+    public Object getTempCacheValue(String key) {
         if (this.tempCache != null) {
             return this.tempCache.get(key);
         }
         return null;
     }
     
-    public RoleSkill getSkillBy(final Integer skillId) {
-        final Optional<RoleSkill> optional = this.getSkillIds().stream().filter(skill -> skill.getSkillId().equals(skillId)).findFirst();
+    public RoleSkill getSkillBy(Integer skillId) {
+        Optional<RoleSkill> optional = this.getSkillIds().stream().filter(skill -> skill.getSkillId().equals(skillId)).findFirst();
         if (optional.isPresent()) {
-            return optional.get();
+            return (RoleSkill)optional.get();
         }
         return null;
     }
     
-    public void setCurrLife(final int currLife) {
+    public void setCurrLife(int currLife) {
         if (currLife > this.maxLife) {
             this.currLife = this.maxLife;
         }
@@ -117,7 +115,7 @@ public class FightObject implements Comparable<FightObject>
         }
     }
     
-    public int setCurrMana(final int currMana) {
+    public int setCurrMana(int currMana) {
         if (currMana > this.maxMana) {
             this.currMana = this.maxMana;
         }
@@ -127,7 +125,7 @@ public class FightObject implements Comparable<FightObject>
         return this.currMana;
     }
     
-    public int reduceMp(final int mp) {
+    public int reduceMp(int mp) {
         this.currMana -= mp;
         if (this.currMana < 0) {
             this.currMana = 0;
@@ -135,7 +133,7 @@ public class FightObject implements Comparable<FightObject>
         return this.currMana;
     }
     
-    public int reduceHp(final int hp) {
+    public int reduceHp(int hp) {
         this.currLife -= hp;
         if (this.currLife < 0) {
             this.currLife = 0;
@@ -147,10 +145,10 @@ public class FightObject implements Comparable<FightObject>
         return this.currLife <= 0;
     }
     
-    public boolean isCompleted(final int round, final boolean bo) {
-        final boolean boo = this.isCompleted.getOrDefault(round, false);
+    public boolean isCompleted(int round, boolean bo) {
+        boolean boo = (boolean)this.isCompleted.getOrDefault(Integer.valueOf(round), Boolean.valueOf(false));
         if (!boo && bo) {
-            this.isCompleted.put(round, true);
+            this.isCompleted.put(Integer.valueOf(round), Boolean.valueOf(true));
         }
         return boo;
     }
@@ -162,11 +160,11 @@ public class FightObject implements Comparable<FightObject>
         return this.statusMap;
     }
     
-    public void setStatus(final int status, final int value) {
-        this.getStatusMap().setv(String.valueOf(status), (Object)value);
+    public void setStatus(int status, int value) {
+        this.getStatusMap().setv(String.valueOf(status), Integer.valueOf(value));
     }
     
-    public void removeStatus(final int status) {
+    public void removeStatus(int status) {
         this.getStatusMap().unset(String.valueOf(status));
         this.getStatusMap().unset(status + "value");
         this.getStatusMap().unset(status + "record");
@@ -176,54 +174,56 @@ public class FightObject implements Comparable<FightObject>
         this.removeStatusSub(status + "target");
     }
     
-    public void removeSkillCool(final String dist) {
+    public void removeSkillCool(String dist) {
         this.getSkillCoolMap().unset(dist);
         this.getSkillCoolMap().unset(dist + "value");
         this.getSkillCoolMap().unset(dist + "value_targets");
     }
     
-    public void removeSkillCoolOther(final String dist) {
+    public void removeSkillCoolOther(String dist) {
         this.getSkillCoolMap().unset(dist + "value");
         this.getSkillCoolMap().unset(dist + "value_targets");
     }
     
     public List<SkillCool> getSkillCoolList() {
-        final List<SkillCool> list = new ArrayList<SkillCool>();
-        for (final Map.Entry<String, Object> entry : this.getSkillCoolMap().entrySet()) {
-            if (!entry.getKey().matches("^[0-9]+$")) {
+        List<SkillCool> list = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : this.getSkillCoolMap().entrySet()) {
+            if (!((String)entry.getKey()).matches("^[0-9]+$")) {
                 continue;
             }
-            final SkillCool cool = new SkillCool();
-            cool.setObjId(this.getId());
-            cool.setSkillId(Integer.parseInt(entry.getKey()));
-            cool.setRound((Integer)entry.getValue());
+            SkillCool cool = new SkillCool();
+            cool.setObjId((int)this.getId());
+            cool.setSkillId((int)Integer.valueOf((String)entry.getKey()));
+            cool.setRound((int)entry.getValue());
             list.add(cool);
         }
         return list;
     }
     
     public void reduceSkillCool() {
-        final List<String> keys = new ArrayList<String>();
-        final List<String> removeSkillCoolOther = new ArrayList<String>();
-        for (final Map.Entry<String, Object> entry : this.getSkillCoolMap().entrySet()) {
+        List<String> keys = new ArrayList<>();
+        List<String> removeSkillCoolOther = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : this.getSkillCoolMap().entrySet()) {
             if (!(entry.getValue() instanceof Integer)) {
                 continue;
             }
-            int value = (Integer) entry.getValue();
+            int value = (int)entry.getValue();
             if (value <= 0) {
                 keys.add(entry.getKey());
             }
             --value;
-            this.skillCoolMap.setv((String)entry.getKey(), (Object)value);
-            if (value != 0) {
+            this.skillCoolMap.setv((String)entry.getKey(), Integer.valueOf(value));
+            if (value == 0) {
+                removeSkillCoolOther.add(entry.getKey());
+            }
+            else {
                 continue;
             }
-            removeSkillCoolOther.add(entry.getKey());
         }
-        for (final String key : keys) {
+        for (String key : keys) {
             this.removeSkillCool(key);
         }
-        for (final String keyOther : removeSkillCoolOther) {
+        for (String keyOther : removeSkillCoolOther) {
             this.removeSkillCoolOther(keyOther);
         }
     }
@@ -232,20 +232,29 @@ public class FightObject implements Comparable<FightObject>
         ImbueUtil.reduceImbueRounds(this.imbueMap);
     }
     
-    public void removeStatusSub(final String dict) {
+    public void removeStatusSub(String dict) {
         this.statusSubMap.unset(dict);
     }
     
-    public int getStatusValue(final int status) {
-        final String key = String.valueOf(status);
+    public int getStatusValue(int status) {
+        String key = String.valueOf(status);
         return this.getStatusMap().getInt(key, 0);
     }
     
-    public double getSelfAllTempPro(final int dist) {
-        final String pro_dist = String.valueOf(dist);
+    public double getSelfAllTempPro(int dist) {
+        String pro_dist = String.valueOf(dist);
         double sum = 0.0;
         sum += this.propertyMap.getDouble(pro_dist);
-        sum += ImbueUtil.getProValue(this.imbueMap, dist);
+        sum += ImbueUtil.getProValue(this.imbueMap, Integer.valueOf(dist));
+        return sum;
+    }
+    
+    public double getSelfAllTempProOther(FightObject fightObject, int dist) {
+        String pro_dist = String.valueOf(dist);
+        double sum = 0.0;
+        sum += this.propertyMap.getDouble(pro_dist);
+        sum += ImbueUtil.getProValue(this.imbueMap, Integer.valueOf(dist));
+        sum -= ImbueUtil.getIgnoreValue(this.imbueMap, fightObject.getImbueMap(), Integer.valueOf(dist));
         return sum;
     }
     
@@ -270,7 +279,7 @@ public class FightObject implements Comparable<FightObject>
     }
     
     public Boolean RoleIsDamgeImmunity() {
-        return this.getStatusValue(EFFECTTYPE.EFFECTTYPE_TONGCHOUDIKAI.getValue()) >= 1 || this.getStatusValue(EFFECTTYPE.EFFECTTYPE_MONSTER_WUDI.getValue()) >= 1;
+        return Boolean.valueOf(this.getStatusValue(EFFECTTYPE.EFFECTTYPE_TONGCHOUDIKAI.getValue()) >= 1 || this.getStatusValue(EFFECTTYPE.EFFECTTYPE_MONSTER_WUDI.getValue()) >= 1);
     }
     
     public boolean isFrozen() {
@@ -337,20 +346,23 @@ public class FightObject implements Comparable<FightObject>
         this.removeStatus(1019);
     }
     
-    public void clearStatus(final List<Integer> statusList) {
+    public void clearStatus(List<Integer> statusList) {
         if (statusList != null && statusList.size() > 0) {
-            for (final Integer status : statusList) {
-                this.removeStatus(status);
+            for (Integer status : statusList) {
+                this.removeStatus((int)status);
             }
         }
     }
     
-    public List<Integer> getStatusList(final List<Integer> sourceStatusList) {
-        final List<Integer> returnList = new ArrayList<Integer>();
+    public List<Integer> getStatusList(List<Integer> sourceStatusList) {
+        List<Integer> returnList = new ArrayList<>();
         if (sourceStatusList != null && sourceStatusList.size() > 0) {
-            for (final Integer status : sourceStatusList) {
-                if (this.getStatusValue(status) > 0) {
+            for (Integer status : sourceStatusList) {
+                if (this.getStatusValue((int)status) > 0) {
                     returnList.add(status);
+                }
+                else {
+                    continue;
                 }
             }
         }
@@ -365,31 +377,31 @@ public class FightObject implements Comparable<FightObject>
     }
     
     @Override
-    public int compareTo(final FightObject o) {
-        final int oSelf = (int)o.getSelfAllTempPro(PRO_DICT_TYPE.RISE_SPEED.getDist()) + o.getSpeed();
-        final int self = (int)this.getSelfAllTempPro(PRO_DICT_TYPE.RISE_SPEED.getDist()) + this.getSpeed();
+    public int compareTo(FightObject o) {
+        int oSelf = (int)o.getSelfAllTempPro(PRO_DICT_TYPE.RISE_SPEED.getDist()) + o.getSpeed();
+        int self = (int)this.getSelfAllTempPro(PRO_DICT_TYPE.RISE_SPEED.getDist()) + this.getSpeed();
         return oSelf - self;
     }
     
     public FightMember asFightMember() {
-        final FightMember fightMember = new FightMember();
-        fightMember.setId(this.getId());
+        FightMember fightMember = new FightMember();
+        fightMember.setId((int)this.getId());
         fightMember.setHost(this.getHostId());
         fightMember.setSerial((this.getLogic() == LOGIC.LOGICTYPE_MONSTER.getValue()) ? 50000 : this.getSerial());
         fightMember.setPosition(this.getPos());
         fightMember.setIcon(this.getIcon());
         fightMember.setWeaponIcon(this.getWeaponId());
         fightMember.setList(this.asFieldValues());
-        final List<Integer> statusList = this.getStatusList();
+        List<Integer> statusList = this.getStatusList();
         if (statusList != null) {
             fightMember.setStatusList(statusList);
         }
         if (this.isPlayer()) {
-            final List<Effect> effects = SpringUtils.getBean(EquipService.class).selectEffect(this.getRole());
+            List<Effect> effects = ((EquipService)SpringUtils.getBean(EquipService.class)).selectEffect(this.getRole());
             if (effects != null && effects.size() > 0) {
-                final Effect wing = effects.stream().filter(e -> e.getState() == 1 && e.getPart() == ADORN.WING.getValue()).findFirst().orElse(null);
+                Effect wing = (Effect)effects.stream().filter(e -> e.getState() == 1 && e.getPart() == ADORN.WING.getValue()).findFirst().orElse(null);
                 if (wing != null) {
-                    fightMember.getLight_effect().add(wing.getSerial());
+                    fightMember.getLight_effect().add(Integer.valueOf(wing.getSerial()));
                 }
             }
         }
@@ -397,20 +409,21 @@ public class FightObject implements Comparable<FightObject>
     }
     
     public List<FiedValue> asFieldValues() {
-        final ArrayList<FiedValue> fiedValues = new ArrayList<FiedValue>();
+        ArrayList<FiedValue> fiedValues = new ArrayList<>();
         fiedValues.add(new FiedValue("name", (byte)4, this.getName()));
         if (this.getGem() > 0) {
-            fiedValues.add(new FiedValue("gem", (byte)1, this.getGem()));
+            fiedValues.add(new FiedValue("gem", (byte)1, Integer.valueOf(this.getGem())));
         }
-        fiedValues.add(new FiedValue("lv", (byte)2, this.getLevel()));
-        fiedValues.add(new FiedValue("rei", (byte)3, this.getRelive()));
-        fiedValues.add(new FiedValue("maxLife", (byte)3, this.getMaxLife()));
-        fiedValues.add(new FiedValue("maxMana", (byte)3, this.getMaxMana()));
-        fiedValues.add(new FiedValue("currLife", (byte)3, this.getCurrLife()));
-        fiedValues.add(new FiedValue("currMana", (byte)3, this.getCurrMana()));
-        final List<FiedValue> deyList = SpringUtils.getRoleService().deyList(this.getColor());
+        fiedValues.add(new FiedValue("lv", (byte)2, Integer.valueOf(this.getLevel())));
+        fiedValues.add(new FiedValue("rei", (byte)3, Integer.valueOf(this.getRelive())));
+        fiedValues.add(new FiedValue("maxLife", (byte)3, Integer.valueOf(this.getMaxLife())));
+        fiedValues.add(new FiedValue("maxMana", (byte)3, Integer.valueOf(this.getMaxMana())));
+        fiedValues.add(new FiedValue("currLife", (byte)3, Integer.valueOf(this.getCurrLife())));
+        fiedValues.add(new FiedValue("currMana", (byte)3, Integer.valueOf(this.getCurrMana())));
+        List<FiedValue> deyList = SpringUtils.getRoleService().deyList(this.getColor());
         if (deyList.size() > 0) {
             fiedValues.addAll(deyList);
+            return fiedValues;
         }
         return fiedValues;
     }
@@ -419,52 +432,54 @@ public class FightObject implements Comparable<FightObject>
         if (this.maxLife <= 0) {
             return 0.0;
         }
-        final String surplusLifePercentStr = BigDecimalUtil.divide(String.valueOf(this.getCurrLife()), String.valueOf(this.getMaxLife()));
-        final double surplusLifePercent = Double.parseDouble(surplusLifePercentStr);
+        String surplusLifePercentStr = BigDecimalUtil.divide(String.valueOf(this.getCurrLife()), String.valueOf(this.getMaxLife()));
+        double surplusLifePercent = Double.parseDouble(surplusLifePercentStr);
         return surplusLifePercent;
     }
     
-    public Object pushTempCache(final String key, final Object value) {
+    public Object pushTempCache(String key, Object value) {
         if (this.tempCache == null) {
-            this.tempCache = new HashMap<String, Object>(4);
+            this.tempCache = new HashMap(4);
         }
         return this.tempCache.put(key, value);
     }
     
-    public <T> T getTempCache(final String key, final Object dft) {
+    public <T> T getTempCache(String key, Object dft) {
         if (this.tempCache == null) {
             return (T)dft;
         }
-        final T result = (T)this.tempCache.get(key);
-        return (T)((result == null) ? dft : result);
+        T result = (T)this.tempCache.get(key);
+        return (result == null) ? (T)dft : result;
     }
     
     public double getSurplusManaPercent() {
         if (this.maxMana <= 0) {
             return 0.0;
         }
-        final String surplusManaPercentStr = BigDecimalUtil.divide(String.valueOf(this.getCurrMana()), String.valueOf(this.getMaxMana()));
-        final double surplusManaPercent = Double.parseDouble(surplusManaPercentStr);
+        String surplusManaPercentStr = BigDecimalUtil.divide(String.valueOf(this.getCurrMana()), String.valueOf(this.getMaxMana()));
+        double surplusManaPercent = Double.parseDouble(surplusManaPercentStr);
         return surplusManaPercent;
     }
     
-    public void recordAction(final Fight fight) {
-        this.getFightActionRecord().setv(String.valueOf(fight.getRound()), (Object)this.getType());
-        this.getFightActionRecord().setv(fight.getRound() + "details", (Object)this.getSkillId());
+    public void recordAction(Fight fight) {
+        this.getFightActionRecord().setv(String.valueOf(fight.getRound()), Integer.valueOf(this.getType()));
+        this.getFightActionRecord().setv(fight.getRound() + "details", Integer.valueOf(this.getSkillId()));
     }
     
     public List<Integer> getStatusList() {
         if (this.getStatusMap().size() > 0) {
-            final List<Integer> statusList = new ArrayList<Integer>();
-            for (final Map.Entry<String, Object> entry : this.getStatusMap().entrySet()) {
-                if (!entry.getKey().matches("^[0-9]+$")) {
+            List<Integer> statusList = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : this.getStatusMap().entrySet()) {
+                if (!((String)entry.getKey()).matches("^[0-9]+$")) {
                     continue;
                 }
-                if (this.getStatusMap().getInt((String)entry.getKey(), 0) <= 0) {
+                if (this.getStatusMap().getInt((String)entry.getKey(), 0) > 0) {
+                    statusList.add(Integer.valueOf(Integer.parseInt((String)entry.getKey())));
+                    statusList.add(Integer.valueOf(this.getStatusMap().getInt((String)entry.getKey(), 0)));
+                }
+                else {
                     continue;
                 }
-                statusList.add(Integer.parseInt(entry.getKey()));
-                statusList.add(this.getStatusMap().getInt((String)entry.getKey(), 0));
             }
             if (statusList.size() > 0) {
                 return statusList;
@@ -473,31 +488,40 @@ public class FightObject implements Comparable<FightObject>
         return null;
     }
     
-    public void addFallDownList(final int targetId) {
+    public void addFallDownList(int targetId) {
         if (this.getTempCache() == null) {
-            this.tempCache = new HashMap<String, Object>();
+            this.tempCache = new HashMap();
         }
-        ArrayList<Integer> targetFallDownList = (ArrayList<Integer>)this.getTempCache().get("fallDownList");
+        ArrayList<Integer> targetFallDownList = (ArrayList)this.getTempCache().get("fallDownList");
         if (targetFallDownList == null) {
-            targetFallDownList = new ArrayList<Integer>();
+            targetFallDownList = new ArrayList<>();
         }
-        targetFallDownList.add(targetId);
+        targetFallDownList.add(Integer.valueOf(targetId));
     }
     
     public void createFallDownList() {
         if (this.tempCache == null) {
-            this.tempCache = new HashMap<String, Object>();
+            this.tempCache = new HashMap();
         }
-        this.getTempCache().put("fallDownList", new ArrayList());
+        this.getTempCache().put("fallDownList", new ArrayList<>());
     }
     
-    public void addRoundUseSkill(final int round, final int skillId) {
-        List<Integer> skillIds = this.roundUseSkillMap.get(round);
+    public void addRoundUseSkill(int round, int skillId) {
+        List<Integer> skillIds = (List)this.roundUseSkillMap.get(Integer.valueOf(round));
         if (skillIds == null) {
-            skillIds = new ArrayList<Integer>();
-            this.roundUseSkillMap.put(round, skillIds);
+            skillIds = new ArrayList<>();
+            this.roundUseSkillMap.put(Integer.valueOf(round), skillIds);
         }
-        skillIds.add(skillId);
+        skillIds.add(Integer.valueOf(skillId));
+    }
+    
+    public void addNormalAttackObjs(Integer objId) {
+        if (this.normalAttackObjs == null) {
+            this.normalAttackObjs = new ArrayList<>();
+        }
+        if (!this.normalAttackObjs.contains(objId)) {
+            this.normalAttackObjs.add(objId);
+        }
     }
     
     public void setId(final Integer id) {
@@ -694,6 +718,10 @@ public class FightObject implements Comparable<FightObject>
     
     public void setRoundUseSkillMap(final Map<Integer, List<Integer>> roundUseSkillMap) {
         this.roundUseSkillMap = roundUseSkillMap;
+    }
+    
+    public void setNormalAttackObjs(final List<Integer> normalAttackObjs) {
+        this.normalAttackObjs = normalAttackObjs;
     }
     
     public Integer getId() {
@@ -900,6 +928,10 @@ public class FightObject implements Comparable<FightObject>
         return this.roundUseSkillMap;
     }
     
+    public List<Integer> getNormalAttackObjs() {
+        return this.normalAttackObjs;
+    }
+    
     public FightObject() {
         this.colorMap = new NutMap();
         this.weaponId = 0;
@@ -913,23 +945,22 @@ public class FightObject implements Comparable<FightObject>
         this.statusMap = new NutMap();
         this.propertyMap = new NutMap();
         this.statusSubMap = new NutMap();
-        this.imbueMap = new HashMap<Integer, Imbue>();
+        this.imbueMap = new HashMap();
         this.close = 0L;
         this.isASide = false;
         this.comeRound = 1;
         this.dieRound = 0;
         this.reviveSize = 0;
-        this.yepFightPet = new ArrayList<Integer>();
+        this.yepFightPet = new ArrayList<>();
         this.fightActionRecord = NutMap.NEW();
         this.beAttackedMap = NutMap.NEW();
         this.otherMap = NutMap.NEW();
-        this.isCompleted = new HashMap<Integer, Boolean>();
+        this.isCompleted = new HashMap();
         this.roundController = NutMap.NEW();
-        this.roundUseSkillMap = new HashMap<Integer, List<Integer>>();
+        this.roundUseSkillMap = new HashMap();
     }
     
-    @ConstructorProperties({ "id", "serial", "name", "level", "relive", "pos", "race", "icon", "color", "colorMap", "currLife", "maxLife", "weaponId", "gem", "currMana", "maxMana", "speed", "phyPower", "doAction", "hostId", "fightPetId", "logic", "skillIds", "targetId", "type", "skillId", "AutoFight", "born", "morph", "skillCoolMap", "statusMap", "propertyMap", "statusSubMap", "imbueMap", "close", "action", "isASide", "autoFightType", "autoSkillId", "autoTarget", "comeRound", "dieRound", "reviveSize", "fightMsg", "yepFightPet", "fightActionRecord", "beAttackedMap", "otherMap", "isCompleted", "tempCache", "roundController", "roundUseSkillMap" })
-    public FightObject(final Integer id, final int serial, final String name, final int level, final int relive, final int pos, final int race, final int icon, final String color, final NutMap colorMap, final int currLife, final int maxLife, final int weaponId, final int gem, final int currMana, final int maxMana, final int speed, final int phyPower, final boolean doAction, final int hostId, final int fightPetId, final int logic, final List<RoleSkill> skillIds, final int targetId, final int type, final int skillId, final int AutoFight, final int born, final int morph, final NutMap skillCoolMap, final NutMap statusMap, final NutMap propertyMap, final NutMap statusSubMap, final Map<Integer, Imbue> imbueMap, final long close, final int action, final boolean isASide, final int autoFightType, final int autoSkillId, final int autoTarget, final int comeRound, final int dieRound, final int reviveSize, final List<NutMap> fightMsg, final List<Integer> yepFightPet, final NutMap fightActionRecord, final NutMap beAttackedMap, final NutMap otherMap, final Map<Integer, Boolean> isCompleted, final Map<String, Object> tempCache, final NutMap roundController, final Map<Integer, List<Integer>> roundUseSkillMap) {
+    public FightObject(final Integer id, final int serial, final String name, final int level, final int relive, final int pos, final int race, final int icon, final String color, final NutMap colorMap, final int currLife, final int maxLife, final int weaponId, final int gem, final int currMana, final int maxMana, final int speed, final int phyPower, final boolean doAction, final int hostId, final int fightPetId, final int logic, final List<RoleSkill> skillIds, final int targetId, final int type, final int skillId, final int AutoFight, final int born, final int morph, final NutMap skillCoolMap, final NutMap statusMap, final NutMap propertyMap, final NutMap statusSubMap, final Map<Integer, Imbue> imbueMap, final long close, final int action, final boolean isASide, final int autoFightType, final int autoSkillId, final int autoTarget, final int comeRound, final int dieRound, final int reviveSize, final List<NutMap> fightMsg, final List<Integer> yepFightPet, final NutMap fightActionRecord, final NutMap beAttackedMap, final NutMap otherMap, final Map<Integer, Boolean> isCompleted, final Map<String, Object> tempCache, final NutMap roundController, final Map<Integer, List<Integer>> roundUseSkillMap, final List<Integer> normalAttackObjs) {
         this.colorMap = new NutMap();
         this.weaponId = 0;
         this.gem = 0;
@@ -942,19 +973,19 @@ public class FightObject implements Comparable<FightObject>
         this.statusMap = new NutMap();
         this.propertyMap = new NutMap();
         this.statusSubMap = new NutMap();
-        this.imbueMap = new HashMap<Integer, Imbue>();
+        this.imbueMap = new HashMap();
         this.close = 0L;
         this.isASide = false;
         this.comeRound = 1;
         this.dieRound = 0;
         this.reviveSize = 0;
-        this.yepFightPet = new ArrayList<Integer>();
+        this.yepFightPet = new ArrayList<>();
         this.fightActionRecord = NutMap.NEW();
         this.beAttackedMap = NutMap.NEW();
         this.otherMap = NutMap.NEW();
-        this.isCompleted = new HashMap<Integer, Boolean>();
+        this.isCompleted = new HashMap();
         this.roundController = NutMap.NEW();
-        this.roundUseSkillMap = new HashMap<Integer, List<Integer>>();
+        this.roundUseSkillMap = new HashMap();
         this.id = id;
         this.serial = serial;
         this.name = name;
@@ -1007,5 +1038,6 @@ public class FightObject implements Comparable<FightObject>
         this.tempCache = tempCache;
         this.roundController = roundController;
         this.roundUseSkillMap = roundUseSkillMap;
+        this.normalAttackObjs = normalAttackObjs;
     }
 }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.init.domain;
 
-import java.beans.ConstructorProperties;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Table;
@@ -64,60 +62,28 @@ public class SysNpcTypeInfo implements Serializable
         if (!(o instanceof SysNpcTypeInfo)) {
             return false;
         }
-        final SysNpcTypeInfo other = (SysNpcTypeInfo)o;
+        SysNpcTypeInfo other = (SysNpcTypeInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$zs = this.getZs();
-        final Object other$zs = other.getZs();
-        Label_0139: {
-            if (this$zs == null) {
-                if (other$zs == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$zs.equals(other$zs)) {
-                break Label_0139;
-            }
+        Object this$zs = this.getZs();
+        Object other$zs = other.getZs();
+        if (!((this$zs != null) ? this$zs.equals(other$zs) : (other$zs == null))) {
             return false;
         }
-        final Object this$lv = this.getLv();
-        final Object other$lv = other.getLv();
-        if (this$lv == null) {
-            if (other$lv == null) {
-                return true;
-            }
-        }
-        else if (this$lv.equals(other$lv)) {
-            return true;
-        }
-        return false;
+        Object this$lv = this.getLv();
+        Object other$lv = other.getLv();
+        return (this$lv != null) ? this$lv.equals(other$lv) : (other$lv == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -126,15 +92,15 @@ public class SysNpcTypeInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $zs = this.getZs();
+        Object $zs = this.getZs();
         result = result * 59 + (($zs == null) ? 43 : $zs.hashCode());
-        final Object $lv = this.getLv();
+        Object $lv = this.getLv();
         result = result * 59 + (($lv == null) ? 43 : $lv.hashCode());
         return result;
     }
@@ -147,7 +113,6 @@ public class SysNpcTypeInfo implements Serializable
     public SysNpcTypeInfo() {
     }
     
-    @ConstructorProperties({ "id", "name", "zs", "lv" })
     public SysNpcTypeInfo(final Integer id, final String name, final Integer zs, final Integer lv) {
         this.id = id;
         this.name = name;

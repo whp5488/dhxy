@@ -1,4 +1,3 @@
-
 package com.kitty.mina.codec;
 
 import com.kitty.mina.codec.reflect.ReflectEncoder;
@@ -10,6 +9,9 @@ public class SerializerHelper
     private MessageCodecFactory codecFactory;
     private IMessageDecoder decoder;
     private IMessageEncoder encoder;
+    
+    public SerializerHelper() {
+    }
     
     public static SerializerHelper getInstance() {
         if (SerializerHelper.instance != null) {

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -21,6 +20,9 @@ public class SysDataLotteryRare implements Serializable
     private byte type;
     @Column("is_notice")
     private byte isNotice;
+    
+    public SysDataLotteryRare() {
+    }
     
     public int getId() {
         return this.id;
@@ -78,7 +80,7 @@ public class SysDataLotteryRare implements Serializable
         if (!(o instanceof SysDataLotteryRare)) {
             return false;
         }
-        final SysDataLotteryRare other = (SysDataLotteryRare)o;
+        SysDataLotteryRare other = (SysDataLotteryRare)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && Double.compare(this.getRate(), other.getRate()) == 0 && this.getType() == other.getType() && this.getIsNotice() == other.getIsNotice();
     }
     
@@ -88,12 +90,12 @@ public class SysDataLotteryRare implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();
-        final long $rate = Double.doubleToLongBits(this.getRate());
+        long $rate = Double.doubleToLongBits(this.getRate());
         result = result * 59 + (int)($rate >>> 32 ^ $rate);
         result = result * 59 + this.getType();
         result = result * 59 + this.getIsNotice();
@@ -102,6 +104,6 @@ public class SysDataLotteryRare implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataLotteryRare(id=" + this.getId() + ", serial=" + this.getSerial() + ", num=" + this.getNum() + ", rate=" + this.getRate() + ", type=" + this.getType() + ", isNotice=" + this.getIsNotice() + ")";
+        return "SysDataLotteryRare(id=" + this.getId() + ", serial=" + this.getSerial() + ", num=" + this.getNum() + ", rate=" + this.getRate() + ", type=" + (int)this.getType() + ", isNotice=" + (int)this.getIsNotice() + ")";
     }
 }

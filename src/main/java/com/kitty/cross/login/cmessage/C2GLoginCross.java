@@ -1,4 +1,3 @@
-
 package com.kitty.cross.login.cmessage;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class C2GLoginCross extends Message
 {
     int resultCode;
     
+    public C2GLoginCross() {
+    }
+    
     public int getResultCode() {
         return this.resultCode;
     }
     
-    public void setResultCode(final int resultCode) {
+    public void setResultCode(int resultCode) {
         this.resultCode = resultCode;
     }
 }

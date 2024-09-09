@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.scene;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,72 +24,74 @@ public enum SceneManager
     private static final Logger logger;
     private static final int CORE_SIZE = 16;
     private final AtomicInteger atomicInteger;
-    private static final List<TaskWorker> workerPool;
+    private static final List<SceneManager.TaskWorker> workerPool;
     private static final Map<Integer, AOI> scenes;
     
     private SceneManager() {
         this.atomicInteger = new AtomicInteger();
     }
     
-    public void initiate(final List<SysMapInfo> maps) {
+    public void initiate(List<SysMapInfo> maps) {
         maps.forEach(gameMap -> {
-            final AOI scene = new Scene();
+            AOI scene = new Scene();
             scene.setId(this.atomicInteger.getAndIncrement());
             SceneManager.scenes.put(gameMap.getMapSerial(), scene);
+            return;
         });
     }
     
-    private AOI getScene(final int mapId) {
-        return SceneManager.scenes.get(mapId);
+    private AOI getScene(int mapId) {
+        return (AOI)SceneManager.scenes.get(Integer.valueOf(mapId));
     }
     
-    public void enterMap(final int mapId, final Role role) {
-        final AOI scene = this.getScene(mapId);
+    public void enterMap(int mapId, Role role) {
+        AOI scene = this.getScene(mapId);
         this.acceptTask(scene.getId(), () -> scene.enter(role));
     }
     
-    public void leaveMap(final int mapId, final Role role) {
-        final AOI scene = this.getScene(mapId);
-        this.acceptTask(scene.getId(), () -> scene.leave(role.getId()));
+    public void leaveMap(int mapId, Role role) {
+        AOI scene = this.getScene(mapId);
+        this.acceptTask(scene.getId(), () -> scene.leave((long)role.getId()));
     }
     
-    public void movePosition(final Role role) {
-        final int mapId = role.getPos().getMapId();
-        final AOI scene = this.getScene(mapId);
+    public void movePosition(Role role) {
+        int mapId = (int)role.getPos().getMapId();
+        AOI scene = this.getScene(mapId);
         this.acceptTask(scene.getId(), () -> scene.move(role));
     }
     
-    public void goToPosition(final Role role) {
-        final int mapId = role.getPos().getMapId();
-        final AOI scene = this.getScene(mapId);
+    public void goToPosition(Role role) {
+        int mapId = (int)role.getPos().getMapId();
+        AOI scene = this.getScene(mapId);
         this.acceptTask(scene.getId(), () -> scene.goTo(role));
     }
     
-    public void sendMessages(final Role role, final Message... messages) {
-        final AOI scene = this.getScene(role.getPos().getMapId());
+    public void sendMessages(Role role, Message... messages) {
+        AOI scene = this.getScene((int)role.getPos().getMapId());
         this.acceptTask(scene.getId(), () -> scene.sendMessages(role, messages));
     }
     
-    public void giveAppear(final Role role, final Set<Long> enters) {
-        final AOI scene = this.getScene(role.getPos().getMapId());
+    public void giveAppear(Role role, Set<Long> enters) {
+        AOI scene = this.getScene((int)role.getPos().getMapId());
         this.acceptTask(scene.getId(), () -> scene.giveAppear(role, enters));
     }
     
-    public void acceptTask(final int sceneId, final Runnable task) {
+    public void acceptTask(int sceneId, Runnable task) {
         if (task == null) {
             return;
         }
-        final int size = SceneManager.workerPool.size();
-        final int index = sceneId % size;
-        SceneManager.workerPool.get(index).addTask(task);
+        int size = SceneManager.workerPool.size();
+        int index = sceneId % size;
+        ((SceneManager.TaskWorker)SceneManager.workerPool.get(index)).addTask(task);
+        return;
     }
     
     static {
         logger = LoggerFunction.SCENE.getLogger();
-        workerPool = new ArrayList<TaskWorker>();
-        scenes = new HashMap<Integer, AOI>();
+        workerPool = new ArrayList<>();
+        scenes = new HashMap();
         for (int i = 1; i <= 16; ++i) {
-            final TaskWorker worker = new TaskWorker(i);
+            SceneManager.TaskWorker worker = new TaskWorker(i);
             SceneManager.workerPool.add(worker);
             new NamedThreadFactory("scene_" + i).newThread(worker).start();
         }
@@ -101,12 +102,12 @@ public enum SceneManager
         private int id;
         private BlockingQueue<Runnable> taskQueue;
         
-        TaskWorker(final int index) {
-            this.taskQueue = new LinkedBlockingQueue<Runnable>();
+        TaskWorker(int index) {
+            this.taskQueue = new LinkedBlockingQueue();
             this.id = index;
         }
         
-        void addTask(final Runnable task) {
+        void addTask(Runnable task) {
             this.taskQueue.add(task);
         }
         
@@ -114,14 +115,12 @@ public enum SceneManager
         public void run() {
             while (true) {
                 try {
-                    while (true) {
-                        final Runnable task = this.taskQueue.take();
-                        task.run();
-                    }
-                }
-                catch (final Exception e) {
-                    SceneManager.logger.error("Scene task error" + this.id, e);
+                    Runnable task = (Runnable)this.taskQueue.take();
+                    task.run();
                     continue;
+                }
+                catch (Exception e) {
+                    SceneManager.logger.error("Scene task error" + this.id, e);
                 }
             }
         }

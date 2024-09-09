@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message.vo;
 
 import java.io.Serializable;
@@ -9,7 +8,7 @@ public class ActivityData implements Serializable
     private short num;
     private byte liveness;
     
-    public ActivityData(final short serial, final short num, final byte liveness) {
+    public ActivityData(short serial, short num, byte liveness) {
         this.liveness = 0;
         this.serial = serial;
         this.liveness = liveness;
@@ -24,7 +23,7 @@ public class ActivityData implements Serializable
         return this.serial;
     }
     
-    public void setSerial(final short serial) {
+    public void setSerial(short serial) {
         this.serial = serial;
     }
     
@@ -32,7 +31,7 @@ public class ActivityData implements Serializable
         return this.liveness;
     }
     
-    public void setLiveness(final byte liveness) {
+    public void setLiveness(byte liveness) {
         this.liveness = liveness;
     }
     
@@ -40,7 +39,7 @@ public class ActivityData implements Serializable
         return this.num;
     }
     
-    public void setNum(final short num) {
+    public void setNum(short num) {
         this.num = num;
     }
 }

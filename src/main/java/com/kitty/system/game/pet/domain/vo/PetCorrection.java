@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.domain.vo;
 
 import java.io.Serializable;
@@ -47,7 +46,7 @@ public class PetCorrection implements Serializable
         if (!(o instanceof PetCorrection)) {
             return false;
         }
-        final PetCorrection other = (PetCorrection)o;
+        PetCorrection other = (PetCorrection)o;
         return other.canEqual(this) && this.getLevel() == other.getLevel() && this.getExp() == other.getExp() && this.getPoints() == other.getPoints();
     }
     
@@ -57,10 +56,10 @@ public class PetCorrection implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getLevel();
-        final long $exp = this.getExp();
+        long $exp = this.getExp();
         result = result * 59 + (int)($exp >>> 32 ^ $exp);
         result = result * 59 + this.getPoints();
         return result;

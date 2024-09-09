@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.pojo.field;
 
 import java.math.BigDecimal;
@@ -26,25 +25,25 @@ public class PractitionersField extends RankingField
     public PractitionersField() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
     
-    public PractitionersField(final PractitionersSource obj, final int order, final byte serverId) {
+    public PractitionersField(PractitionersSource obj, int order, byte serverId) {
         super(order, serverId);
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = obj.getRoleId();
         this.roleName = obj.getRoleName();
         this.relive = obj.getRelive();
         this.level = obj.getLevel();
-        final String doubleNum = BigDecimalUtil.divide(String.valueOf(obj.getExp()), String.valueOf(obj.getNextLevelNeedExp()));
-        final String percent = BigDecimalUtil.multiply(doubleNum, String.valueOf(100));
-        final BigDecimal bigDecimal = BigDecimalUtil.decimalScaleBig(0, percent);
+        String doubleNum = BigDecimalUtil.divide(String.valueOf(obj.getExp()), String.valueOf(obj.getNextLevelNeedExp()));
+        String percent = BigDecimalUtil.multiply(doubleNum, String.valueOf(100));
+        BigDecimal bigDecimal = BigDecimalUtil.decimalScaleBig(Integer.valueOf(0), percent);
         this.expPercent = bigDecimal.toString() + "%";
         this.serial = obj.getSerial();
         this.weapon = obj.getWeapon();

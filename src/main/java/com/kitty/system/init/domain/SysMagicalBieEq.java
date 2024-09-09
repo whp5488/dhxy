@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.Arrays;
@@ -53,6 +52,9 @@ public class SysMagicalBieEq implements Serializable
     @Column("rnd_range")
     @Default("[]")
     private double[] rndRange;
+    
+    public SysMagicalBieEq() {
+    }
     
     public int getId() {
         return this.id;
@@ -222,40 +224,24 @@ public class SysMagicalBieEq implements Serializable
         if (!(o instanceof SysMagicalBieEq)) {
             return false;
         }
-        final SysMagicalBieEq other = (SysMagicalBieEq)o;
+        SysMagicalBieEq other = (SysMagicalBieEq)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0128: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0128;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
         if (this.getBaseScore() != other.getBaseScore()) {
@@ -288,17 +274,9 @@ public class SysMagicalBieEq implements Serializable
         if (this.getNeedRei() != other.getNeedRei()) {
             return false;
         }
-        final Object this$ownerRole = this.getOwnerRole();
-        final Object other$ownerRole = other.getOwnerRole();
-        if (this$ownerRole == null) {
-            if (other$ownerRole == null) {
-                return this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge() && Arrays.equals(this.getRndRange(), other.getRndRange());
-            }
-        }
-        else if (this$ownerRole.equals(other$ownerRole)) {
-            return this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge() && Arrays.equals(this.getRndRange(), other.getRndRange());
-        }
-        return false;
+        Object this$ownerRole = this.getOwnerRole();
+        Object other$ownerRole = other.getOwnerRole();
+        return ((this$ownerRole != null) ? this$ownerRole.equals(other$ownerRole) : (other$ownerRole == null)) && this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge() && Arrays.equals(this.getRndRange(), other.getRndRange());
     }
     
     protected boolean canEqual(final Object other) {
@@ -307,13 +285,13 @@ public class SysMagicalBieEq implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSerial();
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
         result = result * 59 + this.getBaseScore();
         result = result * 59 + this.getPos();
@@ -325,7 +303,7 @@ public class SysMagicalBieEq implements Serializable
         result = result * 59 + this.getNeedMj();
         result = result * 59 + this.getNeedGrade();
         result = result * 59 + this.getNeedRei();
-        final Object $ownerRole = this.getOwnerRole();
+        Object $ownerRole = this.getOwnerRole();
         result = result * 59 + (($ownerRole == null) ? 43 : $ownerRole.hashCode());
         result = result * 59 + this.getRace();
         result = result * 59 + this.getSex();

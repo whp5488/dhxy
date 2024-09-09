@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -39,7 +38,7 @@ public class ReqCaNomRanking extends Message
         if (!(o instanceof ReqCaNomRanking)) {
             return false;
         }
-        final ReqCaNomRanking other = (ReqCaNomRanking)o;
+        ReqCaNomRanking other = (ReqCaNomRanking)o;
         return other.canEqual(this) && this.getType() == other.getType() && this.getClassify() == other.getClassify();
     }
     
@@ -49,7 +48,7 @@ public class ReqCaNomRanking extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getClassify();
@@ -58,6 +57,6 @@ public class ReqCaNomRanking extends Message
     
     @Override
     public String toString() {
-        return "ReqCaNomRanking(type=" + this.getType() + ", classify=" + this.getClassify() + ")";
+        return "ReqCaNomRanking(type=" + (int)this.getType() + ", classify=" + (int)this.getClassify() + ")";
     }
 }

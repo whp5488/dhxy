@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.system.game.team.domain.TeamMember;
@@ -11,6 +10,9 @@ public class RespUpdateTeamList extends Message
 {
     private String target;
     private List<TeamMember> list;
+    
+    public RespUpdateTeamList() {
+    }
     
     public String getTarget() {
         return this.target;
@@ -36,34 +38,18 @@ public class RespUpdateTeamList extends Message
         if (!(o instanceof RespUpdateTeamList)) {
             return false;
         }
-        final RespUpdateTeamList other = (RespUpdateTeamList)o;
+        RespUpdateTeamList other = (RespUpdateTeamList)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$target = this.getTarget();
-        final Object other$target = other.getTarget();
-        Label_0065: {
-            if (this$target == null) {
-                if (other$target == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$target.equals(other$target)) {
-                break Label_0065;
-            }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (!((this$target != null) ? this$target.equals(other$target) : (other$target == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -72,11 +58,11 @@ public class RespUpdateTeamList extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $target = this.getTarget();
+        Object $target = this.getTarget();
         result = result * 59 + (($target == null) ? 43 : $target.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

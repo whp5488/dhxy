@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -13,7 +12,7 @@ public class ChangeEquipEvent extends BasePlayerEvent
     private BagEquip bagEquip;
     private WearEquip wearEquip;
     
-    public ChangeEquipEvent(final EventType evtType, final Role role, final BagEquip roleEquip, final WearEquip wearEquip) {
+    public ChangeEquipEvent(EventType evtType, Role role, BagEquip roleEquip, WearEquip wearEquip) {
         super(evtType, role);
         this.role = role;
         this.bagEquip = roleEquip;

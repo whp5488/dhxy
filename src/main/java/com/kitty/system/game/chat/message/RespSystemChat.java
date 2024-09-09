@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class RespSystemChat extends Message
         this.serial = 0;
         this.name = "系统";
         this.time = new Long(System.currentTimeMillis() / 1000L).intValue();
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
     }
     
     public int getType() {
@@ -82,7 +81,7 @@ public class RespSystemChat extends Message
         if (!(o instanceof RespSystemChat)) {
             return false;
         }
-        final RespSystemChat other = (RespSystemChat)o;
+        RespSystemChat other = (RespSystemChat)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -92,46 +91,22 @@ public class RespSystemChat extends Message
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0091: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0091;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        Label_0128: {
-            if (this$msg == null) {
-                if (other$msg == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$msg.equals(other$msg)) {
-                break Label_0128;
-            }
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        if (!((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null))) {
             return false;
         }
         if (this.getTime() != other.getTime()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -140,16 +115,16 @@ public class RespSystemChat extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
         result = result * 59 + this.getTime();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

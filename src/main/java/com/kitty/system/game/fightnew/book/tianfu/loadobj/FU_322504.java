@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.loadobj;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -22,74 +21,78 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_322504 extends TianFuProcessor
 {
+    public FU_322504() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public void attackOver(final Fight fight, final FightObject effector, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effector, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         if (!target.isPlayer()) {
             return;
         }
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)target).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322504);
+        DayInCeFight dayInCeFight = ((PlayerFightObject)target).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322504);
         if (tianFuObject == null) {
             return;
         }
         boolean flag = false;
-        Integer theStatus = -1;
+        Integer theStatus = Integer.valueOf(-1);
         int attr = -1;
-    Label_0186:
-        for (final Integer status : StatusConst.getControlStatus()) {
-            if (target.getStatusValue(status) > 0) {
+        for (Integer status : StatusConst.getControlStatus()) {
+            if (target.getStatusValue((int)status) > 0) {
                 flag = true;
                 theStatus = status;
-                switch (theStatus) {
+                switch ((int)theStatus) {
                     case 1002: {
                         attr = SKILLATTR.SKILLATTR_CONFUSE.getValue();
-                        break Label_0186;
+                        break;
                     }
                     case 1003: {
                         attr = SKILLATTR.SKILLATTR_ICE.getValue();
-                        break Label_0186;
+                        break;
                     }
                     case 1004: {
                         attr = SKILLATTR.SKILLATTR_SLEEP.getValue();
-                        break Label_0186;
+                        break;
                     }
                     case 1006: {
                         attr = SKILLATTR.SKILLATTR_YIWANG.getValue();
-                        break Label_0186;
-                    }
-                    default: {
-                        break Label_0186;
+                        break;
                     }
                 }
+                break;
+            }
+            else {
+                continue;
             }
         }
         if (!flag || attr == -1) {
             return;
         }
-        final RoleSkill roleSkill = (RoleSkill)args[0];
-        if (attr != roleSkill.getType()) {
+        RoleSkill roleSkill = (RoleSkill)args[0];
+        if (attr != (int)roleSkill.getType()) {
             return;
         }
-        final double percenta = 3.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-        final boolean flagTrigger = SkillAi.canAffectOnPro(percenta);
+        double percenta = 3.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+        boolean flagTrigger = SkillAi.canAffectOnPro(percenta);
         if (flagTrigger) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 322504);
-            target.getStatusMap().remove((Object)String.valueOf(theStatus));
-            final FightObjectParam targetParam = actionDetailParam.gainTargetParam(target.getId(), false);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 322504);
+            target.getStatusMap().remove(String.valueOf(theStatus));
+            FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)target.getId(), false);
             if (targetParam != null) {
-                targetParam.addClearStatus(theStatus);
-                skillRecord.setT(target.getId());
+                targetParam.addClearStatus((int)theStatus);
+                skillRecord.setT((long)(int)target.getId());
             }
         }
+        return;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.domain;
 
 import com.kitty.common.db.Db4CommonService;
@@ -29,16 +28,16 @@ public class Setting extends BaseEntity<Long>
     
     @Override
     public Long getId() {
-        return this.id;
+        return Long.valueOf(this.id);
     }
     
     public Setting() {
-        this.special = new HashMap<Short, Map<Byte, String>>();
+        this.special = new HashMap();
         this.plugEndTime = 0;
     }
     
-    public Setting(final long id, final long rId) {
-        this.special = new HashMap<Short, Map<Byte, String>>();
+    public Setting(long id, long rId) {
+        this.special = new HashMap();
         this.plugEndTime = 0;
         this.id = id;
         this.rId = rId;

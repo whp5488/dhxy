@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,10 @@ public class ModuleCounterSchedule
 {
     private static final Logger log;
     
-    public static void disconnected(final IoSession session) {
+    public ModuleCounterSchedule() {
+    }
+    
+    public static void disconnected(IoSession session) {
     }
     
     static {

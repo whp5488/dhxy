@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.system.common.enter.FiedValue;
@@ -16,7 +15,7 @@ public class RespUpdateImprovement extends Message
         return this.id;
     }
     
-    public void setId(final int id) {
+    public void setId(int id) {
         this.id = id;
     }
     
@@ -24,14 +23,14 @@ public class RespUpdateImprovement extends Message
         return this.list;
     }
     
-    public void setList(final List<FiedValue> list) {
+    public void setList(List<FiedValue> list) {
         this.list = list;
     }
     
     public RespUpdateImprovement() {
     }
     
-    public RespUpdateImprovement(final int id, final List<FiedValue> list) {
+    public RespUpdateImprovement(int id, List<FiedValue> list) {
         this.id = id;
         this.list = list;
     }

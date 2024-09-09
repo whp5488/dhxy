@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.activity.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,7 +33,7 @@ public class RespGangWarsRoleState extends Message
         if (!(o instanceof RespGangWarsRoleState)) {
             return false;
         }
-        final RespGangWarsRoleState other = (RespGangWarsRoleState)o;
+        RespGangWarsRoleState other = (RespGangWarsRoleState)o;
         return other.canEqual(this) && this.getState() == other.getState() && this.getTime() == other.getTime();
     }
     
@@ -45,7 +43,7 @@ public class RespGangWarsRoleState extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getState();
         result = result * 59 + this.getTime();
@@ -54,10 +52,9 @@ public class RespGangWarsRoleState extends Message
     
     @Override
     public String toString() {
-        return "RespGangWarsRoleState(state=" + this.getState() + ", time=" + this.getTime() + ")";
+        return "RespGangWarsRoleState(state=" + (int)this.getState() + ", time=" + this.getTime() + ")";
     }
     
-    @ConstructorProperties({ "state", "time" })
     public RespGangWarsRoleState(final byte state, final int time) {
         this.state = 0;
         this.time = 0;

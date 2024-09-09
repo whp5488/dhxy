@@ -1,4 +1,3 @@
-
 package com.kitty.rabbit;
 
 import org.slf4j.LoggerFactory;
@@ -23,10 +22,13 @@ public class DelayReceiver
     @Autowired
     private PlayerService playerService;
     
+    public DelayReceiver() {
+    }
+    
     @RabbitListener(queues = { "delay_queue" })
-    public void orderDelayQueue(final String string, final Message message, final Channel channel) {
+    public void orderDelayQueue(String string, Message message, Channel channel) {
         try {
-            final long id = Long.valueOf(string.split("_")[0]);
+            long id = Long.parseLong(string.split("_")[0]);
             Role role = null;
             if (DataCache.OFFLINE_ROLES.containsKey(id)) {
                 role = DataCache.OFFLINE_ROLES.get(id);
@@ -34,7 +36,7 @@ public class DelayReceiver
             else if (DataCache.ONLINE_ROLES.containsKey(id)) {
                 role = DataCache.ONLINE_ROLES.get(id);
             }
-            final Boolean exists = this.redisService.exists(string);
+            Boolean exists = this.redisService.exists(string);
             if (role.getState() == 1) {
                 this.redisService.del(string);
                 return;
@@ -44,7 +46,7 @@ public class DelayReceiver
                 this.playerService.onPlayerLogout(role);
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.getMessage();
         }
     }

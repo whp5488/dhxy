@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.general.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -14,7 +13,7 @@ public class RespRectifyTime extends Message
         this.respTime = String.valueOf(System.currentTimeMillis());
     }
     
-    public RespRectifyTime(final String reqTime) {
+    public RespRectifyTime(String reqTime) {
         this.respTime = String.valueOf(System.currentTimeMillis());
         this.reqTime = reqTime;
     }
@@ -43,34 +42,18 @@ public class RespRectifyTime extends Message
         if (!(o instanceof RespRectifyTime)) {
             return false;
         }
-        final RespRectifyTime other = (RespRectifyTime)o;
+        RespRectifyTime other = (RespRectifyTime)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$reqTime = this.getReqTime();
-        final Object other$reqTime = other.getReqTime();
-        Label_0065: {
-            if (this$reqTime == null) {
-                if (other$reqTime == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$reqTime.equals(other$reqTime)) {
-                break Label_0065;
-            }
+        Object this$reqTime = this.getReqTime();
+        Object other$reqTime = other.getReqTime();
+        if (!((this$reqTime != null) ? this$reqTime.equals(other$reqTime) : (other$reqTime == null))) {
             return false;
         }
-        final Object this$respTime = this.getRespTime();
-        final Object other$respTime = other.getRespTime();
-        if (this$respTime == null) {
-            if (other$respTime == null) {
-                return true;
-            }
-        }
-        else if (this$respTime.equals(other$respTime)) {
-            return true;
-        }
-        return false;
+        Object this$respTime = this.getRespTime();
+        Object other$respTime = other.getRespTime();
+        return (this$respTime != null) ? this$respTime.equals(other$respTime) : (other$respTime == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,11 +62,11 @@ public class RespRectifyTime extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $reqTime = this.getReqTime();
+        Object $reqTime = this.getReqTime();
         result = result * 59 + (($reqTime == null) ? 43 : $reqTime.hashCode());
-        final Object $respTime = this.getRespTime();
+        Object $respTime = this.getRespTime();
         result = result * 59 + (($respTime == null) ? 43 : $respTime.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.codec;
 
 import org.apache.mina.filter.codec.ProtocolDecoder;
@@ -16,11 +15,11 @@ public class CrossMessageCodecFactory implements ProtocolCodecFactory
         this.encoder = new CrossMessageEncoder();
     }
     
-    public ProtocolEncoder getEncoder(final IoSession session) throws Exception {
+    public ProtocolEncoder getEncoder(IoSession session) throws Exception {
         return this.encoder;
     }
     
-    public ProtocolDecoder getDecoder(final IoSession session) throws Exception {
+    public ProtocolDecoder getDecoder(IoSession session) throws Exception {
         return this.decoder;
     }
 }

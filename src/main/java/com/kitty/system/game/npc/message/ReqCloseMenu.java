@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqCloseMenu extends Message
 {
     private int npcId;
+    
+    public ReqCloseMenu() {
+    }
     
     public int getNpcId() {
         return this.npcId;
@@ -25,7 +27,7 @@ public class ReqCloseMenu extends Message
         if (!(o instanceof ReqCloseMenu)) {
             return false;
         }
-        final ReqCloseMenu other = (ReqCloseMenu)o;
+        ReqCloseMenu other = (ReqCloseMenu)o;
         return other.canEqual(this) && this.getNpcId() == other.getNpcId();
     }
     
@@ -35,7 +37,7 @@ public class ReqCloseMenu extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getNpcId();
         return result;

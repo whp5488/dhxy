@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.system.game.market.message.vo.HorseSkillCard;

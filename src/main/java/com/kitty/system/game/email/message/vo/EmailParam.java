@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.message.vo;
 
 import com.kitty.system.game.email.domain.EmailSystem;
@@ -17,7 +16,7 @@ public class EmailParam implements Serializable
     private String sendTime;
     private byte isSystem;
     
-    public EmailParam(final Email email) {
+    public EmailParam(Email email) {
         this.id = String.valueOf(email.getId());
         this.emialTitle = email.getEmailTitle();
         this.sender = String.valueOf(email.getSender());
@@ -28,7 +27,7 @@ public class EmailParam implements Serializable
         this.isSystem = 0;
     }
     
-    public EmailParam(final EmailSystem emailSystem, final byte accessory) {
+    public EmailParam(EmailSystem emailSystem, byte accessory) {
         this.id = String.valueOf(emailSystem.getId());
         this.emialTitle = emailSystem.getEmailTitle();
         this.sender = String.valueOf(emailSystem.getSender());

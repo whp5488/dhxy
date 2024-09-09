@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import java.util.ArrayList;
@@ -18,11 +17,11 @@ public class RespPartyFlag extends Message
     private String text;
     
     public RespPartyFlag() {
-        this.flagList = new ArrayList<PartyFlag>();
-        this.flagColorList = new ArrayList<PartyFlag>();
-        this.laceList = new ArrayList<PartyFlag>();
-        this.emblemList = new ArrayList<PartyFlag>();
-        this.emblemColorList = new ArrayList<PartyFlag>();
+        this.flagList = new ArrayList<>();
+        this.flagColorList = new ArrayList<>();
+        this.laceList = new ArrayList<>();
+        this.emblemList = new ArrayList<>();
+        this.emblemColorList = new ArrayList<>();
     }
     
     public List<PartyFlag> getFlagList() {
@@ -81,86 +80,38 @@ public class RespPartyFlag extends Message
         if (!(o instanceof RespPartyFlag)) {
             return false;
         }
-        final RespPartyFlag other = (RespPartyFlag)o;
+        RespPartyFlag other = (RespPartyFlag)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$flagList = this.getFlagList();
-        final Object other$flagList = other.getFlagList();
-        Label_0065: {
-            if (this$flagList == null) {
-                if (other$flagList == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$flagList.equals(other$flagList)) {
-                break Label_0065;
-            }
+        Object this$flagList = this.getFlagList();
+        Object other$flagList = other.getFlagList();
+        if (!((this$flagList != null) ? this$flagList.equals(other$flagList) : (other$flagList == null))) {
             return false;
         }
-        final Object this$flagColorList = this.getFlagColorList();
-        final Object other$flagColorList = other.getFlagColorList();
-        Label_0102: {
-            if (this$flagColorList == null) {
-                if (other$flagColorList == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$flagColorList.equals(other$flagColorList)) {
-                break Label_0102;
-            }
+        Object this$flagColorList = this.getFlagColorList();
+        Object other$flagColorList = other.getFlagColorList();
+        if (!((this$flagColorList != null) ? this$flagColorList.equals(other$flagColorList) : (other$flagColorList == null))) {
             return false;
         }
-        final Object this$laceList = this.getLaceList();
-        final Object other$laceList = other.getLaceList();
-        Label_0139: {
-            if (this$laceList == null) {
-                if (other$laceList == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$laceList.equals(other$laceList)) {
-                break Label_0139;
-            }
+        Object this$laceList = this.getLaceList();
+        Object other$laceList = other.getLaceList();
+        if (!((this$laceList != null) ? this$laceList.equals(other$laceList) : (other$laceList == null))) {
             return false;
         }
-        final Object this$emblemList = this.getEmblemList();
-        final Object other$emblemList = other.getEmblemList();
-        Label_0176: {
-            if (this$emblemList == null) {
-                if (other$emblemList == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$emblemList.equals(other$emblemList)) {
-                break Label_0176;
-            }
+        Object this$emblemList = this.getEmblemList();
+        Object other$emblemList = other.getEmblemList();
+        if (!((this$emblemList != null) ? this$emblemList.equals(other$emblemList) : (other$emblemList == null))) {
             return false;
         }
-        final Object this$emblemColorList = this.getEmblemColorList();
-        final Object other$emblemColorList = other.getEmblemColorList();
-        Label_0213: {
-            if (this$emblemColorList == null) {
-                if (other$emblemColorList == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$emblemColorList.equals(other$emblemColorList)) {
-                break Label_0213;
-            }
+        Object this$emblemColorList = this.getEmblemColorList();
+        Object other$emblemColorList = other.getEmblemColorList();
+        if (!((this$emblemColorList != null) ? this$emblemColorList.equals(other$emblemColorList) : (other$emblemColorList == null))) {
             return false;
         }
-        final Object this$text = this.getText();
-        final Object other$text = other.getText();
-        if (this$text == null) {
-            if (other$text == null) {
-                return true;
-            }
-        }
-        else if (this$text.equals(other$text)) {
-            return true;
-        }
-        return false;
+        Object this$text = this.getText();
+        Object other$text = other.getText();
+        return (this$text != null) ? this$text.equals(other$text) : (other$text == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -169,19 +120,19 @@ public class RespPartyFlag extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $flagList = this.getFlagList();
+        Object $flagList = this.getFlagList();
         result = result * 59 + (($flagList == null) ? 43 : $flagList.hashCode());
-        final Object $flagColorList = this.getFlagColorList();
+        Object $flagColorList = this.getFlagColorList();
         result = result * 59 + (($flagColorList == null) ? 43 : $flagColorList.hashCode());
-        final Object $laceList = this.getLaceList();
+        Object $laceList = this.getLaceList();
         result = result * 59 + (($laceList == null) ? 43 : $laceList.hashCode());
-        final Object $emblemList = this.getEmblemList();
+        Object $emblemList = this.getEmblemList();
         result = result * 59 + (($emblemList == null) ? 43 : $emblemList.hashCode());
-        final Object $emblemColorList = this.getEmblemColorList();
+        Object $emblemColorList = this.getEmblemColorList();
         result = result * 59 + (($emblemColorList == null) ? 43 : $emblemColorList.hashCode());
-        final Object $text = this.getText();
+        Object $text = this.getText();
         result = result * 59 + (($text == null) ? 43 : $text.hashCode());
         return result;
     }

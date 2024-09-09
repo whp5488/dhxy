@@ -1,11 +1,9 @@
-
 package com.kitty.system.game.friend.facade;
 
+import com.kitty.system.common.message.RespMsg;
+import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespNotifyMiscEx;
 import com.kitty.common.utils.TimeUtil;
-import com.kitty.mina.message.Message;
-import com.kitty.mina.message.MessagePusher;
-import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.vo.utils.Const;
 import com.kitty.system.game.friend.message.ReqSendFriendMsg;
 import com.kitty.system.game.friend.message.ReqSearchFriend;
@@ -40,8 +38,8 @@ public class FriendController
     }
     
     @RequestMapping
-    public void addFriend(final IoSession session, final ReqAddFriend reqAddFriend) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void addFriend(IoSession session, ReqAddFriend reqAddFriend) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             if ("1".equals(reqAddFriend.getGroupId())) {
                 this.friendService.reqAddBlack(role, reqAddFriend);
@@ -53,48 +51,48 @@ public class FriendController
     }
     
     @RequestMapping
-    public void acceptRequest(final IoSession session, final ReqAcceptRequest reqAcceptRequest) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void acceptRequest(IoSession session, ReqAcceptRequest reqAcceptRequest) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.friendService.acceptRequest(role, reqAcceptRequest);
         }
     }
     
     @RequestMapping
-    public void removeFriend(final IoSession session, final ReqDelFriend reqDelFriend) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void removeFriend(IoSession session, ReqDelFriend reqDelFriend) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.friendService.delFriend(role, reqDelFriend.getList());
         }
     }
     
     @RequestMapping
-    public void addFriendGroup(final IoSession session, final ReqAddFriendGroup reqAddFriendGroup) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void addFriendGroup(IoSession session, ReqAddFriendGroup reqAddFriendGroup) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.friendService.addFriendGroup(role, reqAddFriendGroup);
         }
     }
     
     @RequestMapping
-    public void removeFriendGroup(final IoSession session, final ReqDelFriendGroup reqDelFriendGroup) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void removeFriendGroup(IoSession session, ReqDelFriendGroup reqDelFriendGroup) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.friendService.delFriendGroup(role, Long.valueOf(reqDelFriendGroup.getId()));
         }
     }
     
     @RequestMapping
-    public void sortFriendGroup(final IoSession session, final ReqSortFriendGroup sortFriendGroup) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void sortFriendGroup(IoSession session, ReqSortFriendGroup sortFriendGroup) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.friendService.sortFriendGroup(role, sortFriendGroup);
         }
     }
     
     @RequestMapping
-    public void alterFriendGroup(final IoSession session, final ReqAlterFriendGroup alterFriendGroup) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void alterFriendGroup(IoSession session, ReqAlterFriendGroup alterFriendGroup) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             alterFriendGroup.setName(CheckCharUtils.replaceName(alterFriendGroup.getName()));
             this.friendService.alterFriendGroup(role, alterFriendGroup);
@@ -102,31 +100,32 @@ public class FriendController
     }
     
     @RequestMapping
-    public void alterFriend(final IoSession session, final ReqAlterFriend alterFriend) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void alterFriend(IoSession session, ReqAlterFriend alterFriend) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.friendService.alterFriend(role, alterFriend);
         }
     }
     
     @RequestMapping
-    public void searchFriend(final IoSession session, final ReqSearchFriend reqSearchFriend) {
+    public void searchFriend(IoSession session, ReqSearchFriend reqSearchFriend) {
         this.friendService.searchFriend(session, reqSearchFriend.getName());
     }
     
     @RequestMapping
-    public void sendFriendMsg(final IoSession session, final ReqSendFriendMsg reqSendFriendMsg) {
-        if (Const.CHART_LIMIT.contains(9)) {
+    public void sendFriendMsg(IoSession session, ReqSendFriendMsg reqSendFriendMsg) {
+        if (Const.CHART_LIMIT.contains(Integer.valueOf(9))) {
             MessagePusher.pushMessage(session, new RespMsg("该频道暂不支持发言"));
             return;
         }
-        final Role role = SessionUtils.getRoleBySession(session);
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            if (role.getWordTime() > 0L && System.currentTimeMillis() <= role.getWordTime()) {
+            if ((long)role.getWordTime() > 0L && System.currentTimeMillis() <= (long)role.getWordTime()) {
                 MessagePusher.pushMessage(session, new RespNotifyMiscEx("你已被禁言，#<R>" + TimeUtil.simpleDateFormat.format(role.getWordTime()) + "#解除禁言!"));
                 return;
             }
             this.friendService.sendFriendMsg(role, reqSendFriendMsg);
         }
+        return;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.task;
 
 import com.kitty.system.game.fightnew.service.FightNewService;
@@ -14,13 +13,13 @@ public class AutoRoundFinishTask implements FightingTask
     public AutoRoundFinishTask() {
     }
     
-    public AutoRoundFinishTask(final Fight fight, final int objId) {
+    public AutoRoundFinishTask(Fight fight, int objId) {
         this.fight = fight;
         this.objId = objId;
     }
     
     @Override
     public void run() {
-        SpringUtils.getBean(FightExecutorNewService.class).addFightTask(this.fight, () -> SpringUtils.getBean(FightNewService.class).animationPlayEnd(this.fight, this.objId));
+        ((FightExecutorNewService)SpringUtils.getBean(FightExecutorNewService.class)).addFightTask(this.fight, () -> ((FightNewService)SpringUtils.getBean(FightNewService.class)).animationPlayEnd(this.fight, this.objId));
     }
 }

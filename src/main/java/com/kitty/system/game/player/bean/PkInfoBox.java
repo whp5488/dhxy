@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.bean;
 
 import java.util.HashMap;
@@ -16,8 +15,8 @@ public class PkInfoBox implements Serializable
     private Map<Long, PkRecord> beKillRoles;
     
     public PkInfoBox() {
-        this.killRoles = new HashMap<Long, PkRecord>();
-        this.beKillRoles = new HashMap<Long, PkRecord>();
+        this.killRoles = new HashMap();
+        this.beKillRoles = new HashMap();
     }
     
     public boolean isRedName() {

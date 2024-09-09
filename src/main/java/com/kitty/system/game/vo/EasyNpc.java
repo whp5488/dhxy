@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.vo;
 
 import java.io.Serializable;
@@ -18,7 +17,7 @@ public class EasyNpc implements Serializable
         this.t = 1;
     }
     
-    public EasyNpc(final int id, final short m, final short x, final short y, final short s, final String n) {
+    public EasyNpc(int id, short m, short x, short y, short s, String n) {
         this.s = 1;
         this.t = 1;
         this.id = id;
@@ -29,7 +28,7 @@ public class EasyNpc implements Serializable
         this.n = n;
     }
     
-    public EasyNpc(final Npc npc, final byte t) {
+    public EasyNpc(Npc npc, byte t) {
         this.s = 1;
         this.t = 1;
         this.id = npc.getId();
@@ -95,69 +94,5 @@ public class EasyNpc implements Serializable
     
     public void setT(final byte t) {
         this.t = t;
-    }
-    
-    @Override
-    public boolean equals(final Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof EasyNpc)) {
-            return false;
-        }
-        final EasyNpc other = (EasyNpc)o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        if (this.getId() != other.getId()) {
-            return false;
-        }
-        if (this.getM() != other.getM()) {
-            return false;
-        }
-        if (this.getX() != other.getX()) {
-            return false;
-        }
-        if (this.getY() != other.getY()) {
-            return false;
-        }
-        if (this.getS() != other.getS()) {
-            return false;
-        }
-        final Object this$n = this.getN();
-        final Object other$n = other.getN();
-        if (this$n == null) {
-            if (other$n == null) {
-                return this.getT() == other.getT();
-            }
-        }
-        else if (this$n.equals(other$n)) {
-            return this.getT() == other.getT();
-        }
-        return false;
-    }
-    
-    protected boolean canEqual(final Object other) {
-        return other instanceof EasyNpc;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        result = result * 59 + this.getId();
-        result = result * 59 + this.getM();
-        result = result * 59 + this.getX();
-        result = result * 59 + this.getY();
-        result = result * 59 + this.getS();
-        final Object $n = this.getN();
-        result = result * 59 + (($n == null) ? 43 : $n.hashCode());
-        result = result * 59 + this.getT();
-        return result;
-    }
-    
-    @Override
-    public String toString() {
-        return "EasyNpc(id=" + this.getId() + ", m=" + this.getM() + ", x=" + this.getX() + ", y=" + this.getY() + ", s=" + this.getS() + ", n=" + this.getN() + ", t=" + this.getT() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.admin.service;
 
 import com.kitty.system.init.domain.SysMagicalBieEq;
@@ -27,22 +26,20 @@ import java.util.IdentityHashMap;
 import com.kitty.system.game.horse.domain.Horse;
 import com.kitty.system.admin.domain.BriefHorse;
 import com.kitty.system.game.bag.service.BagService;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.tianfu.message.RespTianFuList;
 import java.util.Arrays;
 import com.kitty.system.game.tianfu.pojo.RoleTianFuClient;
 import java.util.Date;
 import com.kitty.common.thread.IdGenerator;
-import java.util.stream.Collector;
+import com.kitty.system.game.tianfu.domain.RoleTianFu;
 import java.util.stream.Collectors;
 import com.kitty.mina.cache.DataCache;
-import com.kitty.system.game.tianfu.domain.RoleTianFu;
 import com.kitty.system.game.tianfu.domain.SysTianFuSkill;
+import com.kitty.system.game.equip.domain.PetEquip;
 import java.util.List;
 import com.kitty.system.game.pet.domain.Pet;
 import com.kitty.system.game.fightnew.service.CountUtils;
-import com.kitty.system.game.equip.domain.PetEquip;
 import java.util.ArrayList;
 import com.kitty.system.game.pet.domain.PetBase;
 import com.kitty.system.game.pet.domain.vo.PetSkill;
@@ -80,32 +77,35 @@ public class GmService
     @Autowired
     PetService petService;
     
-    public boolean adjustRoleGrade(final int id, final int grade) {
-        final Role role = this.roleService.getPlayer(id);
+    public GmService() {
+    }
+    
+    public boolean adjustRoleGrade(int id, int grade) {
+        Role role = this.roleService.getPlayer(id);
         role.setRelive(grade / 1000);
         role.setLevel(grade % 1000);
-        final SysRbAttr sysRbAttr = PartDataPool.rbAttrMap.get(role.getRelive() + 1);
-        final Map<Integer, Integer> skillProficient = new HashMap<Integer, Integer>();
-        final Map<Integer, SysSkill> skillMap = SkillDataPool.skillMap;
-        for (final Integer key : role.getSkills().keySet()) {
-            final RoleSkill skill = role.getSkills().get(key);
+        SysRbAttr sysRbAttr = PartDataPool.rbAttrMap.get(role.getRelive() + 1);
+        Map<Integer, Integer> skillProficient = new HashMap<>();
+        Map<Integer, SysSkill> skillMap = SkillDataPool.skillMap;
+        for (Integer key : role.getSkills().keySet()) {
+            RoleSkill skill = role.getSkills().get(key);
             if (skill.getSkillId().equals(30041)) {
                 continue;
             }
-            final SysSkill sysSkill = skillMap.get(skill.getSkillId());
+            SysSkill sysSkill = skillMap.get(skill.getSkillId());
             skillProficient.put(sysSkill.getPos(), sysRbAttr.getInitSkillExp());
         }
         this.roleService.resetRole(role, skillProficient, PartDataPool.heroMap.get(role.getSerial()), SkillDataPool.skillMap, SpringUtils.getBean(RoleDayInCeService.class), RoleChangeEvent.RACE);
         return true;
     }
     
-    public boolean customPet(final BriefPet briefPet) {
-        final Role role = this.roleService.getPlayer(briefPet.getId());
+    public boolean customPet(BriefPet briefPet) {
+        Role role = this.roleService.getPlayer(briefPet.getId());
         if (role == null) {
             return false;
         }
-        final SysPet sysPet = PetDataPool.petMap.get(briefPet.getSerial());
-        final Pet pet = this.petService.initAsPet(sysPet);
+        SysPet sysPet = PetDataPool.petMap.get(briefPet.getSerial());
+        Pet pet = this.petService.initAsPet(sysPet);
         pet.setRoleId(role.getRoleId());
         pet.setRebirth(briefPet.getRei());
         pet.setPetLv(briefPet.getGrade());
@@ -116,28 +116,28 @@ public class GmService
         pet.setFpoint(FormulaHero.restorePorCount(pet.getRebirth(), pet.getPetLv(), LOGIC.LOGICTYPE_PET.getValue()));
         pet.setPetClose(briefPet.getClose());
         pet.setAwaken(briefPet.getAwaken());
-        final List<PetSkill> petSkills = this.petService.initSkills(sysPet);
-        final List<PetSkill> skills = customPetSkillParse(sysPet, briefPet.getSkills());
+        List<PetSkill> petSkills = this.petService.initSkills(sysPet);
+        List<PetSkill> skills = customPetSkillParse(sysPet, briefPet.getSkills());
         for (int i = 0; i < petSkills.size(); ++i) {
             if (skills.size() > i) {
                 petSkills.get(i).setSerial(skills.get(i).getSerial());
             }
         }
         pet.setSkills(petSkills);
-        final PetBase petBase = new PetBase();
+        PetBase petBase = new PetBase();
         petBase.setGrow_up(briefPet.getGrowUp());
         petBase.setHp_base(briefPet.getHp());
         petBase.setMp_base(briefPet.getMp());
         petBase.setAp_base(briefPet.getAp());
         petBase.setSp_base(briefPet.getSp());
-        final int grade = this.petService.countPetGrade(sysPet, petBase);
+        int grade = this.petService.countPetGrade(sysPet, petBase);
         petBase.setGrade_base(grade);
-        final List<PetEquip> list = new ArrayList<PetEquip>();
+        List<PetEquip> list = new ArrayList<>();
         pet.setPetBase(petBase);
-        final int life = CountUtils.countPetLife(pet, list);
+        int life = CountUtils.countPetLife(pet, list);
         pet.setCurrLife(life);
         pet.setMaxLife(life);
-        final int mana = CountUtils.countPetMana(pet, list);
+        int mana = CountUtils.countPetMana(pet, list);
         pet.setCurrMana(mana);
         pet.setMaxMana(mana);
         this.petService.getArenaScore(role.getId(), pet);
@@ -147,34 +147,36 @@ public class GmService
         return true;
     }
     
-    public boolean customRune(final int rId, final int serial, final byte grade) {
-        final SysTianFuSkill fuSkill = SkillDataPool.tianFuSkillMap.get(serial);
+    public boolean customRune(int rId, int serial, byte grade) {
+        SysTianFuSkill fuSkill = SkillDataPool.tianFuSkillMap.get(Integer.valueOf(serial));
         if (fuSkill == null) {
             return false;
         }
-        final Role role = this.roleService.getPlayer(rId);
-        final List<RoleTianFu> fuList = DataCache.ROLE_TIAN_FU.get(role.getId());
-        if (fuList.stream().filter(obj -> obj.getIsWear() == 0 && obj.getStorePos() == 0).collect(Collectors.toList()).size() >= 75) {
+        Role role = this.roleService.getPlayer(rId);
+        List<RoleTianFu> fuList = DataCache.ROLE_TIAN_FU.get(role.getId());
+        if (((List)fuList.stream().filter(obj -> obj.getIsWear() == 0 && obj.getStorePos() == 0).collect(Collectors.toList())).size() >= 75) {
             return false;
         }
-        final RoleTianFu rune = new RoleTianFu();
-        rune.setId(IdGenerator.getNextId());
-        rune.setRoleId(role.getId());
+        RoleTianFu rune = new RoleTianFu();
+        rune.setId(Long.valueOf(IdGenerator.getNextId()));
+        rune.setRoleId((long)role.getId());
         rune.setCategory(fuSkill.getCategory());
         rune.setLayer(fuSkill.getLayer());
         rune.setIsWear(0);
         rune.setTianFuSerial(fuSkill.getCeSerial());
-        final List<Byte> rarityJudges = new ArrayList<Byte>();
+        List<Byte> rarityJudges = new ArrayList<>();
         for (int i = 0; i < fuSkill.getRarityJudge().size(); ++i) {
             if (i != 0) {
                 rarityJudges.add(fuSkill.getRarityJudge().get(i));
             }
         }
-        for (int i = rarityJudges.size() - 1; i >= 0; --i) {
-            if (rarityJudges.get(i) <= grade) {
+        int i = rarityJudges.size() - 1;
+        while (i >= 0) {
+            if ((byte)rarityJudges.get(i) <= grade) {
                 rune.setProductOrder((byte)(i + 1));
                 break;
             }
+            --i;
         }
         rune.setLevel(grade);
         rune.setToIdentifyCeSerial(1);
@@ -183,71 +185,73 @@ public class GmService
         rune.save();
         fuList.add(rune);
         MessagePusher.pushMessage(role, new RespTianFuList((byte)3, Arrays.asList(new RoleTianFuClient(rune))));
-        SpringUtils.getBean(BagService.class).cartoon(role, serial);
+        ((BagService)SpringUtils.getBean(BagService.class)).cartoon(role, Integer.valueOf(serial));
         return true;
     }
     
-    public boolean customHorse(final BriefHorse briefHorse) {
-        final Role role = this.roleService.getPlayer(briefHorse.getId());
+    public boolean customHorse(BriefHorse briefHorse) {
+        Role role = this.roleService.getPlayer(briefHorse.getId());
         if (role == null) {
             return false;
         }
-        final HorseService horseService = SpringUtils.getHorseService();
-        final Map<Long, Horse> horseMap = horseService.getHorse(role);
-        final Horse horse = horseMap.values().stream().filter(e -> e.getSeat() == briefHorse.getSeat()).findFirst().orElse(null);
+        HorseService horseService = SpringUtils.getHorseService();
+        Map<Long, Horse> horseMap = horseService.getHorse(role);
+        Horse horse = (Horse)horseMap.values().stream().filter(e -> e.getSeat() == briefHorse.getSeat()).findFirst().orElse(null);
         if (horse == null) {
             return false;
         }
-        final ArrayList<Long> objects = new ArrayList<Long>();
-        for (final Integer key : horse.getSkill().keySet()) {
-            final Long anInt = horse.getSkill().get(key);
+        ArrayList<Long> objects = new ArrayList<>();
+        for (Integer key : horse.getSkill().keySet()) {
+            Long anInt = (Long)horse.getSkill().get(key);
             objects.add(anInt);
         }
-        final IdentityHashMap<Integer, Long> skill = new IdentityHashMap<Integer, Long>();
+        IdentityHashMap<Integer, Long> skill = new IdentityHashMap();
         int i = 0;
-        final String[] split2;
-        final String[] split = split2 = briefHorse.getSkills().split(",");
-        for (final String string : split2) {
-            final int key2 = Integer.valueOf(string);
-            skill.put(key2, objects.get(i));
+        String[] split = briefHorse.getSkills().split(",");
+        int length = split.length;
+        int j = 0;
+        while (j < length) {
+            String string = split[j];
+            int key2 = (int)Integer.valueOf(string);
+            skill.put(Integer.valueOf(key2), objects.get(i));
             if (++i > 2) {
                 break;
             }
+            ++j;
         }
         horse.setSkill(skill);
         horse.setGrowUp(briefHorse.getGrowUp());
         horse.setMoveSp(briefHorse.getMove());
         horse.setScore(horseService.score(horse));
         horse.save();
-        HorseSkillUtils.studyFinish(role, horse.getId(), null);
+        HorseSkillUtils.studyFinish(role, (long)horse.getId(), null);
         horseService.refresh(role, horse);
         return true;
     }
     
-    public boolean customAcsry(final Role role, final int pos, final BriefAcsry briefAcsry) {
-        final SysDataAcsry acsry = EquipDataPool.acsryMap.get(briefAcsry.getSerial());
+    public boolean customAcsry(Role role, int pos, BriefAcsry briefAcsry) {
+        SysDataAcsry acsry = (SysDataAcsry)EquipDataPool.acsryMap.get(Integer.valueOf(briefAcsry.getSerial()));
         if (acsry == null) {
             return false;
         }
         double score = 0.0;
-        final Map<Integer, Double> map = EQUIP_PRO_DICT_SCORE.toMap();
-        final List<FiedEquip> field = new ArrayList<FiedEquip>();
-        final String[] split2;
-        final String[] split = split2 = briefAcsry.getBase().split(";");
-        for (final String str : split2) {
-            final String[] strings = str.split(",");
-            final int key = Integer.valueOf(strings[0]);
-            final int val = Integer.valueOf(strings[1]);
-            field.add(new FiedEquip(key, val));
-            final int dist = DataGlobalFunc.GetProDictType(key);
-            final Double odds = map.get(dist);
+        Map<Integer, Double> map = EQUIP_PRO_DICT_SCORE.toMap();
+        List<FiedEquip> field = new ArrayList<>();
+        String[] split;
+        for (String str : split = briefAcsry.getBase().split(";")) {
+            String[] strings = str.split(",");
+            int key = (int)Integer.valueOf(strings[0]);
+            int val = (int)Integer.valueOf(strings[1]);
+            field.add(new FiedEquip(Integer.valueOf(key), Integer.valueOf(val)));
+            int dist = (int)DataGlobalFunc.GetProDictType(key);
+            Double odds = (Double)map.get(Integer.valueOf(dist));
             if (odds != null) {
-                score += val * odds;
+                score += (double)val * (double)odds;
             }
         }
-        field.add(new FiedEquip(6672, acsry.getMaxEndure()));
-        field.add(new FiedEquip(6679, BigDecimalUtil.decimalScaleIntegerDown(0, score) + acsry.getBaseScore()));
-        final BagEquip equip = new BagEquip();
+        field.add(new FiedEquip(Integer.valueOf(6672), Integer.valueOf(acsry.getMaxEndure())));
+        field.add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf(BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(score)) + acsry.getBaseScore())));
+        BagEquip equip = new BagEquip();
         equip.setName(acsry.getName());
         equip.setPosition(acsry.getPos());
         equip.setType(acsry.getSerial());
@@ -257,12 +261,12 @@ public class GmService
         return true;
     }
     
-    public boolean customAcsryPet(final Role role, final int pos, final BriePetfAcsry briePetfAcsry) {
-        final List<SysPetAcsry> collect = EquipDataPool.petAcsryMap.values().stream().filter(e -> e.getPos() == briePetfAcsry.getPos() && e.getGrade() == briePetfAcsry.getGrade()).collect(Collectors.toList());
+    public boolean customAcsryPet(Role role, int pos, BriePetfAcsry briePetfAcsry) {
+        List<SysPetAcsry> collect = (List)EquipDataPool.petAcsryMap.values().stream().filter(e -> e.getPos() == briePetfAcsry.getPos() && e.getGrade() == briePetfAcsry.getGrade()).collect(Collectors.toList());
         if (collect.size() <= 0) {
             return false;
         }
-        final SysPetAcsry sysPetAcsry = collect.get(RandomUtil.round(0, collect.size() - 1));
+        SysPetAcsry sysPetAcsry = (SysPetAcsry)collect.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(collect.size() - 1)));
         int subjoinScore = 0;
         if (ACC_GRADE.PRICELESS.getValue() == briePetfAcsry.getPj()) {
             subjoinScore = 600;
@@ -271,127 +275,128 @@ public class GmService
             subjoinScore = 200;
         }
         double score = 0.0;
-        final Map<Integer, Double> map = PET_EQUIP_PRO_DICT_SCORE.toMap();
-        final List<FiedEquip> field = new ArrayList<FiedEquip>();
-        final String[] split2;
-        final String[] split = split2 = briePetfAcsry.getBase().split(";");
-        for (final String str : split2) {
-            final String[] strings = str.split(",");
-            final int key = Integer.valueOf(strings[0]);
-            final int val = Integer.valueOf(strings[1]);
-            field.add(new FiedEquip(key, val));
-            final SysPetAcsryAdvAttrLib advAttrLib = EquipDataPool.petAcsryAdvAttrLibMap.get(key);
+        Map<Integer, Double> map = PET_EQUIP_PRO_DICT_SCORE.toMap();
+        List<FiedEquip> field = new ArrayList<>();
+        String[] split;
+        for (String str : split = briePetfAcsry.getBase().split(";")) {
+            String[] strings = str.split(",");
+            int key = (int)Integer.valueOf(strings[0]);
+            int val = (int)Integer.valueOf(strings[1]);
+            field.add(new FiedEquip(Integer.valueOf(key), Integer.valueOf(val)));
+            SysPetAcsryAdvAttrLib advAttrLib = (SysPetAcsryAdvAttrLib)EquipDataPool.petAcsryAdvAttrLibMap.get(Integer.valueOf(key));
             if (advAttrLib != null) {
                 if (advAttrLib.getType() == 3) {
-                    score += advAttrLib.getScore() * val / advAttrLib.getValueList().get(1);
+                    score += (double)(advAttrLib.getScore() * val / (int)advAttrLib.getValueList().get(1));
                 }
                 else if (advAttrLib.getType() == 2) {
-                    final int base = advAttrLib.getValueList().get(0);
-                    score += advAttrLib.getScore() * base / advAttrLib.getValueList().get(1);
+                    int base = (int)advAttrLib.getValueList().get(0);
+                    score += (double)(advAttrLib.getScore() * base / (int)advAttrLib.getValueList().get(1));
                 }
                 else {
-                    score += advAttrLib.getScore() * advAttrLib.getValueList().get(0) / advAttrLib.getValueList().get(1);
+                    score += (double)(advAttrLib.getScore() * (int)advAttrLib.getValueList().get(0) / (int)advAttrLib.getValueList().get(1));
                 }
             }
             else {
-                final int dist = DataGlobalFunc.GetProDictType(key);
-                final Double odds = map.get(dist);
+                int dist = (int)DataGlobalFunc.GetProDictType(key);
+                Double odds = (Double)map.get(Integer.valueOf(dist));
                 if (odds != null) {
-                    score += val * odds;
+                    score += (double)val * (double)odds;
                 }
             }
         }
-        field.add(new FiedEquip(6679, BigDecimalUtil.decimalScaleIntegerDown(0, score + subjoinScore)));
-        final PetEquip petEquip = new PetEquip(sysPetAcsry.getName(), 0, sysPetAcsry.getSerial(), sysPetAcsry.getPos(), briePetfAcsry.getPj(), field);
-        petEquip.setId(this.worker.nextId());
-        petEquip.setRId(role.getId());
-        SpringUtils.getBean(BagService.class).addPetEquip(role, petEquip, true, "自定义宠物配饰");
+        field.add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf(BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(score + (double)subjoinScore)))));
+        PetEquip petEquip = new PetEquip(sysPetAcsry.getName(), 0, sysPetAcsry.getSerial(), sysPetAcsry.getPos(), briePetfAcsry.getPj(), field);
+        petEquip.setId(Long.valueOf(this.worker.nextId()));
+        petEquip.setRId((long)role.getId());
+        ((BagService)SpringUtils.getBean(BagService.class)).addPetEquip(role, petEquip, true, "自定义宠物配饰");
         return true;
     }
     
-    public static List<PetSkill> customPetSkillParse(final SysPet sysPet, final String str) {
-        final List<Integer> skills = sysPet.getSkills();
-        final List<Integer> list = new ArrayList<Integer>();
-        final String[] split = str.split(",");
+    public static List<PetSkill> customPetSkillParse(SysPet sysPet, String str) {
+        List<Integer> skills = sysPet.getSkills();
+        List<Integer> list = new ArrayList<>();
+        String[] split = str.split(",");
         if (skills.size() > 0) {
-            for (final String s : split) {
-                final Integer serial = Integer.valueOf(s);
+            int length = split.length;
+            int i = 0;
+            while (i < length) {
+                String s = split[i];
+                Integer serial = Integer.valueOf(s);
                 if (skills.contains(serial)) {
                     list.add(serial);
                     break;
                 }
+                ++i;
             }
         }
-        for (final String s : split) {
-            final Integer serial = Integer.valueOf(s);
+        for (int length2 = split.length, j = 0; j < length2; ++j) {
+            String s = split[j];
+            Integer serial = Integer.valueOf(s);
             if (!list.contains(serial)) {
                 list.add(serial);
             }
         }
-        final List<PetSkill> objects = new ArrayList<PetSkill>();
-        for (final Integer serial2 : list) {
+        List<PetSkill> objects = new ArrayList<>();
+        for (Integer serial2 : list) {
             int subType = 0;
-            final String value = String.valueOf(serial2);
+            String value = String.valueOf(serial2);
             if (value.length() >= 2) {
-                subType = Integer.valueOf(value.substring(1, 2));
+                subType = (int)Integer.valueOf(value.substring(1, 2));
             }
             subType = ((subType < 3) ? 0 : subType);
-            objects.add(new PetSkill(serial2, subType));
+            objects.add(new PetSkill((int)serial2, subType));
         }
         return objects;
     }
     
-    public boolean customSin(final Role role, final int pos, final BriefSin briefSin) {
-        final SysSinBieEq bieEq = EquipDataPool.sinBieEq.get(briefSin.getSerial());
+    public boolean customSin(Role role, int pos, BriefSin briefSin) {
+        SysSinBieEq bieEq = (SysSinBieEq)EquipDataPool.sinBieEq.get(Integer.valueOf(briefSin.getSerial()));
         if (bieEq == null) {
             return false;
         }
-        final BagEquip equip = new BagEquip();
+        BagEquip equip = new BagEquip();
         equip.setPosition(bieEq.getPos());
-        final List<FiedEquip> field = MakeAttribute.createBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), briefSin.getGemCnt(), 0, 0.0);
+        List<FiedEquip> field = MakeAttribute.createBaseBieEq(bieEq.getBaseAttr(), bieEq.getMaxEndure(), bieEq.getSerial(), briefSin.getGemCnt(), 0, 0.0);
         equip.setType(bieEq.getSerial());
         equip.setName(bieEq.getName());
         equip.setField(field);
-        final String[] split2;
-        final String[] split = split2 = briefSin.getBase().split(";");
-        for (final String str : split2) {
-            final String[] strings = str.split(",");
-            final int key = Integer.valueOf(strings[0]);
-            final int val = Integer.valueOf(strings[1]);
-            equip.getArtifice().add(new FiedEquip(key, val));
+        String[] split;
+        for (String str : split = briefSin.getBase().split(";")) {
+            String[] strings = str.split(",");
+            int key = (int)Integer.valueOf(strings[0]);
+            int val = (int)Integer.valueOf(strings[1]);
+            equip.getArtifice().add(new FiedEquip(Integer.valueOf(key), Integer.valueOf(val)));
         }
-        final Integer score = MakeAttribute.calEquipScore(equip);
-        equip.getField().add(new FiedEquip(6679, score + bieEq.getBaseScore()));
-        SpringUtils.getBean(EquipService.class).addEquip(role, equip, pos, 0, "定制仙器");
+        Integer score = MakeAttribute.calEquipScore(equip);
+        equip.getField().add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf((int)score + bieEq.getBaseScore())));
+        ((EquipService)SpringUtils.getBean(EquipService.class)).addEquip(role, equip, pos, 0, "定制仙器");
         return true;
     }
     
-    public boolean customMagical(final Role role, final int pos, final BriefMagical briefMagical) {
-        final SysMagicalBieEq bieEq = EquipDataPool.magicalBieEq.get(briefMagical.getSerial());
+    public boolean customMagical(Role role, int pos, BriefMagical briefMagical) {
+        SysMagicalBieEq bieEq = (SysMagicalBieEq)EquipDataPool.magicalBieEq.get(Integer.valueOf(briefMagical.getSerial()));
         if (bieEq == null) {
             return false;
         }
-        final BagEquip equip = new BagEquip();
+        BagEquip equip = new BagEquip();
         equip.setPosition(bieEq.getPos());
         equip.setType(bieEq.getSerial());
         equip.setName(bieEq.getName());
-        final String[] split2;
-        final String[] splitBase = split2 = briefMagical.getBase().split(";");
-        for (final String str : split2) {
-            final String[] strings = str.split(",");
+        String[] splitBase;
+        for (String str : splitBase = briefMagical.getBase().split(";")) {
+            String[] strings = str.split(",");
             equip.getField().add(new FiedEquip(Integer.valueOf(strings[0]), Integer.valueOf(strings[1])));
         }
-        equip.getField().add(new FiedEquip(6670, briefMagical.getGemCnt()));
-        equip.getField().add(new FiedEquip(6672, bieEq.getMaxEndure()));
-        final String[] split3;
-        final String[] split = split3 = briefMagical.getRefining().split(";");
-        for (final String str2 : split3) {
-            final String[] strings2 = str2.split(",");
+        equip.getField().add(new FiedEquip(Integer.valueOf(6670), Integer.valueOf(briefMagical.getGemCnt())));
+        equip.getField().add(new FiedEquip(Integer.valueOf(6672), Integer.valueOf(bieEq.getMaxEndure())));
+        String[] split;
+        for (String str2 : split = briefMagical.getRefining().split(";")) {
+            String[] strings2 = str2.split(",");
             equip.getArtifice().add(new FiedEquip(Integer.valueOf(strings2[0]), Integer.valueOf(strings2[1])));
         }
-        final Integer score = MakeAttribute.calEquipScore(equip);
-        equip.getField().add(new FiedEquip(6679, score + bieEq.getBaseScore()));
-        SpringUtils.getBean(EquipService.class).addEquip(role, equip, pos, 0, "定制仙器");
+        Integer score = MakeAttribute.calEquipScore(equip);
+        equip.getField().add(new FiedEquip(Integer.valueOf(6679), Integer.valueOf((int)score + bieEq.getBaseScore())));
+        ((EquipService)SpringUtils.getBean(EquipService.class)).addEquip(role, equip, pos, 0, "定制仙器");
         return true;
     }
 }

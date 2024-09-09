@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -55,6 +54,9 @@ public class SysNewBieEq implements Serializable
     private int price;
     @Column("can_merge")
     private int canMerge;
+    
+    public SysNewBieEq() {
+    }
     
     public int getId() {
         return this.id;
@@ -240,56 +242,32 @@ public class SysNewBieEq implements Serializable
         if (!(o instanceof SysNewBieEq)) {
             return false;
         }
-        final SysNewBieEq other = (SysNewBieEq)o;
+        SysNewBieEq other = (SysNewBieEq)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0128: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0128;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
         if (this.getBaseScore() != other.getBaseScore()) {
             return false;
         }
-        final Object this$desc = this.getDesc();
-        final Object other$desc = other.getDesc();
-        Label_0178: {
-            if (this$desc == null) {
-                if (other$desc == null) {
-                    break Label_0178;
-                }
-            }
-            else if (this$desc.equals(other$desc)) {
-                break Label_0178;
-            }
+        Object this$desc = this.getDesc();
+        Object other$desc = other.getDesc();
+        if (!((this$desc != null) ? this$desc.equals(other$desc) : (other$desc == null))) {
             return false;
         }
         if (this.getPos() != other.getPos()) {
@@ -322,17 +300,9 @@ public class SysNewBieEq implements Serializable
         if (this.getOverlap() != other.getOverlap()) {
             return false;
         }
-        final Object this$ownerRole = this.getOwnerRole();
-        final Object other$ownerRole = other.getOwnerRole();
-        if (this$ownerRole == null) {
-            if (other$ownerRole == null) {
-                return this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getPrice() == other.getPrice() && this.getCanMerge() == other.getCanMerge();
-            }
-        }
-        else if (this$ownerRole.equals(other$ownerRole)) {
-            return this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getPrice() == other.getPrice() && this.getCanMerge() == other.getCanMerge();
-        }
-        return false;
+        Object this$ownerRole = this.getOwnerRole();
+        Object other$ownerRole = other.getOwnerRole();
+        return ((this$ownerRole != null) ? this$ownerRole.equals(other$ownerRole) : (other$ownerRole == null)) && this.getRace() == other.getRace() && this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getPrice() == other.getPrice() && this.getCanMerge() == other.getCanMerge();
     }
     
     protected boolean canEqual(final Object other) {
@@ -341,16 +311,16 @@ public class SysNewBieEq implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSerial();
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
         result = result * 59 + this.getBaseScore();
-        final Object $desc = this.getDesc();
+        Object $desc = this.getDesc();
         result = result * 59 + (($desc == null) ? 43 : $desc.hashCode());
         result = result * 59 + this.getPos();
         result = result * 59 + this.getMaxEmbedGemCnt();
@@ -362,7 +332,7 @@ public class SysNewBieEq implements Serializable
         result = result * 59 + this.getNeedGrade();
         result = result * 59 + this.getNeedRei();
         result = result * 59 + this.getOverlap();
-        final Object $ownerRole = this.getOwnerRole();
+        Object $ownerRole = this.getOwnerRole();
         result = result * 59 + (($ownerRole == null) ? 43 : $ownerRole.hashCode());
         result = result * 59 + this.getRace();
         result = result * 59 + this.getSex();

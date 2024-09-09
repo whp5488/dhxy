@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.talent;
 
 import com.kitty.system.game.fightnew.book.pet.utils.PetTriggerPassiveSkill;
@@ -13,33 +12,36 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_83025 extends SkillProcessor
 {
+    public SKILL_83025() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     
     @Override
-    public List<Integer> getTargetIdsForTFQX(final Fight fight, final FightObject effector, final Object... args) {
+    public List<Integer> getTargetIdsForTFQX(Fight fight, FightObject effector, Object... args) {
         return PetTriggerPassiveSkill.getTFQXTargetIds(fight, effector, 83025);
     }
 }

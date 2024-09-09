@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.wardef;
 
 public enum RACE

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.model;
 
 import com.kitty.system.enums.confirm.ConfirmType;
@@ -12,7 +11,7 @@ public class QuestionKjConfirm extends RoleConfirm
         return ConfirmType.COUNTRY;
     }
     
-    public QuestionKjConfirm(final byte type) {
+    public QuestionKjConfirm(byte type) {
         this.type = 0;
         this.type = type;
     }
@@ -21,7 +20,7 @@ public class QuestionKjConfirm extends RoleConfirm
         return this.type;
     }
     
-    public void setType(final byte type) {
+    public void setType(byte type) {
         this.type = type;
     }
 }

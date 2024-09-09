@@ -1,8 +1,7 @@
-
 package com.kitty.system.game.fightnew.utils;
 
-import com.kitty.system.enums.war.warskill.skilldef.PETSKILLATTR;
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
+import com.kitty.system.enums.war.warskill.skilldef.PETSKILLATTR;
 import com.kitty.system.enums.war.warskill.skilldef.SKILLATTR;
 import org.apache.commons.lang3.ArrayUtils;
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -14,35 +13,38 @@ public class FightRateUtil
 {
     private static Integer[] magicRate;
     
-    public static int getRandHurt(final int power) {
-        final Random random = new Random();
-        final int per = random.nextInt(10) + 1;
-        final int value = new Double(power * per * 0.0055).intValue();
+    public FightRateUtil() {
+    }
+    
+    public static int getRandHurt(int power) {
+        Random random = new Random();
+        int per = random.nextInt(10) + 1;
+        int value = new Double((double)(power * per) * 0.0055).intValue();
         if (value <= 0) {
             return 1;
         }
         return random.nextInt(value);
     }
     
-    public static boolean isHit(final int score, final int maxScore) {
-        final Random random = new Random();
-        final int value = random.nextInt(maxScore);
+    public static boolean isHit(int score, int maxScore) {
+        Random random = new Random();
+        int value = random.nextInt(maxScore);
         return value <= score;
     }
     
-    public static boolean petCanRevive(final FightObject fightObject) {
+    public static boolean petCanRevive(FightObject fightObject) {
         return fightObject == null && false;
     }
     
-    public static int getZhangAiRate(final Fight fight, final FightObject attacker, final FightObject target) {
+    public static int getZhangAiRate(Fight fight, FightObject attacker, FightObject target) {
         return 100;
     }
     
-    public static boolean calcMagicStuntRate(final FightObject fightObject, final RoleSkill skill) {
-        final Random random = new Random();
-        if (ArrayUtils.contains((Object[])FightRateUtil.magicRate, (Object)skill.getType())) {
+    public static boolean calcMagicStuntRate(FightObject fightObject, RoleSkill skill) {
+        Random random = new Random();
+        if (ArrayUtils.contains(FightRateUtil.magicRate, skill.getType())) {
             if (fightObject.isPlayer() || fightObject.isPet()) {
-                return triggerRate(fightObject, skill.getType());
+                return triggerRate(fightObject, (int)skill.getType());
             }
             if (random.nextInt(100) + 1 <= 5) {
                 return true;
@@ -51,7 +53,7 @@ public class FightRateUtil
         return false;
     }
     
-    public static boolean triggerRate(final FightObject fightObject, final int type) {
+    public static boolean triggerRate(FightObject fightObject, int type) {
         double pro = 0.0;
         if (type == SKILLATTR.SKILLATTR_WIND.getValue()) {
             pro = fightObject.getSelfAllTempPro(PRO_DICT_TYPE.F_KB_RATIO.getDist());
@@ -89,11 +91,11 @@ public class FightRateUtil
         return SkillAi.canAffectOnPro(pro);
     }
     
-    public static boolean isPetSkillHit(final FightObject effector, final FightObject target) {
+    public static boolean isPetSkillHit(FightObject effector, FightObject target) {
         return isHit(10, 100);
     }
     
     static {
-        FightRateUtil.magicRate = new Integer[] { SKILLATTR.SKILLATTR_WIND.getValue(), SKILLATTR.SKILLATTR_THUNDER.getValue(), SKILLATTR.SKILLATTR_WATER.getValue(), SKILLATTR.SKILLATTR_FIRE.getValue(), SKILLATTR.SKILLATTR_XIXUE.getValue(), SKILLATTR.SKILLATTR_AIHAO.getValue(), PETSKILLATTR.PETSKILLATTR_TM.getValue(), PETSKILLATTR.PETSKILLATTR_FG.getValue(), PETSKILLATTR.PETSKILLATTR_QM.getValue(), PETSKILLATTR.PETSKILLATTR_XL.getValue() };
+        FightRateUtil.magicRate = new Integer[] { Integer.valueOf(SKILLATTR.SKILLATTR_WIND.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_THUNDER.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_WATER.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_FIRE.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_XIXUE.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_AIHAO.getValue()), Integer.valueOf(PETSKILLATTR.PETSKILLATTR_TM.getValue()), Integer.valueOf(PETSKILLATTR.PETSKILLATTR_FG.getValue()), Integer.valueOf(PETSKILLATTR.PETSKILLATTR_QM.getValue()), Integer.valueOf(PETSKILLATTR.PETSKILLATTR_XL.getValue()) };
     }
 }

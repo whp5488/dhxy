@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.wardef;
 
 public enum FIGHT_TYPE
@@ -25,13 +24,18 @@ public enum FIGHT_TYPE
     private int value;
     private int type;
     
-    public static Integer getType(final Integer value) {
-        for (final FIGHT_TYPE fight : values()) {
-            if (fight.getValue() == value) {
-                return fight.type;
+    public static Integer getType(Integer value) {
+        FIGHT_TYPE[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            FIGHT_TYPE fight = values[i];
+            if (fight.getValue() == (int)value) {
+                return Integer.valueOf(fight.type);
             }
+            ++i;
         }
-        return FIGHT_TYPE.MONSTER.type;
+        return Integer.valueOf(FIGHT_TYPE.MONSTER.type);
     }
     
     public String getNote() {

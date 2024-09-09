@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -11,7 +10,7 @@ public class RoleLevelUpEvent extends BasePlayerEvent
     private int oldLevel;
     private int level;
     
-    public RoleLevelUpEvent(final EventType evtType, final Role role, final int oldLevel, final int level) {
+    public RoleLevelUpEvent(EventType evtType, Role role, int oldLevel, int level) {
         super(evtType, role);
         this.oldLevel = oldLevel;
         this.level = level;

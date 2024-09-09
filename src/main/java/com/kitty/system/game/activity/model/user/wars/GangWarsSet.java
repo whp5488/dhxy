@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.wars;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class GangWarsSet
     public GangWarsSet() {
         this.minLevel = 50;
         this.minTeamMemberCount = 3;
-        this.dayOfWeek = new ArrayList<GangWarsTimeSlot>();
+        this.dayOfWeek = new ArrayList<>();
         this.score = 50;
         this.sustain = 30;
         this.period = 5;

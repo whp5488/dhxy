@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,11 +9,14 @@ public class ReqChangeTitle extends Message
     private int serial;
     private byte type;
     
+    public ReqChangeTitle() {
+    }
+    
     public int getSerial() {
         return this.serial;
     }
     
-    public void setSerial(final int serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
@@ -22,7 +24,7 @@ public class ReqChangeTitle extends Message
         return this.type;
     }
     
-    public void setType(final byte type) {
+    public void setType(byte type) {
         this.type = type;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import com.google.common.collect.Lists;
@@ -32,8 +31,8 @@ public enum PRACTICE_PET_PRO_DICT
     private int pro;
     
     public static List<Integer> toList() {
-        final List list = Lists.newArrayList();
-        for (final PRACTICE_PET_PRO_DICT n : values()) {
+        List<Integer> list = Lists.newArrayList();
+        for (PRACTICE_PET_PRO_DICT n : values()) {
             list.add(n.getPro());
         }
         return list;

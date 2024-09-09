@@ -1,4 +1,3 @@
-
 package com.kitty.system.admin.domain;
 
 import java.io.Serializable;
@@ -10,11 +9,14 @@ public class BriefAcsry implements Serializable
     private String base;
     private byte pj;
     
+    public BriefAcsry() {
+    }
+    
     public int getId() {
         return this.id;
     }
     
-    public void setId(final int id) {
+    public void setId(int id) {
         this.id = id;
     }
     
@@ -22,7 +24,7 @@ public class BriefAcsry implements Serializable
         return this.serial;
     }
     
-    public void setSerial(final int serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
@@ -30,7 +32,7 @@ public class BriefAcsry implements Serializable
         return this.base;
     }
     
-    public void setBase(final String base) {
+    public void setBase(String base) {
         this.base = base;
     }
     
@@ -38,12 +40,8 @@ public class BriefAcsry implements Serializable
         return this.pj;
     }
     
-    public void setPj(final byte pj) {
+    public void setPj(byte pj) {
         this.pj = pj;
     }
-    
-    @Override
-    public String toString() {
-        return "BriefAcsry{id=" + this.id + ", serial=" + this.serial + ", base='" + this.base + '\'' + ", pj=" + this.pj + '}';
-    }
+
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import java.util.ArrayList;
@@ -20,8 +19,8 @@ public class RespWaterStage extends Message
     public RespWaterStage() {
         this.round = 2;
         this.currentSession = 1;
-        this.itself = new ArrayList<MemberInfo>(5);
-        this.enemy = new ArrayList<MemberInfo>(5);
+        this.itself = new ArrayList(5);
+        this.enemy = new ArrayList(5);
         this.time = 0;
     }
     
@@ -81,7 +80,7 @@ public class RespWaterStage extends Message
         if (!(o instanceof RespWaterStage)) {
             return false;
         }
-        final RespWaterStage other = (RespWaterStage)o;
+        RespWaterStage other = (RespWaterStage)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -91,30 +90,14 @@ public class RespWaterStage extends Message
         if (this.getCurrentSession() != other.getCurrentSession()) {
             return false;
         }
-        final Object this$itself = this.getItself();
-        final Object other$itself = other.getItself();
-        Label_0091: {
-            if (this$itself == null) {
-                if (other$itself == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$itself.equals(other$itself)) {
-                break Label_0091;
-            }
+        Object this$itself = this.getItself();
+        Object other$itself = other.getItself();
+        if (!((this$itself != null) ? this$itself.equals(other$itself) : (other$itself == null))) {
             return false;
         }
-        final Object this$enemy = this.getEnemy();
-        final Object other$enemy = other.getEnemy();
-        if (this$enemy == null) {
-            if (other$enemy == null) {
-                return this.getState() == other.getState() && this.getTime() == other.getTime();
-            }
-        }
-        else if (this$enemy.equals(other$enemy)) {
-            return this.getState() == other.getState() && this.getTime() == other.getTime();
-        }
-        return false;
+        Object this$enemy = this.getEnemy();
+        Object other$enemy = other.getEnemy();
+        return ((this$enemy != null) ? this$enemy.equals(other$enemy) : (other$enemy == null)) && this.getState() == other.getState() && this.getTime() == other.getTime();
     }
     
     protected boolean canEqual(final Object other) {
@@ -123,13 +106,13 @@ public class RespWaterStage extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRound();
         result = result * 59 + this.getCurrentSession();
-        final Object $itself = this.getItself();
+        Object $itself = this.getItself();
         result = result * 59 + (($itself == null) ? 43 : $itself.hashCode());
-        final Object $enemy = this.getEnemy();
+        Object $enemy = this.getEnemy();
         result = result * 59 + (($enemy == null) ? 43 : $enemy.hashCode());
         result = result * 59 + this.getState();
         result = result * 59 + this.getTime();
@@ -138,6 +121,6 @@ public class RespWaterStage extends Message
     
     @Override
     public String toString() {
-        return "RespWaterStage(round=" + this.getRound() + ", currentSession=" + this.getCurrentSession() + ", itself=" + this.getItself() + ", enemy=" + this.getEnemy() + ", state=" + this.getState() + ", time=" + this.getTime() + ")";
+        return "RespWaterStage(round=" + (int)this.getRound() + ", currentSession=" + (int)this.getCurrentSession() + ", itself=" + this.getItself() + ", enemy=" + this.getEnemy() + ", state=" + (int)this.getState() + ", time=" + this.getTime() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqSearchRole extends Message
 {
     private String name;
+    
+    public ReqSearchRole() {
+    }
     
     public String getName() {
         return this.name;
@@ -25,21 +27,13 @@ public class ReqSearchRole extends Message
         if (!(o instanceof ReqSearchRole)) {
             return false;
         }
-        final ReqSearchRole other = (ReqSearchRole)o;
+        ReqSearchRole other = (ReqSearchRole)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return true;
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return true;
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return (this$name != null) ? this$name.equals(other$name) : (other$name == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqSearchRole extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         return result;
     }

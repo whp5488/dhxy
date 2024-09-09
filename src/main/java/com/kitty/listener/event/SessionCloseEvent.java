@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -11,7 +10,7 @@ public class SessionCloseEvent extends BasePlayerEvent
     private Role role;
     private IoSession session;
     
-    public SessionCloseEvent(final EventType evtType, final Role role, final IoSession session) {
+    public SessionCloseEvent(EventType evtType, Role role, IoSession session) {
         super(evtType, role);
         this.role = role;
         this.session = session;

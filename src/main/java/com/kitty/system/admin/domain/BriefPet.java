@@ -1,4 +1,3 @@
-
 package com.kitty.system.admin.domain;
 
 import java.io.Serializable;
@@ -28,7 +27,7 @@ public class BriefPet implements Serializable
         return this.id;
     }
     
-    public void setId(final int id) {
+    public void setId(int id) {
         this.id = id;
     }
     
@@ -36,7 +35,7 @@ public class BriefPet implements Serializable
         return this.serial;
     }
     
-    public void setSerial(final int serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
@@ -44,7 +43,7 @@ public class BriefPet implements Serializable
         return this.rei;
     }
     
-    public void setRei(final int rei) {
+    public void setRei(int rei) {
         this.rei = rei;
     }
     
@@ -52,7 +51,7 @@ public class BriefPet implements Serializable
         return this.grade;
     }
     
-    public void setGrade(final int grade) {
+    public void setGrade(int grade) {
         this.grade = grade;
     }
     
@@ -60,7 +59,7 @@ public class BriefPet implements Serializable
         return this.hp;
     }
     
-    public void setHp(final int hp) {
+    public void setHp(int hp) {
         this.hp = hp;
     }
     
@@ -68,7 +67,7 @@ public class BriefPet implements Serializable
         return this.mp;
     }
     
-    public void setMp(final int mp) {
+    public void setMp(int mp) {
         this.mp = mp;
     }
     
@@ -76,7 +75,7 @@ public class BriefPet implements Serializable
         return this.ap;
     }
     
-    public void setAp(final int ap) {
+    public void setAp(int ap) {
         this.ap = ap;
     }
     
@@ -84,7 +83,7 @@ public class BriefPet implements Serializable
         return this.sp;
     }
     
-    public void setSp(final int sp) {
+    public void setSp(int sp) {
         this.sp = sp;
     }
     
@@ -92,7 +91,7 @@ public class BriefPet implements Serializable
         return this.growUp;
     }
     
-    public void setGrowUp(final int growUp) {
+    public void setGrowUp(int growUp) {
         this.growUp = growUp;
     }
     
@@ -100,7 +99,7 @@ public class BriefPet implements Serializable
         return this.close;
     }
     
-    public void setClose(final long close) {
+    public void setClose(long close) {
         this.close = close;
     }
     
@@ -108,7 +107,7 @@ public class BriefPet implements Serializable
         return this.awaken;
     }
     
-    public void setAwaken(final short awaken) {
+    public void setAwaken(short awaken) {
         this.awaken = awaken;
     }
     
@@ -116,7 +115,7 @@ public class BriefPet implements Serializable
         return this.skills;
     }
     
-    public void setSkills(final String skills) {
+    public void setSkills(String skills) {
         this.skills = skills;
     }
 }

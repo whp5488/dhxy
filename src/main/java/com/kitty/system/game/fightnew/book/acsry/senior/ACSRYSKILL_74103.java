@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -13,32 +12,35 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_74103 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_74103() {
+    }
+    
     @Override
-    public NutMap countRecoverBloodEndSS(final Fight fight, final FightObject effecter, final FightObject target, final Object... args) {
+    public NutMap countRecoverBloodEndSS(Fight fight, FightObject effecter, FightObject target, Object... args) {
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            if (playerFightObject.getAcsrySkillList().contains(74103)) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(74103))) {
                 int life = 0;
                 RoleSkill skill = null;
                 try {
                     life = (int)args[0];
                     skill = (RoleSkill)args[1];
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (skill == null) {
                     return null;
                 }
-                if (SKILLATTR.SKILLATTR_XIXUE.getValue() == skill.getType()) {
+                if (SKILLATTR.SKILLATTR_XIXUE.getValue() == (int)skill.getType()) {
                     if (life > 0) {
                         double percent = 1.0;
-                        percent += playerFightObject.getRole().getGg() / 100 * 0.1;
-                        final int addLife = (int)(life * percent);
-                        final NutMap map = NutMap.NEW();
-                        map.setv("changeLife", (Object)addLife);
-                        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 74103);
-                        skillRecord.setT(target.getId());
+                        percent += (double)((int)playerFightObject.getRole().getGg() / 100) * 0.1;
+                        int addLife = (int)((double)life * percent);
+                        NutMap map = NutMap.NEW();
+                        map.setv("changeLife", Integer.valueOf(addLife));
+                        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 74103);
+                        skillRecord.setT((long)(int)target.getId());
                         return map;
                     }
                     return null;

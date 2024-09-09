@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.Arrays;
@@ -88,7 +87,7 @@ public class SysPetSkill implements Serializable
     }
     
     public SysPetSkill() {
-        this.astrictTypeMap = new HashMap<String, Double>();
+        this.astrictTypeMap = new HashMap();
     }
     
     public Integer getId() {
@@ -263,232 +262,96 @@ public class SysPetSkill implements Serializable
         if (!(o instanceof SysPetSkill)) {
             return false;
         }
-        final SysPetSkill other = (SysPetSkill)o;
+        SysPetSkill other = (SysPetSkill)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$icon = this.getIcon();
-        final Object other$icon = other.getIcon();
-        Label_0176: {
-            if (this$icon == null) {
-                if (other$icon == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$icon.equals(other$icon)) {
-                break Label_0176;
-            }
+        Object this$icon = this.getIcon();
+        Object other$icon = other.getIcon();
+        if (!((this$icon != null) ? this$icon.equals(other$icon) : (other$icon == null))) {
             return false;
         }
-        final Object this$attr = this.getAttr();
-        final Object other$attr = other.getAttr();
-        Label_0213: {
-            if (this$attr == null) {
-                if (other$attr == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$attr.equals(other$attr)) {
-                break Label_0213;
-            }
+        Object this$attr = this.getAttr();
+        Object other$attr = other.getAttr();
+        if (!((this$attr != null) ? this$attr.equals(other$attr) : (other$attr == null))) {
             return false;
         }
-        final Object this$rarity = this.getRarity();
-        final Object other$rarity = other.getRarity();
-        Label_0250: {
-            if (this$rarity == null) {
-                if (other$rarity == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$rarity.equals(other$rarity)) {
-                break Label_0250;
-            }
+        Object this$rarity = this.getRarity();
+        Object other$rarity = other.getRarity();
+        if (!((this$rarity != null) ? this$rarity.equals(other$rarity) : (other$rarity == null))) {
             return false;
         }
-        final Object this$hxyLearnRatePostWar = this.getHxyLearnRatePostWar();
-        final Object other$hxyLearnRatePostWar = other.getHxyLearnRatePostWar();
-        Label_0287: {
-            if (this$hxyLearnRatePostWar == null) {
-                if (other$hxyLearnRatePostWar == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$hxyLearnRatePostWar.equals(other$hxyLearnRatePostWar)) {
-                break Label_0287;
-            }
+        Object this$hxyLearnRatePostWar = this.getHxyLearnRatePostWar();
+        Object other$hxyLearnRatePostWar = other.getHxyLearnRatePostWar();
+        if (!((this$hxyLearnRatePostWar != null) ? this$hxyLearnRatePostWar.equals(other$hxyLearnRatePostWar) : (other$hxyLearnRatePostWar == null))) {
             return false;
         }
-        final Object this$learnRatePostWar = this.getLearnRatePostWar();
-        final Object other$learnRatePostWar = other.getLearnRatePostWar();
-        Label_0324: {
-            if (this$learnRatePostWar == null) {
-                if (other$learnRatePostWar == null) {
-                    break Label_0324;
-                }
-            }
-            else if (this$learnRatePostWar.equals(other$learnRatePostWar)) {
-                break Label_0324;
-            }
+        Object this$learnRatePostWar = this.getLearnRatePostWar();
+        Object other$learnRatePostWar = other.getLearnRatePostWar();
+        if (!((this$learnRatePostWar != null) ? this$learnRatePostWar.equals(other$learnRatePostWar) : (other$learnRatePostWar == null))) {
             return false;
         }
-        final Object this$wanShouLearnRatePostWar = this.getWanShouLearnRatePostWar();
-        final Object other$wanShouLearnRatePostWar = other.getWanShouLearnRatePostWar();
-        Label_0361: {
-            if (this$wanShouLearnRatePostWar == null) {
-                if (other$wanShouLearnRatePostWar == null) {
-                    break Label_0361;
-                }
-            }
-            else if (this$wanShouLearnRatePostWar.equals(other$wanShouLearnRatePostWar)) {
-                break Label_0361;
-            }
+        Object this$wanShouLearnRatePostWar = this.getWanShouLearnRatePostWar();
+        Object other$wanShouLearnRatePostWar = other.getWanShouLearnRatePostWar();
+        if (!((this$wanShouLearnRatePostWar != null) ? this$wanShouLearnRatePostWar.equals(other$wanShouLearnRatePostWar) : (other$wanShouLearnRatePostWar == null))) {
             return false;
         }
-        final Object this$initiative = this.getInitiative();
-        final Object other$initiative = other.getInitiative();
-        Label_0398: {
-            if (this$initiative == null) {
-                if (other$initiative == null) {
-                    break Label_0398;
-                }
-            }
-            else if (this$initiative.equals(other$initiative)) {
-                break Label_0398;
-            }
+        Object this$initiative = this.getInitiative();
+        Object other$initiative = other.getInitiative();
+        if (!((this$initiative != null) ? this$initiative.equals(other$initiative) : (other$initiative == null))) {
             return false;
         }
-        final Object this$targetType = this.getTargetType();
-        final Object other$targetType = other.getTargetType();
-        Label_0435: {
-            if (this$targetType == null) {
-                if (other$targetType == null) {
-                    break Label_0435;
-                }
-            }
-            else if (this$targetType.equals(other$targetType)) {
-                break Label_0435;
-            }
+        Object this$targetType = this.getTargetType();
+        Object other$targetType = other.getTargetType();
+        if (!((this$targetType != null) ? this$targetType.equals(other$targetType) : (other$targetType == null))) {
             return false;
         }
-        final Object this$triggerType = this.getTriggerType();
-        final Object other$triggerType = other.getTriggerType();
-        Label_0472: {
-            if (this$triggerType == null) {
-                if (other$triggerType == null) {
-                    break Label_0472;
-                }
-            }
-            else if (this$triggerType.equals(other$triggerType)) {
-                break Label_0472;
-            }
+        Object this$triggerType = this.getTriggerType();
+        Object other$triggerType = other.getTriggerType();
+        if (!((this$triggerType != null) ? this$triggerType.equals(other$triggerType) : (other$triggerType == null))) {
             return false;
         }
-        final Object this$passiveTriggerSkill = this.getPassiveTriggerSkill();
-        final Object other$passiveTriggerSkill = other.getPassiveTriggerSkill();
-        Label_0509: {
-            if (this$passiveTriggerSkill == null) {
-                if (other$passiveTriggerSkill == null) {
-                    break Label_0509;
-                }
-            }
-            else if (this$passiveTriggerSkill.equals(other$passiveTriggerSkill)) {
-                break Label_0509;
-            }
+        Object this$passiveTriggerSkill = this.getPassiveTriggerSkill();
+        Object other$passiveTriggerSkill = other.getPassiveTriggerSkill();
+        if (!((this$passiveTriggerSkill != null) ? this$passiveTriggerSkill.equals(other$passiveTriggerSkill) : (other$passiveTriggerSkill == null))) {
             return false;
         }
         if (this.getIsPvp() != other.getIsPvp()) {
             return false;
         }
-        final Object this$coverSkillSerials = this.getCoverSkillSerials();
-        final Object other$coverSkillSerials = other.getCoverSkillSerials();
-        Label_0559: {
-            if (this$coverSkillSerials == null) {
-                if (other$coverSkillSerials == null) {
-                    break Label_0559;
-                }
-            }
-            else if (this$coverSkillSerials.equals(other$coverSkillSerials)) {
-                break Label_0559;
-            }
+        Object this$coverSkillSerials = this.getCoverSkillSerials();
+        Object other$coverSkillSerials = other.getCoverSkillSerials();
+        if (!((this$coverSkillSerials != null) ? this$coverSkillSerials.equals(other$coverSkillSerials) : (other$coverSkillSerials == null))) {
             return false;
         }
-        final Object this$clashSkillSerials = this.getClashSkillSerials();
-        final Object other$clashSkillSerials = other.getClashSkillSerials();
-        Label_0596: {
-            if (this$clashSkillSerials == null) {
-                if (other$clashSkillSerials == null) {
-                    break Label_0596;
-                }
-            }
-            else if (this$clashSkillSerials.equals(other$clashSkillSerials)) {
-                break Label_0596;
-            }
+        Object this$clashSkillSerials = this.getClashSkillSerials();
+        Object other$clashSkillSerials = other.getClashSkillSerials();
+        if (!((this$clashSkillSerials != null) ? this$clashSkillSerials.equals(other$clashSkillSerials) : (other$clashSkillSerials == null))) {
             return false;
         }
-        final Object this$togetherTriggerSkillSerials = this.getTogetherTriggerSkillSerials();
-        final Object other$togetherTriggerSkillSerials = other.getTogetherTriggerSkillSerials();
-        Label_0633: {
-            if (this$togetherTriggerSkillSerials == null) {
-                if (other$togetherTriggerSkillSerials == null) {
-                    break Label_0633;
-                }
-            }
-            else if (this$togetherTriggerSkillSerials.equals(other$togetherTriggerSkillSerials)) {
-                break Label_0633;
-            }
+        Object this$togetherTriggerSkillSerials = this.getTogetherTriggerSkillSerials();
+        Object other$togetherTriggerSkillSerials = other.getTogetherTriggerSkillSerials();
+        if (!((this$togetherTriggerSkillSerials != null) ? this$togetherTriggerSkillSerials.equals(other$togetherTriggerSkillSerials) : (other$togetherTriggerSkillSerials == null))) {
             return false;
         }
-        final Object this$astrictTypeJson = this.getAstrictTypeJson();
-        final Object other$astrictTypeJson = other.getAstrictTypeJson();
-        Label_0670: {
-            if (this$astrictTypeJson == null) {
-                if (other$astrictTypeJson == null) {
-                    break Label_0670;
-                }
-            }
-            else if (this$astrictTypeJson.equals(other$astrictTypeJson)) {
-                break Label_0670;
-            }
+        Object this$astrictTypeJson = this.getAstrictTypeJson();
+        Object other$astrictTypeJson = other.getAstrictTypeJson();
+        if (!((this$astrictTypeJson != null) ? this$astrictTypeJson.equals(other$astrictTypeJson) : (other$astrictTypeJson == null))) {
             return false;
         }
         if (!Arrays.equals(this.getPower(), other.getPower())) {
@@ -497,17 +360,9 @@ public class SysPetSkill implements Serializable
         if (this.getExecutionSequence() != other.getExecutionSequence()) {
             return false;
         }
-        final Object this$astrictTypeMap = this.getAstrictTypeMap();
-        final Object other$astrictTypeMap = other.getAstrictTypeMap();
-        if (this$astrictTypeMap == null) {
-            if (other$astrictTypeMap == null) {
-                return true;
-            }
-        }
-        else if (this$astrictTypeMap.equals(other$astrictTypeMap)) {
-            return true;
-        }
-        return false;
+        Object this$astrictTypeMap = this.getAstrictTypeMap();
+        Object other$astrictTypeMap = other.getAstrictTypeMap();
+        return (this$astrictTypeMap != null) ? this$astrictTypeMap.equals(other$astrictTypeMap) : (other$astrictTypeMap == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -516,46 +371,46 @@ public class SysPetSkill implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $icon = this.getIcon();
+        Object $icon = this.getIcon();
         result = result * 59 + (($icon == null) ? 43 : $icon.hashCode());
-        final Object $attr = this.getAttr();
+        Object $attr = this.getAttr();
         result = result * 59 + (($attr == null) ? 43 : $attr.hashCode());
-        final Object $rarity = this.getRarity();
+        Object $rarity = this.getRarity();
         result = result * 59 + (($rarity == null) ? 43 : $rarity.hashCode());
-        final Object $hxyLearnRatePostWar = this.getHxyLearnRatePostWar();
+        Object $hxyLearnRatePostWar = this.getHxyLearnRatePostWar();
         result = result * 59 + (($hxyLearnRatePostWar == null) ? 43 : $hxyLearnRatePostWar.hashCode());
-        final Object $learnRatePostWar = this.getLearnRatePostWar();
+        Object $learnRatePostWar = this.getLearnRatePostWar();
         result = result * 59 + (($learnRatePostWar == null) ? 43 : $learnRatePostWar.hashCode());
-        final Object $wanShouLearnRatePostWar = this.getWanShouLearnRatePostWar();
+        Object $wanShouLearnRatePostWar = this.getWanShouLearnRatePostWar();
         result = result * 59 + (($wanShouLearnRatePostWar == null) ? 43 : $wanShouLearnRatePostWar.hashCode());
-        final Object $initiative = this.getInitiative();
+        Object $initiative = this.getInitiative();
         result = result * 59 + (($initiative == null) ? 43 : $initiative.hashCode());
-        final Object $targetType = this.getTargetType();
+        Object $targetType = this.getTargetType();
         result = result * 59 + (($targetType == null) ? 43 : $targetType.hashCode());
-        final Object $triggerType = this.getTriggerType();
+        Object $triggerType = this.getTriggerType();
         result = result * 59 + (($triggerType == null) ? 43 : $triggerType.hashCode());
-        final Object $passiveTriggerSkill = this.getPassiveTriggerSkill();
+        Object $passiveTriggerSkill = this.getPassiveTriggerSkill();
         result = result * 59 + (($passiveTriggerSkill == null) ? 43 : $passiveTriggerSkill.hashCode());
         result = result * 59 + this.getIsPvp();
-        final Object $coverSkillSerials = this.getCoverSkillSerials();
+        Object $coverSkillSerials = this.getCoverSkillSerials();
         result = result * 59 + (($coverSkillSerials == null) ? 43 : $coverSkillSerials.hashCode());
-        final Object $clashSkillSerials = this.getClashSkillSerials();
+        Object $clashSkillSerials = this.getClashSkillSerials();
         result = result * 59 + (($clashSkillSerials == null) ? 43 : $clashSkillSerials.hashCode());
-        final Object $togetherTriggerSkillSerials = this.getTogetherTriggerSkillSerials();
+        Object $togetherTriggerSkillSerials = this.getTogetherTriggerSkillSerials();
         result = result * 59 + (($togetherTriggerSkillSerials == null) ? 43 : $togetherTriggerSkillSerials.hashCode());
-        final Object $astrictTypeJson = this.getAstrictTypeJson();
+        Object $astrictTypeJson = this.getAstrictTypeJson();
         result = result * 59 + (($astrictTypeJson == null) ? 43 : $astrictTypeJson.hashCode());
         result = result * 59 + Arrays.hashCode(this.getPower());
         result = result * 59 + this.getExecutionSequence();
-        final Object $astrictTypeMap = this.getAstrictTypeMap();
+        Object $astrictTypeMap = this.getAstrictTypeMap();
         result = result * 59 + (($astrictTypeMap == null) ? 43 : $astrictTypeMap.hashCode());
         return result;
     }

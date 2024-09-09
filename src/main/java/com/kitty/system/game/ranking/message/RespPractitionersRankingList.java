@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import java.util.ArrayList;
@@ -12,8 +11,8 @@ public class RespPractitionersRankingList extends Message
 {
     List<PractitionersField> practitionersFields;
     
-    public RespPractitionersRankingList(final List<PractitionersField> practitionersFields) {
-        this.practitionersFields = new ArrayList<PractitionersField>();
+    public RespPractitionersRankingList(List<PractitionersField> practitionersFields) {
+        this.practitionersFields = new ArrayList<>();
         this.practitionersFields = practitionersFields;
     }
     
@@ -33,21 +32,13 @@ public class RespPractitionersRankingList extends Message
         if (!(o instanceof RespPractitionersRankingList)) {
             return false;
         }
-        final RespPractitionersRankingList other = (RespPractitionersRankingList)o;
+        RespPractitionersRankingList other = (RespPractitionersRankingList)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$practitionersFields = this.getPractitionersFields();
-        final Object other$practitionersFields = other.getPractitionersFields();
-        if (this$practitionersFields == null) {
-            if (other$practitionersFields == null) {
-                return true;
-            }
-        }
-        else if (this$practitionersFields.equals(other$practitionersFields)) {
-            return true;
-        }
-        return false;
+        Object this$practitionersFields = this.getPractitionersFields();
+        Object other$practitionersFields = other.getPractitionersFields();
+        return (this$practitionersFields != null) ? this$practitionersFields.equals(other$practitionersFields) : (other$practitionersFields == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -56,9 +47,9 @@ public class RespPractitionersRankingList extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $practitionersFields = this.getPractitionersFields();
+        Object $practitionersFields = this.getPractitionersFields();
         result = result * 59 + (($practitionersFields == null) ? 43 : $practitionersFields.hashCode());
         return result;
     }

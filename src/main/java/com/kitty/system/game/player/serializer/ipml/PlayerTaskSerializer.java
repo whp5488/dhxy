@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.serializer.ipml;
 
 import com.kitty.system.game.task.domain.RoleTask;
@@ -10,20 +9,23 @@ import com.kitty.system.game.player.serializer.IPlayerPropSerializer;
 
 public class PlayerTaskSerializer implements IPlayerPropSerializer
 {
+    public PlayerTaskSerializer() {
+    }
+    
     @Override
-    public void serialize(final Role player) {
+    public void serialize(Role player) {
         if (player.getTask() != null) {
-            final String json = JsonUtils.object2String(player.getTask());
+            String json = JsonUtils.object2String(player.getTask());
             player.setTaskJson(ZipUtil.compress(json));
         }
     }
     
     @Override
-    public void deserialize(final Role player) {
-        final String json = player.getTaskJson();
-        if (StringUtils.isNotEmpty((CharSequence)json)) {
-            final String content = ZipUtil.uncompress(json);
-            player.setTask(JsonUtils.string2Object(content, RoleTask.class));
+    public void deserialize(Role player) {
+        String json = player.getTaskJson();
+        if (StringUtils.isNotEmpty(json)) {
+            String content = ZipUtil.uncompress(json);
+            player.setTask((RoleTask)JsonUtils.string2Object(content, RoleTask.class));
         }
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.facade;
 
 import com.kitty.listener.event.RoleLevelUpEvent;
@@ -46,37 +45,40 @@ public class PartyController
     @Autowired
     private PartyRedBagHandler partyRedBagHandler;
     
+    public PartyController() {
+    }
+    
     @RequestMapping
-    public void createPatry(final IoSession session, final ReqCreateParty createParty) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void createPatry(IoSession session, ReqCreateParty createParty) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyService.confirmCreateParty(role, createParty);
     }
     
     @RequestMapping
-    public void modifyParty(final IoSession session, final ReqPartyModifyMember reqPartyModifyMember) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void modifyParty(IoSession session, ReqPartyModifyMember reqPartyModifyMember) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (reqPartyModifyMember.getJob() == -2) {
-            this.partyService.kickOut(role, reqPartyModifyMember.getId());
+            this.partyService.kickOut(role, (int)reqPartyModifyMember.getId());
         }
         else if (reqPartyModifyMember.getJob() == 0) {
             this.partyService.quitParty(role);
         }
         else {
-            this.partyService.changeJob(role, reqPartyModifyMember.getId(), reqPartyModifyMember.getName(), reqPartyModifyMember.getJob());
+            this.partyService.changeJob(role, (int)reqPartyModifyMember.getId(), reqPartyModifyMember.getName(), reqPartyModifyMember.getJob());
         }
     }
     
     @RequestMapping
-    public void checkJoinList(final IoSession session, final ReqJoinPartyList reqJoinPartyList) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void checkJoinList(IoSession session, ReqJoinPartyList reqJoinPartyList) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyService.checkJoinList(role);
     }
     
     @RequestMapping
-    public void partyFlag(final IoSession session, final ReqPartyFlag reqPartyFlag) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void partyFlag(IoSession session, ReqPartyFlag reqPartyFlag) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Party party = this.partyService.getParty(role);
+            Party party = this.partyService.getParty(role);
             if (party != null) {
                 this.partyService.partyFlag(party, role);
             }
@@ -84,10 +86,10 @@ public class PartyController
     }
     
     @RequestMapping
-    public void unlockPartyFlag(final IoSession session, final ReqPartyUnlockFlag reqPartyUnlockFlag) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void unlockPartyFlag(IoSession session, ReqPartyUnlockFlag reqPartyUnlockFlag) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Party party = this.partyService.getParty(role);
+            Party party = this.partyService.getParty(role);
             if (party != null) {
                 this.partyService.unlockPartyFlag(party, role, reqPartyUnlockFlag);
             }
@@ -95,10 +97,10 @@ public class PartyController
     }
     
     @RequestMapping
-    public void savePartyFlag(final IoSession session, final ReqSavePartyFlag reqPartyFlag) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void savePartyFlag(IoSession session, ReqSavePartyFlag reqPartyFlag) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Party party = this.partyService.getParty(role);
+            Party party = this.partyService.getParty(role);
             if (party != null) {
                 this.partyService.savePartyFlag(party, role, reqPartyFlag);
             }
@@ -106,10 +108,10 @@ public class PartyController
     }
     
     @RequestMapping
-    public void partyPolitics(final IoSession session, final ReqPartyPolitics partyPolitics) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void partyPolitics(IoSession session, ReqPartyPolitics partyPolitics) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final Party party = this.partyService.getParty(role);
+            Party party = this.partyService.getParty(role);
             if (party != null) {
                 this.partyService.getRespOpenPatry(party, role);
             }
@@ -117,123 +119,124 @@ public class PartyController
     }
     
     @RequestMapping
-    public void queryParties(final IoSession session, final ReqQueryPartys reqQueryPartys) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void queryParties(IoSession session, ReqQueryPartys reqQueryPartys) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.partyService.queryParties(role, reqQueryPartys);
         }
     }
     
     @RequestMapping
-    public void checkPartyMember(final IoSession session, final ReqPartyMembers reqPartyMembers) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void checkPartyMember(IoSession session, ReqPartyMembers reqPartyMembers) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.partyService.checkPartyMember(role, reqPartyMembers);
         }
     }
     
     @RequestMapping
-    public void modifyNotice(final IoSession session, final ReqModifyNotice reqModifyNotice) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void modifyNotice(IoSession session, ReqModifyNotice reqModifyNotice) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.partyService.modifyNotice(role, reqModifyNotice.getMsg(), reqModifyNotice.getType());
         }
     }
     
     @RequestMapping
-    public void autoAgree(final IoSession session, final ReqPartyRejectLevel reqPartyRejectLevel) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void autoAgree(IoSession session, ReqPartyRejectLevel reqPartyRejectLevel) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyService.setAutoAgreeSetting(role, reqPartyRejectLevel);
     }
     
     @RequestMapping
-    public void controlPartyChannel(final IoSession session, final ReqControlPartyChannel reqControlPartyChannel) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void controlPartyChannel(IoSession session, ReqControlPartyChannel reqControlPartyChannel) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (reqControlPartyChannel.getType() == 1) {
-            this.partyService.prohibitSpeaking(role, role.getRoleId(), reqControlPartyChannel.getName(), (short)1);
+            this.partyService.prohibitSpeaking(role, (int)role.getRoleId(), reqControlPartyChannel.getName(), (short)1);
         }
         else if (reqControlPartyChannel.getType() == 2) {
-            this.partyService.cancelProhibitSpeaking(role, role.getRoleId(), reqControlPartyChannel.getName());
+            this.partyService.cancelProhibitSpeaking(role, (int)role.getRoleId(), reqControlPartyChannel.getName());
         }
     }
     
     @RequestMapping
-    public void getLog(final IoSession session, final ReqPartyLog reqPartyLog) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getLog(IoSession session, ReqPartyLog reqPartyLog) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyService.getPartyLog(role);
     }
     
     @RequestMapping
-    public void rename(final IoSession session, final ReqPartyRename reqPartyRename) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void rename(IoSession session, ReqPartyRename reqPartyRename) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyService.rename(role, reqPartyRename.getName());
     }
     
     @RequestMapping
-    public void getPartyRoleInfo(final IoSession session, final ReqPartyRole partyRole) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getPartyRoleInfo(IoSession session, ReqPartyRole partyRole) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.partyService.getPartyRoleInfo(role, partyRole.getRoleId());
         }
     }
     
     @RequestMapping
-    public void reqSendBagInfo(final IoSession session, final ReqPartyRedBagSendInfo reqPartyRedBagSendInfo) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqSendBagInfo(IoSession session, ReqPartyRedBagSendInfo reqPartyRedBagSendInfo) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyRedBagHandler.sendRedBagSetting(role);
     }
     
     @RequestMapping
-    public void reqSendRedBag(final IoSession session, final ReqPartySendRedBag reqPartySendRedBag) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqSendRedBag(IoSession session, ReqPartySendRedBag reqPartySendRedBag) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyRedBagHandler.sendRedBag(role, reqPartySendRedBag.getMoney(), reqPartySendRedBag.getNum(), reqPartySendRedBag.getMsg(), reqPartySendRedBag.getFormat());
     }
     
     @RequestMapping
-    public void reqRedBagList(final IoSession session, final ReqPartyRedBagList reqPartyRedBagList) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqRedBagList(IoSession session, ReqPartyRedBagList reqPartyRedBagList) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyRedBagHandler.showRedBagList(role);
     }
     
     @RequestMapping
-    public void reqShowRedBag(final IoSession session, final ReqShowRedBag reqShowRedBag) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqShowRedBag(IoSession session, ReqShowRedBag reqShowRedBag) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyRedBagHandler.showRedBag(role, Long.parseLong(reqShowRedBag.getRedBagGid()));
     }
     
     @RequestMapping
-    public void reqRecvRedBag(final IoSession session, final ReqPartyRecvRedBag reqPartyRecvRedBag) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqRecvRedBag(IoSession session, ReqPartyRecvRedBag reqPartyRecvRedBag) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyRedBagHandler.fetchRedBag(role, Long.parseLong(reqPartyRecvRedBag.getRedBagGid()));
     }
     
     @RequestMapping
-    public void reqRedBagRecord(final IoSession session, final ReqPartyRedBagRecord reqPartyRedBagRecord) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqRedBagRecord(IoSession session, ReqPartyRedBagRecord reqPartyRedBagRecord) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.partyRedBagHandler.showRedBagRecord(role, reqPartyRedBagRecord.getType());
     }
     
     @EventHandler({ EventType.LOGIN })
-    public void handleLoginEvent(final LoginEvent loginEvent) {
+    public void handleLoginEvent(LoginEvent loginEvent) {
         this.partyService.handleLogin(loginEvent.getRole());
     }
     
     @EventHandler({ EventType.LOGOUT })
-    public void handleLogoutEvent(final LogoutEvent logoutEvent) {
+    public void handleLogoutEvent(LogoutEvent logoutEvent) {
         this.partyService.handleLogout(logoutEvent.getRole());
     }
     
     @EventHandler({ EventType.ROLE_CHANGE })
-    public void handleRoleNameChangeEvent(final RoleChangeEvent roleChangeEvent) {
+    public void handleRoleNameChangeEvent(RoleChangeEvent roleChangeEvent) {
         this.partyService.handleRoleChange(roleChangeEvent.getRole(), roleChangeEvent.getCurrName());
     }
     
     @EventHandler({ EventType.ROLE_LEVEL_UP })
-    public void handleRoleLevelUpEvent(final RoleLevelUpEvent roleLevelUpEvent) {
-        final Role role = roleLevelUpEvent.getRole();
+    public void handleRoleLevelUpEvent(RoleLevelUpEvent roleLevelUpEvent) {
+        Role role = roleLevelUpEvent.getRole();
         if (role == null) {
             return;
         }
         this.partyService.handleRoleLevelUpEvent(roleLevelUpEvent.getRole());
+        return;
     }
 }

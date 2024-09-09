@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.suit.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqSwitchoverSuit extends Message
 {
     private String id;
+    
+    public ReqSwitchoverSuit() {
+    }
     
     public String getId() {
         return this.id;
@@ -25,21 +27,13 @@ public class ReqSwitchoverSuit extends Message
         if (!(o instanceof ReqSwitchoverSuit)) {
             return false;
         }
-        final ReqSwitchoverSuit other = (ReqSwitchoverSuit)o;
+        ReqSwitchoverSuit other = (ReqSwitchoverSuit)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return true;
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return true;
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return (this$id != null) ? this$id.equals(other$id) : (other$id == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqSwitchoverSuit extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         return result;
     }

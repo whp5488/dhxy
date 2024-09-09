@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.warskill.petskilldef;
 
 import java.util.HashMap;
@@ -26,11 +25,11 @@ public enum ULTIMATE_PETSKILL
     private int type;
     
     public static List<Map<String, Integer>> toList() {
-        final List list = Lists.newArrayList();
-        for (final ULTIMATE_PETSKILL n : values()) {
-            final Map<String, Integer> map = new HashMap<String, Integer>();
-            map.put("value", n.getValue());
-            map.put("type", n.getType());
+        List<Map<String, Integer>> list = Lists.newArrayList();
+        for (ULTIMATE_PETSKILL n : values()) {
+            Map<String, Integer> map = new HashMap();
+            map.put("value", Integer.valueOf(n.getValue()));
+            map.put("type", Integer.valueOf(n.getType()));
             list.add(map);
         }
         return list;

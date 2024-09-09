@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.vo;
 
 import com.kitty.system.game.vo.TitleInfo;
@@ -11,12 +10,12 @@ public class Title
     public Title() {
     }
     
-    public Title(final int serial, final int time) {
+    public Title(int serial, int time) {
         this.serial = serial;
         this.time = time;
     }
     
-    public Title(final TitleInfo titleInfo) {
+    public Title(TitleInfo titleInfo) {
         this.serial = titleInfo.getSerial();
         this.time = titleInfo.getTime();
     }

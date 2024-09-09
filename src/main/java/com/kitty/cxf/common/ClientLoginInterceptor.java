@@ -1,16 +1,15 @@
-
 package com.kitty.cxf.common;
 
-import org.apache.cxf.binding.soap.SoapMessage;
-import org.apache.cxf.headers.Header;
-import org.apache.cxf.helpers.DOMUtils;
+import org.apache.cxf.message.Message;
 import org.apache.cxf.interceptor.Fault;
-import org.apache.cxf.phase.AbstractPhaseInterceptor;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import javax.xml.namespace.QName;
+import org.w3c.dom.Document;
 import java.util.List;
+import org.apache.cxf.headers.Header;
+import javax.xml.namespace.QName;
+import org.apache.cxf.helpers.DOMUtils;
+import org.apache.cxf.binding.soap.SoapMessage;
+import org.apache.cxf.phase.AbstractPhaseInterceptor;
 
 public class ClientLoginInterceptor extends AbstractPhaseInterceptor<SoapMessage>
 {
@@ -21,18 +20,18 @@ public class ClientLoginInterceptor extends AbstractPhaseInterceptor<SoapMessage
         super("prepare-send");
     }
     
-    public ClientLoginInterceptor(final String username, final String password) {
+    public ClientLoginInterceptor(String username, String password) {
         super("prepare-send");
         this.username = username;
         this.password = password;
     }
     
-    public void handleMessage(final SoapMessage soap) throws Fault {
-        final List<Header> headers = soap.getHeaders();
-        final Document doc = DOMUtils.createDocument();
-        final Element auth = doc.createElement("authrity");
-        final Element username = doc.createElement("username");
-        final Element password = doc.createElement("password");
+    public void handleMessage(SoapMessage soap) throws Fault {
+        List<Header> headers = soap.getHeaders();
+        Document doc = DOMUtils.createDocument();
+        Element auth = doc.createElement("authrity");
+        Element username = doc.createElement("username");
+        Element password = doc.createElement("password");
         username.setTextContent(this.username);
         password.setTextContent(this.password);
         auth.appendChild(username);

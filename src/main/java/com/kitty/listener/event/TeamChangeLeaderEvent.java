@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -12,7 +11,7 @@ public class TeamChangeLeaderEvent extends BasePlayerEvent
     private Role role;
     private List<Member> memberList;
     
-    public TeamChangeLeaderEvent(final EventType evtType, final Role role, final List<Member> memberList) {
+    public TeamChangeLeaderEvent(EventType evtType, Role role, List<Member> memberList) {
         super(evtType, role);
         this.memberList = memberList;
         this.role = role;

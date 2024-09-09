@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqPartyUnlockFlag extends Message
 {
     private short type;
     private short index;
+    
+    public ReqPartyUnlockFlag() {
+    }
     
     public short getType() {
         return this.type;
@@ -34,7 +36,7 @@ public class ReqPartyUnlockFlag extends Message
         if (!(o instanceof ReqPartyUnlockFlag)) {
             return false;
         }
-        final ReqPartyUnlockFlag other = (ReqPartyUnlockFlag)o;
+        ReqPartyUnlockFlag other = (ReqPartyUnlockFlag)o;
         return other.canEqual(this) && this.getType() == other.getType() && this.getIndex() == other.getIndex();
     }
     
@@ -44,7 +46,7 @@ public class ReqPartyUnlockFlag extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getIndex();
@@ -53,6 +55,6 @@ public class ReqPartyUnlockFlag extends Message
     
     @Override
     public String toString() {
-        return "ReqPartyUnlockFlag(type=" + this.getType() + ", index=" + this.getIndex() + ")";
+        return "ReqPartyUnlockFlag(type=" + (int)this.getType() + ", index=" + (int)this.getIndex() + ")";
     }
 }

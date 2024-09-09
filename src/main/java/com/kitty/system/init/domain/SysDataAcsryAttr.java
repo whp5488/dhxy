@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import com.kitty.system.init.domain.vo.Prop;
@@ -21,6 +20,9 @@ public class SysDataAcsryAttr
     @Column("rnd_range")
     @Default("[]")
     private List<Prop> prop;
+    
+    public SysDataAcsryAttr() {
+    }
     
     public String getDict() {
         return this.dict;
@@ -54,47 +56,23 @@ public class SysDataAcsryAttr
         if (!(o instanceof SysDataAcsryAttr)) {
             return false;
         }
-        final SysDataAcsryAttr other = (SysDataAcsryAttr)o;
+        SysDataAcsryAttr other = (SysDataAcsryAttr)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dict = this.getDict();
-        final Object other$dict = other.getDict();
-        Label_0065: {
-            if (this$dict == null) {
-                if (other$dict == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$dict.equals(other$dict)) {
-                break Label_0065;
-            }
+        Object this$dict = this.getDict();
+        Object other$dict = other.getDict();
+        if (!((this$dict != null) ? this$dict.equals(other$dict) : (other$dict == null))) {
             return false;
         }
-        final Object this$baseAttrList = this.getBaseAttrList();
-        final Object other$baseAttrList = other.getBaseAttrList();
-        Label_0102: {
-            if (this$baseAttrList == null) {
-                if (other$baseAttrList == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$baseAttrList.equals(other$baseAttrList)) {
-                break Label_0102;
-            }
+        Object this$baseAttrList = this.getBaseAttrList();
+        Object other$baseAttrList = other.getBaseAttrList();
+        if (!((this$baseAttrList != null) ? this$baseAttrList.equals(other$baseAttrList) : (other$baseAttrList == null))) {
             return false;
         }
-        final Object this$prop = this.getProp();
-        final Object other$prop = other.getProp();
-        if (this$prop == null) {
-            if (other$prop == null) {
-                return true;
-            }
-        }
-        else if (this$prop.equals(other$prop)) {
-            return true;
-        }
-        return false;
+        Object this$prop = this.getProp();
+        Object other$prop = other.getProp();
+        return (this$prop != null) ? this$prop.equals(other$prop) : (other$prop == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -103,13 +81,13 @@ public class SysDataAcsryAttr
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dict = this.getDict();
+        Object $dict = this.getDict();
         result = result * 59 + (($dict == null) ? 43 : $dict.hashCode());
-        final Object $baseAttrList = this.getBaseAttrList();
+        Object $baseAttrList = this.getBaseAttrList();
         result = result * 59 + (($baseAttrList == null) ? 43 : $baseAttrList.hashCode());
-        final Object $prop = this.getProp();
+        Object $prop = this.getProp();
         result = result * 59 + (($prop == null) ? 43 : $prop.hashCode());
         return result;
     }

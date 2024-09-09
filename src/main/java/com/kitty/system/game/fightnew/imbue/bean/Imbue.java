@@ -1,20 +1,22 @@
-
 package com.kitty.system.game.fightnew.imbue.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Imbue
+public class Imbue implements Serializable
 {
     private List<ImbueParam> status;
     private List<ImbueParam> skills;
     private List<ImbueParam> rounds;
+    private List<ImbueParam> ignores;
     private double temp;
     
     public Imbue() {
-        this.status = new ArrayList<ImbueParam>();
-        this.skills = new ArrayList<ImbueParam>();
-        this.rounds = new ArrayList<ImbueParam>();
+        this.status = new ArrayList<>();
+        this.skills = new ArrayList<>();
+        this.rounds = new ArrayList<>();
+        this.ignores = new ArrayList<>();
         this.temp = 0.0;
     }
     
@@ -28,6 +30,10 @@ public class Imbue
     
     public List<ImbueParam> getRounds() {
         return this.rounds;
+    }
+    
+    public List<ImbueParam> getIgnores() {
+        return this.ignores;
     }
     
     public double getTemp() {
@@ -44,6 +50,10 @@ public class Imbue
     
     public void setRounds(final List<ImbueParam> rounds) {
         this.rounds = rounds;
+    }
+    
+    public void setIgnores(final List<ImbueParam> ignores) {
+        this.ignores = ignores;
     }
     
     public void setTemp(final double temp) {

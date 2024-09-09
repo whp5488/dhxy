@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 import org.slf4j.LoggerFactory;
@@ -29,63 +28,64 @@ public class ServerSocketIoHandler extends IoHandlerAdapter
     private static final long interval = 15000L;
     private final IMessageDispatcher messageDispatcher;
     
-    public ServerSocketIoHandler(final IMessageDispatcher messageDispatcher) {
+    public ServerSocketIoHandler(IMessageDispatcher messageDispatcher) {
         this.messageDispatcher = messageDispatcher;
     }
     
     public void sessionOpened(final IoSession session) {
     }
     
-    public void sessionClosed(final IoSession session) {
-        final String sid = SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.ACCOUNT_SID, String.class);
-        SpringUtils.getBean(QueueUpService.class).remove(sid);
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void sessionClosed(IoSession session) {
+        String sid = (String)SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.ACCOUNT_SID, String.class);
+        ((QueueUpService)SpringUtils.getBean(QueueUpService.class)).remove(sid);
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         try {
             SpringUtils.getRoleService().addOffline(role, true);
         }
-        catch (final Exception e) {
-            ServerSocketIoHandler.logger.error("Session关闭错误信息===={}", (Object)Lang.getStackTrace((Throwable)e));
+        catch (Exception e) {
+            ServerSocketIoHandler.logger.error("Session关闭错误信息===={}", Lang.getStackTrace(e));
         }
+        return;
     }
     
-    public void sessionCreated(final IoSession session) {
-        session.setAttributeIfAbsent((Object)SessionProperties.DISTRIBUTE_KEY, (Object)SessionManager.INSTANCE.getNextDistributeKey());
+    public void sessionCreated(IoSession session) {
+        session.setAttributeIfAbsent(SessionProperties.DISTRIBUTE_KEY, Integer.valueOf(SessionManager.INSTANCE.getNextDistributeKey()));
         SessionManager.INSTANCE.add2Anonymous(session);
     }
     
-    public void messageReceived(final IoSession session, final Object data) {
-        final Message message = (Message)data;
-        final InetSocketAddress remoteAddress = (InetSocketAddress)session.getRemoteAddress();
-        if (!ProtocalSet.loginSet.contains(message.getModule())) {
-            final Role role = SessionUtils.getRoleBySession(session);
+    public void messageReceived(IoSession session, Object data) {
+        Message message = (Message)data;
+        InetSocketAddress remoteAddress = (InetSocketAddress)session.getRemoteAddress();
+        if (!ProtocalSet.loginSet.contains(Integer.valueOf(message.getModule()))) {
+            Role role = SessionUtils.getRoleBySession(session);
             if (role == null) {
-                ServerSocketIoHandler.logger.error("角色不存在，退出登录,session={} Module={} ip={} message={}", new Object[] { session.getId(), message.getModule(), remoteAddress.getAddress().getHostAddress(), Json.toJson((Object)message) });
+                ServerSocketIoHandler.logger.error("角色不存在，退出登录,session={} Module={} ip={} message={}", new Object[] { Long.valueOf(session.getId()), Integer.valueOf(message.getModule()), remoteAddress.getAddress().getHostAddress(), Json.toJson(message) });
                 session.closeNow();
                 return;
             }
         }
-        final HashMap<String, Long> heartbeatMap = SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.HEARTBEAT_MAP, HashMap.class);
-        final long lastHeartTime = heartbeatMap.getOrDefault("last_heart_time", 0L);
-        final long currReqTime = heartbeatMap.getOrDefault("req_current_time", 0L);
+        HashMap<String, Long> heartbeatMap = (HashMap)SessionManager.INSTANCE.getSessionAttr(session, SessionProperties.HEARTBEAT_MAP, HashMap.class);
+        long lastHeartTime = (long)heartbeatMap.getOrDefault("last_heart_time", Long.valueOf(0L));
+        long currReqTime = (long)heartbeatMap.getOrDefault("req_current_time", Long.valueOf(0L));
         if (lastHeartTime > 0L) {
-            final long check = currReqTime - lastHeartTime;
+            long check = currReqTime - lastHeartTime;
             if (check < 0L || check > 15000L) {
-                final Role role2 = SessionUtils.getRoleBySession(session);
+                Role role2 = SessionUtils.getRoleBySession(session);
                 if (role2 != null) {
-                    final RespOtherLogin respOtherLogin = new RespOtherLogin();
+                    RespOtherLogin respOtherLogin = new RespOtherLogin();
                     respOtherLogin.setContent("请正常游戏OK？");
-                    respOtherLogin.setResult(2);
+                    respOtherLogin.setResult(Integer.valueOf(2));
                     MessagePusher.pushMessage(session, respOtherLogin);
                     role2.getHeartCounts().clear();
                     session.closeNow();
-                    ServerSocketIoHandler.logger.error("玩家编号：{}，玩家名称：{}，请求包异常，moduleId:{}, 上次心跳时间:{}，当前请求时间:{}", new Object[] { role2.getRoleId(), role2.getName(), message.getModule(), lastHeartTime, currReqTime });
+                    ServerSocketIoHandler.logger.error("玩家编号：{}，玩家名称：{}，请求包异常，moduleId:{}, 上次心跳时间:{}，当前请求时间:{}", new Object[] { role2.getRoleId(), role2.getName(), Integer.valueOf(message.getModule()), Long.valueOf(lastHeartTime), Long.valueOf(currReqTime) });
                 }
                 else {
                     session.closeNow();
-                    ServerSocketIoHandler.logger.error("-玩家编号：{}，玩家名称：{}，请求包异常，moduleId:{}, 上次心跳时间:{}，当前请求时间:{}", new Object[] { role2.getRoleId(), role2.getName(), message.getModule(), lastHeartTime, currReqTime });
+                    ServerSocketIoHandler.logger.error("-玩家编号：{}，玩家名称：{}，请求包异常，moduleId:{}, 上次心跳时间:{}，当前请求时间:{}", new Object[] { role2.getRoleId(), role2.getName(), Integer.valueOf(message.getModule()), Long.valueOf(lastHeartTime), Long.valueOf(currReqTime) });
                 }
                 return;
             }
@@ -93,16 +93,16 @@ public class ServerSocketIoHandler extends IoHandlerAdapter
         this.messageDispatcher.dispatch(session, message);
     }
     
-    public void exceptionCaught(final IoSession session, final Throwable cause) {
-        if (cause instanceof IOException) {
+    public void exceptionCaught(IoSession session, Throwable cause) {
+        if ((cause instanceof IOException)) {
             session.closeNow();
         }
         else {
-            final Role role = SessionUtils.getRoleBySession(session);
+            Role role = SessionUtils.getRoleBySession(session);
             if (role != null) {
-                ServerSocketIoHandler.logger.error("异常捕捉关闭socket 角色编号={} 角色名称-{}", (Object)role.getRoleId(), (Object)role.getName());
+                ServerSocketIoHandler.logger.error("异常捕捉关闭socket 角色编号={} 角色名称-{}", role.getRoleId(), role.getName());
             }
-            ServerSocketIoHandler.logger.error("exceptionCaught sessionId={} exception-{}", (Object)session.getId(), (Object)Lang.getStackTrace(cause));
+            ServerSocketIoHandler.logger.error("exceptionCaught sessionId={} exception-{}", Long.valueOf(session.getId()), Lang.getStackTrace(cause));
         }
     }
     

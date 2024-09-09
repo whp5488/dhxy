@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class RespCaNomRanking extends Message
     public RespCaNomRanking() {
         this.type = 0;
         this.classify = 0;
-        this.list = new ArrayList<CaRank>(100);
+        this.list = new ArrayList(100);
     }
     
     public byte getType() {
@@ -52,7 +51,7 @@ public class RespCaNomRanking extends Message
         if (!(o instanceof RespCaNomRanking)) {
             return false;
         }
-        final RespCaNomRanking other = (RespCaNomRanking)o;
+        RespCaNomRanking other = (RespCaNomRanking)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -62,17 +61,9 @@ public class RespCaNomRanking extends Message
         if (this.getClassify() != other.getClassify()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -81,17 +72,17 @@ public class RespCaNomRanking extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getClassify();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespCaNomRanking(type=" + this.getType() + ", classify=" + this.getClassify() + ", list=" + this.getList() + ")";
+        return "RespCaNomRanking(type=" + (int)this.getType() + ", classify=" + (int)this.getClassify() + ", list=" + this.getList() + ")";
     }
 }

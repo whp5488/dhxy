@@ -1,4 +1,3 @@
-
 package com.kitty.mina.filter;
 
 import com.kitty.common.utils.ConcurrentHashSet;
@@ -9,22 +8,22 @@ public class NetGateKeeper
     private ConcurrentHashSet<String> forbidProcotols;
     
     public NetGateKeeper() {
-        this.forbidProcotols = new ConcurrentHashSet<String>();
+        this.forbidProcotols = new ConcurrentHashSet();
     }
     
     public static NetGateKeeper getInstance() {
         return NetGateKeeper.instance;
     }
     
-    public void openProcotol(final String messageId) {
+    public void openProcotol(String messageId) {
         this.forbidProcotols.add(messageId);
     }
     
-    public void closeProcotol(final String messageId) {
+    public void closeProcotol(String messageId) {
         this.forbidProcotols.add(messageId);
     }
     
-    public boolean canVisit(final String messageId) {
+    public boolean canVisit(String messageId) {
         return !this.forbidProcotols.contains(messageId);
     }
     

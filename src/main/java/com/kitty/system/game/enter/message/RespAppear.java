@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import java.util.ArrayList;
@@ -39,8 +38,8 @@ public class RespAppear extends Message
         this.relive = 0;
         this.level = 0;
         this.leaderId = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
         this.mount_icon = 0;
         this.vip = 0;
         this.moveSpeed = 0;
@@ -226,7 +225,7 @@ public class RespAppear extends Message
         if (!(o instanceof RespAppear)) {
             return false;
         }
-        final RespAppear other = (RespAppear)o;
+        RespAppear other = (RespAppear)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -242,33 +241,17 @@ public class RespAppear extends Message
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$partyName = this.getPartyName();
-        final Object other$partyName = other.getPartyName();
-        Label_0117: {
-            if (this$partyName == null) {
-                if (other$partyName == null) {
-                    break Label_0117;
-                }
-            }
-            else if (this$partyName.equals(other$partyName)) {
-                break Label_0117;
-            }
+        Object this$partyName = this.getPartyName();
+        Object other$partyName = other.getPartyName();
+        if (!((this$partyName != null) ? this$partyName.equals(other$partyName) : (other$partyName == null))) {
             return false;
         }
         if (this.getJob() != other.getJob()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0167: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0167;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0167;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getRelive() != other.getRelive()) {
@@ -283,30 +266,14 @@ public class RespAppear extends Message
         if (this.getLeaderId() != other.getLeaderId()) {
             return false;
         }
-        final Object this$light_effect = this.getLight_effect();
-        final Object other$light_effect = other.getLight_effect();
-        Label_0256: {
-            if (this$light_effect == null) {
-                if (other$light_effect == null) {
-                    break Label_0256;
-                }
-            }
-            else if (this$light_effect.equals(other$light_effect)) {
-                break Label_0256;
-            }
+        Object this$light_effect = this.getLight_effect();
+        Object other$light_effect = other.getLight_effect();
+        if (!((this$light_effect != null) ? this$light_effect.equals(other$light_effect) : (other$light_effect == null))) {
             return false;
         }
-        final Object this$special_icon = this.getSpecial_icon();
-        final Object other$special_icon = other.getSpecial_icon();
-        Label_0293: {
-            if (this$special_icon == null) {
-                if (other$special_icon == null) {
-                    break Label_0293;
-                }
-            }
-            else if (this$special_icon.equals(other$special_icon)) {
-                break Label_0293;
-            }
+        Object this$special_icon = this.getSpecial_icon();
+        Object other$special_icon = other.getSpecial_icon();
+        if (!((this$special_icon != null) ? this$special_icon.equals(other$special_icon) : (other$special_icon == null))) {
             return false;
         }
         if (this.getMount_icon() != other.getMount_icon()) {
@@ -330,17 +297,9 @@ public class RespAppear extends Message
         if (this.getGem() != other.getGem()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -349,24 +308,24 @@ public class RespAppear extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         result = result * 59 + this.getPosX();
         result = result * 59 + this.getPosY();
         result = result * 59 + this.getSerial();
-        final Object $partyName = this.getPartyName();
+        Object $partyName = this.getPartyName();
         result = result * 59 + (($partyName == null) ? 43 : $partyName.hashCode());
         result = result * 59 + this.getJob();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getRelive();
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getTitle();
         result = result * 59 + this.getLeaderId();
-        final Object $light_effect = this.getLight_effect();
+        Object $light_effect = this.getLight_effect();
         result = result * 59 + (($light_effect == null) ? 43 : $light_effect.hashCode());
-        final Object $special_icon = this.getSpecial_icon();
+        Object $special_icon = this.getSpecial_icon();
         result = result * 59 + (($special_icon == null) ? 43 : $special_icon.hashCode());
         result = result * 59 + this.getMount_icon();
         result = result * 59 + this.getVip();
@@ -375,13 +334,13 @@ public class RespAppear extends Message
         result = result * 59 + this.getPortrait();
         result = result * 59 + this.getWeapon();
         result = result * 59 + this.getGem();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespAppear(roleId=" + this.getRoleId() + ", posX=" + this.getPosX() + ", posY=" + this.getPosY() + ", serial=" + this.getSerial() + ", partyName=" + this.getPartyName() + ", job=" + this.getJob() + ", name=" + this.getName() + ", relive=" + this.getRelive() + ", level=" + this.getLevel() + ", title=" + this.getTitle() + ", leaderId=" + this.getLeaderId() + ", light_effect=" + this.getLight_effect() + ", special_icon=" + this.getSpecial_icon() + ", mount_icon=" + this.getMount_icon() + ", vip=" + this.getVip() + ", moveSpeed=" + this.getMoveSpeed() + ", fly_type=" + this.getFly_type() + ", portrait=" + this.getPortrait() + ", weapon=" + this.getWeapon() + ", gem=" + this.getGem() + ", list=" + this.getList() + ")";
+        return "RespAppear(roleId=" + this.getRoleId() + ", posX=" + this.getPosX() + ", posY=" + this.getPosY() + ", serial=" + this.getSerial() + ", partyName=" + this.getPartyName() + ", job=" + (int)this.getJob() + ", name=" + this.getName() + ", relive=" + this.getRelive() + ", level=" + this.getLevel() + ", title=" + this.getTitle() + ", leaderId=" + this.getLeaderId() + ", light_effect=" + this.getLight_effect() + ", special_icon=" + this.getSpecial_icon() + ", mount_icon=" + this.getMount_icon() + ", vip=" + this.getVip() + ", moveSpeed=" + this.getMoveSpeed() + ", fly_type=" + this.getFly_type() + ", portrait=" + this.getPortrait() + ", weapon=" + this.getWeapon() + ", gem=" + this.getGem() + ", list=" + this.getList() + ")";
     }
 }

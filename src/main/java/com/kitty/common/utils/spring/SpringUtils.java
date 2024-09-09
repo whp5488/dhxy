@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.spring;
 
 import java.util.Map;
@@ -17,6 +16,7 @@ import com.kitty.system.game.friend.service.FriendService;
 import com.kitty.system.game.party.service.PartyService;
 import com.kitty.system.game.team.service.TeamService;
 import com.kitty.system.game.chat.service.ChatService;
+import com.kitty.system.game.mind.service.MindService;
 import com.kitty.system.game.horse.service.HorseService;
 import com.kitty.system.game.pet.service.PetService;
 import com.kitty.system.game.equip.service.EquipService;
@@ -55,6 +55,8 @@ public class SpringUtils implements ApplicationContextAware
     @Resource
     private HorseService horseService;
     @Resource
+    private MindService mindService;
+    @Resource
     private ChatService chatService;
     @Resource
     private TeamService teamService;
@@ -81,12 +83,15 @@ public class SpringUtils implements ApplicationContextAware
     @Resource
     private InitService initService;
     
+    public SpringUtils() {
+    }
+    
     @PostConstruct
     private void init() {
         SpringUtils.self = this;
     }
     
-    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         SpringUtils.applicationContext = applicationContext;
     }
     
@@ -94,19 +99,19 @@ public class SpringUtils implements ApplicationContextAware
         return SpringUtils.applicationContext;
     }
     
-    public static Object getBean(final String name) {
+    public static Object getBean(String name) {
         return getApplicationContext().getBean(name);
     }
     
-    public static <T> T getBean(final Class<T> clazz) {
-        return (T)getApplicationContext().getBean(clazz);
+    public static <T> T getBean(Class<T> clazz) {
+        return getApplicationContext().getBean(clazz);
     }
     
-    public static <T> T getBean(final String name, final Class<T> clazz) {
-        return (T)getApplicationContext().getBean(name, clazz);
+    public static <T> T getBean(String name, Class<T> clazz) {
+        return getApplicationContext().getBean(name, clazz);
     }
     
-    public static <T> Map<String, T> getBeansOfType(final Class<T> var1) {
+    public static <T> Map<String, T> getBeansOfType(Class<T> var1) {
         return getApplicationContext().getBeansOfType(var1);
     }
     
@@ -144,6 +149,10 @@ public class SpringUtils implements ApplicationContextAware
     
     public static final HorseService getHorseService() {
         return SpringUtils.self.horseService;
+    }
+    
+    public static final MindService getMindService() {
+        return SpringUtils.self.mindService;
     }
     
     public static final ChatService getChatService() {

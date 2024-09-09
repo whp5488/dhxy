@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.domain;
 
 import com.kitty.common.db.Db4EmailService;
@@ -45,6 +44,9 @@ public class EmailSystem extends BaseEntity<Long>
     @Comment("创建时间")
     @Column("create_time")
     private long createTime;
+    
+    public EmailSystem() {
+    }
     
     public void save() {
         Db4EmailService.getInstance().add2Queue(this);

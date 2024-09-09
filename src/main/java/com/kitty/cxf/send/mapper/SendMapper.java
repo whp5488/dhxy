@@ -1,4 +1,3 @@
-
 package com.kitty.cxf.send.mapper;
 
 import org.apache.cxf.endpoint.Client;
@@ -11,10 +10,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendMapper
 {
-    public static Map Client(final Map<String, Object> map, final String api, final String ip, final int port, final String name, final String pwd) {
-        final JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
+    public SendMapper() {
+    }
+    
+    public static Map Client(Map<String, Object> map, String api, String ip, int port, String name, String pwd) {
+        JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         try {
-            final Client client = dcf.createClient("http://" + ip + ":" + port + "/services/ServiceMaster?wsdl");
+            Client client = dcf.createClient("http://" + ip + ":" + port + "/services/ServiceMaster?wsdl");
             client.getOutInterceptors().add(new ClientCheckInterceptor(name, pwd));
             Object[] objects;
             String string = "";
@@ -24,7 +26,7 @@ public class SendMapper
             objects = client.invoke(api, string);
             return MapStringUtil.getStringToMap(objects[0].toString());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }

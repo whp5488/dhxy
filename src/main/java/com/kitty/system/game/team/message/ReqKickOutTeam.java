@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqKickOutTeam extends Message
 {
     private String name;
+    
+    public ReqKickOutTeam() {
+    }
     
     public String getName() {
         return this.name;
@@ -25,21 +27,13 @@ public class ReqKickOutTeam extends Message
         if (!(o instanceof ReqKickOutTeam)) {
             return false;
         }
-        final ReqKickOutTeam other = (ReqKickOutTeam)o;
+        ReqKickOutTeam other = (ReqKickOutTeam)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return true;
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return true;
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return (this$name != null) ? this$name.equals(other$name) : (other$name == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqKickOutTeam extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core;
 
 import org.slf4j.LoggerFactory;
@@ -17,30 +16,30 @@ public class Game2GameIoHandler extends IoHandlerAdapter
     private CMessageDispatcher messageDispatcher;
     private AttributeKey attrKey;
     
-    public Game2GameIoHandler(final CMessageDispatcher messageDispatcher) {
+    public Game2GameIoHandler(CMessageDispatcher messageDispatcher) {
         this.attrKey = new AttributeKey(AttributeKey.class, "SESSION_CONTAINER");
         this.messageDispatcher = messageDispatcher;
     }
     
-    public void sessionCreated(final IoSession session) {
+    public void sessionCreated(IoSession session) {
         System.out.println(session.getRemoteAddress().toString());
-        final SCSession sessionContainer = SCSession.valueOf(session);
+        SCSession sessionContainer = SCSession.valueOf(session);
         session.setAttributeIfAbsent(this.attrKey, sessionContainer);
     }
     
-    public void messageReceived(final IoSession session, final Object data) throws Exception {
-        final SCSession sessionContainer = (SCSession)session.getAttribute(this.attrKey);
-        final Message message = (Message)data;
+    public void messageReceived(IoSession session, Object data) throws Exception {
+        SCSession sessionContainer = (SCSession)session.getAttribute(this.attrKey);
+        Message message = (Message)data;
         this.messageDispatcher.serverDispatch(sessionContainer, message);
     }
     
-    public void sessionClosed(final IoSession session) throws Exception {
+    public void sessionClosed(IoSession session) throws Exception {
         Game2GameIoHandler.logger.error("跨服session关闭");
     }
     
-    public void exceptionCaught(final IoSession session, final Throwable cause) throws Exception {
+    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
         if (!(cause instanceof IOException)) {
-            Game2GameIoHandler.logger.error("server exception", cause);
+            Game2GameIoHandler.logger.error("service exception", cause);
         }
     }
     

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightRecord.message;
 
 import com.kitty.system.game.fightRecord.pojo.MiniFightRecord;
@@ -12,7 +11,7 @@ public class RespFightRecords extends Message
     private String objId;
     private List<MiniFightRecord> records;
     
-    public RespFightRecords(final String objId, final List<MiniFightRecord> records) {
+    public RespFightRecords(String objId, List<MiniFightRecord> records) {
         this.objId = objId;
         this.records = records;
     }

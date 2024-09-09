@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.utils;
 
 import java.util.Iterator;
@@ -12,34 +11,40 @@ import com.kitty.system.game.fightnew.bean.PetFightObject;
 
 public class AwakenSkillEffectUtils
 {
-    public static NutMap getPercentDouble(final PetFightObject petFightObject, final double param1, final double param2) {
-        final Role role = petFightObject.getRole();
-        final Pet pet = petFightObject.getPet();
+    public AwakenSkillEffectUtils() {
+    }
+    
+    public static NutMap getPercentDouble(PetFightObject petFightObject, double param1, double param2) {
+        Role role = petFightObject.getRole();
+        Pet pet = petFightObject.getPet();
         if (role == null || pet == null) {
             return null;
         }
-        final byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
+        byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
         if (suitLevParam > 0) {
-            double percent = getPercent(suitLevParam, param1, param2);
+            double percent = getPercent((int)suitLevParam, param1, param2);
             if (pet.getAwaken() > 0) {
-                percent += getPercent(pet.getAwaken(), param1, param2);
+                percent += getPercent((int)pet.getAwaken(), param1, param2);
             }
-            return NutMap.NEW().setv("percent", (Object)percent);
+            return NutMap.NEW().setv("percent", Double.valueOf(percent));
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
-    private static double getPercent(final int param, final double param1, final double param2) {
-        return param1 * param / param2 / 100.0;
+    private static double getPercent(int param, double param1, double param2) {
+        return param1 * (double)param / param2 / 100.0;
     }
     
-    public static int getStatus(final FightObject fightObject, final List<Integer> statusList) {
+    public static int getStatus(FightObject fightObject, List<Integer> statusList) {
         int returnStatus = 0;
-        for (final Integer status : statusList) {
-            if (fightObject.getStatusValue(status) > 0) {
-                returnStatus = status;
+        for (Integer status : statusList) {
+            if (fightObject.getStatusValue((int)status) > 0) {
+                returnStatus = (int)status;
                 break;
             }
+            continue;
         }
         return returnStatus;
     }

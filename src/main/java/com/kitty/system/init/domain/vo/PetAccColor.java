@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain.vo;
 
 import java.util.HashMap;
@@ -13,8 +12,8 @@ public class PetAccColor implements Serializable
     
     public PetAccColor() {
         this.silver = 0;
-        this.mat = new HashMap<Integer, Integer>();
-        this.switchMat = new HashMap<Integer, Integer>();
+        this.mat = new HashMap();
+        this.switchMat = new HashMap();
     }
     
     public int getSilver() {
@@ -49,37 +48,21 @@ public class PetAccColor implements Serializable
         if (!(o instanceof PetAccColor)) {
             return false;
         }
-        final PetAccColor other = (PetAccColor)o;
+        PetAccColor other = (PetAccColor)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSilver() != other.getSilver()) {
             return false;
         }
-        final Object this$mat = this.getMat();
-        final Object other$mat = other.getMat();
-        Label_0078: {
-            if (this$mat == null) {
-                if (other$mat == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$mat.equals(other$mat)) {
-                break Label_0078;
-            }
+        Object this$mat = this.getMat();
+        Object other$mat = other.getMat();
+        if (!((this$mat != null) ? this$mat.equals(other$mat) : (other$mat == null))) {
             return false;
         }
-        final Object this$switchMat = this.getSwitchMat();
-        final Object other$switchMat = other.getSwitchMat();
-        if (this$switchMat == null) {
-            if (other$switchMat == null) {
-                return true;
-            }
-        }
-        else if (this$switchMat.equals(other$switchMat)) {
-            return true;
-        }
-        return false;
+        Object this$switchMat = this.getSwitchMat();
+        Object other$switchMat = other.getSwitchMat();
+        return (this$switchMat != null) ? this$switchMat.equals(other$switchMat) : (other$switchMat == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -88,12 +71,12 @@ public class PetAccColor implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSilver();
-        final Object $mat = this.getMat();
+        Object $mat = this.getMat();
         result = result * 59 + (($mat == null) ? 43 : $mat.hashCode());
-        final Object $switchMat = this.getSwitchMat();
+        Object $switchMat = this.getSwitchMat();
         result = result * 59 + (($switchMat == null) ? 43 : $switchMat.hashCode());
         return result;
     }

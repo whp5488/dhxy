@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class ReqAddFriendGroup extends Message
     private List<Integer> list;
     
     public ReqAddFriendGroup() {
-        this.list = new ArrayList<Integer>();
+        this.list = new ArrayList<>();
     }
     
     public String getGroupName() {
@@ -40,34 +39,18 @@ public class ReqAddFriendGroup extends Message
         if (!(o instanceof ReqAddFriendGroup)) {
             return false;
         }
-        final ReqAddFriendGroup other = (ReqAddFriendGroup)o;
+        ReqAddFriendGroup other = (ReqAddFriendGroup)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$groupName = this.getGroupName();
-        final Object other$groupName = other.getGroupName();
-        Label_0065: {
-            if (this$groupName == null) {
-                if (other$groupName == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$groupName.equals(other$groupName)) {
-                break Label_0065;
-            }
+        Object this$groupName = this.getGroupName();
+        Object other$groupName = other.getGroupName();
+        if (!((this$groupName != null) ? this$groupName.equals(other$groupName) : (other$groupName == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -76,11 +59,11 @@ public class ReqAddFriendGroup extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $groupName = this.getGroupName();
+        Object $groupName = this.getGroupName();
         result = result * 59 + (($groupName == null) ? 43 : $groupName.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

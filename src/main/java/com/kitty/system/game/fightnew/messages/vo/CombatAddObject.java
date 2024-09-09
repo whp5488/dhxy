@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages.vo;
 
 import com.kitty.system.game.fightnew.utils.FightOtherUtil;
@@ -21,11 +20,14 @@ public class CombatAddObject implements Serializable
     private List<FiedValue> list;
     private List<Integer> skillIds;
     
-    public void addSkillIds(final Pet pet) {
-        final List<Integer> skillIds = FightOtherUtil.addSkillIds(pet);
+    public void addSkillIds(Pet pet) {
+        List<Integer> skillIds = FightOtherUtil.addSkillIds(pet);
         if (skillIds.size() > 0) {
             this.skillIds = skillIds;
         }
+    }
+    
+    public CombatAddObject() {
     }
     
     public int getId() {
@@ -124,7 +126,7 @@ public class CombatAddObject implements Serializable
         if (!(o instanceof CombatAddObject)) {
             return false;
         }
-        final CombatAddObject other = (CombatAddObject)o;
+        CombatAddObject other = (CombatAddObject)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -149,56 +151,24 @@ public class CombatAddObject implements Serializable
         if (this.getWeapon_icon() != other.getWeapon_icon()) {
             return false;
         }
-        final Object this$effects = this.getEffects();
-        final Object other$effects = other.getEffects();
-        Label_0156: {
-            if (this$effects == null) {
-                if (other$effects == null) {
-                    break Label_0156;
-                }
-            }
-            else if (this$effects.equals(other$effects)) {
-                break Label_0156;
-            }
+        Object this$effects = this.getEffects();
+        Object other$effects = other.getEffects();
+        if (!((this$effects != null) ? this$effects.equals(other$effects) : (other$effects == null))) {
             return false;
         }
-        final Object this$suit_light_effects = this.getSuit_light_effects();
-        final Object other$suit_light_effects = other.getSuit_light_effects();
-        Label_0193: {
-            if (this$suit_light_effects == null) {
-                if (other$suit_light_effects == null) {
-                    break Label_0193;
-                }
-            }
-            else if (this$suit_light_effects.equals(other$suit_light_effects)) {
-                break Label_0193;
-            }
+        Object this$suit_light_effects = this.getSuit_light_effects();
+        Object other$suit_light_effects = other.getSuit_light_effects();
+        if (!((this$suit_light_effects != null) ? this$suit_light_effects.equals(other$suit_light_effects) : (other$suit_light_effects == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        Label_0230: {
-            if (this$list == null) {
-                if (other$list == null) {
-                    break Label_0230;
-                }
-            }
-            else if (this$list.equals(other$list)) {
-                break Label_0230;
-            }
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        if (!((this$list != null) ? this$list.equals(other$list) : (other$list == null))) {
             return false;
         }
-        final Object this$skillIds = this.getSkillIds();
-        final Object other$skillIds = other.getSkillIds();
-        if (this$skillIds == null) {
-            if (other$skillIds == null) {
-                return true;
-            }
-        }
-        else if (this$skillIds.equals(other$skillIds)) {
-            return true;
-        }
-        return false;
+        Object this$skillIds = this.getSkillIds();
+        Object other$skillIds = other.getSkillIds();
+        return (this$skillIds != null) ? this$skillIds.equals(other$skillIds) : (other$skillIds == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -207,7 +177,7 @@ public class CombatAddObject implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();
@@ -216,13 +186,13 @@ public class CombatAddObject implements Serializable
         result = result * 59 + this.getPosition();
         result = result * 59 + this.getCustomIcon();
         result = result * 59 + this.getWeapon_icon();
-        final Object $effects = this.getEffects();
+        Object $effects = this.getEffects();
         result = result * 59 + (($effects == null) ? 43 : $effects.hashCode());
-        final Object $suit_light_effects = this.getSuit_light_effects();
+        Object $suit_light_effects = this.getSuit_light_effects();
         result = result * 59 + (($suit_light_effects == null) ? 43 : $suit_light_effects.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
-        final Object $skillIds = this.getSkillIds();
+        Object $skillIds = this.getSkillIds();
         result = result * 59 + (($skillIds == null) ? 43 : $skillIds.hashCode());
         return result;
     }

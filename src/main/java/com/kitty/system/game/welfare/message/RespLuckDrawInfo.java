@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.message;
 
 import com.kitty.system.game.welfare.message.vo.LuckDrawInfo;
@@ -11,6 +10,9 @@ public class RespLuckDrawInfo extends Message
 {
     private List<LuckDrawInfo> list;
     private byte classify;
+    
+    public RespLuckDrawInfo() {
+    }
     
     public List<LuckDrawInfo> getList() {
         return this.list;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -100,6 +99,9 @@ public class SysPartner implements Serializable
     @Comment("技能使用描述集合")
     @Column("skills_detail_json")
     private String skillsDetailJson;
+    
+    public SysPartner() {
+    }
     
     public int getId() {
         return this.id;
@@ -341,7 +343,7 @@ public class SysPartner implements Serializable
         if (!(o instanceof SysPartner)) {
             return false;
         }
-        final SysPartner other = (SysPartner)o;
+        SysPartner other = (SysPartner)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -351,17 +353,9 @@ public class SysPartner implements Serializable
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0091: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0091;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getIsRecruits() != other.getIsRecruits()) {
@@ -379,33 +373,17 @@ public class SysPartner implements Serializable
         if (this.getPosDefine() != other.getPosDefine()) {
             return false;
         }
-        final Object this$position = this.getPosition();
-        final Object other$position = other.getPosition();
-        Label_0193: {
-            if (this$position == null) {
-                if (other$position == null) {
-                    break Label_0193;
-                }
-            }
-            else if (this$position.equals(other$position)) {
-                break Label_0193;
-            }
+        Object this$position = this.getPosition();
+        Object other$position = other.getPosition();
+        if (!((this$position != null) ? this$position.equals(other$position) : (other$position == null))) {
             return false;
         }
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$positionDesc = this.getPositionDesc();
-        final Object other$positionDesc = other.getPositionDesc();
-        Label_0243: {
-            if (this$positionDesc == null) {
-                if (other$positionDesc == null) {
-                    break Label_0243;
-                }
-            }
-            else if (this$positionDesc.equals(other$positionDesc)) {
-                break Label_0243;
-            }
+        Object this$positionDesc = this.getPositionDesc();
+        Object other$positionDesc = other.getPositionDesc();
+        if (!((this$positionDesc != null) ? this$positionDesc.equals(other$positionDesc) : (other$positionDesc == null))) {
             return false;
         }
         if (this.getPriority() != other.getPriority()) {
@@ -426,49 +404,25 @@ public class SysPartner implements Serializable
         if (this.getNeedYl() != other.getNeedYl()) {
             return false;
         }
-        final Object this$typeName = this.getTypeName();
-        final Object other$typeName = other.getTypeName();
-        Label_0358: {
-            if (this$typeName == null) {
-                if (other$typeName == null) {
-                    break Label_0358;
-                }
-            }
-            else if (this$typeName.equals(other$typeName)) {
-                break Label_0358;
-            }
+        Object this$typeName = this.getTypeName();
+        Object other$typeName = other.getTypeName();
+        if (!((this$typeName != null) ? this$typeName.equals(other$typeName) : (other$typeName == null))) {
             return false;
         }
         if (this.getUniqueAptitude1() != other.getUniqueAptitude1()) {
             return false;
         }
-        final Object this$uniqueAptitude1Name = this.getUniqueAptitude1Name();
-        final Object other$uniqueAptitude1Name = other.getUniqueAptitude1Name();
-        Label_0408: {
-            if (this$uniqueAptitude1Name == null) {
-                if (other$uniqueAptitude1Name == null) {
-                    break Label_0408;
-                }
-            }
-            else if (this$uniqueAptitude1Name.equals(other$uniqueAptitude1Name)) {
-                break Label_0408;
-            }
+        Object this$uniqueAptitude1Name = this.getUniqueAptitude1Name();
+        Object other$uniqueAptitude1Name = other.getUniqueAptitude1Name();
+        if (!((this$uniqueAptitude1Name != null) ? this$uniqueAptitude1Name.equals(other$uniqueAptitude1Name) : (other$uniqueAptitude1Name == null))) {
             return false;
         }
         if (this.getUniqueAptitude2() != other.getUniqueAptitude2()) {
             return false;
         }
-        final Object this$uniqueAptitude2Name = this.getUniqueAptitude2Name();
-        final Object other$uniqueAptitude2Name = other.getUniqueAptitude2Name();
-        Label_0458: {
-            if (this$uniqueAptitude2Name == null) {
-                if (other$uniqueAptitude2Name == null) {
-                    break Label_0458;
-                }
-            }
-            else if (this$uniqueAptitude2Name.equals(other$uniqueAptitude2Name)) {
-                break Label_0458;
-            }
+        Object this$uniqueAptitude2Name = this.getUniqueAptitude2Name();
+        Object other$uniqueAptitude2Name = other.getUniqueAptitude2Name();
+        if (!((this$uniqueAptitude2Name != null) ? this$uniqueAptitude2Name.equals(other$uniqueAptitude2Name) : (other$uniqueAptitude2Name == null))) {
             return false;
         }
         if (this.getUpgradeType() != other.getUpgradeType()) {
@@ -486,30 +440,14 @@ public class SysPartner implements Serializable
         if (this.getConflictPriority() != other.getConflictPriority()) {
             return false;
         }
-        final Object this$skills = this.getSkills();
-        final Object other$skills = other.getSkills();
-        Label_0560: {
-            if (this$skills == null) {
-                if (other$skills == null) {
-                    break Label_0560;
-                }
-            }
-            else if (this$skills.equals(other$skills)) {
-                break Label_0560;
-            }
+        Object this$skills = this.getSkills();
+        Object other$skills = other.getSkills();
+        if (!((this$skills != null) ? this$skills.equals(other$skills) : (other$skills == null))) {
             return false;
         }
-        final Object this$skillsDetailJson = this.getSkillsDetailJson();
-        final Object other$skillsDetailJson = other.getSkillsDetailJson();
-        if (this$skillsDetailJson == null) {
-            if (other$skillsDetailJson == null) {
-                return true;
-            }
-        }
-        else if (this$skillsDetailJson.equals(other$skillsDetailJson)) {
-            return true;
-        }
-        return false;
+        Object this$skillsDetailJson = this.getSkillsDetailJson();
+        Object other$skillsDetailJson = other.getSkillsDetailJson();
+        return (this$skillsDetailJson != null) ? this$skillsDetailJson.equals(other$skillsDetailJson) : (other$skillsDetailJson == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -518,21 +456,21 @@ public class SysPartner implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getIsRecruits();
         result = result * 59 + this.getHpMax();
         result = result * 59 + this.getNeedDrade();
         result = result * 59 + this.getOperDefaultSkillId();
         result = result * 59 + this.getPosDefine();
-        final Object $position = this.getPosition();
+        Object $position = this.getPosition();
         result = result * 59 + (($position == null) ? 43 : $position.hashCode());
         result = result * 59 + this.getType();
-        final Object $positionDesc = this.getPositionDesc();
+        Object $positionDesc = this.getPositionDesc();
         result = result * 59 + (($positionDesc == null) ? 43 : $positionDesc.hashCode());
         result = result * 59 + this.getPriority();
         result = result * 59 + this.getRace();
@@ -540,28 +478,28 @@ public class SysPartner implements Serializable
         result = result * 59 + this.getIcon();
         result = result * 59 + this.getSpeed();
         result = result * 59 + this.getNeedYl();
-        final Object $typeName = this.getTypeName();
+        Object $typeName = this.getTypeName();
         result = result * 59 + (($typeName == null) ? 43 : $typeName.hashCode());
         result = result * 59 + this.getUniqueAptitude1();
-        final Object $uniqueAptitude1Name = this.getUniqueAptitude1Name();
+        Object $uniqueAptitude1Name = this.getUniqueAptitude1Name();
         result = result * 59 + (($uniqueAptitude1Name == null) ? 43 : $uniqueAptitude1Name.hashCode());
         result = result * 59 + this.getUniqueAptitude2();
-        final Object $uniqueAptitude2Name = this.getUniqueAptitude2Name();
+        Object $uniqueAptitude2Name = this.getUniqueAptitude2Name();
         result = result * 59 + (($uniqueAptitude2Name == null) ? 43 : $uniqueAptitude2Name.hashCode());
         result = result * 59 + this.getUpgradeType();
         result = result * 59 + this.getNbPartner();
         result = result * 59 + this.getTfcfgidx();
         result = result * 59 + this.getAutoUnlockGrade();
         result = result * 59 + this.getConflictPriority();
-        final Object $skills = this.getSkills();
+        Object $skills = this.getSkills();
         result = result * 59 + (($skills == null) ? 43 : $skills.hashCode());
-        final Object $skillsDetailJson = this.getSkillsDetailJson();
+        Object $skillsDetailJson = this.getSkillsDetailJson();
         result = result * 59 + (($skillsDetailJson == null) ? 43 : $skillsDetailJson.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "SysPartner(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", isRecruits=" + this.getIsRecruits() + ", hpMax=" + this.getHpMax() + ", needDrade=" + this.getNeedDrade() + ", operDefaultSkillId=" + this.getOperDefaultSkillId() + ", posDefine=" + this.getPosDefine() + ", position=" + this.getPosition() + ", type=" + this.getType() + ", positionDesc=" + this.getPositionDesc() + ", priority=" + this.getPriority() + ", race=" + this.getRace() + ", sex=" + this.getSex() + ", icon=" + this.getIcon() + ", speed=" + this.getSpeed() + ", needYl=" + this.getNeedYl() + ", typeName=" + this.getTypeName() + ", uniqueAptitude1=" + this.getUniqueAptitude1() + ", uniqueAptitude1Name=" + this.getUniqueAptitude1Name() + ", uniqueAptitude2=" + this.getUniqueAptitude2() + ", uniqueAptitude2Name=" + this.getUniqueAptitude2Name() + ", upgradeType=" + this.getUpgradeType() + ", nbPartner=" + this.getNbPartner() + ", tfcfgidx=" + this.getTfcfgidx() + ", autoUnlockGrade=" + this.getAutoUnlockGrade() + ", conflictPriority=" + this.getConflictPriority() + ", skills=" + this.getSkills() + ", skillsDetailJson=" + this.getSkillsDetailJson() + ")";
+        return "SysPartner(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", isRecruits=" + (int)this.getIsRecruits() + ", hpMax=" + this.getHpMax() + ", needDrade=" + this.getNeedDrade() + ", operDefaultSkillId=" + this.getOperDefaultSkillId() + ", posDefine=" + this.getPosDefine() + ", position=" + this.getPosition() + ", type=" + this.getType() + ", positionDesc=" + this.getPositionDesc() + ", priority=" + this.getPriority() + ", race=" + this.getRace() + ", sex=" + this.getSex() + ", icon=" + this.getIcon() + ", speed=" + this.getSpeed() + ", needYl=" + this.getNeedYl() + ", typeName=" + this.getTypeName() + ", uniqueAptitude1=" + this.getUniqueAptitude1() + ", uniqueAptitude1Name=" + this.getUniqueAptitude1Name() + ", uniqueAptitude2=" + this.getUniqueAptitude2() + ", uniqueAptitude2Name=" + this.getUniqueAptitude2Name() + ", upgradeType=" + this.getUpgradeType() + ", nbPartner=" + this.getNbPartner() + ", tfcfgidx=" + this.getTfcfgidx() + ", autoUnlockGrade=" + this.getAutoUnlockGrade() + ", conflictPriority=" + this.getConflictPriority() + ", skills=" + this.getSkills() + ", skillsDetailJson=" + this.getSkillsDetailJson() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.talent;
 
 import com.kitty.system.game.fightnew.book.pet.utils.PetTriggerPassiveSkill;
@@ -21,26 +20,29 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_83037 extends SkillProcessor
 {
+    public SKILL_83037() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         int status = 2087;
         if (fight.getRound() != 1) {
             status = this.getRandomStatus();
         }
-        final int time = 2;
+        int time = 2;
         effector.setStatus(status, time);
         if (2087 == status) {
-            ImbueUtil.addRound(effector.getImbueMap(), PRO_DICT_TYPE.H_KB_RATIO.getDist(), 1, 0.5);
+            ImbueUtil.addRound(effector.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.H_KB_RATIO.getDist()), 1, 0.5);
         }
-        final int oldStatus = this.getOldStatus(effector);
+        int oldStatus = this.getOldStatus(effector);
         if (oldStatus != status) {
-            final ActionDetailParam actionDetailParam = new ActionDetailParam(effector, 43, 83037, effector.getId());
-            final FightObjectParam targetParam = ActionParamUtils.addStatusForTarget(effector, 2, status, time, 1);
+            ActionDetailParam actionDetailParam = new ActionDetailParam(effector, 43, 83037, (int)effector.getId());
+            FightObjectParam targetParam = ActionParamUtils.addStatusForTarget(effector, 2, status, time, 1);
             if (oldStatus != 0) {
                 effector.removeStatus(oldStatus);
                 targetParam.addClearStatus(oldStatus);
@@ -52,12 +54,12 @@ public class SKILL_83037 extends SkillProcessor
     }
     
     private int getRandomStatus() {
-        final int[] statuss = { 2087, 2088, 2089 };
-        final int random = RandomUtil.round(0, statuss.length - 1);
+        int[] statuss = { 2087, 2088, 2089 };
+        int random = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(statuss.length - 1));
         return statuss[random];
     }
     
-    private int getOldStatus(final FightObject fightObject) {
+    private int getOldStatus(FightObject fightObject) {
         if (fightObject.getStatusValue(2087) > 0) {
             return 2087;
         }
@@ -71,17 +73,17 @@ public class SKILL_83037 extends SkillProcessor
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 2;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill skill = effector.getSkillBy(83037);
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(83037));
         if (skill != null && !target.isFrozen()) {
-            final double hurt = CountUtils.getPhyAttack(effector);
-            final Effect e = new Effect();
-            final int harm = PetSkillEffectorUtil.wuXingFireCount(fight, effector, target, hurt);
+            double hurt = (double)CountUtils.getPhyAttack(effector);
+            Effect e = new Effect();
+            int harm = PetSkillEffectorUtil.wuXingFireCount(fight, effector, target, hurt);
             e.setType(100000);
             e.setHurt(harm);
             return e;
@@ -90,16 +92,16 @@ public class SKILL_83037 extends SkillProcessor
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     
     @Override
-    public List<Integer> getTargetIdsForTFQX(final Fight fight, final FightObject effector, final Object... args) {
+    public List<Integer> getTargetIdsForTFQX(Fight fight, FightObject effector, Object... args) {
         if (args != null && args.length > 0) {
-            final int status = this.getStatus(effector);
+            int status = this.getStatus(effector);
             if (status > 0) {
-                final int skillSerial = (int)args[0];
+                int skillSerial = (int)args[0];
                 if (status == 2088 && (skillSerial == 80007 || skillSerial == 81012)) {
                     return PetTriggerPassiveSkill.getTFQXTargetIds(fight, effector, 83037);
                 }
@@ -111,7 +113,7 @@ public class SKILL_83037 extends SkillProcessor
         return null;
     }
     
-    private int getStatus(final FightObject fightObject) {
+    private int getStatus(FightObject fightObject) {
         if (fightObject.getStatusValue(2088) > 0) {
             return 2088;
         }

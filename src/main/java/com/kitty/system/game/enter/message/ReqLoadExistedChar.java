@@ -1,13 +1,15 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
-@MessageMeta(module = 4192)
+@MessageMeta(module = 26890)
 public class ReqLoadExistedChar extends Message
 {
     private String id;
+    
+    public ReqLoadExistedChar() {
+    }
     
     public String getId() {
         return this.id;
@@ -25,21 +27,13 @@ public class ReqLoadExistedChar extends Message
         if (!(o instanceof ReqLoadExistedChar)) {
             return false;
         }
-        final ReqLoadExistedChar other = (ReqLoadExistedChar)o;
+        ReqLoadExistedChar other = (ReqLoadExistedChar)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return true;
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return true;
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return (this$id != null) ? this$id.equals(other$id) : (other$id == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqLoadExistedChar extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         return result;
     }

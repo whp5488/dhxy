@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -13,6 +12,9 @@ public class ReqPartySendRedBag extends Message
     private String format;
     private String actName;
     private String actId;
+    
+    public ReqPartySendRedBag() {
+    }
     
     public short getMoney() {
         return this.money;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.tianfu.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -20,6 +19,9 @@ public class SysDayInCePractice implements Serializable
     private int coin;
     @Column("need")
     private short need;
+    
+    public SysDayInCePractice() {
+    }
     
     public int getId() {
         return this.id;

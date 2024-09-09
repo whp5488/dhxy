@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.controller;
 
 import com.kitty.system.game.ranking.message.ReqCaNomRanking;
@@ -8,7 +7,6 @@ import com.kitty.system.game.ranking.message.ReqQlkRanking;
 import com.kitty.system.game.ranking.message.ReqWeaponsRanking;
 import com.kitty.system.game.ranking.message.ReqPractitionersRanking;
 import com.kitty.system.game.ranking.message.ReqComprehensiveStrengthRanking;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.ranking.message.ReqMyRanking;
@@ -51,61 +49,64 @@ public class RankingListConroller
     }
     
     @RequestMapping
-    public void petClassifyRankingList(final IoSession session, final ReqClassifyPetRanking reqClassifyPetRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void petClassifyRankingList(IoSession session, ReqClassifyPetRanking reqClassifyPetRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final int petSerial = reqClassifyPetRanking.getPetSerial();
+        int petSerial = reqClassifyPetRanking.getPetSerial();
         if (petSerial < 0) {
             return;
         }
-        final byte serverId = reqClassifyPetRanking.getServerId();
+        byte serverId = reqClassifyPetRanking.getServerId();
         if (serverId < 0) {
             return;
         }
         this.petRankingListService.getClassifyPetRankingList(role, petSerial, serverId);
+        return;
     }
     
     @RequestMapping
-    public void getPetPropertyRankingList(final IoSession session, final ReqPropertyPetRanking reqPropertyPetRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getPetPropertyRankingList(IoSession session, ReqPropertyPetRanking reqPropertyPetRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final byte serverId = reqPropertyPetRanking.getServerId();
+        byte serverId = reqPropertyPetRanking.getServerId();
         if (serverId < 0) {
             return;
         }
-        final byte type = reqPropertyPetRanking.getType();
+        byte type = reqPropertyPetRanking.getType();
         if (type < 0) {
             return;
         }
         this.petRankingListService.getPetPropertyRankingList(role, type, serverId);
+        return;
     }
     
     @RequestMapping
-    public void getMyRankingList(final IoSession session, final ReqMyRanking reqMyRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getMyRankingList(IoSession session, ReqMyRanking reqMyRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final byte type = reqMyRanking.getType();
+        byte type = reqMyRanking.getType();
         if (type < 0) {
             return;
         }
-        final byte serverId = reqMyRanking.getServerId();
+        byte serverId = reqMyRanking.getServerId();
         if (serverId < 0) {
             return;
         }
-        final int serial = reqMyRanking.getSerial();
+        int serial = reqMyRanking.getSerial();
         if (serial < 0) {
             return;
         }
         this.getMyRankingList(role, type, serverId, serial);
+        return;
     }
     
-    private void getMyRankingList(final Role role, final byte type, final byte serverId, final int serial) {
+    private void getMyRankingList(Role role, byte type, byte serverId, int serial) {
         int flag = type / 10;
         if (flag == 0) {
             flag = type;
@@ -143,85 +144,92 @@ public class RankingListConroller
     }
     
     @RequestMapping
-    public void getComprehensiveStrengthRankingList(final IoSession session, final ReqComprehensiveStrengthRanking reqComprehensiveStrengthRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getComprehensiveStrengthRankingList(IoSession session, ReqComprehensiveStrengthRanking reqComprehensiveStrengthRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final byte race = reqComprehensiveStrengthRanking.getRace();
+        byte race = reqComprehensiveStrengthRanking.getRace();
         if (race < 0 && race > 5) {
             return;
         }
-        final byte serverId = reqComprehensiveStrengthRanking.getServerId();
+        byte serverId = reqComprehensiveStrengthRanking.getServerId();
         if (serverId < 0) {
             return;
         }
         this.comprehensiveStrengthRankingListService.getComprehensiveStrengthRankingList(role, race, serverId);
+        return;
     }
     
     @RequestMapping
-    public void getPractitionersRankingList(final IoSession session, final ReqPractitionersRanking reqPractitionersRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getPractitionersRankingList(IoSession session, ReqPractitionersRanking reqPractitionersRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.practitionersRankingListService.getPractitionersRankingList(role);
+        return;
     }
     
     @RequestMapping
-    public void getWeaponsRankingList(final IoSession session, final ReqWeaponsRanking reqWeaponsRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getWeaponsRankingList(IoSession session, ReqWeaponsRanking reqWeaponsRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final byte race = reqWeaponsRanking.getRace();
+        byte race = reqWeaponsRanking.getRace();
         if (race < 0) {
             return;
         }
-        final byte equipType = reqWeaponsRanking.getEquipType();
+        byte equipType = reqWeaponsRanking.getEquipType();
         if (equipType < 0) {
             return;
         }
         this.weaponsRankingService.getWeaponsRankingList(role, race, equipType);
+        return;
     }
     
     @RequestMapping
-    public void getQlkRinkingList(final IoSession session, final ReqQlkRanking reqQlkRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getQlkRinkingList(IoSession session, ReqQlkRanking reqQlkRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final short qlkType = reqQlkRanking.getQlkType();
+        short qlkType = reqQlkRanking.getQlkType();
         if (qlkType <= 0) {
             return;
         }
         this.qlkRankingService.getQlkRinkingList(role, qlkType, (byte)0);
+        return;
     }
     
     @RequestMapping
-    public void getMaterNomRanking(final IoSession session, final ReqMaterNomRanking reqMaterNomRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getMaterNomRanking(IoSession session, ReqMaterNomRanking reqMaterNomRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.duelRankingService.getMaterNomRanking(session);
+        return;
     }
     
     @RequestMapping
-    public void getMaterTeamRanking(final IoSession session, final ReqMaterTeamRanking materTeamRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getMaterTeamRanking(IoSession session, ReqMaterTeamRanking materTeamRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.duelRankingService.getMaterTeamRanking(session);
+        return;
     }
     
     @RequestMapping
-    public void getCaNomRanking(final IoSession session, final ReqCaNomRanking reqCaNomRanking) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getCaNomRanking(IoSession session, ReqCaNomRanking reqCaNomRanking) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.duelRankingService.getCaNomRanking(session, reqCaNomRanking);
+        return;
     }
 }

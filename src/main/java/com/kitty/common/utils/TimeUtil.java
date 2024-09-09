@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.time.ZoneId;
@@ -30,48 +29,51 @@ public class TimeUtil
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static SimpleDateFormat simpleDateFormat;
     
+    public TimeUtil() {
+    }
+    
     public static int getDaysOfMonth() {
-        final Calendar cl = Calendar.getInstance();
-        final int dayCount = cl.getActualMaximum(5);
+        Calendar cl = Calendar.getInstance();
+        int dayCount = cl.getActualMaximum(5);
         return dayCount;
     }
     
-    public static String formatDate(final Date date) {
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static String formatDate(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return simpleDateFormat.format(date);
     }
     
-    public static String formatDate(final Date date, final String formatPattern) {
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatPattern);
+    public static String formatDate(Date date, String formatPattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatPattern);
         return simpleDateFormat.format(date);
     }
     
-    public static String getDay(final Date date) {
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd");
+    public static String getDay(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd");
         return simpleDateFormat.format(date);
     }
     
-    public static Date parse(final String datestr) {
+    public static Date parse(String datestr) {
         return parse(datestr, "yyyy-MM-dd");
     }
     
-    public static Date parseTime(final String datestr) {
+    public static Date parseTime(String datestr) {
         return parse(datestr, "HH:mm:ss");
     }
     
-    public static Date parse(final String datestr, final String datePattern) {
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
+    public static Date parse(String datestr, String datePattern) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(datePattern);
         try {
             return simpleDateFormat.parse(datestr);
         }
-        catch (final Exception ex) {
+        catch (Exception ex) {
             return null;
         }
     }
     
-    public static String getWeekOfDate(final Date dt) {
-        final String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
-        final Calendar cal = Calendar.getInstance();
+    public static String getWeekOfDate(Date dt) {
+        String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        Calendar cal = Calendar.getInstance();
         cal.setTime(dt);
         int w = cal.get(7) - 1;
         if (w < 0) {
@@ -80,8 +82,8 @@ public class TimeUtil
         return weekDays[w];
     }
     
-    public static int hour(final boolean flag) {
-        final Calendar cal = Calendar.getInstance();
+    public static int hour(boolean flag) {
+        Calendar cal = Calendar.getInstance();
         if (flag) {
             return cal.get(11);
         }
@@ -89,232 +91,232 @@ public class TimeUtil
     }
     
     public static int hour() {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         return cal.get(11);
     }
     
     public static int minute() {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         return cal.get(12);
     }
     
     public static String currentTime() {
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String time = format.format(Calendar.getInstance().getTime());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = format.format(Calendar.getInstance().getTime());
         return time;
     }
     
     public static String year() {
-        final Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-        final int year = c.get(1);
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+        int year = c.get(1);
         return year + "";
     }
     
     public static String month() {
-        final Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-        final int year = c.get(1);
-        final int month = c.get(2) + 1;
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+        int year = c.get(1);
+        int month = c.get(2) + 1;
         return year + "-" + month;
     }
     
     public static String when() {
-        final Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-        final int year = c.get(1);
-        final int month = c.get(2) + 1;
-        final int day = c.get(5);
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+        int year = c.get(1);
+        int month = c.get(2) + 1;
+        int day = c.get(5);
         return year + "-" + month + "-" + day;
     }
     
     public static String yesterday() {
-        final Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
         c.add(5, -1);
-        final int year = c.get(1);
-        final int month = c.get(2) + 1;
-        final int day = c.get(5);
+        int year = c.get(1);
+        int month = c.get(2) + 1;
+        int day = c.get(5);
         return year + "-" + month + "-" + day;
     }
     
-    public static String getFirstDayOfMonth1(final int year, final int month) {
-        final Calendar cal = Calendar.getInstance();
+    public static String getFirstDayOfMonth1(int year, int month) {
+        Calendar cal = Calendar.getInstance();
         cal.set(1, year);
         cal.set(2, month - 1);
-        final int firstDay = cal.getMinimum(5);
+        int firstDay = cal.getMinimum(5);
         cal.set(5, firstDay);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
     
-    public static String getWeekday(final int day) {
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        final Calendar cal = new GregorianCalendar();
+    public static String getWeekday(int day) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = new GregorianCalendar();
         cal.setFirstDayOfWeek(day);
         cal.setTime(new Date());
         cal.set(7, cal.getFirstDayOfWeek());
-        final Date first = cal.getTime();
+        Date first = cal.getTime();
         return format.format(first);
     }
     
     public static int getWeek() {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         return cal.get(7) - 1;
     }
     
-    public static String getLastDayOfMonth1(final int year, final int month) {
-        final Calendar cal = Calendar.getInstance();
+    public static String getLastDayOfMonth1(int year, int month) {
+        Calendar cal = Calendar.getInstance();
         cal.set(1, year);
         cal.set(2, month - 1);
-        final int lastDay = cal.getActualMaximum(5);
+        int lastDay = cal.getActualMaximum(5);
         cal.set(5, lastDay);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
     
     public static String getFirstDayDateOfMonth(final Date date) {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        final int last = cal.getActualMinimum(5);
+        int last = cal.getActualMinimum(5);
         cal.set(5, last);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
     
     public static String getLastDayOfMonth(final Date date) {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        final int last = cal.getActualMaximum(5);
+        int last = cal.getActualMaximum(5);
         cal.set(5, last);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
     
     public static String getFirstDayDateOfYear(final Date date) {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        final int last = cal.getActualMinimum(6);
+        int last = cal.getActualMinimum(6);
         cal.set(6, last);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
     
     public static String getLastDayOfYear(final Date date) {
-        final Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        final int last = cal.getActualMaximum(6);
+        int last = cal.getActualMaximum(6);
         cal.set(6, last);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(cal.getTime());
     }
     
-    public static Date StrToDate(final String type, final String str) {
-        final SimpleDateFormat format = new SimpleDateFormat(type);
+    public static Date StrToDate(String type, String str) {
+        SimpleDateFormat format = new SimpleDateFormat(type);
         Date date = null;
         try {
             date = format.parse(str);
         }
-        catch (final ParseException e) {
+        catch (ParseException e) {
             e.printStackTrace();
         }
         return date;
     }
     
-    public static String subtraction(final Integer time) {
-        final Calendar now = Calendar.getInstance();
-        now.add(5, -time);
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static String subtraction(Integer time) {
+        Calendar now = Calendar.getInstance();
+        now.add(5, -(int)time);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(now.getTime());
     }
     
-    public static String addition(final Integer time) {
-        final Calendar cal = Calendar.getInstance();
-        cal.add(5, time);
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static String addition(Integer time) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(5, (int)time);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormat.format(cal.getTime());
     }
     
-    public static String temporalAdjusters(final int week) {
-        final LocalDate with = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.of(week)));
+    public static String temporalAdjusters(int week) {
+        LocalDate with = LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.of(week)));
         return with.toString();
     }
     
     public static String getNetworkTime() {
         try {
-            final URL url = new URL("http://www.baidu.com");
-            final URLConnection conn = url.openConnection();
+            URL url = new URL("http://www.baidu.com");
+            URLConnection conn = url.openConnection();
             conn.connect();
-            final long dateL = conn.getDate();
-            final Date date = new Date(dateL);
-            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            long dateL = conn.getDate();
+            Date date = new Date(dateL);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             return dateFormat.format(date);
         }
-        catch (final MalformedURLException e) {
+        catch (MalformedURLException e) {
             e.printStackTrace();
             return when();
         }
-        catch (final IOException e2) {
+        catch (IOException e2) {
             e2.printStackTrace();
             return when();
         }
     }
     
-    public static Integer timeCalculate(final Date start, final Date stop) {
-        final Calendar cal1 = Calendar.getInstance();
+    public static Integer timeCalculate(Date start, Date stop) {
+        Calendar cal1 = Calendar.getInstance();
         cal1.setTime(start);
-        final Calendar cal_two = Calendar.getInstance();
+        Calendar cal_two = Calendar.getInstance();
         cal_two.setTime(stop);
-        final long t = cal_two.getTimeInMillis() - cal1.getTimeInMillis();
-        final int days = new Long(t / 86400000L).intValue();
-        return days;
+        long t = cal_two.getTimeInMillis() - cal1.getTimeInMillis();
+        int days = new Long(t / 86400000L).intValue();
+        return Integer.valueOf(days);
     }
     
     public static long timeInMillis() {
         return Calendar.getInstance().getTimeInMillis();
     }
     
-    public static long timeInMillis(final String when) {
-        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static long timeInMillis(String when) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            final Date parse = formatter.parse(when);
+            Date parse = formatter.parse(when);
             return parse.getTime();
         }
-        catch (final ParseException e) {
+        catch (ParseException e) {
             e.printStackTrace();
             return 0L;
         }
     }
     
-    public static int dayInMillis(final String when) {
-        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    public static int dayInMillis(String when) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            final Date parse = formatter.parse(when);
+            Date parse = formatter.parse(when);
             return Math.toIntExact(parse.getTime() / 1000L);
         }
-        catch (final ParseException e) {
+        catch (ParseException e) {
             e.printStackTrace();
             return 0;
         }
     }
     
-    public static String stampToDate(final long stamp) {
-        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    public static String stampToDate(long stamp) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         try {
             return formatter.format(new Date(stamp));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             return when();
         }
     }
     
-    public static int differentDays(final Date date1, final Date date2) {
-        final Calendar cal1 = Calendar.getInstance();
+    public static int differentDays(Date date1, Date date2) {
+        Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
-        final Calendar cal2 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);
-        final int day1 = cal1.get(6);
-        final int day2 = cal2.get(6);
-        final int year1 = cal1.get(1);
-        final int year2 = cal2.get(1);
+        int day1 = cal1.get(6);
+        int day2 = cal2.get(6);
+        int year1 = cal1.get(1);
+        int year2 = cal2.get(1);
         if (year1 != year2) {
             int timeDistance = 0;
             for (int i = year1; i < year2; ++i) {
@@ -331,14 +333,14 @@ public class TimeUtil
     }
     
     public static long getTimeMills() {
-        final LocalDate localDate = LocalDate.now();
-        final LocalTime localTime = LocalTime.now();
+        LocalDate localDate = LocalDate.now();
+        LocalTime localTime = LocalTime.now();
         return LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), localTime.getHour(), localTime.getMinute(), 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
     
-    public static String convertTime(final int time) {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return dateFormat.format(new Date(time * 1000L));
+    public static String convertTime(int time) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(new Date((long)time * 1000L));
     }
     
     static {

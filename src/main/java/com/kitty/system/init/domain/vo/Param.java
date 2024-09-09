@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain.vo;
 
 import java.io.Serializable;
@@ -13,30 +12,30 @@ public class Param implements Serializable
     private int bd;
     
     public Param() {
-        this.k = 0;
-        this.v = 0;
-        this.r = -1;
-        this.t = 0;
+        this.k = Integer.valueOf(0);
+        this.v = Integer.valueOf(0);
+        this.r = Integer.valueOf(-1);
+        this.t = Integer.valueOf(0);
         this.d = null;
         this.bd = 0;
     }
     
-    public Param(final Integer k, final Integer v) {
-        this.k = 0;
-        this.v = 0;
-        this.r = -1;
-        this.t = 0;
+    public Param(Integer k, Integer v) {
+        this.k = Integer.valueOf(0);
+        this.v = Integer.valueOf(0);
+        this.r = Integer.valueOf(-1);
+        this.t = Integer.valueOf(0);
         this.d = null;
         this.bd = 0;
         this.k = k;
         this.v = v;
     }
     
-    public Param(final Integer k, final Integer v, final Integer t) {
-        this.k = 0;
-        this.v = 0;
-        this.r = -1;
-        this.t = 0;
+    public Param(Integer k, Integer v, Integer t) {
+        this.k = Integer.valueOf(0);
+        this.v = Integer.valueOf(0);
+        this.r = Integer.valueOf(-1);
+        this.t = Integer.valueOf(0);
         this.d = null;
         this.bd = 0;
         this.k = k;
@@ -44,11 +43,11 @@ public class Param implements Serializable
         this.t = t;
     }
     
-    public Param(final Integer k, final Integer v, final Integer t, final Integer r) {
-        this.k = 0;
-        this.v = 0;
-        this.r = -1;
-        this.t = 0;
+    public Param(Integer k, Integer v, Integer t, Integer r) {
+        this.k = Integer.valueOf(0);
+        this.v = Integer.valueOf(0);
+        this.r = Integer.valueOf(-1);
+        this.t = Integer.valueOf(0);
         this.d = null;
         this.bd = 0;
         this.k = k;
@@ -57,11 +56,11 @@ public class Param implements Serializable
         this.r = r;
     }
     
-    public Param(final Integer k, final Integer v, final Integer r, final Integer t, final String d) {
-        this.k = 0;
-        this.v = 0;
-        this.r = -1;
-        this.t = 0;
+    public Param(Integer k, Integer v, Integer r, Integer t, String d) {
+        this.k = Integer.valueOf(0);
+        this.v = Integer.valueOf(0);
+        this.r = Integer.valueOf(-1);
+        this.t = Integer.valueOf(0);
         this.d = null;
         this.bd = 0;
         this.k = k;
@@ -127,73 +126,33 @@ public class Param implements Serializable
         if (!(o instanceof Param)) {
             return false;
         }
-        final Param other = (Param)o;
+        Param other = (Param)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$k = this.getK();
-        final Object other$k = other.getK();
-        Label_0065: {
-            if (this$k == null) {
-                if (other$k == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$k.equals(other$k)) {
-                break Label_0065;
-            }
+        Object this$k = this.getK();
+        Object other$k = other.getK();
+        if (!((this$k != null) ? this$k.equals(other$k) : (other$k == null))) {
             return false;
         }
-        final Object this$v = this.getV();
-        final Object other$v = other.getV();
-        Label_0102: {
-            if (this$v == null) {
-                if (other$v == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$v.equals(other$v)) {
-                break Label_0102;
-            }
+        Object this$v = this.getV();
+        Object other$v = other.getV();
+        if (!((this$v != null) ? this$v.equals(other$v) : (other$v == null))) {
             return false;
         }
-        final Object this$r = this.getR();
-        final Object other$r = other.getR();
-        Label_0139: {
-            if (this$r == null) {
-                if (other$r == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$r.equals(other$r)) {
-                break Label_0139;
-            }
+        Object this$r = this.getR();
+        Object other$r = other.getR();
+        if (!((this$r != null) ? this$r.equals(other$r) : (other$r == null))) {
             return false;
         }
-        final Object this$t = this.getT();
-        final Object other$t = other.getT();
-        Label_0176: {
-            if (this$t == null) {
-                if (other$t == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$t.equals(other$t)) {
-                break Label_0176;
-            }
+        Object this$t = this.getT();
+        Object other$t = other.getT();
+        if (!((this$t != null) ? this$t.equals(other$t) : (other$t == null))) {
             return false;
         }
-        final Object this$d = this.getD();
-        final Object other$d = other.getD();
-        if (this$d == null) {
-            if (other$d == null) {
-                return this.getBd() == other.getBd();
-            }
-        }
-        else if (this$d.equals(other$d)) {
-            return this.getBd() == other.getBd();
-        }
-        return false;
+        Object this$d = this.getD();
+        Object other$d = other.getD();
+        return ((this$d != null) ? this$d.equals(other$d) : (other$d == null)) && this.getBd() == other.getBd();
     }
     
     protected boolean canEqual(final Object other) {
@@ -202,17 +161,17 @@ public class Param implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $k = this.getK();
+        Object $k = this.getK();
         result = result * 59 + (($k == null) ? 43 : $k.hashCode());
-        final Object $v = this.getV();
+        Object $v = this.getV();
         result = result * 59 + (($v == null) ? 43 : $v.hashCode());
-        final Object $r = this.getR();
+        Object $r = this.getR();
         result = result * 59 + (($r == null) ? 43 : $r.hashCode());
-        final Object $t = this.getT();
+        Object $t = this.getT();
         result = result * 59 + (($t == null) ? 43 : $t.hashCode());
-        final Object $d = this.getD();
+        Object $d = this.getD();
         result = result * 59 + (($d == null) ? 43 : $d.hashCode());
         result = result * 59 + this.getBd();
         return result;

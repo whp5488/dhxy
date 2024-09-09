@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -10,7 +9,7 @@ public class TaskEndEvent extends BasePlayerEvent
     private Role role;
     private int taskId;
     
-    public TaskEndEvent(final EventType eventType, final Role role, final int taskId) {
+    public TaskEndEvent(EventType eventType, Role role, int taskId) {
         super(eventType, role);
         this.role = role;
         this.taskId = taskId;

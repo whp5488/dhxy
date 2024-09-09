@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.two.normal;
 
 import com.kitty.system.game.fightnew.FightObject;
@@ -12,22 +11,25 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_62018 extends HorseSkillProcessor
 {
+    public HORSESKILL_62018() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         double percenta = (45.0 * HorseSkillUtils.getPercent(horseSkillParam) + 0.1) / 100.0;
         double percentb = (7.0 * HorseSkillUtils.getPercent(horseSkillParam) + 0.1) / 100.0;
         percenta = HorseSkillUtils.getMathRoundPercent(percenta);
         percentb = HorseSkillUtils.getMathRoundPercent(percentb);
-        final NutMap map = NutMap.NEW();
+        NutMap map = NutMap.NEW();
         if (percenta > 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.H_KB_RATIO.getDist()), (Object)percentb);
+            map.setv(String.valueOf(PRO_DICT_TYPE.H_KB_RATIO.getDist()), Double.valueOf(percentb));
         }
         if (percentb > 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), (Object)percentb);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), (Object)percentb);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), (Object)percentb);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), (Object)percentb);
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), (Object)percentb);
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), Double.valueOf(percentb));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), Double.valueOf(percentb));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), Double.valueOf(percentb));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), Double.valueOf(percentb));
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), Double.valueOf(percentb));
         }
         if (map.size() > 0) {
             return map;
@@ -36,7 +38,7 @@ public class HORSESKILL_62018 extends HorseSkillProcessor
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
 }

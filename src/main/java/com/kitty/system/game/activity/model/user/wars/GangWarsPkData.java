@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.wars;
 
 import java.io.Serializable;
@@ -15,11 +14,11 @@ public class GangWarsPkData implements Serializable
         this.rebirth = 0;
     }
     
-    public void updateState(final byte state) {
+    public void updateState(byte state) {
         this.state = state;
     }
     
-    public void updatePosition(final byte position) {
+    public void updatePosition(byte position) {
         this.position = position;
     }
     
@@ -49,6 +48,6 @@ public class GangWarsPkData implements Serializable
     
     @Override
     public String toString() {
-        return "GangWarsPkData(state=" + this.getState() + ", position=" + this.getPosition() + ", rebirth=" + this.getRebirth() + ")";
+        return "GangWarsPkData(state=" + (int)this.getState() + ", position=" + (int)this.getPosition() + ", rebirth=" + this.getRebirth() + ")";
     }
 }

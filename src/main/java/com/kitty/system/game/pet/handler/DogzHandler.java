@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.handler;
 
 import com.kitty.system.game.pet.domain.vo.PetSkill;
@@ -21,32 +20,33 @@ public class DogzHandler extends FeedPetHandler
     private static final String SUCCESS = "恭喜，你的召唤兽#<Y>{0}#学会了{1}";
     private static final Integer SILVER;
     
+    public DogzHandler() {
+    }
+    
     @Override
-    public String acceptFeed(final Pet pet, final Role role, final Integer param, final String type, final int count, final Object... args) {
-        final SysPet sysPet = PetDataPool.petMap.get(pet.getPetType());
+    public String acceptFeed(Pet pet, Role role, Integer param, String type, int count, Object... args) {
+        SysPet sysPet = (SysPet)PetDataPool.petMap.get(pet.getPetType());
         if (sysPet == null) {
             return null;
         }
-        if (sysPet.getLevelType() == PETLEVELTYPE.Pet_LevelType_TSSS.getValue() || sysPet.getLevelType() == PETLEVELTYPE.Pet_LevelType_GJSH.getValue()) {
-            final Integer subType = SkillFunc.getPetSkillSubType(param);
-            if (!subType.equals(PETSKILLSUB.SUBTYPE_SPECIAL.getValue())) {
+        if ((int)sysPet.getLevelType() == PETLEVELTYPE.Pet_LevelType_TSSS.getValue() || (int)sysPet.getLevelType() == PETLEVELTYPE.Pet_LevelType_GJSH.getValue()) {
+            Integer subType = SkillFunc.getPetSkillSubType(param);
+            if (!subType.equals(Integer.valueOf(PETSKILLSUB.SUBTYPE_SPECIAL.getValue()))) {
                 return null;
             }
-            final SysPetSkill skill = SkillDataPool.petSkillMap.get(param);
+            SysPetSkill skill = (SysPetSkill)SkillDataPool.petSkillMap.get(param);
             if (skill != null) {
-                final boolean flag = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, DogzHandler.SILVER, "DogzHandler");
+                boolean flag = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, (long)(int)DogzHandler.SILVER, "DogzHandler");
                 if (flag) {
                     pet.getSkills().forEach(e -> {
                         if (e.getType() == PETSKILLSUB.SUBTYPE_SPECIAL.getValue()) {
-                            e.setSerial(param);
+                            e.setSerial((int)param);
                             return;
                         }
-                        else {
-                            return;
-                        }
+                        return;
                     });
                 }
-                this.petService.getArenaScore(role.getId(), pet);
+                this.petService.getArenaScore((long)role.getId(), pet);
                 this.petService.loadPet(role, pet);
                 pet.save();
                 return MessageFormat.format("恭喜，你的召唤兽#<Y>{0}#学会了{1}", pet.getPetName(), skill.getName());
@@ -56,6 +56,6 @@ public class DogzHandler extends FeedPetHandler
     }
     
     static {
-        SILVER = 5000000;
+        SILVER = Integer.valueOf(5000000);
     }
 }

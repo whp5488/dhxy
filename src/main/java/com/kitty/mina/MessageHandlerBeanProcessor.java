@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 import org.springframework.context.ApplicationContext;
@@ -11,16 +10,19 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 @Component
 public class MessageHandlerBeanProcessor implements BeanPostProcessor, ApplicationContextAware, Ordered
 {
-    public Object postProcessBeforeInitialization(final Object o, final String s) throws BeansException {
+    public MessageHandlerBeanProcessor() {
+    }
+    
+    public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
         MessageDispatcher.getInstance().registerMessageHandler(o);
         return o;
     }
     
-    public Object postProcessAfterInitialization(final Object o, final String s) throws BeansException {
+    public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
         return o;
     }
     
-    public void setApplicationContext(final ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     }
     
     public int getOrder() {

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.broadcast;
 
 import com.kitty.system.enums.common.ADORN;
@@ -13,10 +12,9 @@ import com.kitty.system.game.role.service.RoleService;
 import com.kitty.system.game.equip.domain.WearEquip;
 import com.kitty.system.game.horse.domain.Horse;
 import java.util.List;
-import java.util.Collection;
 import com.kitty.system.common.data.DataGlobalFunc;
-import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.common.enter.FiedValue;
+import com.kitty.common.utils.spring.SpringUtils;
 import java.util.ArrayList;
 import com.kitty.system.game.enter.message.RespAppear;
 import com.kitty.system.game.scene.SceneManager;
@@ -25,7 +23,6 @@ import com.kitty.system.game.team.domain.Team;
 import com.kitty.system.game.enter.RespTitle;
 import com.kitty.system.game.team.domain.Member;
 import com.kitty.common.utils.ConcurrentHashSet;
-import java.io.Serializable;
 import com.kitty.system.game.map.model.GroupMapParam;
 import com.kitty.system.game.map.pool.MapDataPool;
 import com.kitty.system.game.team.message.RespShift;
@@ -60,16 +57,19 @@ public class BroadcastService
     @Autowired
     public HorseService horseService;
     
-    public Message getMovePacket(final Role role) {
-        final RespPositionMove respPositionMove = new RespPositionMove();
-        respPositionMove.setRoleId(role.getRoleId());
-        respPositionMove.setX(role.getPos().getX());
-        respPositionMove.setY(role.getPos().getY());
+    public BroadcastService() {
+    }
+    
+    public Message getMovePacket(Role role) {
+        RespPositionMove respPositionMove = new RespPositionMove();
+        respPositionMove.setRoleId((int)role.getRoleId());
+        respPositionMove.setX((int)role.getPos().getX());
+        respPositionMove.setY((int)role.getPos().getY());
         return respPositionMove;
     }
     
-    public Message getMoveGoto(final int id, final int x, final int y, final int map) {
-        final RespShift respShift = new RespShift();
+    public Message getMoveGoto(int id, int x, int y, int map) {
+        RespShift respShift = new RespShift();
         respShift.setId(id);
         respShift.setX(x);
         respShift.setY(y);
@@ -77,26 +77,28 @@ public class BroadcastService
         return respShift;
     }
     
-    public boolean inSameScene(final Role role, final Role otherRole) {
+    public boolean inSameScene(Role role, Role otherRole) {
         if (role == null || otherRole == null) {
             return false;
         }
         if (MapDataPool.MAP_KEY_GENERATE.containsKey(role.getPos().getMapId())) {
-            ConcurrentHashSet roleIds = this.mapService.getRoleIds(new GroupMapParam(role), role.getPos().getMapId());
-            if (role.getHouse() > 0 && !role.getRoleId().equals(role.getHouse())) {
-                roleIds = this.mapService.getRoleIds(new GroupMapParam(role.getHouse()), role.getPos().getMapId());
+            ConcurrentHashSet<Integer> roleIds = this.mapService.getRoleIds(new GroupMapParam(role), (int)role.getPos().getMapId());
+            if (role.getHouse() > 0 && !role.getRoleId().equals(Integer.valueOf(role.getHouse()))) {
+                roleIds = this.mapService.getRoleIds(new GroupMapParam(Integer.valueOf(role.getHouse())), (int)role.getPos().getMapId());
             }
             return roleIds != null && roleIds.contains(otherRole.getRoleId());
         }
-        return role.getPos().getMapId().equals(otherRole.getPos().getMapId());
+        else {
+            return role.getPos().getMapId().equals(otherRole.getPos().getMapId());
+        }
     }
     
-    public Message getTitleInfoNew(final Role role) {
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        final Fight fight = this.fightNewService.getFightByRoleId(role.getRoleId());
+    public Message getTitleInfoNew(Role role) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        Fight fight = this.fightNewService.getFightByRoleId((int)role.getRoleId());
         String temp = "";
         if (team != null) {
-            if (team.isLeader(role.getRoleId())) {
+            if (team.isLeader((int)role.getRoleId())) {
                 if (team.getList().size() == 5) {
                     temp += "10";
                 }
@@ -105,12 +107,14 @@ public class BroadcastService
                 }
             }
             else {
-                for (int i = 0; i < team.getList().size(); ++i) {
-                    final Member member = team.getList().get(i);
+                int i = 0;
+                while (i < team.getList().size()) {
+                    Member member = (Member)team.getList().get(i);
                     if (member.getRoleId().equals(role.getRoleId()) && member.isInTeam()) {
                         temp += "00";
                         break;
                     }
+                    ++i;
                 }
             }
         }
@@ -123,127 +127,129 @@ public class BroadcastService
         else {
             temp += "0";
         }
-        if (role.getPkInfoBox().isRedName() && !role.getPos().getMapId().equals(1201)) {
+        if (role.getPkInfoBox().isRedName() && !role.getPos().getMapId().equals(Integer.valueOf(1201))) {
             temp += "1";
         }
         else {
             temp += "0";
         }
-        final RespTitle respTitle = new RespTitle();
-        respTitle.setRoleId(role.getRoleId());
-        final byte test = Byte.parseByte(temp, 2);
+        RespTitle respTitle = new RespTitle();
+        respTitle.setRoleId((int)role.getRoleId());
+        byte test = Byte.parseByte(temp, 2);
         respTitle.setParam(test);
         return respTitle;
     }
     
-    public void sendUpdateAppear(final Role role) {
+    public void sendUpdateAppear(Role role) {
         SceneManager.INSTANCE.sendMessages(role, this.getUpdateAppear(role));
     }
     
-    public Message getAppear(final Role role) {
-        final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final RespAppear respAppear = new RespAppear();
-        final List<FiedValue> list = new ArrayList<FiedValue>();
-        respAppear.setRoleId(role.getRoleId());
-        respAppear.setPosX(role.getPos().getX());
-        respAppear.setPosY(role.getPos().getY());
-        respAppear.setSerial(role.getSerial());
+    public Message getAppear(Role role) {
+        int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+        RespAppear respAppear = new RespAppear();
+        List<FiedValue> list = new ArrayList<>();
+        respAppear.setRoleId((int)role.getRoleId());
+        respAppear.setPosX((int)role.getPos().getX());
+        respAppear.setPosY((int)role.getPos().getY());
+        respAppear.setSerial((int)role.getSerial());
         respAppear.setName(role.getName());
         respAppear.setPartyName(SpringUtils.getRoleService().getFactionName(role));
         respAppear.setJob(this.partyService.getJob(role));
-        respAppear.setRelive(role.getRelive());
-        respAppear.setLevel(role.getLevel());
-        final Team team = this.teamService.getTeam(role.getRoleId());
+        respAppear.setRelive((int)role.getRelive());
+        respAppear.setLevel((int)role.getLevel());
+        Team team = this.teamService.getTeam((int)role.getRoleId());
         if (team != null) {
             respAppear.setLeaderId(team.getLeaderRoleId());
-            final Member member = team.getMember(role.getRoleId());
+            Member member = team.getMember((int)role.getRoleId());
             if (member != null) {
-                list.add(new FiedValue("inTeam", (byte)1, member.isInTeam() ? 1 : 2));
+                list.add(new FiedValue("inTeam", (byte)1, Integer.valueOf(member.isInTeam() ? 1 : 2)));
             }
         }
         respAppear.setLight_effect(this.equipService.getWearEffect(role));
-        respAppear.setVip(role.getVip());
+        respAppear.setVip((int)role.getVip());
         respAppear.setFly_type(0);
         respAppear.setPortrait(role.getIcon());
         respAppear.setWeapon(role.getWeaponIcon());
-        final Horse horse = this.horseService.getRideMount(role);
+        Horse horse = this.horseService.getRideMount(role);
         if (horse != null) {
             respAppear.setMount_icon(horse.getSerial());
             respAppear.setMoveSpeed(horse.getMoveSp());
         }
-        final int moveAdditionTime = role.getExtendBox().getState().getInt("shenxing", 0);
+        int moveAdditionTime = role.getExtendBox().getState().getInt("shenxing", 0);
         if (moveAdditionTime > 0 && moveAdditionTime > currTime) {
             respAppear.setMoveSpeed(30);
         }
-        final List<WearEquip> wearEquips = this.equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = this.equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
-            final int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
+            int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
             respAppear.setGem(num);
         }
-        final RoleService roleService = SpringUtils.getRoleService();
+        RoleService roleService = SpringUtils.getRoleService();
         respAppear.setTitle(this.titleService.getTitle(role));
         if (role.getMasquerade() > 0 && role.getCardExpireTime() > currTime) {
-            list.add(new FiedValue("card", (byte)3, role.getMasquerade()));
+            list.add(new FiedValue("card", (byte)3, Integer.valueOf(role.getMasquerade())));
         }
-        final List<FiedValue> deyList = roleService.deyList(role.getColor());
+        List<FiedValue> deyList = roleService.deyList(role.getColor());
         list.addAll(deyList);
         if (list.size() > 0) {
             respAppear.setList(list);
+            return respAppear;
         }
         return respAppear;
     }
     
-    public void sendAppear(final Role role) {
-        final Message titleInfo = this.getTitleInfoNew(role);
-        final Message respAppear = this.getAppear(role);
+    public void sendAppear(Role role) {
+        Message titleInfo = this.getTitleInfoNew(role);
+        Message respAppear = this.getAppear(role);
         MessagePusher.pushMessage(role, respAppear);
         MessagePusher.pushMessage(role, titleInfo);
     }
     
-    public void sendLocalMessage(final Role role, final Message message) {
+    public void sendLocalMessage(Role role, Message message) {
         SceneManager.INSTANCE.sendMessages(role, message);
     }
     
-    public Message getDisAppear(final int petId, final int type) {
+    public Message getDisAppear(int petId, int type) {
         if (petId <= 0) {
             return null;
         }
-        final RespDisappear respDisappear = new RespDisappear();
+        RespDisappear respDisappear = new RespDisappear();
         respDisappear.setId(petId);
         respDisappear.setType(type);
         return respDisappear;
     }
     
-    public Message getDisAppear(final Role meRole) {
-        return this.getDisAppear(meRole.getRoleId(), LOGIC.LOGICTYPE_HERO.getValue());
+    public Message getDisAppear(Role meRole) {
+        return this.getDisAppear((int)meRole.getRoleId(), LOGIC.LOGICTYPE_HERO.getValue());
     }
     
-    public void sendTitleInfo(final Role role) {
+    public void sendTitleInfo(Role role) {
         SceneManager.INSTANCE.sendMessages(role, this.getTitleInfoNew(role));
     }
     
-    public void sendTitleInfoNew(final Role role) {
+    public void sendTitleInfoNew(Role role) {
         SceneManager.INSTANCE.sendMessages(role, this.getTitleInfoNew(role));
     }
     
-    public void updateAppearance(final Role role) {
-        final Message appear = this.getUpdateAppear(role);
+    public void updateAppearance(Role role) {
+        Message appear = this.getUpdateAppear(role);
         MessagePusher.pushMessage(role, appear);
     }
     
-    public void updateAppearance(final Role role, final Role appearRole) {
+    public void updateAppearance(Role role, Role appearRole) {
         if (appearRole == null) {
             return;
         }
-        final Message appear = this.getUpdateAppear(appearRole);
+        Message appear = this.getUpdateAppear(appearRole);
         MessagePusher.pushMessage(role, appear);
+        return;
     }
     
-    public void giveAppear(final Role role, final Team team) {
+    public void giveAppear(Role role, Team team) {
         if (role != null) {
-            final Set<Long> enters = new HashSet<Long>();
+            Set<Long> enters = new HashSet();
             for (int i = 0; i < team.getList().size(); ++i) {
-                final Member member = team.getList().get(i);
+                Member member = (Member)team.getList().get(i);
                 if (!member.getId().equals(role.getId())) {
                     enters.add(member.getId());
                 }
@@ -252,60 +258,61 @@ public class BroadcastService
         }
     }
     
-    public Message getUpdateAppear(final Role role) {
-        final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final List<FiedValue> list = new ArrayList<FiedValue>();
-        final RespUpdateAppearance respUpdateAppearance = new RespUpdateAppearance();
-        respUpdateAppearance.setRoleId(role.getRoleId());
-        respUpdateAppearance.setSerial(role.getSerial());
+    public Message getUpdateAppear(Role role) {
+        int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+        List<FiedValue> list = new ArrayList<>();
+        RespUpdateAppearance respUpdateAppearance = new RespUpdateAppearance();
+        respUpdateAppearance.setRoleId((int)role.getRoleId());
+        respUpdateAppearance.setSerial((int)role.getSerial());
         respUpdateAppearance.setRoleName(role.getName());
         respUpdateAppearance.setPartyName(SpringUtils.getRoleService().getFactionName(role));
         respUpdateAppearance.setJob(this.partyService.getJob(role));
-        respUpdateAppearance.setRelive(role.getRelive());
-        respUpdateAppearance.setLevel(role.getLevel());
-        final Team team = this.teamService.getTeam(role.getRoleId());
+        respUpdateAppearance.setRelive((int)role.getRelive());
+        respUpdateAppearance.setLevel((int)role.getLevel());
+        Team team = this.teamService.getTeam((int)role.getRoleId());
         if (team != null) {
             respUpdateAppearance.setLeaderId(team.getLeaderRoleId());
-            final Member member = team.getMember(role.getRoleId());
+            Member member = team.getMember((int)role.getRoleId());
             if (member != null) {
-                list.add(new FiedValue("inTeam", (byte)1, member.isInTeam() ? 1 : 2));
+                list.add(new FiedValue("inTeam", (byte)1, Integer.valueOf(member.isInTeam() ? 1 : 2)));
             }
         }
         respUpdateAppearance.setLight_effect(this.equipService.getWearEffect(role));
-        respUpdateAppearance.setVip(role.getVip());
+        respUpdateAppearance.setVip((int)role.getVip());
         respUpdateAppearance.setFly_type(0);
         respUpdateAppearance.setPortrait(role.getIcon());
         respUpdateAppearance.setWeapon(role.getWeaponIcon());
-        final Horse horse = this.horseService.getRideMount(role);
+        Horse horse = this.horseService.getRideMount(role);
         if (horse != null) {
             respUpdateAppearance.setMount_icon(horse.getSerial());
             respUpdateAppearance.setMoveSpeed(horse.getMoveSp());
         }
-        final int moveAdditionTime = role.getExtendBox().getState().getInt("shenxing", 0);
+        int moveAdditionTime = role.getExtendBox().getState().getInt("shenxing", 0);
         if (moveAdditionTime > 0 && moveAdditionTime > currTime) {
             respUpdateAppearance.setMoveSpeed(30);
         }
-        final List<WearEquip> wearEquips = this.equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = this.equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
-            final int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
+            int num = DataGlobalFunc.getWeaponGemNum(wearEquips);
             respUpdateAppearance.setGem(num);
         }
-        final RoleService roleService = SpringUtils.getRoleService();
+        RoleService roleService = SpringUtils.getRoleService();
         respUpdateAppearance.setTitle(this.titleService.getTitle(role));
         if (role.getMasquerade() > 0 && role.getCardExpireTime() > currTime) {
-            list.add(new FiedValue("card", (byte)3, role.getMasquerade()));
+            list.add(new FiedValue("card", (byte)3, Integer.valueOf(role.getMasquerade())));
         }
-        final List<FiedValue> deyList = roleService.deyList(role.getColor());
+        List<FiedValue> deyList = roleService.deyList(role.getColor());
         list.addAll(deyList);
         if (list.size() > 0) {
             respUpdateAppearance.setList(list);
+            return respUpdateAppearance;
         }
         return respUpdateAppearance;
     }
     
-    public void handleOnEquip(final Role role, final BagEquip equip) {
+    public void handleOnEquip(Role role, BagEquip equip) {
         if (equip.getPosition() == ADORN.WEAPON.getValue() && equip.getPos() <= 0) {
-            final int num = DataGlobalFunc.getGemNum(equip);
+            int num = DataGlobalFunc.getGemNum(equip);
             if (num >= 10 || num <= 0) {
                 this.sendUpdateAppear(role);
             }

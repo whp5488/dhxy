@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.domain;
 
 import com.kitty.common.db.Db4PetEquipService;
@@ -40,9 +39,9 @@ public class PetEquip extends BaseEntity<Long>
     @Column("lock_state")
     private byte lock;
     
-    public PetEquip(final String name, final int bd, final int serial, final int position, final byte productOrder, final List<FiedEquip> field) {
+    public PetEquip(String name, int bd, int serial, int position, byte productOrder, List<FiedEquip> field) {
         this.pId = 0L;
-        this.field = new ArrayList<FiedEquip>();
+        this.field = new ArrayList<>();
         this.positionNum = 2;
         this.lock = 0;
         this.name = name;
@@ -53,9 +52,9 @@ public class PetEquip extends BaseEntity<Long>
         this.field = field;
     }
     
-    public PetEquip(final Long id, final long rId, final long pId, final String name, final int bd, final int serial, final int position, final byte productOrder, final List<FiedEquip> field, final short positionNum, final byte lock) {
+    public PetEquip(Long id, long rId, long pId, String name, int bd, int serial, int position, byte productOrder, List<FiedEquip> field, short positionNum, byte lock) {
         this.pId = 0L;
-        this.field = new ArrayList<FiedEquip>();
+        this.field = new ArrayList<>();
         this.positionNum = 2;
         this.lock = 0;
         this.id = id;
@@ -73,7 +72,7 @@ public class PetEquip extends BaseEntity<Long>
     
     public PetEquip() {
         this.pId = 0L;
-        this.field = new ArrayList<FiedEquip>();
+        this.field = new ArrayList<>();
         this.positionNum = 2;
         this.lock = 0;
     }
@@ -169,10 +168,5 @@ public class PetEquip extends BaseEntity<Long>
     
     public void setLock(final byte lock) {
         this.lock = lock;
-    }
-    
-    @Override
-    public String toString() {
-        return "PetEquip(id=" + this.getId() + ", rId=" + this.getRId() + ", pId=" + this.getPId() + ", name=" + this.getName() + ", bd=" + this.getBd() + ", serial=" + this.getSerial() + ", position=" + this.getPosition() + ", productOrder=" + this.getProductOrder() + ", field=" + this.getField() + ", positionNum=" + this.getPositionNum() + ", lock=" + this.getLock() + ")";
     }
 }

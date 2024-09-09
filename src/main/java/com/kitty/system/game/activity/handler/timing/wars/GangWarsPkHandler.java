@@ -1,17 +1,15 @@
-
 package com.kitty.system.game.activity.handler.timing.wars;
 
 import com.kitty.system.enums.war.wardef.WarMaxRound;
 import com.kitty.system.game.activity.message.RespNearby;
-import com.kitty.system.common.data.DataGlobalFunc;
 import com.kitty.system.game.activity.message.vo.Nearby;
+import com.kitty.system.common.data.DataGlobalFunc;
 import com.kitty.system.game.enter.message.ReqTelePort;
 import com.kitty.system.game.activity.model.FightInfo;
 import com.kitty.system.game.activity.common.EventsUtils;
 import com.kitty.mina.task.ThreadLocalUtil;
 import com.kitty.listener.event.FightEndEvent;
 import com.kitty.system.game.fightnew.factory.FightFactory;
-import java.util.Collection;
 import com.kitty.system.game.fightnew.bean.Fight;
 import com.kitty.system.game.activity.message.RespGangWarsGateLife;
 import com.kitty.system.game.team.domain.Member;
@@ -26,11 +24,10 @@ import com.kitty.system.game.activity.message.RespGangWarsRoleState;
 import com.kitty.common.core.SchedulerManager;
 import com.kitty.system.game.vo.Npc;
 import com.kitty.system.game.team.domain.Team;
-import com.kitty.common.utils.NumberUtil;
-import com.kitty.system.game.activity.model.user.wars.vo.Equipment;
-import com.kitty.mina.message.Message;
-import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
+import com.kitty.mina.message.MessagePusher;
+import com.kitty.system.game.activity.model.user.wars.vo.Equipment;
+import com.kitty.common.utils.NumberUtil;
 import com.kitty.system.game.role.domain.Role;
 import com.kitty.system.game.party.model.Party;
 import java.util.Iterator;
@@ -83,157 +80,174 @@ public class GangWarsPkHandler extends ActivityHandler
     private static final String REQUEST_FIGHT_NOT = "人数不足#<R>3#人，不能发起攻击";
     private static final String REQUEST_CANNON_FIGHT_NOT = "人数不足#<R>3#人，不能操作";
     
+    public GangWarsPkHandler() {
+    }
+    
     protected int getFightType() {
         return FIGHT_TYPE.GANG_WARS.getValue();
     }
     
-    private boolean isMatchFightType(final int fightType) {
+    private boolean isMatchFightType(int fightType) {
         return this.getFightType() == fightType;
     }
     
     public void start() {
         this.logger.error("帮派大战对决开始");
         try {
-            final GangWarsData objData = this.gangWarsHandler.getObjData();
+            GangWarsData objData = this.gangWarsHandler.getObjData();
             objData.setStage((byte)1);
-            for (final Integer key : objData.getWarsMap().keySet()) {
-                final GangWarsInfo warsInfo = objData.getWarsMap().get(key);
-                final Party party = this.partyService.getParty(key);
-                final Party enemy = this.partyService.getParty(warsInfo.getEnemy());
+            for (Integer key : objData.getWarsMap().keySet()) {
+                GangWarsInfo warsInfo = (GangWarsInfo)objData.getWarsMap().get(key);
+                Party party = this.partyService.getParty(key);
+                Party enemy = this.partyService.getParty(Integer.valueOf(warsInfo.getEnemy()));
                 if (party != null && enemy != null) {
                     this.partyService.npcPartyChat(party, I18nIdDataPool.getI18nContent(370, this.gangWarsHandler.getBye(warsInfo.getGrade()), enemy.getName()));
                 }
+                else {
+                    continue;
+                }
             }
-            for (final Integer serial : objData.getPkData().keySet()) {
-                final Map<Long, GangWarsPkData> dataMap = objData.getPkData().get(serial);
-                final GangWarsInfo sideInfo = objData.getWarsMap().get(serial);
+            for (Integer serial : objData.getPkData().keySet()) {
+                Map<Long, GangWarsPkData> dataMap = (Map)objData.getPkData().get(serial);
+                GangWarsInfo sideInfo = (GangWarsInfo)objData.getWarsMap().get(serial);
                 if (sideInfo.getCombatResults() != 3) {
                     continue;
                 }
-                final Map<Long, GangWarsPkData> enemyDataMap = objData.getPkData().get(sideInfo.getEnemy());
+                Map<Long, GangWarsPkData> enemyDataMap = (Map)objData.getPkData().get(Integer.valueOf(sideInfo.getEnemy()));
                 if (enemyDataMap.size() <= 0) {
-                    final GangWarsInfo enemyInfo = objData.getWarsMap().get(sideInfo.getEnemy());
+                    GangWarsInfo enemyInfo = (GangWarsInfo)objData.getWarsMap().get(Integer.valueOf(sideInfo.getEnemy()));
                     sideInfo.setCombatResults((byte)1);
                     enemyInfo.setCombatResults((byte)0);
-                    this.gangWarsHandler.end(serial, sideInfo, enemyInfo);
+                    this.gangWarsHandler.end((int)serial, sideInfo, enemyInfo);
                 }
                 else {
-                    for (final Long id : dataMap.keySet()) {
-                        final GangWarsPkData warsPkData = dataMap.get(id);
+                    for (Long id : dataMap.keySet()) {
+                        GangWarsPkData warsPkData = (GangWarsPkData)dataMap.get(id);
                         if (warsPkData.getPosition() != 3) {
-                            this.gangWarsHandler.sendRespIcon(id, serial);
+                            this.gangWarsHandler.sendRespIcon((long)id, (int)serial);
+                        }
+                        else {
+                            continue;
                         }
                     }
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("帮战PK阶段开始错误：{}", e.getMessage());
         }
     }
     
-    public void reqOperateEquipment(final Role role, final int type, final String string) {
+    public void reqOperateEquipment(Role role, int type, String string) {
         if (this.teamService.getTeamCount(role) < 3) {
             MessagePusher.pushMessage(role, new RespMsg("人数不足#<R>3#人，不能操作"));
             return;
         }
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
-        final GangWarsInfo warsInfo = objData.getWarsMap().get(role.getFaction());
+        GangWarsInfo warsInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
         if (warsInfo == null || warsInfo.getCombatResults() != 3) {
             return;
         }
         if (type == 0) {
-            final Equipment equipment = objData.getCannonMap().get(warsInfo.getVisible());
-            if (equipment == null) {
-                final Npc npc = this.mapService.getNpc(90996);
-                MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc, "燃烧吧神龙大炮/activate_cannon|我只是参观的/离开#<E:17>#", String.format(npc.getTalk(), 180)));
+            Equipment equipment2 = (Equipment)objData.getCannonMap().get(Integer.valueOf(warsInfo.getVisible()));
+            if (equipment2 == null) {
+                Npc npc2 = this.mapService.getNpc(90996);
+                MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc2, "燃烧吧神龙大炮/activate_cannon|我只是参观的/离开#<E:17>#", String.format(npc2.getTalk(), Short.valueOf((short)180))));
                 return;
             }
-            if (equipment.getStance() == warsInfo.getStance()) {
-                MessagePusher.pushMessage(role, new RespMsg(String.format("我帮#<R>%s#正在准备发射", equipment.getName())));
+            if (equipment2.getStance() == warsInfo.getStance()) {
+                MessagePusher.pushMessage(role, new RespMsg(String.format("我帮#<R>%s#正在准备发射", equipment2.getName())));
                 return;
             }
-            final Npc npc = this.mapService.getNpc(90996);
-            MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc, "是/break_off_cannon|否/离开", "对方正在操作神龙大炮，要阻止吗？"));
+            Npc npc2 = this.mapService.getNpc(90996);
+            MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc2, "是/break_off_cannon|否/离开", "对方正在操作神龙大炮，要阻止吗？"));
+            return;
         }
-        else {
-            if (type != 1) {
-                return;
-            }
+        else if (type == 1) {
             byte stance = 0;
-            if (!NumberUtil.isNumber(string)) {
-                return;
-            }
-            stance = Byte.valueOf(string);
-            if (stance < 0 || stance > 1) {
-                this.logger.error("玩家：{}，攻击城门立场错误{}", role.getRoleId(), string);
-                return;
-            }
-            if (warsInfo.getStance() == stance) {
-                final Party sideParty = this.partyService.getParty(role.getFaction());
-                final Equipment equipment2 = objData.getGateMap().get(warsInfo.getEnemy());
-                if (equipment2 != null) {
-                    final Npc npc2 = this.mapService.getNpc(90995);
-                    npc2.setName(sideParty.getLevel() + "级城门");
-                    MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc2, "是/break_off_gate|否/离开", "对方正在进攻城门，要阻止吗？"));
+            if (NumberUtil.isNumber(string)) {
+                stance = (byte)Byte.valueOf(string);
+                if (stance < 0 || stance > 1) {
+                    this.logger.error("玩家：{}，攻击城门立场错误{}", role.getRoleId(), string);
+                    return;
                 }
-                return;
-            }
-            final Party enemyParty = this.partyService.getParty(warsInfo.getEnemy());
-            final Equipment equipment2 = objData.getGateMap().get(role.getFaction());
-            if (equipment2 != null) {
-                if (team.getId() == equipment2.getTeam()) {
-                    final Npc npc2 = this.mapService.getNpc(90995);
-                    npc2.setName(enemyParty.getLevel() + "级城门");
-                    MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc2, "停止攻击/off_cannon|根本停不下来/离开#<E:17>#", "我队正在向对方城门发起攻击"));
+                if (warsInfo.getStance() == stance) {
+                    Party sideParty = this.partyService.getParty(role.getFaction());
+                    Equipment equipment = (Equipment)objData.getGateMap().get(Integer.valueOf(warsInfo.getEnemy()));
+                    if (equipment != null) {
+                        Npc npc = this.mapService.getNpc(90995);
+                        npc.setName((int)sideParty.getLevel() + "级城门");
+                        MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc, "是/break_off_gate|否/离开", "对方正在进攻城门，要阻止吗？"));
+                    }
+                    return;
                 }
                 else {
-                    MessagePusher.pushMessage(role, new RespMsg(String.format("我方#<R>%s#的队伍正在进攻城门", equipment2.getName())));
+                    Party enemyParty = this.partyService.getParty(Integer.valueOf(warsInfo.getEnemy()));
+                    Equipment equipment = (Equipment)objData.getGateMap().get(role.getFaction());
+                    if (equipment != null) {
+                        if (team.getId() == equipment.getTeam()) {
+                            Npc npc = this.mapService.getNpc(90995);
+                            npc.setName((int)enemyParty.getLevel() + "级城门");
+                            MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc, "停止攻击/off_cannon|根本停不下来/离开#<E:17>#", "我队正在向对方城门发起攻击"));
+                        }
+                        else {
+                            MessagePusher.pushMessage(role, new RespMsg(String.format("我方#<R>%s#的队伍正在进攻城门", equipment.getName())));
+                        }
+                        return;
+                    }
+                    else {
+                        Npc npc = this.mapService.getNpc(90995);
+                        npc.setName((int)enemyParty.getLevel() + "级城门");
+                        GangWarsInfo enemyInfo = (GangWarsInfo)objData.getWarsMap().get(Integer.valueOf(warsInfo.getEnemy()));
+                        MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc, "为了我帮，开打/atk_cannon|还是先干点别的/离开#<E:17>#", "这是敌方城门，耐久剩余#<R>" + (int)enemyInfo.getGateLife() + "#"));
+                        return;
+                    }
                 }
+            }
+            else {
                 return;
             }
-            final Npc npc2 = this.mapService.getNpc(90995);
-            npc2.setName(enemyParty.getLevel() + "级城门");
-            final GangWarsInfo enemyInfo = objData.getWarsMap().get(warsInfo.getEnemy());
-            MessagePusher.pushMessage(role, this.npcService.getRespNpcContent(role, npc2, "为了我帮，开打/atk_cannon|还是先干点别的/离开#<E:17>#", "这是敌方城门，耐久剩余#<R>" + enemyInfo.getGateLife() + "#"));
+        }
+        else {
+            return;
         }
     }
     
-    public void operateCannon(final Role role, final String type) {
+    public void operateCannon(final Role role, String type) {
         if (this.teamService.getTeamCount(role) < 3) {
             return;
         }
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        if (team.getLeaderUid() != role.getId()) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        if (team.getLeaderUid() != (long)role.getId()) {
             MessagePusher.pushMessage(role, new RespMsg("老老实实听从队长指挥吧"));
             return;
         }
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
-        final GangWarsInfo warsInfo = objData.getWarsMap().get(role.getFaction());
+        GangWarsInfo warsInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
         if (warsInfo == null || warsInfo.getCombatResults() != 3) {
             return;
         }
-        final Equipment equipment = objData.getCannonMap().get(warsInfo.getVisible());
+        Equipment equipment = (Equipment)objData.getCannonMap().get(Integer.valueOf(warsInfo.getVisible()));
         if ("activate_cannon".equals(type)) {
             if (equipment == null) {
-                final int time = new Long(System.currentTimeMillis() / 1000L).intValue() + 20;
-                final ScheduledFuture<?> schedule = SchedulerManager.getInstance().schedule(new Runnable() {
+                int time = new Long(System.currentTimeMillis() / 1000L).intValue() + 20;
+                ScheduledFuture<?> schedule = SchedulerManager.getInstance().schedule(new Runnable() {
                     @Override
                     public void run() {
-                        GangWarsPkHandler.this.cannonTimer(role.getFaction());
+                        GangWarsPkHandler.this.cannonTimer((int)role.getFaction());
                     }
                 }, 20000L);
-                final RespGangWarsRoleState respGangWarsRoleState = new RespGangWarsRoleState((byte)2, time);
-                final List<Long> members = this.operateMembers(team, objData.getPkData().get(role.getFaction()), respGangWarsRoleState, (byte)2);
-                objData.getCannonMap().put(warsInfo.getVisible(), new Equipment(schedule, warsInfo.getStance(), team.getId(), role.getName(), members, time));
+                RespGangWarsRoleState respGangWarsRoleState = new RespGangWarsRoleState((byte)2, time);
+                List<Long> members = this.operateMembers(team, (Map)objData.getPkData().get(role.getFaction()), respGangWarsRoleState, (byte)2);
+                objData.getCannonMap().put(Integer.valueOf(warsInfo.getVisible()), new Equipment(schedule, warsInfo.getStance(), team.getId(), role.getName(), members, time));
             }
             else {
                 MessagePusher.pushMessage(role, new RespMsg("大炮引线已被其他玩家点燃"));
@@ -244,40 +258,41 @@ public class GangWarsPkHandler extends ActivityHandler
                 MessagePusher.pushMessage(role, new RespMsg("神龙大炮引线已熄灭"));
                 return;
             }
-            final Map<Long, GangWarsPkData> enemyWarsPkDataMap = objData.getPkData().get(warsInfo.getEnemy());
+            Map<Long, GangWarsPkData> enemyWarsPkDataMap = (Map)objData.getPkData().get(Integer.valueOf(warsInfo.getEnemy()));
             if (enemyWarsPkDataMap == null) {
                 return;
             }
-            final Map<Long, GangWarsPkData> sideWarsPkDataMap = objData.getPkData().get(role.getFaction());
+            Map<Long, GangWarsPkData> sideWarsPkDataMap = (Map)objData.getPkData().get(role.getFaction());
             if (sideWarsPkDataMap == null) {
                 return;
             }
             this.cancelTask(equipment.getScheduledFuture());
-            objData.getCannonMap().remove(warsInfo.getVisible());
+            objData.getCannonMap().remove(Integer.valueOf(warsInfo.getVisible()));
             this.abortOperate(role, equipment, team, sideWarsPkDataMap, enemyWarsPkDataMap, (byte)2, "敌方阻止，操作神龙大炮失败");
         }
+        return;
     }
     
-    public void cannonTimer(final int faction) {
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+    public void cannonTimer(int faction) {
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
-        final List<Long> objects = new ArrayList<Long>();
-        final GangWarsInfo sideInfo = objData.getWarsMap().get(faction);
+        List<Long> objects = new ArrayList<>();
+        GangWarsInfo sideInfo = (GangWarsInfo)objData.getWarsMap().get(Integer.valueOf(faction));
         if (sideInfo == null || sideInfo.getCombatResults() != 3) {
             return;
         }
-        final Map<Long, GangWarsPkData> warsPkDataMap = objData.getPkData().get(faction);
-        final StringBuilder stringBuilder = new StringBuilder();
-        final Equipment equipment = objData.getCannonMap().get(sideInfo.getVisible());
-        for (final Long id : equipment.getList()) {
-            final GangWarsPkData gangWarsPkData = warsPkDataMap.get(id);
+        Map<Long, GangWarsPkData> warsPkDataMap = (Map)objData.getPkData().get(Integer.valueOf(faction));
+        StringBuilder stringBuilder = new StringBuilder();
+        Equipment equipment = (Equipment)objData.getCannonMap().get(Integer.valueOf(sideInfo.getVisible()));
+        for (Long id : equipment.getList()) {
+            GangWarsPkData gangWarsPkData = (GangWarsPkData)warsPkDataMap.get(id);
             if (gangWarsPkData != null && gangWarsPkData.getPosition() != 3) {
                 objects.add(id);
                 gangWarsPkData.setState((byte)0);
             }
-            final Role player = this.roleService.getPlayer(id);
+            Role player = this.roleService.getPlayer((long)id);
             if (player != null) {
                 if (stringBuilder.length() > 0) {
                     stringBuilder.append("、");
@@ -285,29 +300,30 @@ public class GangWarsPkHandler extends ActivityHandler
                 stringBuilder.append(player.getName());
             }
         }
-        objData.getCannonMap().remove(sideInfo.getVisible());
-        final GangWarsInfo enemyInfo = objData.getWarsMap().get(sideInfo.getEnemy());
-        final int gateLife = enemyInfo.getGateLife() - 180;
+        objData.getCannonMap().remove(Integer.valueOf(sideInfo.getVisible()));
+        GangWarsInfo enemyInfo = (GangWarsInfo)objData.getWarsMap().get(Integer.valueOf(sideInfo.getEnemy()));
+        int gateLife = enemyInfo.getGateLife() - 180;
         enemyInfo.setGateLife((short)((gateLife < 0) ? 0 : gateLife));
-        final int count = objData.getRecordMap().getInt(faction + "_cannon", 0);
-        objData.getRecordMap().setv(faction + "_cannon", count + 1);
+        int count = objData.getRecordMap().getInt(faction + "_cannon", 0);
+        objData.getRecordMap().setv(faction + "_cannon", Integer.valueOf(count + 1));
         this.updateGateLife(faction, sideInfo, enemyInfo, objects, (byte)2);
-        final Party enemyParty = this.partyService.getParty(sideInfo.getEnemy());
+        Party enemyParty = this.partyService.getParty(Integer.valueOf(sideInfo.getEnemy()));
         if (enemyParty != null && stringBuilder.length() > 0) {
-            this.partyService.npcPartyChat(enemyParty, String.format("%s#<EP>启动龙神大炮击中#%s#<EP>总部，总部耐久度降低#%d点", stringBuilder.toString(), "我方", 180));
-            final Party sideParty = this.partyService.getParty(faction);
+            this.partyService.npcPartyChat(enemyParty, String.format("%s#<EP>启动龙神大炮击中#%s#<EP>总部，总部耐久度降低#%d点", stringBuilder.toString(), "我方", Short.valueOf((short)180)));
+            Party sideParty = this.partyService.getParty(Integer.valueOf(faction));
             if (sideParty != null) {
-                this.partyService.npcPartyChat(sideParty, String.format("%s#<EP>启动龙神大炮击中#%s#<EP>总部，总部耐久度降低#%d点", stringBuilder.toString(), enemyParty.getName(), 180));
+                this.partyService.npcPartyChat(sideParty, String.format("%s#<EP>启动龙神大炮击中#%s#<EP>总部，总部耐久度降低#%d点", stringBuilder.toString(), enemyParty.getName(), Short.valueOf((short)180)));
             }
         }
+        return;
     }
     
-    public void operateGate(final Role role, final String type) {
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+    public void operateGate(Role role, String type) {
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
-        final GangWarsInfo warsInfo = objData.getWarsMap().get(role.getFaction());
+        GangWarsInfo warsInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
         if (warsInfo == null || warsInfo.getCombatResults() != 3) {
             return;
         }
@@ -320,40 +336,42 @@ public class GangWarsPkHandler extends ActivityHandler
         else if ("break_off_gate".equals(type)) {
             this.breakOffGate(role, objData, warsInfo);
         }
+        return;
     }
     
-    public void atkGate(final Role role, final GangWarsData objData, final GangWarsInfo warsInfo) {
-        final Map<Long, GangWarsPkData> warsPkDataMap = objData.getPkData().get(role.getFaction());
+    public void atkGate(Role role, GangWarsData objData, GangWarsInfo warsInfo) {
+        Map<Long, GangWarsPkData> warsPkDataMap = (Map)objData.getPkData().get(role.getFaction());
         if (warsPkDataMap == null) {
             return;
         }
         if (this.teamService.getTeamCount(role) < 3) {
             return;
         }
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        final Equipment equipment = objData.getGateMap().get(role.getFaction());
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        Equipment equipment = (Equipment)objData.getGateMap().get(role.getFaction());
         if (equipment == null) {
-            final ScheduledFuture<?> schedule = SchedulerManager.getInstance().scheduleAtFixedRate(() -> this.gateTimer(role.getFaction()), 10000L, 10000L);
-            final RespGangWarsRoleState respGangWarsRoleState = new RespGangWarsRoleState((byte)3, 0);
-            final List<Long> members = this.operateMembers(team, warsPkDataMap, respGangWarsRoleState, (byte)3);
+            ScheduledFuture<?> schedule = SchedulerManager.getInstance().scheduleAtFixedRate(() -> this.gateTimer((int)role.getFaction()), 10000L, 10000L);
+            RespGangWarsRoleState respGangWarsRoleState = new RespGangWarsRoleState((byte)3, 0);
+            List<Long> members = this.operateMembers(team, warsPkDataMap, respGangWarsRoleState, (byte)3);
             objData.getGateMap().put(role.getFaction(), new Equipment(schedule, warsInfo.getStance(), team.getId(), role.getName(), members, 0));
         }
         else {
             MessagePusher.pushMessage(role, new RespMsg(String.format("我方#<R>%s#的队伍正在进攻城门", equipment.getName())));
         }
+        return;
     }
     
-    public void offGate(final Role role, final GangWarsData objData, final String tips) {
-        final Map<Long, GangWarsPkData> warsPkDataMap = objData.getPkData().get(role.getFaction());
+    public void offGate(Role role, GangWarsData objData, String tips) {
+        Map<Long, GangWarsPkData> warsPkDataMap = (Map)objData.getPkData().get(role.getFaction());
         if (warsPkDataMap == null) {
             return;
         }
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        if (team.getLeaderUid() != role.getId()) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        if (team.getLeaderUid() != (long)role.getId()) {
             MessagePusher.pushMessage(role, new RespMsg("老老实实听从队长指挥吧"));
             return;
         }
-        final Equipment equipment = objData.getGateMap().get(role.getFaction());
+        Equipment equipment = (Equipment)objData.getGateMap().get(role.getFaction());
         if (equipment == null) {
             return;
         }
@@ -362,86 +380,89 @@ public class GangWarsPkHandler extends ActivityHandler
         }
         this.cancelTask(equipment.getScheduledFuture());
         objData.getGateMap().remove(role.getFaction());
-        final RespOffRoleState offRoleState = new RespOffRoleState("wars", (byte)3);
-        final RespNotifyMiscEx miscEx = new RespNotifyMiscEx(tips);
-        final ChatService chatService = SpringUtils.getChatService();
-        for (final Long id : equipment.getList()) {
-            final GangWarsPkData warsPkData = warsPkDataMap.get(id);
+        RespOffRoleState offRoleState = new RespOffRoleState("wars", (byte)3);
+        RespNotifyMiscEx miscEx = new RespNotifyMiscEx(tips);
+        ChatService chatService = SpringUtils.getChatService();
+        for (Long id : equipment.getList()) {
+            GangWarsPkData warsPkData = (GangWarsPkData)warsPkDataMap.get(id);
             if (warsPkData != null) {
                 warsPkData.setState((byte)0);
             }
-            MessagePusher.pushMessage(id, offRoleState);
-            MessagePusher.pushMessage(id, miscEx);
+            MessagePusher.pushMessage((long)id, offRoleState);
+            MessagePusher.pushMessage((long)id, miscEx);
             chatService.sendInfo(id, tips);
         }
+        return;
     }
     
-    public void breakOffGate(final Role role, final GangWarsData objData, final GangWarsInfo warsInfo) {
-        final Team team = this.teamService.getTeam(role.getRoleId());
-        if (team.getLeaderUid() != role.getId()) {
+    public void breakOffGate(Role role, GangWarsData objData, GangWarsInfo warsInfo) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
+        if (team.getLeaderUid() != (long)role.getId()) {
             MessagePusher.pushMessage(role, new RespMsg("老老实实听从队长指挥吧"));
             return;
         }
-        final Equipment equipment = objData.getGateMap().get(warsInfo.getEnemy());
+        Equipment equipment = (Equipment)objData.getGateMap().get(Integer.valueOf(warsInfo.getEnemy()));
         if (equipment == null) {
             MessagePusher.pushMessage(role, new RespMsg("敌方已经停止了攻击城门"));
             return;
         }
-        final Map<Long, GangWarsPkData> enemyWarsPkDataMap = objData.getPkData().get(warsInfo.getEnemy());
+        Map<Long, GangWarsPkData> enemyWarsPkDataMap = (Map)objData.getPkData().get(Integer.valueOf(warsInfo.getEnemy()));
         if (enemyWarsPkDataMap == null) {
             return;
         }
-        final Map<Long, GangWarsPkData> sideWarsPkDataMap = objData.getPkData().get(role.getFaction());
+        Map<Long, GangWarsPkData> sideWarsPkDataMap = (Map)objData.getPkData().get(role.getFaction());
         if (sideWarsPkDataMap == null) {
             return;
         }
         this.cancelTask(equipment.getScheduledFuture());
-        objData.getGateMap().remove(warsInfo.getEnemy());
+        objData.getGateMap().remove(Integer.valueOf(warsInfo.getEnemy()));
         this.abortOperate(role, equipment, team, sideWarsPkDataMap, enemyWarsPkDataMap, (byte)3, "敌方阻止，停止攻击城门");
+        return;
     }
     
-    public void abortOperate(final Role role, final Equipment equipment, final Team team, final Map<Long, GangWarsPkData> sideWarsPkDataMap, final Map<Long, GangWarsPkData> enemyWarsPkDataMap, final byte state, final String msg) {
-        final RespOffRoleState offRoleState = new RespOffRoleState("wars", state);
+    public void abortOperate(Role role, Equipment equipment, Team team, Map<Long, GangWarsPkData> sideWarsPkDataMap, Map<Long, GangWarsPkData> enemyWarsPkDataMap, byte state, String msg) {
+        RespOffRoleState offRoleState = new RespOffRoleState("wars", state);
         for (int i = 0; i < team.getList().size(); ++i) {
-            final Member member = team.getList().get(i);
+            Member member = (Member)team.getList().get(i);
             if (member.isInTeam()) {
-                final GangWarsPkData warsPkData = enemyWarsPkDataMap.get(member.getId());
+                GangWarsPkData warsPkData = (GangWarsPkData)enemyWarsPkDataMap.get(member.getId());
                 if (warsPkData != null) {
                     warsPkData.setState((byte)0);
                 }
-                MessagePusher.pushMessage(member.getId(), offRoleState);
+                MessagePusher.pushMessage((long)member.getId(), offRoleState);
             }
         }
-        final Team enemyTeam = this.teamService.getTeamByTeamId(equipment.getTeam());
+        Team enemyTeam = this.teamService.getTeamByTeamId(equipment.getTeam());
         if (enemyTeam == null) {
             return;
         }
-        final Role player = this.roleService.getPlayer(enemyTeam.getLeaderUid());
+        Role player = this.roleService.getPlayer(enemyTeam.getLeaderUid());
         if (player == null) {
             return;
         }
         for (int j = 0; j < enemyTeam.getList().size(); ++j) {
-            final Member member2 = enemyTeam.getList().get(j);
+            Member member2 = (Member)enemyTeam.getList().get(j);
             if (member2.isInTeam()) {
-                MessagePusher.pushMessage(member2.getId(), new RespNotifyMiscEx(member2.getId(), msg, true));
+                MessagePusher.pushMessage((long)member2.getId(), new RespNotifyMiscEx(member2.getId(), msg, true));
             }
         }
         this.upMemberState(enemyWarsPkDataMap, enemyTeam, (byte)1);
         this.upMemberState(sideWarsPkDataMap, team, (byte)1);
         this.doStartFightPackage(role, team, player, enemyTeam);
+        return;
     }
     
-    public void upMemberState(final Map<Long, GangWarsPkData> warsPkDataMap, final Team team, final byte state) {
+    public void upMemberState(Map<Long, GangWarsPkData> warsPkDataMap, Team team, byte state) {
         for (int i = 0; i < team.getList().size(); ++i) {
-            final Member member = team.getList().get(i);
+            Member member = (Member)team.getList().get(i);
             if (member.isInTeam()) {
                 this.upMember(member.getId(), warsPkDataMap, state, 0);
             }
         }
     }
     
-    public void upMember(final Long id, final Map<Long, GangWarsPkData> warsPkDataMap, final byte state, final int time) {
-        final GangWarsPkData side = warsPkDataMap.get(id);
+    public void upMember(Long id, Map<Long, GangWarsPkData> warsPkDataMap, byte state, int time) {
+        GangWarsPkData side = (GangWarsPkData)warsPkDataMap.get(id);
         if (side != null) {
             side.setState(state);
             if (time > 0) {
@@ -451,180 +472,201 @@ public class GangWarsPkHandler extends ActivityHandler
         }
     }
     
-    public List<Long> operateMembers(final Team team, final Map<Long, GangWarsPkData> warsPkDataMap, final RespGangWarsRoleState respGangWarsRoleState, final byte state) {
-        final List<Long> objects = new ArrayList<Long>();
-        for (final Member member : team.getList()) {
+    public List<Long> operateMembers(Team team, Map<Long, GangWarsPkData> warsPkDataMap, RespGangWarsRoleState respGangWarsRoleState, byte state) {
+        List<Long> objects = new ArrayList<>();
+        for (Member member : team.getList()) {
             if (member.isInTeam()) {
-                MessagePusher.pushMessage(member.getId(), respGangWarsRoleState);
-                final GangWarsPkData gangWarsPkData = warsPkDataMap.get(member.getId());
-                if (gangWarsPkData == null) {
+                MessagePusher.pushMessage((long)member.getId(), respGangWarsRoleState);
+                GangWarsPkData gangWarsPkData = (GangWarsPkData)warsPkDataMap.get(member.getId());
+                if (gangWarsPkData != null) {
+                    gangWarsPkData.setState(state);
+                    objects.add(member.getId());
+                }
+                else {
                     continue;
                 }
-                gangWarsPkData.setState(state);
-                objects.add(member.getId());
+            }
+            else {
+                continue;
             }
         }
         return objects;
     }
     
-    public void gateTimer(final int faction) {
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+    public void gateTimer(int faction) {
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
-        final List<Long> objects = new ArrayList<Long>();
-        final GangWarsInfo sideInfo = objData.getWarsMap().get(faction);
+        List<Long> objects = new ArrayList<>();
+        GangWarsInfo sideInfo = (GangWarsInfo)objData.getWarsMap().get(Integer.valueOf(faction));
         if (sideInfo == null || sideInfo.getCombatResults() != 3) {
-            final Equipment equipment = objData.getGateMap().get(sideInfo.getVisible());
+            Equipment equipment = (Equipment)objData.getGateMap().get(Integer.valueOf(sideInfo.getVisible()));
             if (equipment != null) {
                 this.cancelTask(equipment.getScheduledFuture());
-                objData.getGateMap().remove(sideInfo.getVisible());
+                objData.getGateMap().remove(Integer.valueOf(sideInfo.getVisible()));
             }
             return;
         }
-        final Equipment equipment = objData.getGateMap().get(faction);
-        if (equipment != null) {
-            final Map<Long, GangWarsPkData> warsPkDataMap = objData.getPkData().get(faction);
-            for (final Long id : equipment.getList()) {
-                final GangWarsPkData gangWarsPkData = warsPkDataMap.get(id);
-                if (gangWarsPkData != null && gangWarsPkData.getPosition() != 3) {
-                    objects.add(id);
-                    gangWarsPkData.setState((byte)0);
-                    MessagePusher.pushMessage(id, new RespMsg("本队对敌方#<O>城门#造成了#<G>30点伤害##<E:50>#"));
+        else {
+            Equipment equipment = (Equipment)objData.getGateMap().get(Integer.valueOf(faction));
+            if (equipment != null) {
+                Map<Long, GangWarsPkData> warsPkDataMap = (Map)objData.getPkData().get(Integer.valueOf(faction));
+                for (Long id : equipment.getList()) {
+                    GangWarsPkData gangWarsPkData = (GangWarsPkData)warsPkDataMap.get(id);
+                    if (gangWarsPkData != null && gangWarsPkData.getPosition() != 3) {
+                        objects.add(id);
+                        gangWarsPkData.setState((byte)0);
+                        MessagePusher.pushMessage((long)id, new RespMsg("本队对敌方#<O>城门#造成了#<G>30点伤害##<E:50>#"));
+                    }
+                    else {
+                        continue;
+                    }
                 }
+                GangWarsInfo enemyInfo = (GangWarsInfo)objData.getWarsMap().get(Integer.valueOf(sideInfo.getEnemy()));
+                int gateLife = enemyInfo.getGateLife() - 30;
+                enemyInfo.setGateLife((short)((gateLife < 0) ? 0 : gateLife));
+                this.updateGateLife(faction, sideInfo, enemyInfo, objects, (byte)3);
             }
-            final GangWarsInfo enemyInfo = objData.getWarsMap().get(sideInfo.getEnemy());
-            final int gateLife = enemyInfo.getGateLife() - 30;
-            enemyInfo.setGateLife((short)((gateLife < 0) ? 0 : gateLife));
-            this.updateGateLife(faction, sideInfo, enemyInfo, objects, (byte)3);
+            return;
         }
     }
     
-    public void updateGateLife(final int serial, final GangWarsInfo sideInfo, final GangWarsInfo enemyInfo, final List<Long> objects, final byte type) {
+    public void updateGateLife(int serial, GangWarsInfo sideInfo, GangWarsInfo enemyInfo, List<Long> objects, byte type) {
         if (enemyInfo.getGateLife() <= 0) {
             sideInfo.setCombatResults((byte)1);
             enemyInfo.setCombatResults((byte)0);
             this.gangWarsHandler.end(serial, sideInfo, enemyInfo);
         }
         else {
-            final GangWarsData objData = this.gangWarsHandler.getObjData();
+            GangWarsData objData = this.gangWarsHandler.getObjData();
             if (objData == null) {
                 return;
             }
             RespGangWarsGateLife gangWarsGateLife = new RespGangWarsGateLife(sideInfo.getGateLife(), enemyInfo.getGateLife(), type, enemyInfo.getStance());
-            for (final Long id : objects) {
-                MessagePusher.pushMessage(id, gangWarsGateLife);
+            for (Long id : objects) {
+                MessagePusher.pushMessage((long)id, gangWarsGateLife);
             }
-            final Map<Long, GangWarsPkData> sideMemberMap = objData.getPkData().get(serial);
-            for (final Long id2 : sideMemberMap.keySet()) {
+            Map<Long, GangWarsPkData> sideMemberMap = (Map)objData.getPkData().get(Integer.valueOf(serial));
+            for (Long id2 : sideMemberMap.keySet()) {
                 if (!objects.contains(id2)) {
-                    MessagePusher.pushMessage(id2, gangWarsGateLife);
+                    MessagePusher.pushMessage((long)id2, gangWarsGateLife);
+                }
+                else {
+                    continue;
                 }
             }
-            final Map<Long, GangWarsPkData> enemyMemberMap = objData.getPkData().get(sideInfo.getEnemy());
+            Map<Long, GangWarsPkData> enemyMemberMap = (Map)objData.getPkData().get(Integer.valueOf(sideInfo.getEnemy()));
             gangWarsGateLife = new RespGangWarsGateLife(enemyInfo.getGateLife(), sideInfo.getGateLife(), (byte)2, enemyInfo.getStance());
-            for (final Long id3 : enemyMemberMap.keySet()) {
+            for (Long id3 : enemyMemberMap.keySet()) {
                 if (!objects.contains(id3)) {
-                    MessagePusher.pushMessage(id3, gangWarsGateLife);
+                    MessagePusher.pushMessage((long)id3, gangWarsGateLife);
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    public void requestFight(final Role role, final int id) {
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+    public void requestFight(Role role, int id) {
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
-        final Role player = this.roleService.getPlayer(id);
+        Role player = this.roleService.getPlayer(id);
         if (player == null || role.getFaction().equals(player.getFaction())) {
             return;
         }
-        final int count = this.teamService.getTeamCount(role);
+        int count = this.teamService.getTeamCount(role);
         if (count < 3) {
             MessagePusher.pushMessage(role, new RespMsg("人数不足#<R>3#人，不能发起攻击"));
             return;
         }
-        final GangWarsInfo gangWarsInfo = objData.getWarsMap().get(role.getFaction());
-        if (gangWarsInfo.getCombatResults() != 3 || !player.getFaction().equals(gangWarsInfo.getEnemy())) {
+        GangWarsInfo gangWarsInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
+        if (gangWarsInfo.getCombatResults() != 3 || !player.getFaction().equals(Integer.valueOf(gangWarsInfo.getEnemy()))) {
             return;
         }
-        final Fight fight = this.fightNewService.getFightByRoleId(player.getRoleId());
+        Fight fight = this.fightNewService.getFightByRoleId((int)player.getRoleId());
         if (fight != null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("对方在战斗中"));
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("对方在战斗中"));
             return;
         }
-        this.doStartFightPackage(role, this.teamService.getTeam(role.getRoleId()), objData.getPkData().get(role.getFaction()), objData.getPkData().get(player.getFaction()), player);
+        this.doStartFightPackage(role, this.teamService.getTeam((int)role.getRoleId()), (Map)objData.getPkData().get(role.getFaction()), (Map)objData.getPkData().get(player.getFaction()), player);
+        return;
     }
     
-    public void doStartFightPackage(final Role role, final Team team, final Map<Long, GangWarsPkData> sideWarsPkDataMap, final Map<Long, GangWarsPkData> enemyWarsPkDataMap, final Role player) {
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+    public void doStartFightPackage(Role role, Team team, Map<Long, GangWarsPkData> sideWarsPkDataMap, Map<Long, GangWarsPkData> enemyWarsPkDataMap, Role player) {
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
         this.upMemberState(sideWarsPkDataMap, team, (byte)1);
-        final Team enemyTeam = this.teamService.getTeam(player.getRoleId());
+        Team enemyTeam = this.teamService.getTeam((int)player.getRoleId());
         Role enemyLeader = player;
-        final Map<Long, GangWarsPkData> warsPkDataMap = objData.getPkData().get(player.getFaction());
+        Map<Long, GangWarsPkData> warsPkDataMap = (Map)objData.getPkData().get(player.getFaction());
         if (enemyTeam == null) {
-            if (!this.isStartFight(role.getId(), warsPkDataMap.get(player.getId()))) {
+            if (!this.isStartFight((long)role.getId(), (GangWarsPkData)warsPkDataMap.get(player.getId()))) {
                 return;
             }
             this.upMember(player.getId(), enemyWarsPkDataMap, (byte)1, 0);
         }
         else {
-            for (int i = 0; i < enemyTeam.getList().size(); ++i) {
-                final Member member = enemyTeam.getList().get(i);
-                if (member.isInTeam() && !this.isStartFight(role.getId(), warsPkDataMap.get(member.getId()))) {
+            int i = 0;
+            while (i < enemyTeam.getList().size()) {
+                Member member = (Member)enemyTeam.getList().get(i);
+                if (member.isInTeam() && !this.isStartFight((long)role.getId(), (GangWarsPkData)warsPkDataMap.get(member.getId()))) {
                     return;
                 }
+                ++i;
             }
             this.upMemberState(enemyWarsPkDataMap, enemyTeam, (byte)1);
             enemyLeader = this.roleService.getPlayer(enemyTeam.getLeaderUid());
         }
-        final GangWarsInfo gangWarsInfo = objData.getWarsMap().get(role.getFaction());
-        Equipment equipment = objData.getCannonMap().get(gangWarsInfo.getVisible());
+        GangWarsInfo gangWarsInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
+        Equipment equipment = (Equipment)objData.getCannonMap().get(Integer.valueOf(gangWarsInfo.getVisible()));
         if (equipment != null && equipment.getList().contains(player.getId())) {
             this.startFightBreakOff(role, player, equipment, objData, enemyTeam, (byte)2);
         }
-        equipment = objData.getGateMap().get(player.getFaction());
+        equipment = (Equipment)objData.getGateMap().get(player.getFaction());
         if (equipment != null) {
             this.startFightBreakOff(role, player, equipment, objData, enemyTeam, (byte)3);
         }
         this.doStartFightPackage(role, team, enemyLeader, enemyTeam);
+        return;
     }
     
-    private void startFightBreakOff(final Role role, final Role player, final Equipment equipment, final GangWarsData objData, final Team enemyTeam, final byte state) {
-        final RespOffRoleState offRoleState = new RespOffRoleState("wars", state);
+    private void startFightBreakOff(Role role, Role player, Equipment equipment, GangWarsData objData, Team enemyTeam, byte state) {
+        RespOffRoleState offRoleState = new RespOffRoleState("wars", state);
         this.cancelTask(equipment.getScheduledFuture());
-        final GangWarsInfo warsInfo = objData.getWarsMap().get(role.getFaction());
+        GangWarsInfo warsInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
         if (state == 3) {
-            objData.getGateMap().remove(warsInfo.getEnemy());
+            objData.getGateMap().remove(Integer.valueOf(warsInfo.getEnemy()));
         }
         else {
-            objData.getCannonMap().remove(warsInfo.getVisible());
+            objData.getCannonMap().remove(Integer.valueOf(warsInfo.getVisible()));
         }
         if (enemyTeam != null) {
             for (int i = 0; i < enemyTeam.getList().size(); ++i) {
-                final Member member = enemyTeam.getList().get(i);
+                Member member = (Member)enemyTeam.getList().get(i);
                 if (member.isInTeam()) {
-                    MessagePusher.pushMessage(member.getId(), offRoleState);
+                    MessagePusher.pushMessage((long)member.getId(), offRoleState);
                 }
             }
         }
         else {
-            MessagePusher.pushMessage(player.getId(), offRoleState);
+            MessagePusher.pushMessage((long)player.getId(), offRoleState);
         }
     }
     
-    private boolean isStartFight(final long id, final GangWarsPkData enemy) {
+    private boolean isStartFight(long id, GangWarsPkData enemy) {
         if (enemy != null) {
             if (enemy.getState() == 1 || enemy.getState() == 4) {
                 MessagePusher.pushMessage(id, new RespMsg("对方在战斗中"));
                 return false;
             }
             if (enemy.getRebirth() > 0) {
-                final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+                int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
                 if (enemy.getRebirth() > currTime) {
                     MessagePusher.pushMessage(id, new RespMsg("对方正在保护阶段"));
                     return false;
@@ -635,15 +677,15 @@ public class GangWarsPkHandler extends ActivityHandler
         return true;
     }
     
-    public void doStartFightPackage(final Role roleA, final Team teamA, final Role roleB, final Team teamB) {
-        final List<Member> listA = new ArrayList<Member>();
+    public void doStartFightPackage(Role roleA, Team teamA, Role roleB, Team teamB) {
+        List<Member> listA = new ArrayList<>();
         if (teamA == null) {
             listA.add(Member.valueOf(roleA));
         }
         else {
             listA.addAll(this.fightNewService.excuteMemberLeaveTemp(roleA, teamA));
         }
-        final List<Member> listB = new ArrayList<Member>();
+        List<Member> listB = new ArrayList<>();
         if (teamB == null) {
             listB.add(Member.valueOf(roleB));
         }
@@ -653,25 +695,26 @@ public class GangWarsPkHandler extends ActivityHandler
         this.doStartFight(listA, listB);
     }
     
-    public void doStartFight(final List<Member> listA, final List<Member> listB) {
+    public void doStartFight(List<Member> listA, List<Member> listB) {
         if (listA == null || listB == null) {
             return;
         }
         if (listA.size() < 0 || listB.size() < 0) {
             return;
         }
-        final int fightType = this.getFightType();
-        final Fight fight = FightFactory.getFightFactory(fightType).create(3001, fightType, listA, listB);
+        int fightType = this.getFightType();
+        Fight fight = FightFactory.getFightFactory(fightType).create(3001, Integer.valueOf(fightType), listA, listB);
         fight.setMaxRound(GangWarsPkHandler.MAX_ROUND);
         fight.start();
+        return;
     }
     
     @Override
-    public void handleFightEnd(final FightEndEvent fightEndEvent) {
+    public void handleFightEnd(FightEndEvent fightEndEvent) {
         ThreadLocalUtil.addLocalTask(fightEndEvent.getRole(), () -> this.doFightEnd(fightEndEvent.getRole(), fightEndEvent));
     }
     
-    private void doFightEnd(final Role role, final FightEndEvent fightEndEvent) {
+    private void doFightEnd(Role role, FightEndEvent fightEndEvent) {
         try {
             if (this.teamService.isInTeam(role) && !this.teamService.isTeamLeader(role)) {
                 return;
@@ -679,44 +722,47 @@ public class GangWarsPkHandler extends ActivityHandler
             if (!this.isMatchFightType(fightEndEvent.getFightType())) {
                 return;
             }
-            if (!role.getPos().getMapId().equals(3001)) {
+            if (!role.getPos().getMapId().equals(Integer.valueOf(3001))) {
                 return;
             }
-            final GangWarsData objData = this.gangWarsHandler.getObjData();
+            GangWarsData objData = this.gangWarsHandler.getObjData();
             if (objData == null) {
                 return;
             }
-            final GangWarsInfo warsInfo = objData.getWarsMap().get(role.getFaction());
+            GangWarsInfo warsInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
             if (warsInfo == null || warsInfo.getCombatResults() != 3) {
                 return;
             }
-            final Team team = this.teamService.getTeam(role.getRoleId());
-            final Map<Long, GangWarsPkData> sideWarsPkDataMap = objData.getPkData().get(role.getFaction());
+            Team team = this.teamService.getTeam((int)role.getRoleId());
+            Map<Long, GangWarsPkData> sideWarsPkDataMap = (Map)objData.getPkData().get(role.getFaction());
             if (sideWarsPkDataMap == null) {
                 return;
             }
             int time = 0;
-            final RespGangWarsRoleState respGangWarsRoleState = new RespGangWarsRoleState((byte)0, time);
+            RespGangWarsRoleState respGangWarsRoleState = new RespGangWarsRoleState((byte)0, time);
             if (fightEndEvent.getStatus() == 2) {
                 time = new Long(System.currentTimeMillis() / 1000L).intValue() + 90;
                 respGangWarsRoleState.setTime(time);
             }
-            final FightInfo fightInfo = EventsUtils.getFightInfo(fightEndEvent.getRolesA(), fightEndEvent.getRolesB(), role.getId());
-            for (final Long id : fightInfo.getItself()) {
+            FightInfo fightInfo = EventsUtils.getFightInfo(fightEndEvent.getRolesA(), fightEndEvent.getRolesB(), (long)role.getId());
+            for (Long id : fightInfo.getItself()) {
                 this.upMember(id, sideWarsPkDataMap, (byte)0, time);
                 if (time > 0) {
-                    MessagePusher.pushMessage(id, respGangWarsRoleState);
+                    MessagePusher.pushMessage((long)id, respGangWarsRoleState);
+                }
+                else {
+                    continue;
                 }
             }
             this.doFightEnd(role, team, fightEndEvent.getStatus(), objData, warsInfo.getStance());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("战斗结束后操作错误-------------------------------------------------------");
         }
     }
     
-    public void doFightEnd(final Role role, final Team team, final byte status, final GangWarsData objData, final byte stance) {
+    public void doFightEnd(Role role, Team team, byte status, GangWarsData objData, byte stance) {
         if (status == 2) {
             int x = 24;
             int y = 19;
@@ -725,58 +771,61 @@ public class GangWarsPkHandler extends ActivityHandler
                 y = 109;
             }
             if (team != null) {
-                this.teamService.memberHandleThreadLocal(team, memberRole -> memberRole.pushTempCache("not_check_change_map", true));
+                this.teamService.memberHandleThreadLocal(team, memberRole -> memberRole.pushTempCache("not_check_change_map", Boolean.valueOf(true)));
             }
             else {
-                role.pushTempCache("not_check_change_map", true);
+                role.pushTempCache("not_check_change_map", Boolean.valueOf(true));
             }
             SpringUtils.getMapService().changeMap(role, new ReqTelePort(3001, x, y), null);
         }
         if (status == 1) {
-            final int anInt = objData.getRecordMap().getInt(role.getFaction() + "_win", 0);
-            objData.getRecordMap().setv(role.getFaction() + "_win", anInt + 1);
+            int anInt = objData.getRecordMap().getInt(role.getFaction() + "_win", 0);
+            objData.getRecordMap().setv(role.getFaction() + "_win", Integer.valueOf(anInt + 1));
         }
     }
     
-    public void getNearby(final Role role) {
-        final GangWarsData objData = this.gangWarsHandler.getObjData();
+    public void getNearby(Role role) {
+        GangWarsData objData = this.gangWarsHandler.getObjData();
         if (objData == null) {
             return;
         }
-        final GangWarsInfo sideInfo = objData.getWarsMap().get(role.getFaction());
+        GangWarsInfo sideInfo = (GangWarsInfo)objData.getWarsMap().get(role.getFaction());
         if (sideInfo == null || sideInfo.getCombatResults() != 3) {
             return;
         }
-        final Map<Long, GangWarsPkData> warsPkDataMap = objData.getPkData().get(sideInfo.getEnemy());
+        Map<Long, GangWarsPkData> warsPkDataMap = (Map)objData.getPkData().get(Integer.valueOf(sideInfo.getEnemy()));
         if (warsPkDataMap == null) {
             return;
         }
-        final List<Nearby> objects = new ArrayList<Nearby>(warsPkDataMap.size());
-        for (final Long id : warsPkDataMap.keySet()) {
-            final GangWarsPkData data = warsPkDataMap.get(id);
+        List<Nearby> objects = new ArrayList(warsPkDataMap.size());
+        for (Long id : warsPkDataMap.keySet()) {
+            GangWarsPkData data = (GangWarsPkData)warsPkDataMap.get(id);
             if (data.getPosition() != 1) {
                 continue;
             }
-            final Role player = this.roleService.getPlayer(id);
+            Role player = this.roleService.getPlayer((long)id);
             if (player == null) {
                 continue;
             }
             if (this.teamService.isInTeam(player) && !this.teamService.isTeamLeader(player)) {
                 continue;
             }
-            if (!DataGlobalFunc.visual(role.getPos().getX(), role.getPos().getY(), player.getPos().getX(), player.getPos().getY(), 50.0)) {
+            if (DataGlobalFunc.visual((int)role.getPos().getX(), (int)role.getPos().getY(), (int)player.getPos().getX(), (int)player.getPos().getY(), 50.0)) {
+                objects.add(new Nearby(player));
+            }
+            else {
                 continue;
             }
-            objects.add(new Nearby(player));
         }
         if (objects.size() > 0) {
             MessagePusher.pushMessage(role, new RespNearby(objects));
         }
+        return;
     }
     
-    public void cancelTask(final ScheduledFuture<?> task) {
+    public void cancelTask(ScheduledFuture<?> task) {
         if (task != null) {
-            task.cancel(Boolean.FALSE);
+            task.cancel((boolean)Boolean.FALSE);
         }
     }
     

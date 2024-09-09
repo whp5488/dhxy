@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import java.util.Iterator;
@@ -22,70 +21,77 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81009 extends SkillProcessor
 {
+    public SKILL_81009() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81009);
-        final List<FiedValue> list = PetPassiveSkillUtil.clearStatus(target, "abnormal");
-        final Effect effect = new Effect();
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81009);
+        List<FiedValue> list = PetPassiveSkillUtil.clearStatus(target, "abnormal");
+        Effect effect = new Effect();
         effect.setType(100000);
         if (list != null && list.size() > 0) {
             effect.setList(list);
-            skillRecord.setT(target.getId());
+            skillRecord.setT((long)(int)target.getId());
+            return effect;
         }
         return effect;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 15400;
     }
     
     @Override
-    public boolean excuteSkillCool(final Fight fight, final FightObject effector, final Object... args) {
-        effector.getSkillCoolMap().setv(String.valueOf(81009), (Object)WarMaxRound.WAR_MAX_ROUND.getValue());
+    public boolean excuteSkillCool(Fight fight, FightObject effector, Object... args) {
+        effector.getSkillCoolMap().setv(String.valueOf(81009), Integer.valueOf(WarMaxRound.WAR_MAX_ROUND.getValue()));
         return true;
     }
     
     @Override
-    public List<Integer> getTargetIds(final Fight fight, final FightObject effector) {
+    public List<Integer> getTargetIds(Fight fight, FightObject effector) {
         int count = 2;
-        final FightObject firstTarget = fight.queryFightObject(effector.getTargetId());
-        final List<Integer> targetIds = new ArrayList<Integer>();
+        FightObject firstTarget = fight.queryFightObject(Integer.valueOf(effector.getTargetId()));
+        List<Integer> targetIds = new ArrayList<>();
         if (firstTarget == null || firstTarget.isFallDown()) {
             count = 3;
         }
         else {
             targetIds.add(firstTarget.getId());
         }
-        final boolean trigger = AcsryPetSkillUtil.isTrigger(81009, effector);
+        boolean trigger = AcsryPetSkillUtil.isTrigger(81009, effector);
         if (trigger) {
             ++count;
         }
-        for (final FightObject obj : fight.getMySide(effector.getId())) {
-            if (obj.getId().equals(effector.getTargetId())) {
+        for (FightObject obj : fight.getMySide((int)effector.getId())) {
+            if (obj.getId().equals(Integer.valueOf(effector.getTargetId()))) {
                 continue;
             }
-            if (!FightOtherUtil.isHaveStatus(obj, StatusConst.getAnomalousStatus())) {
+            if (FightOtherUtil.isHaveStatus(obj, StatusConst.getAnomalousStatus())) {
+                targetIds.add(obj.getId());
+                if (--count <= 0) {
+                    break;
+                }
                 continue;
             }
-            targetIds.add(obj.getId());
-            if (--count <= 0) {
-                break;
+            else {
+                continue;
             }
         }
         return targetIds;

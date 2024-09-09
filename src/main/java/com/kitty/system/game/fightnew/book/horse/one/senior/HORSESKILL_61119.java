@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.one.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -14,20 +13,23 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_61119 extends HorseSkillProcessor
 {
+    public HORSESKILL_61119() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         if (effector.getType() != 0) {
             return null;
         }
         if (args != null && args.length >= 3) {
-            final RoleSkill skill = (RoleSkill)args[2];
-            if (skill != null && skill.getSkillId().equals(81056)) {
-                final HorseSkillParam horseSkillParam = effector.getHorseSkillMap().get(61119);
+            RoleSkill skill = (RoleSkill)args[2];
+            if (skill != null && skill.getSkillId().equals(Integer.valueOf(81056))) {
+                HorseSkillParam horseSkillParam = (HorseSkillParam)effector.getHorseSkillMap().get(Integer.valueOf(61119));
                 if (horseSkillParam == null) {
                     return null;
                 }
@@ -36,15 +38,15 @@ public class HORSESKILL_61119 extends HorseSkillProcessor
                 if (percenta == 0.0) {
                     return null;
                 }
-                final Integer hurt = (Integer)args[0];
+                Integer hurt = (Integer)args[0];
                 if (hurt == null) {
                     return null;
                 }
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 61119);
-                skillRecord.setT(effector.getId());
-                final int alterHurt = (int)(hurt * percenta);
-                final NutMap map = NutMap.NEW();
-                map.setv("alterHurt", (Object)alterHurt);
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 61119);
+                skillRecord.setT((long)(int)effector.getId());
+                int alterHurt = (int)((double)(int)hurt * percenta);
+                NutMap map = NutMap.NEW();
+                map.setv("alterHurt", Integer.valueOf(alterHurt));
                 return map;
             }
         }

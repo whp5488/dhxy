@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.onlinemall.message;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class RespTreasureInfo extends Message
     public RespTreasureInfo() {
         this.original = 8800;
         this.price = Deploy.treasurePrice;
-        this.list = new ArrayList<WeekTreasureInfo>();
+        this.list = new ArrayList<>();
     }
     
     public int getCount() {
@@ -62,7 +61,7 @@ public class RespTreasureInfo extends Message
         if (!(o instanceof RespTreasureInfo)) {
             return false;
         }
-        final RespTreasureInfo other = (RespTreasureInfo)o;
+        RespTreasureInfo other = (RespTreasureInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -75,17 +74,9 @@ public class RespTreasureInfo extends Message
         if (this.getPrice() != other.getPrice()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -94,12 +85,12 @@ public class RespTreasureInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getCount();
         result = result * 59 + this.getOriginal();
         result = result * 59 + this.getPrice();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

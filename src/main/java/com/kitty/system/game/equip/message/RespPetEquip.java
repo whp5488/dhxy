@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.equip.message;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -28,21 +26,13 @@ public class RespPetEquip extends Message
         if (!(o instanceof RespPetEquip)) {
             return false;
         }
-        final RespPetEquip other = (RespPetEquip)o;
+        RespPetEquip other = (RespPetEquip)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -51,9 +41,9 @@ public class RespPetEquip extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
@@ -63,13 +53,12 @@ public class RespPetEquip extends Message
         return "RespPetEquip(list=" + this.getList() + ")";
     }
     
-    @ConstructorProperties({ "list" })
     public RespPetEquip(final List<String> list) {
-        this.list = new ArrayList<String>();
+        this.list = new ArrayList<>();
         this.list = list;
     }
     
     public RespPetEquip() {
-        this.list = new ArrayList<String>();
+        this.list = new ArrayList<>();
     }
 }

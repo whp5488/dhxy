@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class RespClearAllRole extends Message
 {
     private int roleId;
     private int mapId;
+    
+    public RespClearAllRole() {
+    }
     
     public int getRoleId() {
         return this.roleId;
@@ -34,7 +36,7 @@ public class RespClearAllRole extends Message
         if (!(o instanceof RespClearAllRole)) {
             return false;
         }
-        final RespClearAllRole other = (RespClearAllRole)o;
+        RespClearAllRole other = (RespClearAllRole)o;
         return other.canEqual(this) && this.getRoleId() == other.getRoleId() && this.getMapId() == other.getMapId();
     }
     
@@ -44,7 +46,7 @@ public class RespClearAllRole extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         result = result * 59 + this.getMapId();

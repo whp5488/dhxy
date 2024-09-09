@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ public class DayInCeFight
     List<TianFuObject> tianFuList;
     
     public DayInCeFight() {
-        this.tianFuList = new ArrayList<TianFuObject>();
+        this.tianFuList = new ArrayList<>();
     }
     
     public short getLevel() {

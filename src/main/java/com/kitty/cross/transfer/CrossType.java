@@ -1,4 +1,3 @@
-
 package com.kitty.cross.transfer;
 
 public enum CrossType
@@ -8,7 +7,7 @@ public enum CrossType
     
     int type;
     
-    private CrossType(final int type) {
+    private CrossType(int type) {
         this.type = type;
     }
     

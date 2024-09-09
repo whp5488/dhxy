@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.card.facade;
 
 import com.kitty.mina.annotation.RequestMapping;
@@ -16,12 +15,16 @@ public class CardController
     @Autowired
     private CardService cardService;
     
+    public CardController() {
+    }
+    
     @RequestMapping
-    public void useCar(final IoSession session, final ReqUseCard reqUseCard) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void useCar(IoSession session, ReqUseCard reqUseCard) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        this.cardService.useCar(role, reqUseCard.getSerial(), Long.valueOf(reqUseCard.getId()));
+        this.cardService.useCar(role, reqUseCard.getSerial(), (long)Long.valueOf(reqUseCard.getId()));
+        return;
     }
 }

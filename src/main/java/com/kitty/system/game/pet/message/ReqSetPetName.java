@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqSetPetName extends Message
 {
     private Integer petId;
     private String name;
+    
+    public ReqSetPetName() {
+    }
     
     public Integer getPetId() {
         return this.petId;
@@ -34,34 +36,18 @@ public class ReqSetPetName extends Message
         if (!(o instanceof ReqSetPetName)) {
             return false;
         }
-        final ReqSetPetName other = (ReqSetPetName)o;
+        ReqSetPetName other = (ReqSetPetName)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$petId = this.getPetId();
-        final Object other$petId = other.getPetId();
-        Label_0065: {
-            if (this$petId == null) {
-                if (other$petId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$petId.equals(other$petId)) {
-                break Label_0065;
-            }
+        Object this$petId = this.getPetId();
+        Object other$petId = other.getPetId();
+        if (!((this$petId != null) ? this$petId.equals(other$petId) : (other$petId == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return true;
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return true;
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return (this$name != null) ? this$name.equals(other$name) : (other$name == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -70,11 +56,11 @@ public class ReqSetPetName extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $petId = this.getPetId();
+        Object $petId = this.getPetId();
         result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         return result;
     }

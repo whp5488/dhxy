@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.message.vo.RedBagInfo;
@@ -10,6 +9,9 @@ import com.kitty.mina.message.Message;
 public class RespPartyRedBagList extends Message
 {
     private List<RedBagInfo> redBagInfoList;
+    
+    public RespPartyRedBagList() {
+    }
     
     public void setRedBagInfoList(final List<RedBagInfo> redBagInfoList) {
         this.redBagInfoList = redBagInfoList;

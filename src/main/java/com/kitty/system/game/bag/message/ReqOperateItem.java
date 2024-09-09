@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.bag.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -53,7 +51,7 @@ public class ReqOperateItem extends Message
         if (!(o instanceof ReqOperateItem)) {
             return false;
         }
-        final ReqOperateItem other = (ReqOperateItem)o;
+        ReqOperateItem other = (ReqOperateItem)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -66,17 +64,9 @@ public class ReqOperateItem extends Message
         if (this.getNum() != other.getNum()) {
             return false;
         }
-        final Object this$param = this.getParam();
-        final Object other$param = other.getParam();
-        if (this$param == null) {
-            if (other$param == null) {
-                return true;
-            }
-        }
-        else if (this$param.equals(other$param)) {
-            return true;
-        }
-        return false;
+        Object this$param = this.getParam();
+        Object other$param = other.getParam();
+        return (this$param != null) ? this$param.equals(other$param) : (other$param == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -85,12 +75,12 @@ public class ReqOperateItem extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPos();
         result = result * 59 + this.getType();
         result = result * 59 + this.getNum();
-        final Object $param = this.getParam();
+        Object $param = this.getParam();
         result = result * 59 + (($param == null) ? 43 : $param.hashCode());
         return result;
     }
@@ -100,7 +90,6 @@ public class ReqOperateItem extends Message
         return "ReqOperateItem(pos=" + this.getPos() + ", type=" + this.getType() + ", num=" + this.getNum() + ", param=" + this.getParam() + ")";
     }
     
-    @ConstructorProperties({ "pos", "type", "num", "param" })
     public ReqOperateItem(final int pos, final int type, final int num, final String param) {
         this.pos = -1;
         this.num = 0;

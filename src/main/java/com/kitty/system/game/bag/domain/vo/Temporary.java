@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.bag.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class Temporary implements Serializable
@@ -60,73 +58,33 @@ public class Temporary implements Serializable
         if (!(o instanceof Temporary)) {
             return false;
         }
-        final Temporary other = (Temporary)o;
+        Temporary other = (Temporary)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0139: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0139;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$num = this.getNum();
-        final Object other$num = other.getNum();
-        Label_0176: {
-            if (this$num == null) {
-                if (other$num == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$num.equals(other$num)) {
-                break Label_0176;
-            }
+        Object this$num = this.getNum();
+        Object other$num = other.getNum();
+        if (!((this$num != null) ? this$num.equals(other$num) : (other$num == null))) {
             return false;
         }
-        final Object this$rests = this.getRests();
-        final Object other$rests = other.getRests();
-        if (this$rests == null) {
-            if (other$rests == null) {
-                return true;
-            }
-        }
-        else if (this$rests.equals(other$rests)) {
-            return true;
-        }
-        return false;
+        Object this$rests = this.getRests();
+        Object other$rests = other.getRests();
+        return (this$rests != null) ? this$rests.equals(other$rests) : (other$rests == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -135,17 +93,17 @@ public class Temporary implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $num = this.getNum();
+        Object $num = this.getNum();
         result = result * 59 + (($num == null) ? 43 : $num.hashCode());
-        final Object $rests = this.getRests();
+        Object $rests = this.getRests();
         result = result * 59 + (($rests == null) ? 43 : $rests.hashCode());
         return result;
     }
@@ -155,7 +113,6 @@ public class Temporary implements Serializable
         return "Temporary(id=" + this.getId() + ", serial=" + this.getSerial() + ", type=" + this.getType() + ", num=" + this.getNum() + ", rests=" + this.getRests() + ")";
     }
     
-    @ConstructorProperties({ "id", "serial", "type", "num", "rests" })
     public Temporary(final String id, final Integer serial, final Integer type, final Integer num, final Integer rests) {
         this.id = id;
         this.serial = serial;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.domain.vo;
 
 import com.kitty.system.game.team.domain.Member;
@@ -15,12 +14,12 @@ public class SmartTeamMember implements Serializable
     public SmartTeamMember() {
     }
     
-    public SmartTeamMember(final Member member) {
-        this.roleId = member.getRoleId();
+    public SmartTeamMember(Member member) {
+        this.roleId = (int)member.getRoleId();
         this.name = member.getName();
         this.level = member.getLevel();
         this.rebirth = member.getRelive();
-        this.serial = member.getSerial();
+        this.serial = (int)member.getSerial();
     }
     
     public int getRoleId() {

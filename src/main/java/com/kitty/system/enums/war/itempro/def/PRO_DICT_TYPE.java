@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import java.util.Arrays;
@@ -48,12 +47,16 @@ public enum PRO_DICT_TYPE
     K_YW("抗遗忘", 211, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     WL_XS("物理吸收-抗物理", 212, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     SH_DK("伤害抵抗", 213, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
-    K_KZ_CAP("抗控制上限", 214, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
+    K_KZ_CAP("抗控制上限（抗性上限：封、睡、混、遗忘，暂时只要帮派修炼用到）", 214, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     K_MH("抗魅惑", 215, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     K_TM("抗天魔", 216, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     K_FG("抗分光", 217, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     K_QM("抗青面", 218, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     K_XL("抗小楼", 219, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
+    K_FY_LMT("抗封印上限", 220, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
+    K_HS_LMT("抗昏睡上限", 221, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
+    K_HL_LMT("抗混乱上限", 222, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
+    K_YW_LMT("抗遗忘上限", 223, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     OMIT_K_HL("忽视抗混乱", 300, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     OMIT_K_D("忽视抗毒", 301, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
     OMIT_K_HS("忽视抗昏睡", 302, PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue()), 
@@ -113,57 +116,67 @@ public enum PRO_DICT_TYPE
     private int dist;
     private int type;
     
-    public static int getType(final Integer dist) {
+    public static int getType(Integer dist) {
         int type = PRO_TYPE.Pro_Value_PERCENT_TYPE.getValue();
-        for (final PRO_DICT_TYPE n : values()) {
-            if (n.dist == dist) {
+        PRO_DICT_TYPE[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            PRO_DICT_TYPE n = values[i];
+            if (n.dist == (int)dist) {
                 type = n.type;
                 break;
             }
+            ++i;
         }
         return type;
     }
     
     public static Map<Integer, Integer> toMap() {
-        final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for (final PRO_DICT_TYPE n : values()) {
-            if (n.getDist() >= PRO_DICT_TYPE.HIT_RATIO.getDist()) {
-                map.put(n.getDist(), n.getType());
+        Map<Integer, Integer> map = new HashMap();
+        for (PRO_DICT_TYPE n : values()) {
+            if (n.getDist() > PRO_DICT_TYPE.SPEED_PCT.getDist() && (n.getDist() < PRO_DICT_TYPE.K_FY_LMT.getDist() || n.getDist() > PRO_DICT_TYPE.K_YW_LMT.getDist())) {
+                map.put(Integer.valueOf(n.getDist()), Integer.valueOf(n.getType()));
             }
         }
         return map;
     }
     
     public static Map<Integer, Integer> toMapAll() {
-        final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for (final PRO_DICT_TYPE n : values()) {
-            map.put(n.getDist(), n.getType());
+        Map<Integer, Integer> map = new HashMap();
+        for (PRO_DICT_TYPE n : values()) {
+            map.put(Integer.valueOf(n.getDist()), Integer.valueOf(n.getType()));
         }
         return map;
     }
     
     public static List<Integer> getWuXinDist() {
-        return Arrays.asList(PRO_DICT_TYPE.WX_J.getDist(), PRO_DICT_TYPE.WX_M.getDist(), PRO_DICT_TYPE.WX_S.getDist(), PRO_DICT_TYPE.WX_H.getDist(), PRO_DICT_TYPE.WX_T.getDist());
+        return Arrays.asList(Integer.valueOf(PRO_DICT_TYPE.WX_J.getDist()), Integer.valueOf(PRO_DICT_TYPE.WX_M.getDist()), Integer.valueOf(PRO_DICT_TYPE.WX_S.getDist()), Integer.valueOf(PRO_DICT_TYPE.WX_H.getDist()), Integer.valueOf(PRO_DICT_TYPE.WX_T.getDist()));
     }
     
     public static List<Integer> getQWuXinDist() {
-        return Arrays.asList(PRO_DICT_TYPE.Q_KJ.getDist(), PRO_DICT_TYPE.Q_KM.getDist(), PRO_DICT_TYPE.Q_KS.getDist(), PRO_DICT_TYPE.Q_KH.getDist(), PRO_DICT_TYPE.Q_KT.getDist());
+        return Arrays.asList(Integer.valueOf(PRO_DICT_TYPE.Q_KJ.getDist()), Integer.valueOf(PRO_DICT_TYPE.Q_KM.getDist()), Integer.valueOf(PRO_DICT_TYPE.Q_KS.getDist()), Integer.valueOf(PRO_DICT_TYPE.Q_KH.getDist()), Integer.valueOf(PRO_DICT_TYPE.Q_KT.getDist()));
     }
     
-    public static PRO_DICT_TYPE getProDictTypeByDist(final int dist) {
-        for (final PRO_DICT_TYPE obj : values()) {
+    public static PRO_DICT_TYPE getProDictTypeByDist(int dist) {
+        PRO_DICT_TYPE[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            PRO_DICT_TYPE obj = values[i];
             if (obj.getDist() == dist) {
                 return obj;
             }
+            ++i;
         }
         return null;
     }
     
     public static Map<Integer, List<Integer>> getGFSDict() {
-        final Map<Integer, List<Integer>> map = new HashMap<Integer, List<Integer>>();
-        map.put(1008, Arrays.asList(PRO_DICT_TYPE.HIT_RATIO.getDist(), PRO_DICT_TYPE.RISE_ATTACK.getDist()));
-        map.put(1009, Arrays.asList(PRO_DICT_TYPE.K_FY.getDist(), PRO_DICT_TYPE.K_HS.getDist(), PRO_DICT_TYPE.K_HL.getDist(), PRO_DICT_TYPE.K_YW.getDist(), PRO_DICT_TYPE.K_F.getDist(), PRO_DICT_TYPE.K_L.getDist(), PRO_DICT_TYPE.K_S.getDist(), PRO_DICT_TYPE.K_H.getDist(), PRO_DICT_TYPE.K_SS.getDist(), PRO_DICT_TYPE.K_GH.getDist(), PRO_DICT_TYPE.K_DU.getDist(), PRO_DICT_TYPE.WL_XS.getDist()));
-        map.put(1010, Arrays.asList(PRO_DICT_TYPE.RISE_SPEED.getDist()));
+        Map<Integer, List<Integer>> map = new HashMap();
+        map.put(Integer.valueOf(1008), Arrays.asList(Integer.valueOf(PRO_DICT_TYPE.HIT_RATIO.getDist()), Integer.valueOf(PRO_DICT_TYPE.RISE_ATTACK.getDist())));
+        map.put(Integer.valueOf(1009), Arrays.asList(Integer.valueOf(PRO_DICT_TYPE.K_FY.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_HS.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_HL.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_YW.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_F.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_L.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_S.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_H.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_SS.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_GH.getDist()), Integer.valueOf(PRO_DICT_TYPE.K_DU.getDist()), Integer.valueOf(PRO_DICT_TYPE.WL_XS.getDist())));
+        map.put(Integer.valueOf(1010), Arrays.asList(Integer.valueOf(PRO_DICT_TYPE.RISE_SPEED.getDist())));
         return map;
     }
     

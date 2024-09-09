@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.text;
 
 import java.util.Set;
@@ -11,290 +10,344 @@ import com.kitty.common.utils.StringUtils;
 
 public class Convert
 {
-    public static String toStr(final Object value, final String defaultValue) {
+    public Convert() {
+    }
+    
+    public static String toStr(Object value, String defaultValue) {
         if (null == value) {
             return defaultValue;
         }
-        if (value instanceof String) {
+        if ((value instanceof String)) {
             return (String)value;
         }
         return value.toString();
     }
     
-    public static String toStr(final Object value) {
+    public static String toStr(Object value) {
         return toStr(value, null);
     }
     
-    public static Character toChar(final Object value, final Character defaultValue) {
+    public static Character toChar(Object value, Character defaultValue) {
         if (null == value) {
             return defaultValue;
         }
-        if (value instanceof Character) {
+        if ((value instanceof Character)) {
             return (Character)value;
         }
-        final String valueStr = toStr(value, null);
-        return StringUtils.isEmpty(valueStr) ? defaultValue : valueStr.charAt(0);
+        String valueStr = toStr(value, null);
+        return Character.valueOf(StringUtils.isEmpty(valueStr) ? ((char)defaultValue) : valueStr.charAt(0));
     }
     
-    public static Character toChar(final Object value) {
+    public static Character toChar(Object value) {
         return toChar(value, null);
     }
     
-    public static Byte toByte(final Object value, final Byte defaultValue) {
+    public static Byte toByte(Object value, Byte defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Byte) {
-            return (byte)value;
+        if ((value instanceof Byte)) {
+            return (Byte)value;
         }
-        if (value instanceof Number) {
-            return ((Number)value).byteValue();
+        if ((value instanceof Number)) {
+            return Byte.valueOf(((Number)value).byteValue());
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
-            return Byte.parseByte(valueStr);
+            return Byte.valueOf(Byte.parseByte(valueStr));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static Byte toByte(final Object value) {
+    public static Byte toByte(Object value) {
         return toByte(value, null);
     }
     
-    public static Short toShort(final Object value, final Short defaultValue) {
+    public static Short toShort(Object value, Short defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Short) {
-            return (short)value;
+        if ((value instanceof Short)) {
+            return (Short)value;
         }
-        if (value instanceof Number) {
-            return ((Number)value).shortValue();
+        if ((value instanceof Number)) {
+            return Short.valueOf(((Number)value).shortValue());
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
-            return Short.parseShort(valueStr.trim());
+            return Short.valueOf(Short.parseShort(valueStr.trim()));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static Short toShort(final Object value) {
+    public static Short toShort(Object value) {
         return toShort(value, null);
     }
     
-    public static Number toNumber(final Object value, final Number defaultValue) {
+    public static Number toNumber(Object value, Number defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Number) {
+        if ((value instanceof Number)) {
             return (Number)value;
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
             return NumberFormat.getInstance().parse(valueStr);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static Number toNumber(final Object value) {
+    public static Number toNumber(Object value) {
         return toNumber(value, null);
     }
     
-    public static Integer toInt(final Object value, final Integer defaultValue) {
+    public static Integer toInt(Object value, Integer defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Integer) {
+        if ((value instanceof Integer)) {
             return (Integer)value;
         }
-        if (value instanceof Number) {
-            return ((Number)value).intValue();
+        if ((value instanceof Number)) {
+            return Integer.valueOf(((Number)value).intValue());
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
-            return Integer.parseInt(valueStr.trim());
+            return Integer.valueOf(Integer.parseInt(valueStr.trim()));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static Integer toInt(final Object value) {
+    public static Integer toInt(Object value) {
         return toInt(value, null);
     }
     
-    public static Integer[] toIntArray(final String str) {
+    public static Integer[] toIntArray(String str) {
         return toIntArray(",", str);
     }
     
-    public static Long[] toLongArray(final String str) {
+    public static Long[] toLongArray(String str) {
         return toLongArray(",", str);
     }
     
-    public static Integer[] toIntArray(final String split, final String str) {
+    public static Integer[] toIntArray(String split, String str) {
         if (StringUtils.isEmpty(str)) {
             return new Integer[0];
         }
-        final String[] arr = str.split(split);
-        final Integer[] ints = new Integer[arr.length];
+        String[] arr = str.split(split);
+        Integer[] ints = new Integer[arr.length];
         for (int i = 0; i < arr.length; ++i) {
-            final Integer v = toInt(arr[i], 0);
+            Integer v = toInt(arr[i], Integer.valueOf(0));
             ints[i] = v;
         }
         return ints;
     }
     
-    public static Long[] toLongArray(final String split, final String str) {
+    public static Long[] toLongArray(String split, String str) {
         if (StringUtils.isEmpty(str)) {
             return new Long[0];
         }
-        final String[] arr = str.split(split);
-        final Long[] longs = new Long[arr.length];
+        String[] arr = str.split(split);
+        Long[] longs = new Long[arr.length];
         for (int i = 0; i < arr.length; ++i) {
-            final Long v = toLong(arr[i], null);
+            Long v = toLong(arr[i], null);
             longs[i] = v;
         }
         return longs;
     }
     
-    public static String[] toStrArray(final String str) {
+    public static String[] toStrArray(String str) {
         return toStrArray(",", str);
     }
     
-    public static String[] toStrArray(final String split, final String str) {
+    public static String[] toStrArray(String split, String str) {
         return str.split(split);
     }
     
-    public static Long toLong(final Object value, final Long defaultValue) {
+    public static Long toLong(Object value, Long defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Long) {
+        if ((value instanceof Long)) {
             return (Long)value;
         }
-        if (value instanceof Number) {
-            return ((Number)value).longValue();
+        if ((value instanceof Number)) {
+            return Long.valueOf(((Number)value).longValue());
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
-            return new BigDecimal(valueStr.trim()).longValue();
+            return Long.valueOf(new BigDecimal(valueStr.trim()).longValue());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static Long toLong(final Object value) {
+    public static Long toLong(Object value) {
         return toLong(value, null);
     }
     
-    public static Double toDouble(final Object value, final Double defaultValue) {
+    public static Double toDouble(Object value, Double defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Double) {
+        if ((value instanceof Double)) {
             return (Double)value;
         }
-        if (value instanceof Number) {
-            return ((Number)value).doubleValue();
+        if ((value instanceof Number)) {
+            return Double.valueOf(((Number)value).doubleValue());
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
-            return new BigDecimal(valueStr.trim()).doubleValue();
+            return Double.valueOf(new BigDecimal(valueStr.trim()).doubleValue());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static Double toDouble(final Object value) {
+    public static Double toDouble(Object value) {
         return toDouble(value, null);
     }
     
-    public static Float toFloat(final Object value, final Float defaultValue) {
+    public static Float toFloat(Object value, Float defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Float) {
+        if ((value instanceof Float)) {
             return (Float)value;
         }
-        if (value instanceof Number) {
-            return ((Number)value).floatValue();
+        if ((value instanceof Number)) {
+            return Float.valueOf(((Number)value).floatValue());
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
-            return Float.parseFloat(valueStr.trim());
+            return Float.valueOf(Float.parseFloat(valueStr.trim()));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static Float toFloat(final Object value) {
+    public static Float toFloat(Object value) {
         return toFloat(value, null);
     }
     
-    public static Boolean toBool(final Object value, final Boolean defaultValue) {
+    public static Boolean toBool(Object value, Boolean defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof Boolean) {
+        if ((value instanceof Boolean)) {
             return (Boolean)value;
         }
         String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
-        final String lowerCase;
-        valueStr = (lowerCase = valueStr.trim().toLowerCase());
-        switch (lowerCase) {
-            case "true": {
-                return true;
+        valueStr = (valueStr = valueStr.trim().toLowerCase());
+        int n = -1;
+        switch (valueStr.hashCode()) {
+            case 3569038: {
+                if (valueStr.equals("true")) {
+                    n = 0;
+                    break;
+                }
+                break;
             }
-            case "false": {
-                return false;
+            case 97196323: {
+                if (valueStr.equals("false")) {
+                    n = 1;
+                    break;
+                }
+                break;
             }
-            case "yes": {
-                return true;
+            case 119527: {
+                if (valueStr.equals("yes")) {
+                    n = 2;
+                    break;
+                }
+                break;
             }
-            case "ok": {
-                return true;
+            case 3548: {
+                if (valueStr.equals("ok")) {
+                    n = 3;
+                    break;
+                }
+                break;
             }
-            case "no": {
-                return false;
+            case 3521: {
+                if (valueStr.equals("no")) {
+                    n = 4;
+                    break;
+                }
+                break;
             }
-            case "1": {
-                return true;
+            case 49: {
+                if (valueStr.equals("1")) {
+                    n = 5;
+                    break;
+                }
+                break;
             }
-            case "0": {
-                return false;
+            case 48: {
+                if (valueStr.equals("0")) {
+                    n = 6;
+                    break;
+                }
+                break;
+            }
+        }
+        switch (n) {
+            case 0: {
+                return Boolean.valueOf(true);
+            }
+            case 1: {
+                return Boolean.valueOf(false);
+            }
+            case 2: {
+                return Boolean.valueOf(true);
+            }
+            case 3: {
+                return Boolean.valueOf(true);
+            }
+            case 4: {
+                return Boolean.valueOf(false);
+            }
+            case 5: {
+                return Boolean.valueOf(true);
+            }
+            case 6: {
+                return Boolean.valueOf(false);
             }
             default: {
                 return defaultValue;
@@ -302,121 +355,121 @@ public class Convert
         }
     }
     
-    public static Boolean toBool(final Object value) {
+    public static Boolean toBool(Object value) {
         return toBool(value, null);
     }
     
-    public static <E extends Enum<E>> E toEnum(final Class<E> clazz, final Object value, final E defaultValue) {
+    public static <E extends Enum<E>> E toEnum(Class<E> clazz, Object value, E defaultValue) {
         if (value == null) {
             return defaultValue;
         }
         if (clazz.isAssignableFrom(value.getClass())) {
-            final E myE = (E)value;
+            E myE = (E)value;
             return myE;
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
             return Enum.valueOf(clazz, valueStr);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static <E extends Enum<E>> E toEnum(final Class<E> clazz, final Object value) {
-        return toEnum(clazz, value, (E)null);
+    public static <E extends Enum<E>> E toEnum(Class<E> clazz, Object value) {
+        return toEnum(clazz, value, null);
     }
     
-    public static BigInteger toBigInteger(final Object value, final BigInteger defaultValue) {
+    public static BigInteger toBigInteger(Object value, BigInteger defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof BigInteger) {
+        if ((value instanceof BigInteger)) {
             return (BigInteger)value;
         }
-        if (value instanceof Long) {
+        if ((value instanceof Long)) {
             return BigInteger.valueOf((long)value);
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
             return new BigInteger(valueStr);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static BigInteger toBigInteger(final Object value) {
+    public static BigInteger toBigInteger(Object value) {
         return toBigInteger(value, null);
     }
     
-    public static BigDecimal toBigDecimal(final Object value, final BigDecimal defaultValue) {
+    public static BigDecimal toBigDecimal(Object value, BigDecimal defaultValue) {
         if (value == null) {
             return defaultValue;
         }
-        if (value instanceof BigDecimal) {
+        if ((value instanceof BigDecimal)) {
             return (BigDecimal)value;
         }
-        if (value instanceof Long) {
+        if ((value instanceof Long)) {
             return new BigDecimal((long)value);
         }
-        if (value instanceof Double) {
+        if ((value instanceof Double)) {
             return new BigDecimal((double)value);
         }
-        if (value instanceof Integer) {
+        if ((value instanceof Integer)) {
             return new BigDecimal((int)value);
         }
-        final String valueStr = toStr(value, null);
+        String valueStr = toStr(value, null);
         if (StringUtils.isEmpty(valueStr)) {
             return defaultValue;
         }
         try {
             return new BigDecimal(valueStr);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return defaultValue;
         }
     }
     
-    public static BigDecimal toBigDecimal(final Object value) {
+    public static BigDecimal toBigDecimal(Object value) {
         return toBigDecimal(value, null);
     }
     
-    public static String utf8Str(final Object obj) {
+    public static String utf8Str(Object obj) {
         return str(obj, CharsetKit.CHARSET_UTF_8);
     }
     
-    public static String str(final Object obj, final String charsetName) {
+    public static String str(Object obj, String charsetName) {
         return str(obj, Charset.forName(charsetName));
     }
     
-    public static String str(final Object obj, final Charset charset) {
+    public static String str(Object obj, Charset charset) {
         if (null == obj) {
             return null;
         }
-        if (obj instanceof String) {
+        if ((obj instanceof String)) {
             return (String)obj;
         }
         if (obj instanceof byte[] || obj instanceof Byte[]) {
-            return str(obj, charset);
+            return str((Byte[])(Byte[])obj, charset);
         }
-        if (obj instanceof ByteBuffer) {
+        if ((obj instanceof ByteBuffer)) {
             return str((ByteBuffer)obj, charset);
         }
         return obj.toString();
     }
     
-    public static String str(final byte[] bytes, final String charset) {
+    public static String str(byte[] bytes, String charset) {
         return str(bytes, StringUtils.isEmpty(charset) ? Charset.defaultCharset() : Charset.forName(charset));
     }
     
-    public static String str(final byte[] data, final Charset charset) {
+    public static String str(byte[] data, Charset charset) {
         if (data == null) {
             return null;
         }
@@ -426,28 +479,28 @@ public class Convert
         return new String(data, charset);
     }
     
-    public static String str(final ByteBuffer data, final String charset) {
+    public static String str(ByteBuffer data, String charset) {
         if (data == null) {
             return null;
         }
         return str(data, Charset.forName(charset));
     }
     
-    public static String str(final ByteBuffer data, Charset charset) {
+    public static String str(ByteBuffer data, Charset charset) {
         if (null == charset) {
             charset = Charset.defaultCharset();
         }
         return charset.decode(data).toString();
     }
     
-    public static String toSBC(final String input) {
+    public static String toSBC(String input) {
         return toSBC(input, null);
     }
     
-    public static String toSBC(final String input, final Set<Character> notConvertSet) {
-        final char[] c = input.toCharArray();
+    public static String toSBC(String input, Set<Character> notConvertSet) {
+        char[] c = input.toCharArray();
         for (int i = 0; i < c.length; ++i) {
-            if (null == notConvertSet || !notConvertSet.contains(c[i])) {
+            if (null == notConvertSet || !notConvertSet.contains(Character.valueOf(c[i]))) {
                 if (c[i] == ' ') {
                     c[i] = '\u3000';
                 }
@@ -459,14 +512,14 @@ public class Convert
         return new String(c);
     }
     
-    public static String toDBC(final String input) {
+    public static String toDBC(String input) {
         return toDBC(input, null);
     }
     
-    public static String toDBC(final String text, final Set<Character> notConvertSet) {
-        final char[] c = text.toCharArray();
+    public static String toDBC(String text, Set<Character> notConvertSet) {
+        char[] c = text.toCharArray();
         for (int i = 0; i < c.length; ++i) {
-            if (null == notConvertSet || !notConvertSet.contains(c[i])) {
+            if (null == notConvertSet || !notConvertSet.contains(Character.valueOf(c[i]))) {
                 if (c[i] == '\u3000') {
                     c[i] = ' ';
                 }
@@ -475,19 +528,19 @@ public class Convert
                 }
             }
         }
-        final String returnString = new String(c);
+        String returnString = new String(c);
         return returnString;
     }
     
     public static String digitUppercase(double n) {
-        final String[] fraction = { "角", "分" };
-        final String[] digit = { "零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖" };
-        final String[][] unit = { { "元", "万", "亿" }, { "", "拾", "佰", "仟" } };
-        final String head = (n < 0.0) ? "负" : "";
+        String[] fraction = { "角", "分" };
+        String[] digit = { "零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖" };
+        String[][] unit = { { "元", "万", "亿" }, { "", "拾", "佰", "仟" } };
+        String head = (n < 0.0) ? "负" : "";
         n = Math.abs(n);
         String s = "";
         for (int i = 0; i < fraction.length; ++i) {
-            s += (digit[(int)(Math.floor(n * 10.0 * Math.pow(10.0, i)) % 10.0)] + fraction[i]).replaceAll("(零.)+", "");
+            s += (digit[(int)(Math.floor(n * 10.0 * Math.pow(10.0, (double)i)) % 10.0)] + fraction[i]).replaceAll("(零.)+", "");
         }
         if (s.length() < 1) {
             s = "整";
@@ -503,24 +556,24 @@ public class Convert
         return head + s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", "").replaceAll("(零.)+", "零").replaceAll("^整$", "零元整");
     }
     
-    public static String chineseNumberPlusOne(final String chineseNumber) {
-        final Integer aFromC = Chinese.getAFromC(chineseNumber);
-        final String cFromA = Chinese.getCFromA(aFromC + 1);
+    public static String chineseNumberPlusOne(String chineseNumber) {
+        Integer aFromC = Chinese.getAFromC(chineseNumber);
+        String cFromA = Chinese.getCFromA((int)aFromC + 1);
         return cFromA;
     }
     
-    public static Integer getArabicFromChinese(final String chineseValue) {
+    public static Integer getArabicFromChinese(String chineseValue) {
         return Chinese.getAFromC(chineseValue);
     }
     
-    public static String getChineseFromArabic(final Integer arabic) {
-        return Chinese.getCFromA(arabic);
+    public static String getChineseFromArabic(Integer arabic) {
+        return Chinese.getCFromA((int)arabic);
     }
     
-    public static String getArabicFromWeek(final String arabic) {
+    public static String getArabicFromWeek(String arabic) {
         if ("7".equals(arabic)) {
             return "日";
         }
-        return Chinese.getCFromA(Integer.valueOf(arabic));
+        return Chinese.getCFromA((int)Integer.valueOf(arabic));
     }
 }

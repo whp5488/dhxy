@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -18,7 +16,6 @@ public class ReqFightNewPK extends Message
         this.roleId = roleId;
     }
     
-    @ConstructorProperties({ "roleId" })
     public ReqFightNewPK(final int roleId) {
         this.roleId = roleId;
     }

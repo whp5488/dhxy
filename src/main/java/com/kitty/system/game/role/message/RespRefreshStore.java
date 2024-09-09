@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,7 +9,7 @@ public class RespRefreshStore extends Message
     private String saveLife;
     private String saveMana;
     
-    public RespRefreshStore(final Long saveLife, final Long saveMana) {
+    public RespRefreshStore(Long saveLife, Long saveMana) {
         this.saveLife = String.valueOf(saveLife);
         this.saveMana = String.valueOf(saveMana);
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqModifyNotice extends Message
 {
     private String msg;
     private byte type;
+    
+    public ReqModifyNotice() {
+    }
     
     public String getMsg() {
         return this.msg;
@@ -34,21 +36,13 @@ public class ReqModifyNotice extends Message
         if (!(o instanceof ReqModifyNotice)) {
             return false;
         }
-        final ReqModifyNotice other = (ReqModifyNotice)o;
+        ReqModifyNotice other = (ReqModifyNotice)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        if (this$msg == null) {
-            if (other$msg == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$msg.equals(other$msg)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        return ((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,9 +51,9 @@ public class ReqModifyNotice extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
         result = result * 59 + this.getType();
         return result;
@@ -67,6 +61,6 @@ public class ReqModifyNotice extends Message
     
     @Override
     public String toString() {
-        return "ReqModifyNotice(msg=" + this.getMsg() + ", type=" + this.getType() + ")";
+        return "ReqModifyNotice(msg=" + this.getMsg() + ", type=" + (int)this.getType() + ")";
     }
 }

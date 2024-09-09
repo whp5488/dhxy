@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -95,6 +94,9 @@ public class SysHero implements Serializable
     @Comment("镜像")
     @Column("mirror")
     private int mirror;
+    
+    public SysHero() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -320,326 +322,134 @@ public class SysHero implements Serializable
         if (!(o instanceof SysHero)) {
             return false;
         }
-        final SysHero other = (SysHero)o;
+        SysHero other = (SysHero)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getRace() != other.getRace()) {
             return false;
         }
-        final Object this$shape = this.getShape();
-        final Object other$shape = other.getShape();
-        Label_0189: {
-            if (this$shape == null) {
-                if (other$shape == null) {
-                    break Label_0189;
-                }
-            }
-            else if (this$shape.equals(other$shape)) {
-                break Label_0189;
-            }
+        Object this$shape = this.getShape();
+        Object other$shape = other.getShape();
+        if (!((this$shape != null) ? this$shape.equals(other$shape) : (other$shape == null))) {
             return false;
         }
         if (this.getGender() != other.getGender()) {
             return false;
         }
-        final Object this$hp = this.getHp();
-        final Object other$hp = other.getHp();
-        Label_0239: {
-            if (this$hp == null) {
-                if (other$hp == null) {
-                    break Label_0239;
-                }
-            }
-            else if (this$hp.equals(other$hp)) {
-                break Label_0239;
-            }
+        Object this$hp = this.getHp();
+        Object other$hp = other.getHp();
+        if (!((this$hp != null) ? this$hp.equals(other$hp) : (other$hp == null))) {
             return false;
         }
-        final Object this$mp = this.getMp();
-        final Object other$mp = other.getMp();
-        Label_0276: {
-            if (this$mp == null) {
-                if (other$mp == null) {
-                    break Label_0276;
-                }
-            }
-            else if (this$mp.equals(other$mp)) {
-                break Label_0276;
-            }
+        Object this$mp = this.getMp();
+        Object other$mp = other.getMp();
+        if (!((this$mp != null) ? this$mp.equals(other$mp) : (other$mp == null))) {
             return false;
         }
-        final Object this$ap = this.getAp();
-        final Object other$ap = other.getAp();
-        Label_0313: {
-            if (this$ap == null) {
-                if (other$ap == null) {
-                    break Label_0313;
-                }
-            }
-            else if (this$ap.equals(other$ap)) {
-                break Label_0313;
-            }
+        Object this$ap = this.getAp();
+        Object other$ap = other.getAp();
+        if (!((this$ap != null) ? this$ap.equals(other$ap) : (other$ap == null))) {
             return false;
         }
-        final Object this$sp = this.getSp();
-        final Object other$sp = other.getSp();
-        Label_0350: {
-            if (this$sp == null) {
-                if (other$sp == null) {
-                    break Label_0350;
-                }
-            }
-            else if (this$sp.equals(other$sp)) {
-                break Label_0350;
-            }
+        Object this$sp = this.getSp();
+        Object other$sp = other.getSp();
+        if (!((this$sp != null) ? this$sp.equals(other$sp) : (other$sp == null))) {
             return false;
         }
-        final Object this$gg = this.getGg();
-        final Object other$gg = other.getGg();
-        Label_0387: {
-            if (this$gg == null) {
-                if (other$gg == null) {
-                    break Label_0387;
-                }
-            }
-            else if (this$gg.equals(other$gg)) {
-                break Label_0387;
-            }
+        Object this$gg = this.getGg();
+        Object other$gg = other.getGg();
+        if (!((this$gg != null) ? this$gg.equals(other$gg) : (other$gg == null))) {
             return false;
         }
-        final Object this$gGg = this.getGGg();
-        final Object other$gGg = other.getGGg();
-        Label_0424: {
-            if (this$gGg == null) {
-                if (other$gGg == null) {
-                    break Label_0424;
-                }
-            }
-            else if (this$gGg.equals(other$gGg)) {
-                break Label_0424;
-            }
+        Object this$gGg = this.getGGg();
+        Object other$gGg = other.getGGg();
+        if (!((this$gGg != null) ? this$gGg.equals(other$gGg) : (other$gGg == null))) {
             return false;
         }
-        final Object this$lx = this.getLx();
-        final Object other$lx = other.getLx();
-        Label_0461: {
-            if (this$lx == null) {
-                if (other$lx == null) {
-                    break Label_0461;
-                }
-            }
-            else if (this$lx.equals(other$lx)) {
-                break Label_0461;
-            }
+        Object this$lx = this.getLx();
+        Object other$lx = other.getLx();
+        if (!((this$lx != null) ? this$lx.equals(other$lx) : (other$lx == null))) {
             return false;
         }
-        final Object this$gLx = this.getGLx();
-        final Object other$gLx = other.getGLx();
-        Label_0498: {
-            if (this$gLx == null) {
-                if (other$gLx == null) {
-                    break Label_0498;
-                }
-            }
-            else if (this$gLx.equals(other$gLx)) {
-                break Label_0498;
-            }
+        Object this$gLx = this.getGLx();
+        Object other$gLx = other.getGLx();
+        if (!((this$gLx != null) ? this$gLx.equals(other$gLx) : (other$gLx == null))) {
             return false;
         }
-        final Object this$ll = this.getLl();
-        final Object other$ll = other.getLl();
-        Label_0535: {
-            if (this$ll == null) {
-                if (other$ll == null) {
-                    break Label_0535;
-                }
-            }
-            else if (this$ll.equals(other$ll)) {
-                break Label_0535;
-            }
+        Object this$ll = this.getLl();
+        Object other$ll = other.getLl();
+        if (!((this$ll != null) ? this$ll.equals(other$ll) : (other$ll == null))) {
             return false;
         }
-        final Object this$gLl = this.getGLl();
-        final Object other$gLl = other.getGLl();
-        Label_0572: {
-            if (this$gLl == null) {
-                if (other$gLl == null) {
-                    break Label_0572;
-                }
-            }
-            else if (this$gLl.equals(other$gLl)) {
-                break Label_0572;
-            }
+        Object this$gLl = this.getGLl();
+        Object other$gLl = other.getGLl();
+        if (!((this$gLl != null) ? this$gLl.equals(other$gLl) : (other$gLl == null))) {
             return false;
         }
-        final Object this$mj = this.getMj();
-        final Object other$mj = other.getMj();
-        Label_0609: {
-            if (this$mj == null) {
-                if (other$mj == null) {
-                    break Label_0609;
-                }
-            }
-            else if (this$mj.equals(other$mj)) {
-                break Label_0609;
-            }
+        Object this$mj = this.getMj();
+        Object other$mj = other.getMj();
+        if (!((this$mj != null) ? this$mj.equals(other$mj) : (other$mj == null))) {
             return false;
         }
-        final Object this$gMj = this.getGMj();
-        final Object other$gMj = other.getGMj();
-        Label_0646: {
-            if (this$gMj == null) {
-                if (other$gMj == null) {
-                    break Label_0646;
-                }
-            }
-            else if (this$gMj.equals(other$gMj)) {
-                break Label_0646;
-            }
+        Object this$gMj = this.getGMj();
+        Object other$gMj = other.getGMj();
+        if (!((this$gMj != null) ? this$gMj.equals(other$gMj) : (other$gMj == null))) {
             return false;
         }
-        final Object this$cd = this.getCd();
-        final Object other$cd = other.getCd();
-        Label_0683: {
-            if (this$cd == null) {
-                if (other$cd == null) {
-                    break Label_0683;
-                }
-            }
-            else if (this$cd.equals(other$cd)) {
-                break Label_0683;
-            }
+        Object this$cd = this.getCd();
+        Object other$cd = other.getCd();
+        if (!((this$cd != null) ? this$cd.equals(other$cd) : (other$cd == null))) {
             return false;
         }
-        final Object this$gCd = this.getGCd();
-        final Object other$gCd = other.getGCd();
-        Label_0720: {
-            if (this$gCd == null) {
-                if (other$gCd == null) {
-                    break Label_0720;
-                }
-            }
-            else if (this$gCd.equals(other$gCd)) {
-                break Label_0720;
-            }
+        Object this$gCd = this.getGCd();
+        Object other$gCd = other.getGCd();
+        if (!((this$gCd != null) ? this$gCd.equals(other$gCd) : (other$gCd == null))) {
             return false;
         }
-        final Object this$wxJin = this.getWxJin();
-        final Object other$wxJin = other.getWxJin();
-        Label_0757: {
-            if (this$wxJin == null) {
-                if (other$wxJin == null) {
-                    break Label_0757;
-                }
-            }
-            else if (this$wxJin.equals(other$wxJin)) {
-                break Label_0757;
-            }
+        Object this$wxJin = this.getWxJin();
+        Object other$wxJin = other.getWxJin();
+        if (!((this$wxJin != null) ? this$wxJin.equals(other$wxJin) : (other$wxJin == null))) {
             return false;
         }
-        final Object this$wxMu = this.getWxMu();
-        final Object other$wxMu = other.getWxMu();
-        Label_0794: {
-            if (this$wxMu == null) {
-                if (other$wxMu == null) {
-                    break Label_0794;
-                }
-            }
-            else if (this$wxMu.equals(other$wxMu)) {
-                break Label_0794;
-            }
+        Object this$wxMu = this.getWxMu();
+        Object other$wxMu = other.getWxMu();
+        if (!((this$wxMu != null) ? this$wxMu.equals(other$wxMu) : (other$wxMu == null))) {
             return false;
         }
-        final Object this$wxShui = this.getWxShui();
-        final Object other$wxShui = other.getWxShui();
-        Label_0831: {
-            if (this$wxShui == null) {
-                if (other$wxShui == null) {
-                    break Label_0831;
-                }
-            }
-            else if (this$wxShui.equals(other$wxShui)) {
-                break Label_0831;
-            }
+        Object this$wxShui = this.getWxShui();
+        Object other$wxShui = other.getWxShui();
+        if (!((this$wxShui != null) ? this$wxShui.equals(other$wxShui) : (other$wxShui == null))) {
             return false;
         }
-        final Object this$wxHuo = this.getWxHuo();
-        final Object other$wxHuo = other.getWxHuo();
-        Label_0868: {
-            if (this$wxHuo == null) {
-                if (other$wxHuo == null) {
-                    break Label_0868;
-                }
-            }
-            else if (this$wxHuo.equals(other$wxHuo)) {
-                break Label_0868;
-            }
+        Object this$wxHuo = this.getWxHuo();
+        Object other$wxHuo = other.getWxHuo();
+        if (!((this$wxHuo != null) ? this$wxHuo.equals(other$wxHuo) : (other$wxHuo == null))) {
             return false;
         }
-        final Object this$wxTu = this.getWxTu();
-        final Object other$wxTu = other.getWxTu();
-        Label_0905: {
-            if (this$wxTu == null) {
-                if (other$wxTu == null) {
-                    break Label_0905;
-                }
-            }
-            else if (this$wxTu.equals(other$wxTu)) {
-                break Label_0905;
-            }
+        Object this$wxTu = this.getWxTu();
+        Object other$wxTu = other.getWxTu();
+        if (!((this$wxTu != null) ? this$wxTu.equals(other$wxTu) : (other$wxTu == null))) {
             return false;
         }
-        final Object this$adviceAddPro = this.getAdviceAddPro();
-        final Object other$adviceAddPro = other.getAdviceAddPro();
-        if (this$adviceAddPro == null) {
-            if (other$adviceAddPro == null) {
-                return this.getMirror() == other.getMirror();
-            }
-        }
-        else if (this$adviceAddPro.equals(other$adviceAddPro)) {
-            return this.getMirror() == other.getMirror();
-        }
-        return false;
+        Object this$adviceAddPro = this.getAdviceAddPro();
+        Object other$adviceAddPro = other.getAdviceAddPro();
+        return ((this$adviceAddPro != null) ? this$adviceAddPro.equals(other$adviceAddPro) : (other$adviceAddPro == null)) && this.getMirror() == other.getMirror();
     }
     
     protected boolean canEqual(final Object other) {
@@ -648,57 +458,57 @@ public class SysHero implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getRace();
-        final Object $shape = this.getShape();
+        Object $shape = this.getShape();
         result = result * 59 + (($shape == null) ? 43 : $shape.hashCode());
         result = result * 59 + this.getGender();
-        final Object $hp = this.getHp();
+        Object $hp = this.getHp();
         result = result * 59 + (($hp == null) ? 43 : $hp.hashCode());
-        final Object $mp = this.getMp();
+        Object $mp = this.getMp();
         result = result * 59 + (($mp == null) ? 43 : $mp.hashCode());
-        final Object $ap = this.getAp();
+        Object $ap = this.getAp();
         result = result * 59 + (($ap == null) ? 43 : $ap.hashCode());
-        final Object $sp = this.getSp();
+        Object $sp = this.getSp();
         result = result * 59 + (($sp == null) ? 43 : $sp.hashCode());
-        final Object $gg = this.getGg();
+        Object $gg = this.getGg();
         result = result * 59 + (($gg == null) ? 43 : $gg.hashCode());
-        final Object $gGg = this.getGGg();
+        Object $gGg = this.getGGg();
         result = result * 59 + (($gGg == null) ? 43 : $gGg.hashCode());
-        final Object $lx = this.getLx();
+        Object $lx = this.getLx();
         result = result * 59 + (($lx == null) ? 43 : $lx.hashCode());
-        final Object $gLx = this.getGLx();
+        Object $gLx = this.getGLx();
         result = result * 59 + (($gLx == null) ? 43 : $gLx.hashCode());
-        final Object $ll = this.getLl();
+        Object $ll = this.getLl();
         result = result * 59 + (($ll == null) ? 43 : $ll.hashCode());
-        final Object $gLl = this.getGLl();
+        Object $gLl = this.getGLl();
         result = result * 59 + (($gLl == null) ? 43 : $gLl.hashCode());
-        final Object $mj = this.getMj();
+        Object $mj = this.getMj();
         result = result * 59 + (($mj == null) ? 43 : $mj.hashCode());
-        final Object $gMj = this.getGMj();
+        Object $gMj = this.getGMj();
         result = result * 59 + (($gMj == null) ? 43 : $gMj.hashCode());
-        final Object $cd = this.getCd();
+        Object $cd = this.getCd();
         result = result * 59 + (($cd == null) ? 43 : $cd.hashCode());
-        final Object $gCd = this.getGCd();
+        Object $gCd = this.getGCd();
         result = result * 59 + (($gCd == null) ? 43 : $gCd.hashCode());
-        final Object $wxJin = this.getWxJin();
+        Object $wxJin = this.getWxJin();
         result = result * 59 + (($wxJin == null) ? 43 : $wxJin.hashCode());
-        final Object $wxMu = this.getWxMu();
+        Object $wxMu = this.getWxMu();
         result = result * 59 + (($wxMu == null) ? 43 : $wxMu.hashCode());
-        final Object $wxShui = this.getWxShui();
+        Object $wxShui = this.getWxShui();
         result = result * 59 + (($wxShui == null) ? 43 : $wxShui.hashCode());
-        final Object $wxHuo = this.getWxHuo();
+        Object $wxHuo = this.getWxHuo();
         result = result * 59 + (($wxHuo == null) ? 43 : $wxHuo.hashCode());
-        final Object $wxTu = this.getWxTu();
+        Object $wxTu = this.getWxTu();
         result = result * 59 + (($wxTu == null) ? 43 : $wxTu.hashCode());
-        final Object $adviceAddPro = this.getAdviceAddPro();
+        Object $adviceAddPro = this.getAdviceAddPro();
         result = result * 59 + (($adviceAddPro == null) ? 43 : $adviceAddPro.hashCode());
         result = result * 59 + this.getMirror();
         return result;

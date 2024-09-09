@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.task.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class RankHallQuestion implements Serializable
@@ -42,24 +40,16 @@ public class RankHallQuestion implements Serializable
         if (!(o instanceof RankHallQuestion)) {
             return false;
         }
-        final RankHallQuestion other = (RankHallQuestion)o;
+        RankHallQuestion other = (RankHallQuestion)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getI() != other.getI()) {
             return false;
         }
-        final Object this$n = this.getN();
-        final Object other$n = other.getN();
-        if (this$n == null) {
-            if (other$n == null) {
-                return this.getT() == other.getT();
-            }
-        }
-        else if (this$n.equals(other$n)) {
-            return this.getT() == other.getT();
-        }
-        return false;
+        Object this$n = this.getN();
+        Object other$n = other.getN();
+        return ((this$n != null) ? this$n.equals(other$n) : (other$n == null)) && this.getT() == other.getT();
     }
     
     protected boolean canEqual(final Object other) {
@@ -68,11 +58,11 @@ public class RankHallQuestion implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final long $i = this.getI();
+        long $i = this.getI();
         result = result * 59 + (int)($i >>> 32 ^ $i);
-        final Object $n = this.getN();
+        Object $n = this.getN();
         result = result * 59 + (($n == null) ? 43 : $n.hashCode());
         result = result * 59 + this.getT();
         return result;
@@ -83,7 +73,6 @@ public class RankHallQuestion implements Serializable
         return "RankHallQuestion(i=" + this.getI() + ", n=" + this.getN() + ", t=" + this.getT() + ")";
     }
     
-    @ConstructorProperties({ "i", "n", "t" })
     public RankHallQuestion(final long i, final String n, final int t) {
         this.i = i;
         this.n = n;

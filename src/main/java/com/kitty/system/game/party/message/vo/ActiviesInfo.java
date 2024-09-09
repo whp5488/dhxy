@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message.vo;
 
 public class ActiviesInfo
@@ -6,6 +5,9 @@ public class ActiviesInfo
     private String name;
     private short participation;
     private String activeId;
+    
+    public ActiviesInfo() {
+    }
     
     public String getName() {
         return this.name;

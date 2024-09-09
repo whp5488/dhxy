@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.service.handler;
 
 import com.kitty.common.utils.BigDecimalUtil;
@@ -6,15 +5,13 @@ import com.kitty.system.game.vo.utils.Const;
 import com.kitty.system.game.task.message.vo.TaskInfo;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.game.activity.service.ActivityService;
-import java.util.stream.Collector;
+import com.kitty.system.init.domain.SysDataTaskLoop;
 import java.util.stream.Collectors;
 import com.kitty.system.game.task.pool.TaskDataPool;
-import com.kitty.system.init.domain.SysDataTaskLoop;
 import java.util.List;
 import com.kitty.system.game.activity.model.product.ActivityType;
 import com.kitty.system.common.data.DataGlobalFunc;
 import com.kitty.system.game.vo.Npc;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.config.TaskSet;
@@ -41,54 +38,56 @@ public class LoopTaskHandler extends TaskHandler
     }
     
     @Override
-    public boolean resetTask(final Role role, final TaskSet taskSet) {
+    public boolean resetTask(Role role, TaskSet taskSet) {
         return this.roleService.isCanWeeklyReset(role);
     }
     
     @Override
-    public boolean canResetTask(final Role role, final TaskSet taskSet) {
+    public boolean canResetTask(Role role, TaskSet taskSet) {
         return this.roleService.isCanWeeklyReset(role);
     }
     
     @Override
-    public void canSubmitTask(final Role role, final TaskSet taskSet) {
-        final int submitNpc = taskSet.getSubmitNpc();
+    public void canSubmitTask(Role role, TaskSet taskSet) {
+        int submitNpc = taskSet.getSubmitNpc();
         if (submitNpc > 0) {
-            final Npc npc = this.mapService.getNpc(submitNpc);
+            Npc npc = this.mapService.getNpc(submitNpc);
             if (npc != null) {
-                final boolean b = this.npcService.canClickNpc(role, npc);
+                boolean b = this.npcService.canClickNpc(role, npc);
                 if (!b) {
                     MessagePusher.pushMessage(role, new RespMsg("请前往" + npc.getName() + "处提交任务"));
                     return;
                 }
             }
         }
-        final int submitCondition = taskSet.getSubmitCondition();
+        int submitCondition = taskSet.getSubmitCondition();
         if (submitCondition > 0 && !this.taskService.condition(role, taskSet, (byte)1)) {
             return;
         }
         this.taskService.updateSingleTargetProgress(role, taskSet);
         this.addActivityCount(role, taskSet);
+        return;
     }
     
-    public void acceptLoopTask(final Role role, final Npc npc) {
-        final String msg = DataGlobalFunc.needGradeJudge(1, 80, role.getRelive(), role.getLevel(), "你的#<R>角色等级#不足");
+    public void acceptLoopTask(Role role, Npc npc) {
+        String msg = DataGlobalFunc.needGradeJudge(1, 80, (int)role.getRelive(), (int)role.getLevel(), "你的#<R>角色等级#不足");
         if (msg != null) {
             MessagePusher.pushMessage(role, new RespMsg(msg));
             return;
         }
-        final String content = this.getNpcContentNotAccept(role);
+        String content = this.getNpcContentNotAccept(role);
         if (content != null) {
             MessagePusher.pushMessage(role, new RespMsg(content));
             return;
         }
-        final int count = role.getTaskProgress().getLoop() - 1;
+        int count = role.getTaskProgress().getLoop() - 1;
         role.getTaskProgress().setLoop((count < 0) ? 0 : count);
-        role.getTaskProgress().getFinishCounts().setv(ActivityType.LOOP.getActivityId(), 0);
+        role.getTaskProgress().getFinishCounts().setv(ActivityType.LOOP.getActivityId(), Integer.valueOf(0));
         this.acceptTask(role);
+        return;
     }
     
-    public String getNpcContentNotAccept(final Role role) {
+    public String getNpcContentNotAccept(Role role) {
         if (!this.canAcceptTask(role)) {
             return "少侠的任务还没有完成啊#<E:32>#，完成后再来找我吧";
         }
@@ -101,86 +100,85 @@ public class LoopTaskHandler extends TaskHandler
         return null;
     }
     
-    public void acceptTask(final Role role) {
+    public void acceptTask(Role role) {
         if (!this.canAcceptTask(role)) {
             return;
         }
-        final TaskSet randTaskSet = this.getRandomSchoolTask(role);
+        TaskSet randTaskSet = this.getRandomSchoolTask(role);
         if (randTaskSet == null) {
             return;
         }
-        this.acceptTask(role, randTaskSet, -1);
+        super.acceptTask(role, randTaskSet, -1);
+        return;
     }
     
-    private TaskSet getRandomSchoolTask(final Role role) {
-        final List<SysDataTaskLoop> list = TaskDataPool.taskLoopList.stream().filter(e -> e.getKind() == 0).collect(Collectors.toList());
-        final int random = (int)(Math.random() * list.size());
-        final Integer taskId = list.get(random).getSerial();
-        return this.taskService.getTaskSet(taskId);
+    private TaskSet getRandomSchoolTask(Role role) {
+        List<SysDataTaskLoop> list = (List)TaskDataPool.taskLoopList.stream().filter(e -> e.getKind() == 0).collect(Collectors.toList());
+        int random = (int)(Math.random() * (double)list.size());
+        Integer taskId = Integer.valueOf(((SysDataTaskLoop)list.get(random)).getSerial());
+        return this.taskService.getTaskSet((int)taskId);
     }
     
-    private boolean canAcceptTask(final Role role) {
-        final ActivityService activityService = SpringUtils.getBean(ActivityService.class);
-        final boolean isHave = activityService.isHaveRemainCount(role, ActivityType.LOOP);
+    private boolean canAcceptTask(Role role) {
+        ActivityService activityService = (ActivityService)SpringUtils.getBean(ActivityService.class);
+        boolean isHave = activityService.isHaveRemainCount(role, ActivityType.LOOP);
         return isHave && !this.isAcceptedSchoolTask(role) && !this.isWaitGiveUpCD(role);
     }
     
-    public boolean isAcceptedSchoolTask(final Role role) {
-        final List<TaskSet> taskList = this.taskService.getAcceptedTaskListMatchTaskType(role, TaskType.LOOP);
+    public boolean isAcceptedSchoolTask(Role role) {
+        List<TaskSet> taskList = this.taskService.getAcceptedTaskListMatchTaskType(role, TaskType.LOOP);
         return taskList != null && !taskList.isEmpty();
     }
     
-    private boolean isWaitGiveUpCD(final Role role) {
-        final long giveUpTime = role.getTask().getGiveUpTime(TaskType.LOOP);
+    private boolean isWaitGiveUpCD(Role role) {
+        long giveUpTime = role.getTask().getGiveUpTime(TaskType.LOOP);
         return giveUpTime > 0L && System.currentTimeMillis() - giveUpTime < 300000L;
     }
     
     @Override
-    public TaskInfo getTaskInfo(final Role role, final TaskSet taskSet) {
-        final TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
+    public TaskInfo getTaskInfo(Role role, TaskSet taskSet) {
+        TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
         if (this.taskService.isMatchTaskType(taskSet, TaskType.LOOP)) {
-            final int doStep = this.activityService.getFinishCount(role, ActivityType.LOOP, 0);
+            int doStep = this.activityService.getFinishCount(role, ActivityType.LOOP, 0);
             taskInfo.setCounter((short)doStep);
+            return taskInfo;
         }
         return taskInfo;
     }
     
     @Override
-    public boolean canGiveUpTask(final Role role, final TaskSet taskSet) {
+    public boolean canGiveUpTask(Role role, TaskSet taskSet) {
         return false;
     }
     
     @Override
-    public void giveReward(final Role role, final TaskSet taskSet) {
-        final int doStep = this.activityService.getFinishCount(role, ActivityType.LOOP, 1);
+    public void giveReward(Role role, TaskSet taskSet) {
+        int doStep = this.activityService.getFinishCount(role, ActivityType.LOOP, 1);
         if (taskSet.getTaskReward() != null) {
-            this.roleService.addCurrency(role, Const.RESTYPE_COIN, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_COIN), "任务奖励", true, false);
-            this.roleService.addCurrency(role, Const.RESTYPE_SILVER, calculate(role.getLevel(), role.getRelive(), doStep, Const.RESTYPE_SILVER), "任务奖励", true, false);
+            this.roleService.addCurrency(role, Const.RESTYPE_COIN, Long.valueOf(calculate((int)role.getLevel(), (int)role.getRelive(), doStep, (int)Const.RESTYPE_COIN)), "任务奖励", true, false);
+            this.roleService.addCurrency(role, Const.RESTYPE_GOLD, Long.valueOf(calculate((int)role.getLevel(), (int)role.getRelive(), doStep, (int)Const.RESTYPE_GOLD)), "任务奖励", true, false);
         }
         if (doStep < ActivityType.LOOP.getTotalCount()) {
             this.acceptTask(role);
         }
     }
     
-    private void addActivityCount(final Role role, final TaskSet taskSet) {
-        final int step = 1;
+    private void addActivityCount(Role role, TaskSet taskSet) {
+        int step = 1;
         if (this.activityService.isHaveRemainCount(role, ActivityType.LOOP)) {
             this.activityService.addFinishCount(role, ActivityType.LOOP, step);
         }
     }
     
-    private static long calculate(final int grade, final int rei, final int cnt, final int type) {
-        final double fold = ActivityType.LOOP.getFold();
+    private static long calculate(int grade, int rei, int cnt, int type) {
+        double fold = ActivityType.LOOP.getFold();
         double exp = 0.0;
-        if (type == Const.RESTYPE_SILVER) {
-            exp = 30000.0 + Math.floor((cnt - 1) / 10.0) * 2760.0 + (cnt - Math.floor((cnt - 1) / 10.0) * 10.0 - 1.0) * 4166.0;
+        if (type == (int)Const.RESTYPE_GOLD) {
+            exp = 30000.0 + Math.floor((double)(cnt - 1) / 10.0) * 276.0 + ((double)cnt - Math.floor((double)(cnt - 1) / 10.0) * 10.0 - 1.0) * 4166.0;
         }
-        else if (type == Const.RESTYPE_GOLD) {
-            exp = 30000.0 + Math.floor((cnt - 1) / 10.0) * 2760.0 + (cnt - Math.floor((cnt - 1) / 10.0) * 10.0 - 1.0) * 4166.0;
+        else if (type == (int)Const.RESTYPE_COIN) {
+            exp = 30000.0 + Math.floor((double)(cnt - 1) / 10.0) * 2760.0 + ((double)cnt - Math.floor((double)(cnt - 1) / 10.0) * 10.0 - 1.0) * 4166.0;
         }
-        else if (type == Const.RESTYPE_COIN) {
-            exp = 30000.0 + Math.floor((cnt - 1) / 10.0) * 2760.0 + (cnt - Math.floor((cnt - 1) / 10.0) * 10.0 - 1.0) * 4166.0;
-        }
-        return BigDecimalUtil.decimalScaleDown(0, (fold > 1.0) ? (exp * fold) : exp).longValue();
+        return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf((fold > 1.0) ? (exp * fold) : exp)).longValue();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -13,7 +12,7 @@ public class RespPayUrl extends Message
     public RespPayUrl() {
     }
     
-    public RespPayUrl(final String front, final String back) {
+    public RespPayUrl(String front, String back) {
         this.front = front;
         this.back = back;
     }
@@ -22,7 +21,7 @@ public class RespPayUrl extends Message
         return this.front;
     }
     
-    public void setFront(final String front) {
+    public void setFront(String front) {
         this.front = front;
     }
     
@@ -30,7 +29,7 @@ public class RespPayUrl extends Message
         return this.back;
     }
     
-    public void setBack(final String back) {
+    public void setBack(String back) {
         this.back = back;
     }
 }

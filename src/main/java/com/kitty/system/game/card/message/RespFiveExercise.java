@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.card.message;
 
 import com.kitty.system.game.card.domain.CardExercise;
@@ -14,29 +13,29 @@ public class RespFiveExercise extends Message
     private List<FiedValue> list;
     
     public RespFiveExercise() {
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
     }
     
-    public RespFiveExercise(final List<FiedValue> list) {
-        this.list = new ArrayList<FiedValue>();
+    public RespFiveExercise(List<FiedValue> list) {
+        this.list = new ArrayList<>();
         this.list = list;
     }
     
-    public RespFiveExercise(final CardExercise exercise) {
-        this.list = new ArrayList<FiedValue>();
-        final List<FiedValue> objects = new ArrayList<FiedValue>();
-        objects.add(new FiedValue("grade", (byte)2, exercise.getFiveGrade()));
-        objects.add(new FiedValue("goldGrade", (byte)2, exercise.getGoldGrade()));
-        objects.add(new FiedValue("goldExp", (byte)3, exercise.getGoldExp()));
-        objects.add(new FiedValue("woodGrade", (byte)2, exercise.getWoodGrade()));
-        objects.add(new FiedValue("woodExp", (byte)3, exercise.getWoodExp()));
-        objects.add(new FiedValue("waterGrade", (byte)2, exercise.getWaterGrade()));
-        objects.add(new FiedValue("waterExp", (byte)3, exercise.getWaterExp()));
-        objects.add(new FiedValue("fireGrade", (byte)2, exercise.getFireGrade()));
-        objects.add(new FiedValue("fireExp", (byte)3, exercise.getFireExp()));
-        objects.add(new FiedValue("soilGrade", (byte)2, exercise.getSoilGrade()));
-        objects.add(new FiedValue("soilExp", (byte)3, exercise.getSoilExp()));
-        objects.add(new FiedValue("useCount", (byte)2, exercise.getUseCount()));
+    public RespFiveExercise(CardExercise exercise) {
+        this.list = new ArrayList<>();
+        List<FiedValue> objects = new ArrayList<>();
+        objects.add(new FiedValue("grade", (byte)2, Integer.valueOf(exercise.getFiveGrade())));
+        objects.add(new FiedValue("goldGrade", (byte)2, Integer.valueOf(exercise.getGoldGrade())));
+        objects.add(new FiedValue("goldExp", (byte)3, Integer.valueOf(exercise.getGoldExp())));
+        objects.add(new FiedValue("woodGrade", (byte)2, Integer.valueOf(exercise.getWoodGrade())));
+        objects.add(new FiedValue("woodExp", (byte)3, Integer.valueOf(exercise.getWoodExp())));
+        objects.add(new FiedValue("waterGrade", (byte)2, Integer.valueOf(exercise.getWaterGrade())));
+        objects.add(new FiedValue("waterExp", (byte)3, Integer.valueOf(exercise.getWaterExp())));
+        objects.add(new FiedValue("fireGrade", (byte)2, Integer.valueOf(exercise.getFireGrade())));
+        objects.add(new FiedValue("fireExp", (byte)3, Integer.valueOf(exercise.getFireExp())));
+        objects.add(new FiedValue("soilGrade", (byte)2, Integer.valueOf(exercise.getSoilGrade())));
+        objects.add(new FiedValue("soilExp", (byte)3, Integer.valueOf(exercise.getSoilExp())));
+        objects.add(new FiedValue("useCount", (byte)2, Integer.valueOf(exercise.getUseCount())));
         this.list = objects;
     }
     
@@ -56,21 +55,13 @@ public class RespFiveExercise extends Message
         if (!(o instanceof RespFiveExercise)) {
             return false;
         }
-        final RespFiveExercise other = (RespFiveExercise)o;
+        RespFiveExercise other = (RespFiveExercise)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,9 +70,9 @@ public class RespFiveExercise extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.lu;
 
 import com.kitty.common.db.Db4EventService;
@@ -33,7 +32,7 @@ public class WaterRankRecord extends BaseEntity<Long>
         this.leader = 0L;
     }
     
-    public WaterRankRecord(final Long id, final long rId) {
+    public WaterRankRecord(Long id, long rId) {
         this.score = 0;
         this.grade = 0;
         this.equipScore = 0;
@@ -42,7 +41,7 @@ public class WaterRankRecord extends BaseEntity<Long>
         this.rId = rId;
     }
     
-    public WaterRankRecord(final Long id, final long rId, final int score, final int grade, final int equipScore, final long leader) {
+    public WaterRankRecord(Long id, long rId, int score, int grade, int equipScore, long leader) {
         this.score = 0;
         this.grade = 0;
         this.equipScore = 0;
@@ -55,7 +54,7 @@ public class WaterRankRecord extends BaseEntity<Long>
         this.leader = leader;
     }
     
-    public WaterRankRecord(final long rId, final int score, final int grade, final int equipScore, final long leader) {
+    public WaterRankRecord(long rId, int score, int grade, int equipScore, long leader) {
         this.score = 0;
         this.grade = 0;
         this.equipScore = 0;

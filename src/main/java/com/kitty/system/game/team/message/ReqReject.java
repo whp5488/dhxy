@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqReject extends Message
 {
     private String name;
     private String type;
+    
+    public ReqReject() {
+    }
     
     public String getName() {
         return this.name;
@@ -34,34 +36,18 @@ public class ReqReject extends Message
         if (!(o instanceof ReqReject)) {
             return false;
         }
-        final ReqReject other = (ReqReject)o;
+        ReqReject other = (ReqReject)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0065: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0065;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        if (this$type == null) {
-            if (other$type == null) {
-                return true;
-            }
-        }
-        else if (this$type.equals(other$type)) {
-            return true;
-        }
-        return false;
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        return (this$type != null) ? this$type.equals(other$type) : (other$type == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -70,11 +56,11 @@ public class ReqReject extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
         return result;
     }

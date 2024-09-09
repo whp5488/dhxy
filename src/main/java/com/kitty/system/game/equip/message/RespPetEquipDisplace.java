@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.equip.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,34 +33,18 @@ public class RespPetEquipDisplace extends Message
         if (!(o instanceof RespPetEquipDisplace)) {
             return false;
         }
-        final RespPetEquipDisplace other = (RespPetEquipDisplace)o;
+        RespPetEquipDisplace other = (RespPetEquipDisplace)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$main = this.getMain();
-        final Object other$main = other.getMain();
-        Label_0065: {
-            if (this$main == null) {
-                if (other$main == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$main.equals(other$main)) {
-                break Label_0065;
-            }
+        Object this$main = this.getMain();
+        Object other$main = other.getMain();
+        if (!((this$main != null) ? this$main.equals(other$main) : (other$main == null))) {
             return false;
         }
-        final Object this$second = this.getSecond();
-        final Object other$second = other.getSecond();
-        if (this$second == null) {
-            if (other$second == null) {
-                return true;
-            }
-        }
-        else if (this$second.equals(other$second)) {
-            return true;
-        }
-        return false;
+        Object this$second = this.getSecond();
+        Object other$second = other.getSecond();
+        return (this$second != null) ? this$second.equals(other$second) : (other$second == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -71,11 +53,11 @@ public class RespPetEquipDisplace extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $main = this.getMain();
+        Object $main = this.getMain();
         result = result * 59 + (($main == null) ? 43 : $main.hashCode());
-        final Object $second = this.getSecond();
+        Object $second = this.getSecond();
         result = result * 59 + (($second == null) ? 43 : $second.hashCode());
         return result;
     }
@@ -85,7 +67,6 @@ public class RespPetEquipDisplace extends Message
         return "RespPetEquipDisplace(main=" + this.getMain() + ", second=" + this.getSecond() + ")";
     }
     
-    @ConstructorProperties({ "main", "second" })
     public RespPetEquipDisplace(final String main, final String second) {
         this.main = main;
         this.second = second;

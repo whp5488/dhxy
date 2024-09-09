@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.pool;
 
 import java.util.ArrayList;
@@ -27,8 +26,11 @@ public class ItemDataPool
     public static Map<Integer, SysDataAcsryEgg> acsryEggMap;
     public static Map<Integer, SysEffect> effectMap;
     
+    public ItemDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         initDrug(initService);
         initDataStuff(initService);
         initTaskItem(initService);
@@ -39,46 +41,46 @@ public class ItemDataPool
         initEffect(initService);
     }
     
-    public static void initDataStuff(final InitService initService) {
+    public static void initDataStuff(InitService initService) {
         ItemDataPool.data_stuff = initService.initDataStuff();
     }
     
-    public static void initTaskItem(final InitService initService) {
+    public static void initTaskItem(InitService initService) {
         ItemDataPool.data_task_item = initService.initTaskItem();
     }
     
-    public static void initGiftItem(final InitService initService) {
+    public static void initGiftItem(InitService initService) {
         ItemDataPool.data_gift_item = initService.initGiftItem();
     }
     
-    public static void initGiftItemOpen(final InitService initService) {
+    public static void initGiftItemOpen(InitService initService) {
         ItemDataPool.data_gift_item_open = initService.initGiftItemOpen();
     }
     
-    public static void initOtherItem(final InitService initService) {
+    public static void initOtherItem(InitService initService) {
         ItemDataPool.data_other_item = initService.initOtherItem();
     }
     
-    public static void initAcsryEgg(final InitService initService) {
+    public static void initAcsryEgg(InitService initService) {
         ItemDataPool.acsryEggMap = initService.initAcsryEgg();
     }
     
-    public static void initEffect(final InitService initService) {
+    public static void initEffect(InitService initService) {
         ItemDataPool.effectMap = initService.initEffect();
     }
     
-    public static void initDrug(final InitService initService) {
+    public static void initDrug(InitService initService) {
         ItemDataPool.data_drug = initService.initDrug();
     }
     
     static {
-        ItemDataPool.data_drug = new HashMap<Integer, SysDrug>();
-        ItemDataPool.data_task_item = new HashMap<Integer, SysTaskItem>();
-        ItemDataPool.data_stuff = new HashMap<Integer, SysDataStuff>();
-        ItemDataPool.data_gift_item = new HashMap<Integer, SysGiftItem>();
-        ItemDataPool.data_gift_item_open = new ArrayList<SysGiftItemOpen>();
-        ItemDataPool.data_other_item = new HashMap<Integer, SysOtherItem>();
-        ItemDataPool.acsryEggMap = new HashMap<Integer, SysDataAcsryEgg>();
-        ItemDataPool.effectMap = new HashMap<Integer, SysEffect>();
+        ItemDataPool.data_drug = new HashMap();
+        ItemDataPool.data_task_item = new HashMap();
+        ItemDataPool.data_stuff = new HashMap();
+        ItemDataPool.data_gift_item = new HashMap();
+        ItemDataPool.data_gift_item_open = new ArrayList<>();
+        ItemDataPool.data_other_item = new HashMap();
+        ItemDataPool.acsryEggMap = new HashMap();
+        ItemDataPool.effectMap = new HashMap();
     }
 }

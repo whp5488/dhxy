@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -18,6 +17,9 @@ public class SysDataLottery implements Serializable
     private double rate;
     @Column("type")
     private byte type;
+    
+    public SysDataLottery() {
+    }
     
     public int getId() {
         return this.id;
@@ -67,7 +69,7 @@ public class SysDataLottery implements Serializable
         if (!(o instanceof SysDataLottery)) {
             return false;
         }
-        final SysDataLottery other = (SysDataLottery)o;
+        SysDataLottery other = (SysDataLottery)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && Double.compare(this.getRate(), other.getRate()) == 0 && this.getType() == other.getType();
     }
     
@@ -77,12 +79,12 @@ public class SysDataLottery implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();
-        final long $rate = Double.doubleToLongBits(this.getRate());
+        long $rate = Double.doubleToLongBits(this.getRate());
         result = result * 59 + (int)($rate >>> 32 ^ $rate);
         result = result * 59 + this.getType();
         return result;
@@ -90,6 +92,6 @@ public class SysDataLottery implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataLottery(id=" + this.getId() + ", serial=" + this.getSerial() + ", num=" + this.getNum() + ", rate=" + this.getRate() + ", type=" + this.getType() + ")";
+        return "SysDataLottery(id=" + this.getId() + ", serial=" + this.getSerial() + ", num=" + this.getNum() + ", rate=" + this.getRate() + ", type=" + (int)this.getType() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.enums.war.warskill.skilldef.SKILLATTR;
@@ -15,43 +14,47 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_75302 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_75302() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || isHit) {
+        if (isHit == null || (boolean)isHit) {
             return;
         }
-        final int status = this.getStatus(skill.getType());
+        int status = this.getStatus((int)skill.getType());
         if (status != 0 && target.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)target;
-            if (playerFightObject.getAcsrySkillList().contains(75303)) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)target;
+            if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(75303))) {
                 return;
             }
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 75302);
-            final double percent = 0.15;
-            final boolean flag = SkillAi.canAffectOnPro(percent);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 75302);
+            double percent = 0.15;
+            boolean flag = SkillAi.canAffectOnPro(percent);
             if (flag) {
-                final int round = 2;
+                int round = 2;
                 effecter.setStatus(status, round);
-                final FightObjectParam targetParam = actionDetailParam.gainTargetParam(effecter.getId(), true);
-                targetParam.getStatusMap().put(status, round);
-                skillRecord.setT(target.getId());
+                FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)effecter.getId(), true);
+                targetParam.getStatusMap().put(Integer.valueOf(status), Integer.valueOf(round));
+                skillRecord.setT((long)(int)target.getId());
             }
         }
+        return;
     }
     
-    private int getStatus(final int skillType) {
+    private int getStatus(int skillType) {
         if (SKILLATTR.SKILLATTR_ICE.getValue() == skillType) {
             return 1003;
         }

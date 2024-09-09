@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -12,6 +11,9 @@ public class ReqMultiMoveTo extends Message
     private short x;
     private short y;
     private int send_time;
+    
+    public ReqMultiMoveTo() {
+    }
     
     public int getRoleId() {
         return this.roleId;
@@ -61,7 +63,7 @@ public class ReqMultiMoveTo extends Message
         if (!(o instanceof ReqMultiMoveTo)) {
             return false;
         }
-        final ReqMultiMoveTo other = (ReqMultiMoveTo)o;
+        ReqMultiMoveTo other = (ReqMultiMoveTo)o;
         return other.canEqual(this) && this.getRoleId() == other.getRoleId() && this.getMapId() == other.getMapId() && this.getX() == other.getX() && this.getY() == other.getY() && this.getSend_time() == other.getSend_time();
     }
     
@@ -71,7 +73,7 @@ public class ReqMultiMoveTo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         result = result * 59 + this.getMapId();
@@ -83,6 +85,6 @@ public class ReqMultiMoveTo extends Message
     
     @Override
     public String toString() {
-        return "ReqMultiMoveTo(roleId=" + this.getRoleId() + ", mapId=" + this.getMapId() + ", x=" + this.getX() + ", y=" + this.getY() + ", send_time=" + this.getSend_time() + ")";
+        return "ReqMultiMoveTo(roleId=" + this.getRoleId() + ", mapId=" + this.getMapId() + ", x=" + (int)this.getX() + ", y=" + (int)this.getY() + ", send_time=" + this.getSend_time() + ")";
     }
 }

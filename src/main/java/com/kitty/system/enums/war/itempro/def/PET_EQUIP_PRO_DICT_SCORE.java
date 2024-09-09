@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import java.util.HashMap;
@@ -54,9 +53,9 @@ public enum PET_EQUIP_PRO_DICT_SCORE
     private double score;
     
     public static Map<Integer, Double> toMap() {
-        final Map<Integer, Double> map = new HashMap<Integer, Double>();
-        for (final PET_EQUIP_PRO_DICT_SCORE n : values()) {
-            map.put(n.getDist(), n.getScore());
+        Map<Integer, Double> map = new HashMap();
+        for (PET_EQUIP_PRO_DICT_SCORE n : values()) {
+            map.put(Integer.valueOf(n.getDist()), Double.valueOf(n.getScore()));
         }
         return map;
     }

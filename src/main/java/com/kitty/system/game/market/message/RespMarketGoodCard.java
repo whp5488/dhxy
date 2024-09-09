@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import java.util.Iterator;
@@ -23,32 +22,32 @@ public class RespMarketGoodCard extends Message
     private int endTime;
     
     public RespMarketGoodCard() {
-        this.field = new ArrayList<FieldProp>();
-        this.artifice = new ArrayList<FieldProp>();
-        this.para = new ArrayList<FiedValue>();
+        this.field = new ArrayList<>();
+        this.artifice = new ArrayList<>();
+        this.para = new ArrayList<>();
         this.status = 2;
     }
     
-    public RespMarketGoodCard(final String id, final int roleId, final int serial, final List<FiedEquip> field, final List<FiedEquip> artifice) {
-        this.field = new ArrayList<FieldProp>();
-        this.artifice = new ArrayList<FieldProp>();
-        this.para = new ArrayList<FiedValue>();
+    public RespMarketGoodCard(String id, int roleId, int serial, List<FiedEquip> field, List<FiedEquip> artifice) {
+        this.field = new ArrayList<>();
+        this.artifice = new ArrayList<>();
+        this.para = new ArrayList<>();
         this.status = 2;
         this.id = id;
         this.roleId = roleId;
         this.serial = serial;
-        for (final FiedEquip fiedEquip : field) {
+        for (FiedEquip fiedEquip : field) {
             this.field.add(new FieldProp(fiedEquip.getType(), fiedEquip.getValue()));
         }
-        for (final FiedEquip fiedEquip : artifice) {
+        for (FiedEquip fiedEquip : artifice) {
             this.artifice.add(new FieldProp(fiedEquip.getType(), fiedEquip.getValue()));
         }
     }
     
-    public RespMarketGoodCard(final String id, final int roleId, final int serial, final List<FiedEquip> field, final List<FiedEquip> artifice, final List<FiedValue> para, final byte status, final int endTime) {
-        this.field = new ArrayList<FieldProp>();
-        this.artifice = new ArrayList<FieldProp>();
-        this.para = new ArrayList<FiedValue>();
+    public RespMarketGoodCard(String id, int roleId, int serial, List<FiedEquip> field, List<FiedEquip> artifice, List<FiedValue> para, byte status, int endTime) {
+        this.field = new ArrayList<>();
+        this.artifice = new ArrayList<>();
+        this.para = new ArrayList<>();
         this.status = 2;
         this.id = id;
         this.roleId = roleId;
@@ -56,10 +55,10 @@ public class RespMarketGoodCard extends Message
         this.para = para;
         this.status = status;
         this.endTime = endTime;
-        for (final FiedEquip fiedEquip : field) {
+        for (FiedEquip fiedEquip : field) {
             this.field.add(new FieldProp(fiedEquip.getType(), fiedEquip.getValue()));
         }
-        for (final FiedEquip fiedEquip : artifice) {
+        for (FiedEquip fiedEquip : artifice) {
             this.artifice.add(new FieldProp(fiedEquip.getType(), fiedEquip.getValue()));
         }
     }

@@ -1,11 +1,10 @@
-
 package com.kitty.mina;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
-import java.util.Map;
 import com.kitty.mina.task.CmdRecord;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,39 +17,39 @@ public class MessageStatistics
     private ConcurrentMap<Integer, AtomicInteger> receivedCounter;
     
     public MessageStatistics() {
-        this.sentCounter = new ConcurrentHashMap<Integer, AtomicInteger>();
-        this.receivedCounter = new ConcurrentHashMap<Integer, AtomicInteger>();
+        this.sentCounter = new ConcurrentHashMap();
+        this.receivedCounter = new ConcurrentHashMap();
     }
     
     public static MessageStatistics getInstance() {
         return MessageStatistics.self;
     }
     
-    public void addReceived(final int cmd) {
-        this.receivedCounter.putIfAbsent(cmd, new AtomicInteger());
-        final AtomicInteger counter = this.receivedCounter.get(cmd);
+    public void addReceived(int cmd) {
+        this.receivedCounter.putIfAbsent(Integer.valueOf(cmd), new AtomicInteger());
+        AtomicInteger counter = (AtomicInteger)this.receivedCounter.get(Integer.valueOf(cmd));
         counter.incrementAndGet();
     }
     
-    public void addSent(final int cmd) {
-        this.sentCounter.putIfAbsent(cmd, new AtomicInteger());
-        final AtomicInteger counter = this.sentCounter.get(cmd);
+    public void addSent(int cmd) {
+        this.sentCounter.putIfAbsent(Integer.valueOf(cmd), new AtomicInteger());
+        AtomicInteger counter = (AtomicInteger)this.sentCounter.get(Integer.valueOf(cmd));
         counter.incrementAndGet();
     }
     
     @Override
     public String toString() {
-        final List<CmdRecord> received = new ArrayList<CmdRecord>();
-        final List<CmdRecord> sent = new ArrayList<CmdRecord>();
-        for (final Map.Entry<Integer, AtomicInteger> entry : this.receivedCounter.entrySet()) {
-            received.add(new CmdRecord(entry.getKey(), entry.getValue().get()));
+        List<CmdRecord> received = new ArrayList<>();
+        List<CmdRecord> sent = new ArrayList<>();
+        for (Map.Entry<Integer, AtomicInteger> entry : this.receivedCounter.entrySet()) {
+            received.add(new CmdRecord((int)entry.getKey(), ((AtomicInteger)entry.getValue()).get()));
         }
-        for (final Map.Entry<Integer, AtomicInteger> entry : this.sentCounter.entrySet()) {
-            sent.add(new CmdRecord(entry.getKey(), entry.getValue().get()));
+        for (Map.Entry<Integer, AtomicInteger> entry : this.sentCounter.entrySet()) {
+            sent.add(new CmdRecord((int)entry.getKey(), ((AtomicInteger)entry.getValue()).get()));
         }
         Collections.sort(received);
         Collections.sort(sent);
-        final StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder();
         result.append("received = ").append(received.toString()).append("\n").append("sent = ").append(sent.toString());
         return result.toString();
     }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.equip.domain.WearEquip;
 import com.kitty.system.game.equip.service.EquipService;
 import com.kitty.system.common.data.DataGlobalFunc;
@@ -28,58 +26,58 @@ public class PractitionersSource implements Serializable
     private List<Integer> special_icon;
     private List<FiedValue> list;
     
-    public PractitionersSource(final Role role) {
+    public PractitionersSource(Role role) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
-        this.roleId = role.getRoleId();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
+        this.roleId = (int)role.getRoleId();
         this.roleName = role.getName();
     }
     
-    public PractitionersSource(final Role role, final long nextLevelNeedExp) {
+    public PractitionersSource(Role role, long nextLevelNeedExp) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
-        this.roleId = role.getRoleId();
-        this.relive = role.getRelive();
-        this.level = role.getLevel();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
+        this.roleId = (int)role.getRoleId();
+        this.relive = (int)role.getRelive();
+        this.level = (int)role.getLevel();
         this.reliveAndLevel = this.relive * 1000 + this.level;
         this.exp = role.getExp();
         this.nextLevelNeedExp = nextLevelNeedExp;
         this.rests(role);
     }
     
-    public void rests(final Role role) {
+    public void rests(Role role) {
         this.roleName = role.getName();
-        this.serial = role.getSerial();
-        final EquipService equipService = SpringUtils.getEquipService();
+        this.serial = (int)role.getSerial();
+        EquipService equipService = SpringUtils.getEquipService();
         this.weapon = role.getWeaponIcon();
         this.light_effect = equipService.getWearEffect(role);
-        final List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
             this.gem = DataGlobalFunc.getWeaponGemNum(wearEquips);
         }
         this.list = SpringUtils.getRoleService().deyList(role.getColor());
     }
     
-    public void setRelive(final int relive) {
+    public void setRelive(int relive) {
         this.relive = relive;
         this.reliveAndLevel = this.relive * 1000 + this.level;
     }
     
-    public void setLevel(final int level) {
+    public void setLevel(int level) {
         this.level = level;
         this.reliveAndLevel = this.relive * 1000 + this.level;
     }
     
     @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof PractitionersSource) {
-            final PractitionersSource practitionersSource = (PractitionersSource)obj;
+    public boolean equals(Object obj) {
+        if ((obj instanceof PractitionersSource)) {
+            PractitionersSource practitionersSource = (PractitionersSource)obj;
             return this.roleId == practitionersSource.getRoleId();
         }
         return false;
@@ -88,7 +86,7 @@ public class PractitionersSource implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
-        final int prime = 31;
+        int prime = 31;
         result = this.getRoleId() * prime;
         return result;
     }
@@ -189,13 +187,12 @@ public class PractitionersSource implements Serializable
         this.list = list;
     }
     
-    @ConstructorProperties({ "roleId", "roleName", "relive", "level", "reliveAndLevel", "exp", "nextLevelNeedExp", "serial", "weapon", "gem", "light_effect", "special_icon", "list" })
     public PractitionersSource(final int roleId, final String roleName, final int relive, final int level, final int reliveAndLevel, final long exp, final long nextLevelNeedExp, final int serial, final int weapon, final int gem, final List<Integer> light_effect, final List<Integer> special_icon, final List<FiedValue> list) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = roleId;
         this.roleName = roleName;
         this.relive = relive;
@@ -214,8 +211,8 @@ public class PractitionersSource implements Serializable
     public PractitionersSource() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 }

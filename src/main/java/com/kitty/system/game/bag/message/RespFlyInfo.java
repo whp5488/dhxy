@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.system.game.tianfu.pojo.RoleTianFuClient;
@@ -69,7 +68,7 @@ public class RespFlyInfo extends Message
         if (!(o instanceof RespFlyInfo)) {
             return false;
         }
-        final RespFlyInfo other = (RespFlyInfo)o;
+        RespFlyInfo other = (RespFlyInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -79,43 +78,19 @@ public class RespFlyInfo extends Message
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$goods = this.getGoods();
-        final Object other$goods = other.getGoods();
-        Label_0091: {
-            if (this$goods == null) {
-                if (other$goods == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$goods.equals(other$goods)) {
-                break Label_0091;
-            }
+        Object this$goods = this.getGoods();
+        Object other$goods = other.getGoods();
+        if (!((this$goods != null) ? this$goods.equals(other$goods) : (other$goods == null))) {
             return false;
         }
-        final Object this$equip = this.getEquip();
-        final Object other$equip = other.getEquip();
-        Label_0128: {
-            if (this$equip == null) {
-                if (other$equip == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$equip.equals(other$equip)) {
-                break Label_0128;
-            }
+        Object this$equip = this.getEquip();
+        Object other$equip = other.getEquip();
+        if (!((this$equip != null) ? this$equip.equals(other$equip) : (other$equip == null))) {
             return false;
         }
-        final Object this$roleTianFuClient = this.getRoleTianFuClient();
-        final Object other$roleTianFuClient = other.getRoleTianFuClient();
-        if (this$roleTianFuClient == null) {
-            if (other$roleTianFuClient == null) {
-                return true;
-            }
-        }
-        else if (this$roleTianFuClient.equals(other$roleTianFuClient)) {
-            return true;
-        }
-        return false;
+        Object this$roleTianFuClient = this.getRoleTianFuClient();
+        Object other$roleTianFuClient = other.getRoleTianFuClient();
+        return (this$roleTianFuClient != null) ? this$roleTianFuClient.equals(other$roleTianFuClient) : (other$roleTianFuClient == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -124,21 +99,21 @@ public class RespFlyInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPos();
         result = result * 59 + this.getType();
-        final Object $goods = this.getGoods();
+        Object $goods = this.getGoods();
         result = result * 59 + (($goods == null) ? 43 : $goods.hashCode());
-        final Object $equip = this.getEquip();
+        Object $equip = this.getEquip();
         result = result * 59 + (($equip == null) ? 43 : $equip.hashCode());
-        final Object $roleTianFuClient = this.getRoleTianFuClient();
+        Object $roleTianFuClient = this.getRoleTianFuClient();
         result = result * 59 + (($roleTianFuClient == null) ? 43 : $roleTianFuClient.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespFlyInfo(pos=" + this.getPos() + ", type=" + this.getType() + ", goods=" + this.getGoods() + ", equip=" + this.getEquip() + ", roleTianFuClient=" + this.getRoleTianFuClient() + ")";
+        return "RespFlyInfo(pos=" + (int)this.getPos() + ", type=" + (int)this.getType() + ", goods=" + this.getGoods() + ", equip=" + this.getEquip() + ", roleTianFuClient=" + this.getRoleTianFuClient() + ")";
     }
 }

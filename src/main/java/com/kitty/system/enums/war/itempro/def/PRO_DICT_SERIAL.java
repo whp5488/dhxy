@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 public enum PRO_DICT_SERIAL
@@ -15,7 +14,8 @@ public enum PRO_DICT_SERIAL
     PSTZ("配饰套装属性", 100000), 
     TYC("天演策属性", 110000), 
     BS("变身/属性卡属性", 120000), 
-    PET_PS("宠物配饰属性", 130000);
+    PET_PS("宠物配饰属性", 130000), 
+    MIND("心法属性", 140000);
     
     private String name;
     private int serial;

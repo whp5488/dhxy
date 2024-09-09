@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.system.game.fightnew.messages.vo.FightMember;
@@ -11,11 +10,14 @@ public class RespCombatFriends extends Message
 {
     private List<FightMember> list;
     
+    public RespCombatFriends() {
+    }
+    
     public List<FightMember> getList() {
         return this.list;
     }
     
-    public void setList(final List<FightMember> list) {
+    public void setList(List<FightMember> list) {
         this.list = list;
     }
 }

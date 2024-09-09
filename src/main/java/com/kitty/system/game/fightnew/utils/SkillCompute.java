@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.utils;
 
 import com.kitty.system.enums.war.warskill.skilldef.PETSKILLATTR;
@@ -22,71 +21,74 @@ public class SkillCompute
     private static final List<Integer> evade;
     private static final List<Integer> pet_evade;
     
-    public static double computeSkillDamagePoison(final double power, final double kx, final double fk, final Integer skillExp, final Integer round, Integer level, final Integer maxHp, final double extra, final double weak, final double wx) {
-        level = ((level < 0) ? 1 : level);
-        final double damageBase = power * level * (Math.pow(skillExp, 0.4) * 2.8853998118144273 / 100.0 + 1.0);
-        double damage = computeSkillDamage(damageBase, kx, fk, extra, weak, wx);
-        if (round > 1) {
-            damage = Math.min(damage, maxHp * 0.5);
+    public SkillCompute() {
+    }
+    
+    public static double computeSkillDamagePoison(double power, double kx, double fk, Integer skillExp, Integer round, Integer level, Integer maxHp, double extra, double weak, double wx) {
+        level = Integer.valueOf(((int)level < 0) ? 1 : ((int)level));
+        double damageBase = power * (double)(int)level * (Math.pow((double)(int)skillExp, 0.4) * 2.8853998118144273 / 100.0 + 1.0);
+        double damage = (double)(int)computeSkillDamage(damageBase, kx, fk, extra, weak, wx);
+        if ((int)round > 1) {
+            damage = Math.min(damage, (double)(int)maxHp * 0.5);
         }
         damage = Math.max(damage, 1.0);
         return damage;
     }
     
-    public static Integer computeSkillDamagePoisonFollowUp(final NutMap map) {
-        final int id = map.getInt("1005_power");
-        final double kdx = map.getDouble("1005_kdx");
-        final double weak = map.getDouble("1005_weak");
-        final double dqd = map.getDouble("1005_dqd");
-        final int proficient = map.getInt("1005_proficient");
-        final int round = map.getInt("1005_round") + 1;
-        final int level = map.getInt("1005_level");
-        final int maxLife = map.getInt("1005_maxLife");
-        final double extra = map.getDouble("1005_extra");
-        final double wx = map.getDouble("1005_wx");
-        final double hurt = computeSkillDamagePoison(id, kdx, dqd, proficient, round, level, maxLife, extra, weak, wx);
-        return Math.max(1, (int)hurt);
+    public static Integer computeSkillDamagePoisonFollowUp(NutMap map) {
+        int id = map.getInt("1005_power");
+        double kdx = map.getDouble("1005_kdx");
+        double weak = map.getDouble("1005_weak");
+        double dqd = map.getDouble("1005_dqd");
+        int proficient = map.getInt("1005_proficient");
+        int round = map.getInt("1005_round") + 1;
+        int level = map.getInt("1005_level");
+        int maxLife = map.getInt("1005_maxLife");
+        double extra = map.getDouble("1005_extra");
+        double wx = map.getDouble("1005_wx");
+        double hurt = computeSkillDamagePoison((double)id, kdx, dqd, Integer.valueOf(proficient), Integer.valueOf(round), Integer.valueOf(level), Integer.valueOf(maxLife), extra, weak, wx);
+        return Integer.valueOf(Math.max(1, (int)hurt));
     }
     
-    public static Integer computeSkillDamage(double damage, final double kx, final double fk, final double extra, final double weak, final double wx) {
+    public static Integer computeSkillDamage(double damage, double kx, double fk, double extra, double weak, double wx) {
         damage *= 1.0 + fk * 3.0 - kx * 2.0 + extra;
         damage *= wx * (1.0 + weak);
         damage = Math.max(damage, 1.0);
-        return (int)damage;
+        return Integer.valueOf((int)damage);
     }
     
-    public static Integer computePetSkillDamage(double damage, final double kx, final double fk, final double extra, final double weak, final double wx) {
+    public static Integer computePetSkillDamage(double damage, double kx, double fk, double extra, double weak, double wx) {
         damage *= 1.0 + fk * 3.0 - kx + extra;
         damage *= wx * (1.0 + weak);
         damage = Math.max(damage, 1.0);
-        return (int)damage;
+        return Integer.valueOf((int)damage);
     }
     
-    public static Integer computeSkillDamage(final int proficient, final double power, final int max, final int curr, final double kx, final double fk, final double extra, final double weak, final double wx) {
+    public static Integer computeSkillDamage(int proficient, double power, int max, int curr, double kx, double fk, double extra, double weak, double wx) {
         if (curr <= 0) {
-            return 0;
+            return Integer.valueOf(0);
         }
-        final double ratio = BigDecimalUtil.decimalScaleObjectDown(2, 0.425 * (max * 1.1 / curr) + power * (Math.pow(proficient, 0.35) * 2.0 / 100.0 + 1.0)) / 100.0;
-        double damage = (ratio + fk - kx + extra) * curr;
+        double ratio = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(2), Double.valueOf(0.425 * ((double)max * 1.1 / (double)curr) + power * (Math.pow((double)proficient, 0.35) * 2.0 / 100.0 + 1.0))) / 100.0;
+        double damage = (ratio + fk - kx + extra) * (double)curr;
         damage += damage * (wx / 50.0 * (1.0 + weak));
-        final double hp = curr * 0.5;
+        double hp = (double)curr * 0.5;
         if (damage > hp) {
             damage = hp;
         }
         damage = Math.max(damage, 1.0);
-        return (int)damage;
+        return Integer.valueOf((int)damage);
     }
     
-    public static Integer computeSkillLeech(final int id, final int damage, final double extra) {
+    public static Integer computeSkillLeech(int id, int damage, double extra) {
         int leech = 1;
-        final SysSkill skill = SkillDataPool.skillMap.get(id);
+        SysSkill skill = (SysSkill)SkillDataPool.skillMap.get(Integer.valueOf(id));
         if (skill != null) {
-            leech = (int)(damage * (skill.getPower()[1] + 2.0 * extra));
+            leech = (int)((double)damage * (skill.getPower()[1] + 2.0 * extra));
         }
-        return Math.max(leech, 1);
+        return Integer.valueOf(Math.max(leech, 1));
     }
     
-    public static Integer computeSkillDamageWildfire(final FightObject effector, final double[] power, final int level, final int exp, final double kx, final double fk, final double extra, final double weak, final int die, final double wx) {
+    public static Integer computeSkillDamageWildfire(FightObject effector, double[] power, int level, int exp, double kx, double fk, double extra, double weak, int die, double wx) {
         double coeff = 0.0;
         if (die <= 0) {
             coeff = power[1];
@@ -103,37 +105,37 @@ public class SkillCompute
         else {
             coeff = power[5];
         }
-        double hurtBase = power[0] * level * (Math.pow(exp, 0.4) * 2.8853998118144273 / 100.0 + 1.0) * coeff;
-        final int chageBaseHurt = AcsrySkillUtil.getChageBaseHurt(effector);
-        hurtBase += chageBaseHurt;
+        double hurtBase = power[0] * (double)level * (Math.pow((double)exp, 0.4) * 2.8853998118144273 / 100.0 + 1.0) * coeff;
+        int chageBaseHurt = AcsrySkillUtil.getChageBaseHurt(effector);
+        hurtBase += (double)chageBaseHurt;
         if (effector.isPet()) {
             return computePetSkillDamage(hurtBase, kx, fk, extra, weak, wx);
         }
         return computeSkillDamage(hurtBase, kx, fk, extra, weak, wx);
     }
     
-    public static Integer computeDragonSkillDamage(final Fight fight, final FightObject attacker, final FightObject target, int damage, final double conquer_extent, final boolean penetrate, final double extra, final double weak) {
+    public static Integer computeDragonSkillDamage(Fight fight, FightObject attacker, FightObject target, int damage, double conquer_extent, boolean penetrate, double extra, double weak) {
         double wlkang = target.getSelfAllTempPro(PRO_DICT_TYPE.WL_XS.getDist());
         if (penetrate) {
             wlkang -= conquer_extent;
         }
-        damage = BigDecimalUtil.decimalScaleIntegerDown(0, damage * (1.0 - wlkang + extra));
-        final double wx = SkillFunc.getWuXingKeZhiXiuZheng(attacker, target, fight.getType());
-        damage *= (int)(wx * (1.0 + weak));
+        damage = BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf((double)damage * (1.0 - wlkang + extra)));
+        double wx = SkillFunc.getWuXingKeZhiXiuZheng(attacker, target, fight.getType());
+        damage = (int)((double)damage * (wx * (1.0 + weak)));
         if (target.getType() == 1) {
-            damage = BigDecimalUtil.decimalScaleIntegerDown(0, damage * Math.pow(0.5, 0.99));
+            damage = BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf((double)damage * Math.pow(0.5, 0.99)));
         }
-        return Math.max(damage, 1);
+        return Integer.valueOf(Math.max(damage, 1));
     }
     
-    public static int computeAppendTarget(final FightObject effector, final int proficient, final int status) {
+    public static int computeAppendTarget(FightObject effector, int proficient, int status) {
         int count = 0;
-        double down = BigDecimalUtil.decimalScaleObjectDown(3, BigDecimalUtil.decimalScaleObjectDown(1, 0.1 + 18.0 * (1.0 + Math.pow(proficient, 0.35) * 2.0 / 100.0)) / 100.0);
-        final double propertyAdd = effector.getPropertyMap().getDouble(String.valueOf(PRO_DICT_TYPE.CHASE_RATIO.getDist()), 0.0);
+        double down = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(1), Double.valueOf(0.1 + 18.0 * (1.0 + Math.pow((double)proficient, 0.35) * 2.0 / 100.0))) / 100.0));
+        double propertyAdd = effector.getPropertyMap().getDouble(String.valueOf(PRO_DICT_TYPE.CHASE_RATIO.getDist()), 0.0);
         if (propertyAdd != 0.0) {
             down += propertyAdd;
         }
-        for (int num = 1 + (int)(Math.pow(proficient, 0.38) * 8.0 / 100.0), i = 0; i < num; ++i) {
+        for (int num = 1 + (int)(Math.pow((double)proficient, 0.38) * 8.0 / 100.0), i = 0; i < num; ++i) {
             if (SkillAi.canAffectOnPro(down)) {
                 ++count;
             }
@@ -144,85 +146,85 @@ public class SkillCompute
         return count;
     }
     
-    public static boolean computeSkillHit(final Fight fight, final FightObject attacker, final FightObject target, final RoleSkill skill) {
+    public static boolean computeSkillHit(Fight fight, FightObject attacker, FightObject target, RoleSkill skill) {
         double odds = 1.0;
-        final SysSkill sysSkill = SkillDataPool.skillMap.get(skill.getSkillId());
-        final double magicHit = attacker.getSelfAllTempPro(PRO_DICT_TYPE.MAGIC_HIT_RATIO.getDist());
+        SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(skill.getSkillId());
+        double magicHit = attacker.getSelfAllTempPro(PRO_DICT_TYPE.MAGIC_HIT_RATIO.getDist());
         if ((attacker.getLogic() == LOGIC.LOGICTYPE_HERO.getValue() || attacker.getLogic() == LOGIC.LOGICTYPE_MONSTER.getValue()) && SkillCompute.barrier.contains(skill.getType())) {
             if (sysSkill != null) {
                 String statusOdds = null;
-                if (skill.getType() == SKILLATTR.SKILLATTR_CONFUSE.getValue()) {
-                    final double kx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_HL.getDist());
-                    final double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_HL.getDist());
-                    final double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_HL.getDist());
-                    odds = mainParameter(skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
+                if ((int)skill.getType() == SKILLATTR.SKILLATTR_CONFUSE.getValue()) {
+                    double kx = target.getSelfAllTempProOther(attacker, PRO_DICT_TYPE.K_HL.getDist());
+                    double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_HL.getDist());
+                    double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_HL.getDist());
+                    odds = mainParameter((int)skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
                     statusOdds = "1002odds";
                 }
-                else if (skill.getType() == SKILLATTR.SKILLATTR_SLEEP.getValue()) {
-                    final double kx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_HS.getDist());
-                    final double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_HS.getDist());
-                    final double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_HS.getDist());
-                    odds = mainParameter(skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
+                else if ((int)skill.getType() == SKILLATTR.SKILLATTR_SLEEP.getValue()) {
+                    double kx = target.getSelfAllTempProOther(attacker, PRO_DICT_TYPE.K_HS.getDist());
+                    double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_HS.getDist());
+                    double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_HS.getDist());
+                    odds = mainParameter((int)skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
                     statusOdds = "1004odds";
                 }
-                else if (skill.getType() == SKILLATTR.SKILLATTR_ICE.getValue()) {
-                    final double kx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_FY.getDist());
-                    final double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_FY.getDist());
-                    final double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_FY.getDist());
-                    odds = mainParameter(skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
+                else if ((int)skill.getType() == SKILLATTR.SKILLATTR_ICE.getValue()) {
+                    double kx = target.getSelfAllTempProOther(attacker, PRO_DICT_TYPE.K_FY.getDist());
+                    double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_FY.getDist());
+                    double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_FY.getDist());
+                    odds = mainParameter((int)skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
                     statusOdds = "1003odds";
                 }
-                else if (skill.getType() == SKILLATTR.SKILLATTR_YIWANG.getValue()) {
-                    final double kx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_YW.getDist());
-                    final double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_YW.getDist());
-                    final double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_YW.getDist());
-                    odds = mainParameter(skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
+                else if ((int)skill.getType() == SKILLATTR.SKILLATTR_YIWANG.getValue()) {
+                    double kx = target.getSelfAllTempProOther(attacker, PRO_DICT_TYPE.K_YW.getDist());
+                    double hkx = attacker.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_YW.getDist());
+                    double extra = attacker.getSelfAllTempPro(PRO_DICT_TYPE.RISE_YW.getDist());
+                    odds = mainParameter((int)skill.getProficient(), sysSkill.getHitRatio(), kx, hkx, extra);
                     statusOdds = "1006odds";
                 }
                 odds += magicHit;
-                target.getStatusMap().setv(statusOdds, (Object)odds);
+                target.getStatusMap().setv(statusOdds, Double.valueOf(odds));
             }
         }
-        else if (skill.getType() == SKILLATTR.SKILLATTR_HENGSAO.getValue() || skill.getType() == SKILLATTR.SKILLATTR_ZHENJI.getValue() || skill.getType() == SKILLATTR.SKILLATTR_POJIA.getValue()) {
+        else if ((int)skill.getType() == SKILLATTR.SKILLATTR_HENGSAO.getValue() || (int)skill.getType() == SKILLATTR.SKILLATTR_ZHENJI.getValue() || (int)skill.getType() == SKILLATTR.SKILLATTR_POJIA.getValue()) {
             if (sysSkill != null) {
-                final double dodge = target.getSelfAllTempPro(PRO_DICT_TYPE.MAGIC_MISS_RATIO.getDist());
-                final double hit = attacker.getSelfAllTempPro(PRO_DICT_TYPE.HIT_RATIO.getDist());
-                odds = hit - dodge;
+                double dodge = target.getSelfAllTempPro(PRO_DICT_TYPE.MAGIC_MISS_RATIO.getDist());
+                double hit2 = attacker.getSelfAllTempPro(PRO_DICT_TYPE.HIT_RATIO.getDist());
+                odds = hit2 - dodge;
                 odds += magicHit;
             }
         }
         else if (!SkillCompute.evade.contains(skill.getType()) && !SkillCompute.pet_evade.contains(skill.getType())) {
             odds = target.getSelfAllTempPro(PRO_DICT_TYPE.MAGIC_MISS_RATIO.getDist());
-            final double hit2 = attacker.getSelfAllTempPro(PRO_DICT_TYPE.MAGIC_HIT_RATIO.getDist());
-            odds -= hit2;
+            double hit = attacker.getSelfAllTempPro(PRO_DICT_TYPE.MAGIC_HIT_RATIO.getDist());
+            odds -= hit;
             odds += magicHit;
             return odds > 0.0 && SkillAi.canAffectOnPro(odds);
         }
         return !SkillAi.canAffectOnPro(odds);
     }
     
-    public static double mainParameter(final int proficient, final double factor, final double kx, final double hkx, final double extra) {
-        final double count = BigDecimalUtil.decimalScaleDouble(2, factor + (Math.pow(proficient, 0.4) * 4.0 / 100.0 + 1.0) * 300.0) / 1000.0;
-        return BigDecimalUtil.decimalScaleDouble(2, count - kx + hkx + extra);
+    public static double mainParameter(int proficient, double factor, double kx, double hkx, double extra) {
+        double count = BigDecimalUtil.decimalScaleDouble(Integer.valueOf(2), Double.valueOf(factor + (Math.pow((double)proficient, 0.4) * 4.0 / 100.0 + 1.0) * 300.0)) / 1000.0;
+        return BigDecimalUtil.decimalScaleDouble(Integer.valueOf(2), Double.valueOf(count - kx + hkx + extra));
     }
     
-    public static void main(final String[] args) {
-        final double kx = 122.5;
+    public static void main(String[] args) {
+        double kx = 122.5;
         System.out.println("抗性 = " + kx);
-        final double hs = 18.9;
+        double hs = 18.9;
         System.out.println("忽视抗性 = " + hs);
-        final int factor = 62;
+        int factor = 62;
         System.out.println("系数 = " + factor);
-        final int extra = 0;
+        int extra = 0;
         System.out.println("增强 = " + extra);
-        final double v = mainParameter(800, factor, kx / 100.0, hs / 100.0, extra);
+        double v = mainParameter(800, (double)factor, kx / 100.0, hs / 100.0, (double)extra);
         System.out.println("命中率 = " + v);
         System.out.println("是否命中 = " + SkillAi.canAffectOnPro(v));
     }
     
     static {
-        barrier = Arrays.asList(SKILLATTR.SKILLATTR_CONFUSE.getValue(), SKILLATTR.SKILLATTR_SLEEP.getValue(), SKILLATTR.SKILLATTR_ICE.getValue(), SKILLATTR.SKILLATTR_YIWANG.getValue());
-        evade = Arrays.asList(SKILLATTR.SKILLATTR_PAN.getValue(), SKILLATTR.SKILLATTR_ATTACK.getValue(), SKILLATTR.SKILLATTR_SPEED.getValue(), SKILLATTR.SKILLATTR_ZHIYU.getValue());
+        barrier = Arrays.asList(Integer.valueOf(SKILLATTR.SKILLATTR_CONFUSE.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_SLEEP.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_ICE.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_YIWANG.getValue()));
+        evade = Arrays.asList(Integer.valueOf(SKILLATTR.SKILLATTR_PAN.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_ATTACK.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_SPEED.getValue()), Integer.valueOf(SKILLATTR.SKILLATTR_ZHIYU.getValue()));
         pet_evade = PETSKILLATTR.evade();
     }
 }

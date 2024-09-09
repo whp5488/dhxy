@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.wardef;
 
 import com.kitty.system.enums.war.itempro.def.PRO_TYPE;

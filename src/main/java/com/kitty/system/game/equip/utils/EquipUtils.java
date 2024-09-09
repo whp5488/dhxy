@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.utils;
 
 import com.kitty.system.enums.common.ADORN;
@@ -11,38 +10,39 @@ import com.kitty.system.game.equip.domain.vo.EquipAlike;
 
 public class EquipUtils
 {
-    public static BagEquip gemChange(final EquipAlike equipData, BagEquip equip) {
-        final Integer score = MakeAttribute.calEquipScore(equip);
-        final List<FiedEquip> field = equip.getField();
+    public EquipUtils() {
+    }
+    
+    public static BagEquip gemChange(EquipAlike equipData, BagEquip equip) {
+        Integer score = MakeAttribute.calEquipScore(equip);
+        List<FiedEquip> field = equip.getField();
         field.forEach(e -> {
-            if (e.getType().equals(6679)) {
-                e.setValue(score + equipData.getBaseScore());
+            if (e.getType().equals(Integer.valueOf(6679))) {
+                e.setValue(Integer.valueOf((int)score + equipData.getBaseScore()));
                 return;
             }
-            else {
-                return;
-            }
+            return;
         });
         equip.setField(field);
         equip = scoreUpdate(equip, 0, 0, equipData.getBaseScore());
         return equip;
     }
     
-    public static BagEquip scoreUpdate(final BagEquip equip, final int type, final int operateType, final int score) {
-        final BagEquip calculate = new BagEquip();
+    public static BagEquip scoreUpdate(BagEquip equip, int type, int operateType, int score) {
+        BagEquip calculate = new BagEquip();
         BeanUtils.copyBeanProp(calculate, equip);
-        final BagEquip redo = redo(calculate, type, operateType, score);
+        BagEquip redo = redo(calculate, type, operateType, score);
         equip.setRedoGeneralHistory(redo.getRedoGeneralHistory());
         equip.setRedoHighHistory(redo.getRedoHighHistory());
         equip.setRedoSuperHistory(redo.getRedoSuperHistory());
-        final BagEquip artifice = artifice(calculate, type, operateType, score);
+        BagEquip artifice = artifice(calculate, type, operateType, score);
         equip.setArtificeGeneralHistory(artifice.getArtificeGeneralHistory());
         equip.setArtificeHighHistory(artifice.getArtificeHighHistory());
         equip.setArtificeSuperHistory(artifice.getArtificeSuperHistory());
         return equip;
     }
     
-    public static BagEquip redo(final BagEquip calculate, final int type, final int operateType, final int score) {
+    public static BagEquip redo(BagEquip calculate, int type, int operateType, int score) {
         if ((type == 2 || type == 3) && calculate.getRedoGeneralHistory().size() > 0) {
             if (operateType != 1) {
                 calculate.setRedoGeneralHistory(countCommonScore(calculate.getRedoGeneralHistory(), calculate, score, 0));
@@ -70,7 +70,7 @@ public class EquipUtils
         return calculate;
     }
     
-    public static BagEquip artifice(final BagEquip calculate, final int type, final int operateType, final int score) {
+    public static BagEquip artifice(BagEquip calculate, int type, int operateType, int score) {
         if (type == 4 && calculate.getArtificeGeneralHistory().size() > 0) {
             if (operateType != 1) {
                 calculate.setArtificeGeneralHistory(countCommonScore(calculate.getArtificeGeneralHistory(), calculate, score, 1));
@@ -98,14 +98,14 @@ public class EquipUtils
         return calculate;
     }
     
-    public static List<List<FiedEquip>> countOtherScore(final List<List<FiedEquip>> list, final BagEquip calculate, final int score, final int type) {
+    public static List<List<FiedEquip>> countOtherScore(List<List<FiedEquip>> list, BagEquip calculate, int score, int type) {
         for (int i = 0; i < list.size(); ++i) {
-            list.set(i, countCommonScore(list.get(i), calculate, score, type));
+            list.set(i, countCommonScore((List)list.get(i), calculate, score, type));
         }
         return list;
     }
     
-    public static List<FiedEquip> countCommonScore(final List<FiedEquip> list, final BagEquip calculate, final int score, final int type) {
+    public static List<FiedEquip> countCommonScore(List<FiedEquip> list, BagEquip calculate, int score, int type) {
         if (calculate.getPosition() <= ADORN.SHOES.getValue()) {
             if (type == 0) {
                 calculate.setField(list);
@@ -113,17 +113,18 @@ public class EquipUtils
             else {
                 calculate.setArtifice(list);
             }
-            final Integer scoreNew = MakeAttribute.calEquipScore(calculate) + score;
+            Integer scoreNew = Integer.valueOf((int)MakeAttribute.calEquipScore(calculate) + score);
             list.forEach(e -> {
-                if (e.getType().equals(6679)) {
+                if (e.getType().equals(Integer.valueOf(6679))) {
                     e.setValue(scoreNew);
                     return;
                 }
-                else {
-                    return;
-                }
+                return;
             });
+            return list;
         }
-        return list;
+        else {
+            return list;
+        }
     }
 }

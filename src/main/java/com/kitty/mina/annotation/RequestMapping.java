@@ -1,4 +1,3 @@
-
 package com.kitty.mina.annotation;
 
 import java.lang.annotation.RetentionPolicy;

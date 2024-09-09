@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message.vo;
 
 import java.io.Serializable;
@@ -65,7 +64,7 @@ public class CaFightInfo implements Serializable
         if (!(o instanceof CaFightInfo)) {
             return false;
         }
-        final CaFightInfo other = (CaFightInfo)o;
+        CaFightInfo other = (CaFightInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -75,33 +74,17 @@ public class CaFightInfo implements Serializable
         if (this.getItselfLeaderSerial() != other.getItselfLeaderSerial()) {
             return false;
         }
-        final Object this$itselfLeaderName = this.getItselfLeaderName();
-        final Object other$itselfLeaderName = other.getItselfLeaderName();
-        Label_0091: {
-            if (this$itselfLeaderName == null) {
-                if (other$itselfLeaderName == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$itselfLeaderName.equals(other$itselfLeaderName)) {
-                break Label_0091;
-            }
+        Object this$itselfLeaderName = this.getItselfLeaderName();
+        Object other$itselfLeaderName = other.getItselfLeaderName();
+        if (!((this$itselfLeaderName != null) ? this$itselfLeaderName.equals(other$itselfLeaderName) : (other$itselfLeaderName == null))) {
             return false;
         }
         if (this.getEnemyLeaderSerial() != other.getEnemyLeaderSerial()) {
             return false;
         }
-        final Object this$enemyLeaderName = this.getEnemyLeaderName();
-        final Object other$enemyLeaderName = other.getEnemyLeaderName();
-        if (this$enemyLeaderName == null) {
-            if (other$enemyLeaderName == null) {
-                return true;
-            }
-        }
-        else if (this$enemyLeaderName.equals(other$enemyLeaderName)) {
-            return true;
-        }
-        return false;
+        Object this$enemyLeaderName = this.getEnemyLeaderName();
+        Object other$enemyLeaderName = other.getEnemyLeaderName();
+        return (this$enemyLeaderName != null) ? this$enemyLeaderName.equals(other$enemyLeaderName) : (other$enemyLeaderName == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -110,14 +93,14 @@ public class CaFightInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getItselfLeader();
         result = result * 59 + this.getItselfLeaderSerial();
-        final Object $itselfLeaderName = this.getItselfLeaderName();
+        Object $itselfLeaderName = this.getItselfLeaderName();
         result = result * 59 + (($itselfLeaderName == null) ? 43 : $itselfLeaderName.hashCode());
         result = result * 59 + this.getEnemyLeaderSerial();
-        final Object $enemyLeaderName = this.getEnemyLeaderName();
+        Object $enemyLeaderName = this.getEnemyLeaderName();
         result = result * 59 + (($enemyLeaderName == null) ? 43 : $enemyLeaderName.hashCode());
         return result;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -16,6 +15,9 @@ public class SysCanMove implements Serializable
     private String canMove;
     @Column("tab")
     private byte tab;
+    
+    public SysCanMove() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -49,24 +51,16 @@ public class SysCanMove implements Serializable
         if (!(o instanceof SysCanMove)) {
             return false;
         }
-        final SysCanMove other = (SysCanMove)o;
+        SysCanMove other = (SysCanMove)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$canMove = this.getCanMove();
-        final Object other$canMove = other.getCanMove();
-        if (this$canMove == null) {
-            if (other$canMove == null) {
-                return this.getTab() == other.getTab();
-            }
-        }
-        else if (this$canMove.equals(other$canMove)) {
-            return this.getTab() == other.getTab();
-        }
-        return false;
+        Object this$canMove = this.getCanMove();
+        Object other$canMove = other.getCanMove();
+        return ((this$canMove != null) ? this$canMove.equals(other$canMove) : (other$canMove == null)) && this.getTab() == other.getTab();
     }
     
     protected boolean canEqual(final Object other) {
@@ -75,10 +69,10 @@ public class SysCanMove implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $canMove = this.getCanMove();
+        Object $canMove = this.getCanMove();
         result = result * 59 + (($canMove == null) ? 43 : $canMove.hashCode());
         result = result * 59 + this.getTab();
         return result;
@@ -86,6 +80,6 @@ public class SysCanMove implements Serializable
     
     @Override
     public String toString() {
-        return "SysCanMove(serial=" + this.getSerial() + ", canMove=" + this.getCanMove() + ", tab=" + this.getTab() + ")";
+        return "SysCanMove(serial=" + this.getSerial() + ", canMove=" + this.getCanMove() + ", tab=" + (int)this.getTab() + ")";
     }
 }

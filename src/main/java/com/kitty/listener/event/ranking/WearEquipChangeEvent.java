@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event.ranking;
 
 import com.kitty.listener.EventType;
@@ -9,7 +8,7 @@ public class WearEquipChangeEvent extends BaseGameEvent
 {
     private WearEquip wearEquip;
     
-    public WearEquipChangeEvent(final EventType eventType, final WearEquip wearEquip) {
+    public WearEquipChangeEvent(EventType eventType, WearEquip wearEquip) {
         super(eventType);
         this.wearEquip = wearEquip;
     }
@@ -18,7 +17,7 @@ public class WearEquipChangeEvent extends BaseGameEvent
         return this.wearEquip;
     }
     
-    public void setWearEquip(final WearEquip wearEquip) {
+    public void setWearEquip(WearEquip wearEquip) {
         this.wearEquip = wearEquip;
     }
 }

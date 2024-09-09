@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message.vo;
 
 public class MemberInfo
@@ -14,7 +13,7 @@ public class MemberInfo
         this.score = 0;
     }
     
-    public MemberInfo(final String name, final byte rei, final short level, final int serial, final int score) {
+    public MemberInfo(String name, byte rei, short level, int serial, int score) {
         this.rei = 0;
         this.score = 0;
         this.name = name;

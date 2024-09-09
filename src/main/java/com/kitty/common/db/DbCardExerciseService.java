@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -28,7 +27,7 @@ public class DbCardExerciseService
     private final AtomicBoolean run;
     
     public DbCardExerciseService() {
-        this.queue = new BlockingUniqueQueue<CardExercise>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -38,11 +37,11 @@ public class DbCardExerciseService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-card-exercise-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-card-exercise-save-service").newThread(new DbCardExerciseService.Worker()).start();
         DbCardExerciseService.instance = this;
     }
     
-    public void add2Queue(final CardExercise entity) {
+    public void add2Queue(CardExercise entity) {
         this.queue.add(entity);
     }
     
@@ -50,13 +49,13 @@ public class DbCardExerciseService
         return this.queue.size();
     }
     
-    private void saveToDb(final CardExercise entity) {
+    private void saveToDb(CardExercise entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -66,14 +65,14 @@ public class DbCardExerciseService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[DbCardExercise] 执行全部命令后关闭");
+        LoggerUtils.error("[DbCardExercise] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<CardExercise> it = this.queue.iterator();
+            Iterator<CardExercise> it = this.queue.iterator();
             while (it.hasNext()) {
-                final CardExercise obj = it.next();
+                CardExercise obj = (CardExercise)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -87,18 +86,20 @@ public class DbCardExerciseService
             while (DbCardExerciseService.this.run.get()) {
                 CardExercise entity = null;
                 try {
-                    entity = DbCardExerciseService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (CardExercise)DbCardExerciseService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     DbCardExerciseService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("变身卡五行修炼数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("变身卡五行修炼据持久化队列长度：" + DbCardExerciseService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("变身卡五行修炼数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("变身卡五行修炼据持久化队列长度：" + DbCardExerciseService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("存档异常", e);
                     e.printStackTrace();
                 }

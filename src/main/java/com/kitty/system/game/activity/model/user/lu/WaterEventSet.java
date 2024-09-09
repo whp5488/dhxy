@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.activity.model.user.lu;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class WaterEventSet implements Serializable
@@ -42,7 +40,7 @@ public class WaterEventSet implements Serializable
         if (!(o instanceof WaterEventSet)) {
             return false;
         }
-        final WaterEventSet other = (WaterEventSet)o;
+        WaterEventSet other = (WaterEventSet)o;
         return other.canEqual(this) && this.getRound() == other.getRound() && this.getMax() == other.getMax() && this.getSeason() == other.getSeason();
     }
     
@@ -52,7 +50,7 @@ public class WaterEventSet implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRound();
         result = result * 59 + this.getMax();
@@ -62,10 +60,9 @@ public class WaterEventSet implements Serializable
     
     @Override
     public String toString() {
-        return "WaterEventSet(round=" + this.getRound() + ", max=" + this.getMax() + ", season=" + this.getSeason() + ")";
+        return "WaterEventSet(round=" + (int)this.getRound() + ", max=" + (int)this.getMax() + ", season=" + this.getSeason() + ")";
     }
     
-    @ConstructorProperties({ "round", "max", "season" })
     public WaterEventSet(final byte round, final byte max, final int season) {
         this.round = 1;
         this.max = 3;

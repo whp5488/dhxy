@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.other;
 
 import org.nutz.lang.util.NutMap;
@@ -15,36 +14,40 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31312 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31312() {
+    }
+    
     @Override
-    public void phyAttackEnd(final Fight fight, final FightObject effector, final Object... args) {
+    public void phyAttackEnd(Fight fight, FightObject effector, Object... args) {
         if (args == null || args.length < 2) {
             return;
         }
-        final BattleUnit battleUnit = (BattleUnit)args[0];
-        final ActionDetailParam actionDetailParam = (ActionDetailParam)args[1];
+        BattleUnit battleUnit = (BattleUnit)args[0];
+        ActionDetailParam actionDetailParam = (ActionDetailParam)args[1];
         if (battleUnit == null || actionDetailParam == null) {
             return;
         }
-        final FightObject target = fight.queryFightObject(battleUnit.getTarget().getId());
+        FightObject target = fight.queryFightObject(battleUnit.getTarget().getId());
         if (target == null || target.isFallDown()) {
             return;
         }
-        final NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 5.0, 20.0);
+        NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)effector, 5.0, 20.0);
         if (map == null) {
             return;
         }
-        final double percent = map.getDouble("percent");
+        double percent = map.getDouble("percent");
         if (percent > 0.0 && SkillAi.canAffectOnPro(percent)) {
             int addSd = 0;
             if (target.getSpeed() != 0) {
-                addSd = (int)(target.getSpeed() * 0.25);
+                addSd = (int)((double)target.getSpeed() * 0.25);
             }
             if (addSd > 0) {
-                ImbueUtil.addRound(target.getImbueMap(), PRO_DICT_TYPE.RISE_SPEED.getDist(), 1, -addSd);
+                ImbueUtil.addRound(target.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.RISE_SPEED.getDist()), 1, (double)(-addSd));
             }
             else if (addSd < 0) {
-                ImbueUtil.addRound(target.getImbueMap(), PRO_DICT_TYPE.RISE_SPEED.getDist(), 1, addSd);
+                ImbueUtil.addRound(target.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.RISE_SPEED.getDist()), 1, (double)addSd);
             }
         }
+        return;
     }
 }

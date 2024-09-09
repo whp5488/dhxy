@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import java.util.Iterator;
@@ -26,7 +25,7 @@ public class DbRecordService
     private final AtomicBoolean run;
     
     public DbRecordService() {
-        this.queue = new BlockingUniqueQueue<BaseEntity>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -36,11 +35,11 @@ public class DbRecordService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-record-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-record-save-service").newThread(new DbRecordService.Worker()).start();
         DbRecordService.instance = this;
     }
     
-    public void add2Queue(final BaseEntity entity) {
+    public void add2Queue(BaseEntity entity) {
         this.queue.add(entity);
     }
     
@@ -48,13 +47,13 @@ public class DbRecordService
         return this.queue.size();
     }
     
-    private void saveToDb(final BaseEntity entity) {
+    private void saveToDb(BaseEntity entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
-            this.dao.delete((Object)entity);
+            this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -64,14 +63,14 @@ public class DbRecordService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[DbRecord] 执行全部命令后关闭");
+        LoggerUtils.error("[DbRecord] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<BaseEntity> it = this.queue.iterator();
+            Iterator<BaseEntity> it = this.queue.iterator();
             while (it.hasNext()) {
-                final BaseEntity obj = it.next();
+                BaseEntity obj = (BaseEntity)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -85,10 +84,10 @@ public class DbRecordService
             while (DbRecordService.this.run.get()) {
                 BaseEntity entity = null;
                 try {
-                    entity = DbRecordService.this.queue.take();
+                    entity = (BaseEntity)DbRecordService.this.queue.take();
                     DbRecordService.this.saveToDb(entity);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("存档异常", e);
                     e.printStackTrace();
                 }

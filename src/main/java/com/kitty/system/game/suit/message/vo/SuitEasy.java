@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.suit.message.vo;
 
 import java.util.Iterator;
@@ -14,15 +13,15 @@ public class SuitEasy implements Serializable
     private byte state;
     
     public SuitEasy() {
-        this.equip = new ArrayList<String>();
+        this.equip = new ArrayList<>();
     }
     
-    public SuitEasy(final Long id, final String name, final List<Long> equip, final byte state) {
-        this.equip = new ArrayList<String>();
+    public SuitEasy(Long id, String name, List<Long> equip, byte state) {
+        this.equip = new ArrayList<>();
         this.id = String.valueOf(id);
         this.name = name;
-        final List<String> equipList = new ArrayList<String>();
-        for (final Long key : equip) {
+        List<String> equipList = new ArrayList<>();
+        for (Long key : equip) {
             equipList.add(String.valueOf(key));
         }
         this.equip = equipList;
@@ -69,47 +68,23 @@ public class SuitEasy implements Serializable
         if (!(o instanceof SuitEasy)) {
             return false;
         }
-        final SuitEasy other = (SuitEasy)o;
+        SuitEasy other = (SuitEasy)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$equip = this.getEquip();
-        final Object other$equip = other.getEquip();
-        if (this$equip == null) {
-            if (other$equip == null) {
-                return this.getState() == other.getState();
-            }
-        }
-        else if (this$equip.equals(other$equip)) {
-            return this.getState() == other.getState();
-        }
-        return false;
+        Object this$equip = this.getEquip();
+        Object other$equip = other.getEquip();
+        return ((this$equip != null) ? this$equip.equals(other$equip) : (other$equip == null)) && this.getState() == other.getState();
     }
     
     protected boolean canEqual(final Object other) {
@@ -118,13 +93,13 @@ public class SuitEasy implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $equip = this.getEquip();
+        Object $equip = this.getEquip();
         result = result * 59 + (($equip == null) ? 43 : $equip.hashCode());
         result = result * 59 + this.getState();
         return result;
@@ -132,6 +107,6 @@ public class SuitEasy implements Serializable
     
     @Override
     public String toString() {
-        return "SuitEasy(id=" + this.getId() + ", name=" + this.getName() + ", equip=" + this.getEquip() + ", state=" + this.getState() + ")";
+        return "SuitEasy(id=" + this.getId() + ", name=" + this.getName() + ", equip=" + this.getEquip() + ", state=" + (int)this.getState() + ")";
     }
 }

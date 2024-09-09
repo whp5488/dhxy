@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -31,7 +30,7 @@ public class PalNotify extends BaseEntity<Long>
         return this.id;
     }
     
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
@@ -39,7 +38,7 @@ public class PalNotify extends BaseEntity<Long>
         return this.type;
     }
     
-    public void setType(final byte type) {
+    public void setType(byte type) {
         this.type = type;
     }
     
@@ -47,7 +46,7 @@ public class PalNotify extends BaseEntity<Long>
         return this.sender;
     }
     
-    public void setSender(final long sender) {
+    public void setSender(long sender) {
         this.sender = sender;
     }
     
@@ -55,7 +54,7 @@ public class PalNotify extends BaseEntity<Long>
         return this.att;
     }
     
-    public void setAtt(final long att) {
+    public void setAtt(long att) {
         this.att = att;
     }
     
@@ -63,7 +62,7 @@ public class PalNotify extends BaseEntity<Long>
         return this.status;
     }
     
-    public void setStatus(final byte status) {
+    public void setStatus(byte status) {
         this.status = status;
     }
     
@@ -71,7 +70,7 @@ public class PalNotify extends BaseEntity<Long>
         return this.timesTamp;
     }
     
-    public void setTimesTamp(final int timesTamp) {
+    public void setTimesTamp(int timesTamp) {
         this.timesTamp = timesTamp;
     }
     
@@ -79,7 +78,7 @@ public class PalNotify extends BaseEntity<Long>
         return this.groupId;
     }
     
-    public void setGroupId(final long groupId) {
+    public void setGroupId(long groupId) {
         this.groupId = groupId;
     }
     
@@ -87,14 +86,14 @@ public class PalNotify extends BaseEntity<Long>
         return this.remark;
     }
     
-    public void setRemark(final String remark) {
+    public void setRemark(String remark) {
         this.remark = remark;
     }
     
     public PalNotify() {
     }
     
-    public PalNotify(final Long id, final byte type, final long sender, final long att, final byte status, final int timesTamp, final long groupId, final String remark) {
+    public PalNotify(Long id, byte type, long sender, long att, byte status, int timesTamp, long groupId, String remark) {
         this.id = id;
         this.type = type;
         this.sender = sender;

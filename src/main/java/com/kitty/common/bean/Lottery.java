@@ -1,4 +1,3 @@
-
 package com.kitty.common.bean;
 
 public class Lottery
@@ -8,7 +7,7 @@ public class Lottery
     private Double bili;
     private int num;
     
-    public Lottery(final Integer serial, final String name, final Double bili, final int num) {
+    public Lottery(Integer serial, String name, Double bili, int num) {
         this.num = 0;
         this.serial = serial;
         this.name = name;
@@ -16,14 +15,14 @@ public class Lottery
         this.num = num;
     }
     
-    public Lottery(final Integer serial, final String name, final Double bili) {
+    public Lottery(Integer serial, String name, Double bili) {
         this.num = 0;
         this.serial = serial;
         this.name = name;
         this.bili = bili;
     }
     
-    public Lottery(final Integer serial) {
+    public Lottery(Integer serial) {
         this.num = 0;
         this.serial = serial;
     }
@@ -68,47 +67,23 @@ public class Lottery
         if (!(o instanceof Lottery)) {
             return false;
         }
-        final Lottery other = (Lottery)o;
+        Lottery other = (Lottery)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0065: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0065;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$bili = this.getBili();
-        final Object other$bili = other.getBili();
-        if (this$bili == null) {
-            if (other$bili == null) {
-                return this.getNum() == other.getNum();
-            }
-        }
-        else if (this$bili.equals(other$bili)) {
-            return this.getNum() == other.getNum();
-        }
-        return false;
+        Object this$bili = this.getBili();
+        Object other$bili = other.getBili();
+        return ((this$bili != null) ? this$bili.equals(other$bili) : (other$bili == null)) && this.getNum() == other.getNum();
     }
     
     protected boolean canEqual(final Object other) {
@@ -117,13 +92,13 @@ public class Lottery
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $bili = this.getBili();
+        Object $bili = this.getBili();
         result = result * 59 + (($bili == null) ? 43 : $bili.hashCode());
         result = result * 59 + this.getNum();
         return result;

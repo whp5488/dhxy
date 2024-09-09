@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.task;
 
 public enum TaskType
@@ -15,17 +14,17 @@ public enum TaskType
     QUESTION_DLS(10), 
     CARNIVAL(11), 
     DRAGON(12), 
-    CRUSADE_RENEGADE(13),
-    XM(14),
-    KJ(15),
-    LOOP(20),
-    XL(30),
-    CM(40),
+    CRUSADE_RENEGADE(13), 
+    XM(14), 
+    KJ(15), 
+    LOOP(20), 
+    XL(30), 
+    CM(40), 
     MWK_FRONT(2001);
     
     private int id;
     
-    private TaskType(final int id) {
+    private TaskType(int id) {
         this.id = id;
     }
     

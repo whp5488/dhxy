@@ -1,9 +1,7 @@
-
 package com.kitty.system.game.npc.controller;
 
 import com.kitty.system.game.npc.message.ReqMotto;
 import com.kitty.system.game.npc.message.ReqWorship;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.npc.message.RespNpcLeave;
 import com.kitty.system.game.npc.message.ReqCloseMenu;
@@ -31,31 +29,31 @@ public class NpcController
     }
     
     @RequestMapping
-    public void reqNpcContent(final IoSession session, final ReqOpenMenu reqOpenMenu) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqNpcContent(IoSession session, ReqOpenMenu reqOpenMenu) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.npcService.requestNpcContent(role, reqOpenMenu.getNpcId());
     }
     
     @RequestMapping
-    public void reqClickNpcButton(final IoSession session, final ReqNpcTalk reqNpcTalk) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqClickNpcButton(IoSession session, ReqNpcTalk reqNpcTalk) {
+        Role role = SessionUtils.getRoleBySession(session);
         this.npcService.clickNpcButton(role, reqNpcTalk.getNpcId(), reqNpcTalk.getMsg(), reqNpcTalk.getPara());
     }
     
     @RequestMapping
-    public void closeMenu(final IoSession session, final ReqCloseMenu reqCloseMenu) {
-        final RespNpcLeave respNpcLeave = new RespNpcLeave();
+    public void closeMenu(IoSession session, ReqCloseMenu reqCloseMenu) {
+        RespNpcLeave respNpcLeave = new RespNpcLeave();
         respNpcLeave.setNpcId(reqCloseMenu.getNpcId());
         MessagePusher.pushMessage(session, respNpcLeave);
     }
     
     @RequestMapping
-    public void worship(final IoSession session, final ReqWorship reqWorship) {
+    public void worship(IoSession session, ReqWorship reqWorship) {
         this.npcService.worship(session, reqWorship);
     }
     
     @RequestMapping
-    public void motto(final IoSession session, final ReqMotto reqMotto) {
+    public void motto(IoSession session, ReqMotto reqMotto) {
         this.npcService.motto(session, reqMotto.getMotto());
     }
 }

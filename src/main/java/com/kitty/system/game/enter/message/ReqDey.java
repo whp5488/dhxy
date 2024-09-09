@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqDey extends Message
 {
     public int colorOne;
     public int colorTwo;
+    
+    public ReqDey() {
+    }
     
     public int getColorOne() {
         return this.colorOne;
@@ -34,7 +36,7 @@ public class ReqDey extends Message
         if (!(o instanceof ReqDey)) {
             return false;
         }
-        final ReqDey other = (ReqDey)o;
+        ReqDey other = (ReqDey)o;
         return other.canEqual(this) && this.getColorOne() == other.getColorOne() && this.getColorTwo() == other.getColorTwo();
     }
     
@@ -44,7 +46,7 @@ public class ReqDey extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getColorOne();
         result = result * 59 + this.getColorTwo();

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import java.io.UnsupportedEncodingException;
@@ -8,26 +7,29 @@ public class RandomName
 {
     private static String[] Surname;
     
+    public RandomName() {
+    }
+    
     public static String getChineseName() {
-        final Random random = new Random(System.currentTimeMillis());
-        final int index = random.nextInt(RandomName.Surname.length - 1);
+        Random random = new Random(System.currentTimeMillis());
+        int index = random.nextInt(RandomName.Surname.length - 1);
         String name = RandomName.Surname[index];
         name += getChinese(2);
         return name;
     }
     
-    private static String getChinese(final int count) {
-        final StringBuilder str = new StringBuilder();
+    private static String getChinese(int count) {
+        StringBuilder str = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < count; ++i) {
-            final int highPos = 176 + Math.abs(random.nextInt(71));
+            int highPos = 176 + Math.abs(random.nextInt(71));
             random = new Random();
-            final int lowPos = 161 + Math.abs(random.nextInt(94));
-            final byte[] bArr = { new Integer(highPos).byteValue(), new Integer(lowPos).byteValue() };
+            int lowPos = 161 + Math.abs(random.nextInt(94));
+            byte[] bArr = { new Integer(highPos).byteValue(), new Integer(lowPos).byteValue() };
             try {
                 str.append(new String(bArr, "GB2312"));
             }
-            catch (final UnsupportedEncodingException e) {
+            catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }

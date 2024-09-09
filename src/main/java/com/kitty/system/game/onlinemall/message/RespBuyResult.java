@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.onlinemall.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,7 +9,7 @@ public class RespBuyResult extends Message
     private short result;
     private String barcode;
     
-    public RespBuyResult(final short result, final String barcode) {
+    public RespBuyResult(short result, String barcode) {
         this.result = result;
         this.barcode = barcode;
     }

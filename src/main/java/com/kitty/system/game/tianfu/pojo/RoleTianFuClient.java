@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.tianfu.pojo;
 
 import java.util.Map;
@@ -17,7 +16,7 @@ public class RoleTianFuClient
     private short count;
     private int storePos;
     
-    public RoleTianFuClient(final RoleTianFu roleTianFu) {
+    public RoleTianFuClient(RoleTianFu roleTianFu) {
         this.id = String.valueOf(roleTianFu.getId());
         if (roleTianFu.getToIdentifyCeSerial() != 1) {
             this.typeId = roleTianFu.getToIdentifyCeSerial();
@@ -26,11 +25,11 @@ public class RoleTianFuClient
             this.typeId = roleTianFu.getTianFuSerial();
         }
         this.grade = roleTianFu.getLevel();
-        final Map<Long, String> tianFuGridMap = TianFuUtils.getTianFuGridMap(DataCache.ROLE_DAY_IN_CE.get(roleTianFu.getRoleId()));
-        final String tianFuName = tianFuGridMap.get(roleTianFu.getId());
-        final Byte tianFuClientName = TianFuUtils.server2clientGridMap.get(tianFuName);
-        if (tianFuClientName != null && tianFuClientName > 0) {
-            this.usePos = tianFuClientName;
+        Map<Long, String> tianFuGridMap = TianFuUtils.getTianFuGridMap((RoleDayInCe)DataCache.ROLE_DAY_IN_CE.get(Long.valueOf(roleTianFu.getRoleId())));
+        String tianFuName = (String)tianFuGridMap.get(roleTianFu.getId());
+        Byte tianFuClientName = (Byte)TianFuUtils.server2clientGridMap.get(tianFuName);
+        if (tianFuClientName != null && (byte)tianFuClientName > 0) {
+            this.usePos = (byte)tianFuClientName;
         }
         else {
             this.usePos = 0;

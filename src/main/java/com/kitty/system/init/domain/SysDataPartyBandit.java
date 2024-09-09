@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class SysDataPartyBandit implements Serializable
     private List<Param> special;
     
     public SysDataPartyBandit() {
-        this.special = new ArrayList<Param>();
+        this.special = new ArrayList<>();
     }
     
     public int getId() {
@@ -130,37 +129,21 @@ public class SysDataPartyBandit implements Serializable
         if (!(o instanceof SysDataPartyBandit)) {
             return false;
         }
-        final SysDataPartyBandit other = (SysDataPartyBandit)o;
+        SysDataPartyBandit other = (SysDataPartyBandit)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$title = this.getTitle();
-        final Object other$title = other.getTitle();
-        Label_0115: {
-            if (this$title == null) {
-                if (other$title == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$title.equals(other$title)) {
-                break Label_0115;
-            }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (!((this$title != null) ? this$title.equals(other$title) : (other$title == null))) {
             return false;
         }
         if (this.getGrade() != other.getGrade()) {
@@ -172,46 +155,22 @@ public class SysDataPartyBandit implements Serializable
         if (this.getLevel() != other.getLevel()) {
             return false;
         }
-        final Object this$war = this.getWar();
-        final Object other$war = other.getWar();
-        Label_0191: {
-            if (this$war == null) {
-                if (other$war == null) {
-                    break Label_0191;
-                }
-            }
-            else if (this$war.equals(other$war)) {
-                break Label_0191;
-            }
+        Object this$war = this.getWar();
+        Object other$war = other.getWar();
+        if (!((this$war != null) ? this$war.equals(other$war) : (other$war == null))) {
             return false;
         }
         if (this.getNum() != other.getNum()) {
             return false;
         }
-        final Object this$award = this.getAward();
-        final Object other$award = other.getAward();
-        Label_0242: {
-            if (this$award == null) {
-                if (other$award == null) {
-                    break Label_0242;
-                }
-            }
-            else if (this$award.equals(other$award)) {
-                break Label_0242;
-            }
+        Object this$award = this.getAward();
+        Object other$award = other.getAward();
+        if (!((this$award != null) ? this$award.equals(other$award) : (other$award == null))) {
             return false;
         }
-        final Object this$special = this.getSpecial();
-        final Object other$special = other.getSpecial();
-        if (this$special == null) {
-            if (other$special == null) {
-                return true;
-            }
-        }
-        else if (this$special.equals(other$special)) {
-            return true;
-        }
-        return false;
+        Object this$special = this.getSpecial();
+        Object other$special = other.getSpecial();
+        return (this$special != null) ? this$special.equals(other$special) : (other$special == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -220,23 +179,23 @@ public class SysDataPartyBandit implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $title = this.getTitle();
+        Object $title = this.getTitle();
         result = result * 59 + (($title == null) ? 43 : $title.hashCode());
         result = result * 59 + this.getGrade();
         result = result * 59 + this.getIcon();
         result = result * 59 + this.getLevel();
-        final Object $war = this.getWar();
+        Object $war = this.getWar();
         result = result * 59 + (($war == null) ? 43 : $war.hashCode());
-        final long $num = this.getNum();
+        long $num = this.getNum();
         result = result * 59 + (int)($num >>> 32 ^ $num);
-        final Object $award = this.getAward();
+        Object $award = this.getAward();
         result = result * 59 + (($award == null) ? 43 : $award.hashCode());
-        final Object $special = this.getSpecial();
+        Object $special = this.getSpecial();
         result = result * 59 + (($special == null) ? 43 : $special.hashCode());
         return result;
     }

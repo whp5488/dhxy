@@ -1,4 +1,3 @@
-
 package com.kitty.listener.annotation;
 
 import com.kitty.listener.EventType;
@@ -12,5 +11,5 @@ import java.lang.annotation.Documented;
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventHandler {
-    EventType[] value();
+    public abstract EventType[] value();
 }

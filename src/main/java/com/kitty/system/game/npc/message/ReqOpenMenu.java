@@ -1,14 +1,16 @@
-
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
-@MessageMeta(module = 4150)
+@MessageMeta(module = 3520)
 public class ReqOpenMenu extends Message
 {
     private int npcId;
     private int type;
+    
+    public ReqOpenMenu() {
+    }
     
     public int getNpcId() {
         return this.npcId;
@@ -34,7 +36,7 @@ public class ReqOpenMenu extends Message
         if (!(o instanceof ReqOpenMenu)) {
             return false;
         }
-        final ReqOpenMenu other = (ReqOpenMenu)o;
+        ReqOpenMenu other = (ReqOpenMenu)o;
         return other.canEqual(this) && this.getNpcId() == other.getNpcId() && this.getType() == other.getType();
     }
     
@@ -44,7 +46,7 @@ public class ReqOpenMenu extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getNpcId();
         result = result * 59 + this.getType();

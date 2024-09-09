@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.bag.message.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class PotholingVo implements Serializable
@@ -33,34 +31,18 @@ public class PotholingVo implements Serializable
         if (!(o instanceof PotholingVo)) {
             return false;
         }
-        final PotholingVo other = (PotholingVo)o;
+        PotholingVo other = (PotholingVo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0065: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0065;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$num = this.getNum();
-        final Object other$num = other.getNum();
-        if (this$num == null) {
-            if (other$num == null) {
-                return true;
-            }
-        }
-        else if (this$num.equals(other$num)) {
-            return true;
-        }
-        return false;
+        Object this$num = this.getNum();
+        Object other$num = other.getNum();
+        return (this$num != null) ? this$num.equals(other$num) : (other$num == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -69,11 +51,11 @@ public class PotholingVo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $num = this.getNum();
+        Object $num = this.getNum();
         result = result * 59 + (($num == null) ? 43 : $num.hashCode());
         return result;
     }
@@ -83,7 +65,6 @@ public class PotholingVo implements Serializable
         return "PotholingVo(serial=" + this.getSerial() + ", num=" + this.getNum() + ")";
     }
     
-    @ConstructorProperties({ "serial", "num" })
     public PotholingVo(final Integer serial, final Integer num) {
         this.serial = serial;
         this.num = num;

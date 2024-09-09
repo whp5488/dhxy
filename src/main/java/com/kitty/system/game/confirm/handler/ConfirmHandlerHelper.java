@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.handler;
 
 import com.kitty.system.game.confirm.service.handler.QuestionHandler;
@@ -18,23 +17,23 @@ public enum ConfirmHandlerHelper
     private Map<ConfirmType, ConfirmHandler> handlers;
     
     private ConfirmHandlerHelper() {
-        this.handlers = new HashMap<ConfirmType, ConfirmHandler>();
+        this.handlers = new HashMap();
     }
     
-    private void registerHandler(final ConfirmType confirmType, final ConfirmHandler confirmHandler) {
+    private void registerHandler(ConfirmType confirmType, ConfirmHandler confirmHandler) {
         this.handlers.put(confirmType, confirmHandler);
     }
     
-    public ConfirmHandler getTargetHandler(final ConfirmType confirmType) {
-        return this.handlers.get(confirmType);
+    public ConfirmHandler getTargetHandler(ConfirmType confirmType) {
+        return (ConfirmHandler)this.handlers.get(confirmType);
     }
     
     public void initialize() {
-        this.registerHandler(ConfirmType.RETURN_TEAM, SpringUtils.getBean(ReturnTeamHandler.class));
-        this.registerHandler(ConfirmType.REQUEST_TEAM_LEADER, SpringUtils.getBean(RequestTeamLeaderHandler.class));
-        this.registerHandler(ConfirmType.LEAVE_TEAM, SpringUtils.getBean(LeaveTeamHandler.class));
-        this.registerHandler(ConfirmType.LEAVE_TEMP_TEAM, SpringUtils.getBean(LeaveTempTeamHandler.class));
-        this.registerHandler(ConfirmType.COUNTRY, SpringUtils.getBean(QuestionHandler.class));
+        this.registerHandler(ConfirmType.RETURN_TEAM, (ConfirmHandler)SpringUtils.getBean(ReturnTeamHandler.class));
+        this.registerHandler(ConfirmType.REQUEST_TEAM_LEADER, (ConfirmHandler)SpringUtils.getBean(RequestTeamLeaderHandler.class));
+        this.registerHandler(ConfirmType.LEAVE_TEAM, (ConfirmHandler)SpringUtils.getBean(LeaveTeamHandler.class));
+        this.registerHandler(ConfirmType.LEAVE_TEMP_TEAM, (ConfirmHandler)SpringUtils.getBean(LeaveTempTeamHandler.class));
+        this.registerHandler(ConfirmType.COUNTRY, (ConfirmHandler)SpringUtils.getBean(QuestionHandler.class));
     }
     
     static {

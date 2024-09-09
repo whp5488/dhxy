@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.model.JoinMemberInfo;
@@ -40,34 +39,18 @@ public class RespJoinPartyList extends Message
         if (!(o instanceof RespJoinPartyList)) {
             return false;
         }
-        final RespJoinPartyList other = (RespJoinPartyList)o;
+        RespJoinPartyList other = (RespJoinPartyList)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0065: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0065;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -76,11 +59,11 @@ public class RespJoinPartyList extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

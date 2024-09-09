@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.system.game.market.message.vo.MarketDealVo;
@@ -11,6 +10,9 @@ public class ResMarketRecords extends Message
 {
     private List<MarketDealVo> buyList;
     private List<MarketDealVo> sellList;
+    
+    public ResMarketRecords() {
+    }
     
     public void setBuyList(final List<MarketDealVo> buyList) {
         this.buyList = buyList;

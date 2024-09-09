@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.card.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqUseCard extends Message
 {
     private String id;
     private int serial;
+    
+    public ReqUseCard() {
+    }
     
     public String getId() {
         return this.id;
@@ -34,21 +36,13 @@ public class ReqUseCard extends Message
         if (!(o instanceof ReqUseCard)) {
             return false;
         }
-        final ReqUseCard other = (ReqUseCard)o;
+        ReqUseCard other = (ReqUseCard)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getSerial() == other.getSerial();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getSerial() == other.getSerial();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getSerial() == other.getSerial();
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,9 +51,9 @@ public class ReqUseCard extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getSerial();
         return result;

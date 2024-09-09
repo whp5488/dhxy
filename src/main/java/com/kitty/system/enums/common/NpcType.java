@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.common;
 
 public interface NpcType

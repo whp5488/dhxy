@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate.message;
 
 import com.kitty.mina.annotation.MessageMeta;

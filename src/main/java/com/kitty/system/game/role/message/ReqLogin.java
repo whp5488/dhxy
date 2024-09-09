@@ -1,15 +1,23 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
-@MessageMeta(module = 12290)
+@MessageMeta(module = 1833)
 public class ReqLogin extends Message
 {
+    private int a;
     private String accountId;
     private int auth_key;
     private String marking;
+    private int b;
+    
+    public ReqLogin() {
+    }
+    
+    public int getA() {
+        return this.a;
+    }
     
     public String getAccountId() {
         return this.accountId;
@@ -21,6 +29,14 @@ public class ReqLogin extends Message
     
     public String getMarking() {
         return this.marking;
+    }
+    
+    public int getB() {
+        return this.b;
+    }
+    
+    public void setA(final int a) {
+        this.a = a;
     }
     
     public void setAccountId(final String accountId) {
@@ -35,6 +51,10 @@ public class ReqLogin extends Message
         this.marking = marking;
     }
     
+    public void setB(final int b) {
+        this.b = b;
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
@@ -43,37 +63,24 @@ public class ReqLogin extends Message
         if (!(o instanceof ReqLogin)) {
             return false;
         }
-        final ReqLogin other = (ReqLogin)o;
+        ReqLogin other = (ReqLogin)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$accountId = this.getAccountId();
-        final Object other$accountId = other.getAccountId();
-        Label_0065: {
-            if (this$accountId == null) {
-                if (other$accountId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$accountId.equals(other$accountId)) {
-                break Label_0065;
-            }
+        if (this.getA() != other.getA()) {
+            return false;
+        }
+        Object this$accountId = this.getAccountId();
+        Object other$accountId = other.getAccountId();
+        if (!((this$accountId != null) ? this$accountId.equals(other$accountId) : (other$accountId == null))) {
             return false;
         }
         if (this.getAuth_key() != other.getAuth_key()) {
             return false;
         }
-        final Object this$marking = this.getMarking();
-        final Object other$marking = other.getMarking();
-        if (this$marking == null) {
-            if (other$marking == null) {
-                return true;
-            }
-        }
-        else if (this$marking.equals(other$marking)) {
-            return true;
-        }
-        return false;
+        Object this$marking = this.getMarking();
+        Object other$marking = other.getMarking();
+        return ((this$marking != null) ? this$marking.equals(other$marking) : (other$marking == null)) && this.getB() == other.getB();
     }
     
     protected boolean canEqual(final Object other) {
@@ -82,18 +89,20 @@ public class ReqLogin extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $accountId = this.getAccountId();
+        result = result * 59 + this.getA();
+        Object $accountId = this.getAccountId();
         result = result * 59 + (($accountId == null) ? 43 : $accountId.hashCode());
         result = result * 59 + this.getAuth_key();
-        final Object $marking = this.getMarking();
+        Object $marking = this.getMarking();
         result = result * 59 + (($marking == null) ? 43 : $marking.hashCode());
+        result = result * 59 + this.getB();
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqLogin(accountId=" + this.getAccountId() + ", auth_key=" + this.getAuth_key() + ", marking=" + this.getMarking() + ")";
+        return "ReqLogin(a=" + this.getA() + ", accountId=" + this.getAccountId() + ", auth_key=" + this.getAuth_key() + ", marking=" + this.getMarking() + ", b=" + this.getB() + ")";
     }
 }

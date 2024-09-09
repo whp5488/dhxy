@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.suit.message;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ public class RespSuit extends Message
     private List<SuitEasy> list;
     
     public RespSuit() {
-        this.list = new ArrayList<SuitEasy>();
+        this.list = new ArrayList<>();
     }
     
     public List<SuitEasy> getList() {
@@ -32,21 +31,13 @@ public class RespSuit extends Message
         if (!(o instanceof RespSuit)) {
             return false;
         }
-        final RespSuit other = (RespSuit)o;
+        RespSuit other = (RespSuit)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -55,9 +46,9 @@ public class RespSuit extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

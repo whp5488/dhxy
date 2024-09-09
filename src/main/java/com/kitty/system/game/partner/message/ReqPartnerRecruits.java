@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.partner.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -39,7 +38,7 @@ public class ReqPartnerRecruits extends Message
         if (!(o instanceof ReqPartnerRecruits)) {
             return false;
         }
-        final ReqPartnerRecruits other = (ReqPartnerRecruits)o;
+        ReqPartnerRecruits other = (ReqPartnerRecruits)o;
         return other.canEqual(this) && this.getPartnerId() == other.getPartnerId() && this.getIsRecruits() == other.getIsRecruits();
     }
     
@@ -49,7 +48,7 @@ public class ReqPartnerRecruits extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPartnerId();
         result = result * 59 + this.getIsRecruits();
@@ -58,6 +57,6 @@ public class ReqPartnerRecruits extends Message
     
     @Override
     public String toString() {
-        return "ReqPartnerRecruits(partnerId=" + this.getPartnerId() + ", isRecruits=" + this.getIsRecruits() + ")";
+        return "ReqPartnerRecruits(partnerId=" + this.getPartnerId() + ", isRecruits=" + (int)this.getIsRecruits() + ")";
     }
 }

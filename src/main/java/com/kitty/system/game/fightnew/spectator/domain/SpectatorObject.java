@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.spectator.domain;
 
 import com.kitty.system.game.role.domain.Role;
@@ -12,9 +11,9 @@ public class SpectatorObject
     public SpectatorObject() {
     }
     
-    public SpectatorObject(final Role role, final boolean isA) {
-        this.id = role.getId();
-        this.roleId = role.getRoleId();
+    public SpectatorObject(Role role, boolean isA) {
+        this.id = (long)role.getId();
+        this.roleId = (int)role.getRoleId();
         this.isA = isA;
     }
     

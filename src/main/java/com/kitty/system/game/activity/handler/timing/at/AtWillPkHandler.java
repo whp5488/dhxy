@@ -1,14 +1,12 @@
-
 package com.kitty.system.game.activity.handler.timing.at;
 
 import com.kitty.common.utils.BigDecimalUtil;
 import com.kitty.system.game.bag.service.BagService;
 import com.kitty.system.game.pet.domain.Pet;
-import com.kitty.system.enums.item.ItemClassify;
 import com.kitty.system.init.domain.vo.Param;
+import com.kitty.system.enums.item.ItemClassify;
 import com.kitty.system.common.message.RespNotifyMiscEx;
 import com.kitty.system.common.enter.FiedValue;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.activity.message.RespAtClashResult;
 import com.kitty.mina.task.ThreadLocalUtil;
@@ -16,19 +14,16 @@ import com.kitty.listener.event.FightEndEvent;
 import com.kitty.system.enums.war.wardef.FIGHT_TYPE;
 import com.kitty.system.game.fightnew.factory.FightFactory;
 import com.kitty.system.game.activity.common.EventsUtils;
-import com.kitty.system.common.data.ActivityGlobalFunc;
 import java.util.Random;
+import com.kitty.system.common.data.ActivityGlobalFunc;
 import com.kitty.system.game.team.domain.Member;
 import java.util.HashSet;
 import com.kitty.system.game.fightnew.bean.Fight;
-import java.util.Collection;
 import java.text.MessageFormat;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.common.utils.JsonUtils;
 import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.function.Function;
 import java.util.Comparator;
 import java.util.Calendar;
 import com.kitty.system.game.role.domain.Role;
@@ -77,11 +72,14 @@ public class AtWillPkHandler extends ActivityHandler
     private static final String USED_TIME_MESSAGE = "英雄争霸赛已经进行了#<R>{0}分钟#，大家加油啊！";
     private static final String FIRST_MESSAGE = "恭喜，#<Y>{0}#获得了本届的英雄争霸赛的#<R>第一名#。";
     
+    public AtWillPkHandler() {
+    }
+    
     public void start() {
         this.logger.error("英雄争霸赛对决开始");
         try {
-            final AtWillData atWillData = this.atWillHandler.getAtWillData();
-            final AtWillSet atWillSet = this.atWillHandler.getAtWillSet();
+            AtWillData atWillData = this.atWillHandler.getAtWillData();
+            AtWillSet atWillSet = this.atWillHandler.getAtWillSet();
             this.withdraw(atWillData);
             atWillData.setStage((byte)1);
             this.scheduledFuture = SchedulerManager.getInstance().scheduleAtFixedRate(new Runnable() {
@@ -89,41 +87,44 @@ public class AtWillPkHandler extends ActivityHandler
                 public void run() {
                     AtWillPkHandler.this.check();
                 }
-            }, 10000L, atWillSet.getPeriod() * 1000);
+            }, 10000L, (long)(atWillSet.getPeriod() * 1000));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.end();
             e.printStackTrace();
             this.logger.error("英雄争霸赛PK阶段开始错误：{}", e.getMessage());
         }
     }
     
-    public void withdraw(final AtWillData atWillData) {
-        final AtWillSet atWillSet = this.atWillHandler.getAtWillSet();
-        final List<AtWillPkData> list = atWillData.getPkDataList();
-        for (final AtWillPkData data : list) {
-            final Team team = this.teamService.getTeamByTeamId(data.getTeamId());
+    public void withdraw(AtWillData atWillData) {
+        AtWillSet atWillSet = this.atWillHandler.getAtWillSet();
+        List<AtWillPkData> list = atWillData.getPkDataList();
+        for (AtWillPkData data : list) {
+            Team team = this.teamService.getTeamByTeamId(data.getTeamId());
             if (team == null) {
                 continue;
             }
             if (team != null && this.teamService.getTeamCount(team) < atWillSet.getMinTeamMemberCount()) {
-                final Role player = this.roleService.getPlayer(team.getLeaderUid());
+                Role player = this.roleService.getPlayer(team.getLeaderUid());
                 if (player != null) {
                     this.atWillHandler.leave(player);
                 }
                 else {
-                    this.logger.error("AK比赛开始前弃权,队伍人数小于参赛最小人数清理出场。获取角色错误：{}", (Object)team.getLeaderUid());
+                    this.logger.error("AK比赛开始前弃权,队伍人数小于参赛最小人数清理出场。获取角色错误：{}", Long.valueOf(team.getLeaderUid()));
                 }
             }
             else {
-                final List<Integer> objects = this.teamService.getTeamAfkMember(team);
-                for (final Integer object : objects) {
-                    final Role role = this.roleService.getPlayer(object);
+                List<Integer> objects = this.teamService.getTeamAfkMember(team);
+                for (Integer object : objects) {
+                    Role role = this.roleService.getPlayer((int)object);
                     if (role != null) {
-                        role.pushTempCache("at_leave", true);
+                        role.pushTempCache("at_leave", Boolean.valueOf(true));
                         this.teamService.leave(role, false);
                         this.atWillHandler.leave(role);
-                        role.pushTempCache("at_leave", false);
+                        role.pushTempCache("at_leave", Boolean.valueOf(false));
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
@@ -131,7 +132,7 @@ public class AtWillPkHandler extends ActivityHandler
     }
     
     private void check() {
-        final AtWillData atWillData = this.atWillHandler.getAtWillData();
+        AtWillData atWillData = this.atWillHandler.getAtWillData();
         if (atWillData == null || atWillData.getEndTime().getTimeInMillis() < System.currentTimeMillis()) {
             this.end();
             this.logger.error("英雄争霸赛结束，不在匹配");
@@ -142,7 +143,7 @@ public class AtWillPkHandler extends ActivityHandler
             return;
         }
         try {
-            this.logger.info("英雄争霸赛pk匹配，当前剩余队伍数量 = {}", this.sceneTeamCount(atWillData));
+            this.logger.info("英雄争霸赛pk匹配，当前剩余队伍数量 = {}", Integer.valueOf(this.sceneTeamCount(atWillData)));
             if (this.isCanEnd()) {
                 this.logger.info("英雄争霸赛pk结束");
                 this.end();
@@ -153,30 +154,33 @@ public class AtWillPkHandler extends ActivityHandler
                 AtWillPkHandler.MATCH_FLAG = true;
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             AtWillPkHandler.MATCH_FLAG = true;
             e.printStackTrace();
             this.logger.error("英雄争霸赛匹配出错-----------------------------------------------");
         }
+        return;
     }
     
     private boolean isCanEnd() {
-        final AtWillData data = this.atWillHandler.getAtWillData();
+        AtWillData data = this.atWillHandler.getAtWillData();
         return this.sceneTeamCount(data) <= 1 || Calendar.getInstance().after(data.getEndTime());
     }
     
-    public int sceneTeamCount(final AtWillData data) {
+    public int sceneTeamCount(AtWillData data) {
         int count = 0;
         if (data != null) {
-            for (final AtWillPkData obj : data.getPkDataList()) {
-                final Role leader = this.teamService.getTeamLeader(obj.getTeamId());
+            for (AtWillPkData obj : data.getPkDataList()) {
+                Role leader = this.teamService.getTeamLeader(obj.getTeamId());
                 if (leader == null) {
                     continue;
                 }
-                if (!this.atWillHandler.isInMap(leader)) {
+                if (this.atWillHandler.isInMap(leader)) {
+                    ++count;
+                }
+                else {
                     continue;
                 }
-                ++count;
             }
         }
         return count;
@@ -184,103 +188,105 @@ public class AtWillPkHandler extends ActivityHandler
     
     public void end() {
         try {
-            final AtWillData atWillData = this.atWillHandler.getAtWillData();
+            AtWillData atWillData = this.atWillHandler.getAtWillData();
             atWillData.setStage((byte)2);
             this.logger.error("英雄争霸赛对决结束");
-            final List<AtWillPkData> list = atWillData.getPkDataList().stream().filter(e -> e.getPkValue() > 0 && e.getScore() > 0).sorted(Comparator.comparing(AtWillPkData::getPkValue).reversed()).collect(Collectors.toList());
-            final List<AtWillPkData> topList = new ArrayList<AtWillPkData>(3);
+            List<AtWillPkData> list = (List)atWillData.getPkDataList().stream().filter(e -> e.getPkValue() > 0 && e.getScore() > 0).sorted(Comparator.comparing(AtWillPkData::getPkValue).reversed()).collect(Collectors.toList());
+            List<AtWillPkData> topList = new ArrayList(3);
             if (list.size() > 0) {
                 this.logger.error("当前在场的成员：{}", list);
-                for (final AtWillPkData willPkData : list) {
+                for (AtWillPkData willPkData : list) {
                     topList.add(willPkData);
                 }
             }
-            final List<AtWillPkData> collect = atWillData.getPkDataList().stream().sorted(Comparator.comparing(AtWillPkData::getLeave).reversed()).collect(Collectors.toList());
-            for (final AtWillPkData atWillPkData : collect) {
+            List<AtWillPkData> collect = (List)atWillData.getPkDataList().stream().sorted(Comparator.comparing(AtWillPkData::getLeave).reversed()).collect(Collectors.toList());
+            for (AtWillPkData atWillPkData : collect) {
                 if (!topList.contains(atWillPkData)) {
                     topList.add(atWillPkData);
                 }
                 if (topList.size() == 3) {
                     break;
                 }
+                continue;
             }
             if (topList.size() > 0) {
-                this.showGlory(topList.get(0));
+                this.showGlory((AtWillPkData)topList.get(0));
             }
             this.grant(topList);
             this.logger.info("英雄争霸赛结束时，队伍前三名=={}", (topList != null) ? JsonUtils.object2String(topList) : "");
-            for (final AtWillPkData atWillPkData : atWillData.getPkDataList()) {
-                final Team team = SpringUtils.getTeamService().getTeamByTeamId(atWillPkData.getTeamId());
+            for (AtWillPkData atWillPkData : atWillData.getPkDataList()) {
+                Team team = SpringUtils.getTeamService().getTeamByTeamId(atWillPkData.getTeamId());
                 if (team == null) {
                     continue;
                 }
-                final Role leaderRole = this.roleService.getPlayer(team.getLeaderUid());
+                Role leaderRole = this.roleService.getPlayer(team.getLeaderUid());
                 if (leaderRole == null) {
                     continue;
                 }
                 this.atWillHandler.leaveMap(leaderRole);
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         if (this.scheduledFuture != null) {
-            this.scheduledFuture.cancel(Boolean.FALSE);
+            this.scheduledFuture.cancel((boolean)Boolean.FALSE);
         }
     }
     
-    public void grant(final List<AtWillPkData> topList) {
+    public void grant(List<AtWillPkData> topList) {
         int size = 3;
         if (topList.size() < 3) {
             size = topList.size();
         }
         for (int i = 0; i < size; ++i) {
-            final AtWillPkData atWillPkData = topList.get(i);
+            AtWillPkData atWillPkData = (AtWillPkData)topList.get(i);
             this.atWillHandler.send(atWillPkData.getMembers(), (byte)(i + 1));
         }
     }
     
-    public void showGlory(final AtWillPkData atWillPkData) {
+    public void showGlory(AtWillPkData atWillPkData) {
         if (atWillPkData == null) {
             return;
         }
-        final Team team = this.teamService.getTeamByTeamId(atWillPkData.getTeamId());
+        Team team = this.teamService.getTeamByTeamId(atWillPkData.getTeamId());
         if (team == null) {
             return;
         }
-        final String names = this.teamService.checkMember(team, memberRole -> memberRole != null);
-        final String msg = MessageFormat.format("恭喜，#<Y>{0}#获得了本届的英雄争霸赛的#<R>第一名#。", names);
+        String names = this.teamService.checkMember(team, memberRole -> memberRole != null);
+        String msg = MessageFormat.format("恭喜，#<Y>{0}#获得了本届的英雄争霸赛的#<R>第一名#。", names);
         SpringUtils.getChatService().sendSystem(msg, "role");
+        return;
     }
     
     private void match() {
         try {
-            final AtWillData atWillData = this.atWillHandler.getAtWillData();
-            final List<AtWillPkData> atWillPkData = atWillData.getPkDataList();
-            final List<Team> list = this.getFightTeamList(atWillPkData);
-            final List<Team> allList = this.getFightTeamSceneList(atWillPkData);
+            AtWillData atWillData = this.atWillHandler.getAtWillData();
+            List<AtWillPkData> atWillPkData = atWillData.getPkDataList();
+            List<Team> list = this.getFightTeamList(atWillPkData);
+            List<Team> allList = this.getFightTeamSceneList(atWillPkData);
             if (list.size() > 0) {
                 this.match(allList, list);
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("匹配对手出错-----------------------------------------------");
         }
     }
     
-    private List<Team> getFightTeamList(final List<AtWillPkData> pkList) {
+    private List<Team> getFightTeamList(List<AtWillPkData> pkList) {
         try {
-            final List<AtWillPkData> tempPkList = new ArrayList<AtWillPkData>(pkList);
+            List<AtWillPkData> tempPkList = new ArrayList(pkList);
             tempPkList.sort(Comparator.comparing(AtWillPkData::getPrevPKTime));
-            final List<Team> list = new ArrayList<Team>(tempPkList.size());
-            final long now = System.currentTimeMillis();
-            for (final AtWillPkData atWillPkData : tempPkList) {
-                final Team team = this.teamService.getTeamByTeamId(atWillPkData.getTeamId());
+            List<Team> list = new ArrayList(tempPkList.size());
+            long now = System.currentTimeMillis();
+            for (AtWillPkData atWillPkData : tempPkList) {
+                Team team = this.teamService.getTeamByTeamId(atWillPkData.getTeamId());
                 if (team == null) {
                     continue;
                 }
-                final Role leaderRole = this.roleService.getPlayer(team.getLeaderUid());
+                Role leaderRole = this.roleService.getPlayer(team.getLeaderUid());
                 if (leaderRole == null) {
                     this.logger.error("获得可以战斗的队伍队长信息时为空了");
                 }
@@ -288,13 +294,13 @@ public class AtWillPkHandler extends ActivityHandler
                     if (atWillPkData.getState() == 1) {
                         continue;
                     }
-                    if (!leaderRole.getPos().getMapId().equals(4154)) {
+                    if (!leaderRole.getPos().getMapId().equals(Integer.valueOf(4154))) {
                         continue;
                     }
                     if (!this.fightNewService.canFight(leaderRole, team.getList())) {
                         continue;
                     }
-                    final Fight fight = this.fightNewService.getFightByRoleId(leaderRole.getRoleId());
+                    Fight fight = this.fightNewService.getFightByRoleId((int)leaderRole.getRoleId());
                     if (fight != null) {
                         continue;
                     }
@@ -312,32 +318,32 @@ public class AtWillPkHandler extends ActivityHandler
             }
             return list;
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("获得可以战斗的队伍出错了--------------------------------------");
-            return new ArrayList<Team>();
+            return new ArrayList<>();
         }
     }
     
-    private List<Team> getFightTeamSceneList(final List<AtWillPkData> pkList) {
+    private List<Team> getFightTeamSceneList(List<AtWillPkData> pkList) {
         try {
-            final List<AtWillPkData> tempPkList = new ArrayList<AtWillPkData>(pkList);
+            List<AtWillPkData> tempPkList = new ArrayList(pkList);
             tempPkList.sort(Comparator.comparing(AtWillPkData::getPrevPKTime));
-            final List<Team> list = new ArrayList<Team>(tempPkList.size());
-            final long now = System.currentTimeMillis();
-            for (final AtWillPkData atWillPkData : tempPkList) {
-                final Team team = this.teamService.getTeamByTeamId(atWillPkData.getTeamId());
+            List<Team> list = new ArrayList(tempPkList.size());
+            long now = System.currentTimeMillis();
+            for (AtWillPkData atWillPkData : tempPkList) {
+                Team team = this.teamService.getTeamByTeamId(atWillPkData.getTeamId());
                 if (team == null) {
                     continue;
                 }
-                final Role leaderRole = this.roleService.getPlayer(team.getLeaderUid());
+                Role leaderRole = this.roleService.getPlayer(team.getLeaderUid());
                 if (leaderRole == null) {
                     continue;
                 }
                 if (atWillPkData.getState() == 1) {
                     continue;
                 }
-                if (leaderRole.getPos().getMapId() != 4154) {
+                if ((int)leaderRole.getPos().getMapId() != 4154) {
                     continue;
                 }
                 if (now - atWillPkData.getPrevPKTime() < 10000L) {
@@ -350,74 +356,78 @@ public class AtWillPkHandler extends ActivityHandler
             }
             return list;
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("所有在场景中的队伍出错了--------------------------------------");
-            return new ArrayList<Team>();
+            return new ArrayList<>();
         }
     }
     
-    private void match(final List<Team> allList, final List<Team> list) {
+    private void match(List<Team> allList, List<Team> list) {
         try {
-            final HashSet<Integer> hashSet = new HashSet<Integer>();
-            for (final Team team : list) {
-                if (hashSet.contains(team.getId())) {
+            HashSet<Integer> hashSet = new HashSet();
+            for (Team team : list) {
+                if (hashSet.contains(Integer.valueOf(team.getId()))) {
                     continue;
                 }
-                final Team pkTeam = this.getPkTeam(team, allList, list, hashSet);
-                if (pkTeam == null) {
+                Team pkTeam = this.getPkTeam(team, allList, list, hashSet);
+                if (pkTeam != null) {
+                    pkTeam.setLastTeamId(team.getId());
+                    team.setLastTeamId(pkTeam.getId());
+                    this.doStartFight(team, pkTeam);
+                    hashSet.add(Integer.valueOf(team.getId()));
+                    hashSet.add(Integer.valueOf(pkTeam.getId()));
+                    AtWillData atWillData = this.atWillHandler.getAtWillData();
+                    AtWillPkData atWillPkData = (AtWillPkData)atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
+                    if (atWillPkData != null) {
+                        atWillPkData.updateTeamMember(team, (byte)1);
+                    }
+                    else {
+                        this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", Integer.valueOf(team.getId()));
+                    }
+                    atWillPkData = (AtWillPkData)atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == pkTeam.getId()).findFirst().orElse(null);
+                    if (atWillPkData != null) {
+                        atWillPkData.updateTeamMember(pkTeam, (byte)1);
+                    }
+                    else {
+                        this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", Integer.valueOf(team.getId()));
+                    }
+                }
+                else {
                     continue;
-                }
-                pkTeam.setLastTeamId(team.getId());
-                team.setLastTeamId(pkTeam.getId());
-                this.doStartFight(team, pkTeam);
-                hashSet.add(team.getId());
-                hashSet.add(pkTeam.getId());
-                final AtWillData atWillData = this.atWillHandler.getAtWillData();
-                AtWillPkData atWillPkData = atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
-                if (atWillPkData != null) {
-                    atWillPkData.updateTeamMember(team, (byte)1);
-                }
-                else {
-                    this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", team.getId());
-                }
-                atWillPkData = atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == pkTeam.getId()).findFirst().orElse(null);
-                if (atWillPkData != null) {
-                    atWillPkData.updateTeamMember(pkTeam, (byte)1);
-                }
-                else {
-                    this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", team.getId());
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.logger.error("进行PK出错------------------------------------");
             e.printStackTrace();
         }
     }
     
-    private Team getPkTeam(final Team team, final List<Team> allList, final List<Team> list, final HashSet<Integer> hashSet) {
+    private Team getPkTeam(Team team, List<Team> allList, List<Team> list, HashSet<Integer> hashSet) {
         try {
-            final HashSet<Integer> teamHash = new HashSet<Integer>();
+            HashSet<Integer> teamHash = new HashSet();
             for (int i = 0; i < team.getList().size(); ++i) {
-                final Member member = team.getList().get(i);
+                Member member = (Member)team.getList().get(i);
                 teamHash.add(member.getRoleId());
             }
-            final ArrayList<Team> result = new ArrayList<Team>();
-            for (final Team tempTeam : list) {
+            ArrayList<Team> result = new ArrayList<>();
+            for (Team tempTeam : list) {
                 if (tempTeam.getId() == team.getId()) {
                     continue;
                 }
-                if (hashSet.contains(tempTeam.getId())) {
+                if (hashSet.contains(Integer.valueOf(tempTeam.getId()))) {
                     continue;
                 }
                 boolean boo = false;
-                for (int j = 0; j < tempTeam.getList().size(); ++j) {
-                    final Member member2 = tempTeam.getList().get(j);
+                int j = 0;
+                while (j < tempTeam.getList().size()) {
+                    Member member2 = (Member)tempTeam.getList().get(j);
                     if (teamHash.contains(member2.getRoleId())) {
                         boo = true;
                         break;
                     }
+                    ++j;
                 }
                 if (boo) {
                     continue;
@@ -425,38 +435,38 @@ public class AtWillPkHandler extends ActivityHandler
                 result.add(tempTeam);
             }
             if (result.size() <= 0) {
-                this.logger.info("没有空闲的队伍 = {}，在场景中队伍数量 = {}，在场景可以战斗的队伍数量 = {}", new Object[] { team.getId(), allList.size(), list.size() });
+                this.logger.info("没有空闲的队伍 = {}，在场景中队伍数量 = {}，在场景可以战斗的队伍数量 = {}", new Object[] { Integer.valueOf(team.getId()), Integer.valueOf(allList.size()), Integer.valueOf(list.size()) });
                 return null;
             }
             if (allList.size() <= 2) {
-                final int index = new Random().nextInt(result.size());
-                final Team last = result.get(index);
-                this.logger.info("连续匹配同一个队伍=={}=={}", last.getId(), team.getId());
+                int index2 = new Random().nextInt(result.size());
+                Team last = (Team)result.get(index2);
+                this.logger.info("连续匹配同一个队伍=={}=={}", Integer.valueOf(last.getId()), Integer.valueOf(team.getId()));
                 return last;
             }
-            final ArrayList<Team> arrayList = new ArrayList<Team>();
-            for (final Team tempTeam2 : result) {
+            ArrayList<Team> arrayList = new ArrayList<>();
+            for (Team tempTeam2 : result) {
                 if (tempTeam2.getId() == team.getLastTeamId()) {
                     continue;
                 }
                 arrayList.add(tempTeam2);
             }
             if (arrayList.size() <= 0) {
-                this.logger.info("没有匹配到队伍=={}", team.getId());
+                this.logger.info("没有匹配到队伍=={}", Integer.valueOf(team.getId()));
                 return null;
             }
             if (arrayList.size() > 3) {
-                final Team last = ActivityGlobalFunc.getApproximate(team, arrayList);
+                Team last = ActivityGlobalFunc.getApproximate(team, arrayList);
                 if (last != null) {
                     return last;
                 }
             }
-            final int index2 = new Random().nextInt(result.size());
-            final Team last2 = result.get(index2);
-            this.logger.info("不连续匹配同一个队伍=={}=={}", last2.getId(), team.getId());
+            int index = new Random().nextInt(result.size());
+            Team last2 = (Team)result.get(index);
+            this.logger.info("不连续匹配同一个队伍=={}=={}", Integer.valueOf(last2.getId()), Integer.valueOf(team.getId()));
             return last2;
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("获取PK队伍错误------------------------------------------");
             return null;
@@ -470,7 +480,7 @@ public class AtWillPkHandler extends ActivityHandler
         SchedulerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
-                final Fight fight = FightFactory.getFightFactory(fightType).create(mapId, AtWillPkHandler.this.getFightType(), teamA.getList(), teamB.getList());
+                Fight fight = FightFactory.getFightFactory(fightType).create(mapId, Integer.valueOf(AtWillPkHandler.this.getFightType()), teamA.getList(), teamB.getList());
                 fight.setMaxRound(30);
                 fight.start();
             }
@@ -482,11 +492,11 @@ public class AtWillPkHandler extends ActivityHandler
     }
     
     @Override
-    public void handleFightEnd(final FightEndEvent fightEndEvent) {
+    public void handleFightEnd(FightEndEvent fightEndEvent) {
         ThreadLocalUtil.addLocalTask(fightEndEvent.getRole(), () -> this.doFightEnd(fightEndEvent.getRole(), fightEndEvent));
     }
     
-    public void doFightEnd(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightEnd(Role role, FightEndEvent fightEndEvent) {
         try {
             if (this.teamService.isInTeam(role) && !this.teamService.isTeamLeader(role)) {
                 return;
@@ -494,22 +504,22 @@ public class AtWillPkHandler extends ActivityHandler
             if (!this.isMatchFightType(fightEndEvent.getFightType())) {
                 return;
             }
-            if (!role.getPos().getMapId().equals(4154)) {
+            if (!role.getPos().getMapId().equals(Integer.valueOf(4154))) {
                 return;
             }
-            final AtWillData atWillData = this.atWillHandler.getAtWillData();
-            final Team team = this.teamService.getTeam(role.getRoleId());
+            AtWillData atWillData = this.atWillHandler.getAtWillData();
+            Team team = this.teamService.getTeam((int)role.getRoleId());
             if (team == null) {
                 return;
             }
-            final AtWillPkData atWillPkData = atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
+            AtWillPkData atWillPkData = (AtWillPkData)atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
             if (atWillPkData != null) {
                 atWillPkData.updateTeamMember(team, (byte)0);
             }
             else {
                 this.logger.error("战斗结束后获取队伍ID信息失败");
             }
-            final RespAtClashResult resp = new RespAtClashResult();
+            RespAtClashResult resp = new RespAtClashResult();
             resp.setMateSecond(this.atWillHandler.getAtWillSet().getPeriod());
             if (fightEndEvent.getStatus() == 1) {
                 resp.setResult((byte)1);
@@ -517,10 +527,10 @@ public class AtWillPkHandler extends ActivityHandler
                     resp.setMateSecond(-1);
                 }
                 for (int i = 0; i < team.getList().size(); ++i) {
-                    final Member member = team.getList().get(i);
-                    final Role player = this.roleService.getPlayer(member.getId());
+                    Member member = (Member)team.getList().get(i);
+                    Role player = this.roleService.getPlayer((long)member.getId());
                     if (player != null) {
-                        final List<FiedValue> values = this.sendAward(player, (byte)1);
+                        List<FiedValue> values = this.sendAward(player, (byte)1);
                         resp.setList(values);
                         MessagePusher.pushMessage(player, resp);
                     }
@@ -529,10 +539,10 @@ public class AtWillPkHandler extends ActivityHandler
             }
             else {
                 for (int i = 0; i < team.getList().size(); ++i) {
-                    final Member member = team.getList().get(i);
-                    final Role player = this.roleService.getPlayer(member.getId());
+                    Member member = (Member)team.getList().get(i);
+                    Role player = this.roleService.getPlayer((long)member.getId());
                     if (player != null) {
-                        final List<FiedValue> values = this.sendAward(player, (byte)2);
+                        List<FiedValue> values = this.sendAward(player, (byte)2);
                         resp.setList(values);
                         if (atWillData.getStage() == 2 || System.currentTimeMillis() >= atWillData.getEndTime().getTimeInMillis()) {
                             resp.setMateSecond(-1);
@@ -543,66 +553,67 @@ public class AtWillPkHandler extends ActivityHandler
                 this.doFightFail(role, fightEndEvent);
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("战斗结束后操作错误-------------------------------------------------------");
         }
     }
     
-    private boolean isMatchFightType(final int fightType) {
+    private boolean isMatchFightType(int fightType) {
         return this.getFightType() == fightType;
     }
     
-    public void doFightWin(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightWin(Role role, FightEndEvent fightEndEvent) {
         if (!this.isMatchFightType(fightEndEvent.getFightType())) {
             return;
         }
         this.addScore(role);
         this.setPrevPkTime(role);
+        return;
     }
     
-    private void addScore(final Role role) {
-        final Team team = this.teamService.getTeam(role.getRoleId());
+    private void addScore(Role role) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
         if (team != null) {
-            final AtWillData atWillData = this.atWillHandler.getAtWillData();
-            final AtWillPkData atWillPkData = atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
+            AtWillData atWillData = this.atWillHandler.getAtWillData();
+            AtWillPkData atWillPkData = (AtWillPkData)atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
             if (atWillPkData != null) {
-                final short scorePkWin = this.atWillHandler.getAtWillSet().getScorePkWin();
+                short scorePkWin = this.atWillHandler.getAtWillSet().getScorePkWin();
                 atWillPkData.addTotalScore(scorePkWin);
-                final String msg = MessageFormat.format("恭喜你取得了战斗胜利，获得了{0}点积分，你当前的积分为#<R>{1}#点。", scorePkWin, atWillPkData.getScore());
+                String msg = MessageFormat.format("恭喜你取得了战斗胜利，获得了{0}点积分，你当前的积分为#<R>{1}#点。", Short.valueOf(scorePkWin), Short.valueOf(atWillPkData.getScore()));
                 this.teamService.pushMessageToTeam(team, new RespNotifyMiscEx(msg));
             }
         }
     }
     
-    private void setPrevPkTime(final Role role) {
-        final Team team = this.teamService.getTeam(role.getRoleId());
+    private void setPrevPkTime(Role role) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
         if (team != null) {
-            final AtWillData atWillData = this.atWillHandler.getAtWillData();
-            final AtWillPkData atWillPkData = atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
+            AtWillData atWillData = this.atWillHandler.getAtWillData();
+            AtWillPkData atWillPkData = (AtWillPkData)atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
             if (atWillPkData != null) {
                 atWillPkData.setPrevPKTime(System.currentTimeMillis());
             }
         }
     }
     
-    public void doFightFail(final Role role, final FightEndEvent fightEndEvent) {
+    public void doFightFail(Role role, FightEndEvent fightEndEvent) {
         this.fail(role, fightEndEvent);
     }
     
-    public void fail(final Role role, final FightEndEvent fightEndEvent) {
-        final Team team = this.teamService.getTeam(role.getRoleId());
+    public void fail(Role role, FightEndEvent fightEndEvent) {
+        Team team = this.teamService.getTeam((int)role.getRoleId());
         if (team != null) {
-            final AtWillData atWillData = this.atWillHandler.getAtWillData();
-            final AtWillPkData atWillPkData = atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
+            AtWillData atWillData = this.atWillHandler.getAtWillData();
+            AtWillPkData atWillPkData = (AtWillPkData)atWillData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
             if (atWillPkData != null) {
                 atWillPkData.substractPkValue((short)1);
                 atWillPkData.subTotalScore();
-                final String msg = MessageFormat.format("真遗憾你失败了，失去了1点巅峰对决值。", atWillPkData.getPkValue());
+                String msg = MessageFormat.format("真遗憾你失败了，失去了1点巅峰对决值。", Short.valueOf(atWillPkData.getPkValue()));
                 this.teamService.pushMessageToTeam(team, new RespNotifyMiscEx(msg));
                 if (atWillPkData.getPkValue() <= 0) {
                     this.atWillHandler.leaveMap(role);
-                    final String outMsg = MessageFormat.format(" 真是精彩纷呈啊！#<Y>{0}#的队伍英雄争霸赛正在如火如荼的进行！适才在高手对决中棋差一着，遗憾地败下阵来，真是太可惜了。其他还在拼搏的高手要继续努力！", role.getName());
+                    String outMsg = MessageFormat.format(" 真是精彩纷呈啊！#<Y>{0}#的队伍英雄争霸赛正在如火如荼的进行！适才在高手对决中棋差一着，遗憾地败下阵来，真是太可惜了。其他还在拼搏的高手要继续努力！", role.getName());
                     SpringUtils.getChatService().sendSystem(outMsg, "role");
                 }
             }
@@ -610,62 +621,62 @@ public class AtWillPkHandler extends ActivityHandler
         }
     }
     
-    public void checkSystemMessage(final Calendar calendar) {
-        final AtWillData atWillData = this.atWillHandler.getAtWillData();
+    public void checkSystemMessage(Calendar calendar) {
+        AtWillData atWillData = this.atWillHandler.getAtWillData();
         if (calendar.get(11) == atWillData.getStartTime().get(11) + 1 && calendar.get(12) % 5 == 0) {
-            final int intevalMinute = this.getIntevalMinute(atWillData.getStartTime(), calendar);
-            final String msg = MessageFormat.format("英雄争霸赛已经进行了#<R>{0}分钟#，大家加油啊！", intevalMinute);
+            int intevalMinute = this.getIntevalMinute(atWillData.getStartTime(), calendar);
+            String msg = MessageFormat.format("英雄争霸赛已经进行了#<R>{0}分钟#，大家加油啊！", Integer.valueOf(intevalMinute));
             SpringUtils.getChatService().sendSystem(msg, "role");
         }
         if (calendar.get(11) == atWillData.getStartTime().get(11) + 1 && calendar.get(12) % 10 == 0) {
-            final int intevalMinute = this.getIntevalMinute(calendar, atWillData.getEndTime());
-            final String msg = MessageFormat.format("英雄争霸赛还剩#<R>{0}分钟#，大家要抓紧时间啦！", intevalMinute);
+            int intevalMinute = this.getIntevalMinute(calendar, atWillData.getEndTime());
+            String msg = MessageFormat.format("英雄争霸赛还剩#<R>{0}分钟#，大家要抓紧时间啦！", Integer.valueOf(intevalMinute));
             SpringUtils.getChatService().sendSystem(msg, "role");
         }
     }
     
-    private int getIntevalMinute(final Calendar startCalendar, final Calendar endCalendar) {
+    private int getIntevalMinute(Calendar startCalendar, Calendar endCalendar) {
         return (int)Math.abs((endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis()) / 60000L);
     }
     
-    private List<FiedValue> sendAward(final Role role, final byte type) {
-        final List<FiedValue> objects = new ArrayList<FiedValue>();
+    private List<FiedValue> sendAward(Role role, byte type) {
+        List<FiedValue> objects = new ArrayList<>();
         long exp = 1000000L;
         int silver = 500000;
-        final List<Param> list = new ArrayList<Param>();
+        List<Param> list = new ArrayList<>();
         if (type == 2) {
             exp = 500000L;
             silver = 250000;
-            list.add(new Param(ItemClassify.RESTYPE_SILVER.getId(), silver));
-            list.add(new Param(75052, 1, 75052));
-            list.add(new Param(75029, 1, 75029));
+            list.add(new Param(Integer.valueOf(ItemClassify.RESTYPE_SILVER.getId()), Integer.valueOf(silver)));
+            list.add(new Param(Integer.valueOf(75052), Integer.valueOf(1), Integer.valueOf(75052)));
+            list.add(new Param(Integer.valueOf(75029), Integer.valueOf(1), Integer.valueOf(75029)));
         }
         else {
-            list.add(new Param(ItemClassify.RESTYPE_SILVER.getId(), silver));
-            list.add(new Param(75052, 2, 75052));
-            list.add(new Param(75029, 2, 75029));
+            list.add(new Param(Integer.valueOf(ItemClassify.RESTYPE_SILVER.getId()), Integer.valueOf(silver)));
+            list.add(new Param(Integer.valueOf(75052), Integer.valueOf(2), Integer.valueOf(75052)));
+            list.add(new Param(Integer.valueOf(75029), Integer.valueOf(2), Integer.valueOf(75029)));
         }
         objects.add(new FiedValue(String.valueOf(ItemClassify.HERO_EXP.getId()), (byte)4, String.valueOf(exp)));
         SpringUtils.getRoleService().addExp(role, exp, "", false);
-        final Integer combatPet = role.getExtendBox().getCombatPet();
-        if (combatPet > 0) {
-            final Pet pet = SpringUtils.getPetService().selectPet(role).get(combatPet);
+        Integer combatPet = role.getExtendBox().getCombatPet();
+        if ((int)combatPet > 0) {
+            Pet pet = (Pet)SpringUtils.getPetService().selectPet(role).get(combatPet);
             objects.add(new FiedValue(String.valueOf(ItemClassify.PET_EXP.getId()), (byte)4, String.valueOf(exp)));
             SpringUtils.getPetService().addExp(role, pet, exp, false);
         }
-        for (final Param param : list) {
+        for (Param param : list) {
             objects.add(new FiedValue(String.valueOf(param.getK()), (byte)3, param.getV()));
         }
-        SpringUtils.getBean(BagService.class).sendReward(role, list, "英雄争霸赛-战斗" + type, 0);
+        ((BagService)SpringUtils.getBean(BagService.class)).sendReward(role, list, "英雄争霸赛-战斗" + (int)type, 0);
         return objects;
     }
     
-    private static long calculate(final int grade, final int rei, final ItemClassify type) {
+    private static long calculate(int grade, int rei, ItemClassify type) {
         if (type == ItemClassify.HERO_EXP) {
-            return BigDecimalUtil.decimalScaleDown(0, 1.6E7 * (1.0 + (grade + rei * 15) / 140 * 2.5) / 30.0 / 25.59 * (0.23 + Math.pow(1.0, 0.35)) * 1.3).longValue();
+            return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(1.6E7 * (1.0 + (double)((grade + rei * 15) / 140) * 2.5) / 30.0 / 25.59 * (0.23 + Math.pow(1.0, 0.35)) * 1.3)).longValue();
         }
         if (type == ItemClassify.PET_EXP) {
-            return BigDecimalUtil.decimalScaleDown(0, 1.6E7 * (1.0 + (grade + rei * 15) / 140 * 2.5) / 30.0 / 25.59 * (0.23 + Math.pow(1.0, 0.35)) * 1.3 * 1.2).longValue();
+            return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(1.6E7 * (1.0 + (double)((grade + rei * 15) / 140) * 2.5) / 30.0 / 25.59 * (0.23 + Math.pow(1.0, 0.35)) * 1.3 * 1.2)).longValue();
         }
         return 0L;
     }

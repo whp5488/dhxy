@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.tianfu.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqTianFu extends Message
 {
     private byte type;
+    
+    public ReqTianFu() {
+    }
     
     public byte getType() {
         return this.type;
@@ -25,7 +27,7 @@ public class ReqTianFu extends Message
         if (!(o instanceof ReqTianFu)) {
             return false;
         }
-        final ReqTianFu other = (ReqTianFu)o;
+        ReqTianFu other = (ReqTianFu)o;
         return other.canEqual(this) && this.getType() == other.getType();
     }
     
@@ -35,7 +37,7 @@ public class ReqTianFu extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         return result;
@@ -43,6 +45,6 @@ public class ReqTianFu extends Message
     
     @Override
     public String toString() {
-        return "ReqTianFu(type=" + this.getType() + ")";
+        return "ReqTianFu(type=" + (int)this.getType() + ")";
     }
 }

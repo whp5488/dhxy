@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.horse.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,21 +33,13 @@ public class ReqMountControlPet extends Message
         if (!(o instanceof ReqMountControlPet)) {
             return false;
         }
-        final ReqMountControlPet other = (ReqMountControlPet)o;
+        ReqMountControlPet other = (ReqMountControlPet)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$mountId = this.getMountId();
-        final Object other$mountId = other.getMountId();
-        if (this$mountId == null) {
-            if (other$mountId == null) {
-                return this.getPetId() == other.getPetId();
-            }
-        }
-        else if (this$mountId.equals(other$mountId)) {
-            return this.getPetId() == other.getPetId();
-        }
-        return false;
+        Object this$mountId = this.getMountId();
+        Object other$mountId = other.getMountId();
+        return ((this$mountId != null) ? this$mountId.equals(other$mountId) : (other$mountId == null)) && this.getPetId() == other.getPetId();
     }
     
     protected boolean canEqual(final Object other) {
@@ -58,9 +48,9 @@ public class ReqMountControlPet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $mountId = this.getMountId();
+        Object $mountId = this.getMountId();
         result = result * 59 + (($mountId == null) ? 43 : $mountId.hashCode());
         result = result * 59 + this.getPetId();
         return result;
@@ -71,7 +61,6 @@ public class ReqMountControlPet extends Message
         return "ReqMountControlPet(mountId=" + this.getMountId() + ", petId=" + this.getPetId() + ")";
     }
     
-    @ConstructorProperties({ "mountId", "petId" })
     public ReqMountControlPet(final String mountId, final int petId) {
         this.mountId = mountId;
         this.petId = petId;

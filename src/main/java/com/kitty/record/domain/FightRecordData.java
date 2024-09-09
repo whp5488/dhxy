@@ -1,7 +1,5 @@
-
 package com.kitty.record.domain;
 
-import java.beans.ConstructorProperties;
 import java.util.Arrays;
 import org.nutz.dao.entity.annotation.Id;
 import java.io.Serializable;
@@ -45,7 +43,7 @@ public class FightRecordData implements Serializable
         if (!(o instanceof FightRecordData)) {
             return false;
         }
-        final FightRecordData other = (FightRecordData)o;
+        FightRecordData other = (FightRecordData)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getCreateTime() == other.getCreateTime() && Arrays.equals(this.getMsgData(), other.getMsgData());
     }
     
@@ -55,11 +53,11 @@ public class FightRecordData implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final long $id = this.getId();
+        long $id = this.getId();
         result = result * 59 + (int)($id >>> 32 ^ $id);
-        final long $createTime = this.getCreateTime();
+        long $createTime = this.getCreateTime();
         result = result * 59 + (int)($createTime >>> 32 ^ $createTime);
         result = result * 59 + Arrays.hashCode(this.getMsgData());
         return result;
@@ -70,7 +68,6 @@ public class FightRecordData implements Serializable
         return "FightRecordData(id=" + this.getId() + ", createTime=" + this.getCreateTime() + ", msgData=" + Arrays.toString(this.getMsgData()) + ")";
     }
     
-    @ConstructorProperties({ "id", "createTime", "msgData" })
     public FightRecordData(final long id, final long createTime, final byte[] msgData) {
         this.id = id;
         this.createTime = createTime;

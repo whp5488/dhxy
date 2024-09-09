@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.monitor;
 
 import javax.script.ScriptEngine;
@@ -20,6 +19,9 @@ import org.springframework.stereotype.Component;
 @ManagedResource(objectName = "GameMXBean:name=gameMonitor")
 public class GameMonitor implements GameMonitorMBean
 {
+    public GameMonitor() {
+    }
+    
     @ManagedOperation
     @Override
     public int getOnlinePlayerSum() {
@@ -29,8 +31,8 @@ public class GameMonitor implements GameMonitorMBean
     @ManagedOperation
     @Override
     public int getCachePlayerSum() {
-        final GuavaCacheManager cacheManager = SpringUtils.getBean(GuavaCacheManager.class);
-        final GuavaCache guavaCache = (GuavaCache)cacheManager.getCache("player");
+        GuavaCacheManager cacheManager = (GuavaCacheManager)SpringUtils.getBean(GuavaCacheManager.class);
+        GuavaCache guavaCache = (GuavaCache)(GuavaCache)cacheManager.getCache("player");
         return (int)guavaCache.getNativeCache().size();
     }
     
@@ -60,15 +62,15 @@ public class GameMonitor implements GameMonitorMBean
     
     @ManagedOperation(description = "执行groovy脚本")
     @Override
-    public String execGroovyScript(final String groovyCode) {
+    public String execGroovyScript(String groovyCode) {
         try {
-            final ScriptEngineManager engineManager = new ScriptEngineManager();
-            final ScriptEngine scriptEngine = engineManager.getEngineByName("groovy");
+            ScriptEngineManager engineManager = new ScriptEngineManager();
+            ScriptEngine scriptEngine = engineManager.getEngineByName("groovy");
             return scriptEngine.eval(groovyCode).toString();
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error("", e);
-            final String msg = e.getMessage();
+            String msg = e.getMessage();
             return msg;
         }
     }

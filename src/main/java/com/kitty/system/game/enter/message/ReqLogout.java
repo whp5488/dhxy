@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqLogout extends Message
 {
     private Integer reason;
+    
+    public ReqLogout() {
+    }
     
     public Integer getReason() {
         return this.reason;
@@ -25,21 +27,13 @@ public class ReqLogout extends Message
         if (!(o instanceof ReqLogout)) {
             return false;
         }
-        final ReqLogout other = (ReqLogout)o;
+        ReqLogout other = (ReqLogout)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$reason = this.getReason();
-        final Object other$reason = other.getReason();
-        if (this$reason == null) {
-            if (other$reason == null) {
-                return true;
-            }
-        }
-        else if (this$reason.equals(other$reason)) {
-            return true;
-        }
-        return false;
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        return (this$reason != null) ? this$reason.equals(other$reason) : (other$reason == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqLogout extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $reason = this.getReason();
+        Object $reason = this.getReason();
         result = result * 59 + (($reason == null) ? 43 : $reason.hashCode());
         return result;
     }

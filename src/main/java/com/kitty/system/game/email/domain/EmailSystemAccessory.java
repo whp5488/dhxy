@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.email.domain;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class EmailSystemAccessory implements Serializable
@@ -37,7 +35,6 @@ public class EmailSystemAccessory implements Serializable
     public EmailSystemAccessory() {
     }
     
-    @ConstructorProperties({ "type", "serial", "num" })
     public EmailSystemAccessory(final byte type, final int serial, final String num) {
         this.type = type;
         this.serial = serial;

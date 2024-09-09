@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player;
 
 import com.kitty.common.utils.JsonUtils;
@@ -29,46 +28,46 @@ public class PlayerProfile implements Serializable
     private byte drill;
     private String marking;
     
-    public PlayerProfile(final Role role) {
+    public PlayerProfile(Role role) {
         this.drill = 0;
         this.sid = role.getSid();
         this.id = role.getId();
         this.name = role.getName();
         this.icon = role.getIcon();
-        this.serial = role.getSerial();
-        this.level = role.getLevel();
+        this.serial = (int)role.getSerial();
+        this.level = (int)role.getLevel();
         this.exp = role.getExp();
-        this.nextExp = FormulaHero.formulaHeroLvUpExp(role.getLevel(), role.getLevel() + 1, role.getRelive());
+        this.nextExp = FormulaHero.formulaHeroLvUpExp(role.getLevel(), Integer.valueOf((int)role.getLevel() + 1), role.getRelive());
         this.roleId = role.getRoleId();
         this.race = role.getRace().byteValue();
         this.sex = role.getSex().byteValue();
-        this.relive = role.getRelive();
-        this.enterTime = role.getEnterTime();
-        this.faction = role.getFaction();
+        this.relive = (int)role.getRelive();
+        this.enterTime = (long)role.getEnterTime();
+        this.faction = (int)role.getFaction();
         this.drill = role.getExtendBox().getDrill();
         this.marking = role.getMarking();
     }
     
-    public PlayerProfile(final String sid, final Integer roleId, final Long id, final String name, final Integer icon, final Integer serial, final Integer level, final long exp, final Integer relive, final Integer race, final long enterTime, final long lastLoginTime, final Integer sex, final int faction, final String extend, final String marking) {
+    public PlayerProfile(String sid, Integer roleId, Long id, String name, Integer icon, Integer serial, Integer level, long exp, Integer relive, Integer race, long enterTime, long lastLoginTime, Integer sex, int faction, String extend, String marking) {
         this.drill = 0;
         this.sid = sid;
         this.roleId = roleId;
         this.id = id;
         this.name = name;
-        this.icon = icon;
-        this.serial = serial;
-        this.level = level;
+        this.icon = (int)icon;
+        this.serial = (int)serial;
+        this.level = (int)level;
         this.exp = exp;
-        this.nextExp = FormulaHero.formulaHeroLvUpExp(level, level + 1, relive);
-        this.relive = relive;
+        this.nextExp = FormulaHero.formulaHeroLvUpExp(level, Integer.valueOf((int)level + 1), relive);
+        this.relive = (int)relive;
         this.race = race.byteValue();
         this.enterTime = enterTime;
         this.lastLoginTime = lastLoginTime;
         this.sex = sex.byteValue();
         this.faction = faction;
-        if (StringUtils.isNotEmpty((CharSequence)extend)) {
-            final String content = ZipUtil.uncompress(extend);
-            final PlayerExtendBox box = JsonUtils.string2Object(content, PlayerExtendBox.class);
+        if (StringUtils.isNotEmpty(extend)) {
+            String content = ZipUtil.uncompress(extend);
+            PlayerExtendBox box = (PlayerExtendBox)JsonUtils.string2Object(content, PlayerExtendBox.class);
             this.drill = box.getDrill();
         }
         this.marking = marking;
@@ -222,60 +221,28 @@ public class PlayerProfile implements Serializable
         if (!(o instanceof PlayerProfile)) {
             return false;
         }
-        final PlayerProfile other = (PlayerProfile)o;
+        PlayerProfile other = (PlayerProfile)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$sid = this.getSid();
-        final Object other$sid = other.getSid();
-        Label_0065: {
-            if (this$sid == null) {
-                if (other$sid == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$sid.equals(other$sid)) {
-                break Label_0065;
-            }
+        Object this$sid = this.getSid();
+        Object other$sid = other.getSid();
+        if (!((this$sid != null) ? this$sid.equals(other$sid) : (other$sid == null))) {
             return false;
         }
-        final Object this$roleId = this.getRoleId();
-        final Object other$roleId = other.getRoleId();
-        Label_0102: {
-            if (this$roleId == null) {
-                if (other$roleId == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$roleId.equals(other$roleId)) {
-                break Label_0102;
-            }
+        Object this$roleId = this.getRoleId();
+        Object other$roleId = other.getRoleId();
+        if (!((this$roleId != null) ? this$roleId.equals(other$roleId) : (other$roleId == null))) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0139: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0139;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0176: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0176;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getIcon() != other.getIcon()) {
@@ -314,17 +281,9 @@ public class PlayerProfile implements Serializable
         if (this.getDrill() != other.getDrill()) {
             return false;
         }
-        final Object this$marking = this.getMarking();
-        final Object other$marking = other.getMarking();
-        if (this$marking == null) {
-            if (other$marking == null) {
-                return true;
-            }
-        }
-        else if (this$marking.equals(other$marking)) {
-            return true;
-        }
-        return false;
+        Object this$marking = this.getMarking();
+        Object other$marking = other.getMarking();
+        return (this$marking != null) ? this$marking.equals(other$marking) : (other$marking == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -333,39 +292,39 @@ public class PlayerProfile implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $sid = this.getSid();
+        Object $sid = this.getSid();
         result = result * 59 + (($sid == null) ? 43 : $sid.hashCode());
-        final Object $roleId = this.getRoleId();
+        Object $roleId = this.getRoleId();
         result = result * 59 + (($roleId == null) ? 43 : $roleId.hashCode());
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getIcon();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getLevel();
-        final long $exp = this.getExp();
+        long $exp = this.getExp();
         result = result * 59 + (int)($exp >>> 32 ^ $exp);
-        final long $nextExp = this.getNextExp();
+        long $nextExp = this.getNextExp();
         result = result * 59 + (int)($nextExp >>> 32 ^ $nextExp);
         result = result * 59 + this.getRelive();
         result = result * 59 + this.getRace();
-        final long $enterTime = this.getEnterTime();
+        long $enterTime = this.getEnterTime();
         result = result * 59 + (int)($enterTime >>> 32 ^ $enterTime);
-        final long $lastLoginTime = this.getLastLoginTime();
+        long $lastLoginTime = this.getLastLoginTime();
         result = result * 59 + (int)($lastLoginTime >>> 32 ^ $lastLoginTime);
         result = result * 59 + this.getSex();
         result = result * 59 + this.getFaction();
         result = result * 59 + this.getDrill();
-        final Object $marking = this.getMarking();
+        Object $marking = this.getMarking();
         result = result * 59 + (($marking == null) ? 43 : $marking.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "PlayerProfile(sid=" + this.getSid() + ", roleId=" + this.getRoleId() + ", id=" + this.getId() + ", name=" + this.getName() + ", icon=" + this.getIcon() + ", serial=" + this.getSerial() + ", level=" + this.getLevel() + ", exp=" + this.getExp() + ", nextExp=" + this.getNextExp() + ", relive=" + this.getRelive() + ", race=" + this.getRace() + ", enterTime=" + this.getEnterTime() + ", lastLoginTime=" + this.getLastLoginTime() + ", sex=" + this.getSex() + ", faction=" + this.getFaction() + ", drill=" + this.getDrill() + ", marking=" + this.getMarking() + ")";
+        return "PlayerProfile(sid=" + this.getSid() + ", roleId=" + this.getRoleId() + ", id=" + this.getId() + ", name=" + this.getName() + ", icon=" + this.getIcon() + ", serial=" + this.getSerial() + ", level=" + this.getLevel() + ", exp=" + this.getExp() + ", nextExp=" + this.getNextExp() + ", relive=" + this.getRelive() + ", race=" + (int)this.getRace() + ", enterTime=" + this.getEnterTime() + ", lastLoginTime=" + this.getLastLoginTime() + ", sex=" + (int)this.getSex() + ", faction=" + this.getFaction() + ", drill=" + (int)this.getDrill() + ", marking=" + this.getMarking() + ")";
     }
 }

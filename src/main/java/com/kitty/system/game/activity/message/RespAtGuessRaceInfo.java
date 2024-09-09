@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -38,7 +37,7 @@ public class RespAtGuessRaceInfo extends Message
         if (!(o instanceof RespAtGuessRaceInfo)) {
             return false;
         }
-        final RespAtGuessRaceInfo other = (RespAtGuessRaceInfo)o;
+        RespAtGuessRaceInfo other = (RespAtGuessRaceInfo)o;
         return other.canEqual(this) && this.getStartTime() == other.getStartTime() && this.getMateSecond() == other.getMateSecond();
     }
     
@@ -48,7 +47,7 @@ public class RespAtGuessRaceInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getStartTime();
         result = result * 59 + this.getMateSecond();

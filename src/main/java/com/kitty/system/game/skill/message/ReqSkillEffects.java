@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.skill.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqSkillEffects extends Message
 {
     private int serial;
+    
+    public ReqSkillEffects() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -25,7 +27,7 @@ public class ReqSkillEffects extends Message
         if (!(o instanceof ReqSkillEffects)) {
             return false;
         }
-        final ReqSkillEffects other = (ReqSkillEffects)o;
+        ReqSkillEffects other = (ReqSkillEffects)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial();
     }
     
@@ -35,7 +37,7 @@ public class ReqSkillEffects extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         return result;

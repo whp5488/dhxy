@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.task.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -26,7 +24,7 @@ public class RespQuestionConfirm extends Message
         if (!(o instanceof RespQuestionConfirm)) {
             return false;
         }
-        final RespQuestionConfirm other = (RespQuestionConfirm)o;
+        RespQuestionConfirm other = (RespQuestionConfirm)o;
         return other.canEqual(this) && this.getType() == other.getType();
     }
     
@@ -36,7 +34,7 @@ public class RespQuestionConfirm extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         return result;
@@ -44,14 +42,13 @@ public class RespQuestionConfirm extends Message
     
     @Override
     public String toString() {
-        return "RespQuestionConfirm(type=" + this.getType() + ")";
+        return "RespQuestionConfirm(type=" + (int)this.getType() + ")";
     }
     
     public RespQuestionConfirm() {
         this.type = 0;
     }
     
-    @ConstructorProperties({ "type" })
     public RespQuestionConfirm(final byte type) {
         this.type = 0;
         this.type = type;

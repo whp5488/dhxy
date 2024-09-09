@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 import org.nutz.dao.sql.Sql;
@@ -27,12 +26,12 @@ public class ServerConfig
         sql = sql.setCallback(Sqls.callback.str());
         this.dao.execute(sql);
         if (sql.getString() != null) {
-            final int level = Integer.valueOf(sql.getString());
+            int level = (int)Integer.valueOf(sql.getString());
             if (level > this.serverLevel) {
                 this.serverLevel = level;
             }
         }
-        final long time = this.initService.initDate();
+        long time = this.initService.initDate();
         if (time > 0L) {
             this.serverDate = time;
         }
@@ -90,34 +89,18 @@ public class ServerConfig
         if (!(o instanceof ServerConfig)) {
             return false;
         }
-        final ServerConfig other = (ServerConfig)o;
+        ServerConfig other = (ServerConfig)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$dao = this.getDao();
-        final Object other$dao = other.getDao();
-        Label_0065: {
-            if (this$dao == null) {
-                if (other$dao == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$dao.equals(other$dao)) {
-                break Label_0065;
-            }
+        Object this$dao = this.getDao();
+        Object other$dao = other.getDao();
+        if (!((this$dao != null) ? this$dao.equals(other$dao) : (other$dao == null))) {
             return false;
         }
-        final Object this$initService = this.getInitService();
-        final Object other$initService = other.getInitService();
-        if (this$initService == null) {
-            if (other$initService == null) {
-                return this.getSerial() == other.getSerial() && this.getServerDate() == other.getServerDate() && this.getServerLevel() == other.getServerLevel();
-            }
-        }
-        else if (this$initService.equals(other$initService)) {
-            return this.getSerial() == other.getSerial() && this.getServerDate() == other.getServerDate() && this.getServerLevel() == other.getServerLevel();
-        }
-        return false;
+        Object this$initService = this.getInitService();
+        Object other$initService = other.getInitService();
+        return ((this$initService != null) ? this$initService.equals(other$initService) : (other$initService == null)) && this.getSerial() == other.getSerial() && this.getServerDate() == other.getServerDate() && this.getServerLevel() == other.getServerLevel();
     }
     
     protected boolean canEqual(final Object other) {
@@ -126,14 +109,14 @@ public class ServerConfig
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $dao = this.getDao();
+        Object $dao = this.getDao();
         result = result * 59 + (($dao == null) ? 43 : $dao.hashCode());
-        final Object $initService = this.getInitService();
+        Object $initService = this.getInitService();
         result = result * 59 + (($initService == null) ? 43 : $initService.hashCode());
         result = result * 59 + this.getSerial();
-        final long $serverDate = this.getServerDate();
+        long $serverDate = this.getServerDate();
         result = result * 59 + (int)($serverDate >>> 32 ^ $serverDate);
         result = result * 59 + this.getServerLevel();
         return result;

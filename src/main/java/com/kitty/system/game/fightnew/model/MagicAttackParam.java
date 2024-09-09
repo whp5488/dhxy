@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.model;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.fightnew.FightObject;
 import java.util.List;
 import java.io.Serializable;
@@ -72,7 +70,6 @@ public class MagicAttackParam implements Serializable
         return this.sideTarget;
     }
     
-    @ConstructorProperties({ "isDodge", "positiveStatus", "target", "hurt", "clearStatusList", "targetReduceMp", "sideTarget" })
     public MagicAttackParam(final boolean isDodge, final List<Integer> positiveStatus, final FightObject target, final int hurt, final List<Integer> clearStatusList, final int targetReduceMp, final FightObject sideTarget) {
         this.isDodge = isDodge;
         this.positiveStatus = positiveStatus;

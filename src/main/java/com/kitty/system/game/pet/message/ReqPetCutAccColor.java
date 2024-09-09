@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqPetCutAccColor extends Message
     private Integer id;
     private byte pos;
     private byte serial;
+    
+    public ReqPetCutAccColor() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -43,21 +45,13 @@ public class ReqPetCutAccColor extends Message
         if (!(o instanceof ReqPetCutAccColor)) {
             return false;
         }
-        final ReqPetCutAccColor other = (ReqPetCutAccColor)o;
+        ReqPetCutAccColor other = (ReqPetCutAccColor)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getPos() == other.getPos() && this.getSerial() == other.getSerial();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getPos() == other.getPos() && this.getSerial() == other.getSerial();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getPos() == other.getPos() && this.getSerial() == other.getSerial();
     }
     
     protected boolean canEqual(final Object other) {
@@ -66,9 +60,9 @@ public class ReqPetCutAccColor extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getPos();
         result = result * 59 + this.getSerial();
@@ -77,6 +71,6 @@ public class ReqPetCutAccColor extends Message
     
     @Override
     public String toString() {
-        return "ReqPetCutAccColor(id=" + this.getId() + ", pos=" + this.getPos() + ", serial=" + this.getSerial() + ")";
+        return "ReqPetCutAccColor(id=" + this.getId() + ", pos=" + (int)this.getPos() + ", serial=" + (int)this.getSerial() + ")";
     }
 }

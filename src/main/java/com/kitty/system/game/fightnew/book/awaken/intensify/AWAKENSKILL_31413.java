@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.intensify;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -22,43 +21,54 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31413 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31413() {
+    }
+    
     @Override
-    public void magicAttackEnd(final Fight fight, final FightObject effector, final Object... args) {
+    public void magicAttackEnd(Fight fight, FightObject effector, Object... args) {
         if (args == null && args.length < 3) {
             return;
         }
-        final RoleSkill skill = (RoleSkill)args[0];
-        final ActionDetailParam actionDetailParam = (ActionDetailParam)args[1];
-        final List<MagicAttackParam> targets = (List<MagicAttackParam>)args[2];
+        RoleSkill skill = (RoleSkill)args[0];
+        ActionDetailParam actionDetailParam = (ActionDetailParam)args[1];
+        List<MagicAttackParam> targets = (List)args[2];
         if (skill == null || actionDetailParam == null || targets == null) {
             return;
         }
-        final List<Integer> targetIds = new ArrayList<Integer>();
-        for (final MagicAttackParam magicAttackParam : targets) {
+        List<Integer> targetIds = new ArrayList<>();
+        for (MagicAttackParam magicAttackParam : targets) {
             if (magicAttackParam.getTarget() != null) {
                 targetIds.add(magicAttackParam.getTarget().getId());
             }
+            else {
+                continue;
+            }
         }
-        final List<FightObject> mySide = fight.getMySide(effector.getId());
+        List<FightObject> mySide = fight.getMySide((int)effector.getId());
         if (mySide == null || mySide.size() <= 0) {
             return;
         }
         FightObject newTarget = null;
         double cpt = 1.0;
-        for (final FightObject fightObject : mySide) {
+        for (FightObject fightObject : mySide) {
             if (!targetIds.contains(fightObject.getId())) {
-                final double tempCpt = fightObject.getCurrLife() / (double)fightObject.getMaxLife();
-                if (tempCpt >= cpt) {
+                double tempCpt = (double)fightObject.getCurrLife() / (double)fightObject.getMaxLife();
+                if (tempCpt < cpt) {
+                    cpt = tempCpt;
+                    newTarget = fightObject;
+                }
+                else {
                     continue;
                 }
-                cpt = tempCpt;
-                newTarget = fightObject;
+            }
+            else {
+                continue;
             }
         }
         if (newTarget == null) {
             return;
         }
-        final double percent = this.getPercent(effector);
+        double percent = this.getPercent(effector);
         boolean flag = false;
         if (percent != 0.0) {
             flag = SkillAi.canAffectOnPro(percent);
@@ -66,23 +76,24 @@ public class AWAKENSKILL_31413 extends AwakenSkillProcessor
         if (!flag) {
             return;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 31413);
-        final FightObjectParam targetParam = actionDetailParam.gainTargetParam(newTarget.getId(), true);
-        final int addHp = (int)(newTarget.getMaxLife() * 0.5);
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 31413);
+        FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)newTarget.getId(), true);
+        int addHp = (int)((double)newTarget.getMaxLife() * 0.5);
         PassiveSkillUtils.excuteChangeLifeAuto(fight, newTarget, actionDetailParam, targetParam, addHp);
-        skillRecord.setT(newTarget.getId());
+        skillRecord.setT((long)(int)newTarget.getId());
+        return;
     }
     
-    private double getPercent(final FightObject effector) {
+    private double getPercent(FightObject effector) {
         if (effector.isPet()) {
-            final PetFightObject petFightObject = (PetFightObject)effector;
-            final Role role = petFightObject.getRole();
-            final Pet pet = petFightObject.getPet();
-            final byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
+            PetFightObject petFightObject = (PetFightObject)effector;
+            Role role = petFightObject.getRole();
+            Pet pet = petFightObject.getPet();
+            byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
             if (suitLevParam > 0) {
-                double percent = 100 * suitLevParam / 20.0 / 100.0;
+                double percent = (double)(100 * suitLevParam) / 20.0 / 100.0;
                 if (pet.getAwaken() > 0) {
-                    percent += 100 * pet.getAwaken() / 20.0 / 100.0;
+                    percent += (double)(100 * pet.getAwaken()) / 20.0 / 100.0;
                 }
                 return percent;
             }

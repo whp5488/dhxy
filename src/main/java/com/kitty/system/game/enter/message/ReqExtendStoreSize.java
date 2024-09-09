@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,4 +8,7 @@ public class ReqExtendStoreSize extends Message
 {
     public int type;
     public Integer isStore;
+    
+    public ReqExtendStoreSize() {
+    }
 }

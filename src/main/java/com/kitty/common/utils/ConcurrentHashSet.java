@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.Iterator;
@@ -16,11 +15,11 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, Seri
     private final ConcurrentHashMap<E, Object> map;
     
     public ConcurrentHashSet() {
-        this.map = new ConcurrentHashMap<E, Object>();
+        this.map = new ConcurrentHashMap();
     }
     
-    public ConcurrentHashSet(final int initialCapacity) {
-        this.map = new ConcurrentHashMap<E, Object>(initialCapacity);
+    public ConcurrentHashSet(int initialCapacity) {
+        this.map = new ConcurrentHashMap(initialCapacity);
     }
     
     @Override
@@ -39,17 +38,17 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E>, Seri
     }
     
     @Override
-    public boolean contains(final Object o) {
+    public boolean contains(Object o) {
         return this.map.containsKey(o);
     }
     
     @Override
-    public boolean add(final E e) {
+    public boolean add(E e) {
         return this.map.put(e, ConcurrentHashSet.PRESENT) == null;
     }
     
     @Override
-    public boolean remove(final Object o) {
+    public boolean remove(Object o) {
         return this.map.remove(o) == ConcurrentHashSet.PRESENT;
     }
     

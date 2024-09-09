@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.general.message.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class DomesticateInfo implements Serializable
@@ -60,21 +58,13 @@ public class DomesticateInfo implements Serializable
         if (!(o instanceof DomesticateInfo)) {
             return false;
         }
-        final DomesticateInfo other = (DomesticateInfo)o;
+        DomesticateInfo other = (DomesticateInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getTime() == other.getTime() && this.getNum() == other.getNum() && this.getResidue() == other.getResidue() && this.getType() == other.getType();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getTime() == other.getTime() && this.getNum() == other.getNum() && this.getResidue() == other.getResidue() && this.getType() == other.getType();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getTime() == other.getTime() && this.getNum() == other.getNum() && this.getResidue() == other.getResidue() && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -83,9 +73,9 @@ public class DomesticateInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getTime();
         result = result * 59 + this.getNum();
@@ -96,10 +86,9 @@ public class DomesticateInfo implements Serializable
     
     @Override
     public String toString() {
-        return "DomesticateInfo(id=" + this.getId() + ", time=" + this.getTime() + ", num=" + this.getNum() + ", residue=" + this.getResidue() + ", type=" + this.getType() + ")";
+        return "DomesticateInfo(id=" + this.getId() + ", time=" + this.getTime() + ", num=" + this.getNum() + ", residue=" + (int)this.getResidue() + ", type=" + (int)this.getType() + ")";
     }
     
-    @ConstructorProperties({ "id", "time", "num", "residue", "type" })
     public DomesticateInfo(final String id, final int time, final int num, final short residue, final byte type) {
         this.residue = -1;
         this.id = id;

@@ -1,4 +1,3 @@
-
 package com.kitty.listener;
 
 import com.kitty.logs.LoggerUtils;
@@ -16,25 +15,25 @@ public class EventDispatcher
     private LinkedBlockingQueue<BaseGameEvent> eventQueue;
     
     private EventDispatcher() {
-        this.observers = new HashMap<EventType, Set<Object>>();
-        this.eventQueue = new LinkedBlockingQueue<BaseGameEvent>();
-        new NamedThreadFactory("event-dispatch").newThread(new EventWorker()).start();
+        this.observers = new HashMap();
+        this.eventQueue = new LinkedBlockingQueue();
+        new NamedThreadFactory("event-dispatch").newThread(new EventDispatcher.EventWorker()).start();
     }
     
     public static EventDispatcher getInstance() {
         return EventDispatcher.instance;
     }
     
-    public void registerEvent(final EventType evtType, final Object listener) {
-        Set<Object> listeners = this.observers.get(evtType);
+    public void registerEvent(EventType evtType, Object listener) {
+        Set<Object> listeners = (Set)this.observers.get(evtType);
         if (listeners == null) {
-            listeners = new HashSet<Object>();
+            listeners = new HashSet();
             this.observers.put(evtType, listeners);
         }
         listeners.add(listener);
     }
     
-    public void fireEvent(final BaseGameEvent event) {
+    public void fireEvent(BaseGameEvent event) {
         if (event == null) {
             throw new NullPointerException("event cannot be null");
         }
@@ -46,15 +45,15 @@ public class EventDispatcher
         }
     }
     
-    private void triggerEvent(final BaseGameEvent event) {
-        final EventType evtType = event.getEventType();
-        final Set<Object> listeners = this.observers.get(evtType);
+    private void triggerEvent(BaseGameEvent event) {
+        EventType evtType = event.getEventType();
+        Set<Object> listeners = (Set)this.observers.get(evtType);
         if (listeners != null) {
             listeners.forEach(listener -> {
                 try {
                     ListenerManager.INSTANCE.fireEvent(listener, event);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("triggerEvent failed", e);
                 }
             });
@@ -71,14 +70,12 @@ public class EventDispatcher
         public void run() {
             while (true) {
                 try {
-                    while (true) {
-                        final BaseGameEvent event = EventDispatcher.this.eventQueue.take();
-                        EventDispatcher.this.triggerEvent(event);
-                    }
-                }
-                catch (final Exception e) {
-                    LoggerUtils.error("EventWorker run failed", e);
+                    BaseGameEvent event = (BaseGameEvent)EventDispatcher.this.eventQueue.take();
+                    EventDispatcher.this.triggerEvent(event);
                     continue;
+                }
+                catch (Exception e) {
+                    LoggerUtils.error("EventWorker run failed", e);
                 }
             }
         }

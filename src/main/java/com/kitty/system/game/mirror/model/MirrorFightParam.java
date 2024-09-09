@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.mirror.model;
 
 import java.util.List;
@@ -10,13 +9,13 @@ public class MirrorFightParam
     FightMirror fightMirror;
     List<FightMirror> fightMirrorList;
     
-    public MirrorFightParam(final byte fightType, final int npcId, final FightMirror fightMirror) {
+    public MirrorFightParam(byte fightType, int npcId, FightMirror fightMirror) {
         this.fightType = fightType;
         this.npcId = npcId;
         this.fightMirror = fightMirror;
     }
     
-    public MirrorFightParam(final byte fightType, final int npcId, final List<FightMirror> fightMirrorList) {
+    public MirrorFightParam(byte fightType, int npcId, List<FightMirror> fightMirrorList) {
         this.fightType = fightType;
         this.npcId = npcId;
         this.fightMirrorList = fightMirrorList;

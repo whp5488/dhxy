@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.bag.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.equip.domain.PetEquipEasy;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
@@ -27,21 +25,13 @@ public class RespFlyPetEqInfo extends Message
         if (!(o instanceof RespFlyPetEqInfo)) {
             return false;
         }
-        final RespFlyPetEqInfo other = (RespFlyPetEqInfo)o;
+        RespFlyPetEqInfo other = (RespFlyPetEqInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$equip = this.getEquip();
-        final Object other$equip = other.getEquip();
-        if (this$equip == null) {
-            if (other$equip == null) {
-                return true;
-            }
-        }
-        else if (this$equip.equals(other$equip)) {
-            return true;
-        }
-        return false;
+        Object this$equip = this.getEquip();
+        Object other$equip = other.getEquip();
+        return (this$equip != null) ? this$equip.equals(other$equip) : (other$equip == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -50,9 +40,9 @@ public class RespFlyPetEqInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $equip = this.getEquip();
+        Object $equip = this.getEquip();
         result = result * 59 + (($equip == null) ? 43 : $equip.hashCode());
         return result;
     }
@@ -62,7 +52,6 @@ public class RespFlyPetEqInfo extends Message
         return "RespFlyPetEqInfo(equip=" + this.getEquip() + ")";
     }
     
-    @ConstructorProperties({ "equip" })
     public RespFlyPetEqInfo(final PetEquipEasy equip) {
         this.equip = equip;
     }

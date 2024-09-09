@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -10,7 +9,7 @@ public class LeaveMapEvent extends BasePlayerEvent
     private int mapId;
     private Role role;
     
-    public LeaveMapEvent(final EventType evtType, final Role role, final int mapId) {
+    public LeaveMapEvent(EventType evtType, Role role, int mapId) {
         super(evtType, role);
         this.mapId = mapId;
         this.role = role;

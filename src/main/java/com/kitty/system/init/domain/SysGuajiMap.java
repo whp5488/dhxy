@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.Arrays;
@@ -37,6 +36,9 @@ public class SysGuajiMap implements Serializable
     @Comment("")
     @Column("always_judge_lv_flag")
     private Integer always_judge_lv_flag;
+    
+    public SysGuajiMap() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -110,102 +112,46 @@ public class SysGuajiMap implements Serializable
         if (!(o instanceof SysGuajiMap)) {
             return false;
         }
-        final SysGuajiMap other = (SysGuajiMap)o;
+        SysGuajiMap other = (SysGuajiMap)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$mapSerial = this.getMapSerial();
-        final Object other$mapSerial = other.getMapSerial();
-        Label_0102: {
-            if (this$mapSerial == null) {
-                if (other$mapSerial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$mapSerial.equals(other$mapSerial)) {
-                break Label_0102;
-            }
+        Object this$mapSerial = this.getMapSerial();
+        Object other$mapSerial = other.getMapSerial();
+        if (!((this$mapSerial != null) ? this$mapSerial.equals(other$mapSerial) : (other$mapSerial == null))) {
             return false;
         }
-        final Object this$mapName = this.getMapName();
-        final Object other$mapName = other.getMapName();
-        Label_0139: {
-            if (this$mapName == null) {
-                if (other$mapName == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$mapName.equals(other$mapName)) {
-                break Label_0139;
-            }
+        Object this$mapName = this.getMapName();
+        Object other$mapName = other.getMapName();
+        if (!((this$mapName != null) ? this$mapName.equals(other$mapName) : (other$mapName == null))) {
             return false;
         }
         if (!Arrays.deepEquals(this.getRecommendLv(), other.getRecommendLv())) {
             return false;
         }
-        final Object this$warDataId = this.getWarDataId();
-        final Object other$warDataId = other.getWarDataId();
-        Label_0192: {
-            if (this$warDataId == null) {
-                if (other$warDataId == null) {
-                    break Label_0192;
-                }
-            }
-            else if (this$warDataId.equals(other$warDataId)) {
-                break Label_0192;
-            }
+        Object this$warDataId = this.getWarDataId();
+        Object other$warDataId = other.getWarDataId();
+        if (!((this$warDataId != null) ? this$warDataId.equals(other$warDataId) : (other$warDataId == null))) {
             return false;
         }
-        final Object this$unlockzs = this.getUnlockzs();
-        final Object other$unlockzs = other.getUnlockzs();
-        Label_0229: {
-            if (this$unlockzs == null) {
-                if (other$unlockzs == null) {
-                    break Label_0229;
-                }
-            }
-            else if (this$unlockzs.equals(other$unlockzs)) {
-                break Label_0229;
-            }
+        Object this$unlockzs = this.getUnlockzs();
+        Object other$unlockzs = other.getUnlockzs();
+        if (!((this$unlockzs != null) ? this$unlockzs.equals(other$unlockzs) : (other$unlockzs == null))) {
             return false;
         }
-        final Object this$unlocklv = this.getUnlocklv();
-        final Object other$unlocklv = other.getUnlocklv();
-        Label_0266: {
-            if (this$unlocklv == null) {
-                if (other$unlocklv == null) {
-                    break Label_0266;
-                }
-            }
-            else if (this$unlocklv.equals(other$unlocklv)) {
-                break Label_0266;
-            }
+        Object this$unlocklv = this.getUnlocklv();
+        Object other$unlocklv = other.getUnlocklv();
+        if (!((this$unlocklv != null) ? this$unlocklv.equals(other$unlocklv) : (other$unlocklv == null))) {
             return false;
         }
-        final Object this$always_judge_lv_flag = this.getAlways_judge_lv_flag();
-        final Object other$always_judge_lv_flag = other.getAlways_judge_lv_flag();
-        if (this$always_judge_lv_flag == null) {
-            if (other$always_judge_lv_flag == null) {
-                return true;
-            }
-        }
-        else if (this$always_judge_lv_flag.equals(other$always_judge_lv_flag)) {
-            return true;
-        }
-        return false;
+        Object this$always_judge_lv_flag = this.getAlways_judge_lv_flag();
+        Object other$always_judge_lv_flag = other.getAlways_judge_lv_flag();
+        return (this$always_judge_lv_flag != null) ? this$always_judge_lv_flag.equals(other$always_judge_lv_flag) : (other$always_judge_lv_flag == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -214,22 +160,22 @@ public class SysGuajiMap implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $mapSerial = this.getMapSerial();
+        Object $mapSerial = this.getMapSerial();
         result = result * 59 + (($mapSerial == null) ? 43 : $mapSerial.hashCode());
-        final Object $mapName = this.getMapName();
+        Object $mapName = this.getMapName();
         result = result * 59 + (($mapName == null) ? 43 : $mapName.hashCode());
         result = result * 59 + Arrays.deepHashCode(this.getRecommendLv());
-        final Object $warDataId = this.getWarDataId();
+        Object $warDataId = this.getWarDataId();
         result = result * 59 + (($warDataId == null) ? 43 : $warDataId.hashCode());
-        final Object $unlockzs = this.getUnlockzs();
+        Object $unlockzs = this.getUnlockzs();
         result = result * 59 + (($unlockzs == null) ? 43 : $unlockzs.hashCode());
-        final Object $unlocklv = this.getUnlocklv();
+        Object $unlocklv = this.getUnlocklv();
         result = result * 59 + (($unlocklv == null) ? 43 : $unlocklv.hashCode());
-        final Object $always_judge_lv_flag = this.getAlways_judge_lv_flag();
+        Object $always_judge_lv_flag = this.getAlways_judge_lv_flag();
         result = result * 59 + (($always_judge_lv_flag == null) ? 43 : $always_judge_lv_flag.hashCode());
         return result;
     }

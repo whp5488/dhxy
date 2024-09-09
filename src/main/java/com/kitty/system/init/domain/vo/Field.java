@@ -1,7 +1,5 @@
-
 package com.kitty.system.init.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class Field implements Serializable
@@ -33,34 +31,18 @@ public class Field implements Serializable
         if (!(o instanceof Field)) {
             return false;
         }
-        final Field other = (Field)o;
+        Field other = (Field)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$key = this.getKey();
-        final Object other$key = other.getKey();
-        Label_0065: {
-            if (this$key == null) {
-                if (other$key == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$key.equals(other$key)) {
-                break Label_0065;
-            }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (!((this$key != null) ? this$key.equals(other$key) : (other$key == null))) {
             return false;
         }
-        final Object this$value = this.getValue();
-        final Object other$value = other.getValue();
-        if (this$value == null) {
-            if (other$value == null) {
-                return true;
-            }
-        }
-        else if (this$value.equals(other$value)) {
-            return true;
-        }
-        return false;
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        return (this$value != null) ? this$value.equals(other$value) : (other$value == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -69,11 +51,11 @@ public class Field implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $key = this.getKey();
+        Object $key = this.getKey();
         result = result * 59 + (($key == null) ? 43 : $key.hashCode());
-        final Object $value = this.getValue();
+        Object $value = this.getValue();
         result = result * 59 + (($value == null) ? 43 : $value.hashCode());
         return result;
     }
@@ -86,7 +68,6 @@ public class Field implements Serializable
     public Field() {
     }
     
-    @ConstructorProperties({ "key", "value" })
     public Field(final Integer key, final Double value) {
         this.key = key;
         this.value = value;

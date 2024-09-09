@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -14,11 +13,14 @@ public class ReqTaskTalk extends Message
     private short type;
     private String para;
     
+    public ReqTaskTalk() {
+    }
+    
     public int getTalkId() {
         return this.talkId;
     }
     
-    public void setTalkId(final int talkId) {
+    public void setTalkId(int talkId) {
         this.talkId = talkId;
     }
     
@@ -26,7 +28,7 @@ public class ReqTaskTalk extends Message
         return this.type;
     }
     
-    public void setType(final short type) {
+    public void setType(short type) {
         this.type = type;
     }
     
@@ -34,7 +36,7 @@ public class ReqTaskTalk extends Message
         return this.para;
     }
     
-    public void setPara(final String para) {
+    public void setPara(String para) {
         this.para = para;
     }
 }

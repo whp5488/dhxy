@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.safe.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqModifyPassword extends Message
 {
     private String oldPassword;
     private String newPassword;
+    
+    public ReqModifyPassword() {
+    }
     
     public String getOldPassword() {
         return this.oldPassword;
@@ -34,34 +36,18 @@ public class ReqModifyPassword extends Message
         if (!(o instanceof ReqModifyPassword)) {
             return false;
         }
-        final ReqModifyPassword other = (ReqModifyPassword)o;
+        ReqModifyPassword other = (ReqModifyPassword)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$oldPassword = this.getOldPassword();
-        final Object other$oldPassword = other.getOldPassword();
-        Label_0065: {
-            if (this$oldPassword == null) {
-                if (other$oldPassword == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$oldPassword.equals(other$oldPassword)) {
-                break Label_0065;
-            }
+        Object this$oldPassword = this.getOldPassword();
+        Object other$oldPassword = other.getOldPassword();
+        if (!((this$oldPassword != null) ? this$oldPassword.equals(other$oldPassword) : (other$oldPassword == null))) {
             return false;
         }
-        final Object this$newPassword = this.getNewPassword();
-        final Object other$newPassword = other.getNewPassword();
-        if (this$newPassword == null) {
-            if (other$newPassword == null) {
-                return true;
-            }
-        }
-        else if (this$newPassword.equals(other$newPassword)) {
-            return true;
-        }
-        return false;
+        Object this$newPassword = this.getNewPassword();
+        Object other$newPassword = other.getNewPassword();
+        return (this$newPassword != null) ? this$newPassword.equals(other$newPassword) : (other$newPassword == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -70,11 +56,11 @@ public class ReqModifyPassword extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $oldPassword = this.getOldPassword();
+        Object $oldPassword = this.getOldPassword();
         result = result * 59 + (($oldPassword == null) ? 43 : $oldPassword.hashCode());
-        final Object $newPassword = this.getNewPassword();
+        Object $newPassword = this.getNewPassword();
         result = result * 59 + (($newPassword == null) ? 43 : $newPassword.hashCode());
         return result;
     }

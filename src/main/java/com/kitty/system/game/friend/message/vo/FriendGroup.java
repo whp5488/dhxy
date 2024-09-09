@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message.vo;
 
 import com.kitty.system.game.friend.domain.PalFriendGroup;
@@ -12,13 +11,13 @@ public class FriendGroup
     public FriendGroup() {
     }
     
-    public FriendGroup(final PalFriendGroup friendGroup) {
+    public FriendGroup(PalFriendGroup friendGroup) {
         this.serial = String.valueOf(friendGroup.getId());
         this.groupName = friendGroup.getGroupName();
         this.sort = friendGroup.getSort();
     }
     
-    public FriendGroup(final String serial, final String groupName, final short sort) {
+    public FriendGroup(String serial, String groupName, short sort) {
         this.serial = serial;
         this.groupName = groupName;
         this.sort = sort;
@@ -56,34 +55,18 @@ public class FriendGroup
         if (!(o instanceof FriendGroup)) {
             return false;
         }
-        final FriendGroup other = (FriendGroup)o;
+        FriendGroup other = (FriendGroup)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0065: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0065;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$groupName = this.getGroupName();
-        final Object other$groupName = other.getGroupName();
-        if (this$groupName == null) {
-            if (other$groupName == null) {
-                return this.getSort() == other.getSort();
-            }
-        }
-        else if (this$groupName.equals(other$groupName)) {
-            return this.getSort() == other.getSort();
-        }
-        return false;
+        Object this$groupName = this.getGroupName();
+        Object other$groupName = other.getGroupName();
+        return ((this$groupName != null) ? this$groupName.equals(other$groupName) : (other$groupName == null)) && this.getSort() == other.getSort();
     }
     
     protected boolean canEqual(final Object other) {
@@ -92,11 +75,11 @@ public class FriendGroup
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $groupName = this.getGroupName();
+        Object $groupName = this.getGroupName();
         result = result * 59 + (($groupName == null) ? 43 : $groupName.hashCode());
         result = result * 59 + this.getSort();
         return result;
@@ -104,6 +87,6 @@ public class FriendGroup
     
     @Override
     public String toString() {
-        return "FriendGroup(serial=" + this.getSerial() + ", groupName=" + this.getGroupName() + ", sort=" + this.getSort() + ")";
+        return "FriendGroup(serial=" + this.getSerial() + ", groupName=" + this.getGroupName() + ", sort=" + (int)this.getSort() + ")";
     }
 }

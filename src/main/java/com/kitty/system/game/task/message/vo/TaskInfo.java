@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message.vo;
 
 import com.kitty.system.common.enter.FiedValue;
@@ -96,7 +95,7 @@ public class TaskInfo
         if (!(o instanceof TaskInfo)) {
             return false;
         }
-        final TaskInfo other = (TaskInfo)o;
+        TaskInfo other = (TaskInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -118,30 +117,14 @@ public class TaskInfo
         if (this.getRefresh() != other.getRefresh()) {
             return false;
         }
-        final Object this$npcList = this.getNpcList();
-        final Object other$npcList = other.getNpcList();
-        Label_0143: {
-            if (this$npcList == null) {
-                if (other$npcList == null) {
-                    break Label_0143;
-                }
-            }
-            else if (this$npcList.equals(other$npcList)) {
-                break Label_0143;
-            }
+        Object this$npcList = this.getNpcList();
+        Object other$npcList = other.getNpcList();
+        if (!((this$npcList != null) ? this$npcList.equals(other$npcList) : (other$npcList == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -150,7 +133,7 @@ public class TaskInfo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getCounter();
@@ -158,15 +141,15 @@ public class TaskInfo
         result = result * 59 + this.getTaskEndTime();
         result = result * 59 + this.getQuit();
         result = result * 59 + this.getRefresh();
-        final Object $npcList = this.getNpcList();
+        Object $npcList = this.getNpcList();
         result = result * 59 + (($npcList == null) ? 43 : $npcList.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "TaskInfo(serial=" + this.getSerial() + ", counter=" + this.getCounter() + ", taskUpdateTime=" + this.getTaskUpdateTime() + ", taskEndTime=" + this.getTaskEndTime() + ", quit=" + this.getQuit() + ", refresh=" + this.getRefresh() + ", npcList=" + this.getNpcList() + ", list=" + this.getList() + ")";
+        return "TaskInfo(serial=" + this.getSerial() + ", counter=" + (int)this.getCounter() + ", taskUpdateTime=" + this.getTaskUpdateTime() + ", taskEndTime=" + this.getTaskEndTime() + ", quit=" + (int)this.getQuit() + ", refresh=" + (int)this.getRefresh() + ", npcList=" + this.getNpcList() + ", list=" + this.getList() + ")";
     }
 }

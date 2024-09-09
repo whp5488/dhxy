@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.domain.vo;
 
 import com.kitty.system.game.equip.domain.WearEquip;
@@ -8,6 +7,9 @@ import java.io.Serializable;
 public class PetWearEquip implements Serializable
 {
     List<WearEquip> list;
+    
+    public PetWearEquip() {
+    }
     
     public List<WearEquip> getList() {
         return this.list;
@@ -25,21 +27,13 @@ public class PetWearEquip implements Serializable
         if (!(o instanceof PetWearEquip)) {
             return false;
         }
-        final PetWearEquip other = (PetWearEquip)o;
+        PetWearEquip other = (PetWearEquip)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class PetWearEquip implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

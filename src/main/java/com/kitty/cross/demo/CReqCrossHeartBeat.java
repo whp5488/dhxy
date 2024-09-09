@@ -1,4 +1,3 @@
-
 package com.kitty.cross.demo;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -17,7 +16,7 @@ public class CReqCrossHeartBeat extends Message
         return this.time;
     }
     
-    public void setTime(final long time) {
+    public void setTime(long time) {
         this.time = time;
     }
 }

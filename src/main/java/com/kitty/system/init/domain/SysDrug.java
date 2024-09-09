@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.List;
@@ -61,6 +60,9 @@ public class SysDrug implements Serializable
     @Comment("状态编号")
     @Column("status")
     private List<Integer> status;
+    
+    public SysDrug() {
+    }
     
     public Integer getSerial() {
         return this.serial;
@@ -206,229 +208,93 @@ public class SysDrug implements Serializable
         if (!(o instanceof SysDrug)) {
             return false;
         }
-        final SysDrug other = (SysDrug)o;
+        SysDrug other = (SysDrug)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0065: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0065;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$drugAddHpValue = this.getDrugAddHpValue();
-        final Object other$drugAddHpValue = other.getDrugAddHpValue();
-        Label_0139: {
-            if (this$drugAddHpValue == null) {
-                if (other$drugAddHpValue == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$drugAddHpValue.equals(other$drugAddHpValue)) {
-                break Label_0139;
-            }
+        Object this$drugAddHpValue = this.getDrugAddHpValue();
+        Object other$drugAddHpValue = other.getDrugAddHpValue();
+        if (!((this$drugAddHpValue != null) ? this$drugAddHpValue.equals(other$drugAddHpValue) : (other$drugAddHpValue == null))) {
             return false;
         }
-        final Object this$drugAddHpPercent = this.getDrugAddHpPercent();
-        final Object other$drugAddHpPercent = other.getDrugAddHpPercent();
-        Label_0176: {
-            if (this$drugAddHpPercent == null) {
-                if (other$drugAddHpPercent == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$drugAddHpPercent.equals(other$drugAddHpPercent)) {
-                break Label_0176;
-            }
+        Object this$drugAddHpPercent = this.getDrugAddHpPercent();
+        Object other$drugAddHpPercent = other.getDrugAddHpPercent();
+        if (!((this$drugAddHpPercent != null) ? this$drugAddHpPercent.equals(other$drugAddHpPercent) : (other$drugAddHpPercent == null))) {
             return false;
         }
-        final Object this$drugAddHpStored = this.getDrugAddHpStored();
-        final Object other$drugAddHpStored = other.getDrugAddHpStored();
-        Label_0213: {
-            if (this$drugAddHpStored == null) {
-                if (other$drugAddHpStored == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$drugAddHpStored.equals(other$drugAddHpStored)) {
-                break Label_0213;
-            }
+        Object this$drugAddHpStored = this.getDrugAddHpStored();
+        Object other$drugAddHpStored = other.getDrugAddHpStored();
+        if (!((this$drugAddHpStored != null) ? this$drugAddHpStored.equals(other$drugAddHpStored) : (other$drugAddHpStored == null))) {
             return false;
         }
-        final Object this$drugAddMpValue = this.getDrugAddMpValue();
-        final Object other$drugAddMpValue = other.getDrugAddMpValue();
-        Label_0250: {
-            if (this$drugAddMpValue == null) {
-                if (other$drugAddMpValue == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$drugAddMpValue.equals(other$drugAddMpValue)) {
-                break Label_0250;
-            }
+        Object this$drugAddMpValue = this.getDrugAddMpValue();
+        Object other$drugAddMpValue = other.getDrugAddMpValue();
+        if (!((this$drugAddMpValue != null) ? this$drugAddMpValue.equals(other$drugAddMpValue) : (other$drugAddMpValue == null))) {
             return false;
         }
-        final Object this$drugAddMpPercent = this.getDrugAddMpPercent();
-        final Object other$drugAddMpPercent = other.getDrugAddMpPercent();
-        Label_0287: {
-            if (this$drugAddMpPercent == null) {
-                if (other$drugAddMpPercent == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$drugAddMpPercent.equals(other$drugAddMpPercent)) {
-                break Label_0287;
-            }
+        Object this$drugAddMpPercent = this.getDrugAddMpPercent();
+        Object other$drugAddMpPercent = other.getDrugAddMpPercent();
+        if (!((this$drugAddMpPercent != null) ? this$drugAddMpPercent.equals(other$drugAddMpPercent) : (other$drugAddMpPercent == null))) {
             return false;
         }
-        final Object this$drugAddMpStored = this.getDrugAddMpStored();
-        final Object other$drugAddMpStored = other.getDrugAddMpStored();
-        Label_0324: {
-            if (this$drugAddMpStored == null) {
-                if (other$drugAddMpStored == null) {
-                    break Label_0324;
-                }
-            }
-            else if (this$drugAddMpStored.equals(other$drugAddMpStored)) {
-                break Label_0324;
-            }
+        Object this$drugAddMpStored = this.getDrugAddMpStored();
+        Object other$drugAddMpStored = other.getDrugAddMpStored();
+        if (!((this$drugAddMpStored != null) ? this$drugAddMpStored.equals(other$drugAddMpStored) : (other$drugAddMpStored == null))) {
             return false;
         }
-        final Object this$itemShape = this.getItemShape();
-        final Object other$itemShape = other.getItemShape();
-        Label_0361: {
-            if (this$itemShape == null) {
-                if (other$itemShape == null) {
-                    break Label_0361;
-                }
-            }
-            else if (this$itemShape.equals(other$itemShape)) {
-                break Label_0361;
-            }
+        Object this$itemShape = this.getItemShape();
+        Object other$itemShape = other.getItemShape();
+        if (!((this$itemShape != null) ? this$itemShape.equals(other$itemShape) : (other$itemShape == null))) {
             return false;
         }
-        final Object this$price = this.getPrice();
-        final Object other$price = other.getPrice();
-        Label_0398: {
-            if (this$price == null) {
-                if (other$price == null) {
-                    break Label_0398;
-                }
-            }
-            else if (this$price.equals(other$price)) {
-                break Label_0398;
-            }
+        Object this$price = this.getPrice();
+        Object other$price = other.getPrice();
+        if (!((this$price != null) ? this$price.equals(other$price) : (other$price == null))) {
             return false;
         }
-        final Object this$reprice = this.getReprice();
-        final Object other$reprice = other.getReprice();
-        Label_0435: {
-            if (this$reprice == null) {
-                if (other$reprice == null) {
-                    break Label_0435;
-                }
-            }
-            else if (this$reprice.equals(other$reprice)) {
-                break Label_0435;
-            }
+        Object this$reprice = this.getReprice();
+        Object other$reprice = other.getReprice();
+        if (!((this$reprice != null) ? this$reprice.equals(other$reprice) : (other$reprice == null))) {
             return false;
         }
-        final Object this$canMerge = this.getCanMerge();
-        final Object other$canMerge = other.getCanMerge();
-        Label_0472: {
-            if (this$canMerge == null) {
-                if (other$canMerge == null) {
-                    break Label_0472;
-                }
-            }
-            else if (this$canMerge.equals(other$canMerge)) {
-                break Label_0472;
-            }
+        Object this$canMerge = this.getCanMerge();
+        Object other$canMerge = other.getCanMerge();
+        if (!((this$canMerge != null) ? this$canMerge.equals(other$canMerge) : (other$canMerge == null))) {
             return false;
         }
-        final Object this$itemPj = this.getItemPj();
-        final Object other$itemPj = other.getItemPj();
-        Label_0509: {
-            if (this$itemPj == null) {
-                if (other$itemPj == null) {
-                    break Label_0509;
-                }
-            }
-            else if (this$itemPj.equals(other$itemPj)) {
-                break Label_0509;
-            }
+        Object this$itemPj = this.getItemPj();
+        Object other$itemPj = other.getItemPj();
+        if (!((this$itemPj != null) ? this$itemPj.equals(other$itemPj) : (other$itemPj == null))) {
             return false;
         }
-        final Object this$showClass = this.getShowClass();
-        final Object other$showClass = other.getShowClass();
-        Label_0546: {
-            if (this$showClass == null) {
-                if (other$showClass == null) {
-                    break Label_0546;
-                }
-            }
-            else if (this$showClass.equals(other$showClass)) {
-                break Label_0546;
-            }
+        Object this$showClass = this.getShowClass();
+        Object other$showClass = other.getShowClass();
+        if (!((this$showClass != null) ? this$showClass.equals(other$showClass) : (other$showClass == null))) {
             return false;
         }
-        final Object this$targetType = this.getTargetType();
-        final Object other$targetType = other.getTargetType();
-        Label_0583: {
-            if (this$targetType == null) {
-                if (other$targetType == null) {
-                    break Label_0583;
-                }
-            }
-            else if (this$targetType.equals(other$targetType)) {
-                break Label_0583;
-            }
+        Object this$targetType = this.getTargetType();
+        Object other$targetType = other.getTargetType();
+        if (!((this$targetType != null) ? this$targetType.equals(other$targetType) : (other$targetType == null))) {
             return false;
         }
-        final Object this$useType = this.getUseType();
-        final Object other$useType = other.getUseType();
-        Label_0620: {
-            if (this$useType == null) {
-                if (other$useType == null) {
-                    break Label_0620;
-                }
-            }
-            else if (this$useType.equals(other$useType)) {
-                break Label_0620;
-            }
+        Object this$useType = this.getUseType();
+        Object other$useType = other.getUseType();
+        if (!((this$useType != null) ? this$useType.equals(other$useType) : (other$useType == null))) {
             return false;
         }
-        final Object this$status = this.getStatus();
-        final Object other$status = other.getStatus();
-        if (this$status == null) {
-            if (other$status == null) {
-                return true;
-            }
-        }
-        else if (this$status.equals(other$status)) {
-            return true;
-        }
-        return false;
+        Object this$status = this.getStatus();
+        Object other$status = other.getStatus();
+        return (this$status != null) ? this$status.equals(other$status) : (other$status == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -437,41 +303,41 @@ public class SysDrug implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $drugAddHpValue = this.getDrugAddHpValue();
+        Object $drugAddHpValue = this.getDrugAddHpValue();
         result = result * 59 + (($drugAddHpValue == null) ? 43 : $drugAddHpValue.hashCode());
-        final Object $drugAddHpPercent = this.getDrugAddHpPercent();
+        Object $drugAddHpPercent = this.getDrugAddHpPercent();
         result = result * 59 + (($drugAddHpPercent == null) ? 43 : $drugAddHpPercent.hashCode());
-        final Object $drugAddHpStored = this.getDrugAddHpStored();
+        Object $drugAddHpStored = this.getDrugAddHpStored();
         result = result * 59 + (($drugAddHpStored == null) ? 43 : $drugAddHpStored.hashCode());
-        final Object $drugAddMpValue = this.getDrugAddMpValue();
+        Object $drugAddMpValue = this.getDrugAddMpValue();
         result = result * 59 + (($drugAddMpValue == null) ? 43 : $drugAddMpValue.hashCode());
-        final Object $drugAddMpPercent = this.getDrugAddMpPercent();
+        Object $drugAddMpPercent = this.getDrugAddMpPercent();
         result = result * 59 + (($drugAddMpPercent == null) ? 43 : $drugAddMpPercent.hashCode());
-        final Object $drugAddMpStored = this.getDrugAddMpStored();
+        Object $drugAddMpStored = this.getDrugAddMpStored();
         result = result * 59 + (($drugAddMpStored == null) ? 43 : $drugAddMpStored.hashCode());
-        final Object $itemShape = this.getItemShape();
+        Object $itemShape = this.getItemShape();
         result = result * 59 + (($itemShape == null) ? 43 : $itemShape.hashCode());
-        final Object $price = this.getPrice();
+        Object $price = this.getPrice();
         result = result * 59 + (($price == null) ? 43 : $price.hashCode());
-        final Object $reprice = this.getReprice();
+        Object $reprice = this.getReprice();
         result = result * 59 + (($reprice == null) ? 43 : $reprice.hashCode());
-        final Object $canMerge = this.getCanMerge();
+        Object $canMerge = this.getCanMerge();
         result = result * 59 + (($canMerge == null) ? 43 : $canMerge.hashCode());
-        final Object $itemPj = this.getItemPj();
+        Object $itemPj = this.getItemPj();
         result = result * 59 + (($itemPj == null) ? 43 : $itemPj.hashCode());
-        final Object $showClass = this.getShowClass();
+        Object $showClass = this.getShowClass();
         result = result * 59 + (($showClass == null) ? 43 : $showClass.hashCode());
-        final Object $targetType = this.getTargetType();
+        Object $targetType = this.getTargetType();
         result = result * 59 + (($targetType == null) ? 43 : $targetType.hashCode());
-        final Object $useType = this.getUseType();
+        Object $useType = this.getUseType();
         result = result * 59 + (($useType == null) ? 43 : $useType.hashCode());
-        final Object $status = this.getStatus();
+        Object $status = this.getStatus();
         result = result * 59 + (($status == null) ? 43 : $status.hashCode());
         return result;
     }

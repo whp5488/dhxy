@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message.vo;
 
 public class SearchFriend
@@ -12,7 +11,7 @@ public class SearchFriend
     public SearchFriend() {
     }
     
-    public SearchFriend(final int id, final String name, final int serial, final byte rei, final short level) {
+    public SearchFriend(int id, String name, int serial, byte rei, short level) {
         this.id = id;
         this.name = name;
         this.serial = serial;
@@ -68,24 +67,16 @@ public class SearchFriend
         if (!(o instanceof SearchFriend)) {
             return false;
         }
-        final SearchFriend other = (SearchFriend)o;
+        SearchFriend other = (SearchFriend)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getSerial() == other.getSerial() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getSerial() == other.getSerial() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getSerial() == other.getSerial() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
     }
     
     protected boolean canEqual(final Object other) {
@@ -94,10 +85,10 @@ public class SearchFriend
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getRei();
@@ -107,6 +98,6 @@ public class SearchFriend
     
     @Override
     public String toString() {
-        return "SearchFriend(id=" + this.getId() + ", name=" + this.getName() + ", serial=" + this.getSerial() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ")";
+        return "SearchFriend(id=" + this.getId() + ", name=" + this.getName() + ", serial=" + this.getSerial() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -22,6 +21,9 @@ public class SysShopStrengthenMaterial implements Serializable
     @Comment("消费类型")
     @Column("type")
     private Integer type;
+    @Comment("数量")
+    @Column("num")
+    private Integer num;
     @Comment("价格")
     @Column("price")
     private double price;
@@ -41,6 +43,10 @@ public class SysShopStrengthenMaterial implements Serializable
     @Column("discount")
     private Integer discount;
     
+    public SysShopStrengthenMaterial() {
+        this.num = Integer.valueOf(1);
+    }
+    
     public Integer getId() {
         return this.id;
     }
@@ -55,6 +61,10 @@ public class SysShopStrengthenMaterial implements Serializable
     
     public Integer getType() {
         return this.type;
+    }
+    
+    public Integer getNum() {
+        return this.num;
     }
     
     public double getPrice() {
@@ -97,6 +107,10 @@ public class SysShopStrengthenMaterial implements Serializable
         this.type = type;
     }
     
+    public void setNum(final Integer num) {
+        this.num = num;
+    }
+    
     public void setPrice(final double price) {
         this.price = price;
     }
@@ -129,128 +143,61 @@ public class SysShopStrengthenMaterial implements Serializable
         if (!(o instanceof SysShopStrengthenMaterial)) {
             return false;
         }
-        final SysShopStrengthenMaterial other = (SysShopStrengthenMaterial)o;
+        SysShopStrengthenMaterial other = (SysShopStrengthenMaterial)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0176: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0176;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
+            return false;
+        }
+        Object this$num = this.getNum();
+        Object other$num = other.getNum();
+        if (!((this$num != null) ? this$num.equals(other$num) : (other$num == null))) {
             return false;
         }
         if (Double.compare(this.getPrice(), other.getPrice()) != 0) {
             return false;
         }
-        final Object this$sortNo = this.getSortNo();
-        final Object other$sortNo = other.getSortNo();
-        Label_0229: {
-            if (this$sortNo == null) {
-                if (other$sortNo == null) {
-                    break Label_0229;
-                }
-            }
-            else if (this$sortNo.equals(other$sortNo)) {
-                break Label_0229;
-            }
+        Object this$sortNo = this.getSortNo();
+        Object other$sortNo = other.getSortNo();
+        if (!((this$sortNo != null) ? this$sortNo.equals(other$sortNo) : (other$sortNo == null))) {
             return false;
         }
-        final Object this$lvLimit = this.getLvLimit();
-        final Object other$lvLimit = other.getLvLimit();
-        Label_0266: {
-            if (this$lvLimit == null) {
-                if (other$lvLimit == null) {
-                    break Label_0266;
-                }
-            }
-            else if (this$lvLimit.equals(other$lvLimit)) {
-                break Label_0266;
-            }
+        Object this$lvLimit = this.getLvLimit();
+        Object other$lvLimit = other.getLvLimit();
+        if (!((this$lvLimit != null) ? this$lvLimit.equals(other$lvLimit) : (other$lvLimit == null))) {
             return false;
         }
-        final Object this$zsLimit = this.getZsLimit();
-        final Object other$zsLimit = other.getZsLimit();
-        Label_0303: {
-            if (this$zsLimit == null) {
-                if (other$zsLimit == null) {
-                    break Label_0303;
-                }
-            }
-            else if (this$zsLimit.equals(other$zsLimit)) {
-                break Label_0303;
-            }
+        Object this$zsLimit = this.getZsLimit();
+        Object other$zsLimit = other.getZsLimit();
+        if (!((this$zsLimit != null) ? this$zsLimit.equals(other$zsLimit) : (other$zsLimit == null))) {
             return false;
         }
-        final Object this$mustVip = this.getMustVip();
-        final Object other$mustVip = other.getMustVip();
-        Label_0340: {
-            if (this$mustVip == null) {
-                if (other$mustVip == null) {
-                    break Label_0340;
-                }
-            }
-            else if (this$mustVip.equals(other$mustVip)) {
-                break Label_0340;
-            }
+        Object this$mustVip = this.getMustVip();
+        Object other$mustVip = other.getMustVip();
+        if (!((this$mustVip != null) ? this$mustVip.equals(other$mustVip) : (other$mustVip == null))) {
             return false;
         }
-        final Object this$discount = this.getDiscount();
-        final Object other$discount = other.getDiscount();
-        if (this$discount == null) {
-            if (other$discount == null) {
-                return true;
-            }
-        }
-        else if (this$discount.equals(other$discount)) {
-            return true;
-        }
-        return false;
+        Object this$discount = this.getDiscount();
+        Object other$discount = other.getDiscount();
+        return (this$discount != null) ? this$discount.equals(other$discount) : (other$discount == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -259,33 +206,35 @@ public class SysShopStrengthenMaterial implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final long $price = Double.doubleToLongBits(this.getPrice());
+        Object $num = this.getNum();
+        result = result * 59 + (($num == null) ? 43 : $num.hashCode());
+        long $price = Double.doubleToLongBits(this.getPrice());
         result = result * 59 + (int)($price >>> 32 ^ $price);
-        final Object $sortNo = this.getSortNo();
+        Object $sortNo = this.getSortNo();
         result = result * 59 + (($sortNo == null) ? 43 : $sortNo.hashCode());
-        final Object $lvLimit = this.getLvLimit();
+        Object $lvLimit = this.getLvLimit();
         result = result * 59 + (($lvLimit == null) ? 43 : $lvLimit.hashCode());
-        final Object $zsLimit = this.getZsLimit();
+        Object $zsLimit = this.getZsLimit();
         result = result * 59 + (($zsLimit == null) ? 43 : $zsLimit.hashCode());
-        final Object $mustVip = this.getMustVip();
+        Object $mustVip = this.getMustVip();
         result = result * 59 + (($mustVip == null) ? 43 : $mustVip.hashCode());
-        final Object $discount = this.getDiscount();
+        Object $discount = this.getDiscount();
         result = result * 59 + (($discount == null) ? 43 : $discount.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "SysShopStrengthenMaterial(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", type=" + this.getType() + ", price=" + this.getPrice() + ", sortNo=" + this.getSortNo() + ", lvLimit=" + this.getLvLimit() + ", zsLimit=" + this.getZsLimit() + ", mustVip=" + this.getMustVip() + ", discount=" + this.getDiscount() + ")";
+        return "SysShopStrengthenMaterial(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", type=" + this.getType() + ", num=" + this.getNum() + ", price=" + this.getPrice() + ", sortNo=" + this.getSortNo() + ", lvLimit=" + this.getLvLimit() + ", zsLimit=" + this.getZsLimit() + ", mustVip=" + this.getMustVip() + ", discount=" + this.getDiscount() + ")";
     }
 }

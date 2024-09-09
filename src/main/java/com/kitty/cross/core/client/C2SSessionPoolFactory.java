@@ -1,11 +1,10 @@
-
 package com.kitty.cross.core.client;
 
-import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.cross.CrossServerConfig;
 import com.kitty.logs.LoggerUtils;
-import org.apache.commons.pool2.PooledObjectFactory;
 import javax.annotation.PostConstruct;
+import com.kitty.common.utils.spring.SpringUtils;
+import com.kitty.cxf.send.service.GameSendService;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import java.util.concurrent.ConcurrentMap;
@@ -25,45 +24,47 @@ public class C2SSessionPoolFactory
     
     @PostConstruct
     private void init() {
-        (this.config = new GenericObjectPoolConfig()).setMaxTotal(Runtime.getRuntime().availableProcessors());
+        (this.config = new GenericObjectPoolConfig<>()).setMaxTotal(Runtime.getRuntime().availableProcessors());
         this.config.setMaxWaitMillis(5000L);
         C2SSessionPoolFactory.self = this;
+        // 这里尝试连接后端，连接不成功服务器退出
+//        SpringUtils.getBean(GameSendService.class).send();
     }
     
     public static C2SSessionPoolFactory getInstance() {
         return C2SSessionPoolFactory.self;
     }
     
-    public CCSession borrowSession(final String ip, final int port) {
-        final String key = this.buildKey(ip, port);
+    public CCSession borrowSession(String ip, int port) {
+        String key = this.buildKey(ip, port);
         try {
-            final C2SSessionFactory factory = new C2SSessionFactory(ip, port);
-            final GenericObjectPool<CCSession> pool = this.pools.getOrDefault(key, (GenericObjectPool<CCSession>)new GenericObjectPool(factory, this.config));
+            C2SSessionFactory factory = new C2SSessionFactory(ip, port);
+            GenericObjectPool<CCSession> pool = (GenericObjectPool)this.pools.getOrDefault(key, new GenericObjectPool(factory, this.config));
             this.pools.putIfAbsent(key, pool);
-            return (CCSession)pool.borrowObject();
+            return pool.borrowObject();
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             LoggerUtils.error("", e);
             return null;
         }
     }
     
     public CCSession borrowCrossSession() {
-        final CrossServerConfig config = SpringUtils.getBean(CrossServerConfig.class);
-        final String ip = config.getCenterIp();
-        final int port = config.getCenterPort();
+        CrossServerConfig config = SpringUtils.getBean(CrossServerConfig.class);
+        String ip = config.getCenterIp();
+        int port = config.getCenterPort();
         return this.borrowSession(ip, port);
     }
     
-    public void returnSession(final CCSession session) {
-        final String key = this.buildKey(session.getIpAddr(), session.getPort());
-        final GenericObjectPool<CCSession> pool = this.pools.get(key);
+    public void returnSession(CCSession session) {
+        String key = this.buildKey(session.getIpAddr(), session.getPort());
+        GenericObjectPool<CCSession> pool = this.pools.get(key);
         if (pool != null) {
             pool.returnObject(session);
         }
     }
     
-    private String buildKey(final String ip, final int port) {
+    private String buildKey(String ip, int port) {
         return ip + "-" + port;
     }
 }

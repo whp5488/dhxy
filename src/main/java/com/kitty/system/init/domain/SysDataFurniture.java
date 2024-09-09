@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -80,24 +79,16 @@ public class SysDataFurniture
         if (!(o instanceof SysDataFurniture)) {
             return false;
         }
-        final SysDataFurniture other = (SysDataFurniture)o;
+        SysDataFurniture other = (SysDataFurniture)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getClassify() == other.getClassify() && this.getHouse() == other.getHouse() && this.getType() == other.getType() && this.getPrice() == other.getPrice();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getClassify() == other.getClassify() && this.getHouse() == other.getHouse() && this.getType() == other.getType() && this.getPrice() == other.getPrice();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getClassify() == other.getClassify() && this.getHouse() == other.getHouse() && this.getType() == other.getType() && this.getPrice() == other.getPrice();
     }
     
     protected boolean canEqual(final Object other) {
@@ -106,15 +97,15 @@ public class SysDataFurniture
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getClassify();
         result = result * 59 + this.getHouse();
         result = result * 59 + this.getType();
-        final long $price = this.getPrice();
+        long $price = this.getPrice();
         result = result * 59 + (int)($price >>> 32 ^ $price);
         return result;
     }

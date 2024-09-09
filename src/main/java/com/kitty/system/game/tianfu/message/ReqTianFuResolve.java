@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.tianfu.message;
 
 import java.util.List;
@@ -10,6 +9,9 @@ public class ReqTianFuResolve extends Message
 {
     private byte type;
     private List<String> ids;
+    
+    public ReqTianFuResolve() {
+    }
     
     public byte getType() {
         return this.type;
@@ -35,24 +37,16 @@ public class ReqTianFuResolve extends Message
         if (!(o instanceof ReqTianFuResolve)) {
             return false;
         }
-        final ReqTianFuResolve other = (ReqTianFuResolve)o;
+        ReqTianFuResolve other = (ReqTianFuResolve)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$ids = this.getIds();
-        final Object other$ids = other.getIds();
-        if (this$ids == null) {
-            if (other$ids == null) {
-                return true;
-            }
-        }
-        else if (this$ids.equals(other$ids)) {
-            return true;
-        }
-        return false;
+        Object this$ids = this.getIds();
+        Object other$ids = other.getIds();
+        return (this$ids != null) ? this$ids.equals(other$ids) : (other$ids == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -61,16 +55,16 @@ public class ReqTianFuResolve extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
-        final Object $ids = this.getIds();
+        Object $ids = this.getIds();
         result = result * 59 + (($ids == null) ? 43 : $ids.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqTianFuResolve(type=" + this.getType() + ", ids=" + this.getIds() + ")";
+        return "ReqTianFuResolve(type=" + (int)this.getType() + ", ids=" + this.getIds() + ")";
     }
 }

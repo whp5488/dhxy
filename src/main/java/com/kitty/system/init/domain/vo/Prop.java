@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain.vo;
 
 public class Prop
@@ -55,7 +54,7 @@ public class Prop
         if (!(o instanceof Prop)) {
             return false;
         }
-        final Prop other = (Prop)o;
+        Prop other = (Prop)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getOnset() == other.getOnset() && this.getOver() == other.getOver() && Double.compare(this.getProp(), other.getProp()) == 0;
     }
     
@@ -65,12 +64,12 @@ public class Prop
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getOnset();
         result = result * 59 + this.getOver();
-        final long $prop = Double.doubleToLongBits(this.getProp());
+        long $prop = Double.doubleToLongBits(this.getProp());
         result = result * 59 + (int)($prop >>> 32 ^ $prop);
         return result;
     }

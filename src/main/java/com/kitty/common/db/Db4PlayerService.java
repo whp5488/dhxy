@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -35,7 +34,7 @@ public class Db4PlayerService
     
     public Db4PlayerService() {
         this.logger = LoggerFactory.getLogger(Db4PlayerService.class);
-        this.queue = new BlockingUniqueQueue<Role>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -45,11 +44,11 @@ public class Db4PlayerService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-player-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-player-save-service").newThread(new Db4PlayerService.Worker()).start();
         Db4PlayerService.instance = this;
     }
     
-    public void add2Queue(final Role entity) {
+    public void add2Queue(Role entity) {
         this.queue.add(entity);
         this.playerService.saveToCache(entity);
     }
@@ -58,13 +57,13 @@ public class Db4PlayerService
         return this.queue.size();
     }
     
-    private void saveToDb(final Role entity) {
+    private void saveToDb(Role entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -74,14 +73,14 @@ public class Db4PlayerService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Player] 执行全部命令后关闭");
+        LoggerUtils.error("[db4Player] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<Role> it = this.queue.iterator();
+            Iterator<Role> it = this.queue.iterator();
             while (it.hasNext()) {
-                final Role player = it.next();
+                Role player = (Role)it.next();
                 it.remove();
                 this.saveToDb(player);
             }
@@ -95,18 +94,20 @@ public class Db4PlayerService
             while (Db4PlayerService.this.run.get()) {
                 Role entity = null;
                 try {
-                    entity = Db4PlayerService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (Role)Db4PlayerService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     Db4PlayerService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("玩家数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("玩家数据持久化队列长度：" + Db4PlayerService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("玩家数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("玩家数据持久化队列长度：" + Db4PlayerService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     Db4PlayerService.this.logger.error("存档异常角色编号：{}，SID：{}", entity.getRoleId(), entity.getSid());
                     e.printStackTrace();
                 }

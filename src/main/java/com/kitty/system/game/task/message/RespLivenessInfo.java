@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.system.game.task.message.vo.ActivityData;
@@ -16,7 +15,7 @@ public class RespLivenessInfo extends Message
         this.rewardStatus = 0;
     }
     
-    public RespLivenessInfo(final List<ActivityData> list, final byte rewardStatus) {
+    public RespLivenessInfo(List<ActivityData> list, byte rewardStatus) {
         this.rewardStatus = 0;
         this.list = list;
         this.rewardStatus = rewardStatus;
@@ -26,7 +25,7 @@ public class RespLivenessInfo extends Message
         return this.list;
     }
     
-    public void setList(final List<ActivityData> list) {
+    public void setList(List<ActivityData> list) {
         this.list = list;
     }
     
@@ -34,7 +33,7 @@ public class RespLivenessInfo extends Message
         return this.rewardStatus;
     }
     
-    public void setRewardStatus(final byte rewardStatus) {
+    public void setRewardStatus(byte rewardStatus) {
         this.rewardStatus = rewardStatus;
     }
 }

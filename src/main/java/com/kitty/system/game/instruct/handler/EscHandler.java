@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.instruct.handler;
 
 import com.kitty.system.game.fightnew.bean.Fight;
@@ -10,21 +9,24 @@ import com.kitty.system.game.instruct.inter.NcFather;
 
 public class EscHandler implements NcFather
 {
+    public EscHandler() {
+    }
+    
     @Override
-    public void handle(final Role role, final String content) {
+    public void handle(Role role, String content) {
         try {
-            if (SpringUtils.getBean(ServerService.class).getType() == 1) {
+            if (((ServerService)SpringUtils.getBean(ServerService.class)).getType() == 1) {
                 return;
             }
             if ("00".equals(content)) {
-                final FightNewService fightNewService = SpringUtils.getBean(FightNewService.class);
-                final Fight fight = fightNewService.getFightByRoleId(role.getRoleId());
+                FightNewService fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
+                Fight fight = fightNewService.getFightByRoleId((int)role.getRoleId());
                 if (fight != null) {
                     fightNewService.quitFight(fight);
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             System.out.println("e = " + e);
         }
     }

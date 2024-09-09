@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -32,6 +31,9 @@ public class SysDataTaskFight implements Serializable
     @Comment("侠义/好心值")
     @Column("chivalry")
     private Integer chivalry;
+    
+    public SysDataTaskFight() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -89,7 +91,7 @@ public class SysDataTaskFight implements Serializable
         if (!(o instanceof SysDataTaskFight)) {
             return false;
         }
-        final SysDataTaskFight other = (SysDataTaskFight)o;
+        SysDataTaskFight other = (SysDataTaskFight)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -102,43 +104,19 @@ public class SysDataTaskFight implements Serializable
         if (this.getTarNpcData() != other.getTarNpcData()) {
             return false;
         }
-        final Object this$loseEvent = this.getLoseEvent();
-        final Object other$loseEvent = other.getLoseEvent();
-        Label_0104: {
-            if (this$loseEvent == null) {
-                if (other$loseEvent == null) {
-                    break Label_0104;
-                }
-            }
-            else if (this$loseEvent.equals(other$loseEvent)) {
-                break Label_0104;
-            }
+        Object this$loseEvent = this.getLoseEvent();
+        Object other$loseEvent = other.getLoseEvent();
+        if (!((this$loseEvent != null) ? this$loseEvent.equals(other$loseEvent) : (other$loseEvent == null))) {
             return false;
         }
-        final Object this$winEvent = this.getWinEvent();
-        final Object other$winEvent = other.getWinEvent();
-        Label_0141: {
-            if (this$winEvent == null) {
-                if (other$winEvent == null) {
-                    break Label_0141;
-                }
-            }
-            else if (this$winEvent.equals(other$winEvent)) {
-                break Label_0141;
-            }
+        Object this$winEvent = this.getWinEvent();
+        Object other$winEvent = other.getWinEvent();
+        if (!((this$winEvent != null) ? this$winEvent.equals(other$winEvent) : (other$winEvent == null))) {
             return false;
         }
-        final Object this$chivalry = this.getChivalry();
-        final Object other$chivalry = other.getChivalry();
-        if (this$chivalry == null) {
-            if (other$chivalry == null) {
-                return true;
-            }
-        }
-        else if (this$chivalry.equals(other$chivalry)) {
-            return true;
-        }
-        return false;
+        Object this$chivalry = this.getChivalry();
+        Object other$chivalry = other.getChivalry();
+        return (this$chivalry != null) ? this$chivalry.equals(other$chivalry) : (other$chivalry == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -147,16 +125,16 @@ public class SysDataTaskFight implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getTaskSerial();
         result = result * 59 + this.getTarNpcData();
-        final Object $loseEvent = this.getLoseEvent();
+        Object $loseEvent = this.getLoseEvent();
         result = result * 59 + (($loseEvent == null) ? 43 : $loseEvent.hashCode());
-        final Object $winEvent = this.getWinEvent();
+        Object $winEvent = this.getWinEvent();
         result = result * 59 + (($winEvent == null) ? 43 : $winEvent.hashCode());
-        final Object $chivalry = this.getChivalry();
+        Object $chivalry = this.getChivalry();
         result = result * 59 + (($chivalry == null) ? 43 : $chivalry.hashCode());
         return result;
     }

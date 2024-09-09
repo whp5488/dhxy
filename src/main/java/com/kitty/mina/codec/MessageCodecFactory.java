@@ -1,4 +1,3 @@
-
 package com.kitty.mina.codec;
 
 import org.apache.mina.filter.codec.ProtocolDecoder;
@@ -18,11 +17,11 @@ public class MessageCodecFactory implements ProtocolCodecFactory
         this.encoder = new WDEncoder();
     }
     
-    public ProtocolEncoder getEncoder(final IoSession session) throws Exception {
-        return (ProtocolEncoder)this.encoder;
+    public ProtocolEncoder getEncoder(IoSession session) throws Exception {
+        return this.encoder;
     }
     
-    public ProtocolDecoder getDecoder(final IoSession session) throws Exception {
-        return (ProtocolDecoder)this.decoder;
+    public ProtocolDecoder getDecoder(IoSession session) throws Exception {
+        return this.decoder;
     }
 }

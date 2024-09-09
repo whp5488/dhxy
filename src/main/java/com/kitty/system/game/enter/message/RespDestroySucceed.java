@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.enter.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,34 +33,18 @@ public class RespDestroySucceed extends Message
         if (!(o instanceof RespDestroySucceed)) {
             return false;
         }
-        final RespDestroySucceed other = (RespDestroySucceed)o;
+        RespDestroySucceed other = (RespDestroySucceed)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0065: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0065;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$value = this.getValue();
-        final Object other$value = other.getValue();
-        if (this$value == null) {
-            if (other$value == null) {
-                return true;
-            }
-        }
-        else if (this$value.equals(other$value)) {
-            return true;
-        }
-        return false;
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        return (this$value != null) ? this$value.equals(other$value) : (other$value == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -71,11 +53,11 @@ public class RespDestroySucceed extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $value = this.getValue();
+        Object $value = this.getValue();
         result = result * 59 + (($value == null) ? 43 : $value.hashCode());
         return result;
     }
@@ -85,7 +67,6 @@ public class RespDestroySucceed extends Message
         return "RespDestroySucceed(type=" + this.getType() + ", value=" + this.getValue() + ")";
     }
     
-    @ConstructorProperties({ "type", "value" })
     public RespDestroySucceed(final Integer type, final String value) {
         this.type = type;
         this.value = value;

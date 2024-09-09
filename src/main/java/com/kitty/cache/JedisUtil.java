@@ -1,13 +1,12 @@
-
 package com.kitty.cache;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-
+import java.util.Iterator;
 import java.util.Set;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPoolConfig;
+import org.springframework.beans.factory.annotation.Value;
+import redis.clients.jedis.JedisPool;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JedisUtil
@@ -19,33 +18,36 @@ public class JedisUtil
     private static int redisDatabase;
     private static int redisTimeout;
     
+    public JedisUtil() {
+    }
+    
     @Value("${sms.redisHost}")
-    public void setRedisHost(final String redisHost) {
+    public void setRedisHost(String redisHost) {
         JedisUtil.redisHost = redisHost;
     }
     
     @Value("${sms.redisPort}")
-    public void setRedisPort(final int redisPort) {
+    public void setRedisPort(int redisPort) {
         JedisUtil.redisPort = redisPort;
     }
     
     @Value("${sms.redisPassword}")
-    public void setRedisPassword(final String redisPassword) {
+    public void setRedisPassword(String redisPassword) {
         JedisUtil.redisPassword = redisPassword;
     }
     
     @Value("${sms.redisDatabase}")
-    public void setRedisDatabase(final int redisDatabase) {
+    public void setRedisDatabase(int redisDatabase) {
         JedisUtil.redisDatabase = redisDatabase;
     }
     
     @Value("${sms.redisTimeout}")
-    public void setRedisTimeout(final int redisTimeout) {
+    public void setRedisTimeout(int redisTimeout) {
         JedisUtil.redisTimeout = redisTimeout;
     }
     
     public static void load() {
-        final JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         jedisPoolConfig.setMaxIdle(8);
         jedisPoolConfig.setMinIdle(1);
         jedisPoolConfig.setMaxTotal(3000);
@@ -58,46 +60,46 @@ public class JedisUtil
     }
     
     public static Jedis getJedis() {
-        final Jedis jedis = JedisUtil.jedisPool.getResource();
+        Jedis jedis = JedisUtil.jedisPool.getResource();
         jedis.select(JedisUtil.redisDatabase);
         return jedis;
     }
     
-    public static String set(final String key, final String value) {
-        final Jedis jedis = getJedis();
+    public static String set(String key, String value) {
+        Jedis jedis = getJedis();
         return jedis.set(key, value);
     }
     
-    public static String set(final String key, final int seconds, final String value) {
-        final Jedis jedis = getJedis();
+    public static String set(String key, int seconds, String value) {
+        Jedis jedis = getJedis();
         return jedis.setex(key, seconds, value);
     }
     
-    public static Set<String> keys(final String key) {
-        final Jedis jedis = getJedis();
+    public static Set<String> keys(String key) {
+        Jedis jedis = getJedis();
         return jedis.keys(key);
     }
     
-    public static String get(final String key) {
-        final Jedis jedis = getJedis();
+    public static String get(String key) {
+        Jedis jedis = getJedis();
         return jedis.get(key);
     }
     
-    public static long del(final String key) {
-        final Jedis jedis = getJedis();
-        return jedis.del(key);
+    public static long del(String key) {
+        Jedis jedis = getJedis();
+        return (long)jedis.del(key);
     }
     
-    public static void delContain(final String key) {
-        final Jedis jedis = getJedis();
-        final Set<String> keys = jedis.keys(key);
-        for (final String s : keys) {
+    public static void delContain(String key) {
+        Jedis jedis = getJedis();
+        Set<String> keys = jedis.keys(key);
+        for (String s : keys) {
             jedis.del(s);
         }
     }
     
-    public static boolean contain(final String key) {
-        final Set<String> keys = keys(key);
+    public static boolean contain(String key) {
+        Set<String> keys = keys(key);
         return keys.size() > 0;
     }
     

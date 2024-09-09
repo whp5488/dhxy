@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.partner.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqChangeDefaultSkill extends Message
 {
     private int pId;
     private int skillId;
+    
+    public ReqChangeDefaultSkill() {
+    }
     
     public int getPId() {
         return this.pId;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -13,7 +12,7 @@ public class RespUseIncense extends Message
     public RespUseIncense() {
     }
     
-    public RespUseIncense(final Integer serial, final Integer residueTimes) {
+    public RespUseIncense(Integer serial, Integer residueTimes) {
         this.serial = serial;
         this.residueTimes = residueTimes;
     }

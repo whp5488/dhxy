@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class RespChat extends Message
         this.roleId = 0;
         this.roleName = "";
         this.time = new Long(System.currentTimeMillis() / 1000L).intValue();
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
         this.friendId = 0;
     }
     
@@ -117,7 +116,7 @@ public class RespChat extends Message
         if (!(o instanceof RespChat)) {
             return false;
         }
-        final RespChat other = (RespChat)o;
+        RespChat other = (RespChat)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -127,88 +126,40 @@ public class RespChat extends Message
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$roleName = this.getRoleName();
-        final Object other$roleName = other.getRoleName();
-        Label_0091: {
-            if (this$roleName == null) {
-                if (other$roleName == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$roleName.equals(other$roleName)) {
-                break Label_0091;
-            }
+        Object this$roleName = this.getRoleName();
+        Object other$roleName = other.getRoleName();
+        if (!((this$roleName != null) ? this$roleName.equals(other$roleName) : (other$roleName == null))) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        Label_0128: {
-            if (this$msg == null) {
-                if (other$msg == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$msg.equals(other$msg)) {
-                break Label_0128;
-            }
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        if (!((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null))) {
             return false;
         }
         if (this.getTime() != other.getTime()) {
             return false;
         }
-        final Object this$token = this.getToken();
-        final Object other$token = other.getToken();
-        Label_0178: {
-            if (this$token == null) {
-                if (other$token == null) {
-                    break Label_0178;
-                }
-            }
-            else if (this$token.equals(other$token)) {
-                break Label_0178;
-            }
+        Object this$token = this.getToken();
+        Object other$token = other.getToken();
+        if (!((this$token != null) ? this$token.equals(other$token) : (other$token == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        Label_0215: {
-            if (this$list == null) {
-                if (other$list == null) {
-                    break Label_0215;
-                }
-            }
-            else if (this$list.equals(other$list)) {
-                break Label_0215;
-            }
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        if (!((this$list != null) ? this$list.equals(other$list) : (other$list == null))) {
             return false;
         }
         if (this.getFriendId() != other.getFriendId()) {
             return false;
         }
-        final Object this$partyName = this.getPartyName();
-        final Object other$partyName = other.getPartyName();
-        Label_0265: {
-            if (this$partyName == null) {
-                if (other$partyName == null) {
-                    break Label_0265;
-                }
-            }
-            else if (this$partyName.equals(other$partyName)) {
-                break Label_0265;
-            }
+        Object this$partyName = this.getPartyName();
+        Object other$partyName = other.getPartyName();
+        if (!((this$partyName != null) ? this$partyName.equals(other$partyName) : (other$partyName == null))) {
             return false;
         }
-        final Object this$para = this.getPara();
-        final Object other$para = other.getPara();
-        if (this$para == null) {
-            if (other$para == null) {
-                return true;
-            }
-        }
-        else if (this$para.equals(other$para)) {
-            return true;
-        }
-        return false;
+        Object this$para = this.getPara();
+        Object other$para = other.getPara();
+        return (this$para != null) ? this$para.equals(other$para) : (other$para == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -217,23 +168,23 @@ public class RespChat extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getRoleId();
-        final Object $roleName = this.getRoleName();
+        Object $roleName = this.getRoleName();
         result = result * 59 + (($roleName == null) ? 43 : $roleName.hashCode());
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
         result = result * 59 + this.getTime();
-        final Object $token = this.getToken();
+        Object $token = this.getToken();
         result = result * 59 + (($token == null) ? 43 : $token.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getFriendId();
-        final Object $partyName = this.getPartyName();
+        Object $partyName = this.getPartyName();
         result = result * 59 + (($partyName == null) ? 43 : $partyName.hashCode());
-        final Object $para = this.getPara();
+        Object $para = this.getPara();
         result = result * 59 + (($para == null) ? 43 : $para.hashCode());
         return result;
     }

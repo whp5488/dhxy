@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -15,6 +14,9 @@ public class SysEffect
     private byte part;
     @Column("icon")
     private int icon;
+    
+    public SysEffect() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -56,24 +58,16 @@ public class SysEffect
         if (!(o instanceof SysEffect)) {
             return false;
         }
-        final SysEffect other = (SysEffect)o;
+        SysEffect other = (SysEffect)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getPart() == other.getPart() && this.getIcon() == other.getIcon();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getPart() == other.getPart() && this.getIcon() == other.getIcon();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getPart() == other.getPart() && this.getIcon() == other.getIcon();
     }
     
     protected boolean canEqual(final Object other) {
@@ -82,10 +76,10 @@ public class SysEffect
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getPart();
         result = result * 59 + this.getIcon();
@@ -94,6 +88,6 @@ public class SysEffect
     
     @Override
     public String toString() {
-        return "SysEffect(serial=" + this.getSerial() + ", name=" + this.getName() + ", part=" + this.getPart() + ", icon=" + this.getIcon() + ")";
+        return "SysEffect(serial=" + this.getSerial() + ", name=" + this.getName() + ", part=" + (int)this.getPart() + ", icon=" + this.getIcon() + ")";
     }
 }

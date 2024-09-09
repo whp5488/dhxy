@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class ReqLoginPreview extends Message
 {
     private String sid;
     
+    public ReqLoginPreview() {
+    }
+    
     public String getSid() {
         return this.sid;
     }
     
-    public void setSid(final String sid) {
+    public void setSid(String sid) {
         this.sid = sid;
     }
 }

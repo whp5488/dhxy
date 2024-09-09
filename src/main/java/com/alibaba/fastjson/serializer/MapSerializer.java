@@ -1,4 +1,3 @@
-
 package com.alibaba.fastjson.serializer;
 
 import java.util.List;
@@ -20,34 +19,37 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
     public static MapSerializer instance;
     private static final int NON_STRINGKEY_AS_STRING;
     
-    public void write(final JSONSerializer serializer, final Object object, final Object fieldName, final Type fieldType, final int features) throws IOException {
+    public MapSerializer() {
+    }
+    
+    public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType, int features) throws IOException {
         this.write(serializer, object, fieldName, fieldType, features, false);
     }
     
-    public void write(final JSONSerializer serializer, final Object object, final Object fieldName, final Type fieldType, final int features, final boolean unwrapped) throws IOException {
-        final SerializeWriter out = serializer.out;
+    public void write(JSONSerializer serializer, Object object, Object fieldName, Type fieldType, int features, boolean unwrapped) throws IOException {
+        SerializeWriter out = serializer.out;
         if (object == null) {
             out.writeNull();
             return;
         }
-        Map<?, ?> map = (Map<?, ?>)object;
-        final int mapSortFieldMask = SerializerFeature.MapSortField.mask;
+        Map<?, ?> map = (Map)object;
+        int mapSortFieldMask = SerializerFeature.MapSortField.mask;
         if ((out.features & mapSortFieldMask) != 0x0 || (features & mapSortFieldMask) != 0x0) {
-            if (map instanceof JSONObject) {
+            if ((map instanceof JSONObject)) {
                 map = ((JSONObject)map).getInnerMap();
             }
             if (!(map instanceof SortedMap) && !(map instanceof LinkedHashMap)) {
                 try {
-                    map = new TreeMap<Object, Object>(map);
+                    map = new TreeMap(map);
                 }
-                catch (final Exception ex) {}
+                catch (Exception ex) {}
             }
         }
         if (serializer.containsReference(object)) {
             serializer.writeReference(object);
             return;
         }
-        final SerialContext parent = serializer.context;
+        SerialContext parent = serializer.context;
         serializer.setContext(parent, object, fieldName, 0);
         try {
             if (!unwrapped) {
@@ -58,22 +60,22 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
             ObjectSerializer preWriter = null;
             boolean first = true;
             if (out.isEnabled(SerializerFeature.WriteClassName)) {
-                final String typeKey = serializer.config.typeKey;
-                final Class<?> mapClass = map.getClass();
-                final boolean containsKey = (mapClass == JSONObject.class || mapClass == HashMap.class || mapClass == LinkedHashMap.class) && map.containsKey(typeKey);
+                String typeKey = serializer.config.typeKey;
+                Class<?> mapClass = map.getClass();
+                boolean containsKey = (mapClass == JSONObject.class || mapClass == HashMap.class || mapClass == LinkedHashMap.class) && map.containsKey(typeKey);
                 if (!containsKey) {
                     out.writeFieldName(typeKey);
                     out.writeString(object.getClass().getName());
                     first = false;
                 }
             }
-            final Iterator<? extends Map.Entry<?, ?>> iterator = map.entrySet().iterator();
+            Iterator<? extends Map.Entry<?, ?>> iterator = map.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<?, ?> entry = null;
                 try {
                     entry = (Map.Entry)iterator.next();
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     break;
                 }
                 if (entry == null) {
@@ -89,7 +91,7 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                         }
                     }
                     else if (entryKey.getClass().isPrimitive() || entryKey instanceof Number) {
-                        final String strKey = JSON.toJSONString(entryKey);
+                        String strKey = JSON.toJSONString(entryKey);
                         if (!this.applyName(serializer, object, strKey)) {
                             continue;
                         }
@@ -103,7 +105,7 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                         }
                     }
                     else if (entryKey.getClass().isPrimitive() || entryKey instanceof Number) {
-                        final String strKey = JSON.toJSONString(entryKey);
+                        String strKey = JSON.toJSONString(entryKey);
                         if (!this.applyName(serializer, object, strKey)) {
                             continue;
                         }
@@ -117,7 +119,7 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                         }
                     }
                     else if (entryKey.getClass().isPrimitive() || entryKey instanceof Number) {
-                        final String strKey = JSON.toJSONString(entryKey);
+                        String strKey = JSON.toJSONString(entryKey);
                         if (!this.apply(serializer, object, strKey, value)) {
                             continue;
                         }
@@ -131,7 +133,7 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                         }
                     }
                     else if (entryKey.getClass().isPrimitive() || entryKey instanceof Number) {
-                        final String strKey = JSON.toJSONString(entryKey);
+                        String strKey = JSON.toJSONString(entryKey);
                         if (!this.apply(serializer, object, strKey, value)) {
                             continue;
                         }
@@ -143,7 +145,7 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                         entryKey = this.processKey(serializer, object, (String)entryKey, value);
                     }
                     else if (entryKey.getClass().isPrimitive() || entryKey instanceof Number) {
-                        final String strKey = JSON.toJSONString(entryKey);
+                        String strKey = JSON.toJSONString(entryKey);
                         entryKey = this.processKey(serializer, object, strKey, value);
                     }
                 }
@@ -153,25 +155,25 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                         entryKey = this.processKey(serializer, object, (String)entryKey, value);
                     }
                     else if (entryKey.getClass().isPrimitive() || entryKey instanceof Number) {
-                        final String strKey = JSON.toJSONString(entryKey);
+                        String strKey = JSON.toJSONString(entryKey);
                         entryKey = this.processKey(serializer, object, strKey, value);
                     }
                 }
                 if (entryKey == null || entryKey instanceof String) {
-                    value = this.processValue(serializer, (BeanContext)null, object, (String)entryKey, value);
+                    value = this.processValue(serializer, null, object, (String)entryKey, value);
                 }
                 else {
-                    final boolean objectOrArray = entryKey instanceof Map || entryKey instanceof Collection;
+                    boolean objectOrArray = entryKey instanceof Map || entryKey instanceof Collection;
                     if (!objectOrArray) {
-                        final String strKey = JSON.toJSONString(entryKey);
-                        value = this.processValue(serializer, (BeanContext)null, object, strKey, value);
+                        String strKey = JSON.toJSONString(entryKey);
+                        value = this.processValue(serializer, null, object, strKey, value);
                     }
                 }
                 if (value == null && !out.isEnabled(SerializerFeature.WRITE_MAP_NULL_FEATURES)) {
                     continue;
                 }
-                if (entryKey instanceof String) {
-                    final String key = (String)entryKey;
+                if ((entryKey instanceof String)) {
+                    String key = (String)entryKey;
                     if (!first) {
                         out.write(44);
                     }
@@ -185,7 +187,7 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                         out.write(44);
                     }
                     if (out.isEnabled(MapSerializer.NON_STRINGKEY_AS_STRING) && !(entryKey instanceof Enum)) {
-                        final String strEntryKey = JSON.toJSONString(entryKey);
+                        String strEntryKey = JSON.toJSONString(entryKey);
                         serializer.write(strEntryKey);
                     }
                     else {
@@ -198,25 +200,25 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
                     out.writeNull();
                 }
                 else {
-                    final Class<?> clazz = value.getClass();
+                    Class<?> clazz = value.getClass();
                     if (clazz != preClazz) {
                         preClazz = clazz;
                         preWriter = serializer.getObjectWriter(clazz);
                     }
                     if (SerializerFeature.isEnabled(features, SerializerFeature.WriteClassName) && preWriter instanceof JavaBeanSerializer) {
                         Type valueType = null;
-                        if (fieldType instanceof ParameterizedType) {
-                            final ParameterizedType parameterizedType = (ParameterizedType)fieldType;
-                            final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+                        if ((fieldType instanceof ParameterizedType)) {
+                            ParameterizedType parameterizedType = (ParameterizedType)fieldType;
+                            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                             if (actualTypeArguments.length == 2) {
                                 valueType = actualTypeArguments[1];
                             }
                         }
-                        final JavaBeanSerializer javaBeanSerializer = (JavaBeanSerializer)preWriter;
+                        JavaBeanSerializer javaBeanSerializer = (JavaBeanSerializer)preWriter;
                         javaBeanSerializer.writeNoneASM(serializer, value, entryKey, valueType, features);
                     }
                     else {
-                        preWriter.write(serializer, value, entryKey, (Type)null, features);
+                        preWriter.write(serializer, value, entryKey, null, features);
                     }
                 }
             }
@@ -231,6 +233,7 @@ public class MapSerializer extends SerializeFilterable implements ObjectSerializ
         if (!unwrapped) {
             out.write(125);
         }
+        return;
     }
     
     static {

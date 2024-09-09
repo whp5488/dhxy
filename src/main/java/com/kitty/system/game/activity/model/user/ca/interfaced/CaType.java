@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.ca.interfaced;
 
 public interface CaType

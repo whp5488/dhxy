@@ -1,19 +1,17 @@
-
 package com.kitty.system.game.horse.handler;
 
 import java.util.LinkedHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.horse.message.RespPreUpgradeHorse;
+import com.kitty.system.game.horse.message.vo.MountBase;
 import com.kitty.system.common.enter.FiedValue;
+import com.kitty.system.game.horse.domain.vo.HorseBase;
 import java.util.IdentityHashMap;
 import com.kitty.common.utils.LotteryUtils;
 import com.kitty.common.utils.RandomUtil;
-import com.kitty.system.game.horse.message.vo.MountBase;
-import com.kitty.system.game.horse.domain.vo.HorseBase;
 import com.kitty.common.bean.Lottery;
 import java.util.ArrayList;
 import com.kitty.system.game.horse.pool.HorseDataPool;
@@ -32,55 +30,58 @@ public class HorseRefineHandler extends FeedHorseHandler
     public static final int[] BASE_CURRENCY;
     public static final double[] REBATE;
     
+    public HorseRefineHandler() {
+    }
+    
     @Override
-    public String acceptFeed(final Horse horse, final Role role, final short type, final byte operation, final Object... args) {
+    public String acceptFeed(Horse horse, Role role, short type, byte operation, Object... args) {
         if (operation > 3) {
             return null;
         }
-        final byte seat = horse.getSeat();
-        final int count = HorseRefineHandler.COUNT[operation - 1];
-        final Map<Integer, Integer> consume = this.consume(operation, seat, count);
-        final Integer silver = consume.get(Const.RESTYPE_SILVER);
-        final Integer num = consume.get(75045);
-        final boolean b = this.roleService.checkCurrency(role, Const.RESTYPE_SILVER, silver);
+        byte seat = horse.getSeat();
+        int count = HorseRefineHandler.COUNT[operation - 1];
+        Map<Integer, Integer> consume = this.consume((short)operation, seat, count);
+        Integer silver = (Integer)consume.get(Const.RESTYPE_SILVER);
+        Integer num = (Integer)consume.get(Integer.valueOf(75045));
+        boolean b = this.roleService.checkCurrency(role, Const.RESTYPE_SILVER, (long)(int)silver);
         if (!b) {
             return null;
         }
-        final Integer integer = this.bagService.consumeBagGoods(role, 75045, num, true, true, "坐骑洗练");
+        Integer integer = this.bagService.consumeBagGoods(role, 75045, (int)num, true, true, "坐骑洗练");
         if (integer != null) {
             return "净瓶玉露数量不足";
         }
-        final boolean currency = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, silver, "HorseRefine");
+        boolean currency = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, (long)(int)silver, "HorseRefine");
         if (!currency) {
-            this.logger.error("坐骑洗练扣除货币失败，玩家编号 = {}", (Object)role.getRoleId());
+            this.logger.error("坐骑洗练扣除货币失败，玩家编号 = {}", role.getRoleId());
             return null;
         }
         role.save();
-        final int[] horseMoveScope = HorseDataPool.horseMoveScope;
-        final List<Double> rates = new ArrayList<Double>(HorseDataPool.horseGrowList.size());
-        for (final Lottery lottery : HorseDataPool.horseGrowList) {
+        int[] horseMoveScope = HorseDataPool.horseMoveScope;
+        List<Double> rates = new ArrayList(HorseDataPool.horseGrowList.size());
+        for (Lottery lottery : HorseDataPool.horseGrowList) {
             rates.add(lottery.getBili());
         }
-        final List<HorseBase> list = new ArrayList<HorseBase>();
-        final List<MountBase> list_ = new ArrayList<MountBase>();
+        List<HorseBase> list = new ArrayList<>();
+        List<MountBase> list_ = new ArrayList<>();
         for (int i = 0; i < count; ++i) {
-            final int move = RandomUtil.round(horseMoveScope[0], horseMoveScope[1]);
-            final Lottery lottery2 = HorseDataPool.horseGrowList.get(LotteryUtils.lottery(rates));
-            final IdentityHashMap<Integer, Long> skill = this.horseService.creationHorseSkill(seat, new IdentityHashMap<Integer, Long>(3));
-            list.add(new HorseBase(lottery2.getSerial(), move, 0, skill));
-            final List<FiedValue> objects = new ArrayList<FiedValue>();
-            for (final Integer key : skill.keySet()) {
-                Long value = skill.get(key);
+            int move = RandomUtil.round(Integer.valueOf(horseMoveScope[0]), Integer.valueOf(horseMoveScope[1]));
+            Lottery lottery2 = (Lottery)HorseDataPool.horseGrowList.get(LotteryUtils.lottery(rates));
+            IdentityHashMap<Integer, Long> skill = this.horseService.creationHorseSkill(seat, new IdentityHashMap(3));
+            list.add(new HorseBase((int)lottery2.getSerial(), move, 0, skill));
+            List<FiedValue> objects = new ArrayList<>();
+            for (Integer key : skill.keySet()) {
+                Long value = (Long)skill.get(key);
                 if (value == null) {
-                    value = 0L;
+                    value = Long.valueOf(0L);
                 }
                 objects.add(new FiedValue(String.valueOf(key), (byte)4, String.valueOf(value)));
             }
-            list_.add(new MountBase(lottery2.getSerial(), move, 0, objects));
+            list_.add(new MountBase((int)lottery2.getSerial(), move, 0, objects));
         }
-        horse.getDarkBaseMap().put(operation, list);
+        horse.getDarkBaseMap().put(Byte.valueOf(operation), list);
         horse.save();
-        final RespPreUpgradeHorse upgradeHorse = new RespPreUpgradeHorse();
+        RespPreUpgradeHorse upgradeHorse = new RespPreUpgradeHorse();
         upgradeHorse.setId(String.valueOf(horse.getId()));
         upgradeHorse.setAsk(operation);
         upgradeHorse.setList(list_);
@@ -88,13 +89,13 @@ public class HorseRefineHandler extends FeedHorseHandler
         return null;
     }
     
-    public Map<Integer, Integer> consume(final short type, final byte seat, final int count) {
-        final double rebate = HorseRefineHandler.REBATE[type - 1];
-        final int num = HorseRefineHandler.BASE_ITEM[seat - 1];
-        final int currency = HorseRefineHandler.BASE_CURRENCY[seat - 1];
-        final Map<Integer, Integer> map = new LinkedHashMap<Integer, Integer>();
-        map.put(75045, (int)(count * num * rebate));
-        map.put(Const.RESTYPE_SILVER, (int)(count * currency * rebate));
+    public Map<Integer, Integer> consume(short type, byte seat, int count) {
+        double rebate = HorseRefineHandler.REBATE[type - 1];
+        int num = HorseRefineHandler.BASE_ITEM[seat - 1];
+        int currency = HorseRefineHandler.BASE_CURRENCY[seat - 1];
+        Map<Integer, Integer> map = new LinkedHashMap();
+        map.put(Integer.valueOf(75045), Integer.valueOf((int)((double)(count * num) * rebate)));
+        map.put(Const.RESTYPE_SILVER, Integer.valueOf((int)((double)(count * currency) * rebate)));
         return map;
     }
     

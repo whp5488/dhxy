@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -15,6 +14,9 @@ public class SysDataTaskFormula
     @Column("content")
     @Default("[]")
     private List<FiedValue> content;
+    
+    public SysDataTaskFormula() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -40,24 +42,16 @@ public class SysDataTaskFormula
         if (!(o instanceof SysDataTaskFormula)) {
             return false;
         }
-        final SysDataTaskFormula other = (SysDataTaskFormula)o;
+        SysDataTaskFormula other = (SysDataTaskFormula)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$content = this.getContent();
-        final Object other$content = other.getContent();
-        if (this$content == null) {
-            if (other$content == null) {
-                return true;
-            }
-        }
-        else if (this$content.equals(other$content)) {
-            return true;
-        }
-        return false;
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        return (this$content != null) ? this$content.equals(other$content) : (other$content == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -66,10 +60,10 @@ public class SysDataTaskFormula
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $content = this.getContent();
+        Object $content = this.getContent();
         result = result * 59 + (($content == null) ? 43 : $content.hashCode());
         return result;
     }

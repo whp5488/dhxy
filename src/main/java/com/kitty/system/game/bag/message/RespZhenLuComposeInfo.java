@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class RespZhenLuComposeInfo extends Message
     private List<FieldValue> list;
     
     public RespZhenLuComposeInfo() {
-        this.list = new ArrayList<FieldValue>();
+        this.list = new ArrayList<>();
     }
     
     public int getSerial() {

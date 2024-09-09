@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.party.model;
-
-import java.beans.ConstructorProperties;
 
 public class PartyDeny
 {
@@ -23,7 +20,7 @@ public class PartyDeny
         if (!(o instanceof PartyDeny)) {
             return false;
         }
-        final PartyDeny other = (PartyDeny)o;
+        PartyDeny other = (PartyDeny)o;
         return other.canEqual(this) && this.getEndTime() == other.getEndTime();
     }
     
@@ -33,7 +30,7 @@ public class PartyDeny
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getEndTime();
         return result;
@@ -47,7 +44,6 @@ public class PartyDeny
     public PartyDeny() {
     }
     
-    @ConstructorProperties({ "endTime" })
     public PartyDeny(final int endTime) {
         this.endTime = endTime;
     }

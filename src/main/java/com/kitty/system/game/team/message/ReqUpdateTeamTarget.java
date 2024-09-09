@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqUpdateTeamTarget extends Message
 {
     private int roleId;
     private String activityType;
+    
+    public ReqUpdateTeamTarget() {
+    }
     
     public int getRoleId() {
         return this.roleId;

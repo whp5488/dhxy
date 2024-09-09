@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.onlinemall.message;
 
 import java.util.ArrayList;
@@ -15,9 +14,9 @@ public class RespTreasureAwardInfo extends Message
     private List<FieldProp> supreme;
     
     public RespTreasureAwardInfo() {
-        this.normal = new ArrayList<FieldProp>();
-        this.senior = new ArrayList<FieldProp>();
-        this.supreme = new ArrayList<FieldProp>();
+        this.normal = new ArrayList<>();
+        this.senior = new ArrayList<>();
+        this.supreme = new ArrayList<>();
     }
     
     public List<FieldProp> getNormal() {
@@ -52,47 +51,23 @@ public class RespTreasureAwardInfo extends Message
         if (!(o instanceof RespTreasureAwardInfo)) {
             return false;
         }
-        final RespTreasureAwardInfo other = (RespTreasureAwardInfo)o;
+        RespTreasureAwardInfo other = (RespTreasureAwardInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$normal = this.getNormal();
-        final Object other$normal = other.getNormal();
-        Label_0065: {
-            if (this$normal == null) {
-                if (other$normal == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$normal.equals(other$normal)) {
-                break Label_0065;
-            }
+        Object this$normal = this.getNormal();
+        Object other$normal = other.getNormal();
+        if (!((this$normal != null) ? this$normal.equals(other$normal) : (other$normal == null))) {
             return false;
         }
-        final Object this$senior = this.getSenior();
-        final Object other$senior = other.getSenior();
-        Label_0102: {
-            if (this$senior == null) {
-                if (other$senior == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$senior.equals(other$senior)) {
-                break Label_0102;
-            }
+        Object this$senior = this.getSenior();
+        Object other$senior = other.getSenior();
+        if (!((this$senior != null) ? this$senior.equals(other$senior) : (other$senior == null))) {
             return false;
         }
-        final Object this$supreme = this.getSupreme();
-        final Object other$supreme = other.getSupreme();
-        if (this$supreme == null) {
-            if (other$supreme == null) {
-                return true;
-            }
-        }
-        else if (this$supreme.equals(other$supreme)) {
-            return true;
-        }
-        return false;
+        Object this$supreme = this.getSupreme();
+        Object other$supreme = other.getSupreme();
+        return (this$supreme != null) ? this$supreme.equals(other$supreme) : (other$supreme == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -101,13 +76,13 @@ public class RespTreasureAwardInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $normal = this.getNormal();
+        Object $normal = this.getNormal();
         result = result * 59 + (($normal == null) ? 43 : $normal.hashCode());
-        final Object $senior = this.getSenior();
+        Object $senior = this.getSenior();
         result = result * 59 + (($senior == null) ? 43 : $senior.hashCode());
-        final Object $supreme = this.getSupreme();
+        Object $supreme = this.getSupreme();
         result = result * 59 + (($supreme == null) ? 43 : $supreme.hashCode());
         return result;
     }

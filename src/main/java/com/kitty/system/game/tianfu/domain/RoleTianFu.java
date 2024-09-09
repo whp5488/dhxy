@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.domain;
 
-import java.beans.ConstructorProperties;
 import com.kitty.common.db.DbTianFuService;
 import java.util.Date;
 import org.nutz.dao.entity.annotation.Column;
@@ -181,7 +179,6 @@ public class RoleTianFu extends BaseEntity<Long>
         this.DayInCeGrid = DayInCeGrid;
     }
     
-    @ConstructorProperties({ "id", "tianFuSerial", "roleId", "category", "layer", "level", "productOrder", "isWear", "count", "toIdentifyCeSerial", "bd", "createTime", "storePos", "triggerType", "DayInCeGrid" })
     public RoleTianFu(final Long id, final int tianFuSerial, final long roleId, final byte category, final byte layer, final byte level, final byte productOrder, final int isWear, final short count, final int toIdentifyCeSerial, final int bd, final Date createTime, final int storePos, final String triggerType, final String DayInCeGrid) {
         this.id = id;
         this.tianFuSerial = tianFuSerial;

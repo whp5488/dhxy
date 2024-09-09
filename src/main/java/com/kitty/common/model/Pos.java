@@ -1,4 +1,3 @@
-
 package com.kitty.common.model;
 
 import java.io.Serializable;
@@ -14,7 +13,7 @@ public class Pos implements Serializable
         return this.x;
     }
     
-    public void setX(final Integer x) {
+    public void setX(Integer x) {
         this.x = x;
     }
     
@@ -22,7 +21,7 @@ public class Pos implements Serializable
         return this.y;
     }
     
-    public void setY(final Integer y) {
+    public void setY(Integer y) {
         this.y = y;
     }
     
@@ -30,7 +29,7 @@ public class Pos implements Serializable
         return this.dir;
     }
     
-    public void setDir(final Integer dir) {
+    public void setDir(Integer dir) {
         this.dir = dir;
     }
     
@@ -38,11 +37,11 @@ public class Pos implements Serializable
         return this.mapId;
     }
     
-    public void setMapId(final Integer mapId) {
+    public void setMapId(Integer mapId) {
         this.mapId = mapId;
     }
     
-    public Pos(final Integer x, final Integer y, final Integer dir, final Integer mapId) {
+    public Pos(Integer x, Integer y, Integer dir, Integer mapId) {
         this.x = x;
         this.y = y;
         this.dir = dir;
@@ -50,10 +49,10 @@ public class Pos implements Serializable
     }
     
     public Pos() {
-        this.x = 155;
-        this.y = 70;
-        this.dir = 5;
-        this.mapId = 1010;
+        this.x = Integer.valueOf(155);
+        this.y = Integer.valueOf(70);
+        this.dir = Integer.valueOf(5);
+        this.mapId = Integer.valueOf(1010);
     }
     
     @Override

@@ -1,13 +1,12 @@
-
 package com.kitty.mina.codec.reflect.serializer;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.mina.core.buffer.IoBuffer;
 import java.util.List;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,43 +14,44 @@ public abstract class Serializer
 {
     private static Map<Class<?>, Serializer> class2Serializers;
     
-    private static void register(final Class<?> clazz, final Serializer serializer) {
+    public Serializer() {
+    }
+    
+    private static void register(Class<?> clazz, Serializer serializer) {
         Serializer.class2Serializers.put(clazz, serializer);
     }
     
-    public static Serializer getSerializer(final Class<?> clazz) {
+    public static Serializer getSerializer(Class<?> clazz) {
         if (Serializer.class2Serializers.containsKey(clazz)) {
-            return Serializer.class2Serializers.get(clazz);
+            return (Serializer)Serializer.class2Serializers.get(clazz);
         }
         if (clazz.isArray()) {
-            return Serializer.class2Serializers.get(Object[].class);
+            return (Serializer)Serializer.class2Serializers.get(Object[].class);
         }
-        final Field[] fields = clazz.getDeclaredFields();
-        final LinkedHashMap<Field, Class<?>> sortedFields = new LinkedHashMap<Field, Class<?>>();
-        final List<FieldCodecMeta> fieldsMeta = new ArrayList<FieldCodecMeta>();
-        for (final Field field : fields) {
-            final int modifier = field.getModifiers();
-            if (!Modifier.isFinal(modifier) && !Modifier.isStatic(modifier)) {
-                if (!Modifier.isTransient(modifier)) {
-                    field.setAccessible(true);
-                    sortedFields.put(field, field.getType());
-                    final Class<?> type = field.getType();
-                    final Serializer serializer = getSerializer(type);
-                    fieldsMeta.add(FieldCodecMeta.valueOf(field, serializer));
-                }
+        Field[] fields = clazz.getDeclaredFields();
+        LinkedHashMap<Field, Class<?>> sortedFields = new LinkedHashMap();
+        List<FieldCodecMeta> fieldsMeta = new ArrayList<>();
+        for (Field field : fields) {
+            int modifier = field.getModifiers();
+            if (!Modifier.isFinal(modifier) && !Modifier.isStatic(modifier) && !Modifier.isTransient(modifier)) {
+                field.setAccessible(true);
+                sortedFields.put(field, field.getType());
+                Class<?> type = field.getType();
+                Serializer serializer = getSerializer(type);
+                fieldsMeta.add(FieldCodecMeta.valueOf(field, serializer));
             }
         }
-        final Serializer messageCodec = MessageSerializer.valueOf(fieldsMeta);
+        Serializer messageCodec = MessageSerializer.valueOf(fieldsMeta);
         register(clazz, messageCodec);
         return messageCodec;
     }
     
-    public abstract Object decode(final IoBuffer p0, final Class<?> p1, final Class<?> p2);
+    public abstract Object decode(IoBuffer in, Class<?> type, Class<?> wrapper);
     
-    public abstract void encode(final IoBuffer p0, final Object p1, final Class<?> p2);
+    public abstract void encode(IoBuffer out, Object value, Class<?> wrapper);
     
     static {
-        Serializer.class2Serializers = new ConcurrentHashMap<Class<?>, Serializer>();
+        Serializer.class2Serializers = new ConcurrentHashMap();
         register(Boolean.TYPE, new BooleanSerializer());
         register(Boolean.class, new BooleanSerializer());
         register(Byte.TYPE, new ByteSerializer());

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.npc.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -44,37 +42,21 @@ public class RespWorship extends Message
         if (!(o instanceof RespWorship)) {
             return false;
         }
-        final RespWorship other = (RespWorship)o;
+        RespWorship other = (RespWorship)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getNpcId() != other.getNpcId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$motto = this.getMotto();
-        final Object other$motto = other.getMotto();
-        if (this$motto == null) {
-            if (other$motto == null) {
-                return true;
-            }
-        }
-        else if (this$motto.equals(other$motto)) {
-            return true;
-        }
-        return false;
+        Object this$motto = this.getMotto();
+        Object other$motto = other.getMotto();
+        return (this$motto != null) ? this$motto.equals(other$motto) : (other$motto == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -83,12 +65,12 @@ public class RespWorship extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getNpcId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $motto = this.getMotto();
+        Object $motto = this.getMotto();
         result = result * 59 + (($motto == null) ? 43 : $motto.hashCode());
         return result;
     }
@@ -98,7 +80,6 @@ public class RespWorship extends Message
         return "RespWorship(npcId=" + this.getNpcId() + ", name=" + this.getName() + ", motto=" + this.getMotto() + ")";
     }
     
-    @ConstructorProperties({ "npcId", "name", "motto" })
     public RespWorship(final int npcId, final String name, final String motto) {
         this.npcId = npcId;
         this.name = name;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.hero;
 
 import java.util.Collections;
@@ -20,64 +19,72 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_30040 extends SkillProcessor
 {
+    public SKILL_30040() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
-        final int count = 3;
-        final RoleSkill skill = effector.getSkillBy(30040);
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
+        int count = 3;
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(30040));
         if (skill != null) {
-            return count + SkillCompute.computeAppendTarget(effector, skill.getProficient(), effector.getStatusValue(1023));
+            return count + SkillCompute.computeAppendTarget(effector, (int)skill.getProficient(), effector.getStatusValue(1023));
         }
         return count;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill skill = effector.getSkillBy(30040);
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(30040));
         if (skill != null) {
-            final Effect e = new Effect();
+            Effect e = new Effect();
             if (!target.isFrozen()) {
-                final SysSkill sysSkill = SkillDataPool.skillMap.get(30040);
-                int atk = effector.getPhyPower() + (int)(effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_ATTACK.getDist()) * effector.getPhyPower());
+                SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(Integer.valueOf(30040));
+                int atk = effector.getPhyPower() + (int)(effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_ATTACK.getDist()) * (double)effector.getPhyPower());
                 double conquer = effector.getSelfAllTempPro(PRO_DICT_TYPE.CONQUER_RATIO.getDist());
                 double conquer_extent = effector.getSelfAllTempPro(PRO_DICT_TYPE.CONQUER_EXTENT.getDist());
                 double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
                 int time = 1;
-                time = 1 + (int)(Math.pow(skill.getProficient(), 0.38) * 8.0 / 100.0);
-                final double[] power = sysSkill.getPower();
-                atk += (int)(power[0] * effector.getLevel());
-                final double mark = BigDecimalUtil.decimalScaleObjectDown(3, BigDecimalUtil.decimalScaleObjectDown(1, power[1] + power[2] * (1.0 + Math.pow(skill.getProficient(), 0.35) * 2.0 / 100.0)) / 100.0);
-                ImbueUtil.addRound(effector.getImbueMap(), PRO_DICT_TYPE.HIT_RATIO.getDist(), 1, mark);
+                time = 1 + (int)(Math.pow((double)(int)skill.getProficient(), 0.38) * 8.0 / 100.0);
+                double[] power = sysSkill.getPower();
+                atk += (int)(power[0] * (double)effector.getLevel());
+                double mark = BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(3), Double.valueOf(BigDecimalUtil.decimalScaleObjectDown(Integer.valueOf(1), Double.valueOf(power[1] + power[2] * (1.0 + Math.pow((double)(int)skill.getProficient(), 0.35) * 2.0 / 100.0))) / 100.0));
+                ImbueUtil.addTemp(effector.getImbueMap(), PRO_DICT_TYPE.HIT_RATIO.getDist(), mark);
                 conquer += mark;
                 conquer_extent += mark;
-                final double magic_hit = BigDecimalUtil.decimalScaleDouble(3, BigDecimalUtil.decimalScaleDouble(1, power[1] + power[3] * (1.0 + Math.pow(skill.getProficient(), 0.35) * 20.0 / 100.0)) / 100.0);
+                double magic_hit = BigDecimalUtil.decimalScaleDouble(Integer.valueOf(3), Double.valueOf(BigDecimalUtil.decimalScaleDouble(Integer.valueOf(1), Double.valueOf(power[1] + power[3] * (1.0 + Math.pow((double)(int)skill.getProficient(), 0.35) * 20.0 / 100.0))) / 100.0));
                 ImbueUtil.addOrUpdStatus(target.getImbueMap(), 1020, PRO_DICT_TYPE.MAGIC_HIT_RATIO.getDist(), time, -magic_hit);
                 if (weak < 0.0) {
                     weak = 0.0;
                 }
-                final boolean flag = SkillAi.canAffectOnPro(conquer);
-                final Integer hurt = SkillCompute.computeDragonSkillDamage(fight, effector, target, atk, conquer_extent, flag, effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_ZJ.getDist()), weak);
-                e.setList(Collections.singletonList(new FiedValue("penetrate", (byte)3, flag)));
-                e.setHurt(hurt);
+                boolean flag = SkillAi.canAffectOnPro(conquer);
+                Integer hurt = SkillCompute.computeDragonSkillDamage(fight, effector, target, atk, conquer_extent, flag, effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_ZJ.getDist()), weak);
+                e.setList(Collections.singletonList(new FiedValue("penetrate", (byte)3, Boolean.valueOf(flag))));
+                e.setHurt((int)hurt);
                 e.setTime(time);
                 e.setType(1020);
+                return e;
             }
-            return e;
+            else {
+                return e;
+            }
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
-        return BigDecimalUtil.decimalScaleIntegerDown(0, 75.0 * (Math.pow(skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0) * 1.0);
+    public int costMana(RoleSkill skill, Object... args) {
+        return BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(75.0 * (Math.pow((double)(int)skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0) * 1.0));
     }
 }

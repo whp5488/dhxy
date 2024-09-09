@@ -1,4 +1,3 @@
-
 package com.kitty.cache;
 
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,10 @@ public class RedisSerializer
     private static final Logger log;
     public static final String CHARSET = "utf-8";
     
-    public static <T extends Serializable> byte[] serialize(final T t) throws RuntimeException {
+    public RedisSerializer() {
+    }
+    
+    public static <T extends Serializable> byte[] serialize(T t) throws RuntimeException {
         if (t == null) {
             return null;
         }
@@ -26,19 +28,19 @@ public class RedisSerializer
                 try {
                     bytes = JSONObject.toJSONString(t).getBytes("utf-8");
                 }
-                catch (final IOException e) {
+                catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        catch (final Exception e2) {
+        catch (Exception e2) {
             e2.printStackTrace();
             RedisSerializer.log.error("序列化失败 " + e2.getMessage(), e2);
         }
         return bytes;
     }
     
-    public static <T extends Serializable> T deserialize(final byte[] bytes, final Class<T> clazz) throws RuntimeException {
+    public static <T extends Serializable> T deserialize(byte[] bytes, Class<T> clazz) throws RuntimeException {
         if (bytes == null || bytes.length <= 0) {
             return null;
         }
@@ -50,23 +52,23 @@ public class RedisSerializer
                     return (T)s;
                 }
                 if (clazz == Character.TYPE || clazz == Character.class) {
-                    final Character c = s.charAt(0);
+                    Character c = Character.valueOf(s.charAt(0));
                     return (T)c;
                 }
-                final Method method = clazz.getMethod("valueOf", String.class);
-                final Object object = method.invoke(null, s);
+                Method method = clazz.getMethod("valueOf", String.class);
+                Object object = method.invoke(null, s);
                 return (T)object;
             }
             else {
                 try {
-                    return (T)JSONObject.parseObject(new String(bytes, "utf-8"), (Class)clazz);
+                    return (T)JSONObject.parseObject(new String(bytes, "utf-8"), clazz);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     RedisSerializer.log.error("反序列化失败 " + e.getMessage(), e);
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return null;

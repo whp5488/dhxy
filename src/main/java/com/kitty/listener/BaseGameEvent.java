@@ -1,4 +1,3 @@
-
 package com.kitty.listener;
 
 public abstract class BaseGameEvent
@@ -6,7 +5,7 @@ public abstract class BaseGameEvent
     private long createTime;
     private final EventType eventType;
     
-    public BaseGameEvent(final EventType evtType) {
+    public BaseGameEvent(EventType evtType) {
         this.createTime = System.currentTimeMillis();
         this.eventType = evtType;
     }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.pool;
 
 import java.util.HashMap;
@@ -21,55 +20,70 @@ public class PetDataPool
     public static Map<Integer, SysPet> petMap;
     public static Map<String, Map<Byte, PetAccColor>> petAccColorMap;
     
+    public PetDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         initActivePetSkill();
         initPet(initService);
         initPetAccColorMap(initService);
     }
     
     public static void initActivePetSkill() {
-        final List<Map<String, Integer>> dogz_maps = DOGZ_PETSKILL.toList();
-        for (final Map<String, Integer> map : dogz_maps) {
-            final Integer type = map.get("type");
-            if (type == 1) {
+        List<Map<String, Integer>> dogz_maps = DOGZ_PETSKILL.toList();
+        for (Map<String, Integer> map : dogz_maps) {
+            Integer type = (Integer)map.get("type");
+            if ((int)type == 1) {
                 PetDataPool.ACTIVE_PETSKILLLIST.add(map.get("value"));
             }
+            else {
+                continue;
+            }
         }
-        final List<Map<String, Integer>> generl_maps = GENERAL_PETSKILL.toList();
-        for (final Map<String, Integer> map2 : generl_maps) {
-            final Integer type2 = map2.get("type");
-            if (type2 == 1) {
+        List<Map<String, Integer>> generl_maps = GENERAL_PETSKILL.toList();
+        for (Map<String, Integer> map2 : generl_maps) {
+            Integer type2 = (Integer)map2.get("type");
+            if ((int)type2 == 1) {
                 PetDataPool.ACTIVE_PETSKILLLIST.add(map2.get("value"));
             }
-        }
-        final List<Map<String, Integer>> high_maps = HIGH_PETSKILL.toList();
-        for (final Map<String, Integer> map3 : high_maps) {
-            final Integer type3 = map3.get("type");
-            if (type3 == 1) {
-                PetDataPool.ACTIVE_PETSKILLLIST.add(map3.get("value"));
+            else {
+                continue;
             }
         }
-        final List<Map<String, Integer>> ultimate_maps = ULTIMATE_PETSKILL.toList();
-        for (final Map<String, Integer> map4 : ultimate_maps) {
-            final Integer type4 = map4.get("type");
-            if (type4 == 1) {
+        List<Map<String, Integer>> high_maps = HIGH_PETSKILL.toList();
+        for (Map<String, Integer> map3 : high_maps) {
+            Integer type3 = (Integer)map3.get("type");
+            if ((int)type3 == 1) {
+                PetDataPool.ACTIVE_PETSKILLLIST.add(map3.get("value"));
+            }
+            else {
+                continue;
+            }
+        }
+        List<Map<String, Integer>> ultimate_maps = ULTIMATE_PETSKILL.toList();
+        for (Map<String, Integer> map4 : ultimate_maps) {
+            Integer type4 = (Integer)map4.get("type");
+            if ((int)type4 == 1) {
                 PetDataPool.ACTIVE_PETSKILLLIST.add(map4.get("value"));
+            }
+            else {
+                continue;
             }
         }
     }
     
-    public static void initPet(final InitService initService) {
+    public static void initPet(InitService initService) {
         PetDataPool.petMap = initService.initPet();
     }
     
-    public static void initPetAccColorMap(final InitService initService) {
+    public static void initPetAccColorMap(InitService initService) {
         PetDataPool.petAccColorMap = initService.initPetAccColor();
     }
     
     static {
-        PetDataPool.ACTIVE_PETSKILLLIST = new ArrayList<Integer>();
-        PetDataPool.petMap = new HashMap<Integer, SysPet>();
-        PetDataPool.petAccColorMap = new HashMap<String, Map<Byte, PetAccColor>>();
+        PetDataPool.ACTIVE_PETSKILLLIST = new ArrayList<>();
+        PetDataPool.petMap = new HashMap();
+        PetDataPool.petAccColorMap = new HashMap();
     }
 }

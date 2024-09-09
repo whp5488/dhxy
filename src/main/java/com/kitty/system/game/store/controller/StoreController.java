@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.store.controller;
 
 import com.kitty.mina.annotation.RequestMapping;
@@ -24,8 +23,8 @@ public class StoreController
     }
     
     @RequestMapping
-    public void excuteStorePara(final IoSession session, final ReqExcuteStorePara reqExcuteStorePara) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void excuteStorePara(IoSession session, ReqExcuteStorePara reqExcuteStorePara) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
@@ -33,11 +32,12 @@ public class StoreController
             return;
         }
         try {
-            this.storeService.excuteStorePara(role, reqExcuteStorePara.getType(), reqExcuteStorePara.getStoreType(), reqExcuteStorePara.getPos());
+            this.storeService.excuteStorePara(role, Byte.valueOf(reqExcuteStorePara.getType()), Byte.valueOf(reqExcuteStorePara.getStoreType()), reqExcuteStorePara.getPos());
         }
-        catch (final Exception e) {
-            this.logger.error("仓库物品存取操作异常：{}", (Object)e.getMessage());
+        catch (Exception e) {
+            this.logger.error("仓库物品存取操作异常：{}", e.getMessage());
             e.printStackTrace();
         }
+        return;
     }
 }

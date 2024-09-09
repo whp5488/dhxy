@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.loadobj;
 
 import java.util.List;
@@ -22,49 +21,53 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_322201 extends TianFuProcessor
 {
+    public FU_322201() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (!effector.isPlayer()) {
             return null;
         }
         boolean flag = false;
-        Integer theStatus = -1;
-        for (final Integer status : StatusConst.getControlStatus()) {
-            if (effector.getStatusValue(status) > 0) {
+        Integer theStatus = Integer.valueOf(-1);
+        for (Integer status : StatusConst.getControlStatus()) {
+            if (effector.getStatusValue((int)status) > 0) {
                 flag = true;
                 theStatus = status;
                 break;
             }
+            continue;
         }
         if (!flag) {
             return null;
         }
-        final Map<Integer, Integer> abnormalRoundMap = ((PlayerFightObject)effector).getAbnormalRoundMap();
+        Map<Integer, Integer> abnormalRoundMap = ((PlayerFightObject)effector).getAbnormalRoundMap();
         int round = fight.getRound();
         --round;
-        final Integer round1Status = abnormalRoundMap.get(round);
+        Integer round1Status = (Integer)abnormalRoundMap.get(Integer.valueOf(round));
         --round;
-        final Integer round2Status = abnormalRoundMap.get(round);
+        Integer round2Status = (Integer)abnormalRoundMap.get(Integer.valueOf(round));
         if (round1Status != null && StatusConst.getControlStatus().contains(round1Status) && round2Status != null && StatusConst.getControlStatus().contains(round2Status)) {
-            final DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
-            final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322201);
+            DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
+            TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322201);
             if (tianFuObject == null) {
                 return null;
             }
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 322201);
-            final double percenta = 8.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-            final boolean flagTrigger = SkillAi.canAffectOnPro(percenta);
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 322201);
+            double percenta = 8.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+            boolean flagTrigger = SkillAi.canAffectOnPro(percenta);
             if (flagTrigger) {
-                effector.removeStatus(theStatus);
-                final List<Integer> clearList = new ArrayList<Integer>();
+                effector.removeStatus((int)theStatus);
+                List<Integer> clearList = new ArrayList<>();
                 clearList.add(theStatus);
                 ActionParamUtils.clearStatus(fight, effector, effector, 7, 300999, 2, clearList);
-                skillRecord.setT(effector.getId());
+                skillRecord.setT((long)(int)effector.getId());
             }
         }
         return null;

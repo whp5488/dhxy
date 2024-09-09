@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -8,12 +7,15 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_71352 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_71352() {
+    }
+    
     @Override
-    public NutMap addition(final Role role, final Object... args) {
-        final double percent = role.getGg() / 300 * 0.01;
+    public NutMap addition(Role role, Object... args) {
+        double percent = (double)((int)role.getGg() / 300) * 0.01;
         if (percent > 0.0) {
-            final NutMap map = NutMap.NEW();
-            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HS.getDist()), (Object)percent);
+            NutMap map = NutMap.NEW();
+            map.setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_HS.getDist()), Double.valueOf(percent));
             return map;
         }
         return null;

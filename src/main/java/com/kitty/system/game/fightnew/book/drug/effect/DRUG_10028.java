@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.drug.effect;
 
 import com.kitty.system.game.fightnew.utils.ActionParamUtils;
@@ -9,8 +8,11 @@ import com.kitty.system.game.fightnew.book.drug.DrugProcessor;
 
 public class DRUG_10028 extends DrugProcessor
 {
+    public DRUG_10028() {
+    }
+    
     @Override
-    public NutMap effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         int reduceLife;
         if (target.isMonster() && target.getSerial() == 1660032) {
             reduceLife = 10000;

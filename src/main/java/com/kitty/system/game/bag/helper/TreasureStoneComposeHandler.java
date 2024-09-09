@@ -1,16 +1,13 @@
-
 package com.kitty.system.game.bag.helper;
 
 import java.util.Map;
 import java.util.Iterator;
 import com.kitty.system.game.onlinemall.service.MallService;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.vo.FieldProp;
-import java.util.stream.Collector;
+import com.kitty.system.init.domain.SysGiftItemOpen;
 import java.util.stream.Collectors;
 import com.kitty.system.init.pool.ItemDataPool;
-import com.kitty.system.init.domain.SysGiftItemOpen;
 import java.util.List;
 import com.kitty.system.game.onlinemall.message.RespTreasureStoneCompose;
 import com.kitty.common.utils.spring.SpringUtils;
@@ -28,27 +25,32 @@ public class TreasureStoneComposeHandler extends BagHandler
     private static final String LACK = "少侠未放入原石，原石可通过天天挖宝礼包获得";
     private static final int[] NEED;
     
+    public TreasureStoneComposeHandler() {
+    }
+    
     @Override
-    public String acceptOperate(final Role role, final Integer pos, final Integer num, final String param) {
+    public String acceptOperate(Role role, Integer pos, Integer num, String param) {
         NutMap nutMap = null;
         try {
-            nutMap = (NutMap)Json.fromJson(NutMap.class, (CharSequence)param);
+            nutMap = (NutMap)Json.fromJson(NutMap.class, param);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return null;
         }
         boolean flag = true;
         int count = 0;
-        for (final String key : nutMap.keySet()) {
-            final Integer index = Integer.valueOf(key);
-            if (index < 0 || index > 2) {
+        for (String key : nutMap.keySet()) {
+            Integer index = Integer.valueOf(key);
+            if ((int)index < 0 || (int)index > 2) {
                 return null;
             }
             count += nutMap.getInt(key);
-            if (this.bagService.getBagGoods(role, TreasureStoneComposeHandler.NEED[index], nutMap.getInt(key)) == null) {
+            if (this.bagService.getBagGoods(role, TreasureStoneComposeHandler.NEED[(int)index], nutMap.getInt(key)) != null) {
+                flag = false;
+            }
+            else {
                 continue;
             }
-            flag = false;
         }
         if (count <= 0 || count > 3 || !flag) {
             return "少侠未放入原石，原石可通过天天挖宝礼包获得";
@@ -63,25 +65,26 @@ public class TreasureStoneComposeHandler extends BagHandler
             share = 4;
             serial = 30027;
         }
-        for (final String key2 : nutMap.keySet()) {
-            if (this.bagService.consumeBagGoods(role, TreasureStoneComposeHandler.NEED[Integer.valueOf(key2)], nutMap.getInt(key2), true, true, "合成秘宝") != null) {
+        for (String key2 : nutMap.keySet()) {
+            if (this.bagService.consumeBagGoods(role, TreasureStoneComposeHandler.NEED[(int)Integer.valueOf(key2)], nutMap.getInt(key2), true, true, "合成秘宝") != null) {
                 return null;
             }
+            continue;
         }
-        final WeekTreasure weekTreasure = new WeekTreasure(new IdWorker().nextId(), role.getId(), serial);
+        WeekTreasure weekTreasure = new WeekTreasure(Long.valueOf(new IdWorker().nextId()), (long)role.getId(), serial);
         weekTreasure.setShare(share);
         weekTreasure.save();
-        final Map<Long, WeekTreasure> map = SpringUtils.getBean(GamePlayService.class).getWeekTreasure(role.getId());
+        Map<Long, WeekTreasure> map = ((GamePlayService)SpringUtils.getBean(GamePlayService.class)).getWeekTreasure((long)role.getId());
         map.put(weekTreasure.getId(), weekTreasure);
-        final RespTreasureStoneCompose treasureStoneCompose = new RespTreasureStoneCompose();
+        RespTreasureStoneCompose treasureStoneCompose = new RespTreasureStoneCompose();
         treasureStoneCompose.setSerial(serial);
         treasureStoneCompose.setId(String.valueOf(weekTreasure.getId()));
-        final List<SysGiftItemOpen> supremeList = ItemDataPool.data_gift_item_open.stream().filter(item -> item.getGiftSerial().equals(weekTreasure.getSerial())).collect(Collectors.toList());
-        for (final SysGiftItemOpen obj : supremeList) {
+        List<SysGiftItemOpen> supremeList = (List)ItemDataPool.data_gift_item_open.stream().filter(item -> item.getGiftSerial().equals(Integer.valueOf(weekTreasure.getSerial()))).collect(Collectors.toList());
+        for (SysGiftItemOpen obj : supremeList) {
             treasureStoneCompose.getList().add(new FieldProp(obj.getSerial(), obj.getNum()));
         }
-        MessagePusher.pushMessage(role.getId(), treasureStoneCompose);
-        SpringUtils.getBean(MallService.class).openTreasure(role);
+        MessagePusher.pushMessage((long)role.getId(), treasureStoneCompose);
+        ((MallService)SpringUtils.getBean(MallService.class)).openTreasure(role);
         return null;
     }
     

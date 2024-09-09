@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.book.acsrypet.pojo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class AcsryPetSkillParam implements Serializable
@@ -25,7 +23,6 @@ public class AcsryPetSkillParam implements Serializable
         this.pval = pval;
     }
     
-    @ConstructorProperties({ "serial", "pval" })
     public AcsryPetSkillParam(final int serial, final double pval) {
         this.serial = serial;
         this.pval = pval;

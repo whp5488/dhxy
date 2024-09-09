@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.data;
 
 import com.kitty.system.game.role.domain.Role;
@@ -12,26 +11,29 @@ import com.kitty.system.game.team.domain.Team;
 
 public class ActivityGlobalFunc
 {
-    public static Team getApproximate(final Team team, final ArrayList<Team> arrayList) {
+    public ActivityGlobalFunc() {
+    }
+    
+    public static Team getApproximate(Team team, ArrayList<Team> arrayList) {
         if (team == null || arrayList.size() <= 0) {
             return null;
         }
-        final List<Approximate> objects = new ArrayList<Approximate>(arrayList.size());
-        for (final Team t : arrayList) {
-            final int score = getTeamSunEquipScore(t);
+        List<Approximate> objects = new ArrayList<>(arrayList.size());
+        for (Team t : arrayList) {
+            int score = getTeamSunEquipScore(t);
             objects.add(new Approximate(t.getId(), score));
         }
-        final Approximate approximate = getApproximate(getTeamSunEquipScore(team), objects);
+        Approximate approximate = getApproximate(getTeamSunEquipScore(team), objects);
         return arrayList.stream().filter(e -> e.getId() == approximate.getId()).findFirst().orElse(null);
     }
     
-    public static int getTeamSunEquipScore(final Team team) {
+    public static int getTeamSunEquipScore(Team team) {
         int score = 0;
         if (team != null) {
-            final List<Member> list = team.getList();
+            List<Member> list = team.getList();
             for (int i = 0; i < list.size(); ++i) {
-                final Member member = list.get(i);
-                final Role role = SpringUtils.getRoleService().getPlayer(member.getRoleId());
+                Member member = list.get(i);
+                Role role = SpringUtils.getRoleService().getPlayer(member.getRoleId());
                 if (role != null) {
                     score += DataGlobalFunc.getEquipScore(SpringUtils.getEquipService().selectWearEquip(role));
                 }
@@ -40,7 +42,7 @@ public class ActivityGlobalFunc
         return score;
     }
     
-    public static Approximate getApproximate(final int x, final List<Approximate> src) {
+    public static Approximate getApproximate(int x, List<Approximate> src) {
         if (src == null) {
             return null;
         }
@@ -50,7 +52,7 @@ public class ActivityGlobalFunc
         int minDifference = Math.abs(src.get(0).getNum() - x);
         int minIndex = 0;
         for (int i = 1; i < src.size(); ++i) {
-            final int temp = Math.abs(src.get(i).getNum() - x);
+            int temp = Math.abs(src.get(i).getNum() - x);
             if (temp < minDifference) {
                 minIndex = i;
                 minDifference = temp;
@@ -59,14 +61,14 @@ public class ActivityGlobalFunc
         return src.get(minIndex);
     }
     
-    public static void main(final String[] args) {
-        final List<Approximate> list = new ArrayList<Approximate>();
+    public static void main(String[] args) {
+        List<Approximate> list = new ArrayList<>();
         list.add(new Approximate(1, 10));
         list.add(new Approximate(2, 16));
         list.add(new Approximate(3, 8));
         list.add(new Approximate(4, 20));
         list.add(new Approximate(5, 6));
-        final Approximate approximate = getApproximate(7, list);
+        Approximate approximate = getApproximate(7, list);
         System.out.println("approximate = " + approximate.getNum());
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.handler.timing.water;
 
 import com.kitty.system.enums.war.wardef.WarMaxRound;
@@ -22,19 +21,15 @@ import com.kitty.system.game.activity.common.EventsUtils;
 import java.util.HashMap;
 import com.kitty.system.game.activity.model.user.lu.WaterData;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import com.kitty.system.game.activity.model.user.lu.vo.WaterFight;
 import java.util.LinkedHashMap;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
 import com.kitty.system.game.role.domain.Role;
 import com.kitty.system.game.team.domain.Team;
 import java.util.Iterator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.function.Function;
 import java.util.Comparator;
 import java.util.List;
 import com.kitty.system.game.activity.model.user.lu.WaterPkData;
@@ -73,18 +68,21 @@ public class WaterPkHandler extends ActivityHandler
     private static final String FINISH_TIPS = "今晚的水陆大会已结束，各位可以离场，下次水陆大会再战吧！#<E:90>#";
     private static final String COMPENSATE_TIPS;
     
+    public WaterPkHandler() {
+    }
+    
     protected int getFightType() {
         return FIGHT_TYPE.WATER_PK.getValue();
     }
     
-    private boolean isMatchFightType(final int fightType) {
+    private boolean isMatchFightType(int fightType) {
         return this.getFightType() == fightType;
     }
     
     public void start() {
         this.logger.error("水陆大会对决开始");
         try {
-            final WaterSet waterSet = this.waterHandler.getWaterSet();
+            WaterSet waterSet = this.waterHandler.getWaterSet();
             this.withdraw();
             this.waterHandler.getWaterData().setStage((byte)1);
             this.grouping();
@@ -94,9 +92,9 @@ public class WaterPkHandler extends ActivityHandler
                 public void run() {
                     WaterPkHandler.this.check();
                 }
-            }, 10000L, waterSet.getPeriod() * 1000);
+            }, 10000L, (long)(waterSet.getPeriod() * 1000));
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.end();
             e.printStackTrace();
             this.logger.error("水陆大会PK阶段开始错误：{}", e.getMessage());
@@ -104,84 +102,97 @@ public class WaterPkHandler extends ActivityHandler
     }
     
     public void withdraw() {
-        final List<Integer> clearTeamList = new ArrayList<Integer>();
-        final WaterSet waterSet = this.waterHandler.getWaterSet();
+        List<Integer> clearTeamList = new ArrayList<>();
+        WaterSet waterSet = this.waterHandler.getWaterSet();
         List<WaterPkData> list = this.waterHandler.getWaterData().getPkDataList();
-        for (final WaterPkData data : list) {
-            final Team team = this.teamService.getTeamByTeamId(data.getTeamId());
+        for (WaterPkData data : list) {
+            Team team = this.teamService.getTeamByTeamId(data.getTeamId());
             if (team == null) {
-                clearTeamList.add(data.getTeamId());
-                for (final Long member : data.getMembers()) {
-                    final Role role = this.roleService.getPlayer(member);
-                    if (role != null && this.waterHandler.isInMap(role)) {
-                        role.pushTempCache("lu_leave", true);
-                        this.teamService.leave(role, false);
-                        this.waterHandler.leave(role);
+                clearTeamList.add(Integer.valueOf(data.getTeamId()));
+                for (Long member : data.getMembers()) {
+                    Role role2 = this.roleService.getPlayer((long)member);
+                    if (role2 != null && this.waterHandler.isInMap(role2)) {
+                        role2.pushTempCache("lu_leave", Boolean.valueOf(true));
+                        this.teamService.leave(role2, false);
+                        this.waterHandler.leave(role2);
+                    }
+                    else {
+                        continue;
                     }
                 }
             }
             else if (team != null && this.teamService.getTeamCount(team) < waterSet.getMinTeamMemberCount()) {
-                final Role player = this.roleService.getPlayer(team.getLeaderUid());
-                if (player != null) {
-                    this.waterHandler.leave(player);
+                Role player2 = this.roleService.getPlayer(team.getLeaderUid());
+                if (player2 != null) {
+                    this.waterHandler.leave(player2);
                 }
                 else {
-                    this.logger.error("水陆比赛开始前弃权,队伍人数小于参赛最小人数清理出场。获取角色错误：{}", (Object)team.getLeaderUid());
+                    this.logger.error("水陆比赛开始前弃权,队伍人数小于参赛最小人数清理出场。获取角色错误：{}", Long.valueOf(team.getLeaderUid()));
                 }
-                clearTeamList.add(team.getId());
+                clearTeamList.add(Integer.valueOf(team.getId()));
             }
             else {
                 boolean flag = true;
-                final List<Integer> objects = this.teamService.getTeamAfkMember(team);
-                for (final Integer object : objects) {
-                    final Role role2 = this.roleService.getPlayer(object);
-                    if (role2 != null) {
-                        role2.pushTempCache("lu_leave", true);
-                        this.teamService.leave(role2, false);
-                        this.waterHandler.leave(role2);
-                        role2.pushTempCache("lu_leave", false);
-                        if (this.teamService.getTeamCount(team) >= waterSet.getMinTeamMemberCount()) {
+                List<Integer> objects = this.teamService.getTeamAfkMember(team);
+                for (Integer object : objects) {
+                    Role role = this.roleService.getPlayer((int)object);
+                    if (role != null) {
+                        role.pushTempCache("lu_leave", Boolean.valueOf(true));
+                        this.teamService.leave(role, false);
+                        this.waterHandler.leave(role);
+                        role.pushTempCache("lu_leave", Boolean.valueOf(false));
+                        if (this.teamService.getTeamCount(team) < waterSet.getMinTeamMemberCount()) {
+                            Role player = this.roleService.getPlayer(team.getLeaderUid());
+                            if (player != null) {
+                                this.waterHandler.leave(player);
+                            }
+                            clearTeamList.add(Integer.valueOf(team.getId()));
+                            flag = false;
+                        }
+                        else {
                             continue;
                         }
-                        final Role player2 = this.roleService.getPlayer(team.getLeaderUid());
-                        if (player2 != null) {
-                            this.waterHandler.leave(player2);
-                        }
-                        clearTeamList.add(team.getId());
-                        flag = false;
+                    }
+                    else {
+                        continue;
                     }
                 }
-                if (!flag) {
+                if (flag) {
+                    this.waterHandler.enter(data, team);
+                }
+                else {
                     continue;
                 }
-                this.waterHandler.enter(data, team);
             }
         }
-        for (final int teamId : clearTeamList) {
+        for (int teamId : clearTeamList) {
             list.removeIf(e -> e.getTeamId() == teamId);
         }
-        list = list.stream().sorted(Comparator.comparing(WaterPkData::getScore, Comparator.reverseOrder()).thenComparing(WaterPkData::getMemberEquipScore, Comparator.reverseOrder()).thenComparing(WaterPkData::getMemberGrade, Comparator.reverseOrder())).collect(Collectors.toList());
+        list = (List)list.stream().sorted(Comparator.comparing(WaterPkData::getScore, Comparator.reverseOrder()).thenComparing(WaterPkData::getMemberEquipScore, Comparator.reverseOrder()).thenComparing(WaterPkData::getMemberGrade, Comparator.reverseOrder())).collect(Collectors.toList());
         for (int surplus = list.size() % 4, i = 0; i < surplus; ++i) {
-            final int index = list.size() - 1;
-            final WaterPkData data2 = list.get(index);
+            int index = list.size() - 1;
+            WaterPkData data2 = (WaterPkData)list.get(index);
             this.clearSurplus(data2);
             list.remove(index);
         }
         this.waterHandler.getWaterData().setPkDataList(list);
     }
     
-    public void clearSurplus(final WaterPkData data) {
+    public void clearSurplus(WaterPkData data) {
         if (data != null) {
-            final Team team = this.teamService.getTeamByTeamId(data.getTeamId());
-            final Role leader = this.roleService.getPlayer(team.getLeaderUid());
+            Team team = this.teamService.getTeamByTeamId(data.getTeamId());
+            Role leader = this.roleService.getPlayer(team.getLeaderUid());
             if (leader != null) {
                 this.waterHandler.leave(leader);
             }
-            for (final Long id : data.getMembers()) {
-                final Role player = this.roleService.getPlayer(id);
+            for (Long id : data.getMembers()) {
+                Role player = this.roleService.getPlayer((long)id);
                 if (player != null) {
                     this.waterHandler.compensate(player, 50);
                     MessagePusher.pushMessage(player, new RespMsg(WaterPkHandler.COMPENSATE_TIPS));
+                }
+                else {
+                    continue;
                 }
             }
         }
@@ -189,64 +200,73 @@ public class WaterPkHandler extends ActivityHandler
     
     public void grouping() {
         short rank = 1;
-        LinkedHashMap<Integer, WaterPkData> map = new LinkedHashMap<>(4);
-        final List<WaterPkData> pkDataList = this.waterHandler.getWaterData().getPkDataList();
+        LinkedHashMap<Integer, WaterPkData> map = new LinkedHashMap(4);
+        List<WaterPkData> pkDataList = this.waterHandler.getWaterData().getPkDataList();
         for (int i = 0; i < pkDataList.size(); ++i) {
-            map.put(i, pkDataList.get(i));
+            map.put(Integer.valueOf(i), pkDataList.get(i));
             if (map.size() >= 4) {
                 grouping(pkDataList, map, rank);
-                map = new LinkedHashMap<>(4);
+                map = new LinkedHashMap(4);
                 ++rank;
             }
         }
     }
     
-    public static void grouping(final List<WaterPkData> pkDataList, final LinkedHashMap<Integer, WaterPkData> map, final short rank) {
-        for (final int index : map.keySet()) {
+    public static void grouping(List<WaterPkData> pkDataList, LinkedHashMap<Integer, WaterPkData> map, short rank) {
+        for (int index : map.keySet()) {
             boolean flag = true;
-            final WaterPkData data = map.get(index);
+            WaterPkData data = (WaterPkData)map.get(Integer.valueOf(index));
             while (flag) {
-                for (final int key : map.keySet()) {
-                    final WaterPkData pkData = map.get(key);
-                    final WaterFight fight = data.getFight().stream().filter(e -> e.getTeamId() == pkData.getTeamId()).findFirst().orElse(null);
+                for (int key : map.keySet()) {
+                    WaterPkData pkData = (WaterPkData)map.get(Integer.valueOf(key));
+                    WaterFight fight = (WaterFight)data.getFight().stream().filter(e -> e.getTeamId() == pkData.getTeamId()).findFirst().orElse(null);
                     if (data.getTeamId() != pkData.getTeamId() && fight == null) {
-                        final byte session = getSession(data.getFight());
-                        final WaterFight waterFight = pkData.getFight().stream().filter(e -> e.getSession() == session).findFirst().orElse(null);
-                        if (waterFight != null) {
+                        byte session = getSession(data.getFight());
+                        WaterFight waterFight = (WaterFight)pkData.getFight().stream().filter(e -> e.getSession() == session).findFirst().orElse(null);
+                        if (waterFight == null) {
+                            data.getFight().add(new WaterFight(pkData.getTeamId(), pkData.getMembers(), (byte)0, session));
+                            pkData.getFight().add(new WaterFight(data.getTeamId(), data.getMembers(), (byte)0, session));
+                        }
+                        else {
                             continue;
                         }
-                        data.getFight().add(new WaterFight(pkData.getTeamId(), pkData.getMembers(), (byte)0, session));
-                        pkData.getFight().add(new WaterFight(data.getTeamId(), data.getMembers(), (byte)0, session));
+                    }
+                    else {
+                        continue;
                     }
                 }
-                if (data.getFight().size() >= 3) {
-                    flag = false;
+                if (data.getFight().size() < 3) {
+                    continue;
                 }
+                flag = false;
             }
             data.setRank(rank);
-            final List<WaterFight> collect = data.getFight().stream().sorted(Comparator.comparing(WaterFight::getSession)).collect(Collectors.toList());
+            List<WaterFight> collect = (List)data.getFight().stream().sorted(Comparator.comparing(WaterFight::getSession)).collect(Collectors.toList());
             data.setFight(collect);
             pkDataList.set(index, data);
         }
     }
     
-    public static byte getSession(final List<WaterFight> list) {
+    public static byte getSession(List<WaterFight> list) {
         if (list.size() <= 0) {
             return 1;
         }
-        final List<Byte> integers = new ArrayList<Byte>() {
+        List<Byte> integers = new ArrayList<Byte>() {
             {
-                this.add((byte)1);
-                this.add((byte)2);
-                this.add((byte)3);
+                this.add(Byte.valueOf((byte)1));
+                this.add(Byte.valueOf((byte)2));
+                this.add(Byte.valueOf((byte)3));
             }
         };
-        for (final WaterFight waterFight : list) {
-            if (integers.contains(waterFight.getSession())) {
-                integers.removeIf(e -> e.equals(waterFight.getSession()));
+        for (WaterFight waterFight : list) {
+            if (integers.contains(Byte.valueOf(waterFight.getSession()))) {
+                integers.removeIf(e -> e.equals(Byte.valueOf(waterFight.getSession())));
+            }
+            else {
+                continue;
             }
         }
-        return Collections.min((Collection<? extends Byte>)integers);
+        return (byte)Collections.min(integers);
     }
     
     private void check() {
@@ -256,29 +276,31 @@ public class WaterPkHandler extends ActivityHandler
                 this.end();
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("水陆大会匹配出错-----------------------------------------------");
         }
     }
     
     private boolean isCanEnd() {
-        final WaterData data = this.waterHandler.getWaterData();
+        WaterData data = this.waterHandler.getWaterData();
         return data == null || this.sceneTeamCount(data) <= 1 || Calendar.getInstance().after(data.getEndTime());
     }
     
-    public int sceneTeamCount(final WaterData data) {
+    public int sceneTeamCount(WaterData data) {
         int count = 0;
         if (data != null) {
-            for (final WaterPkData obj : data.getPkDataList()) {
-                final Role leader = this.teamService.getTeamLeader(obj.getTeamId());
+            for (WaterPkData obj : data.getPkDataList()) {
+                Role leader = this.teamService.getTeamLeader(obj.getTeamId());
                 if (leader == null) {
                     continue;
                 }
-                if (!this.waterHandler.isInMap(leader)) {
+                if (this.waterHandler.isInMap(leader)) {
+                    ++count;
+                }
+                else {
                     continue;
                 }
-                ++count;
             }
         }
         return count;
@@ -286,59 +308,64 @@ public class WaterPkHandler extends ActivityHandler
     
     public void end() {
         try {
-            final WaterData waterData = this.waterHandler.getWaterData();
+            WaterData waterData = this.waterHandler.getWaterData();
             waterData.setStage((byte)2);
             this.logger.error("水陆大会对决结束");
-            for (final WaterPkData obj : waterData.getPkDataList()) {
-                final Role leaderRole = this.teamService.getTeamLeader(obj.getTeamId());
+            for (WaterPkData obj : waterData.getPkDataList()) {
+                Role leaderRole = this.teamService.getTeamLeader(obj.getTeamId());
                 if (leaderRole == null) {
                     continue;
                 }
                 this.waterHandler.leaveMap(leaderRole);
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         if (this.scheduledFuture != null) {
-            this.scheduledFuture.cancel(Boolean.FALSE);
+            this.scheduledFuture.cancel((boolean)Boolean.FALSE);
         }
     }
     
     private void match() {
         try {
-            final WaterData obj = this.waterHandler.getWaterData();
-            final List<WaterPkData> objPkDataList = obj.getPkDataList();
-            final Map<Integer, Integer> map = new HashMap<Integer, Integer>(objPkDataList.size());
-            for (final WaterPkData data : objPkDataList) {
-                if (map.get(data.getTeamId()) == null) {
-                    final WaterFight fight = EventsUtils.getMinNotFight(data);
-                    if (fight == null) {
+            WaterData obj = this.waterHandler.getWaterData();
+            List<WaterPkData> objPkDataList = obj.getPkDataList();
+            Map<Integer, Integer> map = new HashMap(objPkDataList.size());
+            for (WaterPkData data : objPkDataList) {
+                if (map.get(Integer.valueOf(data.getTeamId())) == null) {
+                    WaterFight fight = EventsUtils.getMinNotFight(data);
+                    if (fight != null) {
+                        Team teamA = this.teamService.getTeamByTeamId(data.getTeamId());
+                        Team teamB = this.teamService.getTeamByTeamId(fight.getTeamId());
+                        this.match(teamA, teamB);
+                        map.put(Integer.valueOf(teamA.getId()), Integer.valueOf(teamB.getId()));
+                        map.put(Integer.valueOf(teamB.getId()), Integer.valueOf(teamA.getId()));
+                    }
+                    else {
                         continue;
                     }
-                    final Team teamA = this.teamService.getTeamByTeamId(data.getTeamId());
-                    final Team teamB = this.teamService.getTeamByTeamId(fight.getTeamId());
-                    this.match(teamA, teamB);
-                    map.put(teamA.getId(), teamB.getId());
-                    map.put(teamB.getId(), teamA.getId());
+                }
+                else {
+                    continue;
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("匹配对手出错-----------------------------------------------");
         }
     }
     
-    private void match(final Team teamA, final Team teamB) {
+    private void match(Team teamA, Team teamB) {
         if (teamA != null && teamB != null) {
-            final WaterData data = this.waterHandler.getWaterData();
-            final WaterPkData pkDataA = data.getPkDataList().stream().filter(e -> e.getTeamId() == teamA.getId()).findFirst().orElse(null);
-            final WaterPkData pkDataB = data.getPkDataList().stream().filter(e -> e.getTeamId() == teamB.getId()).findFirst().orElse(null);
-            final Role playerA = this.roleService.getPlayer(teamA.getLeaderUid());
-            final Role playerB = this.roleService.getPlayer(teamB.getLeaderUid());
-            final boolean inMapA = this.waterHandler.isInMap(playerA);
-            final boolean inMapB = this.waterHandler.isInMap(playerB);
+            WaterData data = this.waterHandler.getWaterData();
+            WaterPkData pkDataA = (WaterPkData)data.getPkDataList().stream().filter(e -> e.getTeamId() == teamA.getId()).findFirst().orElse(null);
+            WaterPkData pkDataB = (WaterPkData)data.getPkDataList().stream().filter(e -> e.getTeamId() == teamB.getId()).findFirst().orElse(null);
+            Role playerA = this.roleService.getPlayer(teamA.getLeaderUid());
+            Role playerB = this.roleService.getPlayer(teamB.getLeaderUid());
+            boolean inMapA = this.waterHandler.isInMap(playerA);
+            boolean inMapB = this.waterHandler.isInMap(playerB);
             if (!inMapA && !inMapB) {
                 return;
             }
@@ -356,14 +383,14 @@ public class WaterPkHandler extends ActivityHandler
                 pkDataA.updateTeamMember((byte)1);
             }
             else {
-                this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", teamA.getId());
+                this.logger.error("1.更新组队成员获取信息错误：队伍ID = {}", Integer.valueOf(teamA.getId()));
             }
             if (pkDataB != null) {
                 pkDataB.setTime(0);
                 pkDataB.updateTeamMember((byte)1);
             }
             else {
-                this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", teamB.getId());
+                this.logger.error("2.更新组队成员获取信息错误：队伍ID = {}", Integer.valueOf(teamB.getId()));
             }
         }
     }
@@ -375,7 +402,7 @@ public class WaterPkHandler extends ActivityHandler
         SchedulerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
-                final Fight fight = FightFactory.getFightFactory(fightType).create(mapId, WaterPkHandler.this.getFightType(), teamA.getList(), teamB.getList());
+                Fight fight = FightFactory.getFightFactory(fightType).create(mapId, Integer.valueOf(WaterPkHandler.this.getFightType()), teamA.getList(), teamB.getList());
                 fight.setMaxRound(WaterPkHandler.MAX_ROUND);
                 fight.start();
             }
@@ -383,11 +410,11 @@ public class WaterPkHandler extends ActivityHandler
     }
     
     @Override
-    public void handleFightEnd(final FightEndEvent fightEndEvent) {
+    public void handleFightEnd(FightEndEvent fightEndEvent) {
         ThreadLocalUtil.addLocalTask(fightEndEvent.getRole(), () -> this.doFightEnd(fightEndEvent.getRole(), fightEndEvent));
     }
     
-    private void doFightEnd(final Role role, final FightEndEvent fightEndEvent) {
+    private void doFightEnd(Role role, FightEndEvent fightEndEvent) {
         try {
             if (this.teamService.isInTeam(role) && !this.teamService.isTeamLeader(role)) {
                 return;
@@ -395,76 +422,82 @@ public class WaterPkHandler extends ActivityHandler
             if (!this.isMatchFightType(fightEndEvent.getFightType())) {
                 return;
             }
-            if (!role.getPos().getMapId().equals(3003)) {
+            if (!role.getPos().getMapId().equals(Integer.valueOf(3003))) {
                 return;
             }
-            final WaterData waterData = this.waterHandler.getWaterData();
-            final Team team = this.teamService.getTeam(role.getRoleId());
+            WaterData waterData = this.waterHandler.getWaterData();
+            Team team = this.teamService.getTeam((int)role.getRoleId());
             if (team == null) {
                 return;
             }
-            final WaterPkData itselfData = waterData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
-            if (itselfData == null) {
+            WaterPkData itselfData = (WaterPkData)waterData.getPkDataList().stream().filter(e -> e.getTeamId() == team.getId()).findFirst().orElse(null);
+            if (itselfData != null) {
+                itselfData.updateTeamMember((byte)0);
+                itselfData.subPkValue((short)1);
+                FightInfo fightInfo = EventsUtils.getFightInfo(fightEndEvent.getRolesA(), fightEndEvent.getRolesB(), (long)role.getId());
+                if (fightInfo == null) {
+                    return;
+                }
+                WaterFight fight = this.updateFightData(itselfData, fightInfo, fightEndEvent.getStatus());
+                this.doFightEnd(fightEndEvent.getStatus(), fightInfo, itselfData, fight.getSession());
+            }
+            else {
                 this.logger.error("战斗结束后获取队伍ID信息失败");
                 return;
             }
-            itselfData.updateTeamMember((byte)0);
-            itselfData.subPkValue((short)1);
-            final FightInfo fightInfo = EventsUtils.getFightInfo(fightEndEvent.getRolesA(), fightEndEvent.getRolesB(), role.getId());
-            if (fightInfo == null) {
-                return;
-            }
-            final WaterFight fight = this.updateFightData(itselfData, fightInfo, fightEndEvent.getStatus());
-            this.doFightEnd(fightEndEvent.getStatus(), fightInfo, itselfData, fight.getSession());
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
             this.logger.error("战斗结束后操作错误-------------------------------------------------------");
         }
     }
     
-    private WaterFight updateFightData(final WaterPkData pkData, final FightInfo fightInfo, final byte state) {
-        final WaterFight fight = EventsUtils.getMinNotFight(pkData);
+    private WaterFight updateFightData(WaterPkData pkData, FightInfo fightInfo, byte state) {
+        WaterFight fight = EventsUtils.getMinNotFight(pkData);
         if (fight == null) {
             return null;
         }
-        for (final WaterFight waterFight : pkData.getFight()) {
+        for (WaterFight waterFight : pkData.getFight()) {
             if (waterFight.getTeamId() == fight.getTeamId()) {
                 waterFight.setState(state);
                 waterFight.setMembers(fightInfo.getEnemy());
                 break;
             }
+            continue;
         }
         return fight;
     }
     
-    private void doFightWin(final FightInfo fightInfo, final int score, final int feats) {
-        for (final Long id : fightInfo.getItself()) {
-            final Role player = this.roleService.getPlayer(id);
+    private void doFightWin(FightInfo fightInfo, int score, int feats) {
+        for (Long id : fightInfo.getItself()) {
+            Role player = this.roleService.getPlayer((long)id);
             if (player != null) {
                 this.waterHandler.compensate(player, score);
-                this.roleService.addCurrency(player, Const.RES_TYPE_FEATS, (long)feats, "水陆大会", false, false);
+                this.roleService.addCurrency(player, Const.RES_TYPE_FEATS, Long.valueOf((long)feats), "水陆大会", false, false);
+            }
+            else {
+                continue;
             }
         }
     }
     
-    public void doFightEnd(final byte result, final FightInfo fightInfo, final WaterPkData itselfData, final byte session) {
+    public void doFightEnd(byte result, FightInfo fightInfo, WaterPkData itselfData, byte session) {
         try {
-            final WaterSet waterSet = this.waterHandler.getWaterSet();
-            final RespWaterClashResult resp = new RespWaterClashResult();
+            WaterSet waterSet = this.waterHandler.getWaterSet();
+            RespWaterClashResult resp = new RespWaterClashResult();
             resp.setItself(this.waterHandler.fightMember(fightInfo.getItself(), fightInfo.getItselfLeader()));
             resp.setEnemy(this.waterHandler.fightMember(fightInfo.getEnemy(), fightInfo.getEnemyLeader()));
             resp.setResult(result);
             if (result == 1) {
-                final int score = waterSet.getScore() + waterSet.getRankExtraScore().getInt(itselfData.getRank() + "_SCORE", 0);
-                final int feats = waterSet.getFeats() + waterSet.getRankExtraScore().getInt(itselfData.getRank() + "_FEATS", 0);
+                int score = waterSet.getScore() + waterSet.getRankExtraScore().getInt((int)itselfData.getRank() + "_SCORE", 0);
+                int feats = waterSet.getFeats() + waterSet.getRankExtraScore().getInt((int)itselfData.getRank() + "_FEATS", 0);
                 resp.setScore((short)score);
                 resp.setFeats((short)feats);
                 this.doFightWin(fightInfo, score, feats);
             }
             itselfData.setTime(0);
             for (int i = 0; i < fightInfo.getItself().size(); ++i) {
-                final Role player = this.roleService.getPlayer(fightInfo.getItself().get(i));
+                Role player = this.roleService.getPlayer((long)fightInfo.getItself().get(i));
                 if (player != null) {
                     this.sendAward(player, result);
                     this.waterHandler.sendRespIcon(player);
@@ -473,27 +506,28 @@ public class WaterPkHandler extends ActivityHandler
             }
             this.assigning((byte)(session + 1), itselfData);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    private void assigning(final byte session, final WaterPkData itselfData) {
+    private void assigning(byte session, WaterPkData itselfData) {
         if (session > 3) {
-            final Team team = this.teamService.getTeamByTeamId(itselfData.getTeamId());
+            Team team = this.teamService.getTeamByTeamId(itselfData.getTeamId());
             if (team == null) {
                 return;
             }
             this.teamService.memberHandleThreadLocal(team, memberRole -> MessagePusher.pushMessage(memberRole, new RespMsg("今晚的水陆大会已结束，各位可以离场，下次水陆大会再战吧！#<E:90>#")));
-            final long count = itselfData.getFight().stream().filter(e -> e.getState() == 1).count();
+            long count = itselfData.getFight().stream().filter(e -> e.getState() == 1).count();
             if (count >= 3L) {
-                final BagService bagService = SpringUtils.getBean(BagService.class);
+                BagService bagService = (BagService)SpringUtils.getBean(BagService.class);
                 this.teamService.memberHandleThreadLocal(team, memberRole -> bagService.addGoods(memberRole, 30023, 1, 0, true, true, "水陆三胜"));
             }
+            return;
         }
         else {
-            final WaterFight needFight = itselfData.getFight().stream().filter(e -> e.getSession() == session).findFirst().orElse(null);
-            final WaterPkData enemyData = this.waterHandler.getWaterData().getPkDataList().stream().filter(e -> e.getTeamId() == needFight.getTeamId()).findFirst().orElse(null);
+            WaterFight needFight = (WaterFight)itselfData.getFight().stream().filter(e -> e.getSession() == session).findFirst().orElse(null);
+            WaterPkData enemyData = (WaterPkData)this.waterHandler.getWaterData().getPkDataList().stream().filter(e -> e.getTeamId() == needFight.getTeamId()).findFirst().orElse(null);
             if (enemyData == null) {
                 this.jumpWin(itselfData, needFight);
                 return;
@@ -503,7 +537,7 @@ public class WaterPkHandler extends ActivityHandler
                 this.jumpWin(itselfData, needFight);
                 return;
             }
-            final Role player = this.roleService.getPlayer(enemyTeam.getLeaderUid());
+            Role player = this.roleService.getPlayer(enemyTeam.getLeaderUid());
             if (player == null) {
                 this.jumpWin(itselfData, needFight);
                 return;
@@ -515,7 +549,7 @@ public class WaterPkHandler extends ActivityHandler
             if (enemyData.getState() == 0) {
                 final Team itselfTeam = this.teamService.getTeamByTeamId(itselfData.getTeamId());
                 this.cancelTask(enemyData.getSchedule());
-                final int time = new Long(System.currentTimeMillis() / 1000L).intValue() + 60;
+                int time = new Long(System.currentTimeMillis() / 1000L).intValue() + 60;
                 enemyData.setTime(time);
                 itselfData.setTime(time);
                 this.teamService.memberHandleThreadLocal(itselfTeam, memberRole -> this.waterHandler.sendRespIcon(memberRole));
@@ -524,7 +558,7 @@ public class WaterPkHandler extends ActivityHandler
             }
             else {
                 final Team itselfTeam = this.teamService.getTeamByTeamId(itselfData.getTeamId());
-                final ScheduledFuture<?> schedule = SchedulerManager.getInstance().scheduleAtFixedRate(new Runnable() {
+                ScheduledFuture<?> schedule = SchedulerManager.getInstance().scheduleAtFixedRate(new Runnable() {
                     @Override
                     public void run() {
                         WaterPkHandler.this.scheduler(itselfTeam.getId(), enemyTeam.getId());
@@ -532,23 +566,24 @@ public class WaterPkHandler extends ActivityHandler
                 }, 0L, 60000L);
                 itselfData.setSchedule(schedule);
             }
+            return;
         }
     }
     
-    public void awaitFight(final Team teamA, final Team teamB) {
+    public void awaitFight(Team teamA, Team teamB) {
         this.match(teamA, teamB);
     }
     
-    public void scheduler(final int itselfTeamId, final int enemyTeamId) {
-        final WaterPkData itselfData = this.waterHandler.getWaterData().getPkDataList().stream().filter(e -> e.getTeamId() == itselfTeamId).findFirst().orElse(null);
-        final WaterFight needFight = itselfData.getFight().stream().filter(e -> e.getTeamId() == enemyTeamId).findFirst().orElse(null);
-        final Team enemyTeam = this.teamService.getTeamByTeamId(enemyTeamId);
+    public void scheduler(int itselfTeamId, int enemyTeamId) {
+        WaterPkData itselfData = (WaterPkData)this.waterHandler.getWaterData().getPkDataList().stream().filter(e -> e.getTeamId() == itselfTeamId).findFirst().orElse(null);
+        WaterFight needFight = (WaterFight)itselfData.getFight().stream().filter(e -> e.getTeamId() == enemyTeamId).findFirst().orElse(null);
+        Team enemyTeam = this.teamService.getTeamByTeamId(enemyTeamId);
         if (enemyTeam == null) {
             this.cancelTask(itselfData.getSchedule());
             this.jumpWin(itselfData, needFight);
             return;
         }
-        final Role player = this.roleService.getPlayer(enemyTeam.getLeaderUid());
+        Role player = this.roleService.getPlayer(enemyTeam.getLeaderUid());
         if (player == null) {
             this.cancelTask(itselfData.getSchedule());
             this.jumpWin(itselfData, needFight);
@@ -557,60 +592,64 @@ public class WaterPkHandler extends ActivityHandler
         if (!this.waterHandler.isInMap(player)) {
             this.cancelTask(itselfData.getSchedule());
             this.jumpWin(itselfData, needFight);
+            return;
         }
+        return;
     }
     
-    public void jumpWin(final WaterPkData itselfData, final WaterFight fight) {
-        final Team itselfTeam = this.teamService.getTeamByTeamId(itselfData.getTeamId());
+    public void jumpWin(WaterPkData itselfData, WaterFight fight) {
+        Team itselfTeam = this.teamService.getTeamByTeamId(itselfData.getTeamId());
         if (itselfTeam == null) {
             return;
         }
-        final List<Role> listA = new ArrayList<Role>();
+        List<Role> listA = new ArrayList<>();
         for (int i = 0; i < itselfTeam.getList().size(); ++i) {
-            final Member member = itselfTeam.getList().get(i);
-            if (member != null) {
-                if (member.isInTeam()) {
-                    final Role player = this.roleService.getPlayer(member.getId());
-                    if (player != null) {
-                        listA.add(player);
-                    }
+            Member member = (Member)itselfTeam.getList().get(i);
+            if (member != null && member.isInTeam()) {
+                Role player = this.roleService.getPlayer((long)member.getId());
+                if (player != null) {
+                    listA.add(player);
                 }
             }
         }
-        final List<Role> listB = new ArrayList<Role>();
-        for (final Long id : fight.getMembers()) {
-            final Role player2 = this.roleService.getPlayer(id);
+        List<Role> listB = new ArrayList<>();
+        for (Long id : fight.getMembers()) {
+            Role player2 = this.roleService.getPlayer((long)id);
             if (player2 != null) {
                 listA.add(player2);
             }
+            else {
+                continue;
+            }
         }
-        final FightInfo fightInfo = EventsUtils.getFightInfo(listA, listB, itselfTeam.getLeaderUid());
+        FightInfo fightInfo = EventsUtils.getFightInfo(listA, listB, itselfTeam.getLeaderUid());
         if (fightInfo == null) {
             return;
         }
-        final WaterFight atFight = this.updateFightData(itselfData, fightInfo, (byte)1);
+        WaterFight atFight = this.updateFightData(itselfData, fightInfo, (byte)1);
         this.doFightEnd((byte)1, fightInfo, itselfData, atFight.getSession());
+        return;
     }
     
-    private void cancelTask(final ScheduledFuture<?> task) {
+    private void cancelTask(ScheduledFuture<?> task) {
         if (task != null) {
-            task.cancel(Boolean.FALSE);
+            task.cancel((boolean)Boolean.FALSE);
         }
     }
     
-    private List<FiedValue> sendAward(final Role role, final byte type) {
-        final List<FiedValue> objects = new ArrayList<FiedValue>();
-        long heroExp = calculate(role.getLevel(), role.getRelive(), ItemClassify.HERO_EXP);
-        heroExp = (long)((type == 2) ? (heroExp * 0.75) : ((double)heroExp));
+    private List<FiedValue> sendAward(Role role, byte type) {
+        List<FiedValue> objects = new ArrayList<>();
+        long heroExp = calculate((int)role.getLevel(), (int)role.getRelive(), ItemClassify.HERO_EXP);
+        heroExp = (long)((type == 2) ? ((double)heroExp * 0.75) : ((double)heroExp));
         objects.add(new FiedValue(String.valueOf(ItemClassify.HERO_EXP.getId()), (byte)4, String.valueOf(heroExp)));
         this.roleService.addExp(role, heroExp, "", true);
-        final Integer combatPet = role.getExtendBox().getCombatPet();
-        if (combatPet > 0) {
-            final PetService petService = SpringUtils.getPetService();
-            final Pet pet = petService.selectPet(role).get(combatPet);
+        Integer combatPet = role.getExtendBox().getCombatPet();
+        if ((int)combatPet > 0) {
+            PetService petService = SpringUtils.getPetService();
+            Pet pet = (Pet)petService.selectPet(role).get(combatPet);
             if (pet != null) {
-                long calculate = calculate(pet.getPetLv(), pet.getRebirth(), ItemClassify.PET_EXP);
-                calculate = (long)((type == 2) ? (calculate * 0.75) : ((double)calculate));
+                long calculate = calculate((int)pet.getPetLv(), (int)pet.getRebirth(), ItemClassify.PET_EXP);
+                calculate = (long)((type == 2) ? ((double)calculate * 0.75) : ((double)calculate));
                 objects.add(new FiedValue(String.valueOf(ItemClassify.PET_EXP.getId()), (byte)4, String.valueOf(calculate)));
                 petService.addExp(role, pet, calculate, true);
             }
@@ -618,18 +657,18 @@ public class WaterPkHandler extends ActivityHandler
         return objects;
     }
     
-    private static long calculate(final int grade, final int rei, final ItemClassify type) {
+    private static long calculate(int grade, int rei, ItemClassify type) {
         if (type == ItemClassify.HERO_EXP) {
-            return BigDecimalUtil.decimalScaleDown(0, 1.9E7 * (1.0 + (grade + rei * 15.0) / 140.0 * 2.5) / 30.0 / 1.39 * (0.23 + Math.pow(1.0, 0.35)) * 1.3).longValue();
+            return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(1.9E7 * (1.0 + ((double)grade + (double)rei * 15.0) / 140.0 * 2.5) / 30.0 / 1.39 * (0.23 + Math.pow(1.0, 0.35)) * 1.3)).longValue();
         }
         if (type == ItemClassify.PET_EXP) {
-            return BigDecimalUtil.decimalScaleDown(0, 1.9E7 * (1.0 + (grade + rei * 15.0) / 140.0 * 2.5) / 30.0 / 1.39 * (0.23 + Math.pow(1.0, 0.35)) * 1.3 * 1.2).longValue();
+            return BigDecimalUtil.decimalScaleDown(Integer.valueOf(0), Double.valueOf(1.9E7 * (1.0 + ((double)grade + (double)rei * 15.0) / 140.0 * 2.5) / 30.0 / 1.39 * (0.23 + Math.pow(1.0, 0.35)) * 1.3 * 1.2)).longValue();
         }
         return 0L;
     }
     
     static {
         MAX_ROUND = WarMaxRound.WAR_MAX_ROUND_LU.getValue();
-        COMPENSATE_TIPS = String.format("你处在了水陆大会的最后一组而且不足4队无法比赛了，水陆举办人见你们太艰难，给予了你们%d水陆积分,下轮要继续加油啊少年", 50);
+        COMPENSATE_TIPS = String.format("你处在了水陆大会的最后一组而且不足4队无法比赛了，水陆举办人见你们太艰难，给予了你们%d水陆积分,下轮要继续加油啊少年", Integer.valueOf(50));
     }
 }

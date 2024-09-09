@@ -1,4 +1,3 @@
-
 package com.kitty.record;
 
 import java.util.Iterator;
@@ -30,7 +29,7 @@ public class RecordThread
     private final AtomicBoolean run;
     
     public RecordThread() {
-        this.queue = new BlockingUniqueQueue<Record>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -40,21 +39,18 @@ public class RecordThread
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("record-service").newThread(new Worker()).start();
+        new NamedThreadFactory("record-service").newThread(new RecordThread.Worker()).start();
         RecordThread.instance = this;
     }
     
-    public void add2Queue(final Record entity) {
-        this.queue.add(entity);
+    public void add2Queue(Record entity) {
     }
     
-    public void add2Queue(final long id, final int roleId, final short type, final byte classify, final String string, final String marking) {
-        final Record record = new Record(id, roleId, type, classify, string, System.currentTimeMillis(), marking);
-        this.queue.add(record);
+    public void add2Queue(long id, int roleId, short type, byte classify, String string, String marking) {
     }
     
-    private void saveToDb(final Record entity) {
-        this.mongoTemplate.insert((Object)entity);
+    private void saveToDb(Record entity) {
+        this.mongoTemplate.insert(entity);
     }
     
     @PreDestroy
@@ -63,14 +59,14 @@ public class RecordThread
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Record] 执行全部命令后关闭");
+        LoggerUtils.error("[db4Record] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<Record> it = this.queue.iterator();
+            Iterator<Record> it = this.queue.iterator();
             while (it.hasNext()) {
-                final Record obj = it.next();
+                Record obj = (Record)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -83,10 +79,10 @@ public class RecordThread
         public void run() {
             while (RecordThread.this.run.get()) {
                 try {
-                    final Record take = RecordThread.this.queue.take();
+                    Record take = (Record)RecordThread.this.queue.take();
                     RecordThread.this.saveToDb(take);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.system.game.pet.domain.PetBase;
@@ -21,19 +20,19 @@ public class RespZhenLuCasePet extends Message
     public RespZhenLuCasePet() {
     }
     
-    public RespZhenLuCasePet(final Pet pet) {
-        final PetBase petBase = pet.getPetBase();
+    public RespZhenLuCasePet(Pet pet) {
+        PetBase petBase = pet.getPetBase();
         this.id = String.valueOf(pet.getPetId());
-        this.serial = pet.getPetType();
-        this.grow = petBase.getGrow_up();
-        this.grade = petBase.getGrade_base();
-        this.hp = petBase.getHp_base();
-        this.mp = petBase.getMp_base();
-        this.ap = petBase.getAp_base();
-        this.sp = petBase.getSp_base();
+        this.serial = (int)pet.getPetType();
+        this.grow = (int)petBase.getGrow_up();
+        this.grade = (int)petBase.getGrade_base();
+        this.hp = (int)petBase.getHp_base();
+        this.mp = (int)petBase.getMp_base();
+        this.ap = (int)petBase.getAp_base();
+        this.sp = (int)petBase.getSp_base();
     }
     
-    public RespZhenLuCasePet(final String id, final int serial, final int grow, final int grade, final int hp, final int mp, final int ap, final int sp) {
+    public RespZhenLuCasePet(String id, int serial, int grow, int grade, int hp, int mp, int ap, int sp) {
         this.id = id;
         this.serial = serial;
         this.grow = grow;

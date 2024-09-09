@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.service;
 
 import com.kitty.system.game.ranking.pojo.QlkRankingSource;
@@ -19,44 +18,48 @@ import org.springframework.stereotype.Component;
 @Component
 public class SyncAppearance
 {
+    public SyncAppearance() {
+    }
+    
     @EventHandler({ EventType.CHANGE_EQUIP_WEAR })
-    public void handleChangeEquipEvent(final ChangeEquipEvent changeEquipEvent) {
-        final Role role = changeEquipEvent.getRole();
-        final WearEquip wearEquip = changeEquipEvent.getWearEquip();
+    public void handleChangeEquipEvent(ChangeEquipEvent changeEquipEvent) {
+        Role role = changeEquipEvent.getRole();
+        WearEquip wearEquip = changeEquipEvent.getWearEquip();
         if (role == null || wearEquip == null) {
             return;
         }
         this.sync(role);
+        return;
     }
     
     @EventHandler({ EventType.ROLE_CHANGE })
-    public void handleRoleChangeEvent(final RoleChangeEvent roleChangeEvent) {
+    public void handleRoleChangeEvent(RoleChangeEvent roleChangeEvent) {
         this.sync(roleChangeEvent.getRole());
     }
     
     @EventHandler({ EventType.ROLE_ASPECT_CHANGE })
-    public void handleRoleAspectChangeEvent(final RoleAspectChangeEvent roleAspectChangeEvent) {
+    public void handleRoleAspectChangeEvent(RoleAspectChangeEvent roleAspectChangeEvent) {
         this.sync(roleAspectChangeEvent.getRole());
     }
     
-    public void sync(final Role role) {
-        final PetRankingSource petRankingSource = RankingList.petRankingListSource.stream().filter(e -> role.getRoleId().equals(e.getRoleId())).findFirst().orElse(null);
+    public void sync(Role role) {
+        PetRankingSource petRankingSource = (PetRankingSource)RankingList.petRankingListSource.stream().filter(e -> role.getRoleId().equals(Integer.valueOf(e.getRoleId()))).findFirst().orElse(null);
         if (petRankingSource != null) {
             petRankingSource.rests(role);
         }
-        final PractitionersSource practitionersSource = RankingList.practitionersSources.stream().filter(e -> role.getRoleId().equals(e.getRoleId())).findFirst().orElse(null);
+        PractitionersSource practitionersSource = (PractitionersSource)RankingList.practitionersSources.stream().filter(e -> role.getRoleId().equals(Integer.valueOf(e.getRoleId()))).findFirst().orElse(null);
         if (practitionersSource != null) {
             practitionersSource.rests(role);
         }
-        final ComprehensiveStrengthSource strengthSource = RankingList.comprehensiveStrengthSources.stream().filter(e -> role.getRoleId().equals(e.getRoleId())).findFirst().orElse(null);
+        ComprehensiveStrengthSource strengthSource = (ComprehensiveStrengthSource)RankingList.comprehensiveStrengthSources.stream().filter(e -> role.getRoleId().equals(Integer.valueOf(e.getRoleId()))).findFirst().orElse(null);
         if (strengthSource != null) {
             strengthSource.rests(role);
         }
-        final WeaponsRankingSource weaponsRankingSource = RankingList.weaponsRankingSources.stream().filter(e -> role.getRoleId().equals(e.getRoleId())).findFirst().orElse(null);
+        WeaponsRankingSource weaponsRankingSource = (WeaponsRankingSource)RankingList.weaponsRankingSources.stream().filter(e -> role.getRoleId().equals(Integer.valueOf(e.getRoleId()))).findFirst().orElse(null);
         if (weaponsRankingSource != null) {
             weaponsRankingSource.rests(role);
         }
-        final QlkRankingSource qlkRankingSource = RankingList.qlkRankingSources.stream().filter(e -> role.getRoleId().equals(e.getRoleId())).findFirst().orElse(null);
+        QlkRankingSource qlkRankingSource = (QlkRankingSource)RankingList.qlkRankingSources.stream().filter(e -> role.getRoleId().equals(Integer.valueOf(e.getRoleId()))).findFirst().orElse(null);
         if (qlkRankingSource != null) {
             qlkRankingSource.rests(role);
         }

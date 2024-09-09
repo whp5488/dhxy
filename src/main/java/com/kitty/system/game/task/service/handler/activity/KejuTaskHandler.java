@@ -1,19 +1,18 @@
-
 package com.kitty.system.game.task.service.handler.activity;
 
 import com.kitty.system.init.domain.SysDataTaskKeju;
 import com.kitty.system.game.bag.service.BagService;
 import com.kitty.common.utils.LotteryUtils;
-import com.kitty.system.init.domain.vo.Param;
 import com.kitty.common.bean.Lottery;
+import com.kitty.system.init.domain.vo.Param;
 import com.kitty.system.init.domain.SysCommonAward;
 import com.kitty.system.game.task.message.RespQuestionHallRank;
 import java.util.Arrays;
 import com.kitty.common.utils.JsonUtils;
+import com.kitty.system.game.email.domain.EmailSystemAccessory;
 import com.kitty.system.common.data.DataExpFunc;
 import com.kitty.system.enums.item.ItemClassify;
 import com.kitty.system.game.vo.utils.Const;
-import com.kitty.system.game.email.domain.EmailSystemAccessory;
 import com.kitty.system.game.email.domain.EmailSystem;
 import java.text.MessageFormat;
 import com.kitty.system.game.task.domain.vo.RankHallQuestion;
@@ -29,10 +28,8 @@ import com.kitty.system.game.task.domain.vo.RecordHallQuestion;
 import java.util.Iterator;
 import com.kitty.common.core.SchedulerManager;
 import java.util.Comparator;
-import java.util.function.Function;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.game.service.AsyncService;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import com.kitty.system.init.domain.SysProvinceQuestion;
 import com.kitty.system.game.task.message.RespQuestionProvince;
@@ -42,15 +39,12 @@ import com.kitty.system.init.domain.SysCountryQuestion;
 import com.kitty.system.game.task.message.RespQuestionCountry;
 import com.kitty.system.game.task.pool.TaskDataPool;
 import com.kitty.system.game.task.message.RespQuestionConfirm;
-import com.kitty.system.game.confirm.model.RoleConfirm;
 import com.kitty.system.game.confirm.model.QuestionKjConfirm;
 import com.kitty.system.game.vo.Npc;
 import com.kitty.listener.EventType;
 import com.kitty.listener.annotation.EventHandler;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.task.message.RespTaskIcon;
-import java.io.Serializable;
 import com.kitty.system.game.task.domain.vo.RecordQuestion;
 import com.kitty.listener.event.LoginEvent;
 import java.util.Calendar;
@@ -88,7 +82,7 @@ public class KejuTaskHandler extends TimeTaskHandler
     private static final String COMPETE_PK_LIMIT = "你现在不能与人切磋。";
     
     public KejuTaskHandler() {
-        this.memberMap = new HashMap<Integer, Boolean>();
+        this.memberMap = new HashMap();
     }
     
     @Override
@@ -97,23 +91,23 @@ public class KejuTaskHandler extends TimeTaskHandler
     }
     
     @Override
-    public boolean canGiveUpTask(final Role role, final TaskSet taskSet) {
+    public boolean canGiveUpTask(Role role, TaskSet taskSet) {
         return true;
     }
     
     @Override
-    public TaskInfo getTaskInfo(final Role role, final TaskSet taskSet) {
-        final TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
+    public TaskInfo getTaskInfo(Role role, TaskSet taskSet) {
+        TaskInfo taskInfo = super.getTaskInfo(role, taskSet);
         return taskInfo;
     }
     
     public static boolean isActivity() {
-        final String day = DateUtils.dayForWeek(new Date());
+        String day = DateUtils.dayForWeek(new Date());
         return KejuTaskHandler.PERIOD.contains(day);
     }
     
-    public static boolean isActivityEnd(final int hour, final int minute) {
-        final Calendar cal = Calendar.getInstance();
+    public static boolean isActivityEnd(int hour, int minute) {
+        Calendar cal = Calendar.getInstance();
         cal.set(11, hour);
         cal.set(12, minute);
         cal.set(13, 0);
@@ -121,28 +115,28 @@ public class KejuTaskHandler extends TimeTaskHandler
     }
     
     @EventHandler({ EventType.LOGIN })
-    public void handleLoginEvent(final LoginEvent loginEvent) {
+    public void handleLoginEvent(LoginEvent loginEvent) {
         if (!isActivity()) {
             return;
         }
-        final Role role = loginEvent.getRole();
-        final int current = new Long(System.currentTimeMillis() / 1000L).intValue();
+        Role role = loginEvent.getRole();
+        int current = new Long(System.currentTimeMillis() / 1000L).intValue();
         if (!isActivityEnd(21, 50)) {
-            final Calendar cal = Calendar.getInstance();
+            Calendar cal = Calendar.getInstance();
             cal.set(11, 21);
             cal.set(12, 50);
             cal.set(13, 0);
-            final int expire = new Long(cal.getTimeInMillis() / 1000L).intValue();
-            final RecordQuestion recordQuestion = this.redisService.get("country:" + role.getId(), RecordQuestion.class);
+            int expire = new Long(cal.getTimeInMillis() / 1000L).intValue();
+            RecordQuestion recordQuestion = (RecordQuestion)this.redisService.get("country:" + role.getId(), RecordQuestion.class);
             if (recordQuestion == null) {
                 this.acceptTask(role, expire, 1730001);
-                final RecordQuestion record = new RecordQuestion();
-                record.setI(role.getRoleId());
+                RecordQuestion record = new RecordQuestion();
+                record.setI((int)role.getRoleId());
                 this.redisService.set("country:" + role.getId(), record, -1L);
             }
             else if (recordQuestion != null && recordQuestion.getS() > 0) {
-                final int mistakes = (int)recordQuestion.getR().stream().filter(e -> e.equals(0)).count();
-                final int minutes = (current - recordQuestion.getS() + mistakes * 30) / 60 % 60;
+                int mistakes = (int)recordQuestion.getR().stream().filter(e -> e.equals(Byte.valueOf((byte)0))).count();
+                int minutes = (current - recordQuestion.getS() + mistakes * 30) / 60 % 60;
                 if (minutes >= 10) {
                     recordQuestion.setE(current + mistakes * 30);
                     this.taskService.deleteTask(role, this.taskService.getTaskSet(1730001));
@@ -151,20 +145,21 @@ public class KejuTaskHandler extends TimeTaskHandler
                 }
             }
         }
-        if (role.getPos().getMapId().equals(3007) && this.memberMap.get(role.getRoleId()) == null) {
+        if (role.getPos().getMapId().equals(Integer.valueOf(3007)) && this.memberMap.get(role.getRoleId()) == null) {
             this.leave(role, false);
         }
-        else if (role.getPos().getMapId().equals(3007) && this.memberMap.get(role.getRoleId())) {
-            MessagePusher.pushMessage(role.getId(), new RespTaskIcon(2000, "kj", (byte)1));
+        else if (role.getPos().getMapId().equals(Integer.valueOf(3007)) && (boolean)this.memberMap.get(role.getRoleId())) {
+            MessagePusher.pushMessage((long)role.getId(), new RespTaskIcon(2000, "kj", (byte)1));
         }
+        return;
     }
     
-    public boolean acceptTask(final Role role, final int expire, final int serial) {
-        final TaskSet taskSet = this.taskService.getTaskSet(serial);
+    public boolean acceptTask(Role role, int expire, int serial) {
+        TaskSet taskSet = this.taskService.getTaskSet(serial);
         return this.acceptTask(role, taskSet, expire);
     }
     
-    public void reqQuestionXs(final Role role, final Npc npc) {
+    public void reqQuestionXs(Role role, Npc npc) {
         if (!isActivity()) {
             return;
         }
@@ -172,32 +167,36 @@ public class KejuTaskHandler extends TimeTaskHandler
             this.npcService.sendNpcContent(role, npc, "", String.format("本届科举%s已圆满结束了，少侠下届再来吧", "乡试"));
             return;
         }
-        final RecordQuestion recordQuestion = this.redisService.get("country:" + role.getId(), RecordQuestion.class);
-        if (recordQuestion == null) {
-            return;
-        }
-        if (recordQuestion.getE() > 0) {
-            final int differenceMillis = recordQuestion.getE() - recordQuestion.getS();
-            final int seconds = differenceMillis % 60;
-            final int minutes = differenceMillis / 60 % 60;
-            if (minutes >= 10) {
-                final String talk = "你已完成乡试，考试用时" + minutes + "分钟" + seconds + "秒。#<E:50>#";
+        RecordQuestion recordQuestion = (RecordQuestion)this.redisService.get("country:" + role.getId(), RecordQuestion.class);
+        if (recordQuestion != null) {
+            if (recordQuestion.getE() > 0) {
+                int differenceMillis = recordQuestion.getE() - recordQuestion.getS();
+                int seconds = differenceMillis % 60;
+                int minutes = differenceMillis / 60 % 60;
+                if (minutes >= 10) {
+                    String talk = "你已完成乡试，考试用时" + minutes + "分钟" + seconds + "秒。#<E:50>#";
+                    this.npcService.sendNpcContent(role, npc, "", talk);
+                    return;
+                }
+                String talk = "你已完成乡试，考试用时" + minutes + "分钟" + seconds + "秒。#<E:50>#\n恭喜少侠获得省试资格，请于今日21:50前找国子监#<PRB0>礼部官员#，参加省试。";
                 this.npcService.sendNpcContent(role, npc, "", talk);
                 return;
             }
-            final String talk = "你已完成乡试，考试用时" + minutes + "分钟" + seconds + "秒。#<E:50>#\n恭喜少侠获得省试资格，请于今日21:50前找国子监#<PRB0>礼部官员#，参加省试。";
-            this.npcService.sendNpcContent(role, npc, "", talk);
-        }
-        else {
-            if (recordQuestion.getS() > 0) {
-                this.npcService.sendNpcContent(role, npc, "乡试（未完成）/get_xs|才疏学浅，在下告辞#<E:23>#/离开", null);
+            else {
+                if (recordQuestion.getS() > 0) {
+                    this.npcService.sendNpcContent(role, npc, "乡试（未完成）/get_xs|才疏学浅，在下告辞#<E:23>#/离开", null);
+                    return;
+                }
+                this.npcService.sendNpcContent(role, npc, "我就是来考的/get_xs|才疏学浅，在下告辞#<E:23>#/离开", null);
                 return;
             }
-            this.npcService.sendNpcContent(role, npc, "我就是来考的/get_xs|才疏学浅，在下告辞#<E:23>#/离开", null);
+        }
+        else {
+            return;
         }
     }
     
-    public void getQuestionXs(final Role role, final Npc npc) {
+    public void getQuestionXs(Role role, Npc npc) {
         if (!isActivity()) {
             return;
         }
@@ -205,7 +204,7 @@ public class KejuTaskHandler extends TimeTaskHandler
             this.npcService.sendNpcContent(role, npc, "", String.format("本届科举%s已圆满结束了，少侠下届再来吧", "乡试"));
             return;
         }
-        final RecordQuestion recordQuestion = this.redisService.get("country:" + role.getId(), RecordQuestion.class);
+        RecordQuestion recordQuestion = (RecordQuestion)this.redisService.get("country:" + role.getId(), RecordQuestion.class);
         if (recordQuestion == null || recordQuestion.getE() > 0) {
             return;
         }
@@ -215,18 +214,19 @@ public class KejuTaskHandler extends TimeTaskHandler
             return;
         }
         this.conductQuestionXs(role, recordQuestion, npc, false);
+        return;
     }
     
-    public void conductQuestionXs(final Role role, final RecordQuestion recordQuestion, final Npc npc, final boolean flag) {
+    public void conductQuestionXs(Role role, RecordQuestion recordQuestion, Npc npc, boolean flag) {
         if (!isActivity()) {
             return;
         }
-        final int current = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final Calendar cal = Calendar.getInstance();
+        int current = new Long(System.currentTimeMillis() / 1000L).intValue();
+        Calendar cal = Calendar.getInstance();
         cal.set(11, 21);
         cal.set(12, 50);
         cal.set(13, 0);
-        final int expire = new Long(cal.getTimeInMillis() / 1000L).intValue();
+        int expire = new Long(cal.getTimeInMillis() / 1000L).intValue();
         if (current >= expire) {
             this.npcService.sendNpcContent(role, npc, "", String.format("本届科举%s已圆满结束了，少侠下届再来吧", "乡试"));
             return;
@@ -235,37 +235,38 @@ public class KejuTaskHandler extends TimeTaskHandler
             recordQuestion.setS(current);
         }
         if (flag) {
-            final SysCountryQuestion question = getQuestionXs(TaskDataPool.countryQuestion);
+            SysCountryQuestion question = getQuestionXs(TaskDataPool.countryQuestion);
             recordQuestion.setQ(question.getSerial());
         }
-        final int mistakes = (int)recordQuestion.getR().stream().filter(e -> e.equals(0)).count();
-        final int minutes = (current - recordQuestion.getS() + mistakes * 30) / 60 % 60;
+        int mistakes = (int)recordQuestion.getR().stream().filter(e -> e.equals(Byte.valueOf((byte)0))).count();
+        int minutes = (current - recordQuestion.getS() + mistakes * 30) / 60 % 60;
         if (minutes >= 10) {
             recordQuestion.setE(current + mistakes * 30);
-            final int differenceMillis = recordQuestion.getE() - recordQuestion.getS();
-            final String talk = "你已完成乡试，考试用时" + differenceMillis / 60 % 60 + "分钟" + differenceMillis % 60 + "秒。#<E:50>#";
+            int differenceMillis = recordQuestion.getE() - recordQuestion.getS();
+            String talk = "你已完成乡试，考试用时" + differenceMillis / 60 % 60 + "分钟" + differenceMillis % 60 + "秒。#<E:50>#";
             this.npcService.sendNpcContent(role, npc, "", talk);
             this.taskService.deleteTask(role, this.taskService.getTaskSet(1730001));
             this.redisService.set("country:" + role.getId(), recordQuestion, -1L);
             return;
         }
-        final RespQuestionCountry questionCountry = new RespQuestionCountry();
+        RespQuestionCountry questionCountry = new RespQuestionCountry();
         questionCountry.setTime(recordQuestion.getS());
         questionCountry.setSerial(recordQuestion.getQ());
         questionCountry.setNum(recordQuestion.getR().size() + 1);
         questionCountry.setMistakes(mistakes);
-        MessagePusher.pushMessage(role.getId(), questionCountry);
+        MessagePusher.pushMessage((long)role.getId(), questionCountry);
         this.redisService.set("country:" + role.getId(), recordQuestion, -1L);
+        return;
     }
     
-    public static SysCountryQuestion getQuestionXs(final Map<Integer, SysCountryQuestion> questionMap) {
-        final Integer[] keys = questionMap.keySet().toArray(new Integer[0]);
-        final int random = RandomUtil.round(0, keys.length - 1);
-        final Integer randomKey = keys[random];
-        return questionMap.get(randomKey);
+    public static SysCountryQuestion getQuestionXs(Map<Integer, SysCountryQuestion> questionMap) {
+        Integer[] keys = (Integer[])questionMap.keySet().toArray(new Integer[0]);
+        int random = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(keys.length - 1));
+        Integer randomKey = keys[random];
+        return (SysCountryQuestion)questionMap.get(randomKey);
     }
     
-    public void reqQuestionSs(final Role role, final Npc npc) {
+    public void reqQuestionSs(Role role, Npc npc) {
         if (!isActivity()) {
             return;
         }
@@ -273,27 +274,30 @@ public class KejuTaskHandler extends TimeTaskHandler
             this.npcService.sendNpcContent(role, npc, "", String.format("本届科举%s已圆满结束了，少侠下届再来吧", "省试"));
             return;
         }
-        final RecordQuestion recordQuestion = this.redisService.get("province:" + role.getId(), RecordQuestion.class);
-        if (recordQuestion == null) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("您还没有参加该活动的资格哦..."));
+        RecordQuestion recordQuestion = (RecordQuestion)this.redisService.get("province:" + role.getId(), RecordQuestion.class);
+        if (recordQuestion != null) {
+            if (recordQuestion.getE() > 0) {
+                int differenceMillis = recordQuestion.getE() - recordQuestion.getS();
+                int seconds = differenceMillis % 60;
+                int minutes = differenceMillis / 60 % 60;
+                String talk = "你已完成省试，考试用时" + minutes + "分钟" + seconds + "秒。殿试名单将于21:51公布，请留意放榜通知。";
+                this.npcService.sendNpcContent(role, npc, "", talk);
+                return;
+            }
+            if (recordQuestion.getS() > 0) {
+                this.npcService.sendNpcContent(role, npc, "省试（未完成）/get_ss|才疏学浅，在下告辞#<E:23>#/离开", null);
+                return;
+            }
+            this.npcService.sendNpcContent(role, npc, "我就是来考的/get_ss|才疏学浅，在下告辞#<E:23>#/离开", null);
             return;
         }
-        if (recordQuestion.getE() > 0) {
-            final int differenceMillis = recordQuestion.getE() - recordQuestion.getS();
-            final int seconds = differenceMillis % 60;
-            final int minutes = differenceMillis / 60 % 60;
-            final String talk = "你已完成省试，考试用时" + minutes + "分钟" + seconds + "秒。殿试名单将于21:51公布，请留意放榜通知。";
-            this.npcService.sendNpcContent(role, npc, "", talk);
+        else {
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("您还没有参加该活动的资格哦..."));
             return;
         }
-        if (recordQuestion.getS() > 0) {
-            this.npcService.sendNpcContent(role, npc, "省试（未完成）/get_ss|才疏学浅，在下告辞#<E:23>#/离开", null);
-            return;
-        }
-        this.npcService.sendNpcContent(role, npc, "我就是来考的/get_ss|才疏学浅，在下告辞#<E:23>#/离开", null);
     }
     
-    public void getQuestionSs(final Role role, final Npc npc) {
+    public void getQuestionSs(Role role, Npc npc) {
         if (!isActivity()) {
             return;
         }
@@ -301,7 +305,7 @@ public class KejuTaskHandler extends TimeTaskHandler
             this.npcService.sendNpcContent(role, npc, "", String.format("本届科举%s已圆满结束了，少侠下届再来吧", "省试"));
             return;
         }
-        final RecordQuestion recordQuestion = this.redisService.get("province:" + role.getId(), RecordQuestion.class);
+        RecordQuestion recordQuestion = (RecordQuestion)this.redisService.get("province:" + role.getId(), RecordQuestion.class);
         if (recordQuestion == null || recordQuestion.getE() > 0) {
             return;
         }
@@ -311,18 +315,19 @@ public class KejuTaskHandler extends TimeTaskHandler
             return;
         }
         this.conductQuestionSs(role, recordQuestion, npc, false);
+        return;
     }
     
-    public void conductQuestionSs(final Role role, final RecordQuestion recordQuestion, final Npc npc, final boolean flag) {
+    public void conductQuestionSs(Role role, RecordQuestion recordQuestion, Npc npc, boolean flag) {
         if (!isActivity()) {
             return;
         }
-        final int current = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final Calendar cal = Calendar.getInstance();
+        int current = new Long(System.currentTimeMillis() / 1000L).intValue();
+        Calendar cal = Calendar.getInstance();
         cal.set(11, 21);
         cal.set(12, 50);
         cal.set(13, 0);
-        final int expire = new Long(cal.getTimeInMillis() / 1000L).intValue();
+        int expire = new Long(cal.getTimeInMillis() / 1000L).intValue();
         if (current >= expire) {
             this.npcService.sendNpcContent(role, npc, "", String.format("本届科举%s已圆满结束了，少侠下届再来吧", "省试"));
             return;
@@ -331,45 +336,46 @@ public class KejuTaskHandler extends TimeTaskHandler
             recordQuestion.setS(current);
         }
         if (flag) {
-            final SysProvinceQuestion question = getQuestionSs(TaskDataPool.provinceQuestion, recordQuestion.getT());
+            SysProvinceQuestion question = getQuestionSs(TaskDataPool.provinceQuestion, recordQuestion.getT());
             recordQuestion.setQ(question.getSerial());
         }
-        final int mistakes = (int)recordQuestion.getR().stream().filter(e -> e.equals(0)).count();
-        final RespQuestionProvince questionProvince = new RespQuestionProvince();
+        int mistakes = (int)recordQuestion.getR().stream().filter(e -> e.equals(Byte.valueOf((byte)0))).count();
+        RespQuestionProvince questionProvince = new RespQuestionProvince();
         questionProvince.setTime(recordQuestion.getS());
         questionProvince.setSerial(recordQuestion.getQ());
         questionProvince.setNum(recordQuestion.getR().size() + 1);
         questionProvince.setMistakes(mistakes);
-        MessagePusher.pushMessage(role.getId(), questionProvince);
+        MessagePusher.pushMessage((long)role.getId(), questionProvince);
         this.redisService.set("province:" + role.getId(), recordQuestion, -1L);
+        return;
     }
     
-    public static SysProvinceQuestion getQuestionSs(final Map<Integer, SysProvinceQuestion> questionMap, final byte type) {
-        final List<SysProvinceQuestion> list = questionMap.values().stream().filter(e -> e.getType() == type).collect(Collectors.toList());
-        final int index = RandomUtil.round(0, list.size() - 1);
-        return list.get(index);
+    public static SysProvinceQuestion getQuestionSs(Map<Integer, SysProvinceQuestion> questionMap, byte type) {
+        List<SysProvinceQuestion> list = (List)questionMap.values().stream().filter(e -> e.getType() == type).collect(Collectors.toList());
+        int index = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(list.size() - 1));
+        return (SysProvinceQuestion)list.get(index);
     }
     
     public void hallCertification() {
         if (!isActivity()) {
             return;
         }
-        SpringUtils.getBean(AsyncService.class).clearKjTitle();
-        final List<RecordQuestion> list = this.redisService.getContain("province:*", RecordQuestion.class);
-        final Map<Byte, List<RecordQuestion>> map = list.stream().filter(e -> e.getE() > 0).collect(Collectors.groupingBy(RecordQuestion::getT));
-        for (final Byte key : map.keySet()) {
-            final String course = getCourseTitle(key);
+        ((AsyncService)SpringUtils.getBean(AsyncService.class)).clearKjTitle();
+        List<RecordQuestion> list = this.redisService.getContain("province:*", RecordQuestion.class);
+        Map<Byte, List<RecordQuestion>> map = (Map)list.stream().filter(e -> e.getE() > 0).collect(Collectors.groupingBy(RecordQuestion::getT));
+        for (Byte key : map.keySet()) {
+            String course = getCourseTitle((byte)key);
             if (course == null) {
                 continue;
             }
-            final List<RecordQuestion> recordQuestionList = map.get(key);
+            List<RecordQuestion> recordQuestionList = (List)map.get(key);
             if (recordQuestionList.size() <= 0) {
                 continue;
             }
-            final List<RecordQuestion> collect = recordQuestionList.stream().sorted(Comparator.comparing(RecordQuestion::getE)).limit(40L).collect(Collectors.toList());
-            final StringBuilder stringBuilder = new StringBuilder();
-            for (final RecordQuestion recordQuestion : collect) {
-                final Role role = this.roleService.getPlayer(recordQuestion.getI());
+            List<RecordQuestion> collect = (List)recordQuestionList.stream().sorted(Comparator.comparing(RecordQuestion::getE)).limit(40L).collect(Collectors.toList());
+            StringBuilder stringBuilder = new StringBuilder();
+            for (RecordQuestion recordQuestion : collect) {
+                Role role = this.roleService.getPlayer(recordQuestion.getI());
                 if (role == null) {
                     continue;
                 }
@@ -377,14 +383,14 @@ public class KejuTaskHandler extends TimeTaskHandler
                     stringBuilder.append("、");
                 }
                 stringBuilder.append(role.getName());
-                this.redisService.set("hall:" + recordQuestion.getI(), recordQuestion.getI(), -1L);
+                this.redisService.set("hall:" + recordQuestion.getI(), Integer.valueOf(recordQuestion.getI()), -1L);
             }
             SpringUtils.getChatService().sendSystem(String.format("兹宣布本届科举考试殿试名单:#<PRB0>%s#:#<LB>%s#请以上考生于今日22:00前找皇宫#<PRB0>房玄龄#入场。", course, stringBuilder.toString()), "系统");
         }
         KejuTaskHandler.hallNum = 0;
         KejuTaskHandler.question = 0;
-        this.memberMap = new HashMap<Integer, Boolean>();
-        final Calendar cal = Calendar.getInstance();
+        this.memberMap = new HashMap();
+        Calendar cal = Calendar.getInstance();
         cal.set(11, 22);
         cal.set(12, 0);
         cal.set(13, 5);
@@ -394,38 +400,41 @@ public class KejuTaskHandler extends TimeTaskHandler
                 KejuTaskHandler.this.scheduled();
             }
         }, cal.getTimeInMillis() - System.currentTimeMillis());
+        return;
     }
     
     public void scheduled() {
-        SpringUtils.getBean(AsyncService.class).kjHallQuestionAward(this.memberMap, KejuTaskHandler.question, KejuTaskHandler.hallNum);
+        ((AsyncService)SpringUtils.getBean(AsyncService.class)).kjHallQuestionAward(this.memberMap, KejuTaskHandler.question, KejuTaskHandler.hallNum);
         if (KejuTaskHandler.hallNum >= 10) {
             return;
         }
-        final int current = new Long(System.currentTimeMillis() / 1000L).intValue();
+        int current = new Long(System.currentTimeMillis() / 1000L).intValue();
         ++KejuTaskHandler.hallNum;
-        final SysHallQuestion questionDs = getQuestionDs(TaskDataPool.hallQuestion);
+        SysHallQuestion questionDs = getQuestionDs(TaskDataPool.hallQuestion);
         KejuTaskHandler.question = questionDs.getSerial();
-        for (final Integer key : this.memberMap.keySet()) {
-            final Boolean flag = this.memberMap.get(key);
-            if (!flag) {
+        for (Integer key : this.memberMap.keySet()) {
+            Boolean flag = (Boolean)this.memberMap.get(key);
+            if (!(boolean)flag) {
                 continue;
             }
-            final Role player = this.roleService.getPlayer(key);
-            if (player == null) {
+            Role player = this.roleService.getPlayer((int)key);
+            if (player != null) {
+                List<RecordHallQuestion> list = this.redisService.getContain("hall:" + player.getRoleId() + "_*", RecordHallQuestion.class);
+                RecordHallQuestion question = new RecordHallQuestion();
+                question.setS(current);
+                question.setQ(questionDs.getSerial());
+                this.redisService.set("hall:" + player.getRoleId() + "_" + questionDs.getSerial() + "_" + KejuTaskHandler.hallNum, question, -1L);
+                RespQuestionHall respQuestionHall = new RespQuestionHall();
+                respQuestionHall.setTime(current);
+                respQuestionHall.setSerial(questionDs.getSerial());
+                respQuestionHall.setNum(KejuTaskHandler.hallNum);
+                long count = list.stream().filter(e -> e.getR() <= 0).count();
+                respQuestionHall.setMistakes((int)((count < 0L) ? 0L : count));
+                MessagePusher.pushMessage((long)player.getId(), respQuestionHall);
+            }
+            else {
                 continue;
             }
-            final List<RecordHallQuestion> list = this.redisService.getContain("hall:" + player.getRoleId() + "_*", RecordHallQuestion.class);
-            final RecordHallQuestion question = new RecordHallQuestion();
-            question.setS(current);
-            question.setQ(questionDs.getSerial());
-            this.redisService.set("hall:" + player.getRoleId() + "_" + questionDs.getSerial() + "_" + KejuTaskHandler.hallNum, question, -1L);
-            final RespQuestionHall respQuestionHall = new RespQuestionHall();
-            respQuestionHall.setTime(current);
-            respQuestionHall.setSerial(questionDs.getSerial());
-            respQuestionHall.setNum(KejuTaskHandler.hallNum);
-            final long count = list.stream().filter(e -> e.getR() <= 0).count();
-            respQuestionHall.setMistakes((int)((count < 0L) ? 0L : count));
-            MessagePusher.pushMessage(player.getId(), respQuestionHall);
         }
         SchedulerManager.getInstance().schedule(new Runnable() {
             @Override
@@ -433,16 +442,17 @@ public class KejuTaskHandler extends TimeTaskHandler
                 KejuTaskHandler.this.scheduled();
             }
         }, 30000L);
+        return;
     }
     
-    public static SysHallQuestion getQuestionDs(final Map<Integer, SysHallQuestion> questionMap) {
-        final Integer[] keys = questionMap.keySet().toArray(new Integer[0]);
-        final int random = RandomUtil.round(0, keys.length - 1);
-        final Integer randomKey = keys[random];
-        return questionMap.get(randomKey);
+    public static SysHallQuestion getQuestionDs(Map<Integer, SysHallQuestion> questionMap) {
+        Integer[] keys = (Integer[])questionMap.keySet().toArray(new Integer[0]);
+        int random = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(keys.length - 1));
+        Integer randomKey = keys[random];
+        return (SysHallQuestion)questionMap.get(randomKey);
     }
     
-    public static String getCourseTitle(final byte type) {
+    public static String getCourseTitle(byte type) {
         switch (type) {
             case 1: {
                 return "常识科";
@@ -468,20 +478,20 @@ public class KejuTaskHandler extends TimeTaskHandler
         }
     }
     
-    public void reqQuestionDs(final Role role, final Npc npc) {
+    public void reqQuestionDs(Role role, Npc npc) {
         if (!isActivity()) {
             return;
         }
-        final int current = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final Calendar cal = Calendar.getInstance();
+        int current = new Long(System.currentTimeMillis() / 1000L).intValue();
+        Calendar cal = Calendar.getInstance();
         cal.set(11, 21);
         cal.set(12, 52);
         cal.set(13, 0);
-        final int enterTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
+        int enterTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
         cal.set(11, 22);
         cal.set(12, 16);
         cal.set(13, 0);
-        final int endTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
+        int endTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
         if (current < enterTime) {
             this.npcService.sendNpcContent(role, npc, "", "科举殿试将于21:52开放进场，还有段时间，可以再温习下#<E:46>#");
         }
@@ -491,78 +501,81 @@ public class KejuTaskHandler extends TimeTaskHandler
         else {
             this.npcService.sendNpcContent(role, npc, "查看金榜/kj_rank|再见/离开", "本届科举已经圆满结束了。");
         }
+        return;
     }
     
-    public void enter(final Role role, final Npc npc) {
+    public void enter(Role role, Npc npc) {
         if (!isActivity()) {
             return;
         }
-        final int current = new Long(System.currentTimeMillis() / 1000L).intValue();
-        final Calendar cal = Calendar.getInstance();
+        int current = new Long(System.currentTimeMillis() / 1000L).intValue();
+        Calendar cal = Calendar.getInstance();
         cal.set(11, 21);
         cal.set(12, 52);
         cal.set(13, 0);
-        final int enterTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
+        int enterTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
         cal.set(11, 22);
         cal.set(12, 16);
         cal.set(13, 0);
-        final int endTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
+        int endTime = new Long(cal.getTimeInMillis() / 1000L).intValue();
         if (current >= enterTime && current < endTime) {
-            final Integer hall = this.redisService.get("hall:" + role.getRoleId(), Integer.class);
+            Integer hall = (Integer)this.redisService.get("hall:" + role.getRoleId(), Integer.class);
             if (hall == null || !role.getRoleId().equals(hall)) {
                 this.npcService.sendNpcContent(role, npc, "", "殿试名单里没看到你啊，不要想冒名顶替#<E:46>#");
                 return;
             }
-            final Team team = this.teamService.getTeam(role.getRoleId());
+            Team team = this.teamService.getTeam((int)role.getRoleId());
             if (team != null) {
                 this.npcService.sendNpcContent(role, npc, "", "科举无法组队哦！请先离队再来吧");
                 return;
             }
-            final ReqTelePort reqTelePort = new ReqTelePort();
+            ReqTelePort reqTelePort = new ReqTelePort();
             reqTelePort.setMapId(3007);
             reqTelePort.setX(60);
             reqTelePort.setY(25);
             SpringUtils.getMapService().changeMap(role, reqTelePort, null);
-            MessagePusher.pushMessage(role.getId(), new RespTaskIcon(2000, "kj", (byte)1));
-            this.memberMap.put(role.getRoleId(), true);
+            MessagePusher.pushMessage((long)role.getId(), new RespTaskIcon(2000, "kj", (byte)1));
+            this.memberMap.put(role.getRoleId(), Boolean.valueOf(true));
         }
+        return;
     }
     
-    public void leave(final Role role, final boolean flag) {
-        final ReqTelePort reqTelePort = new ReqTelePort();
+    public void leave(Role role, boolean flag) {
+        ReqTelePort reqTelePort = new ReqTelePort();
         reqTelePort.setMapId(1000);
         reqTelePort.setX(60);
         reqTelePort.setY(25);
         SpringUtils.getMapService().changeMap(role, reqTelePort, null);
-        MessagePusher.pushMessage(role.getId(), new RespTaskIcon(2000, "kj", (byte)0));
-        final Boolean aBoolean = this.memberMap.get(role.getRoleId());
+        MessagePusher.pushMessage((long)role.getId(), new RespTaskIcon(2000, "kj", (byte)0));
+        Boolean aBoolean = (Boolean)this.memberMap.get(role.getRoleId());
         if (aBoolean != null) {
-            this.memberMap.put(role.getRoleId(), false);
+            this.memberMap.put(role.getRoleId(), Boolean.valueOf(false));
         }
         if (flag) {
-            MessagePusher.pushMessage(role.getId(), new RespMsg("殿试结束，考生离场"));
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("殿试结束，考生离场"));
         }
     }
     
     @Override
-    public void handleHeartBeat(final Role role, final long prevHeartTime) {
-        final int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
+    public void handleHeartBeat(Role role, long prevHeartTime) {
+        int currTime = new Long(System.currentTimeMillis() / 1000L).intValue();
         TaskDataPool.taskKjList.forEach(obj -> {
             if (role.getTask().isAccepted(obj.getSerial())) {
-                final DoingTask doingTask = role.getTask().getDoingTask().get(obj.getSerial());
+                DoingTask doingTask = (DoingTask)role.getTask().getDoingTask().get(Integer.valueOf(obj.getSerial()));
                 if (doingTask != null && currTime >= doingTask.getExpire()) {
-                    final TaskSet taskSet = this.taskService.getTaskSet(obj.getSerial());
+                    TaskSet taskSet = this.taskService.getTaskSet(obj.getSerial());
                     this.giveUpTask(role, taskSet);
                 }
             }
+            return;
         });
     }
     
-    public boolean isInMap(final Role role) {
+    public boolean isInMap(Role role) {
         return role != null && DataGlobalFunc.isInMap(role, 3007);
     }
     
-    public boolean isFoundJoinTeam(final Role role) {
+    public boolean isFoundJoinTeam(Role role) {
         if (this.isInMap(role)) {
             MessagePusher.pushMessage(role, new RespMsg("当前场景禁止组队"));
             return false;
@@ -570,7 +583,7 @@ public class KejuTaskHandler extends TimeTaskHandler
         return true;
     }
     
-    public boolean isRequestJoinTeam(final Role role) {
+    public boolean isRequestJoinTeam(Role role) {
         if (this.isInMap(role)) {
             MessagePusher.pushMessage(role, new RespMsg("当前场景禁止组队"));
             return false;
@@ -578,12 +591,12 @@ public class KejuTaskHandler extends TimeTaskHandler
         return true;
     }
     
-    public boolean isInviteJoinTeam(final Role role, final int inviteRoleId) {
+    public boolean isInviteJoinTeam(Role role, int inviteRoleId) {
         if (this.isInMap(role)) {
             MessagePusher.pushMessage(role, new RespMsg("当前地图无法邀请"));
             return false;
         }
-        final Role invitRole = this.roleService.getPlayer(inviteRoleId);
+        Role invitRole = this.roleService.getPlayer(inviteRoleId);
         if (invitRole == null) {
             MessagePusher.pushMessage(role, new RespMsg("对方所在地图无法接受邀请哦。"));
             return false;
@@ -595,12 +608,12 @@ public class KejuTaskHandler extends TimeTaskHandler
         return true;
     }
     
-    public boolean isAcceptJoinTeam(final Role role, final int joinRoleId) {
+    public boolean isAcceptJoinTeam(Role role, int joinRoleId) {
         if (this.isInMap(role)) {
             MessagePusher.pushMessage(role, new RespMsg("该地图无法操作申请队员"));
             return false;
         }
-        final Role joinRole = SpringUtils.getRoleService().getOnlinePlayer(joinRoleId);
+        Role joinRole = SpringUtils.getRoleService().getOnlinePlayer(joinRoleId);
         if (this.isInMap(joinRole)) {
             MessagePusher.pushMessage(role, new RespMsg("该地图无法操作申请队员"));
             return false;
@@ -608,8 +621,8 @@ public class KejuTaskHandler extends TimeTaskHandler
         return true;
     }
     
-    public boolean isBackToTeam(final Team team, final Role memberRole) {
-        final Role leaderRole = SpringUtils.getRoleService().getOnlinePlayer(team.getLeaderUid());
+    public boolean isBackToTeam(Team team, Role memberRole) {
+        Role leaderRole = SpringUtils.getRoleService().getOnlinePlayer(team.getLeaderUid());
         if (this.isInMap(leaderRole)) {
             MessagePusher.pushMessage(memberRole, new RespMsg("当前场景禁止组队"));
             return false;
@@ -617,7 +630,7 @@ public class KejuTaskHandler extends TimeTaskHandler
         return true;
     }
     
-    public boolean isCompetePk(final Role role, final Role pkRole) {
+    public boolean isCompetePk(Role role, Role pkRole) {
         if (this.isInMap(role)) {
             MessagePusher.pushMessage(role, new RespNotifyMiscEx("你现在不能与人切磋。"));
             return false;
@@ -630,69 +643,69 @@ public class KejuTaskHandler extends TimeTaskHandler
     }
     
     public void rank() {
-        final ArrayList<RankHallQuestion> objects = new ArrayList<RankHallQuestion>();
-        for (final Integer key : this.memberMap.keySet()) {
-            final Role player = this.roleService.getPlayer(key);
+        ArrayList<RankHallQuestion> objects = new ArrayList<>();
+        for (Integer key : this.memberMap.keySet()) {
+            Role player = this.roleService.getPlayer((int)key);
             if (player == null) {
                 continue;
             }
             int elapsed = 0;
-            final List<RecordHallQuestion> list = this.redisService.getContain("hall:" + player.getRoleId() + "_*", RecordHallQuestion.class);
+            List<RecordHallQuestion> list = this.redisService.getContain("hall:" + player.getRoleId() + "_*", RecordHallQuestion.class);
             if (list == null) {
                 continue;
             }
-            for (final RecordHallQuestion hallQuestion : list) {
+            for (RecordHallQuestion hallQuestion : list) {
                 if (hallQuestion.getT() <= 0 || hallQuestion.getR() < 0) {
                     elapsed += 60;
                 }
                 else if (hallQuestion.getR() == 1) {
                     elapsed += hallQuestion.getT() - hallQuestion.getS();
                 }
-                else {
-                    if (hallQuestion.getR() != 0) {
-                        continue;
-                    }
+                else if (hallQuestion.getR() == 0) {
                     elapsed += hallQuestion.getT() - hallQuestion.getS() + 30;
+                }
+                else {
+                    continue;
                 }
             }
             if (list.size() < 10) {
                 elapsed += (10 - list.size()) * 60;
-                this.logger.error("玩家:{}中途退出已答题：{}道", (Object)player.getName(), (Object)list.size());
+                this.logger.error("玩家:{}中途退出已答题：{}道", player.getName(), Integer.valueOf(list.size()));
             }
-            objects.add(new RankHallQuestion(player.getId(), player.getName(), elapsed));
+            objects.add(new RankHallQuestion((long)player.getId(), player.getName(), elapsed));
         }
-        final List<RankHallQuestion> collect = objects.stream().sorted(Comparator.comparing(RankHallQuestion::getT)).limit(100L).collect(Collectors.toList());
-        final String content = "恭喜少侠在本次科举考试中，取得{0}的好成绩";
-        final long current = System.currentTimeMillis();
-        final List<RankHallQuestion> questions = new ArrayList<RankHallQuestion>();
-        final String contentEmail = MessageFormat.format(content, "进士");
-        final StringBuilder stringBuilder = new StringBuilder();
+        List<RankHallQuestion> collect = (List)objects.stream().sorted(Comparator.comparing(RankHallQuestion::getT)).limit(100L).collect(Collectors.toList());
+        String content = "恭喜少侠在本次科举考试中，取得{0}的好成绩";
+        long current = System.currentTimeMillis();
+        List<RankHallQuestion> questions = new ArrayList<>();
+        String contentEmail = MessageFormat.format(content, "进士");
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < collect.size(); ++i) {
             if (i < 3) {
-                final RankHallQuestion rankHallQuestion = collect.get(i);
+                RankHallQuestion rankHallQuestion = (RankHallQuestion)collect.get(i);
                 this.rankHallQuestionTop3(i, rankHallQuestion, current, content);
                 questions.add(rankHallQuestion);
             }
             else {
-                final RankHallQuestion question = collect.get(i);
+                RankHallQuestion question = (RankHallQuestion)collect.get(i);
                 if (stringBuilder.length() < 3) {
                     if (stringBuilder.length() > 0) {
                         stringBuilder.append("、");
                     }
                     stringBuilder.append(question.getN());
                 }
-                final Role player2 = this.roleService.getPlayer(collect.get(i).getI());
+                Role player2 = this.roleService.getPlayer(((RankHallQuestion)collect.get(i)).getI());
                 if (player2 != null) {
-                    final EmailSystem emailSystem = new EmailSystem();
+                    EmailSystem emailSystem = new EmailSystem();
                     emailSystem.setEmailTitle("系统邮件");
                     emailSystem.setSender(1);
-                    emailSystem.setRecipient(player2.getId());
+                    emailSystem.setRecipient((long)player2.getId());
                     emailSystem.setContent(contentEmail);
                     emailSystem.setExpirationTime(current + 86400000L);
-                    final List<EmailSystemAccessory> accessory = new ArrayList<EmailSystemAccessory>();
-                    accessory.add(new EmailSystemAccessory((byte)5, Const.RES_TYPE_EXP, String.valueOf(DataExpFunc.calculateKj(player2.getLevel(), player2.getRelive(), ItemClassify.HERO_EXP.getId(), 1))));
-                    accessory.add(new EmailSystemAccessory((byte)5, Const.RES_TYPE_EXP_PET, String.valueOf(DataExpFunc.calculateKj(player2.getLevel(), player2.getRelive(), ItemClassify.HERO_EXP.getId(), 1))));
-                    accessory.add(new EmailSystemAccessory((byte)6, KejuTaskHandler.TITLE.get(KejuTaskHandler.TITLE.size() - 1), "0"));
+                    List<EmailSystemAccessory> accessory = new ArrayList<>();
+                    accessory.add(new EmailSystemAccessory((byte)5, (int)Const.RES_TYPE_EXP, String.valueOf(DataExpFunc.calculateKj((int)player2.getLevel(), (int)player2.getRelive(), ItemClassify.HERO_EXP.getId(), 1))));
+                    accessory.add(new EmailSystemAccessory((byte)5, (int)Const.RES_TYPE_EXP_PET, String.valueOf(DataExpFunc.calculateKj((int)player2.getLevel(), (int)player2.getRelive(), ItemClassify.HERO_EXP.getId(), 1))));
+                    accessory.add(new EmailSystemAccessory((byte)6, (int)KejuTaskHandler.TITLE.get(KejuTaskHandler.TITLE.size() - 1), "0"));
                     emailSystem.setAccessory(accessory);
                     this.emailService.addEmailSystem(emailSystem);
                 }
@@ -700,15 +713,15 @@ public class KejuTaskHandler extends TimeTaskHandler
         }
         String rest = "";
         if (stringBuilder.length() > 0) {
-            rest = MessageFormat.format("#<LB>赐{1}#等{2}人#<PRB0>进士及第#。", stringBuilder.toString(), collect.size() - 3);
+            rest = MessageFormat.format("#<LB>赐{1}#等{2}人#<PRB0>进士及第#。", stringBuilder.toString(), Integer.valueOf(collect.size() - 3));
         }
-        final String msg = "兹宣布本届科举考试殿试成绩，皇帝制曰，本届策试天下文举,#<PRB0>状元##<LB>{0}#，#<PRB0>榜眼##<LB>{1}#，#<PRB0>探花##<LB>{2}。{3}# 造示";
-        SpringUtils.getChatService().sendSystem(MessageFormat.format(msg, questions.get(0).getN(), questions.get(1).getN(), questions.get(2).getN(), rest), "系统");
+        String msg = "兹宣布本届科举考试殿试成绩，皇帝制曰，本届策试天下文举,#<PRB0>状元##<LB>{0}#，#<PRB0>榜眼##<LB>{1}#，#<PRB0>探花##<LB>{2}。{3}# 造示";
+        SpringUtils.getChatService().sendSystem(MessageFormat.format(msg, ((RankHallQuestion)questions.get(0)).getN(), ((RankHallQuestion)questions.get(1)).getN(), ((RankHallQuestion)questions.get(2)).getN(), rest), "系统");
         this.clearRedis();
         this.redisService.set("kjTop", JsonUtils.object2String(questions), 36000L);
     }
     
-    public void rankHallQuestionTop3(final int index, final RankHallQuestion rankHallQuestion, final long current, final String content) {
+    public void rankHallQuestionTop3(int index, RankHallQuestion rankHallQuestion, long current, String content) {
         String msg = content;
         if (index == 0) {
             msg = MessageFormat.format(content, "状元");
@@ -716,29 +729,30 @@ public class KejuTaskHandler extends TimeTaskHandler
         else if (index == 1) {
             msg = MessageFormat.format(content, "榜眼");
         }
-        else {
-            if (index != 2) {
-                return;
-            }
+        else if (index == 2) {
             msg = MessageFormat.format(content, "探花");
         }
-        final Role player = this.roleService.getPlayer(rankHallQuestion.getI());
+        else {
+            return;
+        }
+        Role player = this.roleService.getPlayer(rankHallQuestion.getI());
         if (player == null) {
             return;
         }
-        final EmailSystem emailSystem = new EmailSystem();
+        EmailSystem emailSystem = new EmailSystem();
         emailSystem.setEmailTitle("系统邮件");
         emailSystem.setSender(1);
-        emailSystem.setRecipient(player.getId());
+        emailSystem.setRecipient((long)player.getId());
         emailSystem.setContent(msg);
         emailSystem.setExpirationTime(current + 86400000L);
-        final List<EmailSystemAccessory> accessory = new ArrayList<EmailSystemAccessory>();
-        accessory.add(new EmailSystemAccessory((byte)5, Const.RES_TYPE_EXP, String.valueOf(DataExpFunc.calculateKj(player.getLevel(), player.getRelive(), ItemClassify.HERO_EXP.getId(), 10 - index))));
-        accessory.add(new EmailSystemAccessory((byte)5, Const.RES_TYPE_EXP_PET, String.valueOf(DataExpFunc.calculateKj(player.getLevel(), player.getRelive(), ItemClassify.HERO_EXP.getId(), 12 - index))));
+        List<EmailSystemAccessory> accessory = new ArrayList<>();
+        accessory.add(new EmailSystemAccessory((byte)5, (int)Const.RES_TYPE_EXP, String.valueOf(DataExpFunc.calculateKj((int)player.getLevel(), (int)player.getRelive(), ItemClassify.HERO_EXP.getId(), 10 - index))));
+        accessory.add(new EmailSystemAccessory((byte)5, (int)Const.RES_TYPE_EXP_PET, String.valueOf(DataExpFunc.calculateKj((int)player.getLevel(), (int)player.getRelive(), ItemClassify.HERO_EXP.getId(), 12 - index))));
         accessory.add(new EmailSystemAccessory((byte)1, getTopAward(index), "1"));
-        accessory.add(new EmailSystemAccessory((byte)6, KejuTaskHandler.TITLE.get(index), "0"));
+        accessory.add(new EmailSystemAccessory((byte)6, (int)KejuTaskHandler.TITLE.get(index), "0"));
         emailSystem.setAccessory(accessory);
         this.emailService.addEmailSystem(emailSystem);
+        return;
     }
     
     public void clearRedis() {
@@ -747,74 +761,75 @@ public class KejuTaskHandler extends TimeTaskHandler
         this.redisService.delContain("hall:*");
     }
     
-    public static int getTopAward(final int top) {
+    public static int getTopAward(int top) {
         if (top == 0) {
-            final List<Integer> list = Arrays.asList(75011, 75012, 75013, 75014, 75015);
-            return list.get(RandomUtil.round(0, list.size() - 1));
+            List<Integer> list = Arrays.asList(Integer.valueOf(75011), Integer.valueOf(75012), Integer.valueOf(75013), Integer.valueOf(75014), Integer.valueOf(75015));
+            return (int)list.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(list.size() - 1)));
         }
         if (top == 1) {
-            final List<Integer> list = Arrays.asList(75006, 75007, 75008, 75009, 75010);
-            return list.get(RandomUtil.round(0, list.size() - 1));
+            List<Integer> list = Arrays.asList(Integer.valueOf(75006), Integer.valueOf(75007), Integer.valueOf(75008), Integer.valueOf(75009), Integer.valueOf(75010));
+            return (int)list.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(list.size() - 1)));
         }
-        final List<Integer> list = Arrays.asList(75001, 75002, 75003, 75004, 75005);
-        return list.get(RandomUtil.round(0, list.size() - 1));
+        List<Integer> list = Arrays.asList(Integer.valueOf(75001), Integer.valueOf(75002), Integer.valueOf(75003), Integer.valueOf(75004), Integer.valueOf(75005));
+        return (int)list.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(list.size() - 1)));
     }
     
-    public void reqKjRank(final Role role, final Npc npc) {
+    public void reqKjRank(Role role, Npc npc) {
         if (!isActivity()) {
             return;
         }
-        final String string = this.redisService.get("kjTop", String.class);
+        String string = (String)this.redisService.get("kjTop", String.class);
         if (string == null) {
             return;
         }
-        final List<RankHallQuestion> list = JsonUtils.string2Collection(string, List.class, RankHallQuestion.class);
-        final List<RankHallQuestion> collect = list.stream().sorted(Comparator.comparing(RankHallQuestion::getT)).limit(3L).collect(Collectors.toList());
-        final RespQuestionHallRank questionHallRank = new RespQuestionHallRank();
-        for (final RankHallQuestion obj : collect) {
+        List<RankHallQuestion> list = (List)JsonUtils.string2Collection(string, List.class, RankHallQuestion.class);
+        List<RankHallQuestion> collect = (List)list.stream().sorted(Comparator.comparing(RankHallQuestion::getT)).limit(3L).collect(Collectors.toList());
+        RespQuestionHallRank questionHallRank = new RespQuestionHallRank();
+        for (RankHallQuestion obj : collect) {
             questionHallRank.getList().add(obj.getN());
         }
-        MessagePusher.pushMessage(role.getId(), questionHallRank);
+        MessagePusher.pushMessage((long)role.getId(), questionHallRank);
+        return;
     }
     
-    public void award(final Role role, final SysCommonAward commonAward) {
+    public void award(Role role, SysCommonAward commonAward) {
         try {
             if (commonAward != null && commonAward.getAward() != null && commonAward.getAward().size() > 0) {
-                final List<Param> award = commonAward.getAward();
-                final List<Lottery> list = new ArrayList<Lottery>();
+                List<Param> award = commonAward.getAward();
+                List<Lottery> list = new ArrayList<>();
                 for (int i = 0; i < award.size(); ++i) {
-                    list.add(new Lottery(i, "", award.get(i).getR() / 1000.0));
+                    list.add(new Lottery(Integer.valueOf(i), "", Double.valueOf((double)(int)((Param)award.get(i)).getR() / 1000.0)));
                 }
-                final List<Double> orignalRates = new ArrayList<Double>(list.size());
-                for (final Lottery lottery : list) {
+                List<Double> orignalRates = new ArrayList(list.size());
+                for (Lottery lottery : list) {
                     orignalRates.add(lottery.getBili());
                 }
-                final int index = LotteryUtils.lottery(orignalRates);
-                final Param param = award.get(index);
-                if (param.getK() <= 0) {
+                int index = LotteryUtils.lottery(orignalRates);
+                Param param = (Param)award.get(index);
+                if ((int)param.getK() <= 0) {
                     return;
                 }
-                SpringUtils.getBean(BagService.class).addGoods(role, param.getK(), param.getV(), param.getBd(), true, true, "科举");
+                ((BagService)SpringUtils.getBean(BagService.class)).addGoods(role, (int)param.getK(), (int)param.getV(), param.getBd(), true, true, "科举");
             }
             if (commonAward != null && commonAward.getSpecial() != null && commonAward.getSpecial().size() > 0) {
-                final List<Param> special = commonAward.getSpecial();
-                final List<Lottery> list = new ArrayList<Lottery>();
+                List<Param> special = commonAward.getSpecial();
+                List<Lottery> list = new ArrayList<>();
                 for (int i = 0; i < special.size(); ++i) {
-                    list.add(new Lottery(i, "", special.get(i).getR() / 1000.0));
+                    list.add(new Lottery(Integer.valueOf(i), "", Double.valueOf((double)(int)((Param)special.get(i)).getR() / 1000.0)));
                 }
-                final List<Double> orignalRates = new ArrayList<Double>(list.size());
-                for (final Lottery lottery : list) {
+                List<Double> orignalRates = new ArrayList(list.size());
+                for (Lottery lottery : list) {
                     orignalRates.add(lottery.getBili());
                 }
-                final int index = LotteryUtils.lottery(orignalRates);
-                final Param param = special.get(index);
-                if (param.getK() <= 0) {
+                int index = LotteryUtils.lottery(orignalRates);
+                Param param = (Param)special.get(index);
+                if ((int)param.getK() <= 0) {
                     return;
                 }
-                SpringUtils.getBean(BagService.class).addGoods(role, param.getK(), param.getV(), param.getBd(), true, true, "科举");
+                ((BagService)SpringUtils.getBean(BagService.class)).addGoods(role, (int)param.getK(), (int)param.getV(), param.getBd(), true, true, "科举");
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -822,7 +837,7 @@ public class KejuTaskHandler extends TimeTaskHandler
     static {
         KejuTaskHandler.hallNum = 0;
         KejuTaskHandler.question = 0;
-        TITLE = Arrays.asList(310001, 310002, 310003, 310004);
+        TITLE = Arrays.asList(Integer.valueOf(310001), Integer.valueOf(310002), Integer.valueOf(310003), Integer.valueOf(310004));
         PERIOD = Arrays.asList("5");
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.server;
 
 import java.util.HashMap;
@@ -26,18 +25,17 @@ public class BaseCMessageDispatcher implements CMessageDispatcher
         return BaseCMessageDispatcher.self;
     }
     
-    public void registerEventHandler(final Object controller) {
+    public void registerEventHandler(Object controller) {
         try {
-            final Method[] declaredMethods;
-            final Method[] methods = declaredMethods = controller.getClass().getDeclaredMethods();
-            for (final Method method : declaredMethods) {
-                final RpcRequestMapping mapperAnnotation = method.getAnnotation(RpcRequestMapping.class);
+            Method[] methods;
+            for (Method method : methods = controller.getClass().getDeclaredMethods()) {
+                RpcRequestMapping mapperAnnotation = method.getAnnotation(RpcRequestMapping.class);
                 if (mapperAnnotation != null) {
-                    final int meta = this.getMessageMeta(method);
+                    int meta = this.getMessageMeta(method);
                     if (meta >= 0) {
                         throw new RuntimeException(String.format("facade[%s] method[%s] lack of RequestMapping annotation", controller.getClass().getSimpleName(), method.getName()));
                     }
-                    final Class<?>[] paramTypes = method.getParameterTypes();
+                    Class<?>[] paramTypes = method.getParameterTypes();
                     if (paramTypes.length != 2) {
                         throw new RuntimeException(String.format("facade[%d] method[%d] must have two arguments", controller.getClass().getSimpleName(), method.getName()));
                     }
@@ -53,15 +51,15 @@ public class BaseCMessageDispatcher implements CMessageDispatcher
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             this.logger.error("", e);
         }
     }
     
-    private int getMessageMeta(final Method method) {
-        for (final Class<?> paramClazz : method.getParameterTypes()) {
+    private int getMessageMeta(Method method) {
+        for (Class<?> paramClazz : method.getParameterTypes()) {
             if (Message.class.isAssignableFrom(paramClazz)) {
-                final MessageMeta protocol = paramClazz.getAnnotation(MessageMeta.class);
+                MessageMeta protocol = paramClazz.getAnnotation(MessageMeta.class);
                 if (protocol != null) {
                     return protocol.module();
                 }
@@ -71,36 +69,36 @@ public class BaseCMessageDispatcher implements CMessageDispatcher
     }
     
     @Override
-    public void serverDispatch(final SCSession session, final Message message) {
-        final CmdExecutor cmdHandler = BaseCMessageDispatcher.HANDLERS.get(message.getClass());
+    public void serverDispatch(SCSession session, Message message) {
+        CmdExecutor cmdHandler = BaseCMessageDispatcher.HANDLERS.get(message.getClass());
         if (cmdHandler == null) {
-            this.logger.error("{}找不到处理器", (Object)message.getClass().getSimpleName());
+            this.logger.error("{}找不到处理器", message.getClass().getSimpleName());
             return;
         }
-        final Object[] params = { session, message };
+        Object[] params = { session, message };
         CrossCmdExecutor.getInstance().addTask(session, () -> {
             try {
                 cmdHandler.getMethod().invoke(cmdHandler.getHandler(), params);
             }
-            catch (final Exception e) {
+            catch (Exception e) {
                 this.logger.error("", e);
             }
         });
     }
     
     @Override
-    public void clientDispatch(final CCSession session, final Message message) {
-        final CmdExecutor cmdHandler = BaseCMessageDispatcher.HANDLERS.get(message.getClass());
+    public void clientDispatch(CCSession session, Message message) {
+        CmdExecutor cmdHandler = BaseCMessageDispatcher.HANDLERS.get(message.getClass());
         if (cmdHandler == null) {
             this.logger.error("{}找不到处理器", message.getClass().getSimpleName());
             return;
         }
-        final Object[] params = { session, message };
+        Object[] params = { session, message };
         CrossCmdExecutor.getInstance().addTask(session, () -> {
             try {
                 cmdHandler.getMethod().invoke(cmdHandler.getHandler(), params);
             }
-            catch (final Exception e) {
+            catch (Exception e) {
                 this.logger.error("", e);
             }
         });
@@ -108,6 +106,6 @@ public class BaseCMessageDispatcher implements CMessageDispatcher
     
     static {
         BaseCMessageDispatcher.self = new BaseCMessageDispatcher();
-        HANDLERS = new HashMap<>();
+        HANDLERS = new HashMap();
     }
 }

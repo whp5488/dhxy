@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.bean;
 
 import com.kitty.common.utils.TimeUtil;
@@ -73,49 +72,49 @@ public class PlayerExtendBox implements Serializable
     public PlayerExtendBox() {
         this.star = 0;
         this.buyPetGrid = 0;
-        this.position = 0;
-        this.storePosition = 0;
+        this.position = Integer.valueOf(0);
+        this.storePosition = Integer.valueOf(0);
         this.petEquipPosition = 0;
-        this.combatPet = 0;
-        this.guoScore = 0L;
-        this.bracScore = 0L;
-        this.naoScore = 0L;
-        this.diScore = 0L;
-        this.arenaScore = 0L;
-        this.longScore = 0L;
-        this.niceScore = 0L;
-        this.helpScore = 0L;
-        this.featsScore = 0L;
-        this.chargeScore = 0L;
-        this.boundGold = 0L;
-        this.achievementScore = 0L;
+        this.combatPet = Integer.valueOf(0);
+        this.guoScore = Long.valueOf(0L);
+        this.bracScore = Long.valueOf(0L);
+        this.naoScore = Long.valueOf(0L);
+        this.diScore = Long.valueOf(0L);
+        this.arenaScore = Long.valueOf(0L);
+        this.longScore = Long.valueOf(0L);
+        this.niceScore = Long.valueOf(0L);
+        this.helpScore = Long.valueOf(0L);
+        this.featsScore = Long.valueOf(0L);
+        this.chargeScore = Long.valueOf(0L);
+        this.boundGold = Long.valueOf(0L);
+        this.achievementScore = Long.valueOf(0L);
         this.banTrade = 0;
         this.stall = 8;
         this.drill = 0;
         this.fkp = 0;
         this.sc = 0;
-        this.setMap = new HashMap<String, Integer>();
+        this.setMap = new HashMap();
         this.autoFight = 0;
         this.newDistrict = new NutMap();
         this.points = new NutMap();
-        this.autoAttrib = new HashMap<String, Integer>();
+        this.autoAttrib = new HashMap();
         this.params = new NutMap();
         this.state = new NutMap();
-        this.autoFightSet = new HashMap<String, Object>();
-        this.quotaLimit = new HashMap<Integer, Map<Integer, Integer>>();
+        this.autoFightSet = new HashMap();
+        this.quotaLimit = new HashMap();
         this.resetQuotaTime = TimeUtil.dayInMillis(TimeUtil.getWeekday(2));
         this.dayQuotaLimit = new NutMap();
-        this.titleMap = new ConcurrentHashMap<Integer, TitleInfo>();
-        this.totalContent = new ArrayList<Integer>();
-        this.msgMap = new ArrayList<NutMap>();
-        this.suits = new ArrayList<SuitParam>();
+        this.titleMap = new ConcurrentHashMap();
+        this.totalContent = new ArrayList<>();
+        this.msgMap = new ArrayList<>();
+        this.suits = new ArrayList<>();
     }
     
     public int getStar() {
         return this.star;
     }
     
-    public void setStar(final int star) {
+    public void setStar(int star) {
         this.star = star;
     }
     
@@ -123,7 +122,7 @@ public class PlayerExtendBox implements Serializable
         return this.buyPetGrid;
     }
     
-    public void setBuyPetGrid(final int buyPetGrid) {
+    public void setBuyPetGrid(int buyPetGrid) {
         this.buyPetGrid = buyPetGrid;
     }
     
@@ -131,7 +130,7 @@ public class PlayerExtendBox implements Serializable
         return this.position;
     }
     
-    public void setPosition(final Integer position) {
+    public void setPosition(Integer position) {
         this.position = position;
     }
     
@@ -139,23 +138,23 @@ public class PlayerExtendBox implements Serializable
         return this.storePosition;
     }
     
-    public void setStorePosition(final Integer storePosition) {
+    public void setStorePosition(Integer storePosition) {
         this.storePosition = storePosition;
     }
     
     public Integer getPetEquipPosition() {
-        return this.petEquipPosition;
+        return Integer.valueOf(this.petEquipPosition);
     }
     
-    public void setPetEquipPosition(final Integer petEquipPosition) {
-        this.petEquipPosition = petEquipPosition;
+    public void setPetEquipPosition(Integer petEquipPosition) {
+        this.petEquipPosition = (int)petEquipPosition;
     }
     
     public Integer getCombatPet() {
         return this.combatPet;
     }
     
-    public void setCombatPet(final Integer combatPet) {
+    public void setCombatPet(Integer combatPet) {
         this.combatPet = combatPet;
     }
     
@@ -163,7 +162,7 @@ public class PlayerExtendBox implements Serializable
         return this.guoScore;
     }
     
-    public void setGuoScore(final Long guoScore) {
+    public void setGuoScore(Long guoScore) {
         this.guoScore = guoScore;
     }
     
@@ -171,7 +170,7 @@ public class PlayerExtendBox implements Serializable
         return this.bracScore;
     }
     
-    public void setBracScore(final Long bracScore) {
+    public void setBracScore(Long bracScore) {
         this.bracScore = bracScore;
     }
     
@@ -179,7 +178,7 @@ public class PlayerExtendBox implements Serializable
         return this.naoScore;
     }
     
-    public void setNaoScore(final Long naoScore) {
+    public void setNaoScore(Long naoScore) {
         this.naoScore = naoScore;
     }
     
@@ -187,7 +186,7 @@ public class PlayerExtendBox implements Serializable
         return this.diScore;
     }
     
-    public void setDiScore(final Long diScore) {
+    public void setDiScore(Long diScore) {
         this.diScore = diScore;
     }
     
@@ -195,7 +194,7 @@ public class PlayerExtendBox implements Serializable
         return this.arenaScore;
     }
     
-    public void setArenaScore(final Long arenaScore) {
+    public void setArenaScore(Long arenaScore) {
         this.arenaScore = arenaScore;
     }
     
@@ -203,7 +202,7 @@ public class PlayerExtendBox implements Serializable
         return this.longScore;
     }
     
-    public void setLongScore(final Long longScore) {
+    public void setLongScore(Long longScore) {
         this.longScore = longScore;
     }
     
@@ -211,7 +210,7 @@ public class PlayerExtendBox implements Serializable
         return this.niceScore;
     }
     
-    public void setNiceScore(final Long niceScore) {
+    public void setNiceScore(Long niceScore) {
         this.niceScore = niceScore;
     }
     
@@ -219,7 +218,7 @@ public class PlayerExtendBox implements Serializable
         return this.helpScore;
     }
     
-    public void setHelpScore(final Long helpScore) {
+    public void setHelpScore(Long helpScore) {
         this.helpScore = helpScore;
     }
     
@@ -227,7 +226,7 @@ public class PlayerExtendBox implements Serializable
         return this.featsScore;
     }
     
-    public void setFeatsScore(final Long featsScore) {
+    public void setFeatsScore(Long featsScore) {
         this.featsScore = featsScore;
     }
     
@@ -235,7 +234,7 @@ public class PlayerExtendBox implements Serializable
         return this.chargeScore;
     }
     
-    public void setChargeScore(final Long chargeScore) {
+    public void setChargeScore(Long chargeScore) {
         this.chargeScore = chargeScore;
     }
     
@@ -243,7 +242,7 @@ public class PlayerExtendBox implements Serializable
         return this.boundGold;
     }
     
-    public void setBoundGold(final Long boundGold) {
+    public void setBoundGold(Long boundGold) {
         this.boundGold = boundGold;
     }
     
@@ -251,7 +250,7 @@ public class PlayerExtendBox implements Serializable
         return this.achievementScore;
     }
     
-    public void setAchievementScore(final Long achievementScore) {
+    public void setAchievementScore(Long achievementScore) {
         this.achievementScore = achievementScore;
     }
     
@@ -259,7 +258,7 @@ public class PlayerExtendBox implements Serializable
         return this.banTrade;
     }
     
-    public void setBanTrade(final int banTrade) {
+    public void setBanTrade(int banTrade) {
         this.banTrade = banTrade;
     }
     
@@ -267,7 +266,7 @@ public class PlayerExtendBox implements Serializable
         return this.stall;
     }
     
-    public void setStall(final int stall) {
+    public void setStall(int stall) {
         this.stall = stall;
     }
     
@@ -275,7 +274,7 @@ public class PlayerExtendBox implements Serializable
         return this.setMap;
     }
     
-    public void setSetMap(final Map<String, Integer> setMap) {
+    public void setSetMap(Map<String, Integer> setMap) {
         this.setMap = setMap;
     }
     
@@ -283,7 +282,7 @@ public class PlayerExtendBox implements Serializable
         return this.autoFight;
     }
     
-    public void setAutoFight(final byte autoFight) {
+    public void setAutoFight(byte autoFight) {
         this.autoFight = autoFight;
     }
     
@@ -291,7 +290,7 @@ public class PlayerExtendBox implements Serializable
         return this.autoAttrib;
     }
     
-    public void setAutoAttrib(final Map<String, Integer> autoAttrib) {
+    public void setAutoAttrib(Map<String, Integer> autoAttrib) {
         this.autoAttrib = autoAttrib;
     }
     
@@ -299,7 +298,7 @@ public class PlayerExtendBox implements Serializable
         return this.params;
     }
     
-    public void setParams(final NutMap params) {
+    public void setParams(NutMap params) {
         this.params = params;
     }
     
@@ -307,7 +306,7 @@ public class PlayerExtendBox implements Serializable
         return this.autoFightSet;
     }
     
-    public void setAutoFightSet(final Map<String, Object> autoFightSet) {
+    public void setAutoFightSet(Map<String, Object> autoFightSet) {
         this.autoFightSet = autoFightSet;
     }
     
@@ -315,7 +314,7 @@ public class PlayerExtendBox implements Serializable
         return this.quotaLimit;
     }
     
-    public void setQuotaLimit(final Map<Integer, Map<Integer, Integer>> quotaLimit) {
+    public void setQuotaLimit(Map<Integer, Map<Integer, Integer>> quotaLimit) {
         this.quotaLimit = quotaLimit;
     }
     
@@ -323,7 +322,7 @@ public class PlayerExtendBox implements Serializable
         return this.resetQuotaTime;
     }
     
-    public void setResetQuotaTime(final int resetQuotaTime) {
+    public void setResetQuotaTime(int resetQuotaTime) {
         this.resetQuotaTime = resetQuotaTime;
     }
     
@@ -331,7 +330,7 @@ public class PlayerExtendBox implements Serializable
         return this.titleMap;
     }
     
-    public void setTitleMap(final ConcurrentHashMap<Integer, TitleInfo> titleMap) {
+    public void setTitleMap(ConcurrentHashMap<Integer, TitleInfo> titleMap) {
         this.titleMap = titleMap;
     }
     
@@ -339,7 +338,7 @@ public class PlayerExtendBox implements Serializable
         return this.signDay;
     }
     
-    public void setSignDay(final String signDay) {
+    public void setSignDay(String signDay) {
         this.signDay = signDay;
     }
     
@@ -347,7 +346,7 @@ public class PlayerExtendBox implements Serializable
         return this.signbuSign;
     }
     
-    public void setSignbuSign(final String signbuSign) {
+    public void setSignbuSign(String signbuSign) {
         this.signbuSign = signbuSign;
     }
     
@@ -355,7 +354,7 @@ public class PlayerExtendBox implements Serializable
         return this.signSize;
     }
     
-    public void setSignSize(final int signSize) {
+    public void setSignSize(int signSize) {
         this.signSize = signSize;
     }
     
@@ -363,7 +362,7 @@ public class PlayerExtendBox implements Serializable
         return this.newcomer;
     }
     
-    public void setNewcomer(final String newcomer) {
+    public void setNewcomer(String newcomer) {
         this.newcomer = newcomer;
     }
     
@@ -371,7 +370,7 @@ public class PlayerExtendBox implements Serializable
         return this.totalContent;
     }
     
-    public void setTotalContent(final ArrayList<Integer> totalContent) {
+    public void setTotalContent(ArrayList<Integer> totalContent) {
         this.totalContent = totalContent;
     }
     
@@ -379,7 +378,7 @@ public class PlayerExtendBox implements Serializable
         return this.msgMap;
     }
     
-    public void setMsgMap(final List<NutMap> msgMap) {
+    public void setMsgMap(List<NutMap> msgMap) {
         this.msgMap = msgMap;
     }
     
@@ -387,7 +386,7 @@ public class PlayerExtendBox implements Serializable
         return this.drill;
     }
     
-    public void setDrill(final byte drill) {
+    public void setDrill(byte drill) {
         this.drill = drill;
     }
     
@@ -395,7 +394,7 @@ public class PlayerExtendBox implements Serializable
         return this.fkp;
     }
     
-    public void setFkp(final byte fkp) {
+    public void setFkp(byte fkp) {
         this.fkp = fkp;
     }
     
@@ -403,7 +402,7 @@ public class PlayerExtendBox implements Serializable
         return this.suits;
     }
     
-    public void setSuits(final List<SuitParam> suits) {
+    public void setSuits(List<SuitParam> suits) {
         this.suits = suits;
     }
     
@@ -411,7 +410,7 @@ public class PlayerExtendBox implements Serializable
         return this.dayQuotaLimit;
     }
     
-    public void setDayQuotaLimit(final NutMap dayQuotaLimit) {
+    public void setDayQuotaLimit(NutMap dayQuotaLimit) {
         this.dayQuotaLimit = dayQuotaLimit;
     }
     
@@ -419,7 +418,7 @@ public class PlayerExtendBox implements Serializable
         return this.points;
     }
     
-    public void setPoints(final NutMap points) {
+    public void setPoints(NutMap points) {
         this.points = points;
     }
     
@@ -427,7 +426,7 @@ public class PlayerExtendBox implements Serializable
         return this.sc;
     }
     
-    public void setSc(final byte sc) {
+    public void setSc(byte sc) {
         this.sc = sc;
     }
     
@@ -435,7 +434,7 @@ public class PlayerExtendBox implements Serializable
         return this.newDistrict;
     }
     
-    public void setNewDistrict(final NutMap newDistrict) {
+    public void setNewDistrict(NutMap newDistrict) {
         this.newDistrict = newDistrict;
     }
     
@@ -443,7 +442,7 @@ public class PlayerExtendBox implements Serializable
         return this.state;
     }
     
-    public void setState(final NutMap state) {
+    public void setState(NutMap state) {
         this.state = state;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 public enum PRO_TYPE

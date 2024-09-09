@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.horse.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,21 +33,13 @@ public class ReqRideMount extends Message
         if (!(o instanceof ReqRideMount)) {
             return false;
         }
-        final ReqRideMount other = (ReqRideMount)o;
+        ReqRideMount other = (ReqRideMount)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$mountId = this.getMountId();
-        final Object other$mountId = other.getMountId();
-        if (this$mountId == null) {
-            if (other$mountId == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$mountId.equals(other$mountId)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$mountId = this.getMountId();
+        Object other$mountId = other.getMountId();
+        return ((this$mountId != null) ? this$mountId.equals(other$mountId) : (other$mountId == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -58,9 +48,9 @@ public class ReqRideMount extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $mountId = this.getMountId();
+        Object $mountId = this.getMountId();
         result = result * 59 + (($mountId == null) ? 43 : $mountId.hashCode());
         result = result * 59 + this.getType();
         return result;
@@ -68,10 +58,9 @@ public class ReqRideMount extends Message
     
     @Override
     public String toString() {
-        return "ReqRideMount(mountId=" + this.getMountId() + ", type=" + this.getType() + ")";
+        return "ReqRideMount(mountId=" + this.getMountId() + ", type=" + (int)this.getType() + ")";
     }
     
-    @ConstructorProperties({ "mountId", "type" })
     public ReqRideMount(final String mountId, final byte type) {
         this.mountId = mountId;
         this.type = type;

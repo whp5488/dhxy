@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.vo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.init.domain.SysDataTaskNpc;
 import java.util.ArrayList;
 import com.kitty.system.game.npc.domain.SysNpcInfo;
@@ -41,7 +39,7 @@ public class Npc implements Serializable
         return this.inFight.get();
     }
     
-    public void setInFight(final boolean inFight) {
+    public void setInFight(boolean inFight) {
         this.inFight.set(inFight);
     }
     
@@ -49,7 +47,7 @@ public class Npc implements Serializable
         return this.endTime <= 0 || Math.toIntExact(System.currentTimeMillis() / 1000L) <= this.endTime;
     }
     
-    public Npc(final SysNpcInfo npcInfo) {
+    public Npc(SysNpcInfo npcInfo) {
         this.icon = 1;
         this.level = 0;
         this.warSerial = 0;
@@ -60,14 +58,14 @@ public class Npc implements Serializable
         this.classify = 0;
         this.type = 0;
         this.visible = 0;
-        this.npcTypes = new ArrayList<Integer>();
+        this.npcTypes = new ArrayList<>();
         this.finish = 0L;
         this.mirror = 0;
-        this.id = npcInfo.getSerial();
-        this.map = npcInfo.getPos().getMapId();
-        this.x = npcInfo.getPos().getX();
-        this.y = npcInfo.getPos().getY();
-        this.icon = npcInfo.getShape();
+        this.id = (int)npcInfo.getSerial();
+        this.map = (int)npcInfo.getPos().getMapId();
+        this.x = (int)npcInfo.getPos().getX();
+        this.y = (int)npcInfo.getPos().getY();
+        this.icon = (int)npcInfo.getShape();
         this.name = npcInfo.getName();
         this.talk = npcInfo.getTalk();
         this.shipper = npcInfo.getShipper();
@@ -75,7 +73,7 @@ public class Npc implements Serializable
         this.classify = npcInfo.getClassify();
     }
     
-    public Npc(final SysDataTaskNpc npcInfo) {
+    public Npc(SysDataTaskNpc npcInfo) {
         this.icon = 1;
         this.level = 0;
         this.warSerial = 0;
@@ -86,7 +84,7 @@ public class Npc implements Serializable
         this.classify = 0;
         this.type = 0;
         this.visible = 0;
-        this.npcTypes = new ArrayList<Integer>();
+        this.npcTypes = new ArrayList<>();
         this.finish = 0L;
         this.mirror = 0;
         this.id = npcInfo.getSerial();
@@ -99,7 +97,7 @@ public class Npc implements Serializable
         this.npcTypes = npcInfo.getTypes();
     }
     
-    public Npc(final int id, final int role, final int map, final int x, final int y, final int icon, final String name, final String title, final int ns, final int type) {
+    public Npc(int id, int role, int map, int x, int y, int icon, String name, String title, int ns, int type) {
         this.icon = 1;
         this.level = 0;
         this.warSerial = 0;
@@ -110,7 +108,7 @@ public class Npc implements Serializable
         this.classify = 0;
         this.type = 0;
         this.visible = 0;
-        this.npcTypes = new ArrayList<Integer>();
+        this.npcTypes = new ArrayList<>();
         this.finish = 0L;
         this.mirror = 0;
         this.id = id;
@@ -125,7 +123,7 @@ public class Npc implements Serializable
         this.type = type;
     }
     
-    public Npc(final int id, final int role, final int map, final int x, final int y, final int icon, final String name, final String title, final int ns, final int level, final int warSerial, final int type) {
+    public Npc(int id, int role, int map, int x, int y, int icon, String name, String title, int ns, int level, int warSerial, int type) {
         this.icon = 1;
         this.level = 0;
         this.warSerial = 0;
@@ -136,7 +134,7 @@ public class Npc implements Serializable
         this.classify = 0;
         this.type = 0;
         this.visible = 0;
-        this.npcTypes = new ArrayList<Integer>();
+        this.npcTypes = new ArrayList<>();
         this.finish = 0L;
         this.mirror = 0;
         this.id = id;
@@ -340,203 +338,7 @@ public class Npc implements Serializable
     public void setMirror(final byte mirror) {
         this.mirror = mirror;
     }
-    
-    @Override
-    public boolean equals(final Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof Npc)) {
-            return false;
-        }
-        final Npc other = (Npc)o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        if (this.getId() != other.getId()) {
-            return false;
-        }
-        if (this.getRole() != other.getRole()) {
-            return false;
-        }
-        if (this.getMap() != other.getMap()) {
-            return false;
-        }
-        if (this.getX() != other.getX()) {
-            return false;
-        }
-        if (this.getY() != other.getY()) {
-            return false;
-        }
-        if (this.getIcon() != other.getIcon()) {
-            return false;
-        }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0143: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0143;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0143;
-            }
-            return false;
-        }
-        final Object this$title = this.getTitle();
-        final Object other$title = other.getTitle();
-        Label_0180: {
-            if (this$title == null) {
-                if (other$title == null) {
-                    break Label_0180;
-                }
-            }
-            else if (this$title.equals(other$title)) {
-                break Label_0180;
-            }
-            return false;
-        }
-        if (this.getNs() != other.getNs()) {
-            return false;
-        }
-        if (this.getLevel() != other.getLevel()) {
-            return false;
-        }
-        if (this.getWarSerial() != other.getWarSerial()) {
-            return false;
-        }
-        if (this.getCreateTime() != other.getCreateTime()) {
-            return false;
-        }
-        if (this.getEndTime() != other.getEndTime()) {
-            return false;
-        }
-        final Object this$roleInfo = this.getRoleInfo();
-        final Object other$roleInfo = other.getRoleInfo();
-        Label_0282: {
-            if (this$roleInfo == null) {
-                if (other$roleInfo == null) {
-                    break Label_0282;
-                }
-            }
-            else if (this$roleInfo.equals(other$roleInfo)) {
-                break Label_0282;
-            }
-            return false;
-        }
-        final Object this$inFight = this.getInFight();
-        final Object other$inFight = other.getInFight();
-        Label_0319: {
-            if (this$inFight == null) {
-                if (other$inFight == null) {
-                    break Label_0319;
-                }
-            }
-            else if (this$inFight.equals(other$inFight)) {
-                break Label_0319;
-            }
-            return false;
-        }
-        if (this.getFightId() != other.getFightId()) {
-            return false;
-        }
-        final Object this$shipper = this.getShipper();
-        final Object other$shipper = other.getShipper();
-        Label_0369: {
-            if (this$shipper == null) {
-                if (other$shipper == null) {
-                    break Label_0369;
-                }
-            }
-            else if (this$shipper.equals(other$shipper)) {
-                break Label_0369;
-            }
-            return false;
-        }
-        if (this.getClassify() != other.getClassify()) {
-            return false;
-        }
-        final Object this$talk = this.getTalk();
-        final Object other$talk = other.getTalk();
-        Label_0419: {
-            if (this$talk == null) {
-                if (other$talk == null) {
-                    break Label_0419;
-                }
-            }
-            else if (this$talk.equals(other$talk)) {
-                break Label_0419;
-            }
-            return false;
-        }
-        if (this.getType() != other.getType()) {
-            return false;
-        }
-        if (this.getVisible() != other.getVisible()) {
-            return false;
-        }
-        final Object this$npcTypes = this.getNpcTypes();
-        final Object other$npcTypes = other.getNpcTypes();
-        if (this$npcTypes == null) {
-            if (other$npcTypes == null) {
-                return this.getFinish() == other.getFinish() && this.getMirror() == other.getMirror();
-            }
-        }
-        else if (this$npcTypes.equals(other$npcTypes)) {
-            return this.getFinish() == other.getFinish() && this.getMirror() == other.getMirror();
-        }
-        return false;
-    }
-    
-    protected boolean canEqual(final Object other) {
-        return other instanceof Npc;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        result = result * 59 + this.getId();
-        result = result * 59 + this.getRole();
-        result = result * 59 + this.getMap();
-        result = result * 59 + this.getX();
-        result = result * 59 + this.getY();
-        result = result * 59 + this.getIcon();
-        final Object $name = this.getName();
-        result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $title = this.getTitle();
-        result = result * 59 + (($title == null) ? 43 : $title.hashCode());
-        result = result * 59 + this.getNs();
-        result = result * 59 + this.getLevel();
-        result = result * 59 + this.getWarSerial();
-        result = result * 59 + this.getCreateTime();
-        result = result * 59 + this.getEndTime();
-        final Object $roleInfo = this.getRoleInfo();
-        result = result * 59 + (($roleInfo == null) ? 43 : $roleInfo.hashCode());
-        final Object $inFight = this.getInFight();
-        result = result * 59 + (($inFight == null) ? 43 : $inFight.hashCode());
-        result = result * 59 + this.getFightId();
-        final Object $shipper = this.getShipper();
-        result = result * 59 + (($shipper == null) ? 43 : $shipper.hashCode());
-        result = result * 59 + this.getClassify();
-        final Object $talk = this.getTalk();
-        result = result * 59 + (($talk == null) ? 43 : $talk.hashCode());
-        result = result * 59 + this.getType();
-        result = result * 59 + this.getVisible();
-        final Object $npcTypes = this.getNpcTypes();
-        result = result * 59 + (($npcTypes == null) ? 43 : $npcTypes.hashCode());
-        final long $finish = this.getFinish();
-        result = result * 59 + (int)($finish >>> 32 ^ $finish);
-        result = result * 59 + this.getMirror();
-        return result;
-    }
-    
-    @Override
-    public String toString() {
-        return "Npc(id=" + this.getId() + ", role=" + this.getRole() + ", map=" + this.getMap() + ", x=" + this.getX() + ", y=" + this.getY() + ", icon=" + this.getIcon() + ", name=" + this.getName() + ", title=" + this.getTitle() + ", ns=" + this.getNs() + ", level=" + this.getLevel() + ", warSerial=" + this.getWarSerial() + ", createTime=" + this.getCreateTime() + ", endTime=" + this.getEndTime() + ", roleInfo=" + this.getRoleInfo() + ", inFight=" + this.getInFight() + ", fightId=" + this.getFightId() + ", shipper=" + this.getShipper() + ", classify=" + this.getClassify() + ", talk=" + this.getTalk() + ", type=" + this.getType() + ", visible=" + this.getVisible() + ", npcTypes=" + this.getNpcTypes() + ", finish=" + this.getFinish() + ", mirror=" + this.getMirror() + ")";
-    }
-    
+
     public Npc() {
         this.icon = 1;
         this.level = 0;
@@ -548,12 +350,11 @@ public class Npc implements Serializable
         this.classify = 0;
         this.type = 0;
         this.visible = 0;
-        this.npcTypes = new ArrayList<Integer>();
+        this.npcTypes = new ArrayList<>();
         this.finish = 0L;
         this.mirror = 0;
     }
     
-    @ConstructorProperties({ "id", "role", "map", "x", "y", "icon", "name", "title", "ns", "level", "warSerial", "createTime", "endTime", "roleInfo", "inFight", "fightId", "shipper", "classify", "talk", "type", "visible", "npcTypes", "finish", "mirror" })
     public Npc(final int id, final int role, final int map, final int x, final int y, final int icon, final String name, final String title, final int ns, final int level, final int warSerial, final int createTime, final int endTime, final NutMap roleInfo, final AtomicBoolean inFight, final int fightId, final String shipper, final int classify, final String talk, final int type, final int visible, final List<Integer> npcTypes, final long finish, final byte mirror) {
         this.icon = 1;
         this.level = 0;
@@ -565,7 +366,7 @@ public class Npc implements Serializable
         this.classify = 0;
         this.type = 0;
         this.visible = 0;
-        this.npcTypes = new ArrayList<Integer>();
+        this.npcTypes = new ArrayList<>();
         this.finish = 0L;
         this.mirror = 0;
         this.id = id;

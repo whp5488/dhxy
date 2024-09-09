@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.callback;
 
 import java.util.concurrent.locks.Condition;
@@ -15,8 +14,11 @@ public class CallbackTask implements Callable<Message>
     private CCSession session;
     private Message request;
     
-    public static CallbackTask valueOf(final CCSession session, final Message message) {
-        final CallbackTask task = new CallbackTask();
+    public CallbackTask() {
+    }
+    
+    public static CallbackTask valueOf(CCSession session, Message message) {
+        CallbackTask task = new CallbackTask();
         task.request = message;
         task.session = session;
         return task;
@@ -25,18 +27,18 @@ public class CallbackTask implements Callable<Message>
     @Override
     public Message call() throws Exception {
         try {
-            final CReqCallBack reqCallBack = (CReqCallBack)this.request;
-            final int index = CallBack.nextMsgId();
+            CReqCallBack reqCallBack = (CReqCallBack)this.request;
+            int index = CallBack.nextMsgId();
             reqCallBack.setIndex(index);
             reqCallBack.serialize();
             this.session.sendMessage(reqCallBack);
-            final ReentrantLock lock = new ReentrantLock();
-            final Condition condition = lock.newCondition();
-            final long maxTimeOut = 5000L;
-            final long startTime = System.currentTimeMillis();
-            final CallBackService callBackService = SpringUtils.getCallBackService();
+            ReentrantLock lock = new ReentrantLock();
+            Condition condition = lock.newCondition();
+            long maxTimeOut = 5000L;
+            long startTime = System.currentTimeMillis();
+            CallBackService callBackService = SpringUtils.getCallBackService();
             while (System.currentTimeMillis() - startTime <= maxTimeOut) {
-                final CallBack c = callBackService.removeCallBack(index);
+                CallBack c = callBackService.removeCallBack(index);
                 if (c != null) {
                     return c.getData();
                 }
@@ -44,7 +46,7 @@ public class CallbackTask implements Callable<Message>
                 try {
                     condition.await(10L, TimeUnit.MILLISECONDS);
                 }
-                catch (final Exception ex) {}
+                catch (Exception ex) {}
                 finally {
                     lock.unlock();
                 }

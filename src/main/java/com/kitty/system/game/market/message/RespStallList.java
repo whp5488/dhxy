@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.system.game.market.model.StallItem;
@@ -13,6 +12,9 @@ public class RespStallList extends Message
     private short currPage;
     private List<StallItem> list;
     private String classify;
+    
+    public RespStallList() {
+    }
     
     public void setTotalPage(final short totalPage) {
         this.totalPage = totalPage;

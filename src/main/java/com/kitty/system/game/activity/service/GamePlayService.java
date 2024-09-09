@@ -1,10 +1,7 @@
-
 package com.kitty.system.game.activity.service;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
 import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.activity.domain.WeekTreasure;
@@ -19,12 +16,15 @@ public class GamePlayService
     @Autowired
     private Dao dao;
     
-    public Map<Long, WeekTreasure> getWeekTreasure(final long id) {
-        Map<Long, WeekTreasure> map = DataCache.WEEK_TREASURE.get(id);
+    public GamePlayService() {
+    }
+    
+    public Map<Long, WeekTreasure> getWeekTreasure(long id) {
+        Map<Long, WeekTreasure> map = (Map)DataCache.WEEK_TREASURE.get(Long.valueOf(id));
         if (map == null) {
-            final List<WeekTreasure> list = this.dao.query(WeekTreasure.class, Cnd.where("r_id", "=", id));
-            map = list.stream().collect(Collectors.toMap(WeekTreasure::getId, WeekTreasure -> WeekTreasure));
-            DataCache.WEEK_TREASURE.put(id, map);
+            List<WeekTreasure> list = this.dao.query(WeekTreasure.class, Cnd.where("r_id", "=", Long.valueOf(id)));
+            map = (Map)list.stream().collect(Collectors.toMap(WeekTreasure::getId, WeekTreasure -> WeekTreasure));
+            DataCache.WEEK_TREASURE.put(Long.valueOf(id), map);
             return map;
         }
         return map;

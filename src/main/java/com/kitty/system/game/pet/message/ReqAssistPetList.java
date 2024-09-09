@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class ReqAssistPetList extends Message
 {
     private Integer serial;
     
+    public ReqAssistPetList() {
+    }
+    
     public Integer getSerial() {
         return this.serial;
     }
     
-    public void setSerial(final Integer serial) {
+    public void setSerial(Integer serial) {
         this.serial = serial;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -42,6 +41,9 @@ public class SysMapTeleporter implements Serializable
     @Comment("传送到地图朝向")
     @Column("dir")
     private Integer dir;
+    
+    public SysMapTeleporter() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -139,151 +141,63 @@ public class SysMapTeleporter implements Serializable
         if (!(o instanceof SysMapTeleporter)) {
             return false;
         }
-        final SysMapTeleporter other = (SysMapTeleporter)o;
+        SysMapTeleporter other = (SysMapTeleporter)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0102: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0102;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$fromMapSerial = this.getFromMapSerial();
-        final Object other$fromMapSerial = other.getFromMapSerial();
-        Label_0176: {
-            if (this$fromMapSerial == null) {
-                if (other$fromMapSerial == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$fromMapSerial.equals(other$fromMapSerial)) {
-                break Label_0176;
-            }
+        Object this$fromMapSerial = this.getFromMapSerial();
+        Object other$fromMapSerial = other.getFromMapSerial();
+        if (!((this$fromMapSerial != null) ? this$fromMapSerial.equals(other$fromMapSerial) : (other$fromMapSerial == null))) {
             return false;
         }
-        final Object this$fromX = this.getFromX();
-        final Object other$fromX = other.getFromX();
-        Label_0213: {
-            if (this$fromX == null) {
-                if (other$fromX == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$fromX.equals(other$fromX)) {
-                break Label_0213;
-            }
+        Object this$fromX = this.getFromX();
+        Object other$fromX = other.getFromX();
+        if (!((this$fromX != null) ? this$fromX.equals(other$fromX) : (other$fromX == null))) {
             return false;
         }
-        final Object this$fromY = this.getFromY();
-        final Object other$fromY = other.getFromY();
-        Label_0250: {
-            if (this$fromY == null) {
-                if (other$fromY == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$fromY.equals(other$fromY)) {
-                break Label_0250;
-            }
+        Object this$fromY = this.getFromY();
+        Object other$fromY = other.getFromY();
+        if (!((this$fromY != null) ? this$fromY.equals(other$fromY) : (other$fromY == null))) {
             return false;
         }
-        final Object this$toMapSerial = this.getToMapSerial();
-        final Object other$toMapSerial = other.getToMapSerial();
-        Label_0287: {
-            if (this$toMapSerial == null) {
-                if (other$toMapSerial == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$toMapSerial.equals(other$toMapSerial)) {
-                break Label_0287;
-            }
+        Object this$toMapSerial = this.getToMapSerial();
+        Object other$toMapSerial = other.getToMapSerial();
+        if (!((this$toMapSerial != null) ? this$toMapSerial.equals(other$toMapSerial) : (other$toMapSerial == null))) {
             return false;
         }
-        final Object this$toMapName = this.getToMapName();
-        final Object other$toMapName = other.getToMapName();
-        Label_0324: {
-            if (this$toMapName == null) {
-                if (other$toMapName == null) {
-                    break Label_0324;
-                }
-            }
-            else if (this$toMapName.equals(other$toMapName)) {
-                break Label_0324;
-            }
+        Object this$toMapName = this.getToMapName();
+        Object other$toMapName = other.getToMapName();
+        if (!((this$toMapName != null) ? this$toMapName.equals(other$toMapName) : (other$toMapName == null))) {
             return false;
         }
-        final Object this$toMapX = this.getToMapX();
-        final Object other$toMapX = other.getToMapX();
-        Label_0361: {
-            if (this$toMapX == null) {
-                if (other$toMapX == null) {
-                    break Label_0361;
-                }
-            }
-            else if (this$toMapX.equals(other$toMapX)) {
-                break Label_0361;
-            }
+        Object this$toMapX = this.getToMapX();
+        Object other$toMapX = other.getToMapX();
+        if (!((this$toMapX != null) ? this$toMapX.equals(other$toMapX) : (other$toMapX == null))) {
             return false;
         }
-        final Object this$toMapY = this.getToMapY();
-        final Object other$toMapY = other.getToMapY();
-        Label_0398: {
-            if (this$toMapY == null) {
-                if (other$toMapY == null) {
-                    break Label_0398;
-                }
-            }
-            else if (this$toMapY.equals(other$toMapY)) {
-                break Label_0398;
-            }
+        Object this$toMapY = this.getToMapY();
+        Object other$toMapY = other.getToMapY();
+        if (!((this$toMapY != null) ? this$toMapY.equals(other$toMapY) : (other$toMapY == null))) {
             return false;
         }
-        final Object this$dir = this.getDir();
-        final Object other$dir = other.getDir();
-        if (this$dir == null) {
-            if (other$dir == null) {
-                return true;
-            }
-        }
-        else if (this$dir.equals(other$dir)) {
-            return true;
-        }
-        return false;
+        Object this$dir = this.getDir();
+        Object other$dir = other.getDir();
+        return (this$dir != null) ? this$dir.equals(other$dir) : (other$dir == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -292,29 +206,29 @@ public class SysMapTeleporter implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $fromMapSerial = this.getFromMapSerial();
+        Object $fromMapSerial = this.getFromMapSerial();
         result = result * 59 + (($fromMapSerial == null) ? 43 : $fromMapSerial.hashCode());
-        final Object $fromX = this.getFromX();
+        Object $fromX = this.getFromX();
         result = result * 59 + (($fromX == null) ? 43 : $fromX.hashCode());
-        final Object $fromY = this.getFromY();
+        Object $fromY = this.getFromY();
         result = result * 59 + (($fromY == null) ? 43 : $fromY.hashCode());
-        final Object $toMapSerial = this.getToMapSerial();
+        Object $toMapSerial = this.getToMapSerial();
         result = result * 59 + (($toMapSerial == null) ? 43 : $toMapSerial.hashCode());
-        final Object $toMapName = this.getToMapName();
+        Object $toMapName = this.getToMapName();
         result = result * 59 + (($toMapName == null) ? 43 : $toMapName.hashCode());
-        final Object $toMapX = this.getToMapX();
+        Object $toMapX = this.getToMapX();
         result = result * 59 + (($toMapX == null) ? 43 : $toMapX.hashCode());
-        final Object $toMapY = this.getToMapY();
+        Object $toMapY = this.getToMapY();
         result = result * 59 + (($toMapY == null) ? 43 : $toMapY.hashCode());
-        final Object $dir = this.getDir();
+        Object $dir = this.getDir();
         result = result * 59 + (($dir == null) ? 43 : $dir.hashCode());
         return result;
     }

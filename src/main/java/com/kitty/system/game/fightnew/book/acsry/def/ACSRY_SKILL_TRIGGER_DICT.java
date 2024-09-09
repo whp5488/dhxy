@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.def;
 
 public enum ACSRY_SKILL_TRIGGER_DICT

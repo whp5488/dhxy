@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.service;
 
 import com.kitty.mina.ProtocalSet;
@@ -24,36 +23,39 @@ public class CommonService
     @Autowired
     private InitService initService;
     
+    public CommonService() {
+    }
+    
     public void loadProduct() {
-        final Map<String, String> map = this.initService.initCommonSet();
-        final Map<String, String> version = this.initService.initVersion();
+        Map<String, String> map = this.initService.initCommonSet();
+        Map<String, String> version = this.initService.initVersion();
         this.initProtocol();
         Deploy.load(map);
-        SpringUtils.getBean(InstructService.class).init();
+        ((InstructService)SpringUtils.getBean(InstructService.class)).init();
         SpringUtils.getPartyService().loadParty();
-        SpringUtils.getBean(ServerService.class).init(map, version);
+        ((ServerService)SpringUtils.getBean(ServerService.class)).init(map, version);
         WelfareDataPool.init(map);
-        SpringUtils.getBean(MarketService.class).init();
-        SpringUtils.getBean(ServerConfig.class).init();
-        SpringUtils.getBean(AtWillHandler.class).loadCommonSet(map);
-        SpringUtils.getBean(WaterHandler.class).loadCommonSet(map);
-        SpringUtils.getBean(GangWarsHandler.class).loadCommonSet(map);
-        SpringUtils.getBean(CaHandler.class).loadCommonSet(map);
-        SpringUtils.getBean(SubstitutionService.class).init();
+        ((MarketService)SpringUtils.getBean(MarketService.class)).init();
+        ((ServerConfig)SpringUtils.getBean(ServerConfig.class)).init();
+        ((AtWillHandler)SpringUtils.getBean(AtWillHandler.class)).loadCommonSet(map);
+        ((WaterHandler)SpringUtils.getBean(WaterHandler.class)).loadCommonSet(map);
+        ((GangWarsHandler)SpringUtils.getBean(GangWarsHandler.class)).loadCommonSet(map);
+        ((CaHandler)SpringUtils.getBean(CaHandler.class)).loadCommonSet(map);
+        ((SubstitutionService)SpringUtils.getBean(SubstitutionService.class)).init();
     }
     
     private void initProtocol() {
-        ProtocalSet.loginSet.add(12290);
-        ProtocalSet.loginSet.add(45627);
-        ProtocalSet.loginSet.add(4274);
-        ProtocalSet.loginSet.add(8284);
-        ProtocalSet.loginSet.add(4192);
-        ProtocalSet.loginSet.add(45144);
-        ProtocalSet.loginSet.add(9040);
-        ProtocalSet.loginSet.add(45073);
-        ProtocalSet.loginSet.add(45057);
-        ProtocalSet.loginSet.add(45696);
-        ProtocalSet.loginSet.add(24112);
-        ProtocalSet.loginSet.add(63752);
+        ProtocalSet.loginSet.add(Integer.valueOf(1833));
+        ProtocalSet.loginSet.add(Integer.valueOf(45627));
+        ProtocalSet.loginSet.add(Integer.valueOf(4274));
+        ProtocalSet.loginSet.add(Integer.valueOf(9005));
+        ProtocalSet.loginSet.add(Integer.valueOf(26890));
+        ProtocalSet.loginSet.add(Integer.valueOf(45144));
+        ProtocalSet.loginSet.add(Integer.valueOf(9040));
+        ProtocalSet.loginSet.add(Integer.valueOf(45073));
+        ProtocalSet.loginSet.add(Integer.valueOf(45057));
+        ProtocalSet.loginSet.add(Integer.valueOf(45696));
+        ProtocalSet.loginSet.add(Integer.valueOf(24112));
+        ProtocalSet.loginSet.add(Integer.valueOf(63752));
     }
 }

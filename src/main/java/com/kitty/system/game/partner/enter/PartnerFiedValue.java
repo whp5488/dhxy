@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.partner.enter;
-
-import java.beans.ConstructorProperties;
 
 public class PartnerFiedValue
 {
@@ -95,7 +92,7 @@ public class PartnerFiedValue
         if (!(o instanceof PartnerFiedValue)) {
             return false;
         }
-        final PartnerFiedValue other = (PartnerFiedValue)o;
+        PartnerFiedValue other = (PartnerFiedValue)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -111,17 +108,9 @@ public class PartnerFiedValue
         if (this.getLevel() != other.getLevel()) {
             return false;
         }
-        final Object this$exp = this.getExp();
-        final Object other$exp = other.getExp();
-        if (this$exp == null) {
-            if (other$exp == null) {
-                return this.getIsRecruit() == other.getIsRecruit() && this.getIsFight() == other.getIsFight() && this.getPartnerOrder() == other.getPartnerOrder() && this.getDsId() == other.getDsId();
-            }
-        }
-        else if (this$exp.equals(other$exp)) {
-            return this.getIsRecruit() == other.getIsRecruit() && this.getIsFight() == other.getIsFight() && this.getPartnerOrder() == other.getPartnerOrder() && this.getDsId() == other.getDsId();
-        }
-        return false;
+        Object this$exp = this.getExp();
+        Object other$exp = other.getExp();
+        return ((this$exp != null) ? this$exp.equals(other$exp) : (other$exp == null)) && this.getIsRecruit() == other.getIsRecruit() && this.getIsFight() == other.getIsFight() && this.getPartnerOrder() == other.getPartnerOrder() && this.getDsId() == other.getDsId();
     }
     
     protected boolean canEqual(final Object other) {
@@ -130,13 +119,13 @@ public class PartnerFiedValue
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getUid();
         result = result * 59 + this.getTypeId();
         result = result * 59 + this.getRelive();
         result = result * 59 + this.getLevel();
-        final Object $exp = this.getExp();
+        Object $exp = this.getExp();
         result = result * 59 + (($exp == null) ? 43 : $exp.hashCode());
         result = result * 59 + this.getIsRecruit();
         result = result * 59 + this.getIsFight();
@@ -147,13 +136,12 @@ public class PartnerFiedValue
     
     @Override
     public String toString() {
-        return "PartnerFiedValue(uid=" + this.getUid() + ", typeId=" + this.getTypeId() + ", relive=" + this.getRelive() + ", level=" + this.getLevel() + ", exp=" + this.getExp() + ", isRecruit=" + this.getIsRecruit() + ", isFight=" + this.getIsFight() + ", partnerOrder=" + this.getPartnerOrder() + ", dsId=" + this.getDsId() + ")";
+        return "PartnerFiedValue(uid=" + this.getUid() + ", typeId=" + this.getTypeId() + ", relive=" + (int)this.getRelive() + ", level=" + (int)this.getLevel() + ", exp=" + this.getExp() + ", isRecruit=" + (int)this.getIsRecruit() + ", isFight=" + (int)this.getIsFight() + ", partnerOrder=" + (int)this.getPartnerOrder() + ", dsId=" + this.getDsId() + ")";
     }
     
     public PartnerFiedValue() {
     }
     
-    @ConstructorProperties({ "uid", "typeId", "relive", "level", "exp", "isRecruit", "isFight", "partnerOrder", "dsId" })
     public PartnerFiedValue(final int uid, final int typeId, final byte relive, final short level, final String exp, final byte isRecruit, final byte isFight, final byte partnerOrder, final int dsId) {
         this.uid = uid;
         this.typeId = typeId;

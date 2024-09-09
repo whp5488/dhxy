@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -11,7 +10,7 @@ public class HeartBeatEvent extends BasePlayerEvent
     private long prevHeartTime;
     private long curveHeartTime;
     
-    public HeartBeatEvent(final EventType evtType, final Role role, final long prevHeartTime) {
+    public HeartBeatEvent(EventType evtType, Role role, long prevHeartTime) {
         super(evtType, role);
         this.role = role;
         this.prevHeartTime = prevHeartTime;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.pet;
 
 public enum ConciseType
@@ -10,13 +9,18 @@ public enum ConciseType
     private Integer note;
     private Integer value;
     
-    public static Integer getValue(final Integer note) {
+    public static Integer getValue(Integer note) {
         Integer value = ConciseType.COMMON.value;
-        for (final ConciseType concise : values()) {
+        ConciseType[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            ConciseType concise = values[i];
             if (concise.getNote().equals(note)) {
                 value = concise.getValue();
                 break;
             }
+            ++i;
         }
         return value;
     }

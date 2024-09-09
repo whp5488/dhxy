@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -21,6 +20,9 @@ public class SysDataLuckDraw implements Serializable
     private int type;
     @Column("is_notice")
     private int isNotice;
+    
+    public SysDataLuckDraw() {
+    }
     
     public int getId() {
         return this.id;
@@ -78,7 +80,7 @@ public class SysDataLuckDraw implements Serializable
         if (!(o instanceof SysDataLuckDraw)) {
             return false;
         }
-        final SysDataLuckDraw other = (SysDataLuckDraw)o;
+        SysDataLuckDraw other = (SysDataLuckDraw)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && Double.compare(this.getRate(), other.getRate()) == 0 && this.getType() == other.getType() && this.getIsNotice() == other.getIsNotice();
     }
     
@@ -88,12 +90,12 @@ public class SysDataLuckDraw implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();
-        final long $rate = Double.doubleToLongBits(this.getRate());
+        long $rate = Double.doubleToLongBits(this.getRate());
         result = result * 59 + (int)($rate >>> 32 ^ $rate);
         result = result * 59 + this.getType();
         result = result * 59 + this.getIsNotice();

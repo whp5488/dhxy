@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqMotto extends Message
 {
     private String motto;
+    
+    public ReqMotto() {
+    }
     
     public String getMotto() {
         return this.motto;
@@ -25,21 +27,13 @@ public class ReqMotto extends Message
         if (!(o instanceof ReqMotto)) {
             return false;
         }
-        final ReqMotto other = (ReqMotto)o;
+        ReqMotto other = (ReqMotto)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$motto = this.getMotto();
-        final Object other$motto = other.getMotto();
-        if (this$motto == null) {
-            if (other$motto == null) {
-                return true;
-            }
-        }
-        else if (this$motto.equals(other$motto)) {
-            return true;
-        }
-        return false;
+        Object this$motto = this.getMotto();
+        Object other$motto = other.getMotto();
+        return (this$motto != null) ? this$motto.equals(other$motto) : (other$motto == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -48,9 +42,9 @@ public class ReqMotto extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $motto = this.getMotto();
+        Object $motto = this.getMotto();
         result = result * 59 + (($motto == null) ? 43 : $motto.hashCode());
         return result;
     }

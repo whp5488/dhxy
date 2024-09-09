@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -11,15 +10,18 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_72313 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_72313() {
+    }
+    
     @Override
-    public boolean magicSelectTarget(final Fight fight, final PlayerFightObject playerFightObject, final Object... args) {
-        final RoleSkill skill = (RoleSkill)args[0];
+    public boolean magicSelectTarget(Fight fight, PlayerFightObject playerFightObject, Object... args) {
+        RoleSkill skill = (RoleSkill)args[0];
         if (skill == null) {
             return false;
         }
-        if (SKILLATTR.SKILLATTR_ZHIYU.getValue() == skill.getType() || SKILLATTR.SKILLATTR_POJIA.getValue() == skill.getType() || SKILLATTR.SKILLATTR_ZHENJI.getValue() == skill.getType() || SKILLATTR.SKILLATTR_FIRE.getValue() == skill.getType() || SKILLATTR.SKILLATTR_WIND.getValue() == skill.getType() || SKILLATTR.SKILLATTR_THUNDER.getValue() == skill.getType() || SKILLATTR.SKILLATTR_WATER.getValue() == skill.getType() || SKILLATTR.SKILLATTR_AIHAO.getValue() == skill.getType()) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, playerFightObject.getId(), 72313);
-            skillRecord.setT(playerFightObject.getId());
+        if (SKILLATTR.SKILLATTR_ZHIYU.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_POJIA.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_ZHENJI.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_FIRE.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_WIND.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_THUNDER.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_WATER.getValue() == (int)skill.getType() || SKILLATTR.SKILLATTR_AIHAO.getValue() == (int)skill.getType()) {
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)playerFightObject.getId(), 72313);
+            skillRecord.setT((long)(int)playerFightObject.getId());
             return true;
         }
         return false;

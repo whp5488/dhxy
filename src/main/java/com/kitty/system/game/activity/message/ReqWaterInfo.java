@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -7,6 +6,9 @@ import com.kitty.mina.message.Message;
 @MessageMeta(module = 49161)
 public class ReqWaterInfo extends Message
 {
+    public ReqWaterInfo() {
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
@@ -15,7 +17,7 @@ public class ReqWaterInfo extends Message
         if (!(o instanceof ReqWaterInfo)) {
             return false;
         }
-        final ReqWaterInfo other = (ReqWaterInfo)o;
+        ReqWaterInfo other = (ReqWaterInfo)o;
         return other.canEqual(this);
     }
     
@@ -25,7 +27,7 @@ public class ReqWaterInfo extends Message
     
     @Override
     public int hashCode() {
-        final int result = 1;
+        int result = 1;
         return result;
     }
     

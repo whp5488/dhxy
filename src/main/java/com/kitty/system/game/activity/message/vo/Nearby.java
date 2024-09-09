@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message.vo;
 
 import com.kitty.system.game.role.domain.Role;
@@ -15,15 +14,15 @@ public class Nearby implements Serializable
     public Nearby() {
     }
     
-    public Nearby(final Role role) {
-        this.id = role.getRoleId();
-        this.serial = role.getSerial();
+    public Nearby(Role role) {
+        this.id = (int)role.getRoleId();
+        this.serial = (int)role.getSerial();
         this.name = role.getName();
         this.rei = role.getRelive().byteValue();
         this.level = role.getLevel().shortValue();
     }
     
-    public Nearby(final int id, final int serial, final String name, final byte rei, final short level) {
+    public Nearby(int id, int serial, String name, byte rei, short level) {
         this.id = id;
         this.serial = serial;
         this.name = name;
@@ -79,7 +78,7 @@ public class Nearby implements Serializable
         if (!(o instanceof Nearby)) {
             return false;
         }
-        final Nearby other = (Nearby)o;
+        Nearby other = (Nearby)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -89,17 +88,9 @@ public class Nearby implements Serializable
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
     }
     
     protected boolean canEqual(final Object other) {
@@ -108,11 +99,11 @@ public class Nearby implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getRei();
         result = result * 59 + this.getLevel();
@@ -121,6 +112,6 @@ public class Nearby implements Serializable
     
     @Override
     public String toString() {
-        return "Nearby(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ")";
+        return "Nearby(id=" + this.getId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ")";
     }
 }

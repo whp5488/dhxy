@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.ColDefine;
@@ -34,6 +33,9 @@ public class SysDataCard
     private int rewardRarity;
     @Column("expire")
     private int expire;
+    
+    public SysDataCard() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -139,24 +141,16 @@ public class SysDataCard
         if (!(o instanceof SysDataCard)) {
             return false;
         }
-        final SysDataCard other = (SysDataCard)o;
+        SysDataCard other = (SysDataCard)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getNeedFiveGrade() != other.getNeedFiveGrade()) {
@@ -171,30 +165,14 @@ public class SysDataCard
         if (this.getRarity() != other.getRarity()) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0167: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0167;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0167;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
-        final Object this$fiveAttr = this.getFiveAttr();
-        final Object other$fiveAttr = other.getFiveAttr();
-        if (this$fiveAttr == null) {
-            if (other$fiveAttr == null) {
-                return Double.compare(this.getFactor(), other.getFactor()) == 0 && this.getMorph() == other.getMorph() && this.getRewardRarity() == other.getRewardRarity() && this.getExpire() == other.getExpire();
-            }
-        }
-        else if (this$fiveAttr.equals(other$fiveAttr)) {
-            return Double.compare(this.getFactor(), other.getFactor()) == 0 && this.getMorph() == other.getMorph() && this.getRewardRarity() == other.getRewardRarity() && this.getExpire() == other.getExpire();
-        }
-        return false;
+        Object this$fiveAttr = this.getFiveAttr();
+        Object other$fiveAttr = other.getFiveAttr();
+        return ((this$fiveAttr != null) ? this$fiveAttr.equals(other$fiveAttr) : (other$fiveAttr == null)) && Double.compare(this.getFactor(), other.getFactor()) == 0 && this.getMorph() == other.getMorph() && this.getRewardRarity() == other.getRewardRarity() && this.getExpire() == other.getExpire();
     }
     
     protected boolean canEqual(final Object other) {
@@ -203,20 +181,20 @@ public class SysDataCard
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getNeedFiveGrade();
         result = result * 59 + this.getNeedOwnerGrade();
         result = result * 59 + this.getCanMerge();
         result = result * 59 + this.getRarity();
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
-        final Object $fiveAttr = this.getFiveAttr();
+        Object $fiveAttr = this.getFiveAttr();
         result = result * 59 + (($fiveAttr == null) ? 43 : $fiveAttr.hashCode());
-        final long $factor = Double.doubleToLongBits(this.getFactor());
+        long $factor = Double.doubleToLongBits(this.getFactor());
         result = result * 59 + (int)($factor >>> 32 ^ $factor);
         result = result * 59 + this.getMorph();
         result = result * 59 + this.getRewardRarity();

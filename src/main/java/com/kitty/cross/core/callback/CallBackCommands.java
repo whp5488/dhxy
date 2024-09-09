@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.callback;
 
 public interface CallBackCommands

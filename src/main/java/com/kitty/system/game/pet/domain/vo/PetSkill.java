@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.pet.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class PetSkill implements Serializable
@@ -33,7 +31,7 @@ public class PetSkill implements Serializable
         if (!(o instanceof PetSkill)) {
             return false;
         }
-        final PetSkill other = (PetSkill)o;
+        PetSkill other = (PetSkill)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getType() == other.getType();
     }
     
@@ -43,7 +41,7 @@ public class PetSkill implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getType();
@@ -55,7 +53,6 @@ public class PetSkill implements Serializable
         return "PetSkill(serial=" + this.getSerial() + ", type=" + this.getType() + ")";
     }
     
-    @ConstructorProperties({ "serial", "type" })
     public PetSkill(final int serial, final int type) {
         this.serial = -1;
         this.type = 0;

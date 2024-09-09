@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.horse.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.horse.message.vo.Mount;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -28,21 +26,13 @@ public class RespMount extends Message
         if (!(o instanceof RespMount)) {
             return false;
         }
-        final RespMount other = (RespMount)o;
+        RespMount other = (RespMount)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -51,9 +41,9 @@ public class RespMount extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
@@ -63,7 +53,6 @@ public class RespMount extends Message
         return "RespMount(list=" + this.getList() + ")";
     }
     
-    @ConstructorProperties({ "list" })
     public RespMount(final List<Mount> list) {
         this.list = list;
     }

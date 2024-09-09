@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -20,46 +19,50 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_324502 extends TianFuProcessor
 {
+    public FU_324502() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public void attackOver(final Fight fight, final FightObject effector, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effector, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         if (fight.isPvp() != 1 || !effector.isPlayer()) {
             return;
         }
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 324502);
+        DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 324502);
         if (tianFuObject == null) {
             return;
         }
-        final RoleSkill roleSkill = (RoleSkill)args[0];
+        RoleSkill roleSkill = (RoleSkill)args[0];
         if (roleSkill == null) {
             return;
         }
         if (target.isFrozen()) {
             return;
         }
-        if (SKILLATTR.SKILLATTR_FIRE.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_WIND.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_THUNDER.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_WATER.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_POISON.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_AIHAO.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_POJIA.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_HENGSAO.getValue() == roleSkill.getType() || SKILLATTR.SKILLATTR_ZHENJI.getValue() == roleSkill.getType()) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 324502);
-            final int currLife = target.getCurrLife();
+        if (SKILLATTR.SKILLATTR_FIRE.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_WIND.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_THUNDER.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_WATER.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_POISON.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_AIHAO.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_POJIA.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_HENGSAO.getValue() == (int)roleSkill.getType() || SKILLATTR.SKILLATTR_ZHENJI.getValue() == (int)roleSkill.getType()) {
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 324502);
+            int currLife = target.getCurrLife();
             if (currLife <= 0) {
                 return;
             }
-            final double percenta = 1.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-            final int hurt = (int)(currLife * percenta);
+            double percenta = 1.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+            int hurt = (int)((double)currLife * percenta);
             if (hurt > 0) {
-                final FightObjectParam targetParam = actionDetailParam.gainTargetParam(target.getId(), true);
+                FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)target.getId(), true);
                 PassiveSkillUtils.excuteChangeLifeAuto(fight, target, actionDetailParam, targetParam, -hurt);
-                skillRecord.setT(target.getId());
+                skillRecord.setT((long)(int)target.getId());
             }
         }
+        return;
     }
 }

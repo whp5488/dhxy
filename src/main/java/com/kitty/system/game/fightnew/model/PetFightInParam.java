@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.model;
 
 import com.kitty.system.game.fightnew.utils.FightOtherUtil;
@@ -11,8 +10,11 @@ public class PetFightInParam implements Serializable
     private int petId;
     private List<Integer> skillIds;
     
-    public void addSkillIds(final Pet pet) {
-        final List<Integer> skillIds = FightOtherUtil.addSkillIds(pet);
+    public PetFightInParam() {
+    }
+    
+    public void addSkillIds(Pet pet) {
+        List<Integer> skillIds = FightOtherUtil.addSkillIds(pet);
         if (skillIds.size() > 0) {
             this.skillIds = skillIds;
         }

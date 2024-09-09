@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.drug.effect;
 
 import com.kitty.system.game.fightnew.model.FightObjectParam;
@@ -19,72 +18,80 @@ import com.kitty.system.game.fightnew.book.drug.DrugProcessor;
 
 public class DRUG_10021 extends DrugProcessor
 {
+    public DRUG_10021() {
+    }
+    
     @Override
-    public NutMap effect(final Fight fight, final FightObject effector, FightObject target, final Object... args) {
+    public NutMap effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (target == null || target.isFallDown()) {
             target = effector;
         }
-        final List<Integer> statusList = new ArrayList<Integer>();
-        final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        List<Integer> statusList = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap();
         if (target.getStatusValue(1002) > 0) {
-            map.put(1002, target.getStatusValue(1002));
-            statusList.add(1002);
+            map.put(Integer.valueOf(1002), Integer.valueOf(target.getStatusValue(1002)));
+            statusList.add(Integer.valueOf(1002));
             target.removeStatus(1002);
         }
         if (target.getStatusValue(1003) > 0) {
-            map.put(1003, target.getStatusValue(1003));
-            statusList.add(1003);
+            map.put(Integer.valueOf(1003), Integer.valueOf(target.getStatusValue(1003)));
+            statusList.add(Integer.valueOf(1003));
             target.removeStatus(1003);
         }
         if (target.getStatusValue(1004) > 0) {
-            map.put(1004, target.getStatusValue(1004));
-            statusList.add(1004);
+            map.put(Integer.valueOf(1004), Integer.valueOf(target.getStatusValue(1004)));
+            statusList.add(Integer.valueOf(1004));
             target.removeStatus(1004);
         }
         if (target.getStatusValue(1006) > 0) {
-            map.put(1006, target.getStatusValue(1006));
-            statusList.add(1006);
+            map.put(Integer.valueOf(1006), Integer.valueOf(target.getStatusValue(1006)));
+            statusList.add(Integer.valueOf(1006));
             target.removeStatus(1006);
         }
-        final ActionDetailParam actionDetailParam = ActionParamUtils.clearStatusReturn(effector, target, 5, 10021, 2, statusList);
+        ActionDetailParam actionDetailParam = ActionParamUtils.clearStatusReturn(effector, target, 5, 10021, 2, statusList);
         double percent = 0.15;
-        final List<FiedValue> tianFuEffects = (List<FiedValue>)args[0];
+        List<FiedValue> tianFuEffects = (List)args[0];
         if (tianFuEffects != null && tianFuEffects.size() > 0) {
-            for (final FiedValue fied : tianFuEffects) {
+            for (FiedValue fied : tianFuEffects) {
                 if (fied.getType().equals("10021_reducePercent") && fied.getVT() == 5) {
-                    final Double value = (Double)fied.getValue();
-                    if (value == null || value <= 0.0) {
+                    Double value = (Double)fied.getValue();
+                    if (value != null && (double)value > 0.0) {
+                        percent -= (double)value;
+                    }
+                    else {
                         continue;
                     }
-                    percent -= value;
+                }
+                else {
+                    continue;
                 }
             }
         }
-        final boolean flag = SkillAi.canAffectOnPro(percent);
+        boolean flag = SkillAi.canAffectOnPro(percent);
         if (flag) {
             int time = 0;
-            final int[] statuss = { 1002, 1003, 1004, 1006 };
-            final Random random = new Random();
-            final int index = random.nextInt(statuss.length);
-            final int status = statuss[index];
-            if (map.get(status) != null && map.get(status) > 0) {
-                time = map.get(status);
+            int[] statuss = { 1002, 1003, 1004, 1006 };
+            Random random = new Random();
+            int index = random.nextInt(statuss.length);
+            int status = statuss[index];
+            if (map.get(Integer.valueOf(status)) != null && (int)map.get(Integer.valueOf(status)) > 0) {
+                time = (int)map.get(Integer.valueOf(status));
             }
             else {
-                final int randomTime = random.nextInt(statusList.size());
-                final int randomStatus = statusList.get(randomTime);
-                time = map.get(randomStatus);
+                int randomTime = random.nextInt(statusList.size());
+                int randomStatus = (int)statusList.get(randomTime);
+                time = (int)map.get(Integer.valueOf(randomStatus));
             }
             target.setStatus(status, time);
-            final FightObjectParam targetParam = ActionParamUtils.getTargetParam(actionDetailParam, target.getId());
-            targetParam.getStatusMap().put(status, time);
+            FightObjectParam targetParam = ActionParamUtils.getTargetParam(actionDetailParam, (int)target.getId());
+            targetParam.getStatusMap().put(Integer.valueOf(status), Integer.valueOf(time));
         }
         fight.getActionParam().getActionDetailParams().add(actionDetailParam);
         return null;
     }
     
     @Override
-    public boolean checkExcute(final Fight fight, final FightObject effector, FightObject target, final Object... args) {
+    public boolean checkExcute(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (effector.isASide() != target.isASide()) {
             return false;
         }

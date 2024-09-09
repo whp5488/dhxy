@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.safe.domain;
 
 public class ErrorRecord
@@ -8,6 +7,9 @@ public class ErrorRecord
     
     public void addErrorCount() {
         ++this.errorSum;
+    }
+    
+    public ErrorRecord() {
     }
     
     public int getErrorSum() {
@@ -34,7 +36,7 @@ public class ErrorRecord
         if (!(o instanceof ErrorRecord)) {
             return false;
         }
-        final ErrorRecord other = (ErrorRecord)o;
+        ErrorRecord other = (ErrorRecord)o;
         return other.canEqual(this) && this.getErrorSum() == other.getErrorSum() && this.getLastErrorTime() == other.getLastErrorTime();
     }
     
@@ -44,10 +46,10 @@ public class ErrorRecord
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getErrorSum();
-        final long $lastErrorTime = this.getLastErrorTime();
+        long $lastErrorTime = this.getLastErrorTime();
         result = result * 59 + (int)($lastErrorTime >>> 32 ^ $lastErrorTime);
         return result;
     }

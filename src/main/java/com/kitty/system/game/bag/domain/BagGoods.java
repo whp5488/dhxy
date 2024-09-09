@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.domain;
 
 import com.kitty.common.db.DbBagGoodsService;
@@ -35,10 +34,10 @@ public class BagGoods extends BaseEntity<Long>
     
     @Override
     public Long getId() {
-        return this.id;
+        return Long.valueOf(this.id);
     }
     
-    public void setId(final long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
@@ -46,7 +45,7 @@ public class BagGoods extends BaseEntity<Long>
         return this.rId;
     }
     
-    public void setrId(final long rId) {
+    public void setrId(long rId) {
         this.rId = rId;
     }
     
@@ -54,7 +53,7 @@ public class BagGoods extends BaseEntity<Long>
         return this.serial;
     }
     
-    public void setSerial(final int serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
@@ -62,7 +61,7 @@ public class BagGoods extends BaseEntity<Long>
         return this.pos;
     }
     
-    public void setPos(final int pos) {
+    public void setPos(int pos) {
         this.pos = pos;
     }
     
@@ -70,7 +69,7 @@ public class BagGoods extends BaseEntity<Long>
         return this.rests;
     }
     
-    public void setRests(final NutMap rests) {
+    public void setRests(NutMap rests) {
         this.rests = rests;
     }
     
@@ -78,14 +77,14 @@ public class BagGoods extends BaseEntity<Long>
         return this.special;
     }
     
-    public void setSpecial(final NutMap special) {
+    public void setSpecial(NutMap special) {
         this.special = special;
     }
     
     public int getNum() {
         int num = 0;
-        final NutMap rests = this.getRests();
-        for (final String key : rests.keySet()) {
+        NutMap rests = this.getRests();
+        for (String key : rests.keySet()) {
             num += rests.getInt(key, 0);
         }
         return num;
@@ -96,7 +95,7 @@ public class BagGoods extends BaseEntity<Long>
         this.special = new NutMap();
     }
     
-    public BagGoods(final long id, final long rId, final int serial, final int pos) {
+    public BagGoods(long id, long rId, int serial, int pos) {
         this.rests = new NutMap();
         this.special = new NutMap();
         this.id = id;
@@ -105,7 +104,7 @@ public class BagGoods extends BaseEntity<Long>
         this.pos = pos;
     }
     
-    public BagGoods(final long id, final long rId, final int serial, final int pos, final NutMap rests) {
+    public BagGoods(long id, long rId, int serial, int pos, NutMap rests) {
         this.rests = new NutMap();
         this.special = new NutMap();
         this.id = id;

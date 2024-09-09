@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.warskill.skilldef;
 
 public enum SKILLATTR
@@ -30,11 +29,16 @@ public enum SKILLATTR
     private String note;
     private int value;
     
-    public static SKILLATTR getByValue(final int value) {
-        for (final SKILLATTR x : values()) {
+    public static SKILLATTR getByValue(int value) {
+        SKILLATTR[] values = values();
+        int length = values.length;
+        int i = 0;
+        while (i < length) {
+            SKILLATTR x = values[i];
             if (x.getValue() == value) {
                 return x;
             }
+            ++i;
         }
         return null;
     }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.pet.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.pet.domain.PetBase;
 import java.util.List;
 import com.kitty.mina.annotation.MessageMeta;
@@ -37,34 +35,18 @@ public class RespUpgradeTaskPet extends Message
         if (!(o instanceof RespUpgradeTaskPet)) {
             return false;
         }
-        final RespUpgradeTaskPet other = (RespUpgradeTaskPet)o;
+        RespUpgradeTaskPet other = (RespUpgradeTaskPet)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$petId = this.getPetId();
-        final Object other$petId = other.getPetId();
-        Label_0065: {
-            if (this$petId == null) {
-                if (other$petId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$petId.equals(other$petId)) {
-                break Label_0065;
-            }
+        Object this$petId = this.getPetId();
+        Object other$petId = other.getPetId();
+        if (!((this$petId != null) ? this$petId.equals(other$petId) : (other$petId == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -73,11 +55,11 @@ public class RespUpgradeTaskPet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $petId = this.getPetId();
+        Object $petId = this.getPetId();
         result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
@@ -87,7 +69,6 @@ public class RespUpgradeTaskPet extends Message
         return "RespUpgradeTaskPet(petId=" + this.getPetId() + ", list=" + this.getList() + ")";
     }
     
-    @ConstructorProperties({ "petId", "list" })
     public RespUpgradeTaskPet(final Integer petId, final List<PetBase> list) {
         this.petId = petId;
         this.list = list;

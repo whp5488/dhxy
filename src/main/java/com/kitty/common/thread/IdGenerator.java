@@ -1,4 +1,3 @@
-
 package com.kitty.common.thread;
 
 import com.kitty.common.utils.spring.SpringUtils;
@@ -9,9 +8,12 @@ public class IdGenerator
 {
     private static AtomicLong generator;
     
+    public IdGenerator() {
+    }
+    
     public static long getNextId() {
-        final ServerConfig config = SpringUtils.getBean(ServerConfig.class);
-        final long serverId = config.getSerial();
+        ServerConfig config = (ServerConfig)SpringUtils.getBean(ServerConfig.class);
+        long serverId = (long)config.getSerial();
         return serverId << 48 | (System.currentTimeMillis() / 1000L & -1L) << 16 | (IdGenerator.generator.getAndIncrement() & 0xFFFFL);
     }
     

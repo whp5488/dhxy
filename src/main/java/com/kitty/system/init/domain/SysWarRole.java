@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import com.kitty.system.game.vo.init.Summon;
@@ -36,6 +35,9 @@ public class SysWarRole implements Serializable
     @Comment("特殊类型")
     @Column("special_type")
     private byte specialType;
+    
+    public SysWarRole() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -93,73 +95,33 @@ public class SysWarRole implements Serializable
         if (!(o instanceof SysWarRole)) {
             return false;
         }
-        final SysWarRole other = (SysWarRole)o;
+        SysWarRole other = (SysWarRole)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$des = this.getDes();
-        final Object other$des = other.getDes();
-        Label_0139: {
-            if (this$des == null) {
-                if (other$des == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$des.equals(other$des)) {
-                break Label_0139;
-            }
+        Object this$des = this.getDes();
+        Object other$des = other.getDes();
+        if (!((this$des != null) ? this$des.equals(other$des) : (other$des == null))) {
             return false;
         }
-        final Object this$monster = this.getMonster();
-        final Object other$monster = other.getMonster();
-        Label_0176: {
-            if (this$monster == null) {
-                if (other$monster == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$monster.equals(other$monster)) {
-                break Label_0176;
-            }
+        Object this$monster = this.getMonster();
+        Object other$monster = other.getMonster();
+        if (!((this$monster != null) ? this$monster.equals(other$monster) : (other$monster == null))) {
             return false;
         }
-        final Object this$summon = this.getSummon();
-        final Object other$summon = other.getSummon();
-        if (this$summon == null) {
-            if (other$summon == null) {
-                return this.getSpecialType() == other.getSpecialType();
-            }
-        }
-        else if (this$summon.equals(other$summon)) {
-            return this.getSpecialType() == other.getSpecialType();
-        }
-        return false;
+        Object this$summon = this.getSummon();
+        Object other$summon = other.getSummon();
+        return ((this$summon != null) ? this$summon.equals(other$summon) : (other$summon == null)) && this.getSpecialType() == other.getSpecialType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -168,17 +130,17 @@ public class SysWarRole implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $des = this.getDes();
+        Object $des = this.getDes();
         result = result * 59 + (($des == null) ? 43 : $des.hashCode());
-        final Object $monster = this.getMonster();
+        Object $monster = this.getMonster();
         result = result * 59 + (($monster == null) ? 43 : $monster.hashCode());
-        final Object $summon = this.getSummon();
+        Object $summon = this.getSummon();
         result = result * 59 + (($summon == null) ? 43 : $summon.hashCode());
         result = result * 59 + this.getSpecialType();
         return result;
@@ -186,6 +148,6 @@ public class SysWarRole implements Serializable
     
     @Override
     public String toString() {
-        return "SysWarRole(id=" + this.getId() + ", serial=" + this.getSerial() + ", des=" + this.getDes() + ", monster=" + this.getMonster() + ", summon=" + this.getSummon() + ", specialType=" + this.getSpecialType() + ")";
+        return "SysWarRole(id=" + this.getId() + ", serial=" + this.getSerial() + ", des=" + this.getDes() + ", monster=" + this.getMonster() + ", summon=" + this.getSummon() + ", specialType=" + (int)this.getSpecialType() + ")";
     }
 }

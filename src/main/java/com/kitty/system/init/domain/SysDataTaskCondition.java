@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -25,6 +24,9 @@ public class SysDataTaskCondition implements Serializable
     @Comment("等级需求")
     @Column("need_grade")
     private int needGrade;
+    
+    public SysDataTaskCondition() {
+    }
     
     public int getSubmitCondition() {
         return this.submitCondition;
@@ -66,24 +68,16 @@ public class SysDataTaskCondition implements Serializable
         if (!(o instanceof SysDataTaskCondition)) {
             return false;
         }
-        final SysDataTaskCondition other = (SysDataTaskCondition)o;
+        SysDataTaskCondition other = (SysDataTaskCondition)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSubmitCondition() != other.getSubmitCondition()) {
             return false;
         }
-        final Object this$needCounter = this.getNeedCounter();
-        final Object other$needCounter = other.getNeedCounter();
-        if (this$needCounter == null) {
-            if (other$needCounter == null) {
-                return this.getPreTask() == other.getPreTask() && this.getNeedGrade() == other.getNeedGrade();
-            }
-        }
-        else if (this$needCounter.equals(other$needCounter)) {
-            return this.getPreTask() == other.getPreTask() && this.getNeedGrade() == other.getNeedGrade();
-        }
-        return false;
+        Object this$needCounter = this.getNeedCounter();
+        Object other$needCounter = other.getNeedCounter();
+        return ((this$needCounter != null) ? this$needCounter.equals(other$needCounter) : (other$needCounter == null)) && this.getPreTask() == other.getPreTask() && this.getNeedGrade() == other.getNeedGrade();
     }
     
     protected boolean canEqual(final Object other) {
@@ -92,10 +86,10 @@ public class SysDataTaskCondition implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSubmitCondition();
-        final Object $needCounter = this.getNeedCounter();
+        Object $needCounter = this.getNeedCounter();
         result = result * 59 + (($needCounter == null) ? 43 : $needCounter.hashCode());
         result = result * 59 + this.getPreTask();
         result = result * 59 + this.getNeedGrade();

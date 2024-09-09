@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -18,6 +17,9 @@ public class SysWxOtherWarData implements Serializable
     @Comment("属性值")
     @Column("value")
     private Double value;
+    
+    public SysWxOtherWarData() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -51,47 +53,23 @@ public class SysWxOtherWarData implements Serializable
         if (!(o instanceof SysWxOtherWarData)) {
             return false;
         }
-        final SysWxOtherWarData other = (SysWxOtherWarData)o;
+        SysWxOtherWarData other = (SysWxOtherWarData)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$value = this.getValue();
-        final Object other$value = other.getValue();
-        if (this$value == null) {
-            if (other$value == null) {
-                return true;
-            }
-        }
-        else if (this$value.equals(other$value)) {
-            return true;
-        }
-        return false;
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        return (this$value != null) ? this$value.equals(other$value) : (other$value == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -100,13 +78,13 @@ public class SysWxOtherWarData implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $value = this.getValue();
+        Object $value = this.getValue();
         result = result * 59 + (($value == null) ? 43 : $value.hashCode());
         return result;
     }

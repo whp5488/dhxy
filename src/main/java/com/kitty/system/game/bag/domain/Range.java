@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.domain;
 
 public class Range<T>
@@ -6,7 +5,7 @@ public class Range<T>
     private T min;
     private T max;
     
-    public Range(final T min, final T max) {
+    public Range(T min, T max) {
         this.min = min;
         this.max = max;
     }

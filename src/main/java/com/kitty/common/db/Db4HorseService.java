@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -28,7 +27,7 @@ public class Db4HorseService
     private final AtomicBoolean run;
     
     public Db4HorseService() {
-        this.queue = new BlockingUniqueQueue<Horse>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -38,11 +37,11 @@ public class Db4HorseService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-horse-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-horse-save-service").newThread(new Db4HorseService.Worker()).start();
         Db4HorseService.instance = this;
     }
     
-    public void add2Queue(final Horse entity) {
+    public void add2Queue(Horse entity) {
         this.queue.add(entity);
     }
     
@@ -50,13 +49,13 @@ public class Db4HorseService
         return this.queue.size();
     }
     
-    private void saveToDb(final Horse entity) {
+    private void saveToDb(Horse entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
             this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -66,14 +65,14 @@ public class Db4HorseService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4Horse] 执行全部命令后关闭");
+        LoggerUtils.error("[db4Horse] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<Horse> it = this.queue.iterator();
+            Iterator<Horse> it = this.queue.iterator();
             while (it.hasNext()) {
-                final Horse obj = it.next();
+                Horse obj = (Horse)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -87,18 +86,20 @@ public class Db4HorseService
             while (Db4HorseService.this.run.get()) {
                 Horse entity = null;
                 try {
-                    entity = Db4HorseService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (Horse)Db4HorseService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     Db4HorseService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("坐骑数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("坐骑数据持久化队列长度：" + Db4HorseService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("坐骑数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("坐骑数据持久化队列长度：" + Db4HorseService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("坐骑数据存档异常", e);
                     e.printStackTrace();
                 }

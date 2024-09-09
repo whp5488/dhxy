@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.vo.utils;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -164,28 +163,28 @@ public interface StatusConst
     public static final int LIFE_VISIBLE = 113;
     public static final int MANA_VISIBLE = 114;
     
-    static List<Integer> getAnomalousStatus() {
+    public static List<Integer> getAnomalousStatus() {
         return Arrays.asList(1002, 1003, 1004, 1006, 1019);
     }
     
-    static List<Integer> getControlStatus() {
+    public static List<Integer> getControlStatus() {
         return Arrays.asList(1002, 1003, 1004, 1006);
     }
     
-    static List<Integer> getWuxingStatus() {
+    public static List<Integer> getWuxingStatus() {
         return Arrays.asList(2062, 2063, 2064, 2065, 2066, 2077, 2078, 2079, 2080, 2081);
     }
     
-    static List<Integer> getPositiveStatus() {
+    public static List<Integer> getPositiveStatus() {
         return Arrays.asList(1008, 1009, 1010, 1011, 1018, 1022, 1023, 2010, 2031);
     }
     
-    static List<Integer> getMiniPositiveStatus() {
+    public static List<Integer> getMiniPositiveStatus() {
         return Arrays.asList(1008, 1009, 1010);
     }
     
-    static Map<Integer, Integer> getWuxinPro() {
-        final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    public static Map<Integer, Integer> getWuxinPro() {
+        Map<Integer, Integer> map = new HashMap<>();
         map.put(2062, PRO_DICT_TYPE.WX_J.getDist());
         map.put(2063, PRO_DICT_TYPE.WX_M.getDist());
         map.put(2064, PRO_DICT_TYPE.WX_S.getDist());

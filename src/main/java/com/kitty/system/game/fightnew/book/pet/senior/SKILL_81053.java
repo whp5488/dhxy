@@ -1,9 +1,7 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import java.util.Iterator;
 import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import com.kitty.system.game.fightnew.book.pet.utils.PetSkillEffectorUtil;
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -21,52 +19,55 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81053 extends SkillProcessor
 {
+    public SKILL_81053() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81053);
-        final List<FiedValue> list = PetPassiveSkillUtil.clearStatus(target, "wuXinModification");
-        final Effect effect = new Effect();
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81053);
+        List<FiedValue> list = PetPassiveSkillUtil.clearStatus(target, "wuXinModification");
+        Effect effect = new Effect();
         effect.setType(100000);
         if (list != null && list.size() > 0) {
             effect.setList(list);
         }
-        skillRecord.setT(target.getId());
+        skillRecord.setT((long)(int)target.getId());
         return effect;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
-        final int level = PetSkillEffectorUtil.getExcuteLevel(args);
+    public int costMana(RoleSkill skill, Object... args) {
+        int level = PetSkillEffectorUtil.getExcuteLevel(args);
         return level * 21;
     }
     
     @Override
-    public boolean excuteSkillCool(final Fight fight, final FightObject effector, final Object... args) {
-        effector.getSkillCoolMap().setv(String.valueOf(81053), (Object)5);
+    public boolean excuteSkillCool(Fight fight, FightObject effector, Object... args) {
+        effector.getSkillCoolMap().setv(String.valueOf(81053), Integer.valueOf(5));
         return true;
     }
     
     @Override
-    public List<Integer> getTargetIds(final Fight fight, final FightObject effector) {
-        final List<FightObject> mySide = fight.getMySide(effector.getId()).stream().collect(Collectors.toList());
+    public List<Integer> getTargetIds(Fight fight, FightObject effector) {
+        List<FightObject> mySide = (List)fight.getMySide((int)effector.getId()).stream().collect(Collectors.toList());
         if (mySide != null && mySide.size() > 0) {
-            final List<Integer> targetIds = new ArrayList<Integer>();
-            for (final FightObject target : mySide) {
+            List<Integer> targetIds = new ArrayList<>();
+            for (FightObject target : mySide) {
                 targetIds.add(target.getId());
             }
             return targetIds;

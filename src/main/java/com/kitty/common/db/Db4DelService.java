@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import com.kitty.logs.LoggerUtils;
@@ -29,7 +28,7 @@ public class Db4DelService
     
     public Db4DelService() {
         this.logger = LoggerFactory.getLogger(this.getClass());
-        this.queue = new BlockingUniqueQueue<BaseEntity>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -40,20 +39,21 @@ public class Db4DelService
     @PostConstruct
     public void init() {
         for (int i = 0; i < 32; ++i) {
-            new NamedThreadFactory("db-common-save-service-" + i).newThread(new Worker()).start();
+            new NamedThreadFactory("db-common-save-service-" + i).newThread(new Db4DelService.Worker()).start();
         }
         this.logger.info("初始化线程32条");
         Db4DelService.instance = this;
     }
     
-    public void delQueue(final BaseEntity entity) {
+    public void delQueue(BaseEntity entity) {
         if (entity == null) {
             return;
         }
         this.queue.add(entity);
+        return;
     }
     
-    public void delToDb(final BaseEntity entity) {
+    public void delToDb(BaseEntity entity) {
         this.dao.delete(entity);
     }
     
@@ -64,14 +64,14 @@ public class Db4DelService
             while (Db4DelService.this.run.get()) {
                 BaseEntity entity = null;
                 try {
-                    entity = Db4DelService.this.queue.take();
-                    SpringUtils.getBean(Db4DelService.class).delToDb(entity);
+                    entity = (BaseEntity)Db4DelService.this.queue.take();
+                    ((Db4DelService)SpringUtils.getBean(Db4DelService.class)).delToDb(entity);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("", e);
                     e.printStackTrace();
                 }
-                Db4DelService.this.logger.error("队列剩余数量=={}", Db4DelService.this.queue.size());
+                Db4DelService.this.logger.error("队列剩余数量=={}", Integer.valueOf(Db4DelService.this.queue.size()));
             }
         }
     }

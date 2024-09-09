@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqTaskSubmit extends Message
 {
     private int taskId;
+    
+    public ReqTaskSubmit() {
+    }
     
     public int getTaskId() {
         return this.taskId;
@@ -25,7 +27,7 @@ public class ReqTaskSubmit extends Message
         if (!(o instanceof ReqTaskSubmit)) {
             return false;
         }
-        final ReqTaskSubmit other = (ReqTaskSubmit)o;
+        ReqTaskSubmit other = (ReqTaskSubmit)o;
         return other.canEqual(this) && this.getTaskId() == other.getTaskId();
     }
     
@@ -35,7 +37,7 @@ public class ReqTaskSubmit extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTaskId();
         return result;

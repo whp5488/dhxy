@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 public class HeartRecord
@@ -6,6 +5,9 @@ public class HeartRecord
     private long lastTime;
     private long currTime;
     private int illegalCount;
+    
+    public HeartRecord() {
+    }
     
     public boolean addCount() {
         ++this.illegalCount;

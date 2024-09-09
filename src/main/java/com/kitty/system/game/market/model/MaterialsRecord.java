@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.model;
 
 import org.nutz.dao.entity.annotation.Column;

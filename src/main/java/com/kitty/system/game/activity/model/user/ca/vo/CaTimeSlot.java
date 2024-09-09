@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.ca.vo;
 
 import java.io.Serializable;
@@ -57,47 +56,23 @@ public class CaTimeSlot implements Serializable
         if (!(o instanceof CaTimeSlot)) {
             return false;
         }
-        final CaTimeSlot other = (CaTimeSlot)o;
+        CaTimeSlot other = (CaTimeSlot)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$signUpTime = this.getSignUpTime();
-        final Object other$signUpTime = other.getSignUpTime();
-        Label_0065: {
-            if (this$signUpTime == null) {
-                if (other$signUpTime == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$signUpTime.equals(other$signUpTime)) {
-                break Label_0065;
-            }
+        Object this$signUpTime = this.getSignUpTime();
+        Object other$signUpTime = other.getSignUpTime();
+        if (!((this$signUpTime != null) ? this$signUpTime.equals(other$signUpTime) : (other$signUpTime == null))) {
             return false;
         }
-        final Object this$startTime = this.getStartTime();
-        final Object other$startTime = other.getStartTime();
-        Label_0102: {
-            if (this$startTime == null) {
-                if (other$startTime == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$startTime.equals(other$startTime)) {
-                break Label_0102;
-            }
+        Object this$startTime = this.getStartTime();
+        Object other$startTime = other.getStartTime();
+        if (!((this$startTime != null) ? this$startTime.equals(other$startTime) : (other$startTime == null))) {
             return false;
         }
-        final Object this$dayOfWeek = this.getDayOfWeek();
-        final Object other$dayOfWeek = other.getDayOfWeek();
-        if (this$dayOfWeek == null) {
-            if (other$dayOfWeek == null) {
-                return this.getRound() == other.getRound();
-            }
-        }
-        else if (this$dayOfWeek.equals(other$dayOfWeek)) {
-            return this.getRound() == other.getRound();
-        }
-        return false;
+        Object this$dayOfWeek = this.getDayOfWeek();
+        Object other$dayOfWeek = other.getDayOfWeek();
+        return ((this$dayOfWeek != null) ? this$dayOfWeek.equals(other$dayOfWeek) : (other$dayOfWeek == null)) && this.getRound() == other.getRound();
     }
     
     protected boolean canEqual(final Object other) {
@@ -106,13 +81,13 @@ public class CaTimeSlot implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $signUpTime = this.getSignUpTime();
+        Object $signUpTime = this.getSignUpTime();
         result = result * 59 + (($signUpTime == null) ? 43 : $signUpTime.hashCode());
-        final Object $startTime = this.getStartTime();
+        Object $startTime = this.getStartTime();
         result = result * 59 + (($startTime == null) ? 43 : $startTime.hashCode());
-        final Object $dayOfWeek = this.getDayOfWeek();
+        Object $dayOfWeek = this.getDayOfWeek();
         result = result * 59 + (($dayOfWeek == null) ? 43 : $dayOfWeek.hashCode());
         result = result * 59 + this.getRound();
         return result;
@@ -120,6 +95,6 @@ public class CaTimeSlot implements Serializable
     
     @Override
     public String toString() {
-        return "CaTimeSlot(signUpTime=" + this.getSignUpTime() + ", startTime=" + this.getStartTime() + ", dayOfWeek=" + this.getDayOfWeek() + ", round=" + this.getRound() + ")";
+        return "CaTimeSlot(signUpTime=" + this.getSignUpTime() + ", startTime=" + this.getStartTime() + ", dayOfWeek=" + this.getDayOfWeek() + ", round=" + (int)this.getRound() + ")";
     }
 }

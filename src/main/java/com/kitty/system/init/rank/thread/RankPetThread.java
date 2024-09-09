@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.rank.thread;
 
 import com.kitty.system.game.equip.domain.PetEquip;
@@ -6,7 +5,6 @@ import com.kitty.system.game.ranking.RankingList;
 import com.kitty.system.game.ranking.pojo.PetRankingSource;
 import com.kitty.system.game.fightnew.service.CountUtils;
 import com.kitty.common.utils.spring.SpringUtils;
-import java.util.Collection;
 import org.apache.commons.collections.CollectionUtils;
 import com.kitty.system.game.pet.pool.PetDataPool;
 import java.util.concurrent.CountDownLatch;
@@ -26,7 +24,7 @@ public class RankPetThread implements Runnable
     private Semaphore semaphore;
     private CountDownLatch countDownLatch;
     
-    public RankPetThread(final int index, final List<Pet> list, final Map<Integer, Role> roleMap, final CountDownLatch countDownLatch, final Semaphore semaphore) {
+    public RankPetThread(int index, List<Pet> list, Map<Integer, Role> roleMap, CountDownLatch countDownLatch, Semaphore semaphore) {
         this.index = 0;
         this.sysPetMap = PetDataPool.petMap;
         this.index = index;
@@ -38,12 +36,12 @@ public class RankPetThread implements Runnable
     
     @Override
     public void run() {
-        if (!CollectionUtils.isEmpty((Collection)this.list)) {
+        if (!CollectionUtils.isEmpty(this.list)) {
             try {
                 this.semaphore.acquire();
                 this.list.stream().forEach(e -> this.neaten(e));
             }
-            catch (final InterruptedException e) {
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
             finally {
@@ -53,14 +51,15 @@ public class RankPetThread implements Runnable
         this.countDownLatch.countDown();
     }
     
-    public void neaten(final Pet pet) {
+    public void neaten(Pet pet) {
         pet.doAfterInit();
-        final Role role = this.roleMap.get(pet.getRoleId());
+        Role role = (Role)this.roleMap.get(pet.getRoleId());
         if (role == null) {
             return;
         }
-        final List<PetEquip> equips = SpringUtils.getPetService().getPetEffective(role.getId(), pet);
-        final PetRankingSource petRankingSource = new PetRankingSource(role, pet, this.sysPetMap.get(pet.getPetType()).getName(), CountUtils.countPetSpeed(pet, false), CountUtils.countPetPhyPower(pet, equips));
+        List<PetEquip> equips = SpringUtils.getPetService().getPetEffective((long)role.getId(), pet);
+        PetRankingSource petRankingSource = new PetRankingSource(role, pet, ((SysPet)this.sysPetMap.get(pet.getPetType())).getName(), CountUtils.countPetSpeed(pet, false), CountUtils.countPetPhyPower(pet, equips));
         RankingList.petRankingListSource.add(petRankingSource);
+        return;
     }
 }

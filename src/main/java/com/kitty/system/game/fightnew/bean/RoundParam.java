@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 public class RoundParam
@@ -8,7 +7,7 @@ public class RoundParam
     private long updateAnimationPredictTime;
     private int predictTime;
     
-    public RoundParam(final int round) {
+    public RoundParam(int round) {
         this.round = round;
     }
     

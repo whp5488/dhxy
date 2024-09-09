@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -17,11 +16,14 @@ public class FireWallConfig
     private int anonymousAliveMilli;
     private static volatile FireWallConfig self;
     
+    public FireWallConfig() {
+    }
+    
     public int getMaxPackagePerSecond() {
         return this.maxPackagePerSecond;
     }
     
-    public void setMaxPackagePerSecond(final int maxPackagePerSecond) {
+    public void setMaxPackagePerSecond(int maxPackagePerSecond) {
         this.maxPackagePerSecond = maxPackagePerSecond;
     }
     
@@ -29,7 +31,7 @@ public class FireWallConfig
         return this.floodWindowSeconds;
     }
     
-    public void setFloodWindowSeconds(final int floodWindowSeconds) {
+    public void setFloodWindowSeconds(int floodWindowSeconds) {
         this.floodWindowSeconds = floodWindowSeconds;
     }
     
@@ -37,7 +39,7 @@ public class FireWallConfig
         return this.maxFloodTimes;
     }
     
-    public void setMaxFloodTimes(final int maxFloodTimes) {
+    public void setMaxFloodTimes(int maxFloodTimes) {
         this.maxFloodTimes = maxFloodTimes;
     }
     

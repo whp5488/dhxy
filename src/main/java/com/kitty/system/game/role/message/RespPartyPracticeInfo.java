@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.role.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,7 +33,7 @@ public class RespPartyPracticeInfo extends Message
         if (!(o instanceof RespPartyPracticeInfo)) {
             return false;
         }
-        final RespPartyPracticeInfo other = (RespPartyPracticeInfo)o;
+        RespPartyPracticeInfo other = (RespPartyPracticeInfo)o;
         return other.canEqual(this) && this.getLevel() == other.getLevel() && this.getPoints() == other.getPoints();
     }
     
@@ -45,7 +43,7 @@ public class RespPartyPracticeInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getPoints();
@@ -54,7 +52,7 @@ public class RespPartyPracticeInfo extends Message
     
     @Override
     public String toString() {
-        return "RespPartyPracticeInfo(level=" + this.getLevel() + ", points=" + this.getPoints() + ")";
+        return "RespPartyPracticeInfo(level=" + (int)this.getLevel() + ", points=" + (int)this.getPoints() + ")";
     }
     
     public RespPartyPracticeInfo() {
@@ -62,7 +60,6 @@ public class RespPartyPracticeInfo extends Message
         this.points = 0;
     }
     
-    @ConstructorProperties({ "level", "points" })
     public RespPartyPracticeInfo(final short level, final short points) {
         this.level = 0;
         this.points = 0;

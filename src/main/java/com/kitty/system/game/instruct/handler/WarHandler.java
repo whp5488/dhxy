@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.instruct.handler;
 
 import com.kitty.system.game.team.domain.Team;
@@ -13,27 +12,30 @@ import com.kitty.system.game.instruct.inter.NcFather;
 
 public class WarHandler implements NcFather
 {
+    public WarHandler() {
+    }
+    
     @Override
-    public void handle(final Role role, final String content) {
+    public void handle(Role role, String content) {
         try {
-            if (SpringUtils.getBean(ServerService.class).getType() == 1) {
+            if (((ServerService)SpringUtils.getBean(ServerService.class)).getType() == 1) {
                 return;
             }
-            final FightNewService fightNewService = SpringUtils.getBean(FightNewService.class);
-            final boolean inFight = fightNewService.isInFight(role);
+            FightNewService fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
+            boolean inFight = fightNewService.isInFight(role);
             if (!inFight) {
-                final MonsterService monsterService = SpringUtils.getBean(MonsterService.class);
-                final Object[] objs = monsterService.getMapMonster(role, Integer.valueOf(content));
-                final List<SysDataMonster> mapMonster = (List<SysDataMonster>)objs[1];
+                MonsterService monsterService = (MonsterService)SpringUtils.getBean(MonsterService.class);
+                Object[] objs = monsterService.getMapMonster(role, (int)Integer.valueOf(content));
+                List<SysDataMonster> mapMonster = (List)objs[1];
                 if (mapMonster == null || mapMonster.size() <= 0) {
                     return;
                 }
-                final Team team = fightNewService.getRoleFightTeam(role);
+                Team team = fightNewService.getRoleFightTeam(role);
                 fightNewService.enterFieldFight(team, role);
-                monsterService.flushMonsterTime(role.getRoleId());
+                monsterService.flushMonsterTime((int)role.getRoleId());
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             System.out.println("e = " + e);
         }
     }

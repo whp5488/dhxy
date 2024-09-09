@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message.vo;
 
 import java.io.Serializable;
@@ -12,7 +11,7 @@ public class HorseSkillCard implements Serializable
     public HorseSkillCard() {
     }
     
-    public HorseSkillCard(final int growUp, final short level, final String skill) {
+    public HorseSkillCard(int growUp, short level, String skill) {
         this.growUp = growUp;
         this.level = level;
         this.skill = skill;
@@ -50,7 +49,7 @@ public class HorseSkillCard implements Serializable
         if (!(o instanceof HorseSkillCard)) {
             return false;
         }
-        final HorseSkillCard other = (HorseSkillCard)o;
+        HorseSkillCard other = (HorseSkillCard)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -60,17 +59,9 @@ public class HorseSkillCard implements Serializable
         if (this.getLevel() != other.getLevel()) {
             return false;
         }
-        final Object this$skill = this.getSkill();
-        final Object other$skill = other.getSkill();
-        if (this$skill == null) {
-            if (other$skill == null) {
-                return true;
-            }
-        }
-        else if (this$skill.equals(other$skill)) {
-            return true;
-        }
-        return false;
+        Object this$skill = this.getSkill();
+        Object other$skill = other.getSkill();
+        return (this$skill != null) ? this$skill.equals(other$skill) : (other$skill == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,17 +70,17 @@ public class HorseSkillCard implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getGrowUp();
         result = result * 59 + this.getLevel();
-        final Object $skill = this.getSkill();
+        Object $skill = this.getSkill();
         result = result * 59 + (($skill == null) ? 43 : $skill.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "HorseSkillCard(growUp=" + this.getGrowUp() + ", level=" + this.getLevel() + ", skill=" + this.getSkill() + ")";
+        return "HorseSkillCard(growUp=" + this.getGrowUp() + ", level=" + (int)this.getLevel() + ", skill=" + this.getSkill() + ")";
     }
 }

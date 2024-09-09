@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightRecord.domain;
 
-import java.beans.ConstructorProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +26,15 @@ public class FightObjectInfo implements Serializable
         this.statusNumMap = statusNumMap;
     }
     
-    @ConstructorProperties({ "petMap", "statusNumMap" })
     public FightObjectInfo(final Map<Integer, List<Integer>> petMap, final Map<Integer, Map<Integer, Map<Integer, Integer>>> statusNumMap) {
-        this.petMap = new HashMap<Integer, List<Integer>>();
-        this.statusNumMap = new HashMap<Integer, Map<Integer, Map<Integer, Integer>>>();
+        this.petMap = new HashMap();
+        this.statusNumMap = new HashMap();
         this.petMap = petMap;
         this.statusNumMap = statusNumMap;
     }
     
     public FightObjectInfo() {
-        this.petMap = new HashMap<Integer, List<Integer>>();
-        this.statusNumMap = new HashMap<Integer, Map<Integer, Map<Integer, Integer>>>();
+        this.petMap = new HashMap();
+        this.statusNumMap = new HashMap();
     }
 }

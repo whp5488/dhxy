@@ -41,6 +41,20 @@ game:
 engine:
   versions: 20.23.13
 
+# 内网通讯验证
+cxf:
+  # cxf账号
+  username: moyec
+  # cxf密码
+  password: moyec
+  # 发送cxf地址
+  sendIp: 127.0.0.1
+  # 发送cxf端口
+  sendPort: 90
+  # 发送cxf账号
+  sendName: moyec
+  # 发送cxf密码
+  sendPwd: moyec
 # 中心服配置
 cross:
   center:

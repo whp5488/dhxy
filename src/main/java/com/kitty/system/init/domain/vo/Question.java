@@ -1,7 +1,5 @@
-
 package com.kitty.system.init.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class Question implements Serializable
@@ -10,7 +8,7 @@ public class Question implements Serializable
     private String answer;
     private byte type;
     
-    public Question(final int serial, final String answer) {
+    public Question(int serial, String answer) {
         this.type = -1;
         this.serial = serial;
         this.answer = answer;
@@ -48,24 +46,16 @@ public class Question implements Serializable
         if (!(o instanceof Question)) {
             return false;
         }
-        final Question other = (Question)o;
+        Question other = (Question)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$answer = this.getAnswer();
-        final Object other$answer = other.getAnswer();
-        if (this$answer == null) {
-            if (other$answer == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$answer.equals(other$answer)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$answer = this.getAnswer();
+        Object other$answer = other.getAnswer();
+        return ((this$answer != null) ? this$answer.equals(other$answer) : (other$answer == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -74,10 +64,10 @@ public class Question implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $answer = this.getAnswer();
+        Object $answer = this.getAnswer();
         result = result * 59 + (($answer == null) ? 43 : $answer.hashCode());
         result = result * 59 + this.getType();
         return result;
@@ -85,10 +75,9 @@ public class Question implements Serializable
     
     @Override
     public String toString() {
-        return "Question(serial=" + this.getSerial() + ", answer=" + this.getAnswer() + ", type=" + this.getType() + ")";
+        return "Question(serial=" + this.getSerial() + ", answer=" + this.getAnswer() + ", type=" + (int)this.getType() + ")";
     }
     
-    @ConstructorProperties({ "serial", "answer", "type" })
     public Question(final int serial, final String answer, final byte type) {
         this.type = -1;
         this.serial = serial;

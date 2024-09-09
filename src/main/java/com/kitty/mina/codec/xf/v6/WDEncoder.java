@@ -1,4 +1,3 @@
-
 package com.kitty.mina.codec.xf.v6;
 
 import java.util.HashSet;
@@ -27,40 +26,40 @@ public class WDEncoder implements ProtocolEncoder
         this.logger = LoggerFactory.getLogger(WDEncoder.class);
     }
     
-    public void dispose(final IoSession arg0) throws Exception {
+    public void dispose(IoSession arg0) throws Exception {
     }
     
-    public void encode(final IoSession session, final Object message, final ProtocolEncoderOutput out) throws Exception {
-        CodecContext context = (CodecContext)session.getAttribute((Object)SessionProperties.CODEC_CONTEXT);
+    public void encode(IoSession session, Object message, ProtocolEncoderOutput out) throws Exception {
+        CodecContext context = (CodecContext)session.getAttribute(SessionProperties.CODEC_CONTEXT);
         if (context == null) {
             context = new CodecContext();
-            session.setAttribute((Object)SessionProperties.CODEC_CONTEXT, (Object)context);
+            session.setAttribute(SessionProperties.CODEC_CONTEXT, context);
         }
-        final Message msg = (Message)message;
-        final IoBuffer buffer = this.writeMessage(msg);
-        out.write((Object)buffer);
+        Message msg = (Message)message;
+        IoBuffer buffer = this.writeMessage(msg);
+        out.write(buffer);
     }
     
-    private IoBuffer writeMessage(final Message message) {
-        if (WDEncoder.FILTER_MAP.contains(message.getModule())) {
+    private IoBuffer writeMessage(Message message) {
+        if (WDEncoder.FILTER_MAP.contains(Integer.valueOf(message.getModule()))) {
             return MinaEncoder.writeMessage(message);
         }
         return encryptMsg(message);
     }
     
-    public static IoBuffer encryptMsg(final Message message) {
-        final int tableIndex = ThreadLocalRandom.current().nextInt(EncryptTable.TABLE.length) + 1;
-        final int moduleId = message.getModule();
-        final IoBuffer buffer = IoBuffer.allocate(32).setAutoExpand(true).setAutoShrink(true);
+    public static IoBuffer encryptMsg(Message message) {
+        int tableIndex = ThreadLocalRandom.current().nextInt(EncryptTable.TABLE.length) + 1;
+        int moduleId = message.getModule();
+        IoBuffer buffer = IoBuffer.allocate(32).setAutoExpand(true).setAutoShrink(true);
         buffer.putUnsignedShort(19802);
         buffer.putUnsignedShort(tableIndex);
         buffer.putUnsignedInt(0);
-        final IMessageEncoder msgEncoder = SerializerHelper.getInstance().getEncoder();
-        final byte[] body = msgEncoder.writeMessageBody(message);
-        final int posi = body.length + 2;
+        IMessageEncoder msgEncoder = SerializerHelper.getInstance().getEncoder();
+        byte[] body = msgEncoder.writeMessageBody(message);
+        int posi = body.length + 2;
         buffer.putShort((short)posi);
-        final byte p1 = (byte)EncryptTable.TABLE[tableIndex - 1][moduleId >> 8 & 0xFF];
-        final byte p2 = (byte)EncryptTable.TABLE[tableIndex - 1][moduleId & 0xFF];
+        byte p1 = (byte)EncryptTable.TABLE[tableIndex - 1][moduleId >> 8 & 0xFF];
+        byte p2 = (byte)EncryptTable.TABLE[tableIndex - 1][moduleId & 0xFF];
         buffer.put(p1).put(p2);
         for (int i = 0; i < body.length; ++i) {
             body[i] = (byte)EncryptTable.TABLE[tableIndex - 1][body[i] & 0xFF];
@@ -72,7 +71,7 @@ public class WDEncoder implements ProtocolEncoder
     
     static {
         log = LoggerFactory.getLogger(WDEncoder.class);
-        (WDEncoder.FILTER_MAP = new HashSet<Integer>()).add(45555);
-        WDEncoder.FILTER_MAP.add(13143);
+        (WDEncoder.FILTER_MAP = new HashSet()).add(Integer.valueOf(45555));
+        WDEncoder.FILTER_MAP.add(Integer.valueOf(13143));
     }
 }

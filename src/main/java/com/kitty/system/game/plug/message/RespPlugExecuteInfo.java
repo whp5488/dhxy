@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.plug.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,7 +33,7 @@ public class RespPlugExecuteInfo extends Message
         if (!(o instanceof RespPlugExecuteInfo)) {
             return false;
         }
-        final RespPlugExecuteInfo other = (RespPlugExecuteInfo)o;
+        RespPlugExecuteInfo other = (RespPlugExecuteInfo)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getNum() == other.getNum();
     }
     
@@ -45,7 +43,7 @@ public class RespPlugExecuteInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();
@@ -57,7 +55,6 @@ public class RespPlugExecuteInfo extends Message
         return "RespPlugExecuteInfo(serial=" + this.getSerial() + ", num=" + this.getNum() + ")";
     }
     
-    @ConstructorProperties({ "serial", "num" })
     public RespPlugExecuteInfo(final int serial, final int num) {
         this.serial = serial;
         this.num = num;

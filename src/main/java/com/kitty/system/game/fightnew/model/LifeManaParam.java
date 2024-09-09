@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.fightnew.model;
-
-import java.beans.ConstructorProperties;
 
 public class LifeManaParam
 {
@@ -63,7 +60,6 @@ public class LifeManaParam
     public LifeManaParam() {
     }
     
-    @ConstructorProperties({ "saveLife", "saveMana", "maxLife", "maxMana", "currLife", "currMana" })
     public LifeManaParam(final String saveLife, final String saveMana, final int maxLife, final int maxMana, final int currLife, final int currMana) {
         this.saveLife = saveLife;
         this.saveMana = saveMana;

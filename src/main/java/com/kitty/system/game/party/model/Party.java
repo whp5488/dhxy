@@ -1,10 +1,8 @@
-
 package com.kitty.system.game.party.model;
 
 import com.kitty.common.utils.JsonUtils;
 import com.kitty.common.utils.ZipUtil;
 import org.apache.commons.lang3.StringUtils;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import java.util.Iterator;
@@ -127,36 +125,36 @@ public class Party extends BaseEntity<Long> implements Comparable<Party>
         this.consentLevel = 0;
         this.refuse = 1;
         this.refuseLevel = 0;
-        this.onlineRate = new ArrayList<Integer>(3);
+        this.onlineRate = new ArrayList(3);
         this.standings = 0;
-        this.flag = new HashMap<Short, Byte>();
-        this.flagColor = new HashMap<Short, Byte>();
-        this.lace = new HashMap<Short, Byte>(8);
-        this.emblem = new HashMap<Short, Byte>();
-        this.emblemColor = new HashMap<Short, Byte>();
+        this.flag = new HashMap();
+        this.flagColor = new HashMap();
+        this.lace = new HashMap(8);
+        this.emblem = new HashMap();
+        this.emblemColor = new HashMap();
         this.emblemText = "帮";
-        this.members = new ConcurrentHashMap<Integer, PartyMember>();
+        this.members = new ConcurrentHashMap();
         this.reqJoin = new NutConcurrentMap();
-        this.denyMap = new ConcurrentHashMap<Integer, PartyDeny>();
-        this.logs = new ArrayList<PartyLog>();
-        this.redBagList = new ArrayList<PartyRedBag>();
+        this.denyMap = new ConcurrentHashMap();
+        this.logs = new ArrayList<>();
+        this.redBagList = new ArrayList<>();
         this.nutMap = new NutConcurrentMap();
-        this.warsRecordList = new ArrayList<PartyWarsRecord>();
+        this.warsRecordList = new ArrayList<>();
     }
     
     public void save() {
         Db4CommonService.getInstance().add2Queue(this);
-        for (final PartyLog log : this.logs) {
+        for (PartyLog log : this.logs) {
             Db4CommonService.getInstance().add2Queue(log);
         }
     }
     
     @JsonIgnore
     public List<Integer> getWarsEnemySerial() {
-        final List<Integer> list = new ArrayList<Integer>();
+        List<Integer> list = new ArrayList<>();
         for (int num = (this.warsRecordList.size() > 3) ? 3 : this.warsRecordList.size(), i = 0; i < num; ++i) {
-            final PartyWarsRecord partyWarsRecord = this.warsRecordList.get(i);
-            list.add(partyWarsRecord.getEnemySerial());
+            PartyWarsRecord partyWarsRecord = (PartyWarsRecord)this.warsRecordList.get(i);
+            list.add(Integer.valueOf(partyWarsRecord.getEnemySerial()));
         }
         return list;
     }
@@ -171,23 +169,23 @@ public class Party extends BaseEntity<Long> implements Comparable<Party>
         if (this.warsRecordList.size() <= 0) {
             return 0;
         }
-        final List<PartyWarsRecord> collect = this.warsRecordList.stream().filter(e -> e.getCombatResults() == 1 || e.getCombatResults() == 2).collect(Collectors.toList());
+        List<PartyWarsRecord> collect = (List)this.warsRecordList.stream().filter(e -> e.getCombatResults() == 1 || e.getCombatResults() == 2).collect(Collectors.toList());
         return collect.size();
     }
     
     @Override
-    public int compareTo(final Party o) {
+    public int compareTo(Party o) {
         return o.getLevel() - this.getLevel();
     }
     
     @Override
     public void doAfterInit() {
-        if (StringUtils.isNotEmpty((CharSequence)this.reqJoinJson)) {
-            final String uncompress = ZipUtil.uncompress(this.reqJoinJson);
-            this.reqJoin = JsonUtils.string2Object(uncompress, NutConcurrentMap.class);
+        if (StringUtils.isNotEmpty(this.reqJoinJson)) {
+            String uncompress = ZipUtil.uncompress(this.reqJoinJson);
+            this.reqJoin = (NutConcurrentMap)JsonUtils.string2Object(uncompress, NutConcurrentMap.class);
         }
-        if (StringUtils.isNotEmpty((CharSequence)this.denyJson)) {
-            final String uncompress = ZipUtil.uncompress(this.denyJson);
+        if (StringUtils.isNotEmpty(this.denyJson)) {
+            String uncompress = ZipUtil.uncompress(this.denyJson);
             this.denyMap = JsonUtils.string2Map(uncompress, Integer.class, PartyDeny.class);
         }
     }
@@ -195,11 +193,11 @@ public class Party extends BaseEntity<Long> implements Comparable<Party>
     @Override
     public void doBeforeSave() {
         if (this.reqJoin != null) {
-            final String string = JsonUtils.object2String(this.reqJoin);
+            String string = JsonUtils.object2String(this.reqJoin);
             this.reqJoinJson = ZipUtil.compress(string);
         }
         if (this.denyMap != null) {
-            final String string = JsonUtils.object2String(this.denyMap);
+            String string = JsonUtils.object2String(this.denyMap);
             this.denyJson = ZipUtil.compress(string);
         }
     }

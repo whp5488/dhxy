@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.safe.facade;
 
 import com.kitty.system.game.safe.message.ReqModifyPassword;
@@ -17,23 +16,26 @@ public class SafeController
     @Autowired
     SafeService safeService;
     
+    public SafeController() {
+    }
+    
     @RequestMapping
-    public void setSafePassword(final IoSession session, final ReqSetSafePassword reqSetSafePassword) {
+    public void setSafePassword(IoSession session, ReqSetSafePassword reqSetSafePassword) {
         this.safeService.setSafePassword(session, reqSetSafePassword);
     }
     
     @RequestMapping
-    public void openSafeDlg(final IoSession session, final ReqOpenSafeLockDlg reqOpenSafeLockDlg) {
+    public void openSafeDlg(IoSession session, ReqOpenSafeLockDlg reqOpenSafeLockDlg) {
         this.safeService.openSafeDlg(session);
     }
     
     @RequestMapping
-    public void unlock(final IoSession session, final ReqUnlock reqUnlock) {
+    public void unlock(IoSession session, ReqUnlock reqUnlock) {
         this.safeService.unlock(session, reqUnlock);
     }
     
     @RequestMapping
-    public void modifyPassword(final IoSession session, final ReqModifyPassword reqModifyPassword) {
+    public void modifyPassword(IoSession session, ReqModifyPassword reqModifyPassword) {
         this.safeService.modifyPassword(session, reqModifyPassword);
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.drivebeasts;
 
 import com.kitty.system.game.fightnew.bean.TianFuObject;
@@ -18,41 +17,44 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_323503 extends TianFuProcessor
 {
+    public FU_323503() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (effector.isPet()) {
-            final Double percent = this.getPercent(fight, effector);
+            Double percent = this.getPercent(fight, effector);
             if (percent == null) {
                 return null;
             }
-            final int dist = PRO_DICT_TYPE.BURN_HURT.getDist();
-            double value = ImbueUtil.getProValue(effector.getImbueMap(), dist);
+            int dist = PRO_DICT_TYPE.BURN_HURT.getDist();
+            double value = ImbueUtil.getProValue(effector.getImbueMap(), Integer.valueOf(dist));
             if (value < 0.3) {
-                value += percent;
+                value += (double)percent;
                 if (value > 0.3) {
                     value = 0.3;
                 }
-                ImbueUtil.addOrUpdSkill(effector.getImbueMap(), dist, WarMaxRound.WAR_MAX_ROUND.getValue(), 323503, value);
+                ImbueUtil.addOrUpdSkill(effector.getImbueMap(), Integer.valueOf(dist), WarMaxRound.WAR_MAX_ROUND.getValue(), 323503, value);
             }
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 323503);
-            skillRecord.setT(effector.getId());
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 323503);
+            skillRecord.setT((long)(int)effector.getId());
         }
         return null;
     }
     
-    private Double getPercent(final Fight fight, final FightObject effector) {
-        final FightObject host = fight.queryFightObject(effector.getHostId());
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)host).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 323503);
+    private Double getPercent(Fight fight, FightObject effector) {
+        FightObject host = fight.queryFightObject(Integer.valueOf(effector.getHostId()));
+        DayInCeFight dayInCeFight = ((PlayerFightObject)host).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 323503);
         if (tianFuObject == null) {
             return null;
         }
-        final double percent = 0.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-        return percent;
+        double percent = 0.5 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+        return Double.valueOf(percent);
     }
 }

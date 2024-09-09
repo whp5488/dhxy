@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.normal;
 
 import java.util.Arrays;
@@ -21,49 +20,52 @@ public class SKILL_80013 extends SkillProcessor
 {
     static final List<String> terms;
     
+    public SKILL_80013() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 80013);
-        final int max2Mana = effector.getMaxMana();
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 80013);
+        int max2Mana = effector.getMaxMana();
         int count = 1;
-        final boolean trigger = AcsryPetSkillUtil.isTrigger(80013, effector);
+        boolean trigger = AcsryPetSkillUtil.isTrigger(80013, effector);
         if (trigger) {
             ++count;
         }
         for (int i = 0; i < count; ++i) {
-            final FightObject unit = SkillAi.effectProBass(fight, effector, 2, SKILL_80013.terms);
+            FightObject unit = SkillAi.effectProBass(fight, effector, Integer.valueOf(2), SKILL_80013.terms);
             if (unit != null) {
                 this.excute(fight, effector, unit, max2Mana);
-                skillRecord.setT(unit.getId());
+                skillRecord.setT((long)(int)unit.getId());
             }
         }
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
     
-    private void excute(final Fight fight, final FightObject effector, final FightObject unit, final int max2Mana) {
+    private void excute(Fight fight, FightObject effector, FightObject unit, int max2Mana) {
         if (unit != null) {
-            final int mana = Math.min(unit.getMaxMana(), unit.getCurrMana() + max2Mana);
-            final int addMana = mana - unit.getCurrMana();
+            int mana = Math.min(unit.getMaxMana(), unit.getCurrMana() + max2Mana);
+            int addMana = mana - unit.getCurrMana();
             ActionParamUtils.changeMana(fight, effector, unit, 7, 80013, 2, addMana);
         }
     }

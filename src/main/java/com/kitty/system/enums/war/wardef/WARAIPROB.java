@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.wardef;
 
 import java.util.HashMap;
@@ -33,9 +32,9 @@ public enum WARAIPROB
     private String type;
     
     public static List<Map<String, Object>> toList() {
-        final List list = Lists.newArrayList();
-        for (final WARAIPROB war : values()) {
-            final Map<String, Object> map = new HashMap<String, Object>();
+        List<Map<String, Object>> list = Lists.newArrayList();
+        for (WARAIPROB war : values()) {
+            Map<String, Object> map = new HashMap();
             map.put("value", war.getValue());
             map.put("type", war.getType());
             list.add(map);

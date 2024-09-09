@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -11,6 +10,9 @@ public class SysDataTaskNpcName
     private String key;
     @Column("name")
     private String name;
+    
+    public SysDataTaskNpcName() {
+    }
     
     public String getKey() {
         return this.key;
@@ -36,34 +38,18 @@ public class SysDataTaskNpcName
         if (!(o instanceof SysDataTaskNpcName)) {
             return false;
         }
-        final SysDataTaskNpcName other = (SysDataTaskNpcName)o;
+        SysDataTaskNpcName other = (SysDataTaskNpcName)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$key = this.getKey();
-        final Object other$key = other.getKey();
-        Label_0065: {
-            if (this$key == null) {
-                if (other$key == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$key.equals(other$key)) {
-                break Label_0065;
-            }
+        Object this$key = this.getKey();
+        Object other$key = other.getKey();
+        if (!((this$key != null) ? this$key.equals(other$key) : (other$key == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return true;
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return true;
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return (this$name != null) ? this$name.equals(other$name) : (other$name == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -72,11 +58,11 @@ public class SysDataTaskNpcName
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $key = this.getKey();
+        Object $key = this.getKey();
         result = result * 59 + (($key == null) ? 43 : $key.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         return result;
     }

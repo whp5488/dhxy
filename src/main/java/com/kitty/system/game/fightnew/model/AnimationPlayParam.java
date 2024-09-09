@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.fightnew.model;
-
-import java.beans.ConstructorProperties;
 
 public class AnimationPlayParam
 {
@@ -51,7 +48,6 @@ public class AnimationPlayParam
         this.isEnd = isEnd;
     }
     
-    @ConstructorProperties({ "fightId", "round", "predictTime", "practicalTime", "isEnd" })
     public AnimationPlayParam(final int fightId, final int round, final int predictTime, final int practicalTime, final boolean isEnd) {
         this.isEnd = false;
         this.fightId = fightId;

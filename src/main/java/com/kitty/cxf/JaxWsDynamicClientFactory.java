@@ -1,4 +1,3 @@
-
 package com.kitty.cxf;
 
 import org.apache.cxf.common.util.Compiler;
@@ -12,7 +11,7 @@ import org.apache.cxf.endpoint.dynamic.DynamicClientFactory;
 
 public class JaxWsDynamicClientFactory extends DynamicClientFactory
 {
-    protected JaxWsDynamicClientFactory(final Bus bus) {
+    protected JaxWsDynamicClientFactory(Bus bus) {
         super(bus);
     }
     
@@ -24,21 +23,21 @@ public class JaxWsDynamicClientFactory extends DynamicClientFactory
         return true;
     }
     
-    public static JaxWsDynamicClientFactory newInstance(final Bus b) {
+    public static JaxWsDynamicClientFactory newInstance(Bus b) {
         return new JaxWsDynamicClientFactory(b);
     }
     
     public static JaxWsDynamicClientFactory newInstance() {
-        final Bus bus = CXFBusFactory.getThreadDefaultBus();
+        Bus bus = CXFBusFactory.getThreadDefaultBus();
         return new JaxWsDynamicClientFactory(bus);
     }
     
-    protected boolean compileJavaSrc(final String classPath, final List<File> srcList, final String dest) {
-        final Compiler javaCompiler = new Compiler();
+    protected boolean compileJavaSrc(String classPath, List<File> srcList, String dest) {
+        Compiler javaCompiler = new Compiler();
         javaCompiler.setEncoding("UTF-8");
         javaCompiler.setClassPath(classPath);
         javaCompiler.setOutputDir(dest);
         javaCompiler.setTarget("1.6");
-        return javaCompiler.compileFiles((List)srcList);
+        return javaCompiler.compileFiles(srcList);
     }
 }

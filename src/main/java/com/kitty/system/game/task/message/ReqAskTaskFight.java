@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqAskTaskFight extends Message
 {
     private int taskId;
     private int npcId;
+    
+    public ReqAskTaskFight() {
+    }
     
     public int getTaskId() {
         return this.taskId;
@@ -34,7 +36,7 @@ public class ReqAskTaskFight extends Message
         if (!(o instanceof ReqAskTaskFight)) {
             return false;
         }
-        final ReqAskTaskFight other = (ReqAskTaskFight)o;
+        ReqAskTaskFight other = (ReqAskTaskFight)o;
         return other.canEqual(this) && this.getTaskId() == other.getTaskId() && this.getNpcId() == other.getNpcId();
     }
     
@@ -44,7 +46,7 @@ public class ReqAskTaskFight extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTaskId();
         result = result * 59 + this.getNpcId();

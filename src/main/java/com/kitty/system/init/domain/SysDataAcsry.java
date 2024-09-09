@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -221,37 +220,21 @@ public class SysDataAcsry
         if (!(o instanceof SysDataAcsry)) {
             return false;
         }
-        final SysDataAcsry other = (SysDataAcsry)o;
+        SysDataAcsry other = (SysDataAcsry)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0115: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0115;
-            }
+        Object this$baseAttr = this.getBaseAttr();
+        Object other$baseAttr = other.getBaseAttr();
+        if (!((this$baseAttr != null) ? this$baseAttr.equals(other$baseAttr) : (other$baseAttr == null))) {
             return false;
         }
         if (this.getBaseScore() != other.getBaseScore()) {
@@ -281,17 +264,9 @@ public class SysDataAcsry
         if (this.getNeedRei() != other.getNeedRei()) {
             return false;
         }
-        final Object this$ownerRole = this.getOwnerRole();
-        final Object other$ownerRole = other.getOwnerRole();
-        Label_0269: {
-            if (this$ownerRole == null) {
-                if (other$ownerRole == null) {
-                    break Label_0269;
-                }
-            }
-            else if (this$ownerRole.equals(other$ownerRole)) {
-                break Label_0269;
-            }
+        Object this$ownerRole = this.getOwnerRole();
+        Object other$ownerRole = other.getOwnerRole();
+        if (!((this$ownerRole != null) ? this$ownerRole.equals(other$ownerRole) : (other$ownerRole == null))) {
             return false;
         }
         if (this.getSex() != other.getSex()) {
@@ -309,17 +284,9 @@ public class SysDataAcsry
         if (this.getBasicPrice() != other.getBasicPrice()) {
             return false;
         }
-        final Object this$suiteType = this.getSuiteType();
-        final Object other$suiteType = other.getSuiteType();
-        if (this$suiteType == null) {
-            if (other$suiteType == null) {
-                return true;
-            }
-        }
-        else if (this$suiteType.equals(other$suiteType)) {
-            return true;
-        }
-        return false;
+        Object this$suiteType = this.getSuiteType();
+        Object other$suiteType = other.getSuiteType();
+        return (this$suiteType != null) ? this$suiteType.equals(other$suiteType) : (other$suiteType == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -328,12 +295,12 @@ public class SysDataAcsry
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $baseAttr = this.getBaseAttr();
+        Object $baseAttr = this.getBaseAttr();
         result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
         result = result * 59 + this.getBaseScore();
         result = result * 59 + this.getPos();
@@ -344,16 +311,16 @@ public class SysDataAcsry
         result = result * 59 + this.getNeedMj();
         result = result * 59 + this.getNeedGrade();
         result = result * 59 + this.getNeedRei();
-        final Object $ownerRole = this.getOwnerRole();
+        Object $ownerRole = this.getOwnerRole();
         result = result * 59 + (($ownerRole == null) ? 43 : $ownerRole.hashCode());
         result = result * 59 + this.getSex();
         result = result * 59 + this.getRarity();
         result = result * 59 + this.getShape();
-        final long $rndRange = Double.doubleToLongBits(this.getRndRange());
+        long $rndRange = Double.doubleToLongBits(this.getRndRange());
         result = result * 59 + (int)($rndRange >>> 32 ^ $rndRange);
-        final long $basicPrice = this.getBasicPrice();
+        long $basicPrice = this.getBasicPrice();
         result = result * 59 + (int)($basicPrice >>> 32 ^ $basicPrice);
-        final Object $suiteType = this.getSuiteType();
+        Object $suiteType = this.getSuiteType();
         result = result * 59 + (($suiteType == null) ? 43 : $suiteType.hashCode());
         return result;
     }

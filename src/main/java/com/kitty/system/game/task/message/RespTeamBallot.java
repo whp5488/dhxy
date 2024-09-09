@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -13,6 +12,9 @@ public class RespTeamBallot extends Message
     private String title;
     private String type;
     private String para;
+    
+    public RespTeamBallot() {
+    }
     
     public boolean isTeamLeader() {
         return this.isTeamLeader;
@@ -70,66 +72,34 @@ public class RespTeamBallot extends Message
         if (!(o instanceof RespTeamBallot)) {
             return false;
         }
-        final RespTeamBallot other = (RespTeamBallot)o;
+        RespTeamBallot other = (RespTeamBallot)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.isTeamLeader() != other.isTeamLeader()) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        Label_0078: {
-            if (this$msg == null) {
-                if (other$msg == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$msg.equals(other$msg)) {
-                break Label_0078;
-            }
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        if (!((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null))) {
             return false;
         }
         if (this.getEndTime() != other.getEndTime()) {
             return false;
         }
-        final Object this$title = this.getTitle();
-        final Object other$title = other.getTitle();
-        Label_0128: {
-            if (this$title == null) {
-                if (other$title == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$title.equals(other$title)) {
-                break Label_0128;
-            }
+        Object this$title = this.getTitle();
+        Object other$title = other.getTitle();
+        if (!((this$title != null) ? this$title.equals(other$title) : (other$title == null))) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        Label_0165: {
-            if (this$type == null) {
-                if (other$type == null) {
-                    break Label_0165;
-                }
-            }
-            else if (this$type.equals(other$type)) {
-                break Label_0165;
-            }
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        if (!((this$type != null) ? this$type.equals(other$type) : (other$type == null))) {
             return false;
         }
-        final Object this$para = this.getPara();
-        final Object other$para = other.getPara();
-        if (this$para == null) {
-            if (other$para == null) {
-                return true;
-            }
-        }
-        else if (this$para.equals(other$para)) {
-            return true;
-        }
-        return false;
+        Object this$para = this.getPara();
+        Object other$para = other.getPara();
+        return (this$para != null) ? this$para.equals(other$para) : (other$para == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -138,17 +108,17 @@ public class RespTeamBallot extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + (this.isTeamLeader() ? 79 : 97);
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
         result = result * 59 + this.getEndTime();
-        final Object $title = this.getTitle();
+        Object $title = this.getTitle();
         result = result * 59 + (($title == null) ? 43 : $title.hashCode());
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
-        final Object $para = this.getPara();
+        Object $para = this.getPara();
         result = result * 59 + (($para == null) ? 43 : $para.hashCode());
         return result;
     }

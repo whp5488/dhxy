@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.facade;
 
 import com.kitty.system.game.equip.message.ReqUpgradeEquip;
@@ -32,16 +31,16 @@ public class EquipController
     }
     
     @RequestMapping
-    public void getEffect(final IoSession session, final ReqEffect reqEffect) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void getEffect(IoSession session, ReqEffect reqEffect) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.equipService.getEffect(role);
         }
     }
     
     @RequestMapping
-    public void operateEffect(final IoSession session, final ReqOperateEffect reqOperateEffect) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void operateEffect(IoSession session, ReqOperateEffect reqOperateEffect) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             if (reqOperateEffect.getType() == 1) {
                 this.equipService.wearEffect(role, reqOperateEffect.getSerial());
@@ -53,56 +52,56 @@ public class EquipController
     }
     
     @RequestMapping
-    public void equip(final IoSession session, final ReqEquip reqEquip) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void equip(IoSession session, ReqEquip reqEquip) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.equipService.wearEquip(role, Long.valueOf(reqEquip.getId()), true);
         }
     }
     
     @RequestMapping
-    public void unEquip(final IoSession session, final ReqUnEquip reqUnequip) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void unEquip(IoSession session, ReqUnEquip reqUnequip) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.equipService.unEquip(role, Long.valueOf(reqUnequip.getId()), true);
         }
     }
     
     @RequestMapping
-    public void equip(final IoSession session, final ReqPetEquip reqEquip) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void equip(IoSession session, ReqPetEquip reqEquip) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.equipService.wearEquip(role, reqEquip);
         }
     }
     
     @RequestMapping
-    public void unEquip(final IoSession session, final ReqUnPetEquip reqUnEquip) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void unEquip(IoSession session, ReqUnPetEquip reqUnEquip) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.equipService.unEquip(role, reqUnEquip);
         }
     }
     
     @RequestMapping
-    public void repairPetAcsry(final IoSession session, final ReqRepairPetAcsry repairPetAcsry) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void repairPetAcsry(IoSession session, ReqRepairPetAcsry repairPetAcsry) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.equipService.repairPetAcsry(role, repairPetAcsry);
         }
     }
     
     @RequestMapping
-    public void petAcsryLock(final IoSession session, final ReqPetAcsryLock petAcsryLock) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void petAcsryLock(IoSession session, ReqPetAcsryLock petAcsryLock) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             this.equipService.petAcsryLock(role, petAcsryLock);
         }
     }
     
     @RequestMapping
-    public void upgradeEquip(final IoSession session, final ReqUpgradeEquip upgradeEquip) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void upgradeEquip(IoSession session, ReqUpgradeEquip upgradeEquip) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }

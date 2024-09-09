@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqEmaiLPickUpGoods extends Message
 {
     private byte type;
     private String emailId;
+    
+    public ReqEmaiLPickUpGoods() {
+    }
     
     public byte getType() {
         return this.type;

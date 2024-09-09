@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightRecord.domain;
 
 import com.kitty.common.db.Db4FightRecordService;
@@ -40,6 +39,9 @@ public class FightRecord extends BaseEntity<Long>
     @Comment("当回合数据发送给的用户id集合")
     @Column("send_roles")
     private String sendRoles;
+    
+    public FightRecord() {
+    }
     
     public void save() {
         Db4FightRecordService.getInstance().add2Queue(this);

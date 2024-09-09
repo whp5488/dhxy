@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqMobile extends Message
 {
     private String verificationCode;
+    
+    public ReqMobile() {
+    }
     
     public String getVerificationCode() {
         return this.verificationCode;

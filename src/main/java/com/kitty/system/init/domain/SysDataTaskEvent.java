@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import com.kitty.system.enums.task.TaskEvent;
@@ -22,6 +21,9 @@ public class SysDataTaskEvent implements Serializable
     @Comment("事件外键")
     @Column("foreign")
     private int foreign;
+    
+    public SysDataTaskEvent() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -63,7 +65,7 @@ public class SysDataTaskEvent implements Serializable
         if (!(o instanceof SysDataTaskEvent)) {
             return false;
         }
-        final SysDataTaskEvent other = (SysDataTaskEvent)o;
+        SysDataTaskEvent other = (SysDataTaskEvent)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -73,17 +75,9 @@ public class SysDataTaskEvent implements Serializable
         if (this.getEvent() != other.getEvent()) {
             return false;
         }
-        final Object this$type = this.getType();
-        final Object other$type = other.getType();
-        if (this$type == null) {
-            if (other$type == null) {
-                return this.getForeign() == other.getForeign();
-            }
-        }
-        else if (this$type.equals(other$type)) {
-            return this.getForeign() == other.getForeign();
-        }
-        return false;
+        Object this$type = this.getType();
+        Object other$type = other.getType();
+        return ((this$type != null) ? this$type.equals(other$type) : (other$type == null)) && this.getForeign() == other.getForeign();
     }
     
     protected boolean canEqual(final Object other) {
@@ -92,11 +86,11 @@ public class SysDataTaskEvent implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getEvent();
-        final Object $type = this.getType();
+        Object $type = this.getType();
         result = result * 59 + (($type == null) ? 43 : $type.hashCode());
         result = result * 59 + this.getForeign();
         return result;

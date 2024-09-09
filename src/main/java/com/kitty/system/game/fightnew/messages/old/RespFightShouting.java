@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages.old;
 
 public class RespFightShouting
@@ -62,7 +61,7 @@ public class RespFightShouting
         if (!(o instanceof RespFightShouting)) {
             return false;
         }
-        final RespFightShouting other = (RespFightShouting)o;
+        RespFightShouting other = (RespFightShouting)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -72,17 +71,9 @@ public class RespFightShouting
         if (this.getChannel() != other.getChannel()) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        if (this$msg == null) {
-            if (other$msg == null) {
-                return this.getShow_time() == other.getShow_time() && this.getMsgDelayTime() == other.getMsgDelayTime();
-            }
-        }
-        else if (this$msg.equals(other$msg)) {
-            return this.getShow_time() == other.getShow_time() && this.getMsgDelayTime() == other.getMsgDelayTime();
-        }
-        return false;
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        return ((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null)) && this.getShow_time() == other.getShow_time() && this.getMsgDelayTime() == other.getMsgDelayTime();
     }
     
     protected boolean canEqual(final Object other) {
@@ -91,11 +82,11 @@ public class RespFightShouting
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getChannel();
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
         result = result * 59 + this.getShow_time();
         result = result * 59 + this.getMsgDelayTime();
@@ -104,6 +95,6 @@ public class RespFightShouting
     
     @Override
     public String toString() {
-        return "RespFightShouting(id=" + this.getId() + ", channel=" + this.getChannel() + ", msg=" + this.getMsg() + ", show_time=" + this.getShow_time() + ", msgDelayTime=" + this.getMsgDelayTime() + ")";
+        return "RespFightShouting(id=" + this.getId() + ", channel=" + (int)this.getChannel() + ", msg=" + this.getMsg() + ", show_time=" + this.getShow_time() + ", msgDelayTime=" + this.getMsgDelayTime() + ")";
     }
 }

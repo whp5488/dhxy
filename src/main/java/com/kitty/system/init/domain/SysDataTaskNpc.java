@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Default;
@@ -32,6 +31,9 @@ public class SysDataTaskNpc
     private List<Integer> types;
     @Column("is_scene")
     private int isScene;
+    
+    public SysDataTaskNpc() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -129,7 +131,7 @@ public class SysDataTaskNpc
         if (!(o instanceof SysDataTaskNpc)) {
             return false;
         }
-        final SysDataTaskNpc other = (SysDataTaskNpc)o;
+        SysDataTaskNpc other = (SysDataTaskNpc)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -151,46 +153,22 @@ public class SysDataTaskNpc
         if (this.getShape() != other.getShape()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0143: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0143;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0143;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getShapeType() != other.getShapeType()) {
             return false;
         }
-        final Object this$talk = this.getTalk();
-        final Object other$talk = other.getTalk();
-        Label_0193: {
-            if (this$talk == null) {
-                if (other$talk == null) {
-                    break Label_0193;
-                }
-            }
-            else if (this$talk.equals(other$talk)) {
-                break Label_0193;
-            }
+        Object this$talk = this.getTalk();
+        Object other$talk = other.getTalk();
+        if (!((this$talk != null) ? this$talk.equals(other$talk) : (other$talk == null))) {
             return false;
         }
-        final Object this$types = this.getTypes();
-        final Object other$types = other.getTypes();
-        if (this$types == null) {
-            if (other$types == null) {
-                return this.getIsScene() == other.getIsScene();
-            }
-        }
-        else if (this$types.equals(other$types)) {
-            return this.getIsScene() == other.getIsScene();
-        }
-        return false;
+        Object this$types = this.getTypes();
+        Object other$types = other.getTypes();
+        return ((this$types != null) ? this$types.equals(other$types) : (other$types == null)) && this.getIsScene() == other.getIsScene();
     }
     
     protected boolean canEqual(final Object other) {
@@ -199,7 +177,7 @@ public class SysDataTaskNpc
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getScene();
@@ -207,12 +185,12 @@ public class SysDataTaskNpc
         result = result * 59 + this.getY();
         result = result * 59 + this.getDir();
         result = result * 59 + this.getShape();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getShapeType();
-        final Object $talk = this.getTalk();
+        Object $talk = this.getTalk();
         result = result * 59 + (($talk == null) ? 43 : $talk.hashCode());
-        final Object $types = this.getTypes();
+        Object $types = this.getTypes();
         result = result * 59 + (($types == null) ? 43 : $types.hashCode());
         result = result * 59 + this.getIsScene();
         return result;

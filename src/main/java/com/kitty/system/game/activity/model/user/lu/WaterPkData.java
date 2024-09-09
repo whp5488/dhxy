@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.lu;
 
 import com.kitty.system.game.team.domain.Member;
@@ -28,52 +27,50 @@ public class WaterPkData implements Serializable
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<WaterFight>(3);
+        this.fight = new ArrayList(3);
     }
     
-    public WaterPkData(final Team team, final short pkValue) {
+    public WaterPkData(Team team, short pkValue) {
         this.memberGrade = 0;
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<WaterFight>(3);
+        this.fight = new ArrayList(3);
         this.teamId = team.getId();
         this.pkValue = pkValue;
         this.members = this.getMembers(team);
     }
     
-    private List<Long> getMembers(final Team team) {
-        final List<Long> members = new ArrayList<Long>();
-        final List<Member> list = team.getList();
+    private List<Long> getMembers(Team team) {
+        List<Long> members = new ArrayList<>();
+        List<Member> list = team.getList();
         for (int i = 0; i < list.size(); ++i) {
-            final Member member = list.get(i);
-            if (member.isInTeam()) {
-                if (!members.contains(member)) {
-                    members.add(member.getId());
-                }
+            Member member = (Member)list.get(i);
+            if (member.isInTeam() && !members.contains(member)) {
+                members.add(member.getId());
             }
         }
         return members;
     }
     
-    public void subPkValue(final short pkValue) {
+    public void subPkValue(short pkValue) {
         this.pkValue -= pkValue;
     }
     
-    public void updateTeamMember(final Team team) {
+    public void updateTeamMember(Team team) {
         this.members = this.getMembers(team);
     }
     
-    public void updateTeamMember(final byte state) {
+    public void updateTeamMember(byte state) {
         this.state = state;
     }
     
-    public WaterPkData(final int teamId, final short pkValue, final int memberGrade, final int memberEquipScore) {
+    public WaterPkData(int teamId, short pkValue, int memberGrade, int memberEquipScore) {
         this.memberGrade = 0;
         this.memberEquipScore = 0;
         this.time = 0;
         this.state = 0;
-        this.fight = new ArrayList<WaterFight>(3);
+        this.fight = new ArrayList(3);
         this.teamId = teamId;
         this.pkValue = pkValue;
         this.memberGrade = memberGrade;
@@ -170,6 +167,6 @@ public class WaterPkData implements Serializable
     
     @Override
     public String toString() {
-        return "WaterPkData(teamId=" + this.getTeamId() + ", pkValue=" + this.getPkValue() + ", score=" + this.getScore() + ", memberGrade=" + this.getMemberGrade() + ", memberEquipScore=" + this.getMemberEquipScore() + ", rank=" + this.getRank() + ", members=" + this.getMembers() + ", time=" + this.getTime() + ", state=" + this.getState() + ", fight=" + this.getFight() + ", schedule=" + this.getSchedule() + ")";
+        return "WaterPkData(teamId=" + this.getTeamId() + ", pkValue=" + (int)this.getPkValue() + ", score=" + (int)this.getScore() + ", memberGrade=" + this.getMemberGrade() + ", memberEquipScore=" + this.getMemberEquipScore() + ", rank=" + (int)this.getRank() + ", members=" + this.getMembers() + ", time=" + this.getTime() + ", state=" + (int)this.getState() + ", fight=" + this.getFight() + ", schedule=" + this.getSchedule() + ")";
     }
 }

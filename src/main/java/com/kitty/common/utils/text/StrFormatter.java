@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.text;
 
 import com.kitty.common.utils.StringUtils;
@@ -10,16 +9,19 @@ public class StrFormatter
     public static final char C_DELIM_START = '{';
     public static final char C_DELIM_END = '}';
     
+    public StrFormatter() {
+    }
+    
     public static String format(final String strPattern, final Object... argArray) {
         if (StringUtils.isEmpty(strPattern) || StringUtils.isEmpty(argArray)) {
             return strPattern;
         }
-        final int strPatternLength = strPattern.length();
-        final StringBuilder sbuf = new StringBuilder(strPatternLength + 50);
+        int strPatternLength = strPattern.length();
+        StringBuilder sbuf = new StringBuilder(strPatternLength + 50);
         int handledPosition = 0;
         int argIndex = 0;
         while (argIndex < argArray.length) {
-            final int delimIndex = strPattern.indexOf("{}", handledPosition);
+            int delimIndex = strPattern.indexOf("{}", handledPosition);
             if (delimIndex == -1) {
                 if (handledPosition == 0) {
                     return strPattern;

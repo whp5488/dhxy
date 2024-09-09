@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsrypet.utils;
 
 import java.util.ArrayList;
@@ -25,78 +24,89 @@ import com.kitty.system.game.fightnew.FightObject;
 
 public class AcsryPetSkillUtil
 {
-    public static double getPval(final int skillId, final FightObject fightObject) {
+    public AcsryPetSkillUtil() {
+    }
+    
+    public static double getPval(int skillId, FightObject fightObject) {
         try {
             if (fightObject != null && fightObject.isPet()) {
                 double pval = 0.0;
-                final PetFightObject petFightObject = (PetFightObject)fightObject;
-                final AcsryPetSkillParam acsryPetSkillParam = petFightObject.getAcsryPetSkillMap().get(skillId);
+                PetFightObject petFightObject = (PetFightObject)fightObject;
+                AcsryPetSkillParam acsryPetSkillParam = (AcsryPetSkillParam)petFightObject.getAcsryPetSkillMap().get(Integer.valueOf(skillId));
                 if (acsryPetSkillParam != null) {
                     pval = acsryPetSkillParam.getPval();
                 }
                 return pval;
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return 0.0;
     }
     
-    public static boolean isTrigger(final int skillId, final FightObject fightObject) {
+    public static boolean isTrigger(int skillId, FightObject fightObject) {
         try {
             if (fightObject != null && fightObject.isPet()) {
-                final PetFightObject petFightObject = (PetFightObject)fightObject;
-                final AcsryPetSkillParam acsryPetSkillParam = petFightObject.getAcsryPetSkillMap().get(skillId);
+                PetFightObject petFightObject = (PetFightObject)fightObject;
+                AcsryPetSkillParam acsryPetSkillParam = (AcsryPetSkillParam)petFightObject.getAcsryPetSkillMap().get(Integer.valueOf(skillId));
                 if (acsryPetSkillParam != null) {
-                    final double pval = acsryPetSkillParam.getPval();
+                    double pval = acsryPetSkillParam.getPval();
                     if (pval > 0.0) {
                         return SkillAi.canAffectOnPro(pval);
                     }
                 }
             }
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
     
-    public static void addPetAcsry(final Role role, final Pet pet, final NutMap propertyMap, final Map<Integer, AcsryPetSkillParam> acsryPetSkillMap) {
-        final List<PetEquip> petEffective = SpringUtils.getPetService().getPetEffective(role.getId(), pet);
+    public static void addPetAcsry(Role role, Pet pet, NutMap propertyMap, Map<Integer, AcsryPetSkillParam> acsryPetSkillMap) {
+        List<PetEquip> petEffective = SpringUtils.getPetService().getPetEffective((long)role.getId(), pet);
         if (petEffective != null && petEffective.size() > 0) {
-            final Map<Integer, Integer> map = PRO_DICT_TYPE.toMap();
-            for (final PetEquip petEquip : petEffective) {
-                final List<FiedEquip> fields = petEquip.getField();
+            Map<Integer, Integer> map = PRO_DICT_TYPE.toMap();
+            for (PetEquip petEquip : petEffective) {
+                List<FiedEquip> fields = petEquip.getField();
                 if (fields != null && fields.size() > 0) {
-                    for (final FiedEquip fiedEquip : fields) {
-                        if (fiedEquip.getType() != null && fiedEquip.getType() > 0) {
-                            final int attrSerial = fiedEquip.getType() % PRO_DICT_SERIAL.PET_PS.getSerial();
-                            if (attrSerial > 0 && map.get(attrSerial) != null) {
+                    for (FiedEquip fiedEquip : fields) {
+                        if (fiedEquip.getType() != null && (int)fiedEquip.getType() > 0) {
+                            int attrSerial = (int)fiedEquip.getType() % PRO_DICT_SERIAL.PET_PS.getSerial();
+                            if (attrSerial > 0 && map.get(Integer.valueOf(attrSerial)) != null) {
                                 addAttrValue(fiedEquip, propertyMap, attrSerial);
                             }
-                            if (petEquip.getProductOrder() < ACC_GRADE.PRICELESS.getValue()) {
+                            if (petEquip.getProductOrder() >= ACC_GRADE.PRICELESS.getValue()) {
+                                addAcsryPetSkill(fiedEquip, acsryPetSkillMap);
+                            }
+                            else {
                                 continue;
                             }
-                            addAcsryPetSkill(fiedEquip, acsryPetSkillMap);
+                        }
+                        else {
+                            continue;
                         }
                     }
+                }
+                else {
+                    continue;
                 }
             }
         }
     }
     
-    private static void addAttrValue(final FiedEquip fiedEquip, final NutMap propertyMap, final int attrSerial) {
+    private static void addAttrValue(FiedEquip fiedEquip, NutMap propertyMap, int attrSerial) {
         if (attrSerial > 0) {
             if (isBasicAttr(attrSerial)) {
                 return;
             }
-            final double value = propertyMap.getDouble(String.valueOf(attrSerial), 0.0) + fiedEquip.getValue() / 1000.0;
-            propertyMap.setv(String.valueOf(attrSerial), (Object)value);
+            double value = propertyMap.getDouble(String.valueOf(attrSerial), 0.0) + (double)(int)fiedEquip.getValue() / 1000.0;
+            propertyMap.setv(String.valueOf(attrSerial), Double.valueOf(value));
         }
     }
     
-    private static boolean isBasicAttr(final int attrSerial) {
+    private static boolean isBasicAttr(int attrSerial) {
         boolean flag = false;
         if (attrSerial == PRO_DICT_TYPE.HP_CAP.getDist() || attrSerial == PRO_DICT_TYPE.MP_CAP.getDist() || attrSerial == PRO_DICT_TYPE.ATTACK.getDist() || attrSerial == PRO_DICT_TYPE.SPEED.getDist() || attrSerial == PRO_DICT_TYPE.HP_PCT.getDist() || attrSerial == PRO_DICT_TYPE.HP_PCT.getDist() || attrSerial == PRO_DICT_TYPE.ATTACK_PCT.getDist() || attrSerial == PRO_DICT_TYPE.SPEED_PCT.getDist()) {
             flag = true;
@@ -104,12 +114,12 @@ public class AcsryPetSkillUtil
         return flag;
     }
     
-    private static void addAcsryPetSkill(final FiedEquip fiedEquip, final Map<Integer, AcsryPetSkillParam> acsryPetSkillMap) {
-        final SysPetAcsryAdvAttrLib sysPetAcsryAdvAttrLib = EquipDataPool.petAcsryAdvAttrLibMap.get(fiedEquip.getType());
+    private static void addAcsryPetSkill(FiedEquip fiedEquip, Map<Integer, AcsryPetSkillParam> acsryPetSkillMap) {
+        SysPetAcsryAdvAttrLib sysPetAcsryAdvAttrLib = (SysPetAcsryAdvAttrLib)EquipDataPool.petAcsryAdvAttrLibMap.get(fiedEquip.getType());
         if (sysPetAcsryAdvAttrLib != null) {
-            for (final Integer skillSerial : sysPetAcsryAdvAttrLib.getSkillList()) {
-                final AcsryPetSkillParam acsryPetSkillParam = new AcsryPetSkillParam(skillSerial, fiedEquip.getValue() / 1000.0);
-                if (82002 == skillSerial || 82015 == skillSerial || 81004 == skillSerial) {
+            for (Integer skillSerial : sysPetAcsryAdvAttrLib.getSkillList()) {
+                AcsryPetSkillParam acsryPetSkillParam = new AcsryPetSkillParam((int)skillSerial, (double)(int)fiedEquip.getValue() / 1000.0);
+                if (82002 == (int)skillSerial || 82015 == (int)skillSerial || 81004 == (int)skillSerial) {
                     acsryPetSkillParam.setPval(1.0);
                 }
                 acsryPetSkillMap.put(skillSerial, acsryPetSkillParam);
@@ -117,32 +127,40 @@ public class AcsryPetSkillUtil
         }
     }
     
-    public static int getAttrSpeed(final Pet pet) {
-        final BagService bagService = SpringUtils.getBean(BagService.class);
-        final Role role = SpringUtils.getRoleService().getPlayer(pet.getRoleId());
+    public static int getAttrSpeed(Pet pet) {
+        BagService bagService = (BagService)SpringUtils.getBean(BagService.class);
+        Role role = SpringUtils.getRoleService().getPlayer((int)pet.getRoleId());
         if (role == null) {
             return 0;
         }
-        final Map<Long, PetEquip> petBagEquip = bagService.getPetBagEquip(role.getId());
+        Map<Long, PetEquip> petBagEquip = bagService.getPetBagEquip((long)role.getId());
         if (petBagEquip != null && petBagEquip.size() > 0) {
             int returnData = 0;
-            for (final Map.Entry<Long, PetEquip> entry : petBagEquip.entrySet()) {
-                final PetEquip petEquip = entry.getValue();
-                if (petEquip.getPId() == pet.getId()) {
-                    for (final FiedEquip fiedEquip : petEquip.getField()) {
+            for (Map.Entry<Long, PetEquip> entry : petBagEquip.entrySet()) {
+                PetEquip petEquip = (PetEquip)entry.getValue();
+                if (petEquip.getPId() == (long)pet.getId()) {
+                    for (FiedEquip fiedEquip : petEquip.getField()) {
                         if (fiedEquip.getType() != null) {
-                            final int attrSerial = fiedEquip.getType() % PRO_DICT_SERIAL.PET_PS.getSerial();
-                            if (attrSerial <= 0 || attrSerial != PRO_DICT_TYPE.SPEED.getDist()) {
+                            int attrSerial = (int)fiedEquip.getType() % PRO_DICT_SERIAL.PET_PS.getSerial();
+                            if (attrSerial > 0 && attrSerial == PRO_DICT_TYPE.SPEED.getDist()) {
+                                returnData += (int)fiedEquip.getValue();
+                            }
+                            else {
                                 continue;
                             }
-                            returnData += fiedEquip.getValue();
+                        }
+                        else {
+                            continue;
                         }
                     }
                 }
+                else {
+                    continue;
+                }
             }
-            final NutMap nutMap = AwakenSkillUtils.additionSuit(role, pet);
+            NutMap nutMap = AwakenSkillUtils.additionSuit(role, pet);
             if (nutMap != null) {
-                final int suitSpeed = nutMap.getInt(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()));
+                int suitSpeed = nutMap.getInt(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()));
                 if (suitSpeed > 0) {
                     returnData += suitSpeed;
                 }
@@ -152,27 +170,35 @@ public class AcsryPetSkillUtil
         return 0;
     }
     
-    public static double getAttrSpeedPct(final Pet pet) {
-        final BagService bagService = SpringUtils.getBean(BagService.class);
-        final Role role = SpringUtils.getRoleService().getPlayer(pet.getRoleId());
+    public static double getAttrSpeedPct(Pet pet) {
+        BagService bagService = (BagService)SpringUtils.getBean(BagService.class);
+        Role role = SpringUtils.getRoleService().getPlayer((int)pet.getRoleId());
         if (role == null) {
             return 0.0;
         }
-        final Map<Long, PetEquip> petBagEquip = bagService.getPetBagEquip(role.getId());
+        Map<Long, PetEquip> petBagEquip = bagService.getPetBagEquip((long)role.getId());
         if (petBagEquip != null && petBagEquip.size() > 0) {
             double returnData = 0.0;
-            for (final Map.Entry<Long, PetEquip> entry : petBagEquip.entrySet()) {
-                final PetEquip petEquip = entry.getValue();
-                if (petEquip.getPId() == pet.getId()) {
-                    for (final FiedEquip fiedEquip : petEquip.getField()) {
+            for (Map.Entry<Long, PetEquip> entry : petBagEquip.entrySet()) {
+                PetEquip petEquip = (PetEquip)entry.getValue();
+                if (petEquip.getPId() == (long)pet.getId()) {
+                    for (FiedEquip fiedEquip : petEquip.getField()) {
                         if (fiedEquip.getType() != null) {
-                            final int attrSerial = fiedEquip.getType() % PRO_DICT_SERIAL.PET_PS.getSerial();
-                            if (attrSerial <= 0 || attrSerial != PRO_DICT_TYPE.SPEED_PCT.getDist()) {
+                            int attrSerial = (int)fiedEquip.getType() % PRO_DICT_SERIAL.PET_PS.getSerial();
+                            if (attrSerial > 0 && attrSerial == PRO_DICT_TYPE.SPEED_PCT.getDist()) {
+                                returnData += (double)(int)fiedEquip.getValue() / 1000.0;
+                            }
+                            else {
                                 continue;
                             }
-                            returnData += fiedEquip.getValue() / 1000.0;
+                        }
+                        else {
+                            continue;
                         }
                     }
+                }
+                else {
+                    continue;
                 }
             }
             return returnData;
@@ -180,28 +206,35 @@ public class AcsryPetSkillUtil
         return 0.0;
     }
     
-    public static List<PetEquip> getWearAcsrys(final Role role, final Pet pet) {
-        final BagService bagService = SpringUtils.getBean(BagService.class);
-        final Map<Long, PetEquip> petBagEquip = bagService.getPetBagEquip(role.getId());
-        final List<PetEquip> returnList = new ArrayList<PetEquip>();
+    public static List<PetEquip> getWearAcsrys(Role role, Pet pet) {
+        BagService bagService = (BagService)SpringUtils.getBean(BagService.class);
+        Map<Long, PetEquip> petBagEquip = bagService.getPetBagEquip((long)role.getId());
+        List<PetEquip> returnList = new ArrayList<>();
         if (petBagEquip != null && petBagEquip.size() > 0) {
-            for (final Map.Entry<Long, PetEquip> entry : petBagEquip.entrySet()) {
-                final PetEquip petEquip = entry.getValue();
-                if (petEquip.getPId() == pet.getId()) {
+            for (Map.Entry<Long, PetEquip> entry : petBagEquip.entrySet()) {
+                PetEquip petEquip = (PetEquip)entry.getValue();
+                if (petEquip.getPId() == (long)pet.getId()) {
                     returnList.add(petEquip);
                 }
+                else {
+                    continue;
+                }
             }
+            return returnList;
         }
         return returnList;
     }
     
-    public static byte getSuitLev(final Role role, final Pet pet) {
-        final List<PetEquip> wearAcsrys = getWearAcsrys(role, pet);
+    public static byte getSuitLev(Role role, Pet pet) {
+        List<PetEquip> wearAcsrys = getWearAcsrys(role, pet);
         if (wearAcsrys.size() >= 3) {
             byte lev = ACC_GRADE.TRENDS.getValue();
-            for (final PetEquip petEquip : wearAcsrys) {
+            for (PetEquip petEquip : wearAcsrys) {
                 if (lev < petEquip.getProductOrder()) {
                     lev = petEquip.getProductOrder();
+                }
+                else {
+                    continue;
                 }
             }
             return lev;
@@ -209,8 +242,8 @@ public class AcsryPetSkillUtil
         return 0;
     }
     
-    public static byte getSuitLevParam(final Role role, final Pet pet) {
-        final byte suitLev = getSuitLev(role, pet);
+    public static byte getSuitLevParam(Role role, Pet pet) {
+        byte suitLev = getSuitLev(role, pet);
         if (suitLev > 0) {
             byte levParam = 0;
             if (suitLev == ACC_GRADE.PLAY_WITH.getValue()) {
@@ -227,6 +260,8 @@ public class AcsryPetSkillUtil
             }
             return levParam;
         }
-        return 0;
+        else {
+            return 0;
+        }
     }
 }

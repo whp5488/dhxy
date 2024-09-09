@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -84,7 +83,7 @@ public class RespActivityPkScore extends Message
         if (!(o instanceof RespActivityPkScore)) {
             return false;
         }
-        final RespActivityPkScore other = (RespActivityPkScore)o;
+        RespActivityPkScore other = (RespActivityPkScore)o;
         return other.canEqual(this) && this.getStage() == other.getStage() && this.getPkValue() == other.getPkValue() && this.getScore() == other.getScore() && this.getStartTime() == other.getStartTime() && this.getStageDurationTime() == other.getStageDurationTime() && this.getRank() == other.getRank() && this.getType() == other.getType();
     }
     
@@ -94,7 +93,7 @@ public class RespActivityPkScore extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getStage();
         result = result * 59 + this.getPkValue();
@@ -108,6 +107,6 @@ public class RespActivityPkScore extends Message
     
     @Override
     public String toString() {
-        return "RespActivityPkScore(stage=" + this.getStage() + ", pkValue=" + this.getPkValue() + ", score=" + this.getScore() + ", startTime=" + this.getStartTime() + ", stageDurationTime=" + this.getStageDurationTime() + ", rank=" + this.getRank() + ", type=" + this.getType() + ")";
+        return "RespActivityPkScore(stage=" + (int)this.getStage() + ", pkValue=" + (int)this.getPkValue() + ", score=" + (int)this.getScore() + ", startTime=" + this.getStartTime() + ", stageDurationTime=" + this.getStageDurationTime() + ", rank=" + (int)this.getRank() + ", type=" + (int)this.getType() + ")";
     }
 }

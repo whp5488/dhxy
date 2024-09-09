@@ -1,14 +1,12 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import com.kitty.system.game.fightnew.book.vo.Effect;
+import com.kitty.system.game.skill.domain.RoleSkill;
 import com.kitty.system.game.fightnew.bean.AstrictSkill;
 import com.kitty.system.game.fightnew.book.pet.utils.PetSkillEffectorUtil;
 import com.kitty.system.game.fightnew.book.pet.utils.PetTriggerPassiveSkill;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import com.kitty.system.game.skill.domain.RoleSkill;
 import java.util.List;
 import com.kitty.system.game.skill.pool.SkillDataPool;
 import com.kitty.system.init.domain.SysPetSkill;
@@ -21,27 +19,30 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81061 extends SkillProcessor
 {
+    public SKILL_81061() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
-        FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81061);
-        final SysPetSkill petSkill = SkillDataPool.petSkillMap.get(81061);
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
+        FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81061);
+        SysPetSkill petSkill = (SysPetSkill)SkillDataPool.petSkillMap.get(Integer.valueOf(81061));
         if (petSkill != null) {
-            final List<RoleSkill> skills = effector.getSkillIds().stream().filter(roleSkill -> roleSkill.getSkillId() > 0).collect(Collectors.toList());
-            final Map<Integer, SysPetSkill> sysPetSkillMap = PetTriggerPassiveSkill.data_pet_skill_maps.get(petSkill.getTriggerType());
-            final SysPetSkill sysPetSkill = PetSkillEffectorUtil.initiativeQueryCover(petSkill, skills, sysPetSkillMap);
-            if (sysPetSkill != null && 81061 != sysPetSkill.getSerial()) {
-                final SkillProcessor processor = SkillProcessor.queryProcessor(sysPetSkill.getSerial());
-                processor.passive(fight, effector);
+            List<RoleSkill> skills = (List)effector.getSkillIds().stream().filter(roleSkill -> (int)roleSkill.getSkillId() > 0).collect(Collectors.toList());
+            Map<Integer, SysPetSkill> sysPetSkillMap = (Map)PetTriggerPassiveSkill.data_pet_skill_maps.get(petSkill.getTriggerType());
+            SysPetSkill sysPetSkill = PetSkillEffectorUtil.initiativeQueryCover(petSkill, skills, sysPetSkillMap);
+            if (sysPetSkill != null && 81061 != (int)sysPetSkill.getSerial()) {
+                SkillProcessor processor = SkillProcessor.queryProcessor(sysPetSkill.getSerial());
+                processor.passive(fight, effector, new Object[0]);
                 return null;
             }
         }
-        final boolean isASide = effector.isASide();
-        AstrictSkill astrictSkill = fight.getAstrictSkillMap().get(!isASide);
+        boolean isASide = effector.isASide();
+        AstrictSkill astrictSkill = (AstrictSkill)fight.getAstrictSkillMap().get(Boolean.valueOf(!isASide));
         boolean isLayIn = true;
         if (astrictSkill != null) {
             isLayIn = false;
@@ -51,23 +52,23 @@ public class SKILL_81061 extends SkillProcessor
             astrictSkill.setASide(!isASide);
             astrictSkill.setRound(1);
             astrictSkill.setTime(2);
-            fight.getAstrictSkillMap().put(!isASide, astrictSkill);
+            fight.getAstrictSkillMap().put(Boolean.valueOf(!isASide), astrictSkill);
         }
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
 }

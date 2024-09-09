@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.bean;
 
 import java.util.HashMap;
@@ -14,8 +13,8 @@ public class PlayerRest implements Serializable
     
     public PlayerRest() {
         this.partyPractice = new PartyPractice();
-        this.correction = new HashMap<Integer, Integer>();
-        this.party = new HashMap<Integer, Integer>();
+        this.correction = new HashMap();
+        this.party = new HashMap();
     }
     
     public PartyPractice getPartyPractice() {
@@ -50,47 +49,23 @@ public class PlayerRest implements Serializable
         if (!(o instanceof PlayerRest)) {
             return false;
         }
-        final PlayerRest other = (PlayerRest)o;
+        PlayerRest other = (PlayerRest)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$partyPractice = this.getPartyPractice();
-        final Object other$partyPractice = other.getPartyPractice();
-        Label_0065: {
-            if (this$partyPractice == null) {
-                if (other$partyPractice == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$partyPractice.equals(other$partyPractice)) {
-                break Label_0065;
-            }
+        Object this$partyPractice = this.getPartyPractice();
+        Object other$partyPractice = other.getPartyPractice();
+        if (!((this$partyPractice != null) ? this$partyPractice.equals(other$partyPractice) : (other$partyPractice == null))) {
             return false;
         }
-        final Object this$correction = this.getCorrection();
-        final Object other$correction = other.getCorrection();
-        Label_0102: {
-            if (this$correction == null) {
-                if (other$correction == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$correction.equals(other$correction)) {
-                break Label_0102;
-            }
+        Object this$correction = this.getCorrection();
+        Object other$correction = other.getCorrection();
+        if (!((this$correction != null) ? this$correction.equals(other$correction) : (other$correction == null))) {
             return false;
         }
-        final Object this$party = this.getParty();
-        final Object other$party = other.getParty();
-        if (this$party == null) {
-            if (other$party == null) {
-                return true;
-            }
-        }
-        else if (this$party.equals(other$party)) {
-            return true;
-        }
-        return false;
+        Object this$party = this.getParty();
+        Object other$party = other.getParty();
+        return (this$party != null) ? this$party.equals(other$party) : (other$party == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -99,13 +74,13 @@ public class PlayerRest implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $partyPractice = this.getPartyPractice();
+        Object $partyPractice = this.getPartyPractice();
         result = result * 59 + (($partyPractice == null) ? 43 : $partyPractice.hashCode());
-        final Object $correction = this.getCorrection();
+        Object $correction = this.getCorrection();
         result = result * 59 + (($correction == null) ? 43 : $correction.hashCode());
-        final Object $party = this.getParty();
+        Object $party = this.getParty();
         result = result * 59 + (($party == null) ? 43 : $party.hashCode());
         return result;
     }

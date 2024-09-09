@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.serializer.ipml;
 
 import com.kitty.common.model.Pos;
@@ -9,19 +8,22 @@ import com.kitty.system.game.player.serializer.IPlayerPropSerializer;
 
 public class PlayerPosSerializer implements IPlayerPropSerializer
 {
+    public PlayerPosSerializer() {
+    }
+    
     @Override
-    public void serialize(final Role player) {
+    public void serialize(Role player) {
         if (player.getPos() != null) {
-            final String posJson = JsonUtils.object2String(player.getPos());
+            String posJson = JsonUtils.object2String(player.getPos());
             player.setPosJson(posJson);
         }
     }
     
     @Override
-    public void deserialize(final Role player) {
-        final String json = player.getPosJson();
-        if (StringUtils.isNotEmpty((CharSequence)json)) {
-            player.setPos(JsonUtils.string2Object(json, Pos.class));
+    public void deserialize(Role player) {
+        String json = player.getPosJson();
+        if (StringUtils.isNotEmpty(json)) {
+            player.setPos((Pos)JsonUtils.string2Object(json, Pos.class));
         }
     }
 }

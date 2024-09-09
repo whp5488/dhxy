@@ -1,12 +1,11 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import com.kitty.system.game.enter.message.RespCombatOpponets;
 import com.kitty.system.game.enter.message.RespCombatFriends;
 import com.kitty.system.game.fightnew.messages.vo.FightMember;
 import com.kitty.system.game.role.domain.Role;
-import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.partner.domain.Partner;
+import com.kitty.mina.cache.DataCache;
 import java.util.Map;
 import com.kitty.system.game.pet.domain.Pet;
 import java.util.ArrayList;
@@ -26,18 +25,18 @@ public class TeamPkFight extends Fight
     private List<Member> listB;
     private static NutMap publicAutoSet;
     
-    public TeamPkFight(final List<Member> listA, final List<Member> listB) {
+    public TeamPkFight(List<Member> listA, List<Member> listB) {
         super(FIGHT_TYPE.PLAY.getValue());
         this.listA = listA;
         this.listB = listB;
-        FightExecutorNewService.FIGHTS.put(this.getId(), this);
+        FightExecutorNewService.FIGHTS.put(Integer.valueOf(this.getId()), this);
     }
     
-    public TeamPkFight(final int type, final List<Member> listA, final List<Member> listB) {
+    public TeamPkFight(int type, List<Member> listA, List<Member> listB) {
         super(type);
         this.listA = listA;
         this.listB = listB;
-        FightExecutorNewService.FIGHTS.put(this.getId(), this);
+        FightExecutorNewService.FIGHTS.put(Integer.valueOf(this.getId()), this);
     }
     
     @Override
@@ -48,12 +47,15 @@ public class TeamPkFight extends Fight
     
     @Override
     protected void notifyAndStart() {
-        this.sendToSide(Boolean.TRUE);
-        this.sendToSide(Boolean.FALSE);
-        SpringUtils.getBean(FightNewService.class).whileSendStart(this);
-        for (final FightObject fightObject : this.getAllFightObjects()) {
+        this.sendToSide((boolean)Boolean.TRUE);
+        this.sendToSide((boolean)Boolean.FALSE);
+        ((FightNewService)SpringUtils.getBean(FightNewService.class)).whileSendStart(this);
+        for (FightObject fightObject : this.getAllFightObjects()) {
             if (fightObject.isPlayer()) {
-                SpringUtils.getBean(FightNewService.class).autoFightOne(this, fightObject);
+                ((FightNewService)SpringUtils.getBean(FightNewService.class)).autoFightOne(this, fightObject);
+            }
+            else {
+                continue;
             }
         }
     }
@@ -63,7 +65,7 @@ public class TeamPkFight extends Fight
         return true;
     }
     
-    private void initRoleAndPetInfo(final boolean isA) {
+    private void initRoleAndPetInfo(boolean isA) {
         int index = 0;
         int petIndex = 5;
         List<FightObject> fightObjectList;
@@ -77,37 +79,37 @@ public class TeamPkFight extends Fight
             memberList = this.listB;
         }
         int customIndex = 0;
-        final List<Member> partners = new ArrayList<Member>();
-        for (final Member member : memberList) {
+        List<Member> partners = new ArrayList<>();
+        for (Member member : memberList) {
             if (!member.isInTeam()) {
                 continue;
             }
-            final Role teamRole = SpringUtils.getRoleService().getOnlinePlayer(member.getId());
+            Role teamRole = SpringUtils.getRoleService().getOnlinePlayer((long)member.getId());
             if (teamRole == null) {
                 partners.add(member);
             }
             else {
-                FightExecutorNewService.FIGHT_ROOMS.put(member.getRoleId(), this.getId());
-                SpringUtils.getBean(FightNewService.class).fullLifeRoleAndPet(this, teamRole);
+                FightExecutorNewService.FIGHT_ROOMS.put(member.getRoleId(), Integer.valueOf(this.getId()));
+                ((FightNewService)SpringUtils.getBean(FightNewService.class)).fullLifeRoleAndPet(this, teamRole);
                 this.fightNewService.checkAtFightStart(teamRole);
-                final FightObject fightObject = new PlayerFightObject(teamRole, index, customIndex, isA);
+                FightObject fightObject = new PlayerFightObject(teamRole, index, customIndex, isA);
                 fightObjectList.add(fightObject);
                 if (isA) {
-                    final FightMember fightMember = fightObject.asFightMember();
+                    FightMember fightMember = fightObject.asFightMember();
                     this.getFightMemberA().add(fightMember);
                 }
                 else {
-                    final FightMember fightMember = fightObject.asFightMember();
+                    FightMember fightMember = fightObject.asFightMember();
                     this.getFightMemberB().add(fightMember);
                 }
                 ++index;
                 ++customIndex;
-                final Pet pet = SpringUtils.getPetService().selectPet(teamRole).get(teamRole.getExtendBox().getCombatPet());
+                Pet pet = (Pet)SpringUtils.getPetService().selectPet(teamRole).get(teamRole.getExtendBox().getCombatPet());
                 if (pet != null) {
                     ++customIndex;
-                    final PetFightObject petFightObj = new PetFightObject(pet, fightObject);
+                    PetFightObject petFightObj = new PetFightObject(pet, fightObject);
                     fightObjectList.add(petFightObj);
-                    final FightMember petFightMember = petFightObj.asFightMember();
+                    FightMember petFightMember = petFightObj.asFightMember();
                     if (isA) {
                         this.getFightMemberA().add(petFightMember);
                     }
@@ -115,35 +117,35 @@ public class TeamPkFight extends Fight
                         this.getFightMemberB().add(petFightMember);
                     }
                     FightExecutorNewService.PETID_ROLEID.put(pet.getPetId(), member.getRoleId());
-                    FightExecutorNewService.FIGHT_ROOMS.put(pet.getPetId(), this.getId());
+                    FightExecutorNewService.FIGHT_ROOMS.put(pet.getPetId(), Integer.valueOf(this.getId()));
                 }
                 ++petIndex;
             }
         }
         if (partners.size() > 0) {
-            for (final Member member2 : partners) {
+            for (Member member2 : partners) {
                 if (!member2.isInTeam()) {
                     continue;
                 }
-                final Role teamRole2 = SpringUtils.getRoleService().getOnlinePlayer(member2.getRoleId());
+                Role teamRole2 = SpringUtils.getRoleService().getOnlinePlayer((int)member2.getRoleId());
                 if (teamRole2 == null) {
                     continue;
                 }
-                final Map<Integer, Partner> partnerMap = DataCache.PARTNER_MAP.get(teamRole2.getId());
+                Map<Integer, Partner> partnerMap = (Map)DataCache.PARTNER_MAP.get(teamRole2.getId());
                 if (partnerMap == null) {
                     continue;
                 }
                 if (partnerMap.size() <= 0) {
                     continue;
                 }
-                final Partner partner = partnerMap.get(member2.getSerial());
+                Partner partner = (Partner)partnerMap.get(member2.getSerial());
                 if (partner == null) {
                     continue;
                 }
-                final FightObject hostFightObject = this.queryFightObject(member2.getRoleId());
-                final FightObject partnerFightObject = new PartnerFightObject(partner, hostFightObject, index);
+                FightObject hostFightObject = this.queryFightObject(member2.getRoleId());
+                FightObject partnerFightObject = new PartnerFightObject(partner, hostFightObject, index);
                 fightObjectList.add(partnerFightObject);
-                final FightMember partnerFightMember = partnerFightObject.asFightMember();
+                FightMember partnerFightMember = partnerFightObject.asFightMember();
                 if (isA) {
                     this.getFightMemberA().add(partnerFightMember);
                 }
@@ -155,9 +157,9 @@ public class TeamPkFight extends Fight
         }
     }
     
-    private void sendToSide(final boolean isA) {
-        final RespCombatFriends respCombatFriends = new RespCombatFriends();
-        final RespCombatOpponets respCombatOpponets = new RespCombatOpponets();
+    private void sendToSide(boolean isA) {
+        RespCombatFriends respCombatFriends = new RespCombatFriends();
+        RespCombatOpponets respCombatOpponets = new RespCombatOpponets();
         List<Member> members;
         if (isA) {
             members = this.listA;
@@ -169,12 +171,12 @@ public class TeamPkFight extends Fight
             respCombatFriends.setList(this.getFightMemberB());
             respCombatOpponets.setList(this.getFightMemberA());
         }
-        SpringUtils.getBean(FightNewService.class).sendStartCombat(this, respCombatFriends, respCombatOpponets, members);
+        ((FightNewService)SpringUtils.getBean(FightNewService.class)).sendStartCombat(this, respCombatFriends, respCombatOpponets, members);
     }
     
     static {
-        (TeamPkFight.publicAutoSet = NutMap.NEW()).setv("type", 0);
-        TeamPkFight.publicAutoSet.setv("action", 1);
-        TeamPkFight.publicAutoSet.setv("skillId", 0);
+        (TeamPkFight.publicAutoSet = NutMap.NEW()).setv("type", Integer.valueOf(0));
+        TeamPkFight.publicAutoSet.setv("action", Integer.valueOf(1));
+        TeamPkFight.publicAutoSet.setv("skillId", Integer.valueOf(0));
     }
 }

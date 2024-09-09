@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.suit.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,7 +33,7 @@ public class RespSuitInfo extends Message
         if (!(o instanceof RespSuitInfo)) {
             return false;
         }
-        final RespSuitInfo other = (RespSuitInfo)o;
+        RespSuitInfo other = (RespSuitInfo)o;
         return other.canEqual(this) && this.getIs() == other.getIs() && this.getNum() == other.getNum();
     }
     
@@ -45,7 +43,7 @@ public class RespSuitInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getIs();
         result = result * 59 + this.getNum();
@@ -54,10 +52,9 @@ public class RespSuitInfo extends Message
     
     @Override
     public String toString() {
-        return "RespSuitInfo(is=" + this.getIs() + ", num=" + this.getNum() + ")";
+        return "RespSuitInfo(is=" + (int)this.getIs() + ", num=" + this.getNum() + ")";
     }
     
-    @ConstructorProperties({ "is", "num" })
     public RespSuitInfo(final byte is, final int num) {
         this.is = 0;
         this.num = 0;

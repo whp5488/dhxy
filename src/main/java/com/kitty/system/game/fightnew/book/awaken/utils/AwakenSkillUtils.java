@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.utils;
 
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_TYPE;
@@ -29,20 +28,23 @@ import com.kitty.system.game.fightnew.bean.Fight;
 
 public class AwakenSkillUtils
 {
-    public static void roundStart(final Fight fight, final FightObject fightObject) {
+    public AwakenSkillUtils() {
+    }
+    
+    public static void roundStart(Fight fight, FightObject fightObject) {
         if (fightObject != null && fightObject.isPet()) {
-            final PetFightObject petFightObject = (PetFightObject)fightObject;
-            final Role role = petFightObject.getRole();
-            final Pet pet = petFightObject.getPet();
-            final List<PetEquip> wearAcsrys = AcsryPetSkillUtil.getWearAcsrys(role, pet);
+            PetFightObject petFightObject = (PetFightObject)fightObject;
+            Role role = petFightObject.getRole();
+            Pet pet = petFightObject.getPet();
+            List<PetEquip> wearAcsrys = AcsryPetSkillUtil.getWearAcsrys(role, pet);
             if (wearAcsrys.size() >= 3) {
-                final SysPet sysPet = PetDataPool.petMap.get(pet.getPetType());
+                SysPet sysPet = (SysPet)PetDataPool.petMap.get(pet.getPetType());
                 if (sysPet != null) {
-                    final Integer jxSkill = sysPet.getJxSkill();
+                    Integer jxSkill = sysPet.getJxSkill();
                     if (jxSkill != null && AwakenSkillConst.getRoundStartSkills().contains(jxSkill)) {
-                        final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                        AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                         if (awakenSkillProcessor != null) {
-                            awakenSkillProcessor.roundStart(fight, petFightObject);
+                            awakenSkillProcessor.roundStart(fight, petFightObject, new Object[0]);
                         }
                     }
                 }
@@ -50,19 +52,19 @@ public class AwakenSkillUtils
         }
     }
     
-    public static NutMap addition(final Role role, final Pet pet) {
+    public static NutMap addition(Role role, Pet pet) {
         NutMap nutMap = additionSuit(role, pet);
         if (nutMap == null) {
             nutMap = NutMap.NEW();
         }
-        final NutMap nutMap2 = additionAwaken(role, pet);
+        NutMap nutMap2 = additionAwaken(role, pet);
         if (nutMap2 != null) {
-            for (final Map.Entry<String, Object> entry : nutMap2.entrySet()) {
-                if (nutMap.getDouble(entry.getKey()) != 0.0) {
-                    nutMap.setv(entry.getKey(), nutMap.getDouble(entry.getKey() + entry.getValue()));
+            for (Map.Entry<String, Object> entry : nutMap2.entrySet()) {
+                if (nutMap.getDouble((String)entry.getKey()) != 0.0) {
+                    nutMap.setv((String)entry.getKey(), Double.valueOf(nutMap.getDouble((String)entry.getKey()) + (double)entry.getValue()));
                 }
                 else {
-                    nutMap.setv(entry.getKey(), entry.getValue());
+                    nutMap.setv((String)entry.getKey(), entry.getValue());
                 }
             }
         }
@@ -72,16 +74,16 @@ public class AwakenSkillUtils
         return null;
     }
     
-    public static NutMap additionSuit(final Role role, final Pet pet) {
-        final List<PetEquip> wearAcsrys = AcsryPetSkillUtil.getWearAcsrys(role, pet);
+    public static NutMap additionSuit(Role role, Pet pet) {
+        List<PetEquip> wearAcsrys = AcsryPetSkillUtil.getWearAcsrys(role, pet);
         if (wearAcsrys.size() >= 3) {
-            final SysPet sysPet = PetDataPool.petMap.get(pet.getPetType());
+            SysPet sysPet = (SysPet)PetDataPool.petMap.get(pet.getPetType());
             if (sysPet != null) {
-                final Integer jxSkill = sysPet.getJxSkill();
+                Integer jxSkill = sysPet.getJxSkill();
                 if (jxSkill != null && AwakenSkillConst.getAdditionSkills().contains(jxSkill)) {
-                    final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                    AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                     if (awakenSkillProcessor != null) {
-                        final NutMap nutMap = awakenSkillProcessor.additionSuit(role, pet);
+                        NutMap nutMap = awakenSkillProcessor.additionSuit(role, pet, new Object[0]);
                         return nutMap;
                     }
                 }
@@ -90,16 +92,16 @@ public class AwakenSkillUtils
         return null;
     }
     
-    public static NutMap additionAwaken(final Role role, final Pet pet) {
-        final List<PetEquip> wearAcsrys = AcsryPetSkillUtil.getWearAcsrys(role, pet);
+    public static NutMap additionAwaken(Role role, Pet pet) {
+        List<PetEquip> wearAcsrys = AcsryPetSkillUtil.getWearAcsrys(role, pet);
         if (wearAcsrys.size() >= 3) {
-            final SysPet sysPet = PetDataPool.petMap.get(pet.getPetType());
+            SysPet sysPet = (SysPet)PetDataPool.petMap.get(pet.getPetType());
             if (sysPet != null) {
-                final Integer jxSkill = sysPet.getJxSkill();
+                Integer jxSkill = sysPet.getJxSkill();
                 if (jxSkill != null && AwakenSkillConst.getAdditionSkills().contains(jxSkill)) {
-                    final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                    AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                     if (awakenSkillProcessor != null && pet.getAwaken() > 0) {
-                        final NutMap nutMap = awakenSkillProcessor.additionAwaken(role, pet);
+                        NutMap nutMap = awakenSkillProcessor.additionAwaken(role, pet, new Object[0]);
                         return nutMap;
                     }
                 }
@@ -108,17 +110,17 @@ public class AwakenSkillUtils
         return null;
     }
     
-    public static double skillIntensifyDouble(final Fight fight, final FightObject effector, final int skillSerial, final FightObject target) {
+    public static double skillIntensifyDouble(Fight fight, FightObject effector, int skillSerial, FightObject target) {
         if (effector.isPet()) {
-            final Integer jxSkill = getJxSkill(effector);
-            if (jxSkill == null || skillSerial != jxSkill) {
+            Integer jxSkill = getJxSkill(effector);
+            if (jxSkill == null || skillSerial != (int)jxSkill) {
                 return 0.0;
             }
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(skillSerial);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(Integer.valueOf(skillSerial));
             if (awakenSkillProcessor != null) {
-                final NutMap nutMap = awakenSkillProcessor.skillIntensify(fight, (PetFightObject)effector, target);
+                NutMap nutMap = awakenSkillProcessor.skillIntensify(fight, (PetFightObject)effector, target);
                 if (nutMap != null) {
-                    final double value = nutMap.getDouble("percent");
+                    double value = nutMap.getDouble("percent");
                     if (value != 0.0) {
                         return value;
                     }
@@ -128,17 +130,17 @@ public class AwakenSkillUtils
         return 0.0;
     }
     
-    public static boolean skillIntensifyBoolean(final Fight fight, final FightObject effector, final int skillSerial) {
+    public static boolean skillIntensifyBoolean(Fight fight, FightObject effector, int skillSerial) {
         if (effector.isPet()) {
-            final Integer jxSkill = getJxSkill(effector);
-            if (jxSkill == null || skillSerial != jxSkill) {
+            Integer jxSkill = getJxSkill(effector);
+            if (jxSkill == null || skillSerial != (int)jxSkill) {
                 return false;
             }
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(skillSerial);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(Integer.valueOf(skillSerial));
             if (awakenSkillProcessor != null) {
-                final NutMap nutMap = awakenSkillProcessor.skillIntensify(fight, (PetFightObject)effector);
+                NutMap nutMap = awakenSkillProcessor.skillIntensify(fight, (PetFightObject)effector, new Object[0]);
                 if (nutMap != null) {
-                    final double value = nutMap.getDouble("percent");
+                    double value = nutMap.getDouble("percent");
                     if (value != 0.0) {
                         return SkillAi.canAffectOnPro(value);
                     }
@@ -148,24 +150,24 @@ public class AwakenSkillUtils
         return false;
     }
     
-    public static void skillIntensifyTM(final Fight fight, final FightObject effector, final int skillId, final List<Integer> excludeTargets) {
+    public static void skillIntensifyTM(Fight fight, FightObject effector, int skillId, List<Integer> excludeTargets) {
         if (effector.isPet()) {
-            final Integer jxSkill = getJxSkill(effector);
-            if (jxSkill == null || !AwakenSkillConst.getSkillIntensifyTMSkills().contains(skillId)) {
+            Integer jxSkill = getJxSkill(effector);
+            if (jxSkill == null || !AwakenSkillConst.getSkillIntensifyTMSkills().contains(Integer.valueOf(skillId))) {
                 return;
             }
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.skillIntensifyTM(fight, (PetFightObject)effector, skillId, excludeTargets);
+                awakenSkillProcessor.skillIntensifyTM(fight, (PetFightObject)effector, Integer.valueOf(skillId), excludeTargets);
             }
         }
     }
     
-    public static void magicAttackEnd(final Fight fight, final FightObject effector, final RoleSkill skill, final ActionDetailParam actionDetailParam, final List<MagicAttackParam> targets) {
+    public static void magicAttackEnd(Fight fight, FightObject effector, RoleSkill skill, ActionDetailParam actionDetailParam, List<MagicAttackParam> targets) {
         if (skill != null) {
-            final Integer jxSkill = getJxSkill(effector);
+            Integer jxSkill = getJxSkill(effector);
             if (jxSkill != null && AwakenSkillConst.getMagicAttackEndSkills().contains(jxSkill)) {
-                final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                 if (awakenSkillProcessor != null) {
                     awakenSkillProcessor.magicAttackEnd(fight, effector, skill, actionDetailParam, targets);
                 }
@@ -173,53 +175,53 @@ public class AwakenSkillUtils
         }
     }
     
-    public static void magicAttackEndOhter(final Fight fight, final FightObject effector, final RoleSkill skill, final List<MagicAttackParam> magicTargets) {
-        final Integer jxSkill = getJxSkill(effector);
+    public static void magicAttackEndOhter(Fight fight, FightObject effector, RoleSkill skill, List<MagicAttackParam> magicTargets) {
+        Integer jxSkill = getJxSkill(effector);
         if (jxSkill != null && AwakenSkillConst.getMagicAttackEndOtherSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
                 awakenSkillProcessor.magicAttackEndOther(fight, effector, skill, magicTargets);
             }
         }
     }
     
-    public static void beforePhysicalAttack(final Fight fight, final FightObject effector, final FightObject target) {
-        final Integer jxSkill = getJxSkill(effector);
+    public static void beforePhysicalAttack(Fight fight, FightObject effector, FightObject target) {
+        Integer jxSkill = getJxSkill(effector);
         if (jxSkill != null && AwakenSkillConst.getBeforePhysicalAttackSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.beforePhysicalAttack(fight, effector);
+                awakenSkillProcessor.beforePhysicalAttack(fight, effector, new Object[0]);
             }
         }
     }
     
-    public static void phyAttackEnd(final Fight fight, final FightObject effector, final BattleUnit battleUnit, final ActionDetailParam actionDetailParam) {
-        final Integer jxSkill = getJxSkill(effector);
+    public static void phyAttackEnd(Fight fight, FightObject effector, BattleUnit battleUnit, ActionDetailParam actionDetailParam) {
+        Integer jxSkill = getJxSkill(effector);
         if (jxSkill != null && AwakenSkillConst.getPhyAttackEndSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
                 awakenSkillProcessor.phyAttackEnd(fight, effector, battleUnit, actionDetailParam);
             }
         }
     }
     
-    public static void beforeDoAction(final Fight fight, final FightObject effector) {
-        final Integer jxSkill = getJxSkill(effector);
+    public static void beforeDoAction(Fight fight, FightObject effector) {
+        Integer jxSkill = getJxSkill(effector);
         if (jxSkill != null && AwakenSkillConst.getBeforeDoActionSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.beforeDoAction(fight, effector);
+                awakenSkillProcessor.beforeDoAction(fight, effector, new Object[0]);
             }
         }
         AWAKENSKILL_31516.clearStatus(fight, effector);
     }
     
-    public static boolean revive(final Fight fight, final FightObject effector) {
-        final Integer jxSkill = getJxSkill(effector);
+    public static boolean revive(Fight fight, FightObject effector) {
+        Integer jxSkill = getJxSkill(effector);
         if (jxSkill != null && AwakenSkillConst.getReviveSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                final NutMap map = awakenSkillProcessor.revive(fight, effector);
+                NutMap map = awakenSkillProcessor.revive(fight, effector, new Object[0]);
                 if (map != null && map.getBoolean("successful", false)) {
                     return true;
                 }
@@ -228,24 +230,25 @@ public class AwakenSkillUtils
         return false;
     }
     
-    public static NutMap isGuard(final Fight fight, final FightObject fightObject) {
+    public static NutMap isGuard(Fight fight, FightObject fightObject) {
         if (fightObject.isPlayer()) {
-            final List<FightObject> mySide = fight.getMySide(fightObject.getId());
+            List<FightObject> mySide = fight.getMySide((int)fightObject.getId());
             FightObject petFightObject = null;
-            for (final FightObject obj : mySide) {
-                if (obj.isPet() && obj.getHostId() == fightObject.getId()) {
+            for (FightObject obj : mySide) {
+                if (obj.isPet() && obj.getHostId() == (int)fightObject.getId()) {
                     petFightObject = obj;
                     break;
                 }
+                continue;
             }
             if (petFightObject != null) {
-                final Integer jxSkill = getJxSkill(petFightObject);
+                Integer jxSkill = getJxSkill(petFightObject);
                 if (jxSkill != null && AwakenSkillConst.getIsGuardSkills().contains(jxSkill)) {
-                    final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                    AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                     if (awakenSkillProcessor != null) {
-                        final double percent = awakenSkillProcessor.isGuard(fight, petFightObject);
+                        double percent = awakenSkillProcessor.isGuard(fight, petFightObject, new Object[0]);
                         if (percent > 0.0) {
-                            return NutMap.NEW().setv("percent", percent).setv("petFightObjectId", petFightObject.getId());
+                            return NutMap.NEW().setv("percent", Double.valueOf(percent)).setv("petFightObjectId", petFightObject.getId());
                         }
                     }
                 }
@@ -254,97 +257,103 @@ public class AwakenSkillUtils
         return null;
     }
     
-    public static NutMap countRecoverBloodEnd(final Fight fight, final FightObject fightObject, final RoleSkill skill, final int addLife) {
+    public static NutMap countRecoverBloodEnd(Fight fight, FightObject fightObject, RoleSkill skill, int addLife) {
         if (addLife > 0) {
-            final Integer jxSkill = getJxSkill(fightObject);
+            Integer jxSkill = getJxSkill(fightObject);
             if (jxSkill != null && AwakenSkillConst.getCountRecoverBloodEndSkills().contains(jxSkill)) {
-                final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                 if (awakenSkillProcessor != null) {
-                    awakenSkillProcessor.countRecoverBloodEnd(fight, fightObject, skill, addLife);
+                    awakenSkillProcessor.countRecoverBloodEnd(fight, fightObject, skill, Integer.valueOf(addLife));
                 }
             }
         }
         return null;
     }
     
-    public static void enteringSide(final Fight fight, final FightObject fightObject) {
-        final Integer jxSkill = getJxSkill(fightObject);
+    public static void enteringSide(Fight fight, FightObject fightObject) {
+        Integer jxSkill = getJxSkill(fightObject);
         if (jxSkill != null && jxSkill != null && AwakenSkillConst.getEnteringSideSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.enteringSide(fight, fightObject);
+                awakenSkillProcessor.enteringSide(fight, fightObject, new Object[0]);
             }
         }
     }
     
-    public static void sufferHarm(final Fight fight, final FightObject fightObject, final int hurt, final FightObject effector) {
+    public static void sufferHarm(Fight fight, FightObject fightObject, int hurt, FightObject effector) {
         if (fightObject == null || fightObject.isFallDown() || hurt <= 0) {
             return;
         }
-        final Integer jxSkill = getJxSkill(fightObject);
+        Integer jxSkill = getJxSkill(fightObject);
         if (jxSkill != null && AwakenSkillConst.getSufferHarmSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.sufferHarm(fight, fightObject, hurt, effector);
+                awakenSkillProcessor.sufferHarm(fight, fightObject, Integer.valueOf(hurt), effector);
             }
         }
+        return;
     }
     
-    public static void enterFight(final Fight fight, final FightObject fightObject) {
-        final Integer jxSkill = getJxSkill(fightObject);
+    public static void enterFight(Fight fight, FightObject fightObject) {
+        Integer jxSkill = getJxSkill(fightObject);
         if (jxSkill != null && AwakenSkillConst.getEnterFightSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.enterFight(fight, fightObject);
+                awakenSkillProcessor.enterFight(fight, fightObject, new Object[0]);
             }
         }
     }
     
-    public static void exitSide(final Fight fight, final FightObject fightObject) {
-        final Integer jxSkill = getJxSkill(fightObject);
+    public static void exitSide(Fight fight, FightObject fightObject) {
+        Integer jxSkill = getJxSkill(fightObject);
         if (jxSkill != null && AwakenSkillConst.getExitSideSkills().contains(jxSkill)) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.exitSide(fight, fightObject);
+                awakenSkillProcessor.exitSide(fight, fightObject, new Object[0]);
             }
         }
     }
     
-    public static void statusOver(final Fight fight, final FightObject fightObject, final int status) {
+    public static void statusOver(Fight fight, FightObject fightObject, int status) {
         if (2169 == status) {
-            final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(31514);
+            AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(Integer.valueOf(31514));
             if (awakenSkillProcessor != null) {
-                awakenSkillProcessor.statusOver(fight, fightObject, status);
+                awakenSkillProcessor.statusOver(fight, fightObject, Integer.valueOf(status));
             }
         }
     }
     
-    public static int changeHurt(final Fight fight, final FightObject effector, final FightObject target, final RoleSkill skill, final int index) {
-        if (effector.isPet() && (PETSKILLATTR.PETSKILLATTR_FIRE.getValue() == skill.getType() || PETSKILLATTR.PETSKILLATTR_WIND.getValue() == skill.getType() || PETSKILLATTR.PETSKILLATTR_THUNDER.getValue() == skill.getType() || PETSKILLATTR.PETSKILLATTR_WATER.getValue() == skill.getType())) {
-            final Integer jxSkill = getJxSkill(effector);
+    public static int changeHurt(Fight fight, FightObject effector, FightObject target, RoleSkill skill, int index) {
+        if (effector.isPet() && (PETSKILLATTR.PETSKILLATTR_FIRE.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_WIND.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_THUNDER.getValue() == (int)skill.getType() || PETSKILLATTR.PETSKILLATTR_WATER.getValue() == (int)skill.getType())) {
+            Integer jxSkill = getJxSkill(effector);
             if (jxSkill != null && AwakenSkillConst.getChangeHurtSkills().contains(jxSkill)) {
-                final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
                 if (awakenSkillProcessor != null) {
-                    return awakenSkillProcessor.changeHurt(fight, effector, target, index);
+                    return awakenSkillProcessor.changeHurt(fight, effector, target, Integer.valueOf(index));
                 }
             }
         }
         return 0;
     }
     
-    public static List<FiedValue> useDrug(final Fight fight, final FightObject effector, final FightObject target, final int showClass) {
-        final List<FightObject> mySide = fight.getMySide(target.getId());
+    public static List<FiedValue> useDrug(Fight fight, FightObject effector, FightObject target, int showClass) {
+        List<FightObject> mySide = fight.getMySide((int)target.getId());
         if (mySide != null && mySide.size() > 0) {
-            for (final FightObject obj : mySide) {
+            for (FightObject obj : mySide) {
                 if (obj.isPet() && !obj.getId().equals(target.getId())) {
-                    final Integer jxSkill = getJxSkill(obj);
-                    if (jxSkill == null || !AwakenSkillConst.getUseDrugSkills().contains(jxSkill)) {
+                    Integer jxSkill = getJxSkill(obj);
+                    if (jxSkill != null && AwakenSkillConst.getUseDrugSkills().contains(jxSkill)) {
+                        AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
+                        if (awakenSkillProcessor != null) {
+                            return awakenSkillProcessor.useDrug(fight, obj, target, Integer.valueOf(showClass));
+                        }
                         continue;
                     }
-                    final AwakenSkillProcessor awakenSkillProcessor = AwakenSkillProcessor.queryProcessor(jxSkill);
-                    if (awakenSkillProcessor != null) {
-                        return awakenSkillProcessor.useDrug(fight, obj, target, showClass);
+                    else {
+                        continue;
                     }
+                }
+                else {
                     continue;
                 }
             }
@@ -352,14 +361,14 @@ public class AwakenSkillUtils
         return null;
     }
     
-    public static int getAwakenSpeed(final Pet pet) {
-        final Role role = SpringUtils.getRoleService().getPlayer(pet.getRoleId());
+    public static int getAwakenSpeed(Pet pet) {
+        Role role = SpringUtils.getRoleService().getPlayer((int)pet.getRoleId());
         if (role == null) {
             return 0;
         }
-        final NutMap nutMap = additionAwaken(role, pet);
+        NutMap nutMap = additionAwaken(role, pet);
         if (nutMap != null) {
-            final int suitSpeed = nutMap.getInt(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()));
+            int suitSpeed = nutMap.getInt(String.valueOf(PRO_DICT_TYPE.SPEED.getDist()));
             if (suitSpeed > 0) {
                 return suitSpeed;
             }
@@ -367,22 +376,24 @@ public class AwakenSkillUtils
         return 0;
     }
     
-    private static Integer getJxSkill(final FightObject effector) {
-        if (!effector.isPet()) {
+    private static Integer getJxSkill(FightObject effector) {
+        if (effector.isPet()) {
+            Pet pet = effector.getPet();
+            if (pet == null) {
+                return null;
+            }
+            SysPet sysPet = (SysPet)PetDataPool.petMap.get(pet.getPetType());
+            if (sysPet == null) {
+                return null;
+            }
+            Integer jxSkill = sysPet.getJxSkill();
+            if (jxSkill == null || (int)jxSkill <= 0) {
+                return null;
+            }
+            return jxSkill;
+        }
+        else {
             return null;
         }
-        final Pet pet = effector.getPet();
-        if (pet == null) {
-            return null;
-        }
-        final SysPet sysPet = PetDataPool.petMap.get(pet.getPetType());
-        if (sysPet == null) {
-            return null;
-        }
-        final Integer jxSkill = sysPet.getJxSkill();
-        if (jxSkill == null || jxSkill <= 0) {
-            return null;
-        }
-        return jxSkill;
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.pojo.field;
 
 import java.util.ArrayList;
@@ -19,13 +18,13 @@ public class QlkRankingField extends RankingField
     private List<Integer> special_icon;
     private List<FiedValue> list;
     
-    public QlkRankingField(final QlkRankingSource obj, final int order, final byte serverId) {
+    public QlkRankingField(QlkRankingSource obj, int order, byte serverId) {
         super(order, serverId);
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = obj.getRoleId();
         this.roleName = obj.getRoleName();
         this.serial = obj.getSerial();
@@ -36,7 +35,7 @@ public class QlkRankingField extends RankingField
         this.list = obj.getList();
     }
     
-    public void setQlkValues(final int qlkValues) {
+    public void setQlkValues(int qlkValues) {
         this.qlkValues = qlkValues;
     }
     

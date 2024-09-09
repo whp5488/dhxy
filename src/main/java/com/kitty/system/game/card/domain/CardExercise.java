@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.card.domain;
 
 import com.kitty.common.db.DbCardExerciseService;
@@ -57,10 +56,10 @@ public class CardExercise extends BaseEntity<Long>
     
     @Override
     public Long getId() {
-        return this.id;
+        return Long.valueOf(this.id);
     }
     
-    public void setId(final long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
@@ -68,7 +67,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.rId;
     }
     
-    public void setrId(final long rId) {
+    public void setrId(long rId) {
         this.rId = rId;
     }
     
@@ -76,7 +75,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.fiveGrade;
     }
     
-    public void setFiveGrade(final int fiveGrade) {
+    public void setFiveGrade(int fiveGrade) {
         this.fiveGrade = fiveGrade;
     }
     
@@ -84,7 +83,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.goldGrade;
     }
     
-    public void setGoldGrade(final int goldGrade) {
+    public void setGoldGrade(int goldGrade) {
         this.goldGrade = goldGrade;
     }
     
@@ -92,7 +91,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.goldExp;
     }
     
-    public void setGoldExp(final int goldExp) {
+    public void setGoldExp(int goldExp) {
         this.goldExp = goldExp;
     }
     
@@ -100,7 +99,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.woodGrade;
     }
     
-    public void setWoodGrade(final int woodGrade) {
+    public void setWoodGrade(int woodGrade) {
         this.woodGrade = woodGrade;
     }
     
@@ -108,7 +107,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.woodExp;
     }
     
-    public void setWoodExp(final int woodExp) {
+    public void setWoodExp(int woodExp) {
         this.woodExp = woodExp;
     }
     
@@ -116,7 +115,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.waterGrade;
     }
     
-    public void setWaterGrade(final int waterGrade) {
+    public void setWaterGrade(int waterGrade) {
         this.waterGrade = waterGrade;
     }
     
@@ -124,7 +123,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.waterExp;
     }
     
-    public void setWaterExp(final int waterExp) {
+    public void setWaterExp(int waterExp) {
         this.waterExp = waterExp;
     }
     
@@ -132,7 +131,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.fireGrade;
     }
     
-    public void setFireGrade(final int fireGrade) {
+    public void setFireGrade(int fireGrade) {
         this.fireGrade = fireGrade;
     }
     
@@ -140,7 +139,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.fireExp;
     }
     
-    public void setFireExp(final int fireExp) {
+    public void setFireExp(int fireExp) {
         this.fireExp = fireExp;
     }
     
@@ -148,7 +147,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.soilGrade;
     }
     
-    public void setSoilGrade(final int soilGrade) {
+    public void setSoilGrade(int soilGrade) {
         this.soilGrade = soilGrade;
     }
     
@@ -156,7 +155,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.soilExp;
     }
     
-    public void setSoilExp(final int soilExp) {
+    public void setSoilExp(int soilExp) {
         this.soilExp = soilExp;
     }
     
@@ -164,7 +163,7 @@ public class CardExercise extends BaseEntity<Long>
         return this.useCount;
     }
     
-    public void setUseCount(final int useCount) {
+    public void setUseCount(int useCount) {
         this.useCount = useCount;
     }
     
@@ -183,7 +182,7 @@ public class CardExercise extends BaseEntity<Long>
         this.useCount = 100;
     }
     
-    public CardExercise(final long id, final long rId) {
+    public CardExercise(long id, long rId) {
         this.fiveGrade = 0;
         this.goldGrade = 0;
         this.goldExp = 0;
@@ -200,7 +199,7 @@ public class CardExercise extends BaseEntity<Long>
         this.rId = rId;
     }
     
-    public CardExercise(final long id, final long rId, final int fiveGrade, final int goldGrade, final int goldExp, final int woodGrade, final int woodExp, final int waterGrade, final int waterExp, final int fireGrade, final int fireExp, final int soilGrade, final int soilExp, final int useCount) {
+    public CardExercise(long id, long rId, int fiveGrade, int goldGrade, int goldExp, int woodGrade, int woodExp, int waterGrade, int waterExp, int fireGrade, int fireExp, int soilGrade, int soilExp, int useCount) {
         this.fiveGrade = 0;
         this.goldGrade = 0;
         this.goldExp = 0;

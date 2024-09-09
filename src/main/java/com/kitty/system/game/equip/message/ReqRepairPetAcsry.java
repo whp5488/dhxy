@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqRepairPetAcsry extends Message
 {
     private String id;
     private int num;
+    
+    public ReqRepairPetAcsry() {
+    }
     
     public String getId() {
         return this.id;
@@ -34,21 +36,13 @@ public class ReqRepairPetAcsry extends Message
         if (!(o instanceof ReqRepairPetAcsry)) {
             return false;
         }
-        final ReqRepairPetAcsry other = (ReqRepairPetAcsry)o;
+        ReqRepairPetAcsry other = (ReqRepairPetAcsry)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getNum() == other.getNum();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getNum() == other.getNum();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getNum() == other.getNum();
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,9 +51,9 @@ public class ReqRepairPetAcsry extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getNum();
         return result;

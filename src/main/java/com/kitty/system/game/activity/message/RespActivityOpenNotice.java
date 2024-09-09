@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -29,7 +28,7 @@ public class RespActivityOpenNotice extends Message
         if (!(o instanceof RespActivityOpenNotice)) {
             return false;
         }
-        final RespActivityOpenNotice other = (RespActivityOpenNotice)o;
+        RespActivityOpenNotice other = (RespActivityOpenNotice)o;
         return other.canEqual(this) && this.getType() == other.getType();
     }
     
@@ -39,7 +38,7 @@ public class RespActivityOpenNotice extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         return result;
@@ -47,6 +46,6 @@ public class RespActivityOpenNotice extends Message
     
     @Override
     public String toString() {
-        return "RespActivityOpenNotice(type=" + this.getType() + ")";
+        return "RespActivityOpenNotice(type=" + (int)this.getType() + ")";
     }
 }

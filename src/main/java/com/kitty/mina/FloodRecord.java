@@ -1,4 +1,3 @@
-
 package com.kitty.mina;
 
 public class FloodRecord
@@ -8,11 +7,14 @@ public class FloodRecord
     private int floodTimes;
     private long lastFloodTime;
     
+    public FloodRecord() {
+    }
+    
     public int getReceivedPacksLastSecond() {
         return this.receivedPacksLastSecond;
     }
     
-    public void setReceivedPacksLastSecond(final int receivedPacksLastSecond) {
+    public void setReceivedPacksLastSecond(int receivedPacksLastSecond) {
         this.receivedPacksLastSecond = receivedPacksLastSecond;
     }
     
@@ -24,7 +26,7 @@ public class FloodRecord
         return this.lastReceivedTime;
     }
     
-    public void setLastReceivedTime(final long lastReceivedTime) {
+    public void setLastReceivedTime(long lastReceivedTime) {
         this.lastReceivedTime = lastReceivedTime;
     }
     
@@ -32,7 +34,7 @@ public class FloodRecord
         return this.floodTimes;
     }
     
-    public void setFloodTimes(final int floodTimes) {
+    public void setFloodTimes(int floodTimes) {
         this.floodTimes = floodTimes;
     }
     
@@ -44,7 +46,7 @@ public class FloodRecord
         return this.lastFloodTime;
     }
     
-    public void setLastFloodTime(final long lastFloodTime) {
+    public void setLastFloodTime(long lastFloodTime) {
         this.lastFloodTime = lastFloodTime;
     }
 }

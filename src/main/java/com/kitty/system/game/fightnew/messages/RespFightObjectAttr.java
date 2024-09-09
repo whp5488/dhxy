@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages;
 
 import com.kitty.system.game.fightnew.messages.vo.FightObjectAttr;
@@ -10,6 +9,9 @@ import com.kitty.mina.message.Message;
 public class RespFightObjectAttr extends Message
 {
     private List<FightObjectAttr> list;
+    
+    public RespFightObjectAttr() {
+    }
     
     public List<FightObjectAttr> getList() {
         return this.list;

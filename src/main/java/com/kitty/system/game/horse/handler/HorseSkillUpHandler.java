@@ -1,12 +1,11 @@
-
 package com.kitty.system.game.horse.handler;
 
 import java.util.Iterator;
 import org.nutz.lang.util.NutMap;
 import java.util.IdentityHashMap;
+import java.text.MessageFormat;
 import com.kitty.common.utils.convert.MoneyUtil;
 import com.kitty.system.game.vo.utils.Const;
-import java.text.MessageFormat;
 import com.kitty.system.game.role.domain.Role;
 import com.kitty.system.game.horse.domain.Horse;
 import org.springframework.stereotype.Component;
@@ -20,28 +19,31 @@ public class HorseSkillUpHandler extends FeedHorseHandler
     private static final String LACK = "{0}数量不足";
     private static final String SUCCESS;
     
+    public HorseSkillUpHandler() {
+    }
+    
     @Override
-    public String acceptFeed(final Horse horse, final Role role, final short type, final byte operation, final Object... args) {
-        final int index = Integer.valueOf(String.valueOf(args[0])) - 1;
+    public String acceptFeed(Horse horse, Role role, short type, byte operation, Object... args) {
+        int index = (int)Integer.valueOf(String.valueOf(args[0])) - 1;
         if (index < 0 || index > 2) {
             return null;
         }
-        final IdentityHashMap<Integer, Long> map = horse.getSkill();
-        final Integer[] keys = map.keySet().toArray(new Integer[0]);
-        final Integer skill = keys[index];
+        IdentityHashMap<Integer, Long> map = horse.getSkill();
+        Integer[] keys = (Integer[])map.keySet().toArray(new Integer[0]);
+        Integer skill = keys[index];
         long exp = getSkillExp(map, skill, index);
         if (exp < 0L) {
             return null;
         }
-        final long limit = getProficiency(horse.getLevel());
+        long limit = getProficiency(horse.getLevel());
         if (exp >= limit) {
             return "技能熟练达到当前等级限制";
         }
         int serial = 75044;
         int num = 2;
         String name = "丹书密卷";
-        final NutMap consume = consume(exp);
-        final long coin = consume.getLong("coin", 0L);
+        NutMap consume = consume(exp);
+        long coin = consume.getLong("coin", 0L);
         if (coin <= 0L) {
             return null;
         }
@@ -54,40 +56,40 @@ public class HorseSkillUpHandler extends FeedHorseHandler
         if (num <= 0 || this.bagService.getBagGoods(role, serial, num) != null) {
             return MessageFormat.format("{0}数量不足", name);
         }
-        final boolean b = this.roleService.checkCurrency(role, Const.RESTYPE_COIN, coin);
+        boolean b = this.roleService.checkCurrency(role, Const.RESTYPE_COIN, coin);
         if (!b) {
             return null;
         }
-        final Integer integer = this.bagService.consumeBagGoods(role, serial, num, true, true, "坐骑技能升级");
+        Integer integer = this.bagService.consumeBagGoods(role, serial, num, true, true, "坐骑技能升级");
         if (integer != null) {
             return MessageFormat.format("{0}数量不足", name);
         }
-        final boolean currency = this.roleService.deductCurrency(role, Const.RESTYPE_COIN, coin, "HorseSkillUpHandler");
+        boolean currency = this.roleService.deductCurrency(role, Const.RESTYPE_COIN, coin, "HorseSkillUpHandler");
         if (!currency) {
-            this.logger.error("坐骑技能升级扣除货币失败，玩家编号 = {}", (Object)role.getRoleId());
+            this.logger.error("坐骑技能升级扣除货币失败，玩家编号 = {}", role.getRoleId());
             return null;
         }
         role.save();
         int i = 0;
-        for (final Integer key : map.keySet()) {
+        for (Integer key : map.keySet()) {
             if (i == index && key.equals(skill)) {
                 exp += 500L;
-                map.put(skill, (exp > limit) ? limit : exp);
+                map.put(skill, Long.valueOf((exp > limit) ? limit : exp));
                 break;
             }
             ++i;
         }
         horse.save();
         this.horseService.refresh(role, horse);
-        return MessageFormat.format(HorseSkillUpHandler.SUCCESS, name, num, MoneyUtil.colours(coin), 500L);
+        return MessageFormat.format(HorseSkillUpHandler.SUCCESS, name, Integer.valueOf(num), MoneyUtil.colours(Long.valueOf(coin)), Long.valueOf(500L));
     }
     
-    public static long getSkillExp(final IdentityHashMap<Integer, Long> map, final Integer serial, final int index) {
+    public static long getSkillExp(IdentityHashMap<Integer, Long> map, Integer serial, int index) {
         long exp = -1L;
         int i = 0;
-        for (final Integer key : map.keySet()) {
+        for (Integer key : map.keySet()) {
             if (key.equals(serial) && i == index) {
-                exp = map.get(key);
+                exp = (long)map.get(key);
                 break;
             }
             ++i;
@@ -95,7 +97,7 @@ public class HorseSkillUpHandler extends FeedHorseHandler
         return exp;
     }
     
-    public static long getProficiency(final short level) {
+    public static long getProficiency(short level) {
         if (level <= 10) {
             return 10000L;
         }
@@ -138,8 +140,8 @@ public class HorseSkillUpHandler extends FeedHorseHandler
         return -1L;
     }
     
-    public static NutMap consume(final long range) {
-        final NutMap nutMap = new NutMap();
+    public static NutMap consume(long range) {
+        NutMap nutMap = new NutMap();
         int count_dsmj = 0;
         int count_lgsm = 0;
         if (range >= 0L && range <= 9999L) {
@@ -193,10 +195,10 @@ public class HorseSkillUpHandler extends FeedHorseHandler
         else if (range >= 120000L && range <= 130000L) {
             count_dsmj = 65;
         }
-        final int coin = (int)(7510.0 + 19.0 * Math.pow((double)(range / 500L), 2.0) + range / 500L * 1392L);
-        nutMap.setv("coin", (Object)coin);
-        nutMap.setv("ds", (Object)count_dsmj);
-        nutMap.setv("lg", (Object)count_lgsm);
+        int coin = (int)(7510.0 + 19.0 * Math.pow((double)(range / 500L), 2.0) + (double)(range / 500L * 1392L));
+        nutMap.setv("coin", Integer.valueOf(coin));
+        nutMap.setv("ds", Integer.valueOf(count_dsmj));
+        nutMap.setv("lg", Integer.valueOf(count_lgsm));
         return nutMap;
     }
     

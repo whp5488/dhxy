@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.message;
 
 import com.kitty.system.game.welfare.domain.GiftsInfo;
@@ -17,7 +16,7 @@ public class RespPayBieGift extends Message
         return this.gifts;
     }
     
-    public void setGifts(final List<GiftsInfo> gifts) {
+    public void setGifts(List<GiftsInfo> gifts) {
         this.gifts = gifts;
     }
     
@@ -25,7 +24,7 @@ public class RespPayBieGift extends Message
         return this.total;
     }
     
-    public void setTotal(final String total) {
+    public void setTotal(String total) {
         this.total = total;
     }
     
@@ -33,11 +32,11 @@ public class RespPayBieGift extends Message
         return this.type;
     }
     
-    public void setType(final byte type) {
+    public void setType(byte type) {
         this.type = type;
     }
     
-    public RespPayBieGift(final List<GiftsInfo> gifts, final String total, final byte type) {
+    public RespPayBieGift(List<GiftsInfo> gifts, String total, byte type) {
         this.type = 0;
         this.gifts = gifts;
         this.total = total;

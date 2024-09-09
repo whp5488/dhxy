@@ -1,7 +1,6 @@
-
 package com.kitty.mina.task;
 
 public interface Distributable
 {
-    int distributeKey();
+    public abstract int distributeKey();
 }

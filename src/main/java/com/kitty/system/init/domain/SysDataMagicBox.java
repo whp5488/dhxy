@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -121,7 +120,7 @@ public class SysDataMagicBox implements Serializable
         if (!(o instanceof SysDataMagicBox)) {
             return false;
         }
-        final SysDataMagicBox other = (SysDataMagicBox)o;
+        SysDataMagicBox other = (SysDataMagicBox)o;
         return other.canEqual(this) && this.getIdentify() == other.getIdentify() && this.getAffiliation() == other.getAffiliation() && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && Double.compare(this.getRate(), other.getRate()) == 0 && this.getType() == other.getType() && this.getClassify() == other.getClassify() && this.getCertainly() == other.getCertainly() && this.getIsNotice() == other.getIsNotice() && this.getBd() == other.getBd();
     }
     
@@ -131,13 +130,13 @@ public class SysDataMagicBox implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getIdentify();
         result = result * 59 + this.getAffiliation();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNum();
-        final long $rate = Double.doubleToLongBits(this.getRate());
+        long $rate = Double.doubleToLongBits(this.getRate());
         result = result * 59 + (int)($rate >>> 32 ^ $rate);
         result = result * 59 + this.getType();
         result = result * 59 + this.getClassify();
@@ -149,6 +148,6 @@ public class SysDataMagicBox implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataMagicBox(identify=" + this.getIdentify() + ", affiliation=" + this.getAffiliation() + ", serial=" + this.getSerial() + ", num=" + this.getNum() + ", rate=" + this.getRate() + ", type=" + this.getType() + ", classify=" + this.getClassify() + ", certainly=" + this.getCertainly() + ", isNotice=" + this.getIsNotice() + ", bd=" + this.getBd() + ")";
+        return "SysDataMagicBox(identify=" + this.getIdentify() + ", affiliation=" + this.getAffiliation() + ", serial=" + this.getSerial() + ", num=" + (int)this.getNum() + ", rate=" + this.getRate() + ", type=" + (int)this.getType() + ", classify=" + (int)this.getClassify() + ", certainly=" + (int)this.getCertainly() + ", isNotice=" + (int)this.getIsNotice() + ", bd=" + this.getBd() + ")";
     }
 }

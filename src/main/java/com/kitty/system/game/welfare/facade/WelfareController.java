@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.welfare.facade;
 
 import com.kitty.system.game.welfare.message.ReqMagicBoxLotto;
@@ -29,7 +28,7 @@ public class WelfareController
     }
     
     @RequestMapping
-    public void luckDraw(final IoSession session, final ReqLuckDraw reqLuckDraw) {
+    public void luckDraw(IoSession session, ReqLuckDraw reqLuckDraw) {
         switch (reqLuckDraw.getClassify()) {
             case 1: {
                 this.welfareService.luckDraw(session, reqLuckDraw);
@@ -40,30 +39,30 @@ public class WelfareController
                 break;
             }
             default: {
-                this.logger.error("未处理功能==CODE:{}", (Object)reqLuckDraw.getClassify());
+                this.logger.error("未处理功能==CODE:{}", reqLuckDraw.getClassify());
                 break;
             }
         }
     }
     
     @RequestMapping
-    public void fiveGuess(final IoSession session, final ReqFiveGuess reqFiveGuess) {
+    public void fiveGuess(IoSession session, ReqFiveGuess reqFiveGuess) {
         this.welfareService.fiveGuess(session, reqFiveGuess);
     }
     
     @RequestMapping
-    public void fiveGuessReply(final IoSession session, final ReqFiveGuessReply reqFiveGuessReply) {
+    public void fiveGuessReply(IoSession session, ReqFiveGuessReply reqFiveGuessReply) {
         this.welfareService.fiveGuessReply(session, reqFiveGuessReply);
     }
     
     @RequestMapping
-    public void drawMoneyFiveGuess(final IoSession session, final ReqDrawMoneyFiveGuess drawMoneyFiveGuess) {
+    public void drawMoneyFiveGuess(IoSession session, ReqDrawMoneyFiveGuess drawMoneyFiveGuess) {
         this.welfareService.drawMoneyFiveGuess(session);
     }
     
     @RequestMapping
-    public void reqMagicBoxInfo(final IoSession session, final ReqMagicBoxInfo reqMagicBoxInfo) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqMagicBoxInfo(IoSession session, ReqMagicBoxInfo reqMagicBoxInfo) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
@@ -71,8 +70,8 @@ public class WelfareController
     }
     
     @RequestMapping
-    public void reqMagicBoxLotto(final IoSession session, final ReqMagicBoxLotto reqMagicBoxLotto) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void reqMagicBoxLotto(IoSession session, ReqMagicBoxLotto reqMagicBoxLotto) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }

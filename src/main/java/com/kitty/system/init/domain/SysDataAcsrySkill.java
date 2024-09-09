@@ -1,7 +1,5 @@
-
 package com.kitty.system.init.domain;
 
-import java.beans.ConstructorProperties;
 import org.nutz.dao.entity.annotation.Default;
 import java.util.List;
 import org.nutz.dao.entity.annotation.Column;
@@ -66,7 +64,6 @@ public class SysDataAcsrySkill
     public SysDataAcsrySkill() {
     }
     
-    @ConstructorProperties({ "serial", "name", "initiative", "triggerType", "forthwithType" })
     public SysDataAcsrySkill(final int serial, final int name, final int initiative, final List<String> triggerType, final List<Integer> forthwithType) {
         this.serial = serial;
         this.name = name;

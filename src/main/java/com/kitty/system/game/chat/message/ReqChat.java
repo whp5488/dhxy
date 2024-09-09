@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import com.kitty.system.game.chat.message.vo.ChatInfo;
@@ -14,6 +13,9 @@ public class ReqChat extends Message
     private List<ChatInfo> list;
     private String token;
     private String para;
+    
+    public ReqChat() {
+    }
     
     public int getType() {
         return this.type;
@@ -63,63 +65,31 @@ public class ReqChat extends Message
         if (!(o instanceof ReqChat)) {
             return false;
         }
-        final ReqChat other = (ReqChat)o;
+        ReqChat other = (ReqChat)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getType() != other.getType()) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        Label_0078: {
-            if (this$msg == null) {
-                if (other$msg == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$msg.equals(other$msg)) {
-                break Label_0078;
-            }
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        if (!((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        Label_0115: {
-            if (this$list == null) {
-                if (other$list == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$list.equals(other$list)) {
-                break Label_0115;
-            }
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        if (!((this$list != null) ? this$list.equals(other$list) : (other$list == null))) {
             return false;
         }
-        final Object this$token = this.getToken();
-        final Object other$token = other.getToken();
-        Label_0152: {
-            if (this$token == null) {
-                if (other$token == null) {
-                    break Label_0152;
-                }
-            }
-            else if (this$token.equals(other$token)) {
-                break Label_0152;
-            }
+        Object this$token = this.getToken();
+        Object other$token = other.getToken();
+        if (!((this$token != null) ? this$token.equals(other$token) : (other$token == null))) {
             return false;
         }
-        final Object this$para = this.getPara();
-        final Object other$para = other.getPara();
-        if (this$para == null) {
-            if (other$para == null) {
-                return true;
-            }
-        }
-        else if (this$para.equals(other$para)) {
-            return true;
-        }
-        return false;
+        Object this$para = this.getPara();
+        Object other$para = other.getPara();
+        return (this$para != null) ? this$para.equals(other$para) : (other$para == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -128,16 +98,16 @@ public class ReqChat extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
-        final Object $token = this.getToken();
+        Object $token = this.getToken();
         result = result * 59 + (($token == null) ? 43 : $token.hashCode());
-        final Object $para = this.getPara();
+        Object $para = this.getPara();
         result = result * 59 + (($para == null) ? 43 : $para.hashCode());
         return result;
     }

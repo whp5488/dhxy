@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import java.util.Arrays;
@@ -451,86 +450,38 @@ public class SysPet implements Serializable
         if (!(o instanceof SysPet)) {
             return false;
         }
-        final SysPet other = (SysPet)o;
+        SysPet other = (SysPet)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0102: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0102;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0139: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0139;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$skills = this.getSkills();
-        final Object other$skills = other.getSkills();
-        Label_0176: {
-            if (this$skills == null) {
-                if (other$skills == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$skills.equals(other$skills)) {
-                break Label_0176;
-            }
+        Object this$skills = this.getSkills();
+        Object other$skills = other.getSkills();
+        if (!((this$skills != null) ? this$skills.equals(other$skills) : (other$skills == null))) {
             return false;
         }
-        final Object this$levelType = this.getLevelType();
-        final Object other$levelType = other.getLevelType();
-        Label_0213: {
-            if (this$levelType == null) {
-                if (other$levelType == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$levelType.equals(other$levelType)) {
-                break Label_0213;
-            }
+        Object this$levelType = this.getLevelType();
+        Object other$levelType = other.getLevelType();
+        if (!((this$levelType != null) ? this$levelType.equals(other$levelType) : (other$levelType == null))) {
             return false;
         }
-        final Object this$shape = this.getShape();
-        final Object other$shape = other.getShape();
-        Label_0250: {
-            if (this$shape == null) {
-                if (other$shape == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$shape.equals(other$shape)) {
-                break Label_0250;
-            }
+        Object this$shape = this.getShape();
+        Object other$shape = other.getShape();
+        if (!((this$shape != null) ? this$shape.equals(other$shape) : (other$shape == null))) {
             return false;
         }
         if (Double.compare(this.getGrowUpH(), other.getGrowUpH()) != 0) {
@@ -542,368 +493,144 @@ public class SysPet implements Serializable
         if (!Arrays.equals(this.getWeight(), other.getWeight())) {
             return false;
         }
-        final Object this$hpMin = this.getHpMin();
-        final Object other$hpMin = other.getHpMin();
-        Label_0335: {
-            if (this$hpMin == null) {
-                if (other$hpMin == null) {
-                    break Label_0335;
-                }
-            }
-            else if (this$hpMin.equals(other$hpMin)) {
-                break Label_0335;
-            }
+        Object this$hpMin = this.getHpMin();
+        Object other$hpMin = other.getHpMin();
+        if (!((this$hpMin != null) ? this$hpMin.equals(other$hpMin) : (other$hpMin == null))) {
             return false;
         }
-        final Object this$hpMax = this.getHpMax();
-        final Object other$hpMax = other.getHpMax();
-        Label_0372: {
-            if (this$hpMax == null) {
-                if (other$hpMax == null) {
-                    break Label_0372;
-                }
-            }
-            else if (this$hpMax.equals(other$hpMax)) {
-                break Label_0372;
-            }
+        Object this$hpMax = this.getHpMax();
+        Object other$hpMax = other.getHpMax();
+        if (!((this$hpMax != null) ? this$hpMax.equals(other$hpMax) : (other$hpMax == null))) {
             return false;
         }
-        final Object this$mpMin = this.getMpMin();
-        final Object other$mpMin = other.getMpMin();
-        Label_0409: {
-            if (this$mpMin == null) {
-                if (other$mpMin == null) {
-                    break Label_0409;
-                }
-            }
-            else if (this$mpMin.equals(other$mpMin)) {
-                break Label_0409;
-            }
+        Object this$mpMin = this.getMpMin();
+        Object other$mpMin = other.getMpMin();
+        if (!((this$mpMin != null) ? this$mpMin.equals(other$mpMin) : (other$mpMin == null))) {
             return false;
         }
-        final Object this$mpMax = this.getMpMax();
-        final Object other$mpMax = other.getMpMax();
-        Label_0446: {
-            if (this$mpMax == null) {
-                if (other$mpMax == null) {
-                    break Label_0446;
-                }
-            }
-            else if (this$mpMax.equals(other$mpMax)) {
-                break Label_0446;
-            }
+        Object this$mpMax = this.getMpMax();
+        Object other$mpMax = other.getMpMax();
+        if (!((this$mpMax != null) ? this$mpMax.equals(other$mpMax) : (other$mpMax == null))) {
             return false;
         }
-        final Object this$apMin = this.getApMin();
-        final Object other$apMin = other.getApMin();
-        Label_0483: {
-            if (this$apMin == null) {
-                if (other$apMin == null) {
-                    break Label_0483;
-                }
-            }
-            else if (this$apMin.equals(other$apMin)) {
-                break Label_0483;
-            }
+        Object this$apMin = this.getApMin();
+        Object other$apMin = other.getApMin();
+        if (!((this$apMin != null) ? this$apMin.equals(other$apMin) : (other$apMin == null))) {
             return false;
         }
-        final Object this$apMax = this.getApMax();
-        final Object other$apMax = other.getApMax();
-        Label_0520: {
-            if (this$apMax == null) {
-                if (other$apMax == null) {
-                    break Label_0520;
-                }
-            }
-            else if (this$apMax.equals(other$apMax)) {
-                break Label_0520;
-            }
+        Object this$apMax = this.getApMax();
+        Object other$apMax = other.getApMax();
+        if (!((this$apMax != null) ? this$apMax.equals(other$apMax) : (other$apMax == null))) {
             return false;
         }
-        final Object this$spMin = this.getSpMin();
-        final Object other$spMin = other.getSpMin();
-        Label_0557: {
-            if (this$spMin == null) {
-                if (other$spMin == null) {
-                    break Label_0557;
-                }
-            }
-            else if (this$spMin.equals(other$spMin)) {
-                break Label_0557;
-            }
+        Object this$spMin = this.getSpMin();
+        Object other$spMin = other.getSpMin();
+        if (!((this$spMin != null) ? this$spMin.equals(other$spMin) : (other$spMin == null))) {
             return false;
         }
-        final Object this$spMax = this.getSpMax();
-        final Object other$spMax = other.getSpMax();
-        Label_0594: {
-            if (this$spMax == null) {
-                if (other$spMax == null) {
-                    break Label_0594;
-                }
-            }
-            else if (this$spMax.equals(other$spMax)) {
-                break Label_0594;
-            }
+        Object this$spMax = this.getSpMax();
+        Object other$spMax = other.getSpMax();
+        if (!((this$spMax != null) ? this$spMax.equals(other$spMax) : (other$spMax == null))) {
             return false;
         }
-        final Object this$wxJin = this.getWxJin();
-        final Object other$wxJin = other.getWxJin();
-        Label_0631: {
-            if (this$wxJin == null) {
-                if (other$wxJin == null) {
-                    break Label_0631;
-                }
-            }
-            else if (this$wxJin.equals(other$wxJin)) {
-                break Label_0631;
-            }
+        Object this$wxJin = this.getWxJin();
+        Object other$wxJin = other.getWxJin();
+        if (!((this$wxJin != null) ? this$wxJin.equals(other$wxJin) : (other$wxJin == null))) {
             return false;
         }
-        final Object this$wxMu = this.getWxMu();
-        final Object other$wxMu = other.getWxMu();
-        Label_0668: {
-            if (this$wxMu == null) {
-                if (other$wxMu == null) {
-                    break Label_0668;
-                }
-            }
-            else if (this$wxMu.equals(other$wxMu)) {
-                break Label_0668;
-            }
+        Object this$wxMu = this.getWxMu();
+        Object other$wxMu = other.getWxMu();
+        if (!((this$wxMu != null) ? this$wxMu.equals(other$wxMu) : (other$wxMu == null))) {
             return false;
         }
-        final Object this$wxShui = this.getWxShui();
-        final Object other$wxShui = other.getWxShui();
-        Label_0705: {
-            if (this$wxShui == null) {
-                if (other$wxShui == null) {
-                    break Label_0705;
-                }
-            }
-            else if (this$wxShui.equals(other$wxShui)) {
-                break Label_0705;
-            }
+        Object this$wxShui = this.getWxShui();
+        Object other$wxShui = other.getWxShui();
+        if (!((this$wxShui != null) ? this$wxShui.equals(other$wxShui) : (other$wxShui == null))) {
             return false;
         }
-        final Object this$wxHuo = this.getWxHuo();
-        final Object other$wxHuo = other.getWxHuo();
-        Label_0742: {
-            if (this$wxHuo == null) {
-                if (other$wxHuo == null) {
-                    break Label_0742;
-                }
-            }
-            else if (this$wxHuo.equals(other$wxHuo)) {
-                break Label_0742;
-            }
+        Object this$wxHuo = this.getWxHuo();
+        Object other$wxHuo = other.getWxHuo();
+        if (!((this$wxHuo != null) ? this$wxHuo.equals(other$wxHuo) : (other$wxHuo == null))) {
             return false;
         }
-        final Object this$wxTu = this.getWxTu();
-        final Object other$wxTu = other.getWxTu();
-        Label_0779: {
-            if (this$wxTu == null) {
-                if (other$wxTu == null) {
-                    break Label_0779;
-                }
-            }
-            else if (this$wxTu.equals(other$wxTu)) {
-                break Label_0779;
-            }
+        Object this$wxTu = this.getWxTu();
+        Object other$wxTu = other.getWxTu();
+        if (!((this$wxTu != null) ? this$wxTu.equals(other$wxTu) : (other$wxTu == null))) {
             return false;
         }
-        final Object this$skillNo = this.getSkillNo();
-        final Object other$skillNo = other.getSkillNo();
-        Label_0816: {
-            if (this$skillNo == null) {
-                if (other$skillNo == null) {
-                    break Label_0816;
-                }
-            }
-            else if (this$skillNo.equals(other$skillNo)) {
-                break Label_0816;
-            }
+        Object this$skillNo = this.getSkillNo();
+        Object other$skillNo = other.getSkillNo();
+        if (!((this$skillNo != null) ? this$skillNo.equals(other$skillNo) : (other$skillNo == null))) {
             return false;
         }
-        final Object this$petType = this.getPetType();
-        final Object other$petType = other.getPetType();
-        Label_0853: {
-            if (this$petType == null) {
-                if (other$petType == null) {
-                    break Label_0853;
-                }
-            }
-            else if (this$petType.equals(other$petType)) {
-                break Label_0853;
-            }
+        Object this$petType = this.getPetType();
+        Object other$petType = other.getPetType();
+        if (!((this$petType != null) ? this$petType.equals(other$petType) : (other$petType == null))) {
             return false;
         }
-        final Object this$adviceAddPro = this.getAdviceAddPro();
-        final Object other$adviceAddPro = other.getAdviceAddPro();
-        Label_0890: {
-            if (this$adviceAddPro == null) {
-                if (other$adviceAddPro == null) {
-                    break Label_0890;
-                }
-            }
-            else if (this$adviceAddPro.equals(other$adviceAddPro)) {
-                break Label_0890;
-            }
+        Object this$adviceAddPro = this.getAdviceAddPro();
+        Object other$adviceAddPro = other.getAdviceAddPro();
+        if (!((this$adviceAddPro != null) ? this$adviceAddPro.equals(other$adviceAddPro) : (other$adviceAddPro == null))) {
             return false;
         }
-        final Object this$openZs = this.getOpenZs();
-        final Object other$openZs = other.getOpenZs();
-        Label_0927: {
-            if (this$openZs == null) {
-                if (other$openZs == null) {
-                    break Label_0927;
-                }
-            }
-            else if (this$openZs.equals(other$openZs)) {
-                break Label_0927;
-            }
+        Object this$openZs = this.getOpenZs();
+        Object other$openZs = other.getOpenZs();
+        if (!((this$openZs != null) ? this$openZs.equals(other$openZs) : (other$openZs == null))) {
             return false;
         }
-        final Object this$openLv = this.getOpenLv();
-        final Object other$openLv = other.getOpenLv();
-        Label_0964: {
-            if (this$openLv == null) {
-                if (other$openLv == null) {
-                    break Label_0964;
-                }
-            }
-            else if (this$openLv.equals(other$openLv)) {
-                break Label_0964;
-            }
+        Object this$openLv = this.getOpenLv();
+        Object other$openLv = other.getOpenLv();
+        if (!((this$openLv != null) ? this$openLv.equals(other$openLv) : (other$openLv == null))) {
             return false;
         }
-        final Object this$needItem = this.getNeedItem();
-        final Object other$needItem = other.getNeedItem();
-        Label_1001: {
-            if (this$needItem == null) {
-                if (other$needItem == null) {
-                    break Label_1001;
-                }
-            }
-            else if (this$needItem.equals(other$needItem)) {
-                break Label_1001;
-            }
+        Object this$needItem = this.getNeedItem();
+        Object other$needItem = other.getNeedItem();
+        if (!((this$needItem != null) ? this$needItem.equals(other$needItem) : (other$needItem == null))) {
             return false;
         }
-        final Object this$canCompose = this.getCanCompose();
-        final Object other$canCompose = other.getCanCompose();
-        Label_1038: {
-            if (this$canCompose == null) {
-                if (other$canCompose == null) {
-                    break Label_1038;
-                }
-            }
-            else if (this$canCompose.equals(other$canCompose)) {
-                break Label_1038;
-            }
+        Object this$canCompose = this.getCanCompose();
+        Object other$canCompose = other.getCanCompose();
+        if (!((this$canCompose != null) ? this$canCompose.equals(other$canCompose) : (other$canCompose == null))) {
             return false;
         }
-        final Object this$catchRatio = this.getCatchRatio();
-        final Object other$catchRatio = other.getCatchRatio();
-        Label_1075: {
-            if (this$catchRatio == null) {
-                if (other$catchRatio == null) {
-                    break Label_1075;
-                }
-            }
-            else if (this$catchRatio.equals(other$catchRatio)) {
-                break Label_1075;
-            }
+        Object this$catchRatio = this.getCatchRatio();
+        Object other$catchRatio = other.getCatchRatio();
+        if (!((this$catchRatio != null) ? this$catchRatio.equals(other$catchRatio) : (other$catchRatio == null))) {
             return false;
         }
-        final Object this$catchMap = this.getCatchMap();
-        final Object other$catchMap = other.getCatchMap();
-        Label_1112: {
-            if (this$catchMap == null) {
-                if (other$catchMap == null) {
-                    break Label_1112;
-                }
-            }
-            else if (this$catchMap.equals(other$catchMap)) {
-                break Label_1112;
-            }
+        Object this$catchMap = this.getCatchMap();
+        Object other$catchMap = other.getCatchMap();
+        if (!((this$catchMap != null) ? this$catchMap.equals(other$catchMap) : (other$catchMap == null))) {
             return false;
         }
-        final Object this$pacc = this.getPacc();
-        final Object other$pacc = other.getPacc();
-        Label_1149: {
-            if (this$pacc == null) {
-                if (other$pacc == null) {
-                    break Label_1149;
-                }
-            }
-            else if (this$pacc.equals(other$pacc)) {
-                break Label_1149;
-            }
+        Object this$pacc = this.getPacc();
+        Object other$pacc = other.getPacc();
+        if (!((this$pacc != null) ? this$pacc.equals(other$pacc) : (other$pacc == null))) {
             return false;
         }
-        final Object this$staticInitVarScore = this.getStaticInitVarScore();
-        final Object other$staticInitVarScore = other.getStaticInitVarScore();
-        Label_1186: {
-            if (this$staticInitVarScore == null) {
-                if (other$staticInitVarScore == null) {
-                    break Label_1186;
-                }
-            }
-            else if (this$staticInitVarScore.equals(other$staticInitVarScore)) {
-                break Label_1186;
-            }
+        Object this$staticInitVarScore = this.getStaticInitVarScore();
+        Object other$staticInitVarScore = other.getStaticInitVarScore();
+        if (!((this$staticInitVarScore != null) ? this$staticInitVarScore.equals(other$staticInitVarScore) : (other$staticInitVarScore == null))) {
             return false;
         }
-        final Object this$color = this.getColor();
-        final Object other$color = other.getColor();
-        Label_1223: {
-            if (this$color == null) {
-                if (other$color == null) {
-                    break Label_1223;
-                }
-            }
-            else if (this$color.equals(other$color)) {
-                break Label_1223;
-            }
+        Object this$color = this.getColor();
+        Object other$color = other.getColor();
+        if (!((this$color != null) ? this$color.equals(other$color) : (other$color == null))) {
             return false;
         }
-        final Object this$jxSkill = this.getJxSkill();
-        final Object other$jxSkill = other.getJxSkill();
-        Label_1260: {
-            if (this$jxSkill == null) {
-                if (other$jxSkill == null) {
-                    break Label_1260;
-                }
-            }
-            else if (this$jxSkill.equals(other$jxSkill)) {
-                break Label_1260;
-            }
+        Object this$jxSkill = this.getJxSkill();
+        Object other$jxSkill = other.getJxSkill();
+        if (!((this$jxSkill != null) ? this$jxSkill.equals(other$jxSkill) : (other$jxSkill == null))) {
             return false;
         }
-        final Object this$accColor = this.getAccColor();
-        final Object other$accColor = other.getAccColor();
-        Label_1297: {
-            if (this$accColor == null) {
-                if (other$accColor == null) {
-                    break Label_1297;
-                }
-            }
-            else if (this$accColor.equals(other$accColor)) {
-                break Label_1297;
-            }
+        Object this$accColor = this.getAccColor();
+        Object other$accColor = other.getAccColor();
+        if (!((this$accColor != null) ? this$accColor.equals(other$accColor) : (other$accColor == null))) {
             return false;
         }
-        final Object this$brandNew = this.getBrandNew();
-        final Object other$brandNew = other.getBrandNew();
-        if (this$brandNew == null) {
-            if (other$brandNew == null) {
-                return this.getCanMerge() == other.getCanMerge();
-            }
-        }
-        else if (this$brandNew.equals(other$brandNew)) {
-            return this.getCanMerge() == other.getCanMerge();
-        }
-        return false;
+        Object this$brandNew = this.getBrandNew();
+        Object other$brandNew = other.getBrandNew();
+        return ((this$brandNew != null) ? this$brandNew.equals(other$brandNew) : (other$brandNew == null)) && this.getCanMerge() == other.getCanMerge();
     }
     
     protected boolean canEqual(final Object other) {
@@ -912,79 +639,79 @@ public class SysPet implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $skills = this.getSkills();
+        Object $skills = this.getSkills();
         result = result * 59 + (($skills == null) ? 43 : $skills.hashCode());
-        final Object $levelType = this.getLevelType();
+        Object $levelType = this.getLevelType();
         result = result * 59 + (($levelType == null) ? 43 : $levelType.hashCode());
-        final Object $shape = this.getShape();
+        Object $shape = this.getShape();
         result = result * 59 + (($shape == null) ? 43 : $shape.hashCode());
-        final long $growUpH = Double.doubleToLongBits(this.getGrowUpH());
+        long $growUpH = Double.doubleToLongBits(this.getGrowUpH());
         result = result * 59 + (int)($growUpH >>> 32 ^ $growUpH);
         result = result * 59 + Arrays.hashCode(this.getGrowthRate());
         result = result * 59 + Arrays.hashCode(this.getWeight());
-        final Object $hpMin = this.getHpMin();
+        Object $hpMin = this.getHpMin();
         result = result * 59 + (($hpMin == null) ? 43 : $hpMin.hashCode());
-        final Object $hpMax = this.getHpMax();
+        Object $hpMax = this.getHpMax();
         result = result * 59 + (($hpMax == null) ? 43 : $hpMax.hashCode());
-        final Object $mpMin = this.getMpMin();
+        Object $mpMin = this.getMpMin();
         result = result * 59 + (($mpMin == null) ? 43 : $mpMin.hashCode());
-        final Object $mpMax = this.getMpMax();
+        Object $mpMax = this.getMpMax();
         result = result * 59 + (($mpMax == null) ? 43 : $mpMax.hashCode());
-        final Object $apMin = this.getApMin();
+        Object $apMin = this.getApMin();
         result = result * 59 + (($apMin == null) ? 43 : $apMin.hashCode());
-        final Object $apMax = this.getApMax();
+        Object $apMax = this.getApMax();
         result = result * 59 + (($apMax == null) ? 43 : $apMax.hashCode());
-        final Object $spMin = this.getSpMin();
+        Object $spMin = this.getSpMin();
         result = result * 59 + (($spMin == null) ? 43 : $spMin.hashCode());
-        final Object $spMax = this.getSpMax();
+        Object $spMax = this.getSpMax();
         result = result * 59 + (($spMax == null) ? 43 : $spMax.hashCode());
-        final Object $wxJin = this.getWxJin();
+        Object $wxJin = this.getWxJin();
         result = result * 59 + (($wxJin == null) ? 43 : $wxJin.hashCode());
-        final Object $wxMu = this.getWxMu();
+        Object $wxMu = this.getWxMu();
         result = result * 59 + (($wxMu == null) ? 43 : $wxMu.hashCode());
-        final Object $wxShui = this.getWxShui();
+        Object $wxShui = this.getWxShui();
         result = result * 59 + (($wxShui == null) ? 43 : $wxShui.hashCode());
-        final Object $wxHuo = this.getWxHuo();
+        Object $wxHuo = this.getWxHuo();
         result = result * 59 + (($wxHuo == null) ? 43 : $wxHuo.hashCode());
-        final Object $wxTu = this.getWxTu();
+        Object $wxTu = this.getWxTu();
         result = result * 59 + (($wxTu == null) ? 43 : $wxTu.hashCode());
-        final Object $skillNo = this.getSkillNo();
+        Object $skillNo = this.getSkillNo();
         result = result * 59 + (($skillNo == null) ? 43 : $skillNo.hashCode());
-        final Object $petType = this.getPetType();
+        Object $petType = this.getPetType();
         result = result * 59 + (($petType == null) ? 43 : $petType.hashCode());
-        final Object $adviceAddPro = this.getAdviceAddPro();
+        Object $adviceAddPro = this.getAdviceAddPro();
         result = result * 59 + (($adviceAddPro == null) ? 43 : $adviceAddPro.hashCode());
-        final Object $openZs = this.getOpenZs();
+        Object $openZs = this.getOpenZs();
         result = result * 59 + (($openZs == null) ? 43 : $openZs.hashCode());
-        final Object $openLv = this.getOpenLv();
+        Object $openLv = this.getOpenLv();
         result = result * 59 + (($openLv == null) ? 43 : $openLv.hashCode());
-        final Object $needItem = this.getNeedItem();
+        Object $needItem = this.getNeedItem();
         result = result * 59 + (($needItem == null) ? 43 : $needItem.hashCode());
-        final Object $canCompose = this.getCanCompose();
+        Object $canCompose = this.getCanCompose();
         result = result * 59 + (($canCompose == null) ? 43 : $canCompose.hashCode());
-        final Object $catchRatio = this.getCatchRatio();
+        Object $catchRatio = this.getCatchRatio();
         result = result * 59 + (($catchRatio == null) ? 43 : $catchRatio.hashCode());
-        final Object $catchMap = this.getCatchMap();
+        Object $catchMap = this.getCatchMap();
         result = result * 59 + (($catchMap == null) ? 43 : $catchMap.hashCode());
-        final Object $pacc = this.getPacc();
+        Object $pacc = this.getPacc();
         result = result * 59 + (($pacc == null) ? 43 : $pacc.hashCode());
-        final Object $staticInitVarScore = this.getStaticInitVarScore();
+        Object $staticInitVarScore = this.getStaticInitVarScore();
         result = result * 59 + (($staticInitVarScore == null) ? 43 : $staticInitVarScore.hashCode());
-        final Object $color = this.getColor();
+        Object $color = this.getColor();
         result = result * 59 + (($color == null) ? 43 : $color.hashCode());
-        final Object $jxSkill = this.getJxSkill();
+        Object $jxSkill = this.getJxSkill();
         result = result * 59 + (($jxSkill == null) ? 43 : $jxSkill.hashCode());
-        final Object $accColor = this.getAccColor();
+        Object $accColor = this.getAccColor();
         result = result * 59 + (($accColor == null) ? 43 : $accColor.hashCode());
-        final Object $brandNew = this.getBrandNew();
+        Object $brandNew = this.getBrandNew();
         result = result * 59 + (($brandNew == null) ? 43 : $brandNew.hashCode());
         result = result * 59 + this.getCanMerge();
         return result;

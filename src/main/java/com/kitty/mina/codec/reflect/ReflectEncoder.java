@@ -1,4 +1,3 @@
-
 package com.kitty.mina.codec.reflect;
 
 import org.slf4j.LoggerFactory;
@@ -12,18 +11,21 @@ public class ReflectEncoder implements IMessageEncoder
 {
     private static Logger logger;
     
+    public ReflectEncoder() {
+    }
+    
     @Override
-    public byte[] writeMessageBody(final Message message) {
-        final IoBuffer out = IoBuffer.allocate(32).setAutoShrink(true).setAutoExpand(true);
+    public byte[] writeMessageBody(Message message) {
+        IoBuffer out = IoBuffer.allocate(32).setAutoShrink(true).setAutoExpand(true);
         try {
-            final Serializer messageCodec = Serializer.getSerializer(message.getClass());
+            Serializer messageCodec = Serializer.getSerializer(message.getClass());
             messageCodec.encode(out, message, null);
         }
-        catch (final Exception e) {
-            ReflectEncoder.logger.error("读取消息出错,模块号{}，类型{},异常{}", (Object)message.getModule(), (Object)e);
+        catch (Exception e) {
+            ReflectEncoder.logger.error("读取消息出错,模块号{}，类型{},异常{}", Integer.valueOf(message.getModule()), e);
         }
         out.flip();
-        final byte[] body = new byte[out.remaining()];
+        byte[] body = new byte[out.remaining()];
         out.get(body);
         return body;
     }

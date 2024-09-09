@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.team.message;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import com.kitty.system.game.team.domain.vo.SmartTeam;
 import java.util.List;
@@ -21,9 +19,8 @@ public class RespTeamList extends Message
         this.smartTeams = smartTeams;
     }
     
-    @ConstructorProperties({ "smartTeams" })
     public RespTeamList(final List<SmartTeam> smartTeams) {
-        this.smartTeams = new ArrayList<SmartTeam>();
+        this.smartTeams = new ArrayList<>();
         this.smartTeams = smartTeams;
     }
 }

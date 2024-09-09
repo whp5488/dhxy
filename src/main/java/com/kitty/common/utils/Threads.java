@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import org.slf4j.LoggerFactory;
@@ -13,14 +12,19 @@ public class Threads
 {
     private static final Logger logger;
     
-    public static void sleep(final long milliseconds) {
+    public Threads() {
+    }
+    
+    public static void sleep(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
         }
-        catch (final InterruptedException e) {}
+        catch (InterruptedException e) {
+            return;
+        }
     }
     
-    public static void shutdownAndAwaitTermination(final ExecutorService pool) {
+    public static void shutdownAndAwaitTermination(ExecutorService pool) {
         if (pool != null && !pool.isShutdown()) {
             pool.shutdown();
             try {
@@ -31,28 +35,28 @@ public class Threads
                     }
                 }
             }
-            catch (final InterruptedException ie) {
+            catch (InterruptedException ie) {
                 pool.shutdownNow();
                 Thread.currentThread().interrupt();
             }
         }
     }
     
-    public static void printException(final Runnable r, Throwable t) {
+    public static void printException(Runnable r, Throwable t) {
         if (t == null && r instanceof Future) {
             try {
-                final Future<?> future = (Future<?>)r;
+                Future<?> future = (Future)r;
                 if (future.isDone()) {
                     future.get();
                 }
             }
-            catch (final CancellationException ce) {
+            catch (CancellationException ce) {
                 t = ce;
             }
-            catch (final ExecutionException ee) {
+            catch (ExecutionException ee) {
                 t = ee.getCause();
             }
-            catch (final InterruptedException ie) {
+            catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
             }
         }

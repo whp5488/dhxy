@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.domain;
 
 import com.kitty.system.game.vo.Npc;
@@ -11,7 +10,7 @@ public class NpcButtonParam
     private String msg;
     private boolean auto;
     
-    public NpcButtonParam(final Role role, final Npc npc, final String msg, final boolean auto) {
+    public NpcButtonParam(Role role, Npc npc, String msg, boolean auto) {
         this.role = role;
         this.npc = npc;
         this.msg = msg;

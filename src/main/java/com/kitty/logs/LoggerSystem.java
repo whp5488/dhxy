@@ -1,4 +1,3 @@
-
 package com.kitty.logs;
 
 import org.slf4j.LoggerFactory;

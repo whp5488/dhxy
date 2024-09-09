@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.house.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -26,7 +24,7 @@ public class RespFurnitureStore extends Message
         if (!(o instanceof RespFurnitureStore)) {
             return false;
         }
-        final RespFurnitureStore other = (RespFurnitureStore)o;
+        RespFurnitureStore other = (RespFurnitureStore)o;
         return other.canEqual(this) && this.getIs() == other.getIs();
     }
     
@@ -36,7 +34,7 @@ public class RespFurnitureStore extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getIs();
         return result;
@@ -44,10 +42,9 @@ public class RespFurnitureStore extends Message
     
     @Override
     public String toString() {
-        return "RespFurnitureStore(is=" + this.getIs() + ")";
+        return "RespFurnitureStore(is=" + (int)this.getIs() + ")";
     }
     
-    @ConstructorProperties({ "is" })
     public RespFurnitureStore(final byte is) {
         this.is = is;
     }

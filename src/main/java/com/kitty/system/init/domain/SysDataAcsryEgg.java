@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -80,7 +79,7 @@ public class SysDataAcsryEgg
         if (!(o instanceof SysDataAcsryEgg)) {
             return false;
         }
-        final SysDataAcsryEgg other = (SysDataAcsryEgg)o;
+        SysDataAcsryEgg other = (SysDataAcsryEgg)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -90,17 +89,9 @@ public class SysDataAcsryEgg
         if (this.getHatchType() != other.getHatchType()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getCanMerge() == other.getCanMerge() && this.getRarity() == other.getRarity() && this.getShape() == other.getShape();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getCanMerge() == other.getCanMerge() && this.getRarity() == other.getRarity() && this.getShape() == other.getShape();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getCanMerge() == other.getCanMerge() && this.getRarity() == other.getRarity() && this.getShape() == other.getShape();
     }
     
     protected boolean canEqual(final Object other) {
@@ -109,11 +100,11 @@ public class SysDataAcsryEgg
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getHatchType();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getCanMerge();
         result = result * 59 + this.getRarity();

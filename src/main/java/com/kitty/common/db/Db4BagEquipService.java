@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import org.apache.commons.lang3.time.StopWatch;
@@ -28,7 +27,7 @@ public class Db4BagEquipService
     private final AtomicBoolean run;
     
     public Db4BagEquipService() {
-        this.queue = new BlockingUniqueQueue<BagEquip>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -38,11 +37,11 @@ public class Db4BagEquipService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-bag-equip-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-bag-equip-save-service").newThread(new Db4BagEquipService.Worker()).start();
         Db4BagEquipService.instance = this;
     }
     
-    public void add2Queue(final BagEquip entity) {
+    public void add2Queue(BagEquip entity) {
         this.queue.add(entity);
     }
     
@@ -50,13 +49,13 @@ public class Db4BagEquipService
         return this.queue.size();
     }
     
-    private void saveToDb(final BagEquip entity) {
+    private void saveToDb(BagEquip entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
-            this.dao.delete((Object)entity);
+            this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -66,14 +65,14 @@ public class Db4BagEquipService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[db4BagEquip] 执行全部命令后关闭");
+        LoggerUtils.error("[db4BagEquip] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<BagEquip> it = this.queue.iterator();
+            Iterator<BagEquip> it = this.queue.iterator();
             while (it.hasNext()) {
-                final BagEquip obj = it.next();
+                BagEquip obj = (BagEquip)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -85,19 +84,22 @@ public class Db4BagEquipService
         @Override
         public void run() {
             while (Db4BagEquipService.this.run.get()) {
+                BagEquip entity = null;
                 try {
-                    BagEquip entity = Db4BagEquipService.this.queue.take();
-                    final StopWatch stopWatch = new StopWatch();
+                    entity = (BagEquip)Db4BagEquipService.this.queue.take();
+                    StopWatch stopWatch = new StopWatch();
                     stopWatch.start();
                     Db4BagEquipService.this.saveToDb(entity);
                     stopWatch.stop();
-                    if (stopWatch.getTime() <= 500L) {
+                    if (stopWatch.getTime() > 500L) {
+                        LoggerUtils.info("背包装备数据持久化消耗毫秒：" + stopWatch.getTime(), new Object[0]);
+                        LoggerUtils.info("背包装备数据持久化队列长度：" + Db4BagEquipService.this.queue.size(), new Object[0]);
+                    }
+                    else {
                         continue;
                     }
-                    LoggerUtils.info("背包装备数据持久化消耗毫秒：" + stopWatch.getTime());
-                    LoggerUtils.info("背包装备数据持久化队列长度：" + Db4BagEquipService.this.queue.size());
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("装备存档异常", e);
                     e.printStackTrace();
                 }

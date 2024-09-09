@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import java.util.ArrayList;
@@ -16,52 +15,57 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_75122 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_75122() {
+    }
+    
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
-        if (SKILLATTR.SKILLATTR_WULI.getValue() == skill.getType() && effecter.isPlayer()) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 75122);
-            final double percent = 0.1;
-            final boolean flag = SkillAi.canAffectOnPro(percent);
+        if (SKILLATTR.SKILLATTR_WULI.getValue() == (int)skill.getType() && effecter.isPlayer()) {
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 75122);
+            double percent = 0.1;
+            boolean flag = SkillAi.canAffectOnPro(percent);
             if (flag && target.getStatusValue(1003) <= 0) {
-                final int round = 1;
+                int round = 1;
                 target.setStatus(1002, round);
-                final FightObjectParam targetParam = actionDetailParam.gainTargetParam(target.getId(), false);
+                FightObjectParam targetParam = actionDetailParam.gainTargetParam((int)target.getId(), false);
                 if (targetParam != null) {
-                    targetParam.getStatusMap().put(1002, round);
+                    targetParam.getStatusMap().put(Integer.valueOf(1002), Integer.valueOf(round));
                 }
-                final List<Integer> list = this.clearStatus(target, skill.getType());
+                List<Integer> list = this.clearStatus(target, (int)skill.getType());
                 if (list.size() > 0) {
-                    skillRecord.setT(target.getId());
+                    skillRecord.setT((long)(int)target.getId());
                     targetParam.addClearStatus(list);
                 }
             }
         }
+        return;
     }
     
-    public List<Integer> clearStatus(final FightObject target, final int skillType) {
-        final List<Integer> list = new ArrayList<Integer>();
+    public List<Integer> clearStatus(FightObject target, int skillType) {
+        List<Integer> list = new ArrayList<>();
         if (target.getStatusValue(1006) > 0) {
-            list.add(1006);
+            list.add(Integer.valueOf(1006));
             target.setStatus(1006, 0);
         }
         if (target.getStatusValue(1004) > 0) {
-            list.add(1004);
+            list.add(Integer.valueOf(1004));
             target.setStatus(1004, 0);
+            return list;
         }
         return list;
     }

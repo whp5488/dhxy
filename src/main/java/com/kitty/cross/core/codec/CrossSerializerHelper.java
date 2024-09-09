@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.codec;
 
 import com.kitty.mina.codec.reflect.ReflectEncoder;
@@ -12,6 +11,9 @@ public class CrossSerializerHelper
     private CrossMessageCodecFactory codecFactory;
     private IMessageDecoder decoder;
     private IMessageEncoder encoder;
+    
+    public CrossSerializerHelper() {
+    }
     
     public static CrossSerializerHelper getInstance() {
         if (CrossSerializerHelper.instance != null) {

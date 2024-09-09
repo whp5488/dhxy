@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.equip.domain.WearEquip;
 import com.kitty.system.game.equip.service.EquipService;
 import com.kitty.system.common.data.DataGlobalFunc;
@@ -29,22 +27,22 @@ public class QlkRankingSource implements Serializable
     private List<Integer> special_icon;
     private List<FiedValue> list;
     
-    public QlkRankingSource(final int roleId) {
+    public QlkRankingSource(int roleId) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = roleId;
     }
     
-    public QlkRankingSource(final Role role, final int[] qlkArrays) {
+    public QlkRankingSource(Role role, int[] qlkArrays) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
-        this.roleId = role.getRoleId();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
+        this.roleId = (int)role.getRoleId();
         this.qlkj = qlkArrays[0];
         this.qlkm = qlkArrays[1];
         this.qlks = qlkArrays[2];
@@ -53,14 +51,14 @@ public class QlkRankingSource implements Serializable
         this.rests(role);
     }
     
-    public void rests(final Role role) {
+    public void rests(Role role) {
         this.roleName = role.getName();
-        this.serial = role.getSerial();
-        this.race = role.getRace();
-        final EquipService equipService = SpringUtils.getEquipService();
+        this.serial = (int)role.getSerial();
+        this.race = (int)role.getRace();
+        EquipService equipService = SpringUtils.getEquipService();
         this.weapon = role.getWeaponIcon();
         this.light_effect = equipService.getWearEffect(role);
-        final List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
             this.gem = DataGlobalFunc.getWeaponGemNum(wearEquips);
         }
@@ -68,9 +66,9 @@ public class QlkRankingSource implements Serializable
     }
     
     @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof QlkRankingSource) {
-            final QlkRankingSource qlkRankingSource = (QlkRankingSource)obj;
+    public boolean equals(Object obj) {
+        if ((obj instanceof QlkRankingSource)) {
+            QlkRankingSource qlkRankingSource = (QlkRankingSource)obj;
             return this.roleId == qlkRankingSource.getRoleId();
         }
         return false;
@@ -79,7 +77,7 @@ public class QlkRankingSource implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
-        final int prime = 31;
+        int prime = 31;
         result = this.getRoleId() * prime;
         return result;
     }
@@ -196,13 +194,12 @@ public class QlkRankingSource implements Serializable
         this.list = list;
     }
     
-    @ConstructorProperties({ "roleId", "roleName", "race", "serial", "qlkj", "qlkm", "qlks", "qlkh", "qlkt", "weapon", "gem", "light_effect", "special_icon", "list" })
     public QlkRankingSource(final int roleId, final String roleName, final int race, final int serial, final int qlkj, final int qlkm, final int qlks, final int qlkh, final int qlkt, final int weapon, final int gem, final List<Integer> light_effect, final List<Integer> special_icon, final List<FiedValue> list) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = roleId;
         this.roleName = roleName;
         this.race = race;
@@ -222,8 +219,8 @@ public class QlkRankingSource implements Serializable
     public QlkRankingSource() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 }

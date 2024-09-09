@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import java.util.Arrays;
@@ -10,6 +9,9 @@ public class RespSyncMessage extends Message
 {
     private int code;
     private byte[] msg;
+    
+    public RespSyncMessage() {
+    }
     
     public int getCode() {
         return this.code;
@@ -35,7 +37,7 @@ public class RespSyncMessage extends Message
         if (!(o instanceof RespSyncMessage)) {
             return false;
         }
-        final RespSyncMessage other = (RespSyncMessage)o;
+        RespSyncMessage other = (RespSyncMessage)o;
         return other.canEqual(this) && this.getCode() == other.getCode() && Arrays.equals(this.getMsg(), other.getMsg());
     }
     
@@ -45,7 +47,7 @@ public class RespSyncMessage extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getCode();
         result = result * 59 + Arrays.hashCode(this.getMsg());

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqChangeColorPet extends Message
 {
     private int petId;
     private byte colorSerial;
+    
+    public ReqChangeColorPet() {
+    }
     
     public int getPetId() {
         return this.petId;
@@ -34,7 +36,7 @@ public class ReqChangeColorPet extends Message
         if (!(o instanceof ReqChangeColorPet)) {
             return false;
         }
-        final ReqChangeColorPet other = (ReqChangeColorPet)o;
+        ReqChangeColorPet other = (ReqChangeColorPet)o;
         return other.canEqual(this) && this.getPetId() == other.getPetId() && this.getColorSerial() == other.getColorSerial();
     }
     
@@ -44,7 +46,7 @@ public class ReqChangeColorPet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetId();
         result = result * 59 + this.getColorSerial();
@@ -53,6 +55,6 @@ public class ReqChangeColorPet extends Message
     
     @Override
     public String toString() {
-        return "ReqChangeColorPet(petId=" + this.getPetId() + ", colorSerial=" + this.getColorSerial() + ")";
+        return "ReqChangeColorPet(petId=" + this.getPetId() + ", colorSerial=" + (int)this.getColorSerial() + ")";
     }
 }

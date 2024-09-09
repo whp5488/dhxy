@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.messages;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqFightObjectAttr extends Message
 {
     private int fightId;
+    
+    public ReqFightObjectAttr() {
+    }
     
     public int getFightId() {
         return this.fightId;

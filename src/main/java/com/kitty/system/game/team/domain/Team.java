@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.domain;
 
 import java.util.Arrays;
@@ -25,8 +24,8 @@ public class Team
     private int maxLevel;
     private int maxRelive;
     
-    public boolean isLeader(final int roleId) {
-        return this.list != null && !this.list.isEmpty() && this.list.get(0) != null && this.list.get(0).getRoleId().equals(roleId);
+    public boolean isLeader(int roleId) {
+        return this.list != null && !this.list.isEmpty() && this.list.get(0) != null && ((Member)this.list.get(0)).getRoleId().equals(Integer.valueOf(roleId));
     }
     
     public int getLeaderRoleId() {
@@ -36,7 +35,7 @@ public class Team
         if (this.list.get(0) == null) {
             return 0;
         }
-        return this.list.get(0).getRoleId();
+        return (int)((Member)this.list.get(0)).getRoleId();
     }
     
     public long getLeaderUid() {
@@ -46,31 +45,31 @@ public class Team
         if (this.list.get(0) == null) {
             return 0L;
         }
-        return this.list.get(0).getId();
+        return (long)((Member)this.list.get(0)).getId();
     }
     
-    public Member getMember(final int roleId) {
-        for (int i = 0; i < this.list.size(); ++i) {
-            final Member member = this.list.get(i);
-            if (member != null && member.getRoleId().equals(roleId)) {
+    public Member getMember(int roleId) {
+        int i = 0;
+        while (i < this.list.size()) {
+            Member member = (Member)this.list.get(i);
+            if (member != null && member.getRoleId().equals(Integer.valueOf(roleId))) {
                 return member;
             }
+            ++i;
         }
         return null;
     }
     
     public String getMemberNames() {
-        final StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         if (this.list != null) {
             for (int i = 0; i < this.list.size(); ++i) {
-                final Member member = this.list.get(i);
-                if (member != null) {
-                    if (member.isInTeam()) {
-                        if (stringBuilder.length() > 0) {
-                            stringBuilder.append("、");
-                        }
-                        stringBuilder.append(member.getName());
+                Member member = (Member)this.list.get(i);
+                if (member != null && member.isInTeam()) {
+                    if (stringBuilder.length() > 0) {
+                        stringBuilder.append("、");
                     }
+                    stringBuilder.append(member.getName());
                 }
             }
         }
@@ -213,105 +212,49 @@ public class Team
         if (!(o instanceof Team)) {
             return false;
         }
-        final Team other = (Team)o;
+        Team other = (Team)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getId() != other.getId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$createTime = this.getCreateTime();
-        final Object other$createTime = other.getCreateTime();
-        Label_0115: {
-            if (this$createTime == null) {
-                if (other$createTime == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$createTime.equals(other$createTime)) {
-                break Label_0115;
-            }
+        Object this$createTime = this.getCreateTime();
+        Object other$createTime = other.getCreateTime();
+        if (!((this$createTime != null) ? this$createTime.equals(other$createTime) : (other$createTime == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        Label_0152: {
-            if (this$list == null) {
-                if (other$list == null) {
-                    break Label_0152;
-                }
-            }
-            else if (this$list.equals(other$list)) {
-                break Label_0152;
-            }
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        if (!((this$list != null) ? this$list.equals(other$list) : (other$list == null))) {
             return false;
         }
-        final Object this$partner = this.getPartner();
-        final Object other$partner = other.getPartner();
-        Label_0189: {
-            if (this$partner == null) {
-                if (other$partner == null) {
-                    break Label_0189;
-                }
-            }
-            else if (this$partner.equals(other$partner)) {
-                break Label_0189;
-            }
+        Object this$partner = this.getPartner();
+        Object other$partner = other.getPartner();
+        if (!((this$partner != null) ? this$partner.equals(other$partner) : (other$partner == null))) {
             return false;
         }
         if (this.getLastTeamId() != other.getLastTeamId()) {
             return false;
         }
-        final Object this$target = this.getTarget();
-        final Object other$target = other.getTarget();
-        Label_0239: {
-            if (this$target == null) {
-                if (other$target == null) {
-                    break Label_0239;
-                }
-            }
-            else if (this$target.equals(other$target)) {
-                break Label_0239;
-            }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (!((this$target != null) ? this$target.equals(other$target) : (other$target == null))) {
             return false;
         }
-        final Object this$msg = this.getMsg();
-        final Object other$msg = other.getMsg();
-        Label_0276: {
-            if (this$msg == null) {
-                if (other$msg == null) {
-                    break Label_0276;
-                }
-            }
-            else if (this$msg.equals(other$msg)) {
-                break Label_0276;
-            }
+        Object this$msg = this.getMsg();
+        Object other$msg = other.getMsg();
+        if (!((this$msg != null) ? this$msg.equals(other$msg) : (other$msg == null))) {
             return false;
         }
-        final Object this$fightLeaveNutMap = this.getFightLeaveNutMap();
-        final Object other$fightLeaveNutMap = other.getFightLeaveNutMap();
-        if (this$fightLeaveNutMap == null) {
-            if (other$fightLeaveNutMap == null) {
-                return Arrays.equals(this.getRaceLimit(), other.getRaceLimit()) && this.getSexLimit() == other.getSexLimit() && this.getMinLevel() == other.getMinLevel() && this.getMinRelive() == other.getMinRelive() && this.getMaxLevel() == other.getMaxLevel() && this.getMaxRelive() == other.getMaxRelive();
-            }
-        }
-        else if (this$fightLeaveNutMap.equals(other$fightLeaveNutMap)) {
-            return Arrays.equals(this.getRaceLimit(), other.getRaceLimit()) && this.getSexLimit() == other.getSexLimit() && this.getMinLevel() == other.getMinLevel() && this.getMinRelive() == other.getMinRelive() && this.getMaxLevel() == other.getMaxLevel() && this.getMaxRelive() == other.getMaxRelive();
-        }
-        return false;
+        Object this$fightLeaveNutMap = this.getFightLeaveNutMap();
+        Object other$fightLeaveNutMap = other.getFightLeaveNutMap();
+        return ((this$fightLeaveNutMap != null) ? this$fightLeaveNutMap.equals(other$fightLeaveNutMap) : (other$fightLeaveNutMap == null)) && Arrays.equals(this.getRaceLimit(), other.getRaceLimit()) && this.getSexLimit() == other.getSexLimit() && this.getMinLevel() == other.getMinLevel() && this.getMinRelive() == other.getMinRelive() && this.getMaxLevel() == other.getMaxLevel() && this.getMaxRelive() == other.getMaxRelive();
     }
     
     protected boolean canEqual(final Object other) {
@@ -320,23 +263,23 @@ public class Team
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $createTime = this.getCreateTime();
+        Object $createTime = this.getCreateTime();
         result = result * 59 + (($createTime == null) ? 43 : $createTime.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
-        final Object $partner = this.getPartner();
+        Object $partner = this.getPartner();
         result = result * 59 + (($partner == null) ? 43 : $partner.hashCode());
         result = result * 59 + this.getLastTeamId();
-        final Object $target = this.getTarget();
+        Object $target = this.getTarget();
         result = result * 59 + (($target == null) ? 43 : $target.hashCode());
-        final Object $msg = this.getMsg();
+        Object $msg = this.getMsg();
         result = result * 59 + (($msg == null) ? 43 : $msg.hashCode());
-        final Object $fightLeaveNutMap = this.getFightLeaveNutMap();
+        Object $fightLeaveNutMap = this.getFightLeaveNutMap();
         result = result * 59 + (($fightLeaveNutMap == null) ? 43 : $fightLeaveNutMap.hashCode());
         result = result * 59 + Arrays.hashCode(this.getRaceLimit());
         result = result * 59 + this.getSexLimit();

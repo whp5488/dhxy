@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.chat.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqChatObjectDetail extends Message
     private String id;
     private byte type;
     private int ownerRoleId;
+    
+    public ReqChatObjectDetail() {
+    }
     
     public String getId() {
         return this.id;
@@ -43,21 +45,13 @@ public class ReqChatObjectDetail extends Message
         if (!(o instanceof ReqChatObjectDetail)) {
             return false;
         }
-        final ReqChatObjectDetail other = (ReqChatObjectDetail)o;
+        ReqChatObjectDetail other = (ReqChatObjectDetail)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getType() == other.getType() && this.getOwnerRoleId() == other.getOwnerRoleId();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getType() == other.getType() && this.getOwnerRoleId() == other.getOwnerRoleId();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getType() == other.getType() && this.getOwnerRoleId() == other.getOwnerRoleId();
     }
     
     protected boolean canEqual(final Object other) {
@@ -66,9 +60,9 @@ public class ReqChatObjectDetail extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getType();
         result = result * 59 + this.getOwnerRoleId();
@@ -77,6 +71,6 @@ public class ReqChatObjectDetail extends Message
     
     @Override
     public String toString() {
-        return "ReqChatObjectDetail(id=" + this.getId() + ", type=" + this.getType() + ", ownerRoleId=" + this.getOwnerRoleId() + ")";
+        return "ReqChatObjectDetail(id=" + this.getId() + ", type=" + (int)this.getType() + ", ownerRoleId=" + this.getOwnerRoleId() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.common.mysql;
 
 import java.lang.annotation.Documented;
@@ -11,5 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface TargetDataSource {
-    String name();
+    public abstract String name();
 }

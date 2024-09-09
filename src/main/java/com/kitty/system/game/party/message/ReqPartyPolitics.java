@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -7,6 +6,9 @@ import com.kitty.mina.message.Message;
 @MessageMeta(module = 20534)
 public class ReqPartyPolitics extends Message
 {
+    public ReqPartyPolitics() {
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
@@ -15,7 +17,7 @@ public class ReqPartyPolitics extends Message
         if (!(o instanceof ReqPartyPolitics)) {
             return false;
         }
-        final ReqPartyPolitics other = (ReqPartyPolitics)o;
+        ReqPartyPolitics other = (ReqPartyPolitics)o;
         return other.canEqual(this);
     }
     
@@ -25,7 +27,7 @@ public class ReqPartyPolitics extends Message
     
     @Override
     public int hashCode() {
-        final int result = 1;
+        int result = 1;
         return result;
     }
     

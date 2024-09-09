@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.equip.message.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class EffectInfo implements Serializable
@@ -42,7 +40,7 @@ public class EffectInfo implements Serializable
         if (!(o instanceof EffectInfo)) {
             return false;
         }
-        final EffectInfo other = (EffectInfo)o;
+        EffectInfo other = (EffectInfo)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getState() == other.getState() && this.getTime() == other.getTime();
     }
     
@@ -52,7 +50,7 @@ public class EffectInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getState();
@@ -62,10 +60,9 @@ public class EffectInfo implements Serializable
     
     @Override
     public String toString() {
-        return "EffectInfo(serial=" + this.getSerial() + ", state=" + this.getState() + ", time=" + this.getTime() + ")";
+        return "EffectInfo(serial=" + this.getSerial() + ", state=" + (int)this.getState() + ", time=" + this.getTime() + ")";
     }
     
-    @ConstructorProperties({ "serial", "state", "time" })
     public EffectInfo(final int serial, final byte state, final int time) {
         this.serial = serial;
         this.state = state;

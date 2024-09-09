@@ -1,11 +1,8 @@
-
 package com.kitty.system.init.pool;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.Serializable;
-import java.util.Collection;
 import com.kitty.common.utils.JsonUtils;
 import com.kitty.common.utils.ZipUtil;
 import com.kitty.system.init.domain.vo.Move;
@@ -38,8 +35,11 @@ public class PartDataPool
     public static Map<String, SysCommonAward> commonAwardMap;
     public static Map<String, Tgroups> tgroupsMap;
     
+    public PartDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         PartDataPool.heroMap = initService.initHero();
         PartDataPool.reiEnMap = initService.initReiEn();
         PartDataPool.petExerciseMap = initService.initPetExercise();
@@ -47,39 +47,41 @@ public class PartDataPool
         PartDataPool.roleChangeColor = initService.initRoleChangeColor();
         PartDataPool.titleMap = initService.initTitle();
         initCanMove(initService.initCanMove());
-        final String[] split2;
-        final String[] split = split2 = SpringUtils.getBean(ServerService.class).getMarking().split(",");
-        for (final String s : split2) {
+        String[] split;
+        for (String s : split = ((ServerService)SpringUtils.getBean(ServerService.class)).getMarking().split(",")) {
             PartDataPool.MARKING.add(s);
         }
         PartDataPool.tgroupsMap = initService.initGroups();
         PartDataPool.commonAwardMap = initService.initCommonAward();
     }
     
-    public static void initCanMove(final List<SysCanMove> list) {
-        final RedisService redisService = SpringUtils.getBean(RedisService.class);
-        for (final SysCanMove sysCanMove : list) {
-            final Move move = new Move();
-            final String uncompress = ZipUtil.uncompress(sysCanMove.getCanMove());
-            final List<String> collection = JsonUtils.string2Collection(uncompress, List.class, String.class);
+    public static void initCanMove(List<SysCanMove> list) {
+        RedisService redisService = (RedisService)SpringUtils.getBean(RedisService.class);
+        for (SysCanMove sysCanMove : list) {
+            Move move = new Move();
+            String uncompress = ZipUtil.uncompress(sysCanMove.getCanMove());
+            List<String> collection = (List)JsonUtils.string2Collection(uncompress, List.class, String.class);
             move.getList().addAll(collection);
             redisService.set("move_" + sysCanMove.getSerial(), move, 0L);
             if (sysCanMove.getTab() <= 0) {
-                PartDataPool.can_move_map.add(sysCanMove.getSerial());
+                PartDataPool.can_move_map.add(Integer.valueOf(sysCanMove.getSerial()));
+            }
+            else {
+                continue;
             }
         }
     }
     
     static {
-        PartDataPool.MARKING = new ArrayList<String>();
-        PartDataPool.heroMap = new HashMap<Integer, SysHero>();
-        PartDataPool.reiEnMap = new HashMap<Integer, SysReiEn>();
-        PartDataPool.petExerciseMap = new HashMap<Integer, SysPetExercise>();
-        PartDataPool.rbAttrMap = new HashMap<Integer, SysRbAttr>();
-        PartDataPool.roleChangeColor = new HashMap<Integer, SysRoleChangeColor>();
-        PartDataPool.can_move_map = new ArrayList<Integer>();
-        PartDataPool.titleMap = new HashMap<Integer, SysDataTitle>();
-        PartDataPool.commonAwardMap = new HashMap<String, SysCommonAward>();
-        PartDataPool.tgroupsMap = new HashMap<String, Tgroups>();
+        PartDataPool.MARKING = new ArrayList<>();
+        PartDataPool.heroMap = new HashMap();
+        PartDataPool.reiEnMap = new HashMap();
+        PartDataPool.petExerciseMap = new HashMap();
+        PartDataPool.rbAttrMap = new HashMap();
+        PartDataPool.roleChangeColor = new HashMap();
+        PartDataPool.can_move_map = new ArrayList<>();
+        PartDataPool.titleMap = new HashMap();
+        PartDataPool.commonAwardMap = new HashMap();
+        PartDataPool.tgroupsMap = new HashMap();
     }
 }

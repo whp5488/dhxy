@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.mirror.service;
 
 import com.kitty.system.game.fightnew.factory.FightFactory;
@@ -31,58 +30,58 @@ public class FightMirrorService
         this.logger = LoggerFactory.getLogger(this.getClass());
     }
     
-    public FightMirror createFightMirror(final long id, final Role role) {
+    public FightMirror createFightMirror(long id, Role role) {
         return this.createFightMirror(id, role, 3);
     }
     
-    public FightMirror createFightMirror(final long id, final Role role, final int lifeRate) {
-        final FightMirror fightMirror = new FightMirror();
-        fightMirror.setId(id);
+    public FightMirror createFightMirror(long id, Role role, int lifeRate) {
+        FightMirror fightMirror = new FightMirror();
+        fightMirror.setId(Long.valueOf(id));
         fightMirror.setRoleMirror(this.createRoleMirror(role, lifeRate));
         fightMirror.setPetMirror(this.createPetMirror(role, lifeRate));
         return fightMirror;
     }
     
-    private RoleMirror createRoleMirror(final Role role, final int lifeRate) {
-        final RoleMirror roleMirror = new RoleMirror();
-        roleMirror.setId(role.getId());
+    private RoleMirror createRoleMirror(Role role, int lifeRate) {
+        RoleMirror roleMirror = new RoleMirror();
+        roleMirror.setId((long)role.getId());
         roleMirror.setName(role.getName());
-        roleMirror.setLevel(role.getLevel());
-        roleMirror.setMaxLife(role.getMaxLife() * lifeRate);
-        roleMirror.setMaxMana(role.getMaxMana());
+        roleMirror.setLevel((int)role.getLevel());
+        roleMirror.setMaxLife((int)role.getMaxLife() * lifeRate);
+        roleMirror.setMaxMana((int)role.getMaxMana());
         roleMirror.setIcon(role.getIcon());
         roleMirror.setWeaponIcon(role.getWeaponIcon());
         return roleMirror;
     }
     
-    private PetMirror createPetMirror(final Role role, final int lifeRate) {
-        final Map<Integer, Pet> petMap = this.petService.selectPet(role);
-        final Pet pet = petMap.get(role.getExtendBox().getBuyPetGrid());
-        final PetMirror petMirror = new PetMirror();
+    private PetMirror createPetMirror(Role role, int lifeRate) {
+        Map<Integer, Pet> petMap = this.petService.selectPet(role);
+        Pet pet = (Pet)petMap.get(Integer.valueOf(role.getExtendBox().getBuyPetGrid()));
+        PetMirror petMirror = new PetMirror();
         petMirror.setName(pet.getPetName());
-        petMirror.setIcon(pet.getShape());
-        petMirror.setLevel(pet.getPetLv());
-        petMirror.setSerial(pet.getPetType());
+        petMirror.setIcon((int)pet.getShape());
+        petMirror.setLevel((int)pet.getPetLv());
+        petMirror.setSerial((int)pet.getPetType());
         petMirror.setIntimacy(pet.getPetClose());
         petMirror.setSkillIds(pet.getSkills());
         return petMirror;
     }
     
-    public FightMirror getFightMirror(final long id) {
-        return DataCache.FIGHT_MIRRORS.get(id);
+    public FightMirror getFightMirror(long id) {
+        return (FightMirror)DataCache.FIGHT_MIRRORS.get(Long.valueOf(id));
     }
     
-    public void addFightMirror(final FightMirror fightMirror) {
+    public void addFightMirror(FightMirror fightMirror) {
     }
     
-    public void updateFightMirror(final FightMirror fightMirror) {
+    public void updateFightMirror(FightMirror fightMirror) {
     }
     
     public void loadFightMirrors() {
     }
     
-    public Fight startFight(final Role role, final MirrorFightParam mirrorFightParam) {
-        final FightNewService fightNewService = SpringUtils.getBean(FightNewService.class);
+    public Fight startFight(Role role, MirrorFightParam mirrorFightParam) {
+        FightNewService fightNewService = (FightNewService)SpringUtils.getBean(FightNewService.class);
         if (fightNewService.isInFight(role)) {
             return null;
         }
@@ -91,15 +90,15 @@ public class FightMirrorService
             return null;
         }
         synchronized (role.getCanFight()) {
-            if (!role.getCanFight()) {
+            if (!(boolean)role.getCanFight()) {
                 return null;
             }
-            role.setCanFight(false);
+            role.setCanFight(Boolean.valueOf(false));
         }
-        final byte fightType = mirrorFightParam.getFightType();
-        final int npcId = mirrorFightParam.getNpcId();
-        final FightMirror fightMirror = mirrorFightParam.getFightMirror();
-        final Fight fight = FightFactory.getFightFactory(fightType).create(0, role, fightType, npcId, (fightMirror != null) ? fightMirror : mirrorFightParam.getFightMirrorList());
+        byte fightType = mirrorFightParam.getFightType();
+        int npcId = mirrorFightParam.getNpcId();
+        FightMirror fightMirror = mirrorFightParam.getFightMirror();
+        Fight fight = FightFactory.getFightFactory((int)fightType).create(0, role, Byte.valueOf(fightType), Integer.valueOf(npcId), (fightMirror != null) ? fightMirror : mirrorFightParam.getFightMirrorList());
         fight.start();
         return fight;
     }

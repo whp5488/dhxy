@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.model.vo.PartyMemberObject;
@@ -50,7 +49,7 @@ public class RespPartyMembers extends Message
         if (!(o instanceof RespPartyMembers)) {
             return false;
         }
-        final RespPartyMembers other = (RespPartyMembers)o;
+        RespPartyMembers other = (RespPartyMembers)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -60,17 +59,9 @@ public class RespPartyMembers extends Message
         if (this.getTail() != other.getTail()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,17 +70,17 @@ public class RespPartyMembers extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPage();
         result = result * 59 + this.getTail();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespPartyMembers(page=" + this.getPage() + ", tail=" + this.getTail() + ", list=" + this.getList() + ")";
+        return "RespPartyMembers(page=" + (int)this.getPage() + ", tail=" + (int)this.getTail() + ", list=" + this.getList() + ")";
     }
 }

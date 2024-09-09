@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqAlterFriend extends Message
     private String id;
     private String remark;
     private int pal;
+    
+    public ReqAlterFriend() {
+    }
     
     public String getId() {
         return this.id;
@@ -43,34 +45,18 @@ public class ReqAlterFriend extends Message
         if (!(o instanceof ReqAlterFriend)) {
             return false;
         }
-        final ReqAlterFriend other = (ReqAlterFriend)o;
+        ReqAlterFriend other = (ReqAlterFriend)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$remark = this.getRemark();
-        final Object other$remark = other.getRemark();
-        if (this$remark == null) {
-            if (other$remark == null) {
-                return this.getPal() == other.getPal();
-            }
-        }
-        else if (this$remark.equals(other$remark)) {
-            return this.getPal() == other.getPal();
-        }
-        return false;
+        Object this$remark = this.getRemark();
+        Object other$remark = other.getRemark();
+        return ((this$remark != null) ? this$remark.equals(other$remark) : (other$remark == null)) && this.getPal() == other.getPal();
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,11 +65,11 @@ public class ReqAlterFriend extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $remark = this.getRemark();
+        Object $remark = this.getRemark();
         result = result * 59 + (($remark == null) ? 43 : $remark.hashCode());
         result = result * 59 + this.getPal();
         return result;

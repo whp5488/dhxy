@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.system.game.role.domain.RoleInfo;
@@ -59,24 +58,16 @@ public class RespExistedRoleList extends Message
         if (!(o instanceof RespExistedRoleList)) {
             return false;
         }
-        final RespExistedRoleList other = (RespExistedRoleList)o;
+        RespExistedRoleList other = (RespExistedRoleList)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getServerState() != other.getServerState()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return this.getOpenServerTime() == other.getOpenServerTime() && this.getAccount_online() == other.getAccount_online();
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return this.getOpenServerTime() == other.getOpenServerTime() && this.getAccount_online() == other.getAccount_online();
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return ((this$list != null) ? this$list.equals(other$list) : (other$list == null)) && this.getOpenServerTime() == other.getOpenServerTime() && this.getAccount_online() == other.getAccount_online();
     }
     
     protected boolean canEqual(final Object other) {
@@ -85,10 +76,10 @@ public class RespExistedRoleList extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getServerState();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getOpenServerTime();
         result = result * 59 + this.getAccount_online();

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.service;
 
 import com.kitty.logs.LoggerUtils;
@@ -20,7 +19,7 @@ public class FightExecutorNewService
     public static final ConcurrentHashMap<Integer, Integer> FIGHT_ROOMS;
     public static final ConcurrentHashMap<Integer, Fight> FIGHTS;
     public static final ConcurrentHashMap<Integer, Integer> PETID_ROLEID;
-    private final List<TaskWorker> workerPool;
+    private final List<FightExecutorNewService.TaskWorker> workerPool;
     private volatile boolean run;
     
     public FightExecutorNewService() {
@@ -31,16 +30,16 @@ public class FightExecutorNewService
     @PostConstruct
     private void init() {
         for (int size = 9, i = 1; i <= size; ++i) {
-            final TaskWorker worker = new TaskWorker(i);
+            FightExecutorNewService.TaskWorker worker = new FightExecutorNewService.TaskWorker(i);
             this.workerPool.add(worker);
             new NamedThreadFactory("game-fightnew_" + i).newThread(worker).start();
         }
     }
     
-    public void addFightTask(final Fight fight, final FightingTask task) {
-        final int size = this.workerPool.size();
-        final int index = fight.getId() % size;
-        this.workerPool.get(index).addTask(task);
+    public void addFightTask(Fight fight, FightingTask task) {
+        int size = this.workerPool.size();
+        int index = fight.getId() % size;
+        ((FightExecutorNewService.TaskWorker)this.workerPool.get(index)).addTask(task);
     }
     
     @PreDestroy
@@ -49,9 +48,9 @@ public class FightExecutorNewService
     }
     
     static {
-        FIGHT_ROOMS = new ConcurrentHashMap<>();
-        FIGHTS = new ConcurrentHashMap<>();
-        PETID_ROLEID = new ConcurrentHashMap<>();
+        FIGHT_ROOMS = new ConcurrentHashMap();
+        FIGHTS = new ConcurrentHashMap();
+        PETID_ROLEID = new ConcurrentHashMap();
     }
     
     private class TaskWorker implements Runnable
@@ -59,12 +58,12 @@ public class FightExecutorNewService
         private int id;
         private BlockingQueue<FightingTask> taskQueue;
         
-        TaskWorker(final int index) {
-            this.taskQueue = new LinkedBlockingQueue<FightingTask>();
+        TaskWorker(int index) {
+            this.taskQueue = new LinkedBlockingQueue();
             this.id = index;
         }
         
-        public void addTask(final FightingTask task) {
+        public void addTask(FightingTask task) {
             this.taskQueue.add(task);
         }
         
@@ -72,10 +71,10 @@ public class FightExecutorNewService
         public void run() {
             while (FightExecutorNewService.this.run) {
                 try {
-                    final FightingTask task = this.taskQueue.take();
+                    FightingTask task = (FightingTask)this.taskQueue.take();
                     task.run();
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("task Worker" + this.id, e);
                 }
             }

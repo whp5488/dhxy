@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.facade;
 
 import com.kitty.system.game.activity.handler.timing.ca.CaHandler;
@@ -31,70 +30,74 @@ public class TaskActivityController
     @Autowired
     ActivityService activityService;
     
+    public TaskActivityController() {
+    }
+    
     @EventHandler({ EventType.LOGOUT })
-    public void handleLogoutEvent(final LogoutEvent LogoutEvent) {
-        final Role role = LogoutEvent.getRole();
+    public void handleLogoutEvent(LogoutEvent LogoutEvent) {
+        Role role = LogoutEvent.getRole();
         this.activityService.handleLogout(role);
     }
     
     @EventHandler({ EventType.LOGIN })
-    public void handleLoginEvent(final LoginEvent loginEvent) {
-        final Role role = loginEvent.getRole();
+    public void handleLoginEvent(LoginEvent loginEvent) {
+        Role role = loginEvent.getRole();
         this.activityService.handleLogin(role);
     }
     
     @EventHandler({ EventType.ROLE_EXPIRE })
-    public void handleRoleExpireEvent(final RoleExpireEvent roleExpireEvent) {
-        final Role role = roleExpireEvent.getRole();
+    public void handleRoleExpireEvent(RoleExpireEvent roleExpireEvent) {
+        Role role = roleExpireEvent.getRole();
         this.activityService.handleRoleExpire(role);
     }
     
     @EventHandler({ EventType.TEAM_LEAVE })
-    public void handleTeamLeaveEvent(final TeamLeaveEvent teamLeaveEvent) {
-        final Role role = teamLeaveEvent.getRole();
+    public void handleTeamLeaveEvent(TeamLeaveEvent teamLeaveEvent) {
+        Role role = teamLeaveEvent.getRole();
         this.activityService.handleLeaveTeam(role, teamLeaveEvent.isLeader(), teamLeaveEvent.getTeam());
     }
     
     @EventHandler({ EventType.TEAM_LEAVE_MOMENT })
-    public void handleTeamLeaveMonmentEvent(final TeamLeaveMomentEvent teamLeaveMomentEvent) {
-        final Role role = teamLeaveMomentEvent.getRole();
+    public void handleTeamLeaveMonmentEvent(TeamLeaveMomentEvent teamLeaveMomentEvent) {
+        Role role = teamLeaveMomentEvent.getRole();
         this.activityService.handleTeamLeaveMoment(role);
     }
     
     @EventHandler({ EventType.TEAM_JOIN })
-    public void handleTeamJoinEvent(final TeamJoinEvent joinEvent) {
-        final Role role = joinEvent.getRole();
+    public void handleTeamJoinEvent(TeamJoinEvent joinEvent) {
+        Role role = joinEvent.getRole();
         this.activityService.handleTeamJoinEvent(role);
     }
     
     @EventHandler({ EventType.TEAM_CHANGE_LEADER })
-    public void handleTeamChangeLeaderEvent(final TeamChangeLeaderEvent teamChangeLeaderEvent) {
-        final Role role = teamChangeLeaderEvent.getRole();
+    public void handleTeamChangeLeaderEvent(TeamChangeLeaderEvent teamChangeLeaderEvent) {
+        Role role = teamChangeLeaderEvent.getRole();
         this.activityService.handleTeamChangeLeader(role, teamChangeLeaderEvent.getMemberList());
     }
     
     @EventHandler({ EventType.HEART_BEAT })
-    public void handleHeartBeat(final HeartBeatEvent heartBeatEvent) {
-        final Role role = heartBeatEvent.getRole();
+    public void handleHeartBeat(HeartBeatEvent heartBeatEvent) {
+        Role role = heartBeatEvent.getRole();
         if (role == null) {
             return;
         }
         this.activityService.handleHeartBeat(role, heartBeatEvent.getPrevHeartTime());
+        return;
     }
     
     @EventHandler({ EventType.FIGHT_END })
-    public void handleFightEndEvent(final FightEndEvent fightEndEvent) {
-        ThreadLocalUtil.addLocalTask(fightEndEvent.getRole(), () -> SpringUtils.getBean(TaskService.class).doFightEnd(fightEndEvent.getRole(), fightEndEvent));
+    public void handleFightEndEvent(FightEndEvent fightEndEvent) {
+        ThreadLocalUtil.addLocalTask(fightEndEvent.getRole(), () -> ((TaskService)SpringUtils.getBean(TaskService.class)).doFightEnd(fightEndEvent.getRole(), fightEndEvent));
         this.activityService.handleFightEnd(fightEndEvent);
     }
     
     @RequestMapping
-    public void waterInfo(final Role role, final ReqWaterInfo reqWaterInfo) {
-        SpringUtils.getBean(WaterHandler.class).waterInfo(role);
+    public void waterInfo(Role role, ReqWaterInfo reqWaterInfo) {
+        ((WaterHandler)SpringUtils.getBean(WaterHandler.class)).waterInfo(role);
     }
     
     @RequestMapping
-    public void caInfo(final Role role, final ReqCaInfo reqCaInfo) {
-        SpringUtils.getBean(CaHandler.class).caInfo(role);
+    public void caInfo(Role role, ReqCaInfo reqCaInfo) {
+        ((CaHandler)SpringUtils.getBean(CaHandler.class)).caInfo(role);
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.mina.task;
 
 public class CmdRecord implements Comparable<CmdRecord>
@@ -6,7 +5,7 @@ public class CmdRecord implements Comparable<CmdRecord>
     private int cmd;
     private int count;
     
-    public CmdRecord(final int cmd, final int count) {
+    public CmdRecord(int cmd, int count) {
         this.cmd = cmd;
         this.count = count;
     }
@@ -15,7 +14,7 @@ public class CmdRecord implements Comparable<CmdRecord>
         return this.cmd;
     }
     
-    public void setCmd(final int cmd) {
+    public void setCmd(int cmd) {
         this.cmd = cmd;
     }
     
@@ -23,7 +22,7 @@ public class CmdRecord implements Comparable<CmdRecord>
         return this.count;
     }
     
-    public void setCount(final int count) {
+    public void setCount(int count) {
         this.count = count;
     }
     
@@ -33,7 +32,7 @@ public class CmdRecord implements Comparable<CmdRecord>
     }
     
     @Override
-    public int compareTo(final CmdRecord o) {
+    public int compareTo(CmdRecord o) {
         if (this.count != o.getCount()) {
             return o.getCount() - this.count;
         }

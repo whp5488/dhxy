@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.concurrent.locks.Lock;
@@ -16,8 +15,8 @@ public class LimitedCacheMap<K, V>
     private ReentrantReadWriteLock.ReadLock readLock;
     private ReentrantReadWriteLock.WriteLock writeLock;
     
-    public LimitedCacheMap(final int capacity, final long aliveTime) {
-        this(capacity, aliveTime, Boolean.FALSE);
+    public LimitedCacheMap(int capacity, long aliveTime) {
+        this(capacity, aliveTime, (boolean)Boolean.FALSE);
     }
     
     public LimitedCacheMap(final int capacity, final long aliveTime, final boolean useLru) {
@@ -31,23 +30,23 @@ public class LimitedCacheMap<K, V>
             private static final long serialVersionUID = 1L;
             
             @Override
-            protected boolean removeEldestEntry(final Map.Entry<K, Element<V>> eldest) {
+            protected boolean removeEldestEntry(Map.Entry<K, Element<V>> eldest) {
                 if (this.size() > capacity) {
                     return true;
                 }
-                final long eleAliveTime = System.currentTimeMillis() - eldest.getValue().bornTime;
+                long eleAliveTime = System.currentTimeMillis() - ((Element)eldest.getValue()).bornTime;
                 return eleAliveTime > aliveTime;
             }
         };
     }
     
-    public V put(final K key, final V value) {
+    public V put(K key, V value) {
         V preValue = null;
-        final Element<V> newValue = new Element<V>(value);
+        Element<V> newValue = new Element(value);
         this.readLock.lock();
         try {
             if (this.data.containsKey(key)) {
-                preValue = (V)this.data.get(key).value;
+                preValue = ((Element<V>)this.data.get(key)).value;
             }
             this.data.put(key, newValue);
             return preValue;
@@ -57,12 +56,12 @@ public class LimitedCacheMap<K, V>
         }
     }
     
-    public V get(final K key) {
-        final Lock lock = this.useLru ? this.writeLock : this.readLock;
+    public V get(K key) {
+        Lock lock = this.useLru ? this.writeLock : this.readLock;
         Element<V> target = null;
         lock.lock();
         try {
-            target = this.data.get(key);
+            target = (Element)this.data.get(key);
             if (target == null) {
                 return null;
             }
@@ -70,7 +69,7 @@ public class LimitedCacheMap<K, V>
         finally {
             lock.unlock();
         }
-        final long eleAlive = System.currentTimeMillis() - target.bornTime;
+        long eleAlive = System.currentTimeMillis() - target.bornTime;
         if (eleAlive < this.aliveTime) {
             return target.value;
         }
@@ -88,7 +87,7 @@ public class LimitedCacheMap<K, V>
         }
     }
     
-    public void remove(final K key) {
+    public void remove(K key) {
         this.writeLock.lock();
         try {
             this.data.remove(key);
@@ -108,12 +107,12 @@ public class LimitedCacheMap<K, V>
         }
     }
     
-    public static void main(final String[] args) throws Exception {
-        final LimitedCacheMap<Integer, Integer> map = new LimitedCacheMap<Integer, Integer>(3, 1500L);
-        map.put(1, 1);
+    public static void main(String[] args) throws Exception {
+        LimitedCacheMap<Integer, Integer> map = new LimitedCacheMap(3, 1500L);
+        map.put(Integer.valueOf(1), Integer.valueOf(1));
         System.out.println("-----");
         Thread.sleep(1200L);
-        System.out.println(map.get(1));
+        System.out.println(map.get(Integer.valueOf(1)));
     }
     
     @Override
@@ -126,7 +125,7 @@ public class LimitedCacheMap<K, V>
         V value;
         long bornTime;
         
-        Element(final V v) {
+        Element(V v) {
             this.value = v;
             this.bornTime = System.currentTimeMillis();
         }

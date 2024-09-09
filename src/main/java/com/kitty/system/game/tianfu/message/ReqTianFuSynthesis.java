@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.tianfu.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqTianFuSynthesis extends Message
 {
     private short num;
+    
+    public ReqTianFuSynthesis() {
+    }
     
     public short getNum() {
         return this.num;
@@ -25,7 +27,7 @@ public class ReqTianFuSynthesis extends Message
         if (!(o instanceof ReqTianFuSynthesis)) {
             return false;
         }
-        final ReqTianFuSynthesis other = (ReqTianFuSynthesis)o;
+        ReqTianFuSynthesis other = (ReqTianFuSynthesis)o;
         return other.canEqual(this) && this.getNum() == other.getNum();
     }
     
@@ -35,7 +37,7 @@ public class ReqTianFuSynthesis extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getNum();
         return result;
@@ -43,6 +45,6 @@ public class ReqTianFuSynthesis extends Message
     
     @Override
     public String toString() {
-        return "ReqTianFuSynthesis(num=" + this.getNum() + ")";
+        return "ReqTianFuSynthesis(num=" + (int)this.getNum() + ")";
     }
 }

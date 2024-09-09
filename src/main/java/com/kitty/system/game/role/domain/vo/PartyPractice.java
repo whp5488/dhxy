@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.domain.vo;
 
 import java.io.Serializable;
@@ -37,7 +36,7 @@ public class PartyPractice implements Serializable
         if (!(o instanceof PartyPractice)) {
             return false;
         }
-        final PartyPractice other = (PartyPractice)o;
+        PartyPractice other = (PartyPractice)o;
         return other.canEqual(this) && this.getLevel() == other.getLevel() && this.getPoints() == other.getPoints();
     }
     
@@ -47,7 +46,7 @@ public class PartyPractice implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getPoints();

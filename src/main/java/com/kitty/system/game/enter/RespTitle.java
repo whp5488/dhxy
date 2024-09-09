@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class RespTitle extends Message
 {
     private int roleId;
     private byte param;
+    
+    public RespTitle() {
+    }
     
     public int getRoleId() {
         return this.roleId;
@@ -34,7 +36,7 @@ public class RespTitle extends Message
         if (!(o instanceof RespTitle)) {
             return false;
         }
-        final RespTitle other = (RespTitle)o;
+        RespTitle other = (RespTitle)o;
         return other.canEqual(this) && this.getRoleId() == other.getRoleId() && this.getParam() == other.getParam();
     }
     
@@ -44,7 +46,7 @@ public class RespTitle extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         result = result * 59 + this.getParam();
@@ -53,6 +55,6 @@ public class RespTitle extends Message
     
     @Override
     public String toString() {
-        return "RespTitle(roleId=" + this.getRoleId() + ", param=" + this.getParam() + ")";
+        return "RespTitle(roleId=" + this.getRoleId() + ", param=" + (int)this.getParam() + ")";
     }
 }

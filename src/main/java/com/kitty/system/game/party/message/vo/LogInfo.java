@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.party.message.vo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.StringField;
 import java.io.Serializable;
 
@@ -26,21 +24,13 @@ public class LogInfo implements Serializable
         if (!(o instanceof LogInfo)) {
             return false;
         }
-        final LogInfo other = (LogInfo)o;
+        LogInfo other = (LogInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$content = this.getContent();
-        final Object other$content = other.getContent();
-        if (this$content == null) {
-            if (other$content == null) {
-                return true;
-            }
-        }
-        else if (this$content.equals(other$content)) {
-            return true;
-        }
-        return false;
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        return (this$content != null) ? this$content.equals(other$content) : (other$content == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -49,9 +39,9 @@ public class LogInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $content = this.getContent();
+        Object $content = this.getContent();
         result = result * 59 + (($content == null) ? 43 : $content.hashCode());
         return result;
     }
@@ -64,7 +54,6 @@ public class LogInfo implements Serializable
     public LogInfo() {
     }
     
-    @ConstructorProperties({ "content" })
     public LogInfo(final String content) {
         this.content = content;
     }

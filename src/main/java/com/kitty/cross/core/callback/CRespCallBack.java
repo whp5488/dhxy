@@ -1,4 +1,3 @@
-
 package com.kitty.cross.core.callback;
 
 import com.kitty.common.utils.JsonUtils;
@@ -12,8 +11,11 @@ public class CRespCallBack extends Message
     private String data;
     private String msgClass;
     
-    public static CRespCallBack valueOf(final Message message) {
-        final CRespCallBack response = new CRespCallBack();
+    public CRespCallBack() {
+    }
+    
+    public static CRespCallBack valueOf(Message message) {
+        CRespCallBack response = new CRespCallBack();
         response.data = JsonUtils.object2String(message);
         response.msgClass = message.getClass().getName();
         return response;
@@ -23,7 +25,7 @@ public class CRespCallBack extends Message
         return this.index;
     }
     
-    public void setIndex(final int index) {
+    public void setIndex(int index) {
         this.index = index;
     }
     
@@ -31,7 +33,7 @@ public class CRespCallBack extends Message
         return this.data;
     }
     
-    public void setData(final String data) {
+    public void setData(String data) {
         this.data = data;
     }
     
@@ -39,7 +41,7 @@ public class CRespCallBack extends Message
         return this.msgClass;
     }
     
-    public void setMsgClass(final String msgClass) {
+    public void setMsgClass(String msgClass) {
         this.msgClass = msgClass;
     }
 }

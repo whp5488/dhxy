@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.confirm.model;
 
 import com.kitty.system.enums.confirm.ConfirmType;
@@ -12,7 +11,7 @@ public class LeaveTempTeamConfirm extends RoleConfirm
         return ConfirmType.LEAVE_TEMP_TEAM;
     }
     
-    public LeaveTempTeamConfirm(final int type) {
+    public LeaveTempTeamConfirm(int type) {
         this.type = -1;
         this.type = type;
     }
@@ -21,7 +20,7 @@ public class LeaveTempTeamConfirm extends RoleConfirm
         return this.type;
     }
     
-    public void setType(final int type) {
+    public void setType(int type) {
         this.type = type;
     }
 }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.book.horse.vo;
 
-import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 public class HorseSkillParam implements Serializable
@@ -43,7 +41,6 @@ public class HorseSkillParam implements Serializable
         return this.level;
     }
     
-    @ConstructorProperties({ "serial", "proficient", "growUp", "level" })
     public HorseSkillParam(final int serial, final long proficient, final int growUp, final short level) {
         this.serial = serial;
         this.proficient = proficient;

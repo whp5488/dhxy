@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.tianfu.controller;
 
 import com.kitty.system.game.tianfu.message.ReqTianFuWear;
@@ -26,9 +25,12 @@ public class RoleTianFuController
     @Autowired
     private RoleDayInCeService roleDayInCeService;
     
+    public RoleTianFuController() {
+    }
+    
     @RequestMapping
-    public void roleTianFu(final IoSession session, final ReqTianFu reqTianFu) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void roleTianFu(IoSession session, ReqTianFu reqTianFu) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
@@ -42,38 +44,40 @@ public class RoleTianFuController
                 break;
             }
         }
+        return;
     }
     
     @RequestMapping
-    public void roleTianFuSynthesis(final IoSession session, final ReqTianFuSynthesis reqTianFuSynthesis) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void roleTianFuSynthesis(IoSession session, ReqTianFuSynthesis reqTianFuSynthesis) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final Short num = reqTianFuSynthesis.getNum();
-        if (num == null || num <= 0) {
+        Short num = Short.valueOf(reqTianFuSynthesis.getNum());
+        if (num == null || (short)num <= 0) {
             return;
         }
         this.roleTianFuService.roleTianFuSynthesis(role, num);
+        return;
     }
     
     @RequestMapping
-    public void roleTianFuResolve(final IoSession session, final ReqTianFuResolve reqTianFuResolve) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void roleTianFuResolve(IoSession session, ReqTianFuResolve reqTianFuResolve) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final List<String> ids = reqTianFuResolve.getIds();
-        final List<Long> idList = new ArrayList<Long>();
+        List<String> ids = reqTianFuResolve.getIds();
+        List<Long> idList = new ArrayList<>();
         if (ids == null || ids.size() <= 0) {
             return;
         }
-        for (final String idStr : ids) {
+        for (String idStr : ids) {
             Long id;
             try {
-                id = Long.parseLong(idStr);
+                id = Long.valueOf(Long.parseLong(idStr));
             }
-            catch (final NumberFormatException e) {
+            catch (NumberFormatException e) {
                 continue;
             }
             idList.add(id);
@@ -81,44 +85,46 @@ public class RoleTianFuController
         if (idList.size() != ids.size()) {
             return;
         }
-        final Byte type = reqTianFuResolve.getType();
-        if (0 == type) {
+        Byte type = Byte.valueOf(reqTianFuResolve.getType());
+        if (0 == (byte)type) {
             this.roleTianFuService.roleTianFuResolve(role, idList);
         }
-        else if (1 == type) {
+        else if (1 == (byte)type) {
             this.roleTianFuService.roleTianFuIdentify(role, idList);
         }
+        return;
     }
     
     @RequestMapping
-    public void dayInCe(final IoSession session, final ReqDayInCeUpgrade reqDayInCeUpgrade) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void dayInCe(IoSession session, ReqDayInCeUpgrade reqDayInCeUpgrade) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final Integer addLevel = reqDayInCeUpgrade.getAddLevel();
-        if (addLevel == null || addLevel == 0) {
+        Integer addLevel = reqDayInCeUpgrade.getAddLevel();
+        if (addLevel == null || (int)addLevel == 0) {
             this.roleDayInCeService.getDayInCeLevel(role);
         }
-        else if (addLevel > 0) {
+        else if ((int)addLevel > 0) {
             this.roleDayInCeService.addDayInCeLevel(role, addLevel);
         }
-        else if (addLevel == -1) {
+        else if ((int)addLevel == -1) {
             this.roleDayInCeService.getAchievement(role);
         }
+        return;
     }
     
     @RequestMapping
-    public void tianFuWear(final IoSession session, final ReqTianFuWear reqTianFuWear) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void tianFuWear(IoSession session, ReqTianFuWear reqTianFuWear) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
-        final byte type = reqTianFuWear.getType();
+        byte type = reqTianFuWear.getType();
         if (1 != type && 0 != type) {
             return;
         }
-        final String tianFuIdStr = reqTianFuWear.getId();
+        String tianFuIdStr = reqTianFuWear.getId();
         if (tianFuIdStr == null || "".equals(tianFuIdStr)) {
             return;
         }
@@ -126,13 +132,14 @@ public class RoleTianFuController
         try {
             tianFuId = Long.parseLong(tianFuIdStr);
         }
-        catch (final NumberFormatException e) {
+        catch (NumberFormatException e) {
             System.err.println("佩戴/卸下天策符id整数转换错误");
         }
-        final short grid = reqTianFuWear.getGrid();
+        short grid = reqTianFuWear.getGrid();
         if (grid < 1) {
             return;
         }
-        this.roleDayInCeService.tianFuWear(role, type, tianFuId, grid);
+        this.roleDayInCeService.tianFuWear(role, type, tianFuId, (int)grid);
+        return;
     }
 }

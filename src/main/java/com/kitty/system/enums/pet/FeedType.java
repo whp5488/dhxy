@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.pet;
 
 public enum FeedType
@@ -23,7 +22,7 @@ public enum FeedType
     
     private String type;
     
-    private FeedType(final String type) {
+    private FeedType(String type) {
         this.type = type;
     }
     

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.model;
 
 import java.util.Collections;
@@ -12,7 +11,7 @@ public class ActionParam
     List<ActionDetailParam> actionDetailParams;
     
     public ActionParam() {
-        this.actionDetailParams = Collections.synchronizedList(new LinkedList<ActionDetailParam>());
+        this.actionDetailParams = Collections.synchronizedList(new LinkedList());
     }
     
     public int getFightRound() {

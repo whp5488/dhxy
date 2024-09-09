@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -18,6 +17,9 @@ public class SysSkillUpGradeConsume implements Serializable
     @Comment("多目标技能耗费")
     @Column("more")
     private Integer more;
+    
+    public SysSkillUpGradeConsume() {
+    }
     
     public Integer getGrade() {
         return this.grade;
@@ -51,47 +53,23 @@ public class SysSkillUpGradeConsume implements Serializable
         if (!(o instanceof SysSkillUpGradeConsume)) {
             return false;
         }
-        final SysSkillUpGradeConsume other = (SysSkillUpGradeConsume)o;
+        SysSkillUpGradeConsume other = (SysSkillUpGradeConsume)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$grade = this.getGrade();
-        final Object other$grade = other.getGrade();
-        Label_0065: {
-            if (this$grade == null) {
-                if (other$grade == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$grade.equals(other$grade)) {
-                break Label_0065;
-            }
+        Object this$grade = this.getGrade();
+        Object other$grade = other.getGrade();
+        if (!((this$grade != null) ? this$grade.equals(other$grade) : (other$grade == null))) {
             return false;
         }
-        final Object this$alone = this.getAlone();
-        final Object other$alone = other.getAlone();
-        Label_0102: {
-            if (this$alone == null) {
-                if (other$alone == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$alone.equals(other$alone)) {
-                break Label_0102;
-            }
+        Object this$alone = this.getAlone();
+        Object other$alone = other.getAlone();
+        if (!((this$alone != null) ? this$alone.equals(other$alone) : (other$alone == null))) {
             return false;
         }
-        final Object this$more = this.getMore();
-        final Object other$more = other.getMore();
-        if (this$more == null) {
-            if (other$more == null) {
-                return true;
-            }
-        }
-        else if (this$more.equals(other$more)) {
-            return true;
-        }
-        return false;
+        Object this$more = this.getMore();
+        Object other$more = other.getMore();
+        return (this$more != null) ? this$more.equals(other$more) : (other$more == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -100,13 +78,13 @@ public class SysSkillUpGradeConsume implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $grade = this.getGrade();
+        Object $grade = this.getGrade();
         result = result * 59 + (($grade == null) ? 43 : $grade.hashCode());
-        final Object $alone = this.getAlone();
+        Object $alone = this.getAlone();
         result = result * 59 + (($alone == null) ? 43 : $alone.hashCode());
-        final Object $more = this.getMore();
+        Object $more = this.getMore();
         result = result * 59 + (($more == null) ? 43 : $more.hashCode());
         return result;
     }

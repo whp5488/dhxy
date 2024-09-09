@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.wars.vo;
 
 import java.io.Serializable;
@@ -12,7 +11,7 @@ public class GangWarsInfo implements Serializable
     private int enemy;
     private byte combatResults;
     
-    public GangWarsInfo(final byte stance, final int visible, final int grade, final int enemy) {
+    public GangWarsInfo(byte stance, int visible, int grade, int enemy) {
         this.gateLife = 5000;
         this.grade = 1;
         this.combatResults = 3;
@@ -22,7 +21,7 @@ public class GangWarsInfo implements Serializable
         this.enemy = enemy;
     }
     
-    public GangWarsInfo(final short gateLife, final byte stance, final int visible, final int grade, final int enemy) {
+    public GangWarsInfo(short gateLife, byte stance, int visible, int grade, int enemy) {
         this.gateLife = 5000;
         this.grade = 1;
         this.combatResults = 3;
@@ -89,7 +88,7 @@ public class GangWarsInfo implements Serializable
         if (!(o instanceof GangWarsInfo)) {
             return false;
         }
-        final GangWarsInfo other = (GangWarsInfo)o;
+        GangWarsInfo other = (GangWarsInfo)o;
         return other.canEqual(this) && this.getGateLife() == other.getGateLife() && this.getStance() == other.getStance() && this.getVisible() == other.getVisible() && this.getGrade() == other.getGrade() && this.getEnemy() == other.getEnemy() && this.getCombatResults() == other.getCombatResults();
     }
     
@@ -99,7 +98,7 @@ public class GangWarsInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getGateLife();
         result = result * 59 + this.getStance();
@@ -112,7 +111,7 @@ public class GangWarsInfo implements Serializable
     
     @Override
     public String toString() {
-        return "GangWarsInfo(gateLife=" + this.getGateLife() + ", stance=" + this.getStance() + ", visible=" + this.getVisible() + ", grade=" + this.getGrade() + ", enemy=" + this.getEnemy() + ", combatResults=" + this.getCombatResults() + ")";
+        return "GangWarsInfo(gateLife=" + (int)this.getGateLife() + ", stance=" + (int)this.getStance() + ", visible=" + this.getVisible() + ", grade=" + this.getGrade() + ", enemy=" + this.getEnemy() + ", combatResults=" + (int)this.getCombatResults() + ")";
     }
     
     public GangWarsInfo() {

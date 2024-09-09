@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.store.service;
 
 import com.kitty.system.game.role.domain.Goods;
@@ -7,11 +6,8 @@ import com.kitty.system.common.enter.FiedValue;
 import com.kitty.system.game.equip.domain.EquipEasy;
 import com.kitty.system.game.bag.message.RespFlyInfo;
 import com.kitty.system.game.player.bean.PlayerExtendBox;
-import java.util.Collection;
 import java.util.Collections;
 import com.kitty.system.game.vo.utils.Const;
-import java.util.function.Function;
-import org.nutz.dao.Condition;
 import org.nutz.dao.Cnd;
 import java.util.ArrayList;
 import org.nutz.lang.util.NutMap;
@@ -23,24 +19,22 @@ import com.kitty.system.game.store.domain.StoreGoods;
 import com.kitty.system.game.bag.domain.BagGoods;
 import java.util.Iterator;
 import com.kitty.system.game.tianfu.message.RespTianFuDebris;
+import com.kitty.system.game.tianfu.message.RespTianFuDelete;
 import com.kitty.system.game.tianfu.message.RespTianFuList;
+import java.util.Arrays;
 import com.kitty.system.game.tianfu.pojo.RoleTianFuClient;
 import com.kitty.system.game.bag.message.RespDeleteItem;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import com.kitty.system.game.tianfu.message.RespTianFuDelete;
-import java.util.Arrays;
-import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.tianfu.domain.RoleTianFu;
+import com.kitty.mina.cache.DataCache;
 import java.util.List;
+import com.kitty.mina.message.MessagePusher;
+import com.kitty.system.common.message.RespNotifyMiscEx;
 import com.kitty.mina.cache.BagCache;
 import java.util.Map;
 import com.kitty.common.utils.bean.BeanUtils;
-import com.kitty.system.game.store.domain.StoreEquip;
 import com.kitty.system.game.bag.domain.BagEquip;
-import com.kitty.mina.message.Message;
-import com.kitty.mina.message.MessagePusher;
-import com.kitty.system.common.message.RespNotifyMiscEx;
+import com.kitty.system.game.store.domain.StoreEquip;
 import com.kitty.system.game.role.domain.Role;
 import org.slf4j.LoggerFactory;
 import com.kitty.system.game.bag.service.BagService;
@@ -68,135 +62,140 @@ public class StoreService
         this.logger = LoggerFactory.getLogger(StoreService.class);
     }
     
-    public void excuteStorePara(final Role role, final Byte type, final Byte storeType, final String posOrId) {
-        final boolean clicker = this.roleService.mouserClicker(role, "store", 250L);
+    public void excuteStorePara(Role role, Byte type, Byte storeType, String posOrId) {
+        boolean clicker = this.roleService.mouserClicker(role, "store", 250L);
         if (!clicker) {
             return;
         }
-        switch (storeType) {
+        switch ((byte)storeType) {
             case 0: {
-                if (type == 1) {
-                    final int pos = Integer.parseInt(posOrId);
-                    final int posStor = this.getPos(role);
+                if ((byte)type == 1) {
+                    int pos = Integer.parseInt(posOrId);
+                    int posStor = this.getPos(role);
                     if (posStor <= -1) {
                         MessagePusher.pushMessage(role, new RespNotifyMiscEx("仓库物品栏空间不足"));
                         return;
                     }
-                    final Map<Long, BagEquip> bagEquip = this.bagService.getBagEquip(role);
-                    final BagEquip equip = bagEquip.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
+                    Map<Long, BagEquip> bagEquip = this.bagService.getBagEquip(role);
+                    BagEquip equip = (BagEquip)bagEquip.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
                     if (equip != null) {
-                        final StoreEquip equipStore = new StoreEquip();
+                        StoreEquip equipStore = new StoreEquip();
                         BeanUtils.copyBeanProp(equipStore, equip);
                         equip.setDelete(true);
-                        BagCache.BAG_EQUIP_MAP.get(role.getId()).remove(equip.getId());
+                        ((Map)BagCache.BAG_EQUIP_MAP.get(role.getId())).remove(equip.getId());
                         equip.save();
                         equipStore.setPos(posStor);
-                        BagCache.STORE_EQUIP_MAP.get(role.getId()).put(equipStore.getId(), equipStore);
+                        ((Map)BagCache.STORE_EQUIP_MAP.get(role.getId())).put(equipStore.getId(), equipStore);
                         equipStore.save();
                         this.bagService.deleteInform(role, (byte)0, equip.getPos());
                         this.refreshStoreEquip(role, equipStore);
                     }
-                } else {
-                    if (type != 0) {
-                        break;
-                    }
-                    final int pos = Integer.parseInt(posOrId);
-                    final int posBag = this.bagService.getPos(role, false);
+                    break;
+                }
+                else if ((byte)type == 0) {
+                    int pos = Integer.parseInt(posOrId);
+                    int posBag = this.bagService.getPos(role, false);
                     if (posBag <= -1) {
                         MessagePusher.pushMessage(role, new RespNotifyMiscEx("背包物品栏空间不足"));
                         return;
                     }
-                    final Map<Long, StoreEquip> storeEquipMap = this.getStoreEquip(role);
-                    final StoreEquip storeEquip = storeEquipMap.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
+                    Map<Long, StoreEquip> storeEquipMap = this.getStoreEquip(role);
+                    StoreEquip storeEquip = (StoreEquip)storeEquipMap.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
                     if (storeEquip != null) {
-                        final BagEquip equipBag = new BagEquip();
+                        BagEquip equipBag = new BagEquip();
                         BeanUtils.copyBeanProp(equipBag, storeEquip);
                         storeEquip.setDelete(true);
-                        BagCache.STORE_EQUIP_MAP.get(role.getId()).remove(storeEquip.getId());
+                        ((Map)BagCache.STORE_EQUIP_MAP.get(role.getId())).remove(storeEquip.getId());
                         storeEquip.save();
                         equipBag.setPos(posBag);
-                        BagCache.BAG_EQUIP_MAP.get(role.getId()).put(equipBag.getId(), equipBag);
+                        ((Map)BagCache.BAG_EQUIP_MAP.get(role.getId())).put(equipBag.getId(), equipBag);
                         equipBag.save();
                         this.bagService.refreshRoleEquip(role, equipBag, false);
                         this.bagService.deleteInform(role, (byte)1, storeEquip.getPos());
                     }
+                    break;
                 }
-                break;
+                else {
+                    break;
+                }
             }
             case 1: {
-                if (type == 1) {
+                if ((byte)type == 1) {
                     this.excuteGoods(role, Integer.parseInt(posOrId));
                     break;
                 }
-                if (type == 0) {
+                if ((byte)type == 0) {
                     this.excuteGoodsStore(role, Integer.parseInt(posOrId));
                     break;
                 }
                 break;
             }
             case 4: {
-                if (type == 1) {
-                    final long tianFuId = Long.parseLong(posOrId);
-                    final int posStor2 = this.getPos(role);
-                    final List<RoleTianFu> list = DataCache.ROLE_TIAN_FU.get(role.getId());
-                    final RoleTianFu roleTianFu = list.stream().filter(obj -> obj.getId().equals(tianFuId) && obj.getIsWear() == 0 && obj.getStorePos() == 0).findFirst().orElse(null);
-                    if (roleTianFu != null) {
-                        if (roleTianFu.getTianFuSerial() == 9997) {
-                            this.debrisToStore(role, roleTianFu, roleTianFu.getCount(), posStor2);
+                if ((byte)type == 1) {
+                    long tianFuId = Long.parseLong(posOrId);
+                    int posStor2 = this.getPos(role);
+                    List<RoleTianFu> list2 = DataCache.ROLE_TIAN_FU.get(role.getId());
+                    RoleTianFu roleTianFu2 = (RoleTianFu)list2.stream().filter(obj -> obj.getId().equals(Long.valueOf(tianFuId)) && obj.getIsWear() == 0 && obj.getStorePos() == 0).findFirst().orElse(null);
+                    if (roleTianFu2 != null) {
+                        if (roleTianFu2.getTianFuSerial() == 9997) {
+                            this.debrisToStore(role, roleTianFu2, (int)roleTianFu2.getCount(), posStor2);
                         }
                         else {
                             if (posStor2 <= -1) {
                                 MessagePusher.pushMessage(role, new RespNotifyMiscEx("仓库物品栏空间不足"));
                                 return;
                             }
-                            roleTianFu.setStorePos(posStor2);
-                            roleTianFu.save();
-                            this.refreshStoreTianFu(role, roleTianFu);
-                            MessagePusher.pushMessage(role, new RespTianFuDelete(Arrays.asList(roleTianFu.getId().toString())));
+                            roleTianFu2.setStorePos(posStor2);
+                            roleTianFu2.save();
+                            this.refreshStoreTianFu(role, roleTianFu2);
+                            MessagePusher.pushMessage(role, new RespTianFuDelete(Arrays.asList(roleTianFu2.getId().toString())));
                         }
                     }
                     break;
                 }
-                if (type == 0) {
-                    final long tianFuId = Long.parseLong(posOrId);
-                    final List<RoleTianFu> list2 = DataCache.ROLE_TIAN_FU.get(role.getId());
-                    final RoleTianFu roleTianFu2 = list2.stream().filter(obj -> obj.getId() == tianFuId && obj.getStorePos() > 0).findFirst().orElse(null);
-                    if (roleTianFu2 != null) {
-                        if (roleTianFu2.getTianFuSerial() == 9997) {
-                            final int count = roleTianFu2.getCount();
+                else if ((byte)type == 0) {
+                    long tianFuId = Long.parseLong(posOrId);
+                    List<RoleTianFu> list = DataCache.ROLE_TIAN_FU.get(role.getId());
+                    RoleTianFu roleTianFu = (RoleTianFu)list.stream().filter(obj -> (long)obj.getId() == tianFuId && obj.getStorePos() > 0).findFirst().orElse(null);
+                    if (roleTianFu != null) {
+                        if (roleTianFu.getTianFuSerial() == 9997) {
+                            int count = roleTianFu.getCount();
                             if (count > 9999) {
                                 MessagePusher.pushMessage(role, new RespNotifyMiscEx("天策符数量已达上限"));
                                 return;
                             }
-                            this.debrisGet(role, roleTianFu2, count);
+                            this.debrisGet(role, roleTianFu, count);
                         }
                         else {
-                            final List<RoleTianFu> roleTianFus = (List<RoleTianFu>)DataCache.ROLE_TIAN_FU.get(role.getId()).stream().filter(obj -> obj.getIsWear() == 0 && obj.getStorePos() == 0).collect(Collectors.toList());
+                            List<RoleTianFu> roleTianFus = (List)(DataCache.ROLE_TIAN_FU.get(role.getId())).stream().filter(obj -> obj.getIsWear() == 0 && obj.getStorePos() == 0).collect(Collectors.toList());
                             if (roleTianFus.size() >= 75) {
                                 MessagePusher.pushMessage(role, new RespNotifyMiscEx("天策符数量已达上限"));
                                 return;
                             }
-                            MessagePusher.pushMessage(role, new RespDeleteItem((byte)1, roleTianFu2.getStorePos()));
-                            roleTianFu2.setStorePos(0);
-                            roleTianFu2.save();
-                            MessagePusher.pushMessage(role, new RespTianFuList((byte)1, Arrays.asList(new RoleTianFuClient(roleTianFu2))));
+                            MessagePusher.pushMessage(role, new RespDeleteItem((byte)1, roleTianFu.getStorePos()));
+                            roleTianFu.setStorePos(0);
+                            roleTianFu.save();
+                            MessagePusher.pushMessage(role, new RespTianFuList((byte)1, Arrays.asList(new RoleTianFuClient(roleTianFu))));
                         }
                     }
                     break;
                 }
-                break;
+                else {
+                    break;
+                }
             }
             default: {
-                this.logger.error("仓库存储无该类型【{}】操作", (Object)storeType);
+                this.logger.error("仓库存储无该类型【{}】操作", storeType);
                 break;
             }
         }
+        return;
     }
     
-    private void debrisToStore(final Role role, final RoleTianFu roleTianFu, int count, final int posStor) {
-        final List<RoleTianFu> debrisList = (List<RoleTianFu>)DataCache.ROLE_TIAN_FU.get(role.getId()).stream().filter(obj -> obj.getTianFuSerial() == 9997 && obj.getStorePos() != 0).collect(Collectors.toList());
-        final int countOld = count;
-        for (final RoleTianFu debris : debrisList) {
+    private void debrisToStore(Role role, RoleTianFu roleTianFu, int count, int posStor) {
+        List<RoleTianFu> debrisList = (List)(DataCache.ROLE_TIAN_FU.get(role.getId())).stream().filter(obj -> obj.getTianFuSerial() == 9997 && obj.getStorePos() != 0).collect(Collectors.toList());
+        int countOld = count;
+        for (RoleTianFu debris : debrisList) {
             if (debris.getCount() < 9999) {
                 int tempNum = 9999 - debris.getCount();
                 if (tempNum >= count) {
@@ -209,6 +208,9 @@ public class StoreService
                 if (count == 0) {
                     break;
                 }
+                continue;
+            }
+            else {
                 continue;
             }
         }
@@ -231,15 +233,15 @@ public class StoreService
             if (roleTianFu.getCount() <= 0) {
                 roleTianFu.setDelete(true);
                 MessagePusher.pushMessage(role, new RespTianFuDelete(Arrays.asList(roleTianFu.getId().toString())));
-                DataCache.ROLE_TIAN_FU.get(role.getId()).remove(roleTianFu);
+                (DataCache.ROLE_TIAN_FU.get(role.getId())).remove(roleTianFu);
             }
             roleTianFu.save();
         }
     }
     
-    private void debrisGet(final Role role, final RoleTianFu storeTianFu, int count) {
-        final List<RoleTianFu> list = DataCache.ROLE_TIAN_FU.get(role.getId());
-        final RoleTianFu debris = list.stream().filter(obj -> obj.getTianFuSerial() == 9997 && obj.getStorePos() == 0).findFirst().orElse(null);
+    private void debrisGet(Role role, RoleTianFu storeTianFu, int count) {
+        List<RoleTianFu> list = DataCache.ROLE_TIAN_FU.get(role.getId());
+        RoleTianFu debris = (RoleTianFu)list.stream().filter(obj -> obj.getTianFuSerial() == 9997 && obj.getStorePos() == 0).findFirst().orElse(null);
         if (debris != null) {
             if (debris.getCount() + count > 9999) {
                 if (debris.getCount() >= 9999) {
@@ -254,7 +256,7 @@ public class StoreService
             this.debrisToBag(role, storeTianFu, count);
         }
         else {
-            final List<RoleTianFu> roleTianFus = (List<RoleTianFu>)DataCache.ROLE_TIAN_FU.get(role.getId()).stream().filter(obj -> obj.getIsWear() == 0 && obj.getStorePos() == 0).collect(Collectors.toList());
+            List<RoleTianFu> roleTianFus = (List)(DataCache.ROLE_TIAN_FU.get(role.getId())).stream().filter(obj -> obj.getIsWear() == 0 && obj.getStorePos() == 0).collect(Collectors.toList());
             if (roleTianFus.size() >= 75) {
                 MessagePusher.pushMessage(role, new RespNotifyMiscEx("天策符数量已达上限"));
                 return;
@@ -266,9 +268,9 @@ public class StoreService
                 MessagePusher.pushMessage(role, new RespTianFuDebris(storeTianFu));
                 return;
             }
-            final RoleTianFu roleTianFu = new RoleTianFu();
+            RoleTianFu roleTianFu = new RoleTianFu();
             BeanUtils.copyBeanProp(roleTianFu, storeTianFu);
-            roleTianFu.setId(this.worker.nextId());
+            roleTianFu.setId(Long.valueOf(this.worker.nextId()));
             roleTianFu.setCount((short)count);
             roleTianFu.setStorePos(0);
             roleTianFu.save();
@@ -277,12 +279,12 @@ public class StoreService
         }
     }
     
-    private void debrisToBag(final Role role, final RoleTianFu storeTianFu, int count) {
+    private void debrisToBag(Role role, RoleTianFu storeTianFu, int count) {
         if (storeTianFu.getCount() <= count) {
             count -= storeTianFu.getCount();
             storeTianFu.setCount((short)0);
             storeTianFu.setDelete(true);
-            DataCache.ROLE_TIAN_FU.get(role.getId()).remove(storeTianFu);
+            (DataCache.ROLE_TIAN_FU.get(role.getId())).remove(storeTianFu);
             MessagePusher.pushMessage(role, new RespDeleteItem((byte)1, storeTianFu.getStorePos()));
         }
         else {
@@ -292,8 +294,8 @@ public class StoreService
         }
         storeTianFu.save();
         if (count > 0) {
-            final List<RoleTianFu> storeDebrisList = (List<RoleTianFu>)DataCache.ROLE_TIAN_FU.get(role.getId()).stream().filter(obj -> obj.getTianFuSerial() == 9997 && obj.getStorePos() != 0 && !obj.getId().equals(storeTianFu.getId())).collect(Collectors.toList());
-            for (final RoleTianFu debrisTianFu : storeDebrisList) {
+            List<RoleTianFu> storeDebrisList = (List)(DataCache.ROLE_TIAN_FU.get(role.getId())).stream().filter(obj -> obj.getTianFuSerial() == 9997 && obj.getStorePos() != 0 && !obj.getId().equals(storeTianFu.getId())).collect(Collectors.toList());
+            for (RoleTianFu debrisTianFu : storeDebrisList) {
                 int tempNum;
                 if (count - debrisTianFu.getCount() < 0) {
                     tempNum = count;
@@ -304,7 +306,7 @@ public class StoreService
                 debrisTianFu.setCount((short)(debrisTianFu.getCount() - tempNum));
                 if (debrisTianFu.getCount() <= 0) {
                     debrisTianFu.setDelete(true);
-                    DataCache.ROLE_TIAN_FU.get(role.getId()).remove(debrisTianFu);
+                    (DataCache.ROLE_TIAN_FU.get(role.getId())).remove(debrisTianFu);
                     MessagePusher.pushMessage(role, new RespDeleteItem((byte)1, debrisTianFu.getStorePos()));
                 }
                 else {
@@ -315,93 +317,94 @@ public class StoreService
                 if (count <= 0) {
                     break;
                 }
+                continue;
             }
         }
     }
     
-    private void excuteGoods(final Role role, final int pos) {
-        final Map<Long, BagGoods> bagGoodsMap = this.bagService.getBagGoods(role);
-        final BagGoods goods = bagGoodsMap.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
+    private void excuteGoods(Role role, int pos) {
+        Map<Long, BagGoods> bagGoodsMap = this.bagService.getBagGoods(role);
+        BagGoods goods = (BagGoods)bagGoodsMap.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
         if (goods != null) {
-            final int posStor = this.getPos(role);
+            int posStor = this.getPos(role);
             if (posStor <= -1) {
-                final Map<Long, StoreGoods> storeGoodsMap = this.getStoreGoods(role);
-                final StoreGoods storeGoods = storeGoodsMap.values().stream().filter(obj -> obj.getSerial() == goods.getSerial()).findFirst().orElse(null);
-                final Map map = DataGlobalFunc.GetItemDataByItemTypeId(goods.getSerial());
-                final JSONObject json = JsonUtils.objectToJson(map.get(goods.getSerial()));
-                final int canMerge = json.getInteger("canMerge");
+                Map<Long, StoreGoods> storeGoodsMap = this.getStoreGoods(role);
+                StoreGoods storeGoods = (StoreGoods)storeGoodsMap.values().stream().filter(obj -> obj.getSerial() == goods.getSerial()).findFirst().orElse(null);
+                Map<Object, Object> map = DataGlobalFunc.GetItemDataByItemTypeId(Integer.valueOf(goods.getSerial()));
+                JSONObject json = JsonUtils.objectToJson(map.get(Integer.valueOf(goods.getSerial())));
+                int canMerge = (int)json.getInteger("canMerge");
                 if (storeGoods == null || storeGoods.getNum() + goods.getNum() > canMerge) {
                     MessagePusher.pushMessage(role, new RespNotifyMiscEx("仓库物品栏空间不足"));
                     return;
                 }
             }
-            final int count = goods.getNum();
-            final StoreGoods goodsStore = new StoreGoods();
+            int count = goods.getNum();
+            StoreGoods goodsStore = new StoreGoods();
             BeanUtils.copyBeanProp(goodsStore, goods);
             this.bagService.removeItem(role, pos, 1, "存入仓库，数量：" + count);
             this.saveStoreGoods(role, goodsStore, goodsStore.getNum());
             this.bagService.refreshRoleGoods(role, goods, false);
-            RecordThread.getInstance().add2Queue(role.getId(), role.getRoleId(), (short)1, (byte)1, String.format("道具（%d）存入仓库，仓库数量增加：%d", goods.getSerial(), count), role.getMarking());
-            RecordThread.getInstance().add2Queue(role.getId(), role.getRoleId(), (short)1, (byte)2, String.format("道具（%d）存入仓库，背包数量减少：%d", goods.getSerial(), count), role.getMarking());
+            RecordThread.getInstance().add2Queue((long)role.getId(), (int)role.getRoleId(), (short)1, (byte)1, String.format("道具（%d）存入仓库，仓库数量增加：%d", Integer.valueOf(goods.getSerial()), Integer.valueOf(count)), role.getMarking());
+            RecordThread.getInstance().add2Queue((long)role.getId(), (int)role.getRoleId(), (short)1, (byte)2, String.format("道具（%d）存入仓库，背包数量减少：%d", Integer.valueOf(goods.getSerial()), Integer.valueOf(count)), role.getMarking());
         }
     }
     
-    private void excuteGoodsStore(final Role role, final int pos) {
-        final Map<Long, StoreGoods> storeGoodsMap = this.getStoreGoods(role);
-        final StoreGoods goods = storeGoodsMap.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
+    private void excuteGoodsStore(Role role, int pos) {
+        Map<Long, StoreGoods> storeGoodsMap = this.getStoreGoods(role);
+        StoreGoods goods = (StoreGoods)storeGoodsMap.values().stream().filter(e -> e.getPos() == pos).findFirst().orElse(null);
         if (goods != null) {
-            final int count = goods.getNum();
-            final boolean flag = this.bagService.checkPos(role, goods.getSerial(), count);
+            int count = goods.getNum();
+            boolean flag = this.bagService.checkPos(role, goods.getSerial(), count);
             if (!flag) {
                 return;
             }
-            final NutMap rests = goods.getRests();
+            NutMap rests = goods.getRests();
             if (rests.size() > 0) {
-                for (final Map.Entry<String, Object> entry : rests.entrySet()) {
-                    this.bagService.addGoods(role, goods.getSerial(), (Integer)entry.getValue(), Integer.parseInt(entry.getKey()), false, false, "仓库取出");
+                for (Map.Entry<String, Object> entry : rests.entrySet()) {
+                    this.bagService.addGoods(role, goods.getSerial(), (int)entry.getValue(), Integer.parseInt((String)entry.getKey()), false, false, "仓库取出");
                 }
             }
             goods.setRests(NutMap.NEW());
             goods.setDelete(true);
-            BagCache.STORE_GOODS_MAP.get(role.getId()).remove(goods.getId());
+            ((Map)BagCache.STORE_GOODS_MAP.get(role.getId())).remove(goods.getId());
             goods.save();
             this.refreshStoreGoods(role, goods);
-            RecordThread.getInstance().add2Queue(role.getId(), role.getRoleId(), (short)1, (byte)2, String.format("道具（%d）从仓库取出，仓库数量减少：%d", goods.getSerial(), count), role.getMarking());
-            RecordThread.getInstance().add2Queue(role.getId(), role.getRoleId(), (short)1, (byte)1, String.format("道具（%d）从仓库取出，背包数量增加：%d", goods.getSerial(), count), role.getMarking());
+            RecordThread.getInstance().add2Queue((long)role.getId(), (int)role.getRoleId(), (short)1, (byte)2, String.format("道具（%d）从仓库取出，仓库数量减少：%d", Integer.valueOf(goods.getSerial()), Integer.valueOf(count)), role.getMarking());
+            RecordThread.getInstance().add2Queue((long)role.getId(), (int)role.getRoleId(), (short)1, (byte)1, String.format("道具（%d）从仓库取出，背包数量增加：%d", Integer.valueOf(goods.getSerial()), Integer.valueOf(count)), role.getMarking());
         }
     }
     
-    private void saveStoreGoods(final Role role, final StoreGoods storeGood, int num) {
-        final List<StoreGoods> storeGoods = this.getStoreGoods(role).values().stream().collect(Collectors.toList());
-        final Map map = DataGlobalFunc.GetItemDataByItemTypeId(storeGood.getSerial());
+    private void saveStoreGoods(Role role, StoreGoods storeGood, int num) {
+        List<StoreGoods> storeGoods = (List)this.getStoreGoods(role).values().stream().collect(Collectors.toList());
+        Map<Object, Object> map = DataGlobalFunc.GetItemDataByItemTypeId(Integer.valueOf(storeGood.getSerial()));
         if (map == null) {
             return;
         }
-        final JSONObject json = JsonUtils.objectToJson(map.get(storeGood.getSerial()));
-        final int canMerge = json.getInteger("canMerge");
-        final List<StoreGoods> collect = storeGoods.stream().filter(item -> item.getSerial() == storeGood.getSerial()).collect(Collectors.toList());
+        JSONObject json = JsonUtils.objectToJson(map.get(Integer.valueOf(storeGood.getSerial())));
+        int canMerge = (int)json.getInteger("canMerge");
+        List<StoreGoods> collect = (List)storeGoods.stream().filter(item -> item.getSerial() == storeGood.getSerial()).collect(Collectors.toList());
         if (collect.size() > 0) {
-            for (final StoreGoods goods : collect) {
-                final int residue = canMerge - goods.getNum();
+            for (StoreGoods goods : collect) {
+                int residue = canMerge - goods.getNum();
                 if (residue <= 0) {
                     continue;
                 }
                 if (residue >= num) {
-                    this.saveGoods(storeGood.getRests(), num, goods.getRests());
+                    this.saveGoods(storeGood.getRests(), Integer.valueOf(num), goods.getRests());
                     goods.save();
                     this.refreshStoreGoods(role, goods);
                     num = 0;
                     break;
                 }
                 num = Math.abs(residue - num);
-                this.saveGoods(storeGood.getRests(), residue, goods.getRests());
+                this.saveGoods(storeGood.getRests(), Integer.valueOf(residue), goods.getRests());
                 goods.save();
                 this.refreshStoreGoods(role, goods);
             }
         }
         while (num > 0) {
             int add = 0;
-            final int mod = num - canMerge;
+            int mod = num - canMerge;
             if (mod > 0) {
                 add = canMerge;
             }
@@ -412,42 +415,46 @@ public class StoreService
             storeGood.setPos(this.getPos(role));
             storeGood.setId(this.worker.nextId());
             storeGood.save();
-            BagCache.STORE_GOODS_MAP.get(role.getId()).put(storeGood.getId(), storeGood);
+            ((Map)BagCache.STORE_GOODS_MAP.get(role.getId())).put(storeGood.getId(), storeGood);
             this.refreshStoreGoods(role, storeGood);
         }
+        return;
     }
     
-    public boolean saveGoods(final NutMap restsSrc, Integer num, final NutMap rests) {
-        final List<String> removeKeys = new ArrayList<String>();
-        for (final String key : restsSrc.keySet()) {
-            if (num <= 0) {
+    public boolean saveGoods(NutMap restsSrc, Integer num, NutMap rests) {
+        List<String> removeKeys = new ArrayList<>();
+        for (String key : restsSrc.keySet()) {
+            if ((int)num <= 0) {
                 return true;
             }
             boolean flag = true;
-            for (final String key2 : rests.keySet()) {
+            for (String key2 : rests.keySet()) {
                 if (key.equals(key2)) {
-                    num = this.excuteGoodNum(restsSrc, rests, key, num, true);
+                    num = Integer.valueOf(this.excuteGoodNum(restsSrc, rests, key, (int)num, true));
                     flag = false;
                     break;
                 }
-            }
-            if (flag) {
-                num = this.excuteGoodNum(restsSrc, rests, key, num, false);
-            }
-            if (restsSrc.getInt(key) > 0) {
                 continue;
             }
-            removeKeys.add(key);
+            if (flag) {
+                num = Integer.valueOf(this.excuteGoodNum(restsSrc, rests, key, (int)num, false));
+            }
+            if (restsSrc.getInt(key) <= 0) {
+                removeKeys.add(key);
+            }
+            else {
+                continue;
+            }
         }
         if (removeKeys.size() > 0) {
-            for (final String key : removeKeys) {
-                restsSrc.remove((Object)key);
+            for (String key : removeKeys) {
+                restsSrc.remove(key);
             }
         }
         return true;
     }
     
-    private int excuteGoodNum(final NutMap restsSrc, final NutMap rests, final String key, int num, final boolean flag) {
+    private int excuteGoodNum(NutMap restsSrc, NutMap rests, String key, int num, boolean flag) {
         int value;
         if (num < restsSrc.getInt(key)) {
             value = num;
@@ -456,112 +463,115 @@ public class StoreService
             value = restsSrc.getInt(key);
         }
         if (flag) {
-            rests.setv(key, (Object)(rests.getInt(key) + value));
+            rests.setv(key, Integer.valueOf(rests.getInt(key) + value));
         }
         else {
-            rests.setv(key, (Object)value);
+            rests.setv(key, Integer.valueOf(value));
         }
-        restsSrc.setv(key, (Object)(restsSrc.getInt(key) - value));
+        restsSrc.setv(key, Integer.valueOf(restsSrc.getInt(key) - value));
         num -= value;
         return num;
     }
     
-    public int getPos(final Role role) {
-        return this.getMinAndMaxPos(role);
+    public int getPos(Role role) {
+        return (int)this.getMinAndMaxPos(role);
     }
     
-    private Integer getMinAndMaxPos(final Role role) {
-        final List<Integer> list = new ArrayList<Integer>();
-        final Map<Long, StoreEquip> equips = this.getStoreEquip(role);
-        for (final StoreEquip equip : equips.values()) {
-            list.add(equip.getPos());
+    private Integer getMinAndMaxPos(Role role) {
+        List<Integer> list = new ArrayList<>();
+        Map<Long, StoreEquip> equips = this.getStoreEquip(role);
+        for (StoreEquip equip : equips.values()) {
+            list.add(Integer.valueOf(equip.getPos()));
         }
-        final Map<Long, StoreGoods> goods = this.getStoreGoods(role);
-        for (final StoreGoods good : goods.values()) {
-            list.add(good.getPos());
+        Map<Long, StoreGoods> goods = this.getStoreGoods(role);
+        for (StoreGoods good : goods.values()) {
+            list.add(Integer.valueOf(good.getPos()));
         }
-        final List<RoleTianFu> roleTianFus = (List<RoleTianFu>)DataCache.ROLE_TIAN_FU.get(role.getId()).stream().filter(obj -> obj.getStorePos() > 0).collect(Collectors.toList());
-        for (final RoleTianFu roleTianFu : roleTianFus) {
-            list.add(roleTianFu.getStorePos());
+        List<RoleTianFu> roleTianFus = (List)(DataCache.ROLE_TIAN_FU.get(role.getId())).stream().filter(obj -> obj.getStorePos() > 0).collect(Collectors.toList());
+        for (RoleTianFu roleTianFu : roleTianFus) {
+            list.add(Integer.valueOf(roleTianFu.getStorePos()));
         }
         return this.getVacancySize(role, list);
     }
     
-    public Map<Long, StoreEquip> getStoreEquip(final Role role) {
-        final Map<Long, StoreEquip> storeGoodsMap = BagCache.STORE_EQUIP_MAP.get(role.getId());
+    public Map<Long, StoreEquip> getStoreEquip(Role role) {
+        Map<Long, StoreEquip> storeGoodsMap = (Map)BagCache.STORE_EQUIP_MAP.get(role.getId());
         if (storeGoodsMap == null) {
-            final List<StoreEquip> list = this.dao.query(StoreEquip.class, Cnd.where("r_id", "=", role.getId()));
+            List<StoreEquip> list = this.dao.query(StoreEquip.class, Cnd.where("r_id", "=", role.getId()));
             list.forEach(equip -> equip.doAfterInit());
-            final Map<Long, StoreEquip> map = list.stream().collect(Collectors.toMap(StoreEquip::getId, StoreEquip -> StoreEquip));
+            Map<Long, StoreEquip> map = (Map)list.stream().collect(Collectors.toMap(StoreEquip::getId, StoreEquip -> StoreEquip));
             BagCache.STORE_EQUIP_MAP.put(role.getId(), map);
             return map;
         }
         return storeGoodsMap;
     }
     
-    public Map<Long, StoreGoods> getStoreGoods(final Role role) {
-        final Map<Long, StoreGoods> storeGoodsMap = BagCache.STORE_GOODS_MAP.get(role.getId());
+    public Map<Long, StoreGoods> getStoreGoods(Role role) {
+        Map<Long, StoreGoods> storeGoodsMap = (Map)BagCache.STORE_GOODS_MAP.get(role.getId());
         if (storeGoodsMap == null) {
-            final List<StoreGoods> list = this.dao.query(StoreGoods.class, Cnd.where("r_id", "=", role.getId()));
-            final Map<Long, StoreGoods> map = list.stream().collect(Collectors.toMap(StoreGoods::getId, StoreGoods -> StoreGoods));
+            List<StoreGoods> list = this.dao.query(StoreGoods.class, Cnd.where("r_id", "=", role.getId()));
+            Map<Long, StoreGoods> map = (Map)list.stream().collect(Collectors.toMap(StoreGoods::getId, StoreGoods -> StoreGoods));
             BagCache.STORE_GOODS_MAP.put(role.getId(), map);
             return map;
         }
         return storeGoodsMap;
     }
     
-    public Integer getVacancySize(final Role role, final List<Integer> list) {
-        final PlayerExtendBox extendBox = role.getExtendBox();
-        final List<Integer> objects = new ArrayList<Integer>();
-        Integer pos = 0;
-        pos = extendBox.getStorePosition() * Const.BAG_POS + Const.STORE_POS_MIN;
-        if (list.size() < pos) {
-            for (int i = 1; i <= pos; ++i) {
-                objects.add(i);
+    public Integer getVacancySize(Role role, List<Integer> list) {
+        PlayerExtendBox extendBox = role.getExtendBox();
+        List<Integer> objects = new ArrayList<>();
+        Integer pos = Integer.valueOf(0);
+        pos = Integer.valueOf((int)extendBox.getStorePosition() * (int)Const.BAG_POS + (int)Const.STORE_POS_MIN);
+        if (list.size() < (int)pos) {
+            for (int i = 1; i <= (int)pos; ++i) {
+                objects.add(Integer.valueOf(i));
             }
-            final List<Integer> vacancy = new ArrayList<Integer>();
-            for (final Integer v : objects) {
+            List<Integer> vacancy = new ArrayList<>();
+            for (Integer v : objects) {
                 if (!list.contains(v)) {
                     vacancy.add(v);
                 }
+                else {
+                    continue;
+                }
             }
-            return (vacancy.size() <= 0) ? Integer.valueOf(-1) : Collections.min((Collection<? extends Integer>)vacancy);
+            return (vacancy.size() <= 0) ? Integer.valueOf(-1) : ((Integer)Collections.min(vacancy));
         }
-        return -1;
+        return Integer.valueOf(-1);
     }
     
-    public void refreshStoreEquip(final Role role, final StoreEquip equip) {
-        final RespFlyInfo respFlyInfo = new RespFlyInfo();
-        respFlyInfo.setEquip(new EquipEasy(equip, role.getRoleId()));
+    public void refreshStoreEquip(Role role, StoreEquip equip) {
+        RespFlyInfo respFlyInfo = new RespFlyInfo();
+        respFlyInfo.setEquip(new EquipEasy(equip, (int)role.getRoleId()));
         respFlyInfo.setPos((byte)1);
         MessagePusher.pushMessage(role, respFlyInfo);
     }
     
-    public void refreshStoreTianFu(final Role role, final RoleTianFu roleTianFu) {
-        final RoleTianFuClient roleTianFuClient = new RoleTianFuClient(roleTianFu);
-        final RespFlyInfo respFlyInfo = new RespFlyInfo();
+    public void refreshStoreTianFu(Role role, RoleTianFu roleTianFu) {
+        RoleTianFuClient roleTianFuClient = new RoleTianFuClient(roleTianFu);
+        RespFlyInfo respFlyInfo = new RespFlyInfo();
         respFlyInfo.setRoleTianFuClient(roleTianFuClient);
         respFlyInfo.setPos((byte)1);
         respFlyInfo.setType((byte)2);
         MessagePusher.pushMessage(role, respFlyInfo);
     }
     
-    public void refreshStoreGoods(final Role role, final StoreGoods goods) {
-        final RespFlyInfo respFlyInfo = new RespFlyInfo();
+    public void refreshStoreGoods(Role role, StoreGoods goods) {
+        RespFlyInfo respFlyInfo = new RespFlyInfo();
         respFlyInfo.setType((byte)1);
-        final List<FiedValue> list = new ArrayList<FiedValue>();
-        final NutMap rests = goods.getRests();
+        List<FiedValue> list = new ArrayList<>();
+        NutMap rests = goods.getRests();
         try {
-            for (final String key : rests.keySet()) {
-                list.add(new FiedValue(key, (byte)3, rests.getInt(key)));
+            for (String key : rests.keySet()) {
+                list.add(new FiedValue(key, (byte)3, Integer.valueOf(rests.getInt(key))));
             }
-            final NutMap special = goods.getSpecial();
-            for (final String key2 : special.keySet()) {
-                list.add(new FiedValue(key2, (byte)3, special.getInt(key2)));
+            NutMap special = goods.getSpecial();
+            for (String key2 : special.keySet()) {
+                list.add(new FiedValue(key2, (byte)3, Integer.valueOf(special.getInt(key2))));
             }
         }
-        catch (final ConcurrentModificationException ex) {}
-        respFlyInfo.setGoods(new Goods(String.valueOf(goods.getId()), goods.getNum(), goods.getSerial(), goods.getPos(), list));
+        catch (ConcurrentModificationException ex) {}
+        respFlyInfo.setGoods(new Goods(String.valueOf(goods.getId()), Integer.valueOf(goods.getNum()), Integer.valueOf(goods.getSerial()), Integer.valueOf(goods.getPos()), list));
         respFlyInfo.setPos((byte)1);
         MessagePusher.pushMessage(role, respFlyInfo);
     }

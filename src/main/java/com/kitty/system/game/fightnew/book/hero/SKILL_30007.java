@@ -1,9 +1,9 @@
-
 package com.kitty.system.game.fightnew.book.hero;
 
 import com.kitty.system.enums.war.wardef.LOGIC;
 import com.kitty.common.utils.BigDecimalUtil;
 import com.kitty.system.game.skill.domain.RoleSkill;
+import com.kitty.system.enums.war.itempro.mind.MIND;
 import com.kitty.system.game.fightnew.utils.SkillCompute;
 import com.kitty.system.game.fightnew.utils.SkillFunc;
 import com.kitty.system.game.fightnew.utils.PassiveSkillUtils;
@@ -19,69 +19,81 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_30007 extends SkillProcessor
 {
+    public SKILL_30007() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
-        final RoleSkill skill = effector.getSkillBy(30007);
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
+        RoleSkill skill = effector.getSkillBy(Integer.valueOf(30007));
         if (skill != null) {
-            final Effect e = new Effect();
+            Effect e = new Effect();
             if (!target.isFrozen()) {
-                final SysSkill sysSkill = SkillDataPool.skillMap.get(30007);
-                final double power = sysSkill.getPower()[0];
-                final int proficient = skill.getProficient();
-                final int maxLife = target.getMaxLife();
+                SysSkill sysSkill = (SysSkill)SkillDataPool.skillMap.get(Integer.valueOf(30007));
+                double power = sysSkill.getPower()[0];
+                int proficient = (int)skill.getProficient();
+                int maxLife = target.getMaxLife();
                 double kdx = target.getSelfAllTempPro(PRO_DICT_TYPE.K_DU.getDist());
-                final double wsk = PassiveSkillUtils.getWsk(effector);
+                double wsk = PassiveSkillUtils.getWsk(effector);
                 kdx -= wsk;
-                final double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
-                final double dqd = effector.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_D.getDist());
-                final double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_D.getDist());
-                final double wx = SkillFunc.getWuXingKeZhiXiuZheng(effector, target, fight.getType());
-                final double hurt = SkillCompute.computeSkillDamagePoison(power, kdx, dqd, proficient, 1, effector.getLevel(), maxLife, extra, weak, wx);
-                final int time = this.time(effector, skill, kdx, dqd);
-                target.getStatusSubMap().setv("1005_power", (Object)power);
-                target.getStatusSubMap().setv("1005_kdx", (Object)kdx);
-                target.getStatusSubMap().setv("1005_weak", (Object)weak);
-                target.getStatusSubMap().setv("1005_dqd", (Object)dqd);
-                target.getStatusSubMap().setv("1005_proficient", (Object)proficient);
-                target.getStatusSubMap().setv("1005_round", (Object)1);
-                target.getStatusSubMap().setv("1005_level", (Object)effector.getLevel());
-                target.getStatusSubMap().setv("1005_maxLife", (Object)maxLife);
-                target.getStatusSubMap().setv("1005_extra", (Object)extra);
-                target.getStatusSubMap().setv("1005_wx", (Object)wx);
+                double weak = effector.getSelfAllTempPro(PRO_DICT_TYPE.BURN_HURT.getDist()) - target.getSelfAllTempPro(PRO_DICT_TYPE.SH_DK.getDist());
+                double dqd = effector.getSelfAllTempPro(PRO_DICT_TYPE.OMIT_K_D.getDist());
+                double extra = effector.getSelfAllTempPro(PRO_DICT_TYPE.RISE_D.getDist());
+                double wx = SkillFunc.getWuXingKeZhiXiuZheng(effector, target, fight.getType());
+                double hurt = SkillCompute.computeSkillDamagePoison(power, kdx, dqd, Integer.valueOf(proficient), Integer.valueOf(1), Integer.valueOf(effector.getLevel()), Integer.valueOf(maxLife), extra, weak, wx);
+                int time = this.time(effector, skill, kdx, dqd);
+                target.getStatusSubMap().setv("1005_power", Double.valueOf(power));
+                target.getStatusSubMap().setv("1005_kdx", Double.valueOf(kdx));
+                target.getStatusSubMap().setv("1005_weak", Double.valueOf(weak));
+                target.getStatusSubMap().setv("1005_dqd", Double.valueOf(dqd));
+                target.getStatusSubMap().setv("1005_proficient", Integer.valueOf(proficient));
+                target.getStatusSubMap().setv("1005_round", Integer.valueOf(1));
+                target.getStatusSubMap().setv("1005_level", Integer.valueOf(effector.getLevel()));
+                target.getStatusSubMap().setv("1005_maxLife", Integer.valueOf(maxLife));
+                target.getStatusSubMap().setv("1005_extra", Double.valueOf(extra));
+                target.getStatusSubMap().setv("1005_wx", Double.valueOf(wx));
+                hurt -= target.getSelfAllTempPro(MIND.XS_DU.getDist());
+                if (hurt <= 0.0) {
+                    hurt = 1.0;
+                }
                 e.setHurt(Math.max(1, (int)hurt));
                 e.setTime(time);
                 e.setType(1005);
+                return e;
             }
-            return e;
+            else {
+                return e;
+            }
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
-        return BigDecimalUtil.decimalScaleIntegerDown(0, 25.0 * (Math.pow(skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0));
+    public int costMana(RoleSkill skill, Object... args) {
+        return BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(25.0 * (Math.pow((double)(int)skill.getProficient(), 0.77) * 5.0 / 100.0 + 1.0)));
     }
     
-    public int time(final FightObject effector, final RoleSkill skill, final double kdx, final double dqd) {
+    public int time(FightObject effector, RoleSkill skill, double kdx, double dqd) {
         int time = 2;
         if (effector.getLogic() != LOGIC.LOGICTYPE_MONSTER.getValue() && skill != null) {
-            time = BigDecimalUtil.decimalScaleIntegerDown(0, 2.0 * (1.0 + Math.pow(skill.getProficient(), 0.3) * 4.0 / 100.0));
+            time = BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf(2.0 * (1.0 + Math.pow((double)(int)skill.getProficient(), 0.3) * 4.0 / 100.0)));
         }
-        return Math.min(time, BigDecimalUtil.decimalScaleInteger(0, time * (1.0 - kdx / 2.0 + dqd)));
+        return Math.min(time, BigDecimalUtil.decimalScaleInteger(Integer.valueOf(0), Double.valueOf((double)time * (1.0 - kdx / 2.0 + dqd))));
     }
 }

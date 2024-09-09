@@ -1,29 +1,31 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
-@MessageMeta(module = 4144)
+@MessageMeta(module = 5155)
 public class ReqEnterRoom extends Message
 {
-    private String mapName;
     private int isTaskWalk;
+    private String mapName;
     
-    public String getMapName() {
-        return this.mapName;
+    public ReqEnterRoom() {
     }
     
     public int getIsTaskWalk() {
         return this.isTaskWalk;
     }
     
-    public void setMapName(final String mapName) {
-        this.mapName = mapName;
+    public String getMapName() {
+        return this.mapName;
     }
     
     public void setIsTaskWalk(final int isTaskWalk) {
         this.isTaskWalk = isTaskWalk;
+    }
+    
+    public void setMapName(final String mapName) {
+        this.mapName = mapName;
     }
     
     @Override
@@ -34,21 +36,16 @@ public class ReqEnterRoom extends Message
         if (!(o instanceof ReqEnterRoom)) {
             return false;
         }
-        final ReqEnterRoom other = (ReqEnterRoom)o;
+        ReqEnterRoom other = (ReqEnterRoom)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$mapName = this.getMapName();
-        final Object other$mapName = other.getMapName();
-        if (this$mapName == null) {
-            if (other$mapName == null) {
-                return this.getIsTaskWalk() == other.getIsTaskWalk();
-            }
+        if (this.getIsTaskWalk() != other.getIsTaskWalk()) {
+            return false;
         }
-        else if (this$mapName.equals(other$mapName)) {
-            return this.getIsTaskWalk() == other.getIsTaskWalk();
-        }
-        return false;
+        Object this$mapName = this.getMapName();
+        Object other$mapName = other.getMapName();
+        return (this$mapName != null) ? this$mapName.equals(other$mapName) : (other$mapName == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,16 +54,16 @@ public class ReqEnterRoom extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $mapName = this.getMapName();
-        result = result * 59 + (($mapName == null) ? 43 : $mapName.hashCode());
         result = result * 59 + this.getIsTaskWalk();
+        Object $mapName = this.getMapName();
+        result = result * 59 + (($mapName == null) ? 43 : $mapName.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "ReqEnterRoom(mapName=" + this.getMapName() + ", isTaskWalk=" + this.getIsTaskWalk() + ")";
+        return "ReqEnterRoom(isTaskWalk=" + this.getIsTaskWalk() + ", mapName=" + this.getMapName() + ")";
     }
 }

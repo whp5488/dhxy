@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.substitution.service;
 
 import java.util.HashMap;
@@ -13,15 +12,18 @@ public class SubstitutionService
 {
     public static Map<Integer, SubstitutionHandler> substitution;
     
-    public void init() {
-        SubstitutionService.substitution.put(FIGHT_TYPE.CS_SUB.getValue(), new CsSubstitutionHandler());
+    public SubstitutionService() {
     }
     
-    public static SubstitutionHandler querySubstitution(final Integer type) {
-        return SubstitutionService.substitution.get(type);
+    public void init() {
+        SubstitutionService.substitution.put(Integer.valueOf(FIGHT_TYPE.CS_SUB.getValue()), new CsSubstitutionHandler());
+    }
+    
+    public static SubstitutionHandler querySubstitution(Integer type) {
+        return (SubstitutionHandler)SubstitutionService.substitution.get(type);
     }
     
     static {
-        SubstitutionService.substitution = new HashMap<Integer, SubstitutionHandler>();
+        SubstitutionService.substitution = new HashMap();
     }
 }

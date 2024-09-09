@@ -1,4 +1,3 @@
-
 package com.kitty.mina.codec.reflect.serializer;
 
 import java.lang.reflect.ParameterizedType;
@@ -12,10 +11,13 @@ public class FieldCodecMeta
     private Serializer serializer;
     private Class<?> wrapper;
     
-    public static FieldCodecMeta valueOf(final Field field, final Serializer serializer) {
-        final FieldCodecMeta meta = new FieldCodecMeta();
+    public FieldCodecMeta() {
+    }
+    
+    public static FieldCodecMeta valueOf(Field field, Serializer serializer) {
+        FieldCodecMeta meta = new FieldCodecMeta();
         meta.field = field;
-        final Class<?> type = field.getType();
+        Class<?> type = field.getType();
         meta.type = type;
         meta.serializer = serializer;
         if (Collection.class.isAssignableFrom(type)) {

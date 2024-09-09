@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -58,6 +57,9 @@ public class SysMapInfo implements Serializable
     @Comment("地图跳转提示")
     @Column("how_to_out")
     private String howToOut;
+    
+    public SysMapInfo() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -195,112 +197,48 @@ public class SysMapInfo implements Serializable
         if (!(o instanceof SysMapInfo)) {
             return false;
         }
-        final SysMapInfo other = (SysMapInfo)o;
+        SysMapInfo other = (SysMapInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0102: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0102;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$mapSerial = this.getMapSerial();
-        final Object other$mapSerial = other.getMapSerial();
-        Label_0139: {
-            if (this$mapSerial == null) {
-                if (other$mapSerial == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$mapSerial.equals(other$mapSerial)) {
-                break Label_0139;
-            }
+        Object this$mapSerial = this.getMapSerial();
+        Object other$mapSerial = other.getMapSerial();
+        if (!((this$mapSerial != null) ? this$mapSerial.equals(other$mapSerial) : (other$mapSerial == null))) {
             return false;
         }
-        final Object this$lvLimit = this.getLvLimit();
-        final Object other$lvLimit = other.getLvLimit();
-        Label_0176: {
-            if (this$lvLimit == null) {
-                if (other$lvLimit == null) {
-                    break Label_0176;
-                }
-            }
-            else if (this$lvLimit.equals(other$lvLimit)) {
-                break Label_0176;
-            }
+        Object this$lvLimit = this.getLvLimit();
+        Object other$lvLimit = other.getLvLimit();
+        if (!((this$lvLimit != null) ? this$lvLimit.equals(other$lvLimit) : (other$lvLimit == null))) {
             return false;
         }
-        final Object this$bornPoint = this.getBornPoint();
-        final Object other$bornPoint = other.getBornPoint();
-        Label_0213: {
-            if (this$bornPoint == null) {
-                if (other$bornPoint == null) {
-                    break Label_0213;
-                }
-            }
-            else if (this$bornPoint.equals(other$bornPoint)) {
-                break Label_0213;
-            }
+        Object this$bornPoint = this.getBornPoint();
+        Object other$bornPoint = other.getBornPoint();
+        if (!((this$bornPoint != null) ? this$bornPoint.equals(other$bornPoint) : (other$bornPoint == null))) {
             return false;
         }
-        final Object this$warMap = this.getWarMap();
-        final Object other$warMap = other.getWarMap();
-        Label_0250: {
-            if (this$warMap == null) {
-                if (other$warMap == null) {
-                    break Label_0250;
-                }
-            }
-            else if (this$warMap.equals(other$warMap)) {
-                break Label_0250;
-            }
+        Object this$warMap = this.getWarMap();
+        Object other$warMap = other.getWarMap();
+        if (!((this$warMap != null) ? this$warMap.equals(other$warMap) : (other$warMap == null))) {
             return false;
         }
-        final Object this$mapType = this.getMapType();
-        final Object other$mapType = other.getMapType();
-        Label_0287: {
-            if (this$mapType == null) {
-                if (other$mapType == null) {
-                    break Label_0287;
-                }
-            }
-            else if (this$mapType.equals(other$mapType)) {
-                break Label_0287;
-            }
+        Object this$mapType = this.getMapType();
+        Object other$mapType = other.getMapType();
+        if (!((this$mapType != null) ? this$mapType.equals(other$mapType) : (other$mapType == null))) {
             return false;
         }
-        final Object this$canKuaFu = this.getCanKuaFu();
-        final Object other$canKuaFu = other.getCanKuaFu();
-        Label_0324: {
-            if (this$canKuaFu == null) {
-                if (other$canKuaFu == null) {
-                    break Label_0324;
-                }
-            }
-            else if (this$canKuaFu.equals(other$canKuaFu)) {
-                break Label_0324;
-            }
+        Object this$canKuaFu = this.getCanKuaFu();
+        Object other$canKuaFu = other.getCanKuaFu();
+        if (!((this$canKuaFu != null) ? this$canKuaFu.equals(other$canKuaFu) : (other$canKuaFu == null))) {
             return false;
         }
         if (this.getCaneasyleave() != other.getCaneasyleave()) {
@@ -318,43 +256,19 @@ public class SysMapInfo implements Serializable
         if (this.getIsWanted() != other.getIsWanted()) {
             return false;
         }
-        final Object this$fuBen = this.getFuBen();
-        final Object other$fuBen = other.getFuBen();
-        Label_0426: {
-            if (this$fuBen == null) {
-                if (other$fuBen == null) {
-                    break Label_0426;
-                }
-            }
-            else if (this$fuBen.equals(other$fuBen)) {
-                break Label_0426;
-            }
+        Object this$fuBen = this.getFuBen();
+        Object other$fuBen = other.getFuBen();
+        if (!((this$fuBen != null) ? this$fuBen.equals(other$fuBen) : (other$fuBen == null))) {
             return false;
         }
-        final Object this$levelScope = this.getLevelScope();
-        final Object other$levelScope = other.getLevelScope();
-        Label_0463: {
-            if (this$levelScope == null) {
-                if (other$levelScope == null) {
-                    break Label_0463;
-                }
-            }
-            else if (this$levelScope.equals(other$levelScope)) {
-                break Label_0463;
-            }
+        Object this$levelScope = this.getLevelScope();
+        Object other$levelScope = other.getLevelScope();
+        if (!((this$levelScope != null) ? this$levelScope.equals(other$levelScope) : (other$levelScope == null))) {
             return false;
         }
-        final Object this$howToOut = this.getHowToOut();
-        final Object other$howToOut = other.getHowToOut();
-        if (this$howToOut == null) {
-            if (other$howToOut == null) {
-                return true;
-            }
-        }
-        else if (this$howToOut.equals(other$howToOut)) {
-            return true;
-        }
-        return false;
+        Object this$howToOut = this.getHowToOut();
+        Object other$howToOut = other.getHowToOut();
+        return (this$howToOut != null) ? this$howToOut.equals(other$howToOut) : (other$howToOut == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -363,34 +277,34 @@ public class SysMapInfo implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $mapSerial = this.getMapSerial();
+        Object $mapSerial = this.getMapSerial();
         result = result * 59 + (($mapSerial == null) ? 43 : $mapSerial.hashCode());
-        final Object $lvLimit = this.getLvLimit();
+        Object $lvLimit = this.getLvLimit();
         result = result * 59 + (($lvLimit == null) ? 43 : $lvLimit.hashCode());
-        final Object $bornPoint = this.getBornPoint();
+        Object $bornPoint = this.getBornPoint();
         result = result * 59 + (($bornPoint == null) ? 43 : $bornPoint.hashCode());
-        final Object $warMap = this.getWarMap();
+        Object $warMap = this.getWarMap();
         result = result * 59 + (($warMap == null) ? 43 : $warMap.hashCode());
-        final Object $mapType = this.getMapType();
+        Object $mapType = this.getMapType();
         result = result * 59 + (($mapType == null) ? 43 : $mapType.hashCode());
-        final Object $canKuaFu = this.getCanKuaFu();
+        Object $canKuaFu = this.getCanKuaFu();
         result = result * 59 + (($canKuaFu == null) ? 43 : $canKuaFu.hashCode());
         result = result * 59 + this.getCaneasyleave();
         result = result * 59 + this.getBgw();
         result = result * 59 + this.getBgh();
         result = result * 59 + this.getIsPkMap();
         result = result * 59 + this.getIsWanted();
-        final Object $fuBen = this.getFuBen();
+        Object $fuBen = this.getFuBen();
         result = result * 59 + (($fuBen == null) ? 43 : $fuBen.hashCode());
-        final Object $levelScope = this.getLevelScope();
+        Object $levelScope = this.getLevelScope();
         result = result * 59 + (($levelScope == null) ? 43 : $levelScope.hashCode());
-        final Object $howToOut = this.getHowToOut();
+        Object $howToOut = this.getHowToOut();
         result = result * 59 + (($howToOut == null) ? 43 : $howToOut.hashCode());
         return result;
     }

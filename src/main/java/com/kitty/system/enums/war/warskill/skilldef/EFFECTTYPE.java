@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.warskill.skilldef;
 
 import java.util.HashMap;
@@ -142,18 +141,18 @@ public enum EFFECTTYPE
     private String yhjy;
     
     public static List<Map<String, Object>> toList() {
-        final List list = Lists.newArrayList();
-        for (final EFFECTTYPE effecttype : values()) {
-            final Map<String, Object> map = new HashMap<String, Object>();
-            map.put("value", effecttype.getValue());
-            map.put("swbl", effecttype.getSwbl());
-            map.put("fyqc", effecttype.getFyqc());
-            map.put("mbshClear", effecttype.getMbshClear());
-            map.put("jsClear", effecttype.getJsClear());
-            map.put("dtbhClear", effecttype.getDtbhClear());
-            map.put("chddClear", effecttype.getChddClear());
-            map.put("gyzlControl", effecttype.getGyzlControl());
-            map.put("qsshClear", effecttype.getQsshClear());
+        List<Map<String, Object>> list = Lists.newArrayList();
+        for (EFFECTTYPE effecttype : values()) {
+            Map<String, Object> map = new HashMap();
+            map.put("value", Integer.valueOf(effecttype.getValue()));
+            map.put("swbl", Integer.valueOf(effecttype.getSwbl()));
+            map.put("fyqc", Integer.valueOf(effecttype.getFyqc()));
+            map.put("mbshClear", Integer.valueOf(effecttype.getMbshClear()));
+            map.put("jsClear", Integer.valueOf(effecttype.getJsClear()));
+            map.put("dtbhClear", Integer.valueOf(effecttype.getDtbhClear()));
+            map.put("chddClear", Integer.valueOf(effecttype.getChddClear()));
+            map.put("gyzlControl", Integer.valueOf(effecttype.getGyzlControl()));
+            map.put("qsshClear", Integer.valueOf(effecttype.getQsshClear()));
             map.put("yhjy", effecttype.getYhjy());
             list.add(map);
         }

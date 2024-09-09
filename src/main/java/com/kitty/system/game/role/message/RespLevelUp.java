@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.role.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,7 +33,7 @@ public class RespLevelUp extends Message
         if (!(o instanceof RespLevelUp)) {
             return false;
         }
-        final RespLevelUp other = (RespLevelUp)o;
+        RespLevelUp other = (RespLevelUp)o;
         return other.canEqual(this) && this.getRoleId() == other.getRoleId() && this.getLevel() == other.getLevel();
     }
     
@@ -45,7 +43,7 @@ public class RespLevelUp extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         result = result * 59 + this.getLevel();
@@ -60,7 +58,6 @@ public class RespLevelUp extends Message
     public RespLevelUp() {
     }
     
-    @ConstructorProperties({ "roleId", "level" })
     public RespLevelUp(final int roleId, final int level) {
         this.roleId = roleId;
         this.level = level;

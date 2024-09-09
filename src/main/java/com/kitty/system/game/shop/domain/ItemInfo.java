@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.shop.domain;
 
 import java.util.ArrayList;
@@ -20,15 +19,15 @@ public class ItemInfo
         this.pay_type = 1;
         this.discount = 0;
         this.quotaLimit = -1;
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
     }
     
-    public ItemInfo(final int serial, final int count, final int pay_type, final int price, final int discount, final int quotaLimit, final List<FiedValue> list) {
+    public ItemInfo(int serial, int count, int pay_type, int price, int discount, int quotaLimit, List<FiedValue> list) {
         this.count = 1;
         this.pay_type = 1;
         this.discount = 0;
         this.quotaLimit = -1;
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
         this.serial = serial;
         this.count = count;
         this.pay_type = pay_type;
@@ -38,12 +37,12 @@ public class ItemInfo
         this.list = list;
     }
     
-    public ItemInfo(final int serial, final int count, final int pay_type, final int price, final int discount, final int quotaLimit) {
+    public ItemInfo(int serial, int count, int pay_type, int price, int discount, int quotaLimit) {
         this.count = 1;
         this.pay_type = 1;
         this.discount = 0;
         this.quotaLimit = -1;
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
         this.serial = serial;
         this.count = count;
         this.pay_type = pay_type;
@@ -116,7 +115,7 @@ public class ItemInfo
         if (!(o instanceof ItemInfo)) {
             return false;
         }
-        final ItemInfo other = (ItemInfo)o;
+        ItemInfo other = (ItemInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -138,17 +137,9 @@ public class ItemInfo
         if (this.getQuotaLimit() != other.getQuotaLimit()) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -157,7 +148,7 @@ public class ItemInfo
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getCount();
@@ -165,7 +156,7 @@ public class ItemInfo
         result = result * 59 + this.getPrice();
         result = result * 59 + this.getDiscount();
         result = result * 59 + this.getQuotaLimit();
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }

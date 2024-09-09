@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -57,37 +56,21 @@ public class RespGangWarsInfo extends Message
         if (!(o instanceof RespGangWarsInfo)) {
             return false;
         }
-        final RespGangWarsInfo other = (RespGangWarsInfo)o;
+        RespGangWarsInfo other = (RespGangWarsInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$sideName = this.getSideName();
-        final Object other$sideName = other.getSideName();
-        Label_0065: {
-            if (this$sideName == null) {
-                if (other$sideName == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$sideName.equals(other$sideName)) {
-                break Label_0065;
-            }
+        Object this$sideName = this.getSideName();
+        Object other$sideName = other.getSideName();
+        if (!((this$sideName != null) ? this$sideName.equals(other$sideName) : (other$sideName == null))) {
             return false;
         }
         if (this.getSideNum() != other.getSideNum()) {
             return false;
         }
-        final Object this$enemyName = this.getEnemyName();
-        final Object other$enemyName = other.getEnemyName();
-        if (this$enemyName == null) {
-            if (other$enemyName == null) {
-                return this.getEnemyNum() == other.getEnemyNum();
-            }
-        }
-        else if (this$enemyName.equals(other$enemyName)) {
-            return this.getEnemyNum() == other.getEnemyNum();
-        }
-        return false;
+        Object this$enemyName = this.getEnemyName();
+        Object other$enemyName = other.getEnemyName();
+        return ((this$enemyName != null) ? this$enemyName.equals(other$enemyName) : (other$enemyName == null)) && this.getEnemyNum() == other.getEnemyNum();
     }
     
     protected boolean canEqual(final Object other) {
@@ -96,12 +79,12 @@ public class RespGangWarsInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $sideName = this.getSideName();
+        Object $sideName = this.getSideName();
         result = result * 59 + (($sideName == null) ? 43 : $sideName.hashCode());
         result = result * 59 + this.getSideNum();
-        final Object $enemyName = this.getEnemyName();
+        Object $enemyName = this.getEnemyName();
         result = result * 59 + (($enemyName == null) ? 43 : $enemyName.hashCode());
         result = result * 59 + this.getEnemyNum();
         return result;
@@ -109,6 +92,6 @@ public class RespGangWarsInfo extends Message
     
     @Override
     public String toString() {
-        return "RespGangWarsInfo(sideName=" + this.getSideName() + ", sideNum=" + this.getSideNum() + ", enemyName=" + this.getEnemyName() + ", enemyNum=" + this.getEnemyNum() + ")";
+        return "RespGangWarsInfo(sideName=" + this.getSideName() + ", sideNum=" + (int)this.getSideNum() + ", enemyName=" + this.getEnemyName() + ", enemyNum=" + (int)this.getEnemyNum() + ")";
     }
 }

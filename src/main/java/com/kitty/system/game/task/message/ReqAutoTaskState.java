@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqAutoTaskState extends Message
 {
     private byte actionType;
     private byte stage;
+    
+    public ReqAutoTaskState() {
+    }
     
     public void setActionType(final byte actionType) {
         this.actionType = actionType;

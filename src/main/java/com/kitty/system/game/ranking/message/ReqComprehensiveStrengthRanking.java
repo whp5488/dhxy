@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqComprehensiveStrengthRanking extends Message
 {
     private byte race;
     private byte serverId;
+    
+    public ReqComprehensiveStrengthRanking() {
+    }
     
     public byte getRace() {
         return this.race;
@@ -34,7 +36,7 @@ public class ReqComprehensiveStrengthRanking extends Message
         if (!(o instanceof ReqComprehensiveStrengthRanking)) {
             return false;
         }
-        final ReqComprehensiveStrengthRanking other = (ReqComprehensiveStrengthRanking)o;
+        ReqComprehensiveStrengthRanking other = (ReqComprehensiveStrengthRanking)o;
         return other.canEqual(this) && this.getRace() == other.getRace() && this.getServerId() == other.getServerId();
     }
     
@@ -44,7 +46,7 @@ public class ReqComprehensiveStrengthRanking extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRace();
         result = result * 59 + this.getServerId();
@@ -53,6 +55,6 @@ public class ReqComprehensiveStrengthRanking extends Message
     
     @Override
     public String toString() {
-        return "ReqComprehensiveStrengthRanking(race=" + this.getRace() + ", serverId=" + this.getServerId() + ")";
+        return "ReqComprehensiveStrengthRanking(race=" + (int)this.getRace() + ", serverId=" + (int)this.getServerId() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate.model;
 
 import com.kitty.mina.cache.DataCache;
@@ -16,18 +15,18 @@ public class QueueUpService
     public QueueUpService() {
         this.needQueue = false;
         this.ONLINE_NUM = 1600;
-        this.QueueUpInfos = new LinkedList<String>();
+        this.QueueUpInfos = new LinkedList();
     }
     
-    public int getIndex(final String sid) {
+    public int getIndex(String sid) {
         return this.QueueUpInfos.indexOf(sid) + 1;
     }
     
-    public int getQueueTime(final String sid) {
+    public int getQueueTime(String sid) {
         return this.getIndex(sid) * 3;
     }
     
-    public int addQueue(final String sid) {
+    public int addQueue(String sid) {
         boolean success;
         do {
             success = this.QueueUpInfos.add(sid);
@@ -35,26 +34,26 @@ public class QueueUpService
         return this.getIndex(sid);
     }
     
-    public boolean peek(final String sid) {
+    public boolean peek(String sid) {
         return sid.equals(this.QueueUpInfos.peek()) && this.remove(sid);
     }
     
-    public boolean remove(final String sid) {
+    public boolean remove(String sid) {
         return this.QueueUpInfos.remove(sid);
     }
     
     public boolean isNeedQueue() {
-        final int onlineNum = DataCache.ONLINE_ROLES.size();
+        int onlineNum = DataCache.ONLINE_ROLES.size();
         return onlineNum >= this.ONLINE_NUM && this.needQueue;
     }
     
-    public void setNeedQueue(final boolean needQueue) {
+    public void setNeedQueue(boolean needQueue) {
         if (!(this.needQueue = needQueue)) {
             this.QueueUpInfos.clear();
         }
     }
     
-    public void setOnlineNum(final int ONLINE_NUM) {
+    public void setOnlineNum(int ONLINE_NUM) {
         this.ONLINE_NUM = ONLINE_NUM;
     }
 }

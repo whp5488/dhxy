@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.util;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -20,49 +19,49 @@ import com.kitty.system.game.role.domain.Role;
 
 public class RankingUtils
 {
-    public static Map<String, Integer> getTotalRepair(final Role role, final List<Pet> pets, final List<WearEquip> wearEquips) {
-        final Map<String, Integer> map = (Map<String, Integer>)new HashedMap();
-        final int[] skillScores = { 0 };
+    public RankingUtils() {
+    }
+    
+    public static Map<String, Integer> getTotalRepair(Role role, List<Pet> pets, List<WearEquip> wearEquips) {
+        Map<String, Integer> map = new HashedMap();
+        int[] skillScores = { 0 };
         role.getSkills().values().stream().forEach(roleSkill -> {
-            final int n;
-            skillScores[0] += BigDecimalUtil.decimalScaleIntegerDown(0, roleSkill.getProficient() / 100);
+            skillScores[0] += BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Integer.valueOf((int)roleSkill.getProficient() / 100));
             return;
         });
-        final int skillScore = BigDecimalUtil.decimalScaleIntegerDown(0, BigDecimalUtil.multiply(String.valueOf(skillScores[0]), String.valueOf(2.5)));
-        map.put("skillScore", skillScore);
-        final int[] petScores = { 0 };
+        int skillScore = BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), BigDecimalUtil.multiply(String.valueOf(skillScores[0]), String.valueOf(2.5)));
+        map.put("skillScore", Integer.valueOf(skillScore));
+        int[] petScores = { 0 };
         if (pets != null) {
             pets.stream().forEach(pet -> {
                 pet.doAfterInit();
-                final int n2;
-                petScores[0] += BigDecimalUtil.decimalScaleIntegerDown(0, pet.getScore());
+                petScores[0] += BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), pet.getScore());
                 return;
             });
         }
-        final int petScore = petScores[0];
-        map.put("petScore", petScore);
-        final int[] wearEquipScores = { 0 };
+        int petScore = petScores[0];
+        map.put("petScore", Integer.valueOf(petScore));
+        int[] wearEquipScores = { 0 };
         if (wearEquips != null) {
             wearEquips.stream().forEach(wearEquip -> {
                 wearEquip.doAfterInit();
-                final Optional<FiedEquip> optional = wearEquip.getField().stream().filter(fiedEquip -> fiedEquip.getValue().equals(6679)).findAny();
+                Optional<FiedEquip> optional = wearEquip.getField().stream().filter(fiedEquip -> fiedEquip.getValue().equals(Integer.valueOf(6679))).findAny();
                 if (optional.isPresent()) {
-                    final Integer value = optional.get().getValue();
+                    Integer value = ((FiedEquip)optional.get()).getValue();
                     if (value != null) {
-                        final int n3;
-                        wearEquipScores[0] += value;
+                        wearEquipScores[0] += (int)value;
                     }
                 }
                 return;
             });
         }
-        final int wearEquipScore = wearEquipScores[0];
-        map.put("wearEquipScore", wearEquipScore);
+        int wearEquipScore = wearEquipScores[0];
+        map.put("wearEquipScore", Integer.valueOf(wearEquipScore));
         return map;
     }
     
-    public static int[] getRoleQlkWuxing(final Role role, final List<WearEquip> wearEquips, final QlkRankingSource qlkRankingSource) {
-        final NutMap tianFuMap = TianFuUtils.countFuPlayerBookGain(role);
+    public static int[] getRoleQlkWuxing(Role role, List<WearEquip> wearEquips, QlkRankingSource qlkRankingSource) {
+        NutMap tianFuMap = TianFuUtils.countFuPlayerBookGain(role);
         int qlkj = 0;
         int qlkm = 0;
         int qlks = 0;
@@ -77,35 +76,35 @@ public class RankingUtils
         }
         if (wearEquips != null && wearEquips.size() > 0) {
             for (int i = wearEquips.size() - 1; i >= 0; --i) {
-                final WearEquip wearEquip = wearEquips.get(i);
-                qlkj += (int)CountUtils.countEquipPro(wearEquip, PRO_DICT_TYPE.Q_KJ.getDist());
-                qlkm += (int)CountUtils.countEquipPro(wearEquip, PRO_DICT_TYPE.Q_KM.getDist());
-                qlks += (int)CountUtils.countEquipPro(wearEquip, PRO_DICT_TYPE.Q_KS.getDist());
-                qlkh += (int)CountUtils.countEquipPro(wearEquip, PRO_DICT_TYPE.Q_KH.getDist());
-                qlkt += (int)CountUtils.countEquipPro(wearEquip, PRO_DICT_TYPE.Q_KT.getDist());
+                WearEquip wearEquip = (WearEquip)wearEquips.get(i);
+                qlkj = (int)((double)qlkj + CountUtils.countEquipPro(wearEquip, Integer.valueOf(PRO_DICT_TYPE.Q_KJ.getDist())));
+                qlkm = (int)((double)qlkm + CountUtils.countEquipPro(wearEquip, Integer.valueOf(PRO_DICT_TYPE.Q_KM.getDist())));
+                qlks = (int)((double)qlks + CountUtils.countEquipPro(wearEquip, Integer.valueOf(PRO_DICT_TYPE.Q_KS.getDist())));
+                qlkh = (int)((double)qlkh + CountUtils.countEquipPro(wearEquip, Integer.valueOf(PRO_DICT_TYPE.Q_KH.getDist())));
+                qlkt = (int)((double)qlkt + CountUtils.countEquipPro(wearEquip, Integer.valueOf(PRO_DICT_TYPE.Q_KT.getDist())));
             }
         }
         if (tianFuMap != null && tianFuMap.size() > 0) {
-            qlkj += (int)(TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KJ.getDist()), qlkj) * 1000.0);
-            qlkm += (int)(TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KM.getDist()), qlkm) * 1000.0);
-            qlks += (int)(TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KS.getDist()), qlks) * 1000.0);
-            qlkh += (int)(TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KH.getDist()), qlkh) * 1000.0);
-            qlkt += (int)(TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KT.getDist()), qlkt) * 1000.0);
+            qlkj = (int)((double)qlkj + TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KJ.getDist()), (double)qlkj) * 1000.0);
+            qlkm = (int)((double)qlkm + TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KM.getDist()), (double)qlkm) * 1000.0);
+            qlks = (int)((double)qlks + TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KS.getDist()), (double)qlks) * 1000.0);
+            qlkh = (int)((double)qlkh + TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KH.getDist()), (double)qlkh) * 1000.0);
+            qlkt = (int)((double)qlkt + TianFuUtils.getPropertyForMap(tianFuMap, String.valueOf(PRO_DICT_TYPE.Q_KT.getDist()), (double)qlkt) * 1000.0);
         }
         return new int[] { qlkj, qlkm, qlks, qlkh, qlkt };
     }
     
-    public static WeaponsRankingSource createWeaponsRankingSource(final Role role, final WearEquip wearEquip, int score) {
-        final Optional<FiedEquip> optional = wearEquip.getField().stream().filter(fiedEquip -> fiedEquip.getType().equals(6679)).findAny();
+    public static WeaponsRankingSource createWeaponsRankingSource(Role role, WearEquip wearEquip, int score) {
+        Optional<FiedEquip> optional = wearEquip.getField().stream().filter(fiedEquip -> fiedEquip.getType().equals(Integer.valueOf(6679))).findAny();
         if (optional.isPresent()) {
-            final Integer value = optional.get().getValue();
+            Integer value = ((FiedEquip)optional.get()).getValue();
             if (value != null) {
-                score = value;
-                final WeaponsRankingSource weaponsRankingSource = new WeaponsRankingSource(wearEquip, role, score);
+                score = (int)value;
+                WeaponsRankingSource weaponsRankingSource = new WeaponsRankingSource(wearEquip, role, score);
                 return weaponsRankingSource;
             }
         }
-        final WeaponsRankingSource weaponsRankingSource2 = new WeaponsRankingSource(wearEquip, role, 0);
+        WeaponsRankingSource weaponsRankingSource2 = new WeaponsRankingSource(wearEquip, role, 0);
         return weaponsRankingSource2;
     }
 }

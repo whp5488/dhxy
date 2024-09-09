@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -16,6 +15,9 @@ public class SysDataMonsterPeripheral implements Serializable
     private int gemNum;
     @Column("color")
     private byte color;
+    
+    public SysDataMonsterPeripheral() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -57,7 +59,7 @@ public class SysDataMonsterPeripheral implements Serializable
         if (!(o instanceof SysDataMonsterPeripheral)) {
             return false;
         }
-        final SysDataMonsterPeripheral other = (SysDataMonsterPeripheral)o;
+        SysDataMonsterPeripheral other = (SysDataMonsterPeripheral)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getWeaponId() == other.getWeaponId() && this.getGemNum() == other.getGemNum() && this.getColor() == other.getColor();
     }
     
@@ -67,7 +69,7 @@ public class SysDataMonsterPeripheral implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getWeaponId();
@@ -78,6 +80,6 @@ public class SysDataMonsterPeripheral implements Serializable
     
     @Override
     public String toString() {
-        return "SysDataMonsterPeripheral(serial=" + this.getSerial() + ", weaponId=" + this.getWeaponId() + ", gemNum=" + this.getGemNum() + ", color=" + this.getColor() + ")";
+        return "SysDataMonsterPeripheral(serial=" + this.getSerial() + ", weaponId=" + this.getWeaponId() + ", gemNum=" + this.getGemNum() + ", color=" + (int)this.getColor() + ")";
     }
 }

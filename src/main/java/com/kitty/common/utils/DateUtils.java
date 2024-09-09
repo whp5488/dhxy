@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.Calendar;
@@ -16,6 +15,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static String YYYYMMDDHHMMSS;
     public static String YYYY_MM_DD_HH_MM_SS;
     private static String[] parsePatterns;
+    
+    public DateUtils() {
+    }
     
     public static Date getNowDate() {
         return new Date();
@@ -49,60 +51,60 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         try {
             return new SimpleDateFormat(format).parse(ts);
         }
-        catch (final ParseException e) {
+        catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
     
     public static final String datePath() {
-        final Date now = new Date();
+        Date now = new Date();
         return DateFormatUtils.format(now, "yyyy/MM/dd");
     }
     
     public static final String dateTime() {
-        final Date now = new Date();
+        Date now = new Date();
         return DateFormatUtils.format(now, "yyyyMMdd");
     }
     
-    public static Date parseDate(final Object str) {
+    public static Date parseDate(Object str) {
         if (str == null) {
             return null;
         }
         try {
             return parseDate(str.toString(), DateUtils.parsePatterns);
         }
-        catch (final ParseException e) {
+        catch (ParseException e) {
             return null;
         }
     }
     
     public static Date getServerStartDate() {
-        final long time = ManagementFactory.getRuntimeMXBean().getStartTime();
+        long time = ManagementFactory.getRuntimeMXBean().getStartTime();
         return new Date(time);
     }
     
-    public static int differentDaysByMillisecond(final Date date1, final Date date2) {
+    public static int differentDaysByMillisecond(Date date1, Date date2) {
         return Math.abs((int)((date2.getTime() - date1.getTime()) / 86400000L));
     }
     
-    public static String getDatePoor(final Date endDate, final Date nowDate) {
-        final long nd = 86400000L;
-        final long nh = 3600000L;
-        final long nm = 60000L;
-        final long diff = endDate.getTime() - nowDate.getTime();
-        final long day = diff / nd;
-        final long hour = diff % nd / nh;
-        final long min = diff % nd % nh / nm;
+    public static String getDatePoor(Date endDate, Date nowDate) {
+        long nd = 86400000L;
+        long nh = 3600000L;
+        long nm = 60000L;
+        long diff = endDate.getTime() - nowDate.getTime();
+        long day = diff / nd;
+        long hour = diff % nd / nh;
+        long min = diff % nd % nh / nm;
         return day + "天" + hour + "小时" + min + "分钟";
     }
     
-    public static String dayForWeek(final Date tmpDate) {
-        final Calendar cal = Calendar.getInstance();
-        final String[] weekDays = { "7", "1", "2", "3", "4", "5", "6" };
+    public static String dayForWeek(Date tmpDate) {
+        Calendar cal = Calendar.getInstance();
+        String[] weekDays = { "7", "1", "2", "3", "4", "5", "6" };
         try {
             cal.setTime(tmpDate);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         int w = cal.get(7) - 1;
@@ -112,8 +114,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         return weekDays[w];
     }
     
-    public static String formatDate(final Date date) {
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    public static String formatDate(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         return simpleDateFormat.format(date);
     }
     

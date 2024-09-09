@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.task.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -53,7 +51,7 @@ public class RespQuestionProvince extends Message
         if (!(o instanceof RespQuestionProvince)) {
             return false;
         }
-        final RespQuestionProvince other = (RespQuestionProvince)o;
+        RespQuestionProvince other = (RespQuestionProvince)o;
         return other.canEqual(this) && this.getTime() == other.getTime() && this.getSerial() == other.getSerial() && this.getNum() == other.getNum() && this.getMistakes() == other.getMistakes();
     }
     
@@ -63,7 +61,7 @@ public class RespQuestionProvince extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getTime();
         result = result * 59 + this.getSerial();
@@ -80,7 +78,6 @@ public class RespQuestionProvince extends Message
     public RespQuestionProvince() {
     }
     
-    @ConstructorProperties({ "time", "serial", "num", "mistakes" })
     public RespQuestionProvince(final int time, final int serial, final int num, final int mistakes) {
         this.time = time;
         this.serial = serial;

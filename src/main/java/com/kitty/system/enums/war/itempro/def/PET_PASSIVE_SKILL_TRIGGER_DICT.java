@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 import java.util.ArrayList;
@@ -52,22 +51,22 @@ public enum PET_PASSIVE_SKILL_TRIGGER_DICT
     private String value;
     
     public static List<String> toList() {
-        final List list = Lists.newArrayList();
-        for (final PET_PASSIVE_SKILL_TRIGGER_DICT n : values()) {
+        List<String> list = Lists.newArrayList();
+        for (PET_PASSIVE_SKILL_TRIGGER_DICT n : values()) {
             list.add(n.getValue());
         }
         return list;
     }
     
     public static Map<Integer, List<String>> getSkillTypeOther() {
-        final Map<Integer, List<String>> map = new HashMap<Integer, List<String>>();
-        final List<String> list83036 = new ArrayList<String>() {
+        Map<Integer, List<String>> map = new HashMap();
+        List<String> list83036 = new ArrayList<String>() {
             {
                 this.add(PET_PASSIVE_SKILL_TRIGGER_DICT.ROUND_START.getValue());
                 this.add(PET_PASSIVE_SKILL_TRIGGER_DICT.MAGIC_ATTACK_END.getValue());
             }
         };
-        map.put(83036, list83036);
+        map.put(Integer.valueOf(83036), list83036);
         return map;
     }
     

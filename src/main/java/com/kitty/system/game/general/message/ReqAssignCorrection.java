@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.general.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqAssignCorrection extends Message
 {
     private Integer petId;
     private String nutMap;
+    
+    public ReqAssignCorrection() {
+    }
     
     public Integer getPetId() {
         return this.petId;
@@ -34,34 +36,18 @@ public class ReqAssignCorrection extends Message
         if (!(o instanceof ReqAssignCorrection)) {
             return false;
         }
-        final ReqAssignCorrection other = (ReqAssignCorrection)o;
+        ReqAssignCorrection other = (ReqAssignCorrection)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$petId = this.getPetId();
-        final Object other$petId = other.getPetId();
-        Label_0065: {
-            if (this$petId == null) {
-                if (other$petId == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$petId.equals(other$petId)) {
-                break Label_0065;
-            }
+        Object this$petId = this.getPetId();
+        Object other$petId = other.getPetId();
+        if (!((this$petId != null) ? this$petId.equals(other$petId) : (other$petId == null))) {
             return false;
         }
-        final Object this$nutMap = this.getNutMap();
-        final Object other$nutMap = other.getNutMap();
-        if (this$nutMap == null) {
-            if (other$nutMap == null) {
-                return true;
-            }
-        }
-        else if (this$nutMap.equals(other$nutMap)) {
-            return true;
-        }
-        return false;
+        Object this$nutMap = this.getNutMap();
+        Object other$nutMap = other.getNutMap();
+        return (this$nutMap != null) ? this$nutMap.equals(other$nutMap) : (other$nutMap == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -70,11 +56,11 @@ public class ReqAssignCorrection extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $petId = this.getPetId();
+        Object $petId = this.getPetId();
         result = result * 59 + (($petId == null) ? 43 : $petId.hashCode());
-        final Object $nutMap = this.getNutMap();
+        Object $nutMap = this.getNutMap();
         result = result * 59 + (($nutMap == null) ? 43 : $nutMap.hashCode());
         return result;
     }

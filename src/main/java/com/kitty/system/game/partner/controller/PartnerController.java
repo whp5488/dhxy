@@ -1,9 +1,8 @@
-
 package com.kitty.system.game.partner.controller;
 
 import com.kitty.system.game.partner.message.ReqChangeDefaultSkill;
-import com.kitty.mina.cache.DataCache;
 import com.kitty.system.game.partner.domain.Partner;
+import com.kitty.mina.cache.DataCache;
 import java.util.Map;
 import com.kitty.system.game.partner.message.ReqFeedPartner;
 import com.kitty.system.game.partner.message.ReqPartnerList;
@@ -31,24 +30,24 @@ public class PartnerController
     }
     
     @RequestMapping
-    public void recruitsPartner(final IoSession session, final ReqPartnerRecruits reqPartnerRecruits) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void recruitsPartner(IoSession session, ReqPartnerRecruits reqPartnerRecruits) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null && reqPartnerRecruits.getPartnerId() > 0) {
-            this.partnerService.addPartner(role, reqPartnerRecruits.getPartnerId());
+            this.partnerService.addPartner(role, Integer.valueOf(reqPartnerRecruits.getPartnerId()));
         }
     }
     
     @RequestMapping
-    public void combatPartner(final IoSession session, final ReqSelectCurrentPartner reqSelectCurrentPartner) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void combatPartner(IoSession session, ReqSelectCurrentPartner reqSelectCurrentPartner) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null && reqSelectCurrentPartner != null) {
             this.partnerService.combatPartner(role, reqSelectCurrentPartner);
         }
     }
     
     @RequestMapping
-    public void selectPartnerList(final IoSession session, final ReqPartnerList reqPartnerList) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void selectPartnerList(IoSession session, ReqPartnerList reqPartnerList) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
             if (reqPartnerList.getIsFight() == 1) {
                 this.partnerService.selectFightPartnerList(role);
@@ -60,39 +59,39 @@ public class PartnerController
     }
     
     @RequestMapping
-    public void feedPartner(final IoSession session, final ReqFeedPartner reqFeedPartner) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void feedPartner(IoSession session, ReqFeedPartner reqFeedPartner) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final String type = reqFeedPartner.getType();
+            String type = reqFeedPartner.getType();
             if (type == null) {
                 return;
             }
-            final Integer partnerId = reqFeedPartner.getPartnerId();
+            Integer partnerId = Integer.valueOf(reqFeedPartner.getPartnerId());
             if (partnerId == null) {
                 return;
             }
-            final Map<Integer, Partner> partnerMap = DataCache.PARTNER_MAP.get(role.getId());
+            Map<Integer, Partner> partnerMap = (Map)DataCache.PARTNER_MAP.get(role.getId());
             if (partnerMap == null || partnerMap.size() <= 0) {
                 return;
             }
-            final Partner partner = partnerMap.get(partnerId);
+            Partner partner = (Partner)partnerMap.get(partnerId);
             if (partner == null) {
                 return;
             }
-            final Integer param = reqFeedPartner.getParam();
+            Integer param = Integer.valueOf(reqFeedPartner.getParam());
             if (param == null) {
                 return;
             }
-            this.partnerService.feedPartner(role, partner, type, param);
+            this.partnerService.feedPartner(role, partner, type, (int)param);
         }
     }
     
     @RequestMapping
-    public void changeDefaultSkill(final IoSession session, final ReqChangeDefaultSkill reqChangeDefaultSkill) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void changeDefaultSkill(IoSession session, ReqChangeDefaultSkill reqChangeDefaultSkill) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role != null) {
-            final int pId = reqChangeDefaultSkill.getPId();
-            final int skillId = reqChangeDefaultSkill.getSkillId();
+            int pId = reqChangeDefaultSkill.getPId();
+            int skillId = reqChangeDefaultSkill.getSkillId();
             if (pId < 0 || skillId < 0) {
                 return;
             }

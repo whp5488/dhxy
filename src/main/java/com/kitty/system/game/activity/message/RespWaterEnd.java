@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class RespWaterEnd extends Message
     public RespWaterEnd() {
         this.round = 0;
         this.rank = 0;
-        this.matchResult = new ArrayList<WaterMatchResultInfo>(3);
+        this.matchResult = new ArrayList(3);
         this.score = 0;
         this.feats = 0;
     }
@@ -81,7 +80,7 @@ public class RespWaterEnd extends Message
         if (!(o instanceof RespWaterEnd)) {
             return false;
         }
-        final RespWaterEnd other = (RespWaterEnd)o;
+        RespWaterEnd other = (RespWaterEnd)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -91,30 +90,14 @@ public class RespWaterEnd extends Message
         if (this.getRank() != other.getRank()) {
             return false;
         }
-        final Object this$itself = this.getItself();
-        final Object other$itself = other.getItself();
-        Label_0091: {
-            if (this$itself == null) {
-                if (other$itself == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$itself.equals(other$itself)) {
-                break Label_0091;
-            }
+        Object this$itself = this.getItself();
+        Object other$itself = other.getItself();
+        if (!((this$itself != null) ? this$itself.equals(other$itself) : (other$itself == null))) {
             return false;
         }
-        final Object this$matchResult = this.getMatchResult();
-        final Object other$matchResult = other.getMatchResult();
-        if (this$matchResult == null) {
-            if (other$matchResult == null) {
-                return this.getScore() == other.getScore() && this.getFeats() == other.getFeats();
-            }
-        }
-        else if (this$matchResult.equals(other$matchResult)) {
-            return this.getScore() == other.getScore() && this.getFeats() == other.getFeats();
-        }
-        return false;
+        Object this$matchResult = this.getMatchResult();
+        Object other$matchResult = other.getMatchResult();
+        return ((this$matchResult != null) ? this$matchResult.equals(other$matchResult) : (other$matchResult == null)) && this.getScore() == other.getScore() && this.getFeats() == other.getFeats();
     }
     
     protected boolean canEqual(final Object other) {
@@ -123,13 +106,13 @@ public class RespWaterEnd extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRound();
         result = result * 59 + this.getRank();
-        final Object $itself = this.getItself();
+        Object $itself = this.getItself();
         result = result * 59 + (($itself == null) ? 43 : $itself.hashCode());
-        final Object $matchResult = this.getMatchResult();
+        Object $matchResult = this.getMatchResult();
         result = result * 59 + (($matchResult == null) ? 43 : $matchResult.hashCode());
         result = result * 59 + this.getScore();
         result = result * 59 + this.getFeats();
@@ -138,6 +121,6 @@ public class RespWaterEnd extends Message
     
     @Override
     public String toString() {
-        return "RespWaterEnd(round=" + this.getRound() + ", rank=" + this.getRank() + ", itself=" + this.getItself() + ", matchResult=" + this.getMatchResult() + ", score=" + this.getScore() + ", feats=" + this.getFeats() + ")";
+        return "RespWaterEnd(round=" + (int)this.getRound() + ", rank=" + (int)this.getRank() + ", itself=" + this.getItself() + ", matchResult=" + this.getMatchResult() + ", score=" + this.getScore() + ", feats=" + this.getFeats() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.roundstart;
 
 import com.kitty.system.game.pet.domain.Pet;
@@ -14,23 +13,26 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31405 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31405() {
+    }
+    
     @Override
-    public void roundStart(final Fight fight, final PetFightObject petFightObject, final Object... args) {
-        final FightObject host = fight.queryFightObject(petFightObject.getHostId());
+    public void roundStart(Fight fight, PetFightObject petFightObject, Object... args) {
+        FightObject host = fight.queryFightObject(Integer.valueOf(petFightObject.getHostId()));
         if (!host.isFallDown()) {
-            final String lifePct = BigDecimalUtil.divide(String.valueOf(host.getCurrLife()), String.valueOf(host.getMaxLife()), 3);
+            String lifePct = BigDecimalUtil.divide(String.valueOf(host.getCurrLife()), String.valueOf(host.getMaxLife()), 3);
             if (Double.parseDouble(lifePct) < 0.4) {
-                final Role role = petFightObject.getRole();
-                final Pet pet = petFightObject.getPet();
-                final byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
+                Role role = petFightObject.getRole();
+                Pet pet = petFightObject.getPet();
+                byte suitLevParam = AcsryPetSkillUtil.getSuitLevParam(role, pet);
                 if (suitLevParam > 0) {
-                    double percent = this.getPercent(suitLevParam);
+                    double percent = this.getPercent((short)suitLevParam);
                     if (pet.getAwaken() > 0) {
                         percent += this.getPercent(pet.getAwaken());
                     }
-                    final boolean flag = SkillAi.canAffectOnPro(percent);
+                    boolean flag = SkillAi.canAffectOnPro(percent);
                     if (flag) {
-                        final int addLife = (int)(host.getMaxLife() * 0.5);
+                        int addLife = (int)((double)host.getMaxLife() * 0.5);
                         ActionParamUtils.changeLife(fight, petFightObject, host, 7, 31405, 2, addLife, false);
                     }
                 }
@@ -38,7 +40,7 @@ public class AWAKENSKILL_31405 extends AwakenSkillProcessor
         }
     }
     
-    private double getPercent(final short param) {
-        return 30 * param / 20.0 / 100.0;
+    private double getPercent(short param) {
+        return (double)(30 * param) / 20.0 / 100.0;
     }
 }

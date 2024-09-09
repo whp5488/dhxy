@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqAddFriend extends Message
     private int roleId;
     private String groupId;
     private String remark;
+    
+    public ReqAddFriend() {
+    }
     
     public int getRoleId() {
         return this.roleId;
@@ -43,37 +45,21 @@ public class ReqAddFriend extends Message
         if (!(o instanceof ReqAddFriend)) {
             return false;
         }
-        final ReqAddFriend other = (ReqAddFriend)o;
+        ReqAddFriend other = (ReqAddFriend)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$groupId = this.getGroupId();
-        final Object other$groupId = other.getGroupId();
-        Label_0078: {
-            if (this$groupId == null) {
-                if (other$groupId == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$groupId.equals(other$groupId)) {
-                break Label_0078;
-            }
+        Object this$groupId = this.getGroupId();
+        Object other$groupId = other.getGroupId();
+        if (!((this$groupId != null) ? this$groupId.equals(other$groupId) : (other$groupId == null))) {
             return false;
         }
-        final Object this$remark = this.getRemark();
-        final Object other$remark = other.getRemark();
-        if (this$remark == null) {
-            if (other$remark == null) {
-                return true;
-            }
-        }
-        else if (this$remark.equals(other$remark)) {
-            return true;
-        }
-        return false;
+        Object this$remark = this.getRemark();
+        Object other$remark = other.getRemark();
+        return (this$remark != null) ? this$remark.equals(other$remark) : (other$remark == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -82,12 +68,12 @@ public class ReqAddFriend extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
-        final Object $groupId = this.getGroupId();
+        Object $groupId = this.getGroupId();
         result = result * 59 + (($groupId == null) ? 43 : $groupId.hashCode());
-        final Object $remark = this.getRemark();
+        Object $remark = this.getRemark();
         result = result * 59 + (($remark == null) ? 43 : $remark.hashCode());
         return result;
     }

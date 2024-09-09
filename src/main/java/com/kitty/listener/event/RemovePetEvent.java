@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -11,7 +10,7 @@ public class RemovePetEvent extends BasePlayerEvent
     private Role role;
     private Pet pet;
     
-    public RemovePetEvent(final EventType evtType, final Role role, final Pet pet) {
+    public RemovePetEvent(EventType evtType, Role role, Pet pet) {
         super(evtType, role);
         this.role = role;
         this.pet = pet;

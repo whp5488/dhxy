@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqJoinTeamList extends Message
 {
     private String activityType;
+    
+    public ReqJoinTeamList() {
+    }
     
     public String getActivityType() {
         return this.activityType;

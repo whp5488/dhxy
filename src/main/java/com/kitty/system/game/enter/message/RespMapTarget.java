@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.enter.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class RespMapTarget extends Message
     private int mapId;
     private int posX;
     private int posY;
+    
+    public RespMapTarget() {
+    }
     
     public int getMapId() {
         return this.mapId;
@@ -43,7 +45,7 @@ public class RespMapTarget extends Message
         if (!(o instanceof RespMapTarget)) {
             return false;
         }
-        final RespMapTarget other = (RespMapTarget)o;
+        RespMapTarget other = (RespMapTarget)o;
         return other.canEqual(this) && this.getMapId() == other.getMapId() && this.getPosX() == other.getPosX() && this.getPosY() == other.getPosY();
     }
     
@@ -53,7 +55,7 @@ public class RespMapTarget extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getMapId();
         result = result * 59 + this.getPosX();

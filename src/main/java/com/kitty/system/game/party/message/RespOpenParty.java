@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class RespOpenParty extends Message
         this.win = 0;
         this.lose = 0;
         this.standings = 0;
-        this.master = new ArrayList<FiedValue>();
+        this.master = new ArrayList<>();
     }
     
     public int getSerial() {
@@ -226,7 +225,7 @@ public class RespOpenParty extends Message
         if (!(o instanceof RespOpenParty)) {
             return false;
         }
-        final RespOpenParty other = (RespOpenParty)o;
+        RespOpenParty other = (RespOpenParty)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -245,43 +244,19 @@ public class RespOpenParty extends Message
         if (this.getOnlineMember() != other.getOnlineMember()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0130: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0130;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0130;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
-        final Object this$notice = this.getNotice();
-        final Object other$notice = other.getNotice();
-        Label_0167: {
-            if (this$notice == null) {
-                if (other$notice == null) {
-                    break Label_0167;
-                }
-            }
-            else if (this$notice.equals(other$notice)) {
-                break Label_0167;
-            }
+        Object this$notice = this.getNotice();
+        Object other$notice = other.getNotice();
+        if (!((this$notice != null) ? this$notice.equals(other$notice) : (other$notice == null))) {
             return false;
         }
-        final Object this$aim = this.getAim();
-        final Object other$aim = other.getAim();
-        Label_0204: {
-            if (this$aim == null) {
-                if (other$aim == null) {
-                    break Label_0204;
-                }
-            }
-            else if (this$aim.equals(other$aim)) {
-                break Label_0204;
-            }
+        Object this$aim = this.getAim();
+        Object other$aim = other.getAim();
+        if (!((this$aim != null) ? this$aim.equals(other$aim) : (other$aim == null))) {
             return false;
         }
         if (this.getJoinTime() != other.getJoinTime()) {
@@ -290,30 +265,14 @@ public class RespOpenParty extends Message
         if (this.getActive() != other.getActive()) {
             return false;
         }
-        final Object this$capital = this.getCapital();
-        final Object other$capital = other.getCapital();
-        Label_0267: {
-            if (this$capital == null) {
-                if (other$capital == null) {
-                    break Label_0267;
-                }
-            }
-            else if (this$capital.equals(other$capital)) {
-                break Label_0267;
-            }
+        Object this$capital = this.getCapital();
+        Object other$capital = other.getCapital();
+        if (!((this$capital != null) ? this$capital.equals(other$capital) : (other$capital == null))) {
             return false;
         }
-        final Object this$cntech = this.getCntech();
-        final Object other$cntech = other.getCntech();
-        Label_0304: {
-            if (this$cntech == null) {
-                if (other$cntech == null) {
-                    break Label_0304;
-                }
-            }
-            else if (this$cntech.equals(other$cntech)) {
-                break Label_0304;
-            }
+        Object this$cntech = this.getCntech();
+        Object other$cntech = other.getCntech();
+        if (!((this$cntech != null) ? this$cntech.equals(other$cntech) : (other$cntech == null))) {
             return false;
         }
         if (this.getConsent() != other.getConsent()) {
@@ -343,17 +302,9 @@ public class RespOpenParty extends Message
         if (this.getStandings() != other.getStandings()) {
             return false;
         }
-        final Object this$master = this.getMaster();
-        final Object other$master = other.getMaster();
-        if (this$master == null) {
-            if (other$master == null) {
-                return true;
-            }
-        }
-        else if (this$master.equals(other$master)) {
-            return true;
-        }
-        return false;
+        Object this$master = this.getMaster();
+        Object other$master = other.getMaster();
+        return (this$master != null) ? this$master.equals(other$master) : (other$master == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -362,24 +313,24 @@ public class RespOpenParty extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getCreateTime();
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getCount();
         result = result * 59 + this.getOnlineMember();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        final Object $notice = this.getNotice();
+        Object $notice = this.getNotice();
         result = result * 59 + (($notice == null) ? 43 : $notice.hashCode());
-        final Object $aim = this.getAim();
+        Object $aim = this.getAim();
         result = result * 59 + (($aim == null) ? 43 : $aim.hashCode());
         result = result * 59 + this.getJoinTime();
         result = result * 59 + this.getActive();
-        final Object $capital = this.getCapital();
+        Object $capital = this.getCapital();
         result = result * 59 + (($capital == null) ? 43 : $capital.hashCode());
-        final Object $cntech = this.getCntech();
+        Object $cntech = this.getCntech();
         result = result * 59 + (($cntech == null) ? 43 : $cntech.hashCode());
         result = result * 59 + this.getConsent();
         result = result * 59 + this.getConsentLevel();
@@ -390,13 +341,13 @@ public class RespOpenParty extends Message
         result = result * 59 + this.getWin();
         result = result * 59 + this.getLose();
         result = result * 59 + this.getStandings();
-        final Object $master = this.getMaster();
+        Object $master = this.getMaster();
         result = result * 59 + (($master == null) ? 43 : $master.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "RespOpenParty(serial=" + this.getSerial() + ", createTime=" + this.getCreateTime() + ", level=" + this.getLevel() + ", count=" + this.getCount() + ", onlineMember=" + this.getOnlineMember() + ", name=" + this.getName() + ", notice=" + this.getNotice() + ", aim=" + this.getAim() + ", joinTime=" + this.getJoinTime() + ", active=" + this.getActive() + ", capital=" + this.getCapital() + ", cntech=" + this.getCntech() + ", consent=" + this.getConsent() + ", consentLevel=" + this.getConsentLevel() + ", refuse=" + this.getRefuse() + ", refuseLevel=" + this.getRefuseLevel() + ", job=" + this.getJob() + ", sum=" + this.getSum() + ", win=" + this.getWin() + ", lose=" + this.getLose() + ", standings=" + this.getStandings() + ", master=" + this.getMaster() + ")";
+        return "RespOpenParty(serial=" + this.getSerial() + ", createTime=" + this.getCreateTime() + ", level=" + (int)this.getLevel() + ", count=" + (int)this.getCount() + ", onlineMember=" + (int)this.getOnlineMember() + ", name=" + this.getName() + ", notice=" + this.getNotice() + ", aim=" + this.getAim() + ", joinTime=" + this.getJoinTime() + ", active=" + (int)this.getActive() + ", capital=" + this.getCapital() + ", cntech=" + this.getCntech() + ", consent=" + (int)this.getConsent() + ", consentLevel=" + (int)this.getConsentLevel() + ", refuse=" + (int)this.getRefuse() + ", refuseLevel=" + (int)this.getRefuseLevel() + ", job=" + (int)this.getJob() + ", sum=" + (int)this.getSum() + ", win=" + (int)this.getWin() + ", lose=" + (int)this.getLose() + ", standings=" + (int)this.getStandings() + ", master=" + this.getMaster() + ")";
     }
 }

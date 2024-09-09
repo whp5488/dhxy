@@ -1,11 +1,9 @@
-
 package com.kitty.system.boss.service;
 
 import com.kitty.system.enums.war.wardef.LOGIC;
 import com.kitty.system.game.enter.message.RespDisappear;
 import java.util.Iterator;
 import java.util.Set;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.enter.message.RespElseAppear;
 import com.kitty.system.game.vo.Npc;
@@ -37,52 +35,52 @@ public class BossService
         return BossService.atomicInteger.getAndIncrement();
     }
     
-    public Fight startFightToBoss(final Role role, final BossFightParam bossFightParam) {
-        final Team team = SpringUtils.getFightNewService().getRoleFightTeam(role);
+    public Fight startFightToBoss(Role role, BossFightParam bossFightParam) {
+        Team team = SpringUtils.getFightNewService().getRoleFightTeam(role);
         return this.sendBossTeam(team, role, bossFightParam);
     }
     
-    public Fight sendBossTeam(final Team team, final Role role, final BossFightParam bossFightParam) {
-        final FightNewService fightService = SpringUtils.getBean(FightNewService.class);
+    public Fight sendBossTeam(Team team, Role role, BossFightParam bossFightParam) {
+        FightNewService fightService = SpringUtils.getBean(FightNewService.class);
         if (!fightService.canFight(role, team.getList())) {
             return null;
         }
         synchronized (role.getCanFight()) {
-            if (!role.getCanFight()) {
+            if (!(boolean)role.getCanFight()) {
                 return null;
             }
-            role.setCanFight(false);
+            role.setCanFight(Boolean.FALSE);
         }
         if (SpringUtils.getTeamService().isInTeamAndNotLeader(role)) {
             this.logger.warn("{}({})不是队长触发战斗", role.getRoleId(), role.getName());
             return null;
         }
-        final int type = bossFightParam.getFightType();
-        final Pos position = role.getPos();
-        final int mapId = position.getMapId();
-        final Fight battleground = FightFactory.getFightFactory(type).create(mapId, role, team, bossFightParam);
+        int type = bossFightParam.getFightType();
+        Pos position = role.getPos();
+        int mapId = (int)position.getMapId();
+        Fight battleground = FightFactory.getFightFactory(type).create(mapId, role, team, bossFightParam);
         battleground.setSpecialMonsterType(bossFightParam.getSpecialMonsterType());
         battleground.start();
         return battleground;
     }
     
-    public void broadcastNpcShow(final GroupMapParam groupMapParam, final Npc npc) {
+    public void broadcastNpcShow(GroupMapParam groupMapParam, Npc npc) {
         if (npc == null || !npc.isShow()) {
             return;
         }
-        final Set<Integer> roleIds = SpringUtils.getMapService().getRoleIds(groupMapParam, npc.getMap());
+        Set<Integer> roleIds = SpringUtils.getMapService().getRoleIds(groupMapParam, npc.getMap());
         if (roleIds == null || roleIds.size() <= 0) {
             return;
         }
-        final RespElseAppear respAppear = new RespElseAppear();
+        RespElseAppear respAppear = new RespElseAppear();
         respAppear.setId(npc.getId());
         respAppear.setN(npc.getName());
         respAppear.setS((short)npc.getIcon());
         respAppear.setX((short)npc.getX());
         respAppear.setY((short)npc.getY());
         respAppear.setT(npc.getTitle());
-        for (final Integer roleId : roleIds) {
-            final Role tempRole = SpringUtils.getRoleService().getOnlinePlayer(roleId);
+        for (Integer roleId : roleIds) {
+            Role tempRole = SpringUtils.getRoleService().getOnlinePlayer((int)roleId);
             if (tempRole == null) {
                 continue;
             }
@@ -90,16 +88,16 @@ public class BossService
         }
     }
     
-    public void broadcastNpcHide(final GroupMapParam groupMapParam, final Npc npc) {
-        final Set<Integer> roleIds = SpringUtils.getMapService().getRoleIds(groupMapParam, npc.getMap());
+    public void broadcastNpcHide(GroupMapParam groupMapParam, Npc npc) {
+        Set<Integer> roleIds = SpringUtils.getMapService().getRoleIds(groupMapParam, npc.getMap());
         if (roleIds == null || roleIds.size() <= 0) {
             return;
         }
-        final RespDisappear respDisappear = new RespDisappear();
+        RespDisappear respDisappear = new RespDisappear();
         respDisappear.setId(npc.getId());
         respDisappear.setType(LOGIC.NPC.getValue());
-        for (final Integer roleId : roleIds) {
-            final Role role = SpringUtils.getRoleService().getOnlinePlayer(roleId);
+        for (Integer roleId : roleIds) {
+            Role role = SpringUtils.getRoleService().getOnlinePlayer((int)roleId);
             MessagePusher.pushMessage(role, respDisappear);
         }
     }

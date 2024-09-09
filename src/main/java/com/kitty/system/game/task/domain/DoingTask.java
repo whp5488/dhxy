@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.task.domain;
 
-import java.beans.ConstructorProperties;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,11 +21,11 @@ public class DoingTask implements Serializable
     private int update;
     private int expire;
     
-    public DoingTask(final int taskId, final int targetProgress, final int expire) {
+    public DoingTask(int taskId, int targetProgress, int expire) {
         this.targetProgress = 0;
-        this.easyNpcList = Collections.synchronizedList(new ArrayList<EasyNpc>());
+        this.easyNpcList = Collections.synchronizedList(new ArrayList<>());
         this.finishedTask = 0;
-        this.changeCounter = new ConcurrentHashMap<Integer, Integer>();
+        this.changeCounter = new ConcurrentHashMap();
         this.taskId = taskId;
         this.targetProgress = targetProgress;
         this.create = new Long(System.currentTimeMillis() / 1000L).intValue();
@@ -130,17 +128,16 @@ public class DoingTask implements Serializable
     
     public DoingTask() {
         this.targetProgress = 0;
-        this.easyNpcList = Collections.synchronizedList(new ArrayList<EasyNpc>());
+        this.easyNpcList = Collections.synchronizedList(new ArrayList<>());
         this.finishedTask = 0;
-        this.changeCounter = new ConcurrentHashMap<Integer, Integer>();
+        this.changeCounter = new ConcurrentHashMap();
     }
     
-    @ConstructorProperties({ "taskId", "targetProgress", "fightId", "npcId", "easyNpcList", "finishedTask", "changeCounter", "para", "create", "update", "expire" })
     public DoingTask(final int taskId, final int targetProgress, final int fightId, final int npcId, final List<EasyNpc> easyNpcList, final int finishedTask, final ConcurrentHashMap<Integer, Integer> changeCounter, final String para, final int create, final int update, final int expire) {
         this.targetProgress = 0;
-        this.easyNpcList = Collections.synchronizedList(new ArrayList<EasyNpc>());
+        this.easyNpcList = Collections.synchronizedList(new ArrayList<>());
         this.finishedTask = 0;
-        this.changeCounter = new ConcurrentHashMap<Integer, Integer>();
+        this.changeCounter = new ConcurrentHashMap();
         this.taskId = taskId;
         this.targetProgress = targetProgress;
         this.fightId = fightId;

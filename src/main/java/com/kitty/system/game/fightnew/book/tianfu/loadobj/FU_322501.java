@@ -1,8 +1,6 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.loadobj;
 
 import com.kitty.system.game.fightnew.utils.SkillAi;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.List;
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -19,42 +17,47 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_322501 extends TianFuProcessor
 {
+    public FU_322501() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (!target.isPlayer()) {
             return null;
         }
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)target).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322501);
+        DayInCeFight dayInCeFight = ((PlayerFightObject)target).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322501);
         if (tianFuObject == null) {
             return null;
         }
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 322501);
-        if (!this.getTriggerPercent(fight, target.getId())) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 322501);
+        if (this.getTriggerPercent(fight, target.getId())) {
+            Integer hurt = (Integer)args[0];
+            if (hurt == null || (int)hurt <= 0) {
+                return null;
+            }
+            double percenta = 4.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+            int alterHurt = (int)((double)(int)hurt * percenta);
+            NutMap map = NutMap.NEW();
+            map.setv("alterHurt", Integer.valueOf(-alterHurt));
+            skillRecord.setT((long)(int)target.getId());
+            return map;
+        }
+        else {
             return null;
         }
-        final Integer hurt = (Integer)args[0];
-        if (hurt == null || hurt <= 0) {
-            return null;
-        }
-        final double percenta = 4.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-        final int alterHurt = (int)(hurt * percenta);
-        final NutMap map = NutMap.NEW();
-        map.setv("alterHurt", (Object)(-alterHurt));
-        skillRecord.setT(target.getId());
-        return map;
     }
     
-    public boolean getTriggerPercent(final Fight fight, final Integer targetId) {
+    public boolean getTriggerPercent(Fight fight, Integer targetId) {
         double percent = 0.2;
-        final List<FightObject> mySide = fight.getMySide(targetId).stream().filter(obj -> obj.isFallDown()).collect(Collectors.toList());
+        List<FightObject> mySide = (List)fight.getMySide((int)targetId).stream().filter(obj -> obj.isFallDown()).collect(Collectors.toList());
         if (mySide != null && mySide.size() > 0) {
-            percent += percent * mySide.size();
+            percent += percent * (double)mySide.size();
         }
         return SkillAi.canAffectOnPro(percent);
     }

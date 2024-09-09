@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.Map;
@@ -12,70 +11,75 @@ import java.util.List;
 
 public class LotteryUtils
 {
-    public static int lottery(final List<Double> originalRates) {
-        if (originalRates == null || originalRates.isEmpty()) {
-            return -1;
-        }
-        final int size = originalRates.size();
-        double sumRate = 0.0;
-        for (final double rate : originalRates) {
-            sumRate += rate;
-        }
-        final List<Double> sortOrignalRates = new ArrayList<Double>(size);
-        Double tempSumRate = 0.0;
-        for (final double rate2 : originalRates) {
-            tempSumRate += rate2;
-            sortOrignalRates.add(tempSumRate / sumRate);
-        }
-        final double nextDouble = Math.random();
-        sortOrignalRates.add(nextDouble);
-        Collections.sort(sortOrignalRates);
-        return sortOrignalRates.indexOf(nextDouble);
+    public LotteryUtils() {
     }
     
-    public static int lotteryIntEasy(final List<Integer> originalRates, final int baodi, final boolean isOrder) {
+    public static int lottery(List<Double> originalRates) {
         if (originalRates == null || originalRates.isEmpty()) {
             return -1;
         }
-        final int size = originalRates.size();
-        final double sumRate = 1000.0;
-        final List<Double> sortOrignalRates = new ArrayList<Double>(size);
-        Double tempSumRate = 0.0;
-        for (final double rate : originalRates) {
-            tempSumRate += rate;
+        int size = originalRates.size();
+        double sumRate = 0.0;
+        for (double rate : originalRates) {
+            sumRate += rate;
+        }
+        List<Double> sortOrignalRates = new ArrayList(size);
+        Double tempSumRate = Double.valueOf(0.0);
+        for (double rate2 : originalRates) {
+            tempSumRate = Double.valueOf((double)tempSumRate + rate2);
+            sortOrignalRates.add(Double.valueOf((double)tempSumRate / sumRate));
+        }
+        double nextDouble = Math.random();
+        sortOrignalRates.add(Double.valueOf(nextDouble));
+        Collections.sort(sortOrignalRates);
+        return sortOrignalRates.indexOf(Double.valueOf(nextDouble));
+    }
+    
+    public static int lotteryIntEasy(List<Integer> originalRates, int baodi, boolean isOrder) {
+        if (originalRates == null || originalRates.isEmpty()) {
+            return -1;
+        }
+        int size = originalRates.size();
+        double sumRate = 1000.0;
+        List<Double> sortOrignalRates = new ArrayList(size);
+        Double tempSumRate = Double.valueOf(0.0);
+        Iterator<Integer> iterator = originalRates.iterator();
+        while (iterator.hasNext()) {
+            double rate = (double)(int)iterator.next();
+            tempSumRate = Double.valueOf((double)tempSumRate + rate);
             sortOrignalRates.add(tempSumRate);
         }
-        final double nextDouble = Math.random() * sumRate + baodi;
-        sortOrignalRates.add(nextDouble);
+        double nextDouble = Math.random() * sumRate + (double)baodi;
+        sortOrignalRates.add(Double.valueOf(nextDouble));
         if (isOrder) {
             Collections.sort(sortOrignalRates);
         }
         else {
             Collections.sort(sortOrignalRates, Comparator.reverseOrder());
         }
-        return sortOrignalRates.indexOf(nextDouble);
+        return sortOrignalRates.indexOf(Double.valueOf(nextDouble));
     }
     
-    public static void main(final String[] args) {
-        final List<Lottery> list = new ArrayList<Lottery>();
-        list.add(new Lottery(1, "电视", 4.5));
-        list.add(new Lottery(2, "手机", 95.5));
-        list.add(new Lottery(3, "飞机", 0.339999));
-        list.add(new Lottery(4, "冰箱", 1.0E-4));
-        final List<Double> orignalRates = new ArrayList<Double>(list.size());
-        for (final Lottery lottery : list) {
+    public static void main(String[] args) {
+        List<Lottery> list = new ArrayList<>();
+        list.add(new Lottery(Integer.valueOf(1), "电视", Double.valueOf(4.5)));
+        list.add(new Lottery(Integer.valueOf(2), "手机", Double.valueOf(95.5)));
+        list.add(new Lottery(Integer.valueOf(3), "飞机", Double.valueOf(0.339999)));
+        list.add(new Lottery(Integer.valueOf(4), "冰箱", Double.valueOf(1.0E-4)));
+        List<Double> orignalRates = new ArrayList(list.size());
+        for (Lottery lottery : list) {
             orignalRates.add(lottery.getBili());
         }
-        final Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new HashMap();
         for (int i = 0; i < 1000000; ++i) {
-            final int index = lottery(orignalRates);
-            final String name = list.get(index).getName();
+            int index = lottery(orignalRates);
+            String name = ((Lottery)list.get(index)).getName();
             if (map.containsKey(name)) {
-                Integer integer = map.get(name);
-                map.put(name, ++integer);
+                Integer integer = (Integer)map.get(name);
+                map.put(name, integer = Integer.valueOf((int)integer + 1));
             }
             else {
-                map.put(name, 1);
+                map.put(name, Integer.valueOf(1));
             }
         }
         System.out.println("我抽奖了一百万次商品出现的概率" + map);

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.horse.one.normal;
 
 import com.kitty.system.game.fightnew.book.horse.utils.HorseSkillUtils;
@@ -13,25 +12,29 @@ import com.kitty.system.game.fightnew.book.horse.HorseSkillProcessor;
 
 public class HORSESKILL_61010 extends HorseSkillProcessor
 {
+    public HORSESKILL_61010() {
+    }
+    
     @Override
-    public NutMap addition(final HorseSkillParam horseSkillParam, final Object... args) {
+    public NutMap addition(HorseSkillParam horseSkillParam, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final PetFightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, PetFightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap studyExcute(final Pet pet, final HorseSkillParam horseSkillParam, final Object... obj) {
-        final double percent = 0.2;
-        final NutMap map = NutMap.NEW();
-        map.setv(String.valueOf(PRO_DICT_TYPE.SPEED_PCT.getDist()), (Object)(-percent));
+    public NutMap studyExcute(Pet pet, HorseSkillParam horseSkillParam, Object... obj) {
+        double percent = 0.2;
+        NutMap map = NutMap.NEW();
+        map.setv(String.valueOf(PRO_DICT_TYPE.SPEED_PCT.getDist()), Double.valueOf(-percent));
         double percentb = (30.0 * HorseSkillUtils.getPercent(horseSkillParam) + 0.1) / 100.0;
         percentb = HorseSkillUtils.getMathRoundPercent(percentb);
         if (percentb != 0.0) {
-            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), (Object)percentb);
+            map.setv(String.valueOf(PRO_DICT_TYPE.ATTACK_PCT.getDist()), Double.valueOf(percentb));
+            return map;
         }
         return map;
     }

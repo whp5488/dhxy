@@ -1,4 +1,3 @@
-
 package com.kitty.system.enums.war.itempro.def;
 
 public enum DAY_IN_CE_TRIGGER_DICT

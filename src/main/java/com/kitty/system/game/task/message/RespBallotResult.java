@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.system.game.task.message.vo.BallotInfo;
@@ -20,7 +19,7 @@ public class RespBallotResult extends Message
         return this.meTime;
     }
     
-    public void setMeTime(final short meTime) {
+    public void setMeTime(short meTime) {
         this.meTime = meTime;
     }
     
@@ -28,7 +27,7 @@ public class RespBallotResult extends Message
         return this.resultList;
     }
     
-    public void setResultList(final List<BallotInfo> resultList) {
+    public void setResultList(List<BallotInfo> resultList) {
         this.resultList = resultList;
     }
 }

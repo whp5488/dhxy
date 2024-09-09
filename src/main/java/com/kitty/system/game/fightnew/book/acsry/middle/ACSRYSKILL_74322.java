@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.middle;
 
 import com.kitty.system.enums.war.warskill.skilldef.SKILLATTR;
@@ -14,8 +13,11 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_74322 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_74322() {
+    }
+    
     @Override
-    public void passive(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void passive(Fight fight, FightObject fightObject, Object... args) {
         if (fightObject.isFallDown() || fightObject.getCurrLife() <= 1) {
             return;
         }
@@ -23,57 +25,59 @@ public class ACSRYSKILL_74322 extends AcsrySkillProcessor
             return;
         }
         if (fightObject.getStatusValue(1007) > 0) {
-            final String statusValue = fightObject.getStatusMap().getString("1007perpetrator");
+            String statusValue = fightObject.getStatusMap().getString("1007perpetrator");
             if (statusValue != null) {
-                final String[] strs = statusValue.split("_");
+                String[] strs = statusValue.split("_");
                 if (strs[0] == null || "".equals(strs[0]) || !String.valueOf(74322).equals(strs[0])) {
                     return;
                 }
                 if (strs[1] == null || "".equals(strs[1]) || !strs[1].matches("^[0-9]+$")) {
                     return;
                 }
-                final FightObject effecter = fight.queryFightObject(Integer.parseInt(strs[1]));
+                FightObject effecter = fight.queryFightObject(Integer.valueOf(Integer.parseInt(strs[1])));
                 if (effecter == null || effecter.isFallDown()) {
                     return;
                 }
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, fightObject.getId(), 74322);
-                int reduceLife = (int)(fightObject.getMaxLife() * 0.1);
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)fightObject.getId(), 74322);
+                int reduceLife = (int)((double)fightObject.getMaxLife() * 0.1);
                 if (reduceLife >= fightObject.getCurrLife()) {
                     reduceLife = fightObject.getCurrLife() - 1;
                 }
-                skillRecord.setT(fightObject.getId());
+                skillRecord.setT((long)(int)fightObject.getId());
                 ActionParamUtils.changeLife(fight, effecter, fightObject, 7, 300999, 2, -reduceLife, false);
             }
         }
+        return;
     }
     
     @Override
-    public void attackOver(final Fight fight, final FightObject effecter, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
+    public void attackOver(Fight fight, FightObject effecter, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
         RoleSkill skill = null;
-        Boolean isHit = false;
+        Boolean isHit = Boolean.valueOf(false);
         try {
             skill = (RoleSkill)args[0];
             isHit = (Boolean)args[1];
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return;
         }
         if (skill == null) {
             return;
         }
-        if (isHit == null || !isHit) {
+        if (isHit == null || !(boolean)isHit) {
             return;
         }
         if (effecter.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
-            if (playerFightObject.getAcsrySkillList().contains(74323)) {
+            PlayerFightObject playerFightObject = (PlayerFightObject)effecter;
+            if (playerFightObject.getAcsrySkillList().contains(Integer.valueOf(74323))) {
                 return;
             }
-            if (SKILLATTR.SKILLATTR_SHUAIRUO.getValue() == skill.getType() && target.getStatusValue(1007) > 0) {
-                target.getStatusMap().setv("1007perpetrator", (Object)("74322_" + effecter.getId()));
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effecter.getId(), 74322);
-                skillRecord.setT(target.getId());
+            if (SKILLATTR.SKILLATTR_SHUAIRUO.getValue() == (int)skill.getType() && target.getStatusValue(1007) > 0) {
+                target.getStatusMap().setv("1007perpetrator", "74322_" + effecter.getId());
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effecter.getId(), 74322);
+                skillRecord.setT((long)(int)target.getId());
             }
         }
+        return;
     }
 }

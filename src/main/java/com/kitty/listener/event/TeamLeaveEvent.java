@@ -1,4 +1,3 @@
-
 package com.kitty.listener.event;
 
 import com.kitty.listener.EventType;
@@ -12,7 +11,7 @@ public class TeamLeaveEvent extends BasePlayerEvent
     private boolean isLeader;
     private Team team;
     
-    public TeamLeaveEvent(final EventType evtType, final Role role, final boolean isLeader, final Team team) {
+    public TeamLeaveEvent(EventType evtType, Role role, boolean isLeader, Team team) {
         super(evtType, role);
         this.role = role;
         this.isLeader = isLeader;

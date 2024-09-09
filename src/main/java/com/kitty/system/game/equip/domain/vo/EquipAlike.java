@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.domain.vo;
 
 import java.util.List;
@@ -26,6 +25,9 @@ public class EquipAlike implements Serializable
     private int sex;
     private int shape;
     private int canMerge;
+    
+    public EquipAlike() {
+    }
     
     public String getName() {
         return this.name;
@@ -185,148 +187,5 @@ public class EquipAlike implements Serializable
     
     public void setCanMerge(final int canMerge) {
         this.canMerge = canMerge;
-    }
-    
-    @Override
-    public boolean equals(final Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof EquipAlike)) {
-            return false;
-        }
-        final EquipAlike other = (EquipAlike)o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0065: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0065;
-            }
-            return false;
-        }
-        if (this.getSerial() != other.getSerial()) {
-            return false;
-        }
-        final Object this$baseAttr = this.getBaseAttr();
-        final Object other$baseAttr = other.getBaseAttr();
-        Label_0115: {
-            if (this$baseAttr == null) {
-                if (other$baseAttr == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$baseAttr.equals(other$baseAttr)) {
-                break Label_0115;
-            }
-            return false;
-        }
-        if (this.getBaseScore() != other.getBaseScore()) {
-            return false;
-        }
-        if (this.getPos() != other.getPos()) {
-            return false;
-        }
-        if (this.getMaxEmbedGemCnt() != other.getMaxEmbedGemCnt()) {
-            return false;
-        }
-        if (this.getMaxEndure() != other.getMaxEndure()) {
-            return false;
-        }
-        if (this.getNeedGg() != other.getNeedGg()) {
-            return false;
-        }
-        if (this.getNeedLx() != other.getNeedLx()) {
-            return false;
-        }
-        if (this.getNeedLl() != other.getNeedLl()) {
-            return false;
-        }
-        if (this.getNeedMj() != other.getNeedMj()) {
-            return false;
-        }
-        if (this.getNeedGrade() != other.getNeedGrade()) {
-            return false;
-        }
-        if (this.getNeedRei() != other.getNeedRei()) {
-            return false;
-        }
-        if (this.getOwnerRole() != other.getOwnerRole()) {
-            return false;
-        }
-        final Object this$race = this.getRace();
-        final Object other$race = other.getRace();
-        Label_0295: {
-            if (this$race == null) {
-                if (other$race == null) {
-                    break Label_0295;
-                }
-            }
-            else if (this$race.equals(other$race)) {
-                break Label_0295;
-            }
-            return false;
-        }
-        if (this.getRarity() != other.getRarity()) {
-            return false;
-        }
-        final Object this$rndWeight = this.getRndWeight();
-        final Object other$rndWeight = other.getRndWeight();
-        if (this$rndWeight == null) {
-            if (other$rndWeight == null) {
-                return this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge();
-            }
-        }
-        else if (this$rndWeight.equals(other$rndWeight)) {
-            return this.getSex() == other.getSex() && this.getShape() == other.getShape() && this.getCanMerge() == other.getCanMerge();
-        }
-        return false;
-    }
-    
-    protected boolean canEqual(final Object other) {
-        return other instanceof EquipAlike;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int PRIME = 59;
-        int result = 1;
-        final Object $name = this.getName();
-        result = result * 59 + (($name == null) ? 43 : $name.hashCode());
-        result = result * 59 + this.getSerial();
-        final Object $baseAttr = this.getBaseAttr();
-        result = result * 59 + (($baseAttr == null) ? 43 : $baseAttr.hashCode());
-        result = result * 59 + this.getBaseScore();
-        result = result * 59 + this.getPos();
-        result = result * 59 + this.getMaxEmbedGemCnt();
-        result = result * 59 + this.getMaxEndure();
-        result = result * 59 + this.getNeedGg();
-        result = result * 59 + this.getNeedLx();
-        result = result * 59 + this.getNeedLl();
-        result = result * 59 + this.getNeedMj();
-        result = result * 59 + this.getNeedGrade();
-        result = result * 59 + this.getNeedRei();
-        result = result * 59 + this.getOwnerRole();
-        final Object $race = this.getRace();
-        result = result * 59 + (($race == null) ? 43 : $race.hashCode());
-        result = result * 59 + this.getRarity();
-        final Object $rndWeight = this.getRndWeight();
-        result = result * 59 + (($rndWeight == null) ? 43 : $rndWeight.hashCode());
-        result = result * 59 + this.getSex();
-        result = result * 59 + this.getShape();
-        result = result * 59 + this.getCanMerge();
-        return result;
-    }
-    
-    @Override
-    public String toString() {
-        return "EquipAlike(name=" + this.getName() + ", serial=" + this.getSerial() + ", baseAttr=" + this.getBaseAttr() + ", baseScore=" + this.getBaseScore() + ", pos=" + this.getPos() + ", maxEmbedGemCnt=" + this.getMaxEmbedGemCnt() + ", maxEndure=" + this.getMaxEndure() + ", needGg=" + this.getNeedGg() + ", needLx=" + this.getNeedLx() + ", needLl=" + this.getNeedLl() + ", needMj=" + this.getNeedMj() + ", needGrade=" + this.getNeedGrade() + ", needRei=" + this.getNeedRei() + ", ownerRole=" + this.getOwnerRole() + ", race=" + this.getRace() + ", rarity=" + this.getRarity() + ", rndWeight=" + this.getRndWeight() + ", sex=" + this.getSex() + ", shape=" + this.getShape() + ", canMerge=" + this.getCanMerge() + ")";
     }
 }

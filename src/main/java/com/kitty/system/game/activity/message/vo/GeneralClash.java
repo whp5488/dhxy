@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.activity.message.vo;
-
-import java.beans.ConstructorProperties;
 
 public class GeneralClash
 {
@@ -50,21 +47,13 @@ public class GeneralClash
         if (!(o instanceof GeneralClash)) {
             return false;
         }
-        final GeneralClash other = (GeneralClash)o;
+        GeneralClash other = (GeneralClash)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return this.getIcon() == other.getIcon() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return this.getIcon() == other.getIcon() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return ((this$name != null) ? this$name.equals(other$name) : (other$name == null)) && this.getIcon() == other.getIcon() && this.getRei() == other.getRei() && this.getLevel() == other.getLevel();
     }
     
     protected boolean canEqual(final Object other) {
@@ -73,9 +62,9 @@ public class GeneralClash
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getIcon();
         result = result * 59 + this.getRei();
@@ -85,10 +74,9 @@ public class GeneralClash
     
     @Override
     public String toString() {
-        return "GeneralClash(name=" + this.getName() + ", icon=" + this.getIcon() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ")";
+        return "GeneralClash(name=" + this.getName() + ", icon=" + this.getIcon() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ")";
     }
     
-    @ConstructorProperties({ "name", "icon", "rei", "level" })
     public GeneralClash(final String name, final int icon, final byte rei, final short level) {
         this.name = name;
         this.icon = icon;

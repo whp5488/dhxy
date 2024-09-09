@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.system.game.party.message.vo.RecvRedBagInfo;
@@ -21,6 +20,9 @@ public class RespPartyRecvRedBag extends Message
     private byte isSender;
     private byte isRecv;
     private List<RecvRedBagInfo> recvRedBagInfoList;
+    
+    public RespPartyRecvRedBag() {
+    }
     
     public void setType(final byte type) {
         this.type = type;

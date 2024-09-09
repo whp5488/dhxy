@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqDropPet extends Message
 {
     private int petId;
+    
+    public ReqDropPet() {
+    }
     
     public int getPetId() {
         return this.petId;
@@ -25,7 +27,7 @@ public class ReqDropPet extends Message
         if (!(o instanceof ReqDropPet)) {
             return false;
         }
-        final ReqDropPet other = (ReqDropPet)o;
+        ReqDropPet other = (ReqDropPet)o;
         return other.canEqual(this) && this.getPetId() == other.getPetId();
     }
     
@@ -35,7 +37,7 @@ public class ReqDropPet extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetId();
         return result;

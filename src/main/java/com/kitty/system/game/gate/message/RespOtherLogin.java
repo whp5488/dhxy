@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.gate.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -12,8 +11,8 @@ public class RespOtherLogin extends Message
     private String content;
     
     public RespOtherLogin() {
-        this.result = 1;
-        this.code = 9018;
+        this.result = Integer.valueOf(1);
+        this.code = Integer.valueOf(9018);
     }
     
     public Integer getResult() {
@@ -48,47 +47,23 @@ public class RespOtherLogin extends Message
         if (!(o instanceof RespOtherLogin)) {
             return false;
         }
-        final RespOtherLogin other = (RespOtherLogin)o;
+        RespOtherLogin other = (RespOtherLogin)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$result = this.getResult();
-        final Object other$result = other.getResult();
-        Label_0065: {
-            if (this$result == null) {
-                if (other$result == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$result.equals(other$result)) {
-                break Label_0065;
-            }
+        Object this$result = this.getResult();
+        Object other$result = other.getResult();
+        if (!((this$result != null) ? this$result.equals(other$result) : (other$result == null))) {
             return false;
         }
-        final Object this$code = this.getCode();
-        final Object other$code = other.getCode();
-        Label_0102: {
-            if (this$code == null) {
-                if (other$code == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$code.equals(other$code)) {
-                break Label_0102;
-            }
+        Object this$code = this.getCode();
+        Object other$code = other.getCode();
+        if (!((this$code != null) ? this$code.equals(other$code) : (other$code == null))) {
             return false;
         }
-        final Object this$content = this.getContent();
-        final Object other$content = other.getContent();
-        if (this$content == null) {
-            if (other$content == null) {
-                return true;
-            }
-        }
-        else if (this$content.equals(other$content)) {
-            return true;
-        }
-        return false;
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        return (this$content != null) ? this$content.equals(other$content) : (other$content == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -97,13 +72,13 @@ public class RespOtherLogin extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $result = this.getResult();
+        Object $result = this.getResult();
         result = result * 59 + (($result == null) ? 43 : $result.hashCode());
-        final Object $code = this.getCode();
+        Object $code = this.getCode();
         result = result * 59 + (($code == null) ? 43 : $code.hashCode());
-        final Object $content = this.getContent();
+        Object $content = this.getContent();
         result = result * 59 + (($content == null) ? 43 : $content.hashCode());
         return result;
     }

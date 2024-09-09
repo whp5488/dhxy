@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.bean;
 
 import java.io.Serializable;
@@ -10,6 +9,9 @@ public class TianFuObject implements Serializable
     private byte level;
     private byte productOrder;
     private String triggerType;
+    
+    public TianFuObject() {
+    }
     
     public long getRoleTianFuId() {
         return this.roleTianFuId;

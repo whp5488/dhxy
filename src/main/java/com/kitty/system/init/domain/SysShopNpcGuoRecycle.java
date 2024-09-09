@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -13,6 +12,9 @@ public class SysShopNpcGuoRecycle implements Serializable
     private Integer serial;
     @Column("price")
     private int price;
+    
+    public SysShopNpcGuoRecycle() {
+    }
     
     public Integer getSerial() {
         return this.serial;
@@ -38,21 +40,13 @@ public class SysShopNpcGuoRecycle implements Serializable
         if (!(o instanceof SysShopNpcGuoRecycle)) {
             return false;
         }
-        final SysShopNpcGuoRecycle other = (SysShopNpcGuoRecycle)o;
+        SysShopNpcGuoRecycle other = (SysShopNpcGuoRecycle)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        if (this$serial == null) {
-            if (other$serial == null) {
-                return this.getPrice() == other.getPrice();
-            }
-        }
-        else if (this$serial.equals(other$serial)) {
-            return this.getPrice() == other.getPrice();
-        }
-        return false;
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        return ((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null)) && this.getPrice() == other.getPrice();
     }
     
     protected boolean canEqual(final Object other) {
@@ -61,9 +55,9 @@ public class SysShopNpcGuoRecycle implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
         result = result * 59 + this.getPrice();
         return result;

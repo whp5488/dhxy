@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.i18n.service;
 
 public interface I18nId

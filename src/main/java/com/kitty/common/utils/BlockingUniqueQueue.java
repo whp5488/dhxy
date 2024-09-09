@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.Iterator;
@@ -12,16 +11,16 @@ public class BlockingUniqueQueue<E> extends LinkedBlockingQueue<E>
     private Set<E> datas;
     
     public BlockingUniqueQueue() {
-        this.datas = new ConcurrentHashSet<E>(1200);
+        this.datas = new ConcurrentHashSet(1200);
     }
     
     @Override
-    public boolean contains(final Object o) {
+    public boolean contains(Object o) {
         return this.datas.contains(o);
     }
     
     @Override
-    public boolean containsAll(final Collection<?> c) {
+    public boolean containsAll(Collection<?> c) {
         return this.datas.containsAll(c);
     }
     
@@ -31,13 +30,13 @@ public class BlockingUniqueQueue<E> extends LinkedBlockingQueue<E>
         try {
             head = super.take();
         }
-        catch (final Exception ex) {}
+        catch (Exception ex) {}
         this.datas.remove(head);
         return head;
     }
     
     @Override
-    public boolean add(final E e) {
+    public boolean add(E e) {
         if (this.contains(e)) {
             return false;
         }
@@ -46,25 +45,28 @@ public class BlockingUniqueQueue<E> extends LinkedBlockingQueue<E>
     }
     
     @Override
-    public boolean addAll(final Collection<? extends E> c) {
+    public boolean addAll(Collection<? extends E> c) {
         boolean modified = false;
-        for (final E e : c) {
+        for (E e : c) {
             if (this.add(e)) {
                 modified = true;
+            }
+            else {
+                continue;
             }
         }
         return modified;
     }
     
     @Override
-    public boolean remove(final Object o) {
+    public boolean remove(Object o) {
         this.datas.remove(o);
         return super.remove(o);
     }
     
     @Override
-    public boolean removeAll(final Collection<?> c) {
-        for (final Object e : c) {
+    public boolean removeAll(Collection<?> c) {
+        for (Object e : c) {
             this.datas.remove(e);
         }
         return super.removeAll(c);
@@ -72,7 +74,7 @@ public class BlockingUniqueQueue<E> extends LinkedBlockingQueue<E>
     
     @Override
     public Iterator<E> iterator() {
-        return new Itr(super.iterator());
+        return new BlockingUniqueQueue.Itr(super.iterator());
     }
     
     private class Itr implements Iterator<E>
@@ -80,7 +82,7 @@ public class BlockingUniqueQueue<E> extends LinkedBlockingQueue<E>
         private Iterator<E> it;
         private E curr;
         
-        Itr(final Iterator<E> it) {
+        Itr(Iterator<E> it) {
             this.it = it;
         }
         

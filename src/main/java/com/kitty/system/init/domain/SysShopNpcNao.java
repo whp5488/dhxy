@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -27,6 +26,9 @@ public class SysShopNpcNao implements Serializable
     private int quotaLimit;
     @Column("bind")
     private int bind;
+    
+    public SysShopNpcNao() {
+    }
     
     public Integer getSerial() {
         return this.serial;
@@ -108,21 +110,13 @@ public class SysShopNpcNao implements Serializable
         if (!(o instanceof SysShopNpcNao)) {
             return false;
         }
-        final SysShopNpcNao other = (SysShopNpcNao)o;
+        SysShopNpcNao other = (SysShopNpcNao)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        if (this$serial == null) {
-            if (other$serial == null) {
-                return this.getNum() == other.getNum() && this.getPrice() == other.getPrice() && this.getSortNo() == other.getSortNo() && this.getLvLimit() == other.getLvLimit() && this.getZsLimit() == other.getZsLimit() && this.getDiscount() == other.getDiscount() && this.getQuotaLimit() == other.getQuotaLimit() && this.getBind() == other.getBind();
-            }
-        }
-        else if (this$serial.equals(other$serial)) {
-            return this.getNum() == other.getNum() && this.getPrice() == other.getPrice() && this.getSortNo() == other.getSortNo() && this.getLvLimit() == other.getLvLimit() && this.getZsLimit() == other.getZsLimit() && this.getDiscount() == other.getDiscount() && this.getQuotaLimit() == other.getQuotaLimit() && this.getBind() == other.getBind();
-        }
-        return false;
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        return ((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null)) && this.getNum() == other.getNum() && this.getPrice() == other.getPrice() && this.getSortNo() == other.getSortNo() && this.getLvLimit() == other.getLvLimit() && this.getZsLimit() == other.getZsLimit() && this.getDiscount() == other.getDiscount() && this.getQuotaLimit() == other.getQuotaLimit() && this.getBind() == other.getBind();
     }
     
     protected boolean canEqual(final Object other) {
@@ -131,9 +125,9 @@ public class SysShopNpcNao implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
         result = result * 59 + this.getNum();
         result = result * 59 + this.getPrice();

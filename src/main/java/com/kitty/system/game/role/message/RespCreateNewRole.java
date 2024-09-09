@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class RespCreateNewRole extends Message
 {
     private Integer id;
     private String name;
+    
+    public RespCreateNewRole() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -34,34 +36,18 @@ public class RespCreateNewRole extends Message
         if (!(o instanceof RespCreateNewRole)) {
             return false;
         }
-        final RespCreateNewRole other = (RespCreateNewRole)o;
+        RespCreateNewRole other = (RespCreateNewRole)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        Label_0065: {
-            if (this$id == null) {
-                if (other$id == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$id.equals(other$id)) {
-                break Label_0065;
-            }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (!((this$id != null) ? this$id.equals(other$id) : (other$id == null))) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        if (this$name == null) {
-            if (other$name == null) {
-                return true;
-            }
-        }
-        else if (this$name.equals(other$name)) {
-            return true;
-        }
-        return false;
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        return (this$name != null) ? this$name.equals(other$name) : (other$name == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -70,11 +56,11 @@ public class RespCreateNewRole extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         return result;
     }

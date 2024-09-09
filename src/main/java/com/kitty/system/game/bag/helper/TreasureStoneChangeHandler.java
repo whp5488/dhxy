@@ -1,13 +1,10 @@
-
 package com.kitty.system.game.bag.helper;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import com.kitty.system.common.message.RespHint;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.message.RespMsg;
-import java.util.Collection;
 import com.kitty.common.utils.ArraysUtil;
 import com.kitty.common.utils.RandomUtil;
 import com.kitty.system.game.vo.utils.Const;
@@ -25,29 +22,34 @@ public class TreasureStoneChangeHandler extends BagHandler
     private static final List<Integer> NEED;
     private static final long SILVER = 100000L;
     
+    public TreasureStoneChangeHandler() {
+    }
+    
     @Override
-    public String acceptOperate(final Role role, final Integer pos, final Integer num, final String param) {
+    public String acceptOperate(Role role, Integer pos, Integer num, String param) {
         NutMap nutMap = null;
         try {
-            nutMap = (NutMap)Json.fromJson(NutMap.class, (CharSequence)param);
+            nutMap = (NutMap)Json.fromJson(NutMap.class, param);
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             return null;
         }
-        final ArrayList<Integer> list = new ArrayList<Integer>();
+        ArrayList<Integer> list = new ArrayList<>();
         boolean flag = true;
         int count = 0;
-        for (final String key : nutMap.keySet()) {
-            final Integer index = Integer.valueOf(key);
-            if (index < 0 || index > 2) {
+        for (String key : nutMap.keySet()) {
+            Integer index = Integer.valueOf(key);
+            if ((int)index < 0 || (int)index > 2) {
                 return null;
             }
-            list.add(TreasureStoneChangeHandler.NEED.get(index));
+            list.add(TreasureStoneChangeHandler.NEED.get((int)index));
             count += nutMap.getInt(key);
-            if (this.bagService.getBagGoods(role, TreasureStoneChangeHandler.NEED.get(index), nutMap.getInt(key)) == null) {
+            if (this.bagService.getBagGoods(role, (int)TreasureStoneChangeHandler.NEED.get((int)index), nutMap.getInt(key)) != null) {
+                flag = false;
+            }
+            else {
                 continue;
             }
-            flag = false;
         }
         if (!this.roleService.checkCurrency(role, Const.RESTYPE_SILVER, 100000L)) {
             return null;
@@ -61,44 +63,45 @@ public class TreasureStoneChangeHandler extends BagHandler
         if (!this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, 100000L, "原石转换")) {
             return null;
         }
-        for (final String key : nutMap.keySet()) {
-            if (this.bagService.consumeBagGoods(role, TreasureStoneChangeHandler.NEED.get(Integer.valueOf(key)), nutMap.getInt(key), true, true, "原石转换") != null) {
+        for (String key : nutMap.keySet()) {
+            if (this.bagService.consumeBagGoods(role, (int)TreasureStoneChangeHandler.NEED.get((int)Integer.valueOf(key)), nutMap.getInt(key), true, true, "原石转换") != null) {
                 return null;
             }
+            continue;
         }
-        final List<Integer> objects = new ArrayList<Integer>();
+        List<Integer> objects = new ArrayList<>();
         if (nutMap.size() == 2) {
-            final int index2 = RandomUtil.round(0, TreasureStoneChangeHandler.NEED.size() - 1);
+            int index2 = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(TreasureStoneChangeHandler.NEED.size() - 1));
             objects.add(TreasureStoneChangeHandler.NEED.get(index2));
-            final List<Integer> notMatchList = new ArrayList<Integer>(ArraysUtil.getDifferListByMapPlus(TreasureStoneChangeHandler.NEED, list));
+            List<Integer> notMatchList = new ArrayList(ArraysUtil.getDifferListByMapPlus(TreasureStoneChangeHandler.NEED, list));
             if (notMatchList != null && notMatchList.size() > 0) {
                 objects.add(notMatchList.get(0));
             }
             else {
-                objects.add(TreasureStoneChangeHandler.NEED.get(RandomUtil.round(0, TreasureStoneChangeHandler.NEED.size() - 1)));
+                objects.add(TreasureStoneChangeHandler.NEED.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(TreasureStoneChangeHandler.NEED.size() - 1))));
             }
         }
         else {
-            objects.add(TreasureStoneChangeHandler.NEED.get(RandomUtil.round(0, TreasureStoneChangeHandler.NEED.size() - 1)));
-            objects.add(TreasureStoneChangeHandler.NEED.get(RandomUtil.round(0, TreasureStoneChangeHandler.NEED.size() - 1)));
+            objects.add(TreasureStoneChangeHandler.NEED.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(TreasureStoneChangeHandler.NEED.size() - 1))));
+            objects.add(TreasureStoneChangeHandler.NEED.get(RandomUtil.round(Integer.valueOf(0), Integer.valueOf(TreasureStoneChangeHandler.NEED.size() - 1))));
         }
-        MessagePusher.pushMessage(role.getId(), new RespMsg("转换成功"));
-        MessagePusher.pushMessage(role.getId(), new RespHint(30, (short)1));
-        for (final Integer serial : objects) {
+        MessagePusher.pushMessage((long)role.getId(), new RespMsg("转换成功"));
+        MessagePusher.pushMessage((long)role.getId(), new RespHint(30, (short)1));
+        for (Integer serial : objects) {
             String name = "红色原石";
-            if (serial == 90059) {
+            if ((int)serial == 90059) {
                 name = "蓝色原石";
             }
-            else if (serial == 90060) {
+            else if ((int)serial == 90060) {
                 name = "黄色原石";
             }
-            this.bagService.addGoods(role, serial, 1, 0, false, true, "原石转换");
-            MessagePusher.pushMessage(role.getId(), new RespMsg("获得#<LB1>" + name + "#1个"));
+            this.bagService.addGoods(role, (int)serial, 1, 0, false, true, "原石转换");
+            MessagePusher.pushMessage((long)role.getId(), new RespMsg("获得#<LB1>" + name + "#1个"));
         }
         return null;
     }
     
     static {
-        NEED = Arrays.asList(90058, 90059, 90060);
+        NEED = Arrays.asList(Integer.valueOf(90058), Integer.valueOf(90059), Integer.valueOf(90060));
     }
 }

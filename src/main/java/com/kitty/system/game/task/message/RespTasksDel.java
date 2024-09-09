@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -38,7 +37,7 @@ public class RespTasksDel extends Message
         if (!(o instanceof RespTasksDel)) {
             return false;
         }
-        final RespTasksDel other = (RespTasksDel)o;
+        RespTasksDel other = (RespTasksDel)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getType() == other.getType();
     }
     
@@ -48,7 +47,7 @@ public class RespTasksDel extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getType();
@@ -57,6 +56,6 @@ public class RespTasksDel extends Message
     
     @Override
     public String toString() {
-        return "RespTasksDel(serial=" + this.getSerial() + ", type=" + this.getType() + ")";
+        return "RespTasksDel(serial=" + this.getSerial() + ", type=" + (int)this.getType() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.helper;
 
 import com.kitty.system.game.vo.utils.Const;
@@ -6,15 +5,14 @@ import com.kitty.system.enums.war.itempro.def.CONVERT_DICT;
 import com.kitty.system.enums.war.itempro.def.PRO_DICT_SERIAL;
 import com.kitty.system.init.domain.SysPurifyAttr;
 import com.kitty.system.game.equip.pool.EquipDataPool;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
-import com.kitty.system.game.vo.FiedEquip;
 import com.kitty.system.common.enter.FiedValue;
+import com.kitty.system.game.vo.FiedEquip;
 import java.util.ArrayList;
 import com.kitty.system.game.equip.message.RespUpgradePreview;
-import java.util.Map;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ConcurrentModificationException;
 import com.kitty.logs.LoggerUtils;
 import com.kitty.common.utils.bean.BeanUtils;
@@ -46,30 +44,33 @@ public abstract class UpgradeHandler
     
     public UpgradeHandler() {
         this.logger = LoggerFunction.UPGRADE_EQUIP.getLogger();
-        this.worker = SpringUtils.getBean(IdWorker.class);
-        this.equipService = SpringUtils.getBean(EquipService.class);
-        this.bagService = SpringUtils.getBean(BagService.class);
+        this.worker = (IdWorker)SpringUtils.getBean(IdWorker.class);
+        this.equipService = (EquipService)SpringUtils.getBean(EquipService.class);
+        this.bagService = (BagService)SpringUtils.getBean(BagService.class);
         this.roleService = SpringUtils.getRoleService();
-        this.chatService = SpringUtils.getBean(ChatService.class);
+        this.chatService = (ChatService)SpringUtils.getBean(ChatService.class);
     }
     
-    public abstract String acceptUpgrade(final Role p0, final Integer p1, final Integer p2, final String p3, final String p4);
+    public abstract String acceptUpgrade(Role role, Integer upgradePos, Integer type, String param, String cause);
     
-    int getVacancy(final Role role) {
+    int getVacancy(Role role) {
         return this.bagService.getPos(role, false);
     }
     
-    public EquipInfo getEquip(final Role role, final int pos, final Long id) {
-        final EquipInfo equipInfo = new EquipInfo();
+    public EquipInfo getEquip(Role role, int pos, Long id) {
+        EquipInfo equipInfo = new EquipInfo();
         BagEquip equip = new BagEquip();
         try {
             if (pos < 0) {
                 boolean flag = true;
-                final List<WearEquip> wearEquips = this.equipService.selectWearEquip(role);
-                for (final WearEquip wearEquip : wearEquips) {
+                List<WearEquip> wearEquips = this.equipService.selectWearEquip(role);
+                for (WearEquip wearEquip : wearEquips) {
                     if (wearEquip != null && wearEquip.getId() != null && wearEquip.getId().equals(id)) {
                         flag = false;
                         BeanUtils.copyBeanProp(equip, wearEquip);
+                    }
+                    else {
+                        continue;
                     }
                 }
                 if (flag) {
@@ -78,8 +79,8 @@ public abstract class UpgradeHandler
                 }
             }
             else {
-                final Map<Long, BagEquip> bagEquip = this.bagService.getBagEquip(role);
-                equip = bagEquip.get(id);
+                Map<Long, BagEquip> bagEquip = this.bagService.getBagEquip(role);
+                equip = (BagEquip)bagEquip.get(id);
                 if (equip == null) {
                     equipInfo.setTips("背包没有该道具");
                 }
@@ -87,28 +88,30 @@ public abstract class UpgradeHandler
             if (equip != null && equip.getId() == null) {
                 equip = null;
                 equipInfo.setTips("获取装备信息错误");
-                LoggerUtils.info("玩家[{}]获取装备信息错误：装备ID = {}，位置 = {}" + role.getRoleId(), id, pos);
+                LoggerUtils.info("玩家[{}]获取装备信息错误：装备ID = {}，位置 = {}" + role.getRoleId(), id, Integer.valueOf(pos));
             }
             equipInfo.setEquip(equip);
         }
-        catch (final ConcurrentModificationException e) {
+        catch (ConcurrentModificationException e) {
             e.getMessage();
         }
         return equipInfo;
     }
     
-    public void refresh(final Role role, final BagEquip equip, final int pos, final Long id, final boolean flag) {
+    public void refresh(Role role, BagEquip equip, int pos, Long id, boolean flag) {
         try {
             if (pos < 0) {
-                final List<WearEquip> wearEquips = this.equipService.selectWearEquip(role);
-                final WearEquip wearEquip = new WearEquip();
+                List<WearEquip> wearEquips = this.equipService.selectWearEquip(role);
+                WearEquip wearEquip = new WearEquip();
                 BeanUtils.copyBeanProp(wearEquip, equip);
-                for (int i = 0; i < wearEquips.size(); ++i) {
-                    final WearEquip wear = wearEquips.get(i);
+                int i = 0;
+                while (i < wearEquips.size()) {
+                    WearEquip wear = (WearEquip)wearEquips.get(i);
                     if (wear.getId().equals(id)) {
                         wearEquips.set(i, wearEquip);
                         break;
                     }
+                    ++i;
                 }
                 wearEquip.save();
                 if (flag) {
@@ -116,7 +119,7 @@ public abstract class UpgradeHandler
                 }
             }
             else {
-                final Map<Long, BagEquip> bagEquipMap = this.bagService.getBagEquip(role);
+                Map<Long, BagEquip> bagEquipMap = this.bagService.getBagEquip(role);
                 bagEquipMap.put(equip.getId(), equip);
                 equip.save();
                 if (flag) {
@@ -124,17 +127,17 @@ public abstract class UpgradeHandler
                 }
             }
         }
-        catch (final ConcurrentModificationException ex) {}
+        catch (ConcurrentModificationException ex) {}
     }
     
-    public void animation(final Role role, final BagEquip equip, final BagEquip newEq, final int level) {
-        final RespUpgradePreview preview = new RespUpgradePreview();
-        final List<FiedValue> listOne = new ArrayList<FiedValue>();
-        for (final FiedEquip fiedEquip : equip.getField()) {
+    public void animation(Role role, BagEquip equip, BagEquip newEq, int level) {
+        RespUpgradePreview preview = new RespUpgradePreview();
+        List<FiedValue> listOne = new ArrayList<>();
+        for (FiedEquip fiedEquip : equip.getField()) {
             listOne.add(new FiedValue(String.valueOf(fiedEquip.getType()), (byte)3, fiedEquip.getValue()));
         }
-        final List<FiedValue> listTwo = new ArrayList<FiedValue>();
-        for (final FiedEquip fiedEquip2 : newEq.getField()) {
+        List<FiedValue> listTwo = new ArrayList<>();
+        for (FiedEquip fiedEquip2 : newEq.getField()) {
             listTwo.add(new FiedValue(String.valueOf(fiedEquip2.getType()), (byte)3, fiedEquip2.getValue()));
         }
         preview.setListOne(listOne);
@@ -145,69 +148,57 @@ public abstract class UpgradeHandler
         MessagePusher.pushMessage(role, preview);
     }
     
-    public int getPj(final int pj) {
-        final String value = String.valueOf(pj);
+    public int getPj(int pj) {
+        String value = String.valueOf(pj);
         if (value.length() >= 2) {
-            return Integer.valueOf(value.substring(1, 2));
+            return (int)Integer.valueOf(value.substring(1, 2));
         }
         return 0;
     }
     
-    public int fieldSerial(final List<FiedEquip> field) {
-        final int[] serial = { 0 };
+    public int fieldSerial(List<FiedEquip> field) {
+        int[] serial = { 0 };
         field.forEach(e -> {
-            if (e.getType().equals(6680)) {
-                serial[0] = e.getValue();
+            if (e.getType().equals(Integer.valueOf(6680))) {
+                serial[0] = (int)e.getValue();
                 return;
             }
-            else {
-                return;
-            }
+            return;
         });
         return serial[0];
     }
     
-    public BagEquip clearHistory(final BagEquip equip) {
-        equip.setRedoGeneralHistory(new ArrayList<FiedEquip>());
-        equip.setRedoHighHistory(new ArrayList<List<FiedEquip>>());
-        equip.setRedoSuperHistory(new ArrayList<List<FiedEquip>>());
-        equip.setArtificeGeneralHistory(new ArrayList<FiedEquip>());
-        equip.setArtificeHighHistory(new ArrayList<List<FiedEquip>>());
-        equip.setArtificeSuperHistory(new ArrayList<List<FiedEquip>>());
-        equip.setPurifyGeneralHistory(new ArrayList<FiedEquip>());
-        equip.setPurifyHighHistory(new ArrayList<List<FiedEquip>>());
-        equip.setPurifySuperHistory(new ArrayList<List<FiedEquip>>());
+    public BagEquip clearHistory(BagEquip equip) {
+        equip.setRedoGeneralHistory(new ArrayList<>());
+        equip.setRedoHighHistory(new ArrayList<>());
+        equip.setRedoSuperHistory(new ArrayList<>());
+        equip.setArtificeGeneralHistory(new ArrayList<>());
+        equip.setArtificeHighHistory(new ArrayList<>());
+        equip.setArtificeSuperHistory(new ArrayList<>());
+        equip.setPurifyGeneralHistory(new ArrayList<>());
+        equip.setPurifyHighHistory(new ArrayList<>());
+        equip.setPurifySuperHistory(new ArrayList<>());
         return equip;
     }
     
-    public FiedEquip getPurify(final List<FiedEquip> field, final int pj) {
+    public FiedEquip getPurify(List<FiedEquip> field, int pj) {
         if (pj >= 5) {
-            final List<SysPurifyAttr> list = EquipDataPool.purify;
-            for (final FiedEquip fiedEquip : field) {
-                final SysPurifyAttr purifyAttr = list.stream().filter(e -> fiedEquip.getType() - PRO_DICT_SERIAL.EQUIP_PRO.getSerial() == CONVERT_DICT.getDist(e.getDict())).findFirst().orElse(null);
+            List<SysPurifyAttr> list = EquipDataPool.purify;
+            for (FiedEquip fiedEquip : field) {
+                SysPurifyAttr purifyAttr = (SysPurifyAttr)list.stream().filter(e -> (int)fiedEquip.getType() - PRO_DICT_SERIAL.EQUIP_PRO.getSerial() == CONVERT_DICT.getDist(e.getDict())).findFirst().orElse(null);
                 if (purifyAttr != null) {
                     return fiedEquip;
                 }
+                continue;
             }
         }
         return null;
     }
     
-    public int expend(final int type) {
-        int count = 1;
-        if (type == 2) {
-            count = 5;
-        }
-        else if (type == 3) {
-            count = 20;
-        }
-        return count;
-    }
-    
-    public BagEquip remoldSave(final BagEquip equip, final List<List<FiedEquip>> redo, final int type) {
+    public BagEquip remoldSave(BagEquip equip, List<List<FiedEquip>> redo, int type) {
         if (redo.size() > 0) {
             if (type == 1) {
-                equip.setRedoGeneralHistory(redo.get(0));
+                equip.setRedoGeneralHistory((List)redo.get(0));
             }
             else if (type == 2) {
                 equip.setRedoHighHistory(redo);
@@ -219,10 +210,10 @@ public abstract class UpgradeHandler
         return equip;
     }
     
-    public BagEquip remoldPurifySave(final BagEquip equip, final List<List<FiedEquip>> redo, final int type) {
+    public BagEquip remoldPurifySave(BagEquip equip, List<List<FiedEquip>> redo, int type) {
         if (redo.size() > 0) {
             if (type == 1) {
-                equip.setPurifyGeneralHistory(redo.get(0));
+                equip.setPurifyGeneralHistory((List)redo.get(0));
             }
             else if (type == 2) {
                 equip.setPurifyHighHistory(redo);
@@ -234,10 +225,10 @@ public abstract class UpgradeHandler
         return equip;
     }
     
-    public BagEquip refineSave(final BagEquip equip, final List<List<FiedEquip>> refine, final int type) {
+    public BagEquip refineSave(BagEquip equip, List<List<FiedEquip>> refine, int type) {
         if (refine.size() > 0) {
             if (type == 1) {
-                equip.setArtificeGeneralHistory(refine.get(0));
+                equip.setArtificeGeneralHistory((List)refine.get(0));
             }
             else if (type == 2) {
                 equip.setArtificeHighHistory(refine);
@@ -249,25 +240,25 @@ public abstract class UpgradeHandler
         return equip;
     }
     
-    public boolean deduct(final Role role, final Map<Integer, Integer> consume) {
-        for (final Integer key : consume.keySet()) {
-            final Integer amount = consume.get(key);
+    public boolean deduct(Role role, Map<Integer, Integer> consume) {
+        for (Integer key : consume.keySet()) {
+            Integer amount = (Integer)consume.get(key);
             if (key.equals(Const.RESTYPE_SILVER)) {
-                final boolean b = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, amount, "装备打造实现类");
+                boolean b = this.roleService.deductCurrency(role, Const.RESTYPE_SILVER, (long)(int)amount, "装备打造实现类");
                 if (!b) {
                     return false;
                 }
                 continue;
             }
             else if (key.equals(Const.RESTYPE_COIN)) {
-                final boolean b = this.roleService.deductCurrency(role, Const.RESTYPE_COIN, amount, "装备打造实现类");
+                boolean b = this.roleService.deductCurrency(role, Const.RESTYPE_COIN, (long)(int)amount, "装备打造实现类");
                 if (!b) {
                     return false;
                 }
                 continue;
             }
             else {
-                final Integer integer = this.bagService.consumeBagGoods(role, key, amount, true, true, "装备打造");
+                Integer integer = this.bagService.consumeBagGoods(role, (int)key, (int)amount, true, true, "装备打造");
                 if (integer != null) {
                     return false;
                 }

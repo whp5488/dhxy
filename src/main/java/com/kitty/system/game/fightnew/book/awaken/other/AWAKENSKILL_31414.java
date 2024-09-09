@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken.other;
 
 import org.nutz.lang.util.NutMap;
@@ -12,14 +11,18 @@ import com.kitty.system.game.fightnew.book.awaken.AwakenSkillProcessor;
 
 public class AWAKENSKILL_31414 extends AwakenSkillProcessor
 {
+    public AWAKENSKILL_31414() {
+    }
+    
     @Override
-    public void enterFight(final Fight fight, final FightObject fightObject, final Object... args) {
-        final NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)fightObject, 25.0, 20.0);
+    public void enterFight(Fight fight, FightObject fightObject, Object... args) {
+        NutMap map = AwakenSkillEffectUtils.getPercentDouble((PetFightObject)fightObject, 25.0, 20.0);
         if (map == null) {
             return;
         }
-        final double percent = map.getDouble("percent");
-        ImbueUtil.addRound(fightObject.getImbueMap(), PRO_DICT_TYPE.CONQUER_RATIO.getDist(), 1, percent + 0.1);
-        ImbueUtil.addRound(fightObject.getImbueMap(), PRO_DICT_TYPE.CONQUER_RATIO.getDist(), 2, -0.1);
+        double percent = map.getDouble("percent");
+        ImbueUtil.addRound(fightObject.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.CONQUER_RATIO.getDist()), 1, percent + 0.1);
+        ImbueUtil.addRound(fightObject.getImbueMap(), Integer.valueOf(PRO_DICT_TYPE.CONQUER_RATIO.getDist()), 2, -0.1);
+        return;
     }
 }

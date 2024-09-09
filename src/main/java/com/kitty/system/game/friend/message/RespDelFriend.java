@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.friend.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -26,7 +24,7 @@ public class RespDelFriend extends Message
         if (!(o instanceof RespDelFriend)) {
             return false;
         }
-        final RespDelFriend other = (RespDelFriend)o;
+        RespDelFriend other = (RespDelFriend)o;
         return other.canEqual(this) && this.getId() == other.getId();
     }
     
@@ -36,7 +34,7 @@ public class RespDelFriend extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         return result;
@@ -47,7 +45,6 @@ public class RespDelFriend extends Message
         return "RespDelFriend(id=" + this.getId() + ")";
     }
     
-    @ConstructorProperties({ "id" })
     public RespDelFriend(final int id) {
         this.id = id;
     }

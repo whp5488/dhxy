@@ -1,11 +1,10 @@
-
 package com.kitty.system.game.player.serializer;
 
 import com.kitty.system.game.pet.domain.Pet;
 
 public interface IPetPropSerializer
 {
-    void serialize(final Pet p0);
+    public abstract void serialize(Pet pet);
     
-    void deserialize(final Pet p0);
+    public abstract void deserialize(Pet pet);
 }

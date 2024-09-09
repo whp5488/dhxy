@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,11 +8,14 @@ public class ReqRequestLineInfo extends Message
 {
     private String accountId;
     
+    public ReqRequestLineInfo() {
+    }
+    
     public String getAccountId() {
         return this.accountId;
     }
     
-    public void setAccountId(final String accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
     

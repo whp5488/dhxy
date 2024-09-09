@@ -1,4 +1,3 @@
-
 package com.kitty.record.domain;
 
 import com.kitty.record.FightRecordThread;
@@ -17,6 +16,9 @@ public class FightRecord implements Serializable
     private List<Long> roleIds;
     private String marking;
     private String sendRoles;
+    
+    public FightRecord() {
+    }
     
     public void save() {
         FightRecordThread.getInstance().add2Queue(this);

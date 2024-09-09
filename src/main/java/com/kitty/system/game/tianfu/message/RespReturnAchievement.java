@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.tianfu.message;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import com.kitty.system.common.enter.FiedValue;
 import java.util.List;
@@ -21,13 +19,12 @@ public class RespReturnAchievement extends Message
         this.list = list;
     }
     
-    @ConstructorProperties({ "list" })
     public RespReturnAchievement(final List<FiedValue> list) {
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
         this.list = list;
     }
     
     public RespReturnAchievement() {
-        this.list = new ArrayList<FiedValue>();
+        this.list = new ArrayList<>();
     }
 }

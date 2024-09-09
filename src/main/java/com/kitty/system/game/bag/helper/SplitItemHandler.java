@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.helper;
 
 import java.util.Map;
@@ -13,20 +12,23 @@ import org.springframework.stereotype.Component;
 @Component("SplitItem")
 public class SplitItemHandler extends BagHandler
 {
+    public SplitItemHandler() {
+    }
+    
     @Override
-    public String acceptOperate(final Role role, final Integer pos, final Integer num, final String param) {
-        final Map<Long, BagGoods> bagGoodsMap = this.bagService.getBagGoods(role);
-        final BagGoods goods = bagGoodsMap.values().stream().filter(item -> pos.equals(item.getPos())).findFirst().orElse(null);
+    public String acceptOperate(Role role, Integer pos, Integer num, String param) {
+        Map<Long, BagGoods> bagGoodsMap = this.bagService.getBagGoods(role);
+        BagGoods goods = (BagGoods)bagGoodsMap.values().stream().filter(item -> pos.equals(Integer.valueOf(item.getPos()))).findFirst().orElse(null);
         if (goods == null) {
             return null;
         }
-        final Integer itemType = DataGlobalFunc.GetItemTypeByItemTypeId(goods.getSerial());
-        if (itemType.equals(ITEMLARGETYPE.ITEM_LARGE_TYPE_OTHERITEM.getValue()) && DataGlobalFunc.getItemSubTypeByItemTypeId(goods.getSerial()).equals(ITEM_LARGE_SON_TYPE.ITEM_DEF_TYPE_SKILL_BOOK.getValue())) {
-            final Integer type = DataGlobalFunc.getPetSkillBookTypeByItemTypeId(goods.getSerial());
-            if (type.equals(PETSKILLSUB.SUBTYPE_SENIOR.getValue())) {
-                final boolean flag = this.bagService.checkPos(role, 75017, 10);
+        Integer itemType = DataGlobalFunc.GetItemTypeByItemTypeId(Integer.valueOf(goods.getSerial()));
+        if (itemType.equals(Integer.valueOf(ITEMLARGETYPE.ITEM_LARGE_TYPE_OTHERITEM.getValue())) && DataGlobalFunc.getItemSubTypeByItemTypeId(Integer.valueOf(goods.getSerial())).equals(Integer.valueOf(ITEM_LARGE_SON_TYPE.ITEM_DEF_TYPE_SKILL_BOOK.getValue()))) {
+            Integer type = DataGlobalFunc.getPetSkillBookTypeByItemTypeId(Integer.valueOf(goods.getSerial()));
+            if (type.equals(Integer.valueOf(PETSKILLSUB.SUBTYPE_SENIOR.getValue()))) {
+                boolean flag = this.bagService.checkPos(role, 75017, 10);
                 if (flag) {
-                    final Integer nu = this.bagService.consumeBagGoodsByPos(role, 1, pos, true, "分解高级技能书");
+                    Integer nu = this.bagService.consumeBagGoodsByPos(role, 1, (int)pos, true, "分解高级技能书");
                     if (nu != null) {
                         return null;
                     }
@@ -34,8 +36,8 @@ public class SplitItemHandler extends BagHandler
                     return "你获得了#<II75017>##<LB1>[高级技能书残卷]#X10";
                 }
             }
-            else if (type.equals(PETSKILLSUB.SUBTYPE_SUPREME.getValue())) {
-                final Integer integer = this.bagService.consumeBagGoodsByPos(role, 1, pos, true, "终极技能书");
+            else if (type.equals(Integer.valueOf(PETSKILLSUB.SUBTYPE_SUPREME.getValue()))) {
+                Integer integer = this.bagService.consumeBagGoodsByPos(role, 1, (int)pos, true, "终极技能书");
                 if (integer != null) {
                     return null;
                 }
@@ -43,11 +45,13 @@ public class SplitItemHandler extends BagHandler
                 return "你获得了#<II75018>##<LB1>[终极技能书残卷]#X20";
             }
         }
-        for (int i = 0; i < num; ++i) {
-            final int bagPos = this.bagService.getPos(role, false);
+        int i = 0;
+        while (i < (int)num) {
+            int bagPos = this.bagService.getPos(role, false);
             if (bagPos < 0) {
                 return "物品栏空间不足";
             }
+            ++i;
         }
         return null;
     }

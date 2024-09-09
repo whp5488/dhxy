@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.ranking.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqClassifyPetRanking extends Message
 {
     private int petSerial;
     private byte serverId;
+    
+    public ReqClassifyPetRanking() {
+    }
     
     public int getPetSerial() {
         return this.petSerial;
@@ -34,7 +36,7 @@ public class ReqClassifyPetRanking extends Message
         if (!(o instanceof ReqClassifyPetRanking)) {
             return false;
         }
-        final ReqClassifyPetRanking other = (ReqClassifyPetRanking)o;
+        ReqClassifyPetRanking other = (ReqClassifyPetRanking)o;
         return other.canEqual(this) && this.getPetSerial() == other.getPetSerial() && this.getServerId() == other.getServerId();
     }
     
@@ -44,7 +46,7 @@ public class ReqClassifyPetRanking extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPetSerial();
         result = result * 59 + this.getServerId();
@@ -53,6 +55,6 @@ public class ReqClassifyPetRanking extends Message
     
     @Override
     public String toString() {
-        return "ReqClassifyPetRanking(petSerial=" + this.getPetSerial() + ", serverId=" + this.getServerId() + ")";
+        return "ReqClassifyPetRanking(petSerial=" + this.getPetSerial() + ", serverId=" + (int)this.getServerId() + ")";
     }
 }

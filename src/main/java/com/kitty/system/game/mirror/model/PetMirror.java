@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.mirror.model;
 
 import com.kitty.system.game.pet.domain.vo.PetSkill;
@@ -18,6 +17,9 @@ public class PetMirror
     private List<PetSkill> skillIds;
     private int icon;
     private long intimacy;
+    
+    public PetMirror() {
+    }
     
     public void setName(final String name) {
         this.name = name;

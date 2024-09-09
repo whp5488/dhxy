@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.email.domain;
 
 import com.kitty.common.db.Db4EmailService;
@@ -35,9 +34,9 @@ public class EmailAccessory extends BaseEntity<Long>
     @Column("create_time")
     private long createTime;
     
-    public EmailAccessory(final EmailSystemAccessory emailSystemAccessory, final long id, final long emailId) {
-        this.id = id;
-        this.emailId = emailId;
+    public EmailAccessory(EmailSystemAccessory emailSystemAccessory, long id, long emailId) {
+        this.id = Long.valueOf(id);
+        this.emailId = Long.valueOf(emailId);
         this.type = emailSystemAccessory.getType();
         this.serial = emailSystemAccessory.getSerial();
         this.num = Long.parseLong(emailSystemAccessory.getNum());

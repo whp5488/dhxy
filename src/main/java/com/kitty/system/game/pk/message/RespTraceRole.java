@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pk.message;
 
 import java.util.ArrayList;
@@ -29,8 +28,8 @@ public class RespTraceRole extends Message
         this.level = 0;
         this.weapon = 0;
         this.gem = 0;
-        this.lightEffect = new ArrayList<Integer>();
-        this.specialIcon = new ArrayList<Integer>();
+        this.lightEffect = new ArrayList<>();
+        this.specialIcon = new ArrayList<>();
         this.map = 0;
         this.x = 0;
         this.y = 0;
@@ -148,7 +147,7 @@ public class RespTraceRole extends Message
         if (!(o instanceof RespTraceRole)) {
             return false;
         }
-        final RespTraceRole other = (RespTraceRole)o;
+        RespTraceRole other = (RespTraceRole)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -158,17 +157,9 @@ public class RespTraceRole extends Message
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0091: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0091;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getRelive() != other.getRelive()) {
@@ -183,43 +174,19 @@ public class RespTraceRole extends Message
         if (this.getGem() != other.getGem()) {
             return false;
         }
-        final Object this$lightEffect = this.getLightEffect();
-        final Object other$lightEffect = other.getLightEffect();
-        Label_0180: {
-            if (this$lightEffect == null) {
-                if (other$lightEffect == null) {
-                    break Label_0180;
-                }
-            }
-            else if (this$lightEffect.equals(other$lightEffect)) {
-                break Label_0180;
-            }
+        Object this$lightEffect = this.getLightEffect();
+        Object other$lightEffect = other.getLightEffect();
+        if (!((this$lightEffect != null) ? this$lightEffect.equals(other$lightEffect) : (other$lightEffect == null))) {
             return false;
         }
-        final Object this$specialIcon = this.getSpecialIcon();
-        final Object other$specialIcon = other.getSpecialIcon();
-        Label_0217: {
-            if (this$specialIcon == null) {
-                if (other$specialIcon == null) {
-                    break Label_0217;
-                }
-            }
-            else if (this$specialIcon.equals(other$specialIcon)) {
-                break Label_0217;
-            }
+        Object this$specialIcon = this.getSpecialIcon();
+        Object other$specialIcon = other.getSpecialIcon();
+        if (!((this$specialIcon != null) ? this$specialIcon.equals(other$specialIcon) : (other$specialIcon == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return this.getMap() == other.getMap() && this.getX() == other.getX() && this.getY() == other.getY();
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return this.getMap() == other.getMap() && this.getX() == other.getX() && this.getY() == other.getY();
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return ((this$list != null) ? this$list.equals(other$list) : (other$list == null)) && this.getMap() == other.getMap() && this.getX() == other.getX() && this.getY() == other.getY();
     }
     
     protected boolean canEqual(final Object other) {
@@ -228,21 +195,21 @@ public class RespTraceRole extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         result = result * 59 + this.getSerial();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getRelive();
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getWeapon();
         result = result * 59 + this.getGem();
-        final Object $lightEffect = this.getLightEffect();
+        Object $lightEffect = this.getLightEffect();
         result = result * 59 + (($lightEffect == null) ? 43 : $lightEffect.hashCode());
-        final Object $specialIcon = this.getSpecialIcon();
+        Object $specialIcon = this.getSpecialIcon();
         result = result * 59 + (($specialIcon == null) ? 43 : $specialIcon.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         result = result * 59 + this.getMap();
         result = result * 59 + this.getX();
@@ -252,6 +219,6 @@ public class RespTraceRole extends Message
     
     @Override
     public String toString() {
-        return "RespTraceRole(roleId=" + this.getRoleId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", relive=" + this.getRelive() + ", level=" + this.getLevel() + ", weapon=" + this.getWeapon() + ", gem=" + this.getGem() + ", lightEffect=" + this.getLightEffect() + ", specialIcon=" + this.getSpecialIcon() + ", list=" + this.getList() + ", map=" + this.getMap() + ", x=" + this.getX() + ", y=" + this.getY() + ")";
+        return "RespTraceRole(roleId=" + this.getRoleId() + ", serial=" + this.getSerial() + ", name=" + this.getName() + ", relive=" + (int)this.getRelive() + ", level=" + (int)this.getLevel() + ", weapon=" + this.getWeapon() + ", gem=" + this.getGem() + ", lightEffect=" + this.getLightEffect() + ", specialIcon=" + this.getSpecialIcon() + ", list=" + this.getList() + ", map=" + (int)this.getMap() + ", x=" + (int)this.getX() + ", y=" + (int)this.getY() + ")";
     }
 }

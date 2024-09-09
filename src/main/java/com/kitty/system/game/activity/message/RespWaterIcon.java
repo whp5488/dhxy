@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -78,7 +77,7 @@ public class RespWaterIcon extends Message
         if (!(o instanceof RespWaterIcon)) {
             return false;
         }
-        final RespWaterIcon other = (RespWaterIcon)o;
+        RespWaterIcon other = (RespWaterIcon)o;
         return other.canEqual(this) && this.getRound() == other.getRound() && this.getCurrentSession() == other.getCurrentSession() && this.getTotalSession() == other.getTotalSession() && this.getRank() == other.getRank() && this.getState() == other.getState() && this.getTime() == other.getTime();
     }
     
@@ -88,7 +87,7 @@ public class RespWaterIcon extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRound();
         result = result * 59 + this.getCurrentSession();
@@ -101,6 +100,6 @@ public class RespWaterIcon extends Message
     
     @Override
     public String toString() {
-        return "RespWaterIcon(round=" + this.getRound() + ", currentSession=" + this.getCurrentSession() + ", totalSession=" + this.getTotalSession() + ", rank=" + this.getRank() + ", state=" + this.getState() + ", time=" + this.getTime() + ")";
+        return "RespWaterIcon(round=" + (int)this.getRound() + ", currentSession=" + (int)this.getCurrentSession() + ", totalSession=" + (int)this.getTotalSession() + ", rank=" + (int)this.getRank() + ", state=" + (int)this.getState() + ", time=" + this.getTime() + ")";
     }
 }

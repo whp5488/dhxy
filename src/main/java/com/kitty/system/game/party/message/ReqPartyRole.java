@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqPartyRole extends Message
 {
     private int roleId;
+    
+    public ReqPartyRole() {
+    }
     
     public int getRoleId() {
         return this.roleId;
@@ -25,7 +27,7 @@ public class ReqPartyRole extends Message
         if (!(o instanceof ReqPartyRole)) {
             return false;
         }
-        final ReqPartyRole other = (ReqPartyRole)o;
+        ReqPartyRole other = (ReqPartyRole)o;
         return other.canEqual(this) && this.getRoleId() == other.getRoleId();
     }
     
@@ -35,7 +37,7 @@ public class ReqPartyRole extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
         return result;

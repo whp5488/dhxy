@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.model.user.at;
 
 import java.util.ArrayList;
@@ -23,32 +22,30 @@ public class AtWillPkData implements Serializable
         this.leave = 0L;
     }
     
-    public AtWillPkData(final Team team, final short pkValue) {
+    public AtWillPkData(Team team, short pkValue) {
         this.score = 0;
         this.state = 0;
         this.leave = 0L;
         this.teamId = team.getId();
         this.pkValue = pkValue;
         this.score = 0;
-        final List<Member> members = this.getMembers(team);
+        List<Member> members = this.getMembers(team);
         this.members = members;
     }
     
-    private List<Member> getMembers(final Team team) {
-        final List<Member> members = new ArrayList<Member>();
-        final List<Member> list = team.getList();
+    private List<Member> getMembers(Team team) {
+        List<Member> members = new ArrayList<>();
+        List<Member> list = team.getList();
         for (int i = 0; i < list.size(); ++i) {
-            final Member member = list.get(i);
-            if (member.isInTeam()) {
-                if (!members.contains(member)) {
-                    members.add(member);
-                }
+            Member member = (Member)list.get(i);
+            if (member.isInTeam() && !members.contains(member)) {
+                members.add(member);
             }
         }
         return members;
     }
     
-    public void addTotalScore(final short score) {
+    public void addTotalScore(short score) {
         this.score += score;
     }
     
@@ -59,18 +56,18 @@ public class AtWillPkData implements Serializable
         }
     }
     
-    public void substractPkValue(final short pkValue) {
+    public void substractPkValue(short pkValue) {
         this.pkValue -= pkValue;
     }
     
-    public void updateTeamMember(final Team team, final byte state) {
-        final List<Member> members = this.getMembers(team);
+    public void updateTeamMember(Team team, byte state) {
+        List<Member> members = this.getMembers(team);
         this.members = members;
         this.state = state;
     }
     
-    public void updateTeamMember(final Team team) {
-        final List<Member> members = this.getMembers(team);
+    public void updateTeamMember(Team team) {
+        List<Member> members = this.getMembers(team);
         this.members = members;
     }
     
@@ -132,6 +129,6 @@ public class AtWillPkData implements Serializable
     
     @Override
     public String toString() {
-        return "AtWillPkData(teamId=" + this.getTeamId() + ", pkValue=" + this.getPkValue() + ", score=" + this.getScore() + ", members=" + this.getMembers() + ", prevPKTime=" + this.getPrevPKTime() + ", state=" + this.getState() + ", leave=" + this.getLeave() + ")";
+        return "AtWillPkData(teamId=" + this.getTeamId() + ", pkValue=" + (int)this.getPkValue() + ", score=" + (int)this.getScore() + ", members=" + this.getMembers() + ", prevPKTime=" + this.getPrevPKTime() + ", state=" + (int)this.getState() + ", leave=" + this.getLeave() + ")";
     }
 }

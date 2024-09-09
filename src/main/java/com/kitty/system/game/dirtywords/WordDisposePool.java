@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.dirtywords;
 
 import java.util.HashMap;
@@ -17,27 +16,30 @@ public class WordDisposePool
 {
     private static final Map<Character, List<String>> dirtyWords;
     
+    public WordDisposePool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
-        final List<Word> list = initService.getWord();
-        final Set<String> set = new HashSet<String>();
-        for (final Word word : list) {
+        InitService initService = SpringUtils.getInitService();
+        List<Word> list = initService.getWord();
+        Set<String> set = new HashSet();
+        for (Word word : list) {
             set.add(word.getWord());
         }
         initWordsStore(set);
         System.out.println("初始化敏感词汇 == " + set.size());
     }
     
-    public static List<String> checkDirtyWords(final String sentence) {
-        final char[] stringArr = sentence.toCharArray();
-        final int wordCount = stringArr.length;
-        final List<String> result = new ArrayList<String>();
+    public static List<String> checkDirtyWords(String sentence) {
+        char[] stringArr = sentence.toCharArray();
+        int wordCount = stringArr.length;
+        List<String> result = new ArrayList<>();
         for (int i = 0; i < wordCount - 1; ++i) {
-            final char key = stringArr[i];
-            if (WordDisposePool.dirtyWords.containsKey(key)) {
-                final int endIndex = Math.min(10, wordCount - i);
-                final String checkWord = new String(stringArr, i, endIndex);
-                final String matchedKey = checkWordsMatch(checkWord, key);
+            char key = stringArr[i];
+            if (WordDisposePool.dirtyWords.containsKey(Character.valueOf(key))) {
+                int endIndex = Math.min(10, wordCount - i);
+                String checkWord = new String(stringArr, i, endIndex);
+                String matchedKey = checkWordsMatch(checkWord, Character.valueOf(key));
                 if (matchedKey != null && matchedKey.trim().length() > 0) {
                     result.add(matchedKey);
                 }
@@ -46,27 +48,28 @@ public class WordDisposePool
         return result;
     }
     
-    public static String checkWordsMatch(final String source, final Character key) {
-        final List<String> match = WordDisposePool.dirtyWords.get(key);
-        for (final String unit : match) {
-            final DirtyWordUnit wordUnit = new DirtyWordUnit(source, unit);
+    public static String checkWordsMatch(String source, Character key) {
+        List<String> match = (List)WordDisposePool.dirtyWords.get(key);
+        for (String unit : match) {
+            DirtyWordUnit wordUnit = new DirtyWordUnit(source, unit);
             wordUnit.checkWordIndex();
             if (wordUnit.foundDitryWord()) {
                 return wordUnit.getKeyWord();
             }
+            continue;
         }
         return "";
     }
     
-    private static void initWordsStore(final Set<String> words) {
-        for (final String word : words) {
-            final char first = word.charAt(0);
-            final List<String> sameFirst = WordDisposePool.dirtyWords.computeIfAbsent(Character.valueOf(first), k -> new ArrayList());
+    private static void initWordsStore(Set<String> words) {
+        for (String word : words) {
+            char first = word.charAt(0);
+            List<String> sameFirst = (List)WordDisposePool.dirtyWords.computeIfAbsent(Character.valueOf(first), k -> new ArrayList<>());
             sameFirst.add(word);
         }
     }
     
     static {
-        dirtyWords = new HashMap<Character, List<String>>();
+        dirtyWords = new HashMap();
     }
 }

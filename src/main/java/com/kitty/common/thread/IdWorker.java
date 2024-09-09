@@ -1,4 +1,3 @@
-
 package com.kitty.common.thread;
 
 import java.net.NetworkInterface;
@@ -28,23 +27,23 @@ public class IdWorker
         this.workerId = getMaxWorkerId(this.datacenterId, 31L);
     }
     
-    public IdWorker(final long workerId, final long datacenterId) {
+    public IdWorker(long workerId, long datacenterId) {
         this.sequence = 0L;
         if (workerId > 31L || workerId < 0L) {
-            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", 31L));
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", Long.valueOf(31L)));
         }
-        if (datacenterId <= 31L && datacenterId >= 0L) {
-            this.workerId = workerId;
-            this.datacenterId = datacenterId;
-            return;
+        if (datacenterId > 31L || datacenterId < 0L) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", Long.valueOf(31L)));
         }
-        throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", 31L));
+        this.workerId = workerId;
+        this.datacenterId = datacenterId;
+        return;
     }
     
     public synchronized long nextId() {
         long timestamp = this.timeGen();
         if (timestamp < IdWorker.lastTimestamp) {
-            throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", IdWorker.lastTimestamp - timestamp));
+            throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", Long.valueOf(IdWorker.lastTimestamp - timestamp)));
         }
         if (IdWorker.lastTimestamp == timestamp) {
             this.sequence = (this.sequence + 1L & 0xFFFL);
@@ -56,7 +55,7 @@ public class IdWorker
             this.sequence = 0L;
         }
         IdWorker.lastTimestamp = timestamp;
-        final long nextId = timestamp - 1288834974657L << 22 | this.datacenterId << 17 | this.workerId << 12 | this.sequence;
+        long nextId = timestamp - 1288834974657L << 22 | this.datacenterId << 17 | this.workerId << 12 | this.sequence;
         return nextId;
     }
     
@@ -70,32 +69,33 @@ public class IdWorker
         return System.currentTimeMillis();
     }
     
-    protected static long getMaxWorkerId(final long datacenterId, final long maxWorkerId) {
-        final StringBuffer mpid = new StringBuffer();
+    protected static long getMaxWorkerId(long datacenterId, long maxWorkerId) {
+        StringBuffer mpid = new StringBuffer();
         mpid.append(datacenterId);
-        final String name = ManagementFactory.getRuntimeMXBean().getName();
+        String name = ManagementFactory.getRuntimeMXBean().getName();
         if (!name.isEmpty()) {
             mpid.append(name.split("@")[0]);
         }
-        return (mpid.toString().hashCode() & 0xFFFF) % (maxWorkerId + 1L);
+        return (long)(mpid.toString().hashCode() & 0xFFFF) % (maxWorkerId + 1L);
     }
     
-    protected static long getDatacenterId(final long maxDatacenterId) {
+    protected static long getDatacenterId(long maxDatacenterId) {
         long id = 0L;
         try {
-            final InetAddress ip = InetAddress.getLocalHost();
-            final NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-            if (network == null) {
+            InetAddress ip = InetAddress.getLocalHost();//本地网络有问题。
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+//            if (network == null) {
                 id = 1L;
-            }
-            else {
-                id = System.currentTimeMillis();
-                id %= maxDatacenterId + 1L;
-            }
+//            }
+//            else {
+//                byte[] mac = network.getHardwareAddress();//读不到mac
+//                id = ((0xFFL & (long)mac[mac.length - 1]) | (0xFF00L & (long)mac[mac.length - 2] << 8)) >> 6;// 这行空指针，mac为空。
+//                id %= maxDatacenterId + 1L;
+//            }
         }
-        catch (final Exception var7) {
-            var7.printStackTrace();
-            System.out.println(" getDatacenterId: " + var7.getMessage());
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(" getDatacenterId: " + e.getMessage());
         }
         return id;
     }

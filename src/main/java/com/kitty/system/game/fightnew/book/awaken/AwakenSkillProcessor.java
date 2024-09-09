@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.awaken;
 
 import com.kitty.system.game.fightnew.book.awaken.other.AWAKENSKILL_31516;
@@ -82,149 +81,152 @@ public class AwakenSkillProcessor
 {
     static Map<Integer, AwakenSkillProcessor> skills;
     
-    public static AwakenSkillProcessor queryProcessor(final Integer serial) {
-        return AwakenSkillProcessor.skills.get(serial);
+    public AwakenSkillProcessor() {
     }
     
-    public NutMap additionSuit(final Role role, final Pet pet, final Object... args) {
+    public static AwakenSkillProcessor queryProcessor(Integer serial) {
+        return (AwakenSkillProcessor)AwakenSkillProcessor.skills.get(serial);
+    }
+    
+    public NutMap additionSuit(Role role, Pet pet, Object... args) {
         return null;
     }
     
-    public NutMap additionAwaken(final Role role, final Pet pet, final Object... args) {
+    public NutMap additionAwaken(Role role, Pet pet, Object... args) {
         return null;
     }
     
-    public void roundStart(final Fight fight, final PetFightObject petFightObject, final Object... args) {
+    public void roundStart(Fight fight, PetFightObject petFightObject, Object... args) {
     }
     
-    public NutMap skillIntensify(final Fight fight, final PetFightObject petFightObject, final Object... args) {
+    public NutMap skillIntensify(Fight fight, PetFightObject petFightObject, Object... args) {
         return null;
     }
     
-    public void magicAttackEnd(final Fight fight, final FightObject effector, final Object... args) {
+    public void magicAttackEnd(Fight fight, FightObject effector, Object... args) {
     }
     
-    public void magicAttackEndOther(final Fight fight, final FightObject effector, final Object... args) {
+    public void magicAttackEndOther(Fight fight, FightObject effector, Object... args) {
     }
     
-    public void beforePhysicalAttack(final Fight fight, final FightObject effector, final Object... args) {
+    public void beforePhysicalAttack(Fight fight, FightObject effector, Object... args) {
     }
     
-    public void phyAttackEnd(final Fight fight, final FightObject effector, final Object... args) {
+    public void phyAttackEnd(Fight fight, FightObject effector, Object... args) {
     }
     
-    public void beforeDoAction(final Fight fight, final FightObject effector, final Object... args) {
+    public void beforeDoAction(Fight fight, FightObject effector, Object... args) {
     }
     
-    public NutMap revive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap revive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
-    public double isGuard(final Fight fight, final FightObject effector, final Object... args) {
+    public double isGuard(Fight fight, FightObject effector, Object... args) {
         return 0.0;
     }
     
-    public NutMap countRecoverBloodEnd(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap countRecoverBloodEnd(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
-    public NutMap enteringSide(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap enteringSide(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
-    public void sufferHarm(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void sufferHarm(Fight fight, FightObject fightObject, Object... args) {
     }
     
-    public void enterFight(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void enterFight(Fight fight, FightObject fightObject, Object... args) {
     }
     
-    public void exitSide(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void exitSide(Fight fight, FightObject fightObject, Object... args) {
     }
     
-    public void skillIntensifyTM(final Fight fight, final PetFightObject petFightObject, final Object... args) {
+    public void skillIntensifyTM(Fight fight, PetFightObject petFightObject, Object... args) {
     }
     
-    public void statusOver(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void statusOver(Fight fight, FightObject fightObject, Object... args) {
     }
     
-    public int changeHurt(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public int changeHurt(Fight fight, FightObject effector, FightObject target, Object... args) {
         return 0;
     }
     
-    public List<FiedValue> useDrug(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public List<FiedValue> useDrug(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
-    public NutMap other(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap other(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     static {
-        (AwakenSkillProcessor.skills = new HashMap<Integer, AwakenSkillProcessor>()).put(31303, new AWAKENSKILL_31303());
-        AwakenSkillProcessor.skills.put(31305, new AWAKENSKILL_31305());
-        AwakenSkillProcessor.skills.put(31307, new AWAKENSKILL_31307());
-        AwakenSkillProcessor.skills.put(31310, new AWAKENSKILL_31310());
-        AwakenSkillProcessor.skills.put(31313, new AWAKENSKILL_31313());
-        AwakenSkillProcessor.skills.put(31315, new AWAKENSKILL_31315());
-        AwakenSkillProcessor.skills.put(31316, new AWAKENSKILL_31316());
-        AwakenSkillProcessor.skills.put(31317, new AWAKENSKILL_31317());
-        AwakenSkillProcessor.skills.put(31318, new AWAKENSKILL_31318());
-        AwakenSkillProcessor.skills.put(31319, new AWAKENSKILL_31319());
-        AwakenSkillProcessor.skills.put(31320, new AWAKENSKILL_31320());
-        AwakenSkillProcessor.skills.put(31323, new AWAKENSKILL_31323());
-        AwakenSkillProcessor.skills.put(31324, new AWAKENSKILL_31324());
-        AwakenSkillProcessor.skills.put(31325, new AWAKENSKILL_31325());
-        AwakenSkillProcessor.skills.put(31327, new AWAKENSKILL_31327());
-        AwakenSkillProcessor.skills.put(31418, new AWAKENSKILL_31418());
-        AwakenSkillProcessor.skills.put(31421, new AWAKENSKILL_31421());
-        AwakenSkillProcessor.skills.put(31424, new AWAKENSKILL_31424());
-        AwakenSkillProcessor.skills.put(31301, new AWAKENSKILL_31301());
-        AwakenSkillProcessor.skills.put(31302, new AWAKENSKILL_31302());
-        AwakenSkillProcessor.skills.put(31306, new AWAKENSKILL_31306());
-        AwakenSkillProcessor.skills.put(31321, new AWAKENSKILL_31321());
-        AwakenSkillProcessor.skills.put(31322, new AWAKENSKILL_31322());
-        AwakenSkillProcessor.skills.put(31405, new AWAKENSKILL_31405());
-        AwakenSkillProcessor.skills.put(31517, new AWAKENSKILL_31517());
-        AwakenSkillProcessor.skills.put(31304, new AWAKENSKILL_31304());
-        AwakenSkillProcessor.skills.put(31308, new AWAKENSKILL_31308());
-        AwakenSkillProcessor.skills.put(31309, new AWAKENSKILL_31309());
-        AwakenSkillProcessor.skills.put(31314, new AWAKENSKILL_31314());
-        AwakenSkillProcessor.skills.put(31403, new AWAKENSKILL_31403());
-        AwakenSkillProcessor.skills.put(31407, new AWAKENSKILL_31407());
-        AwakenSkillProcessor.skills.put(31410, new AWAKENSKILL_31410());
-        AwakenSkillProcessor.skills.put(31411, new AWAKENSKILL_31411());
-        AwakenSkillProcessor.skills.put(31413, new AWAKENSKILL_31413());
-        AwakenSkillProcessor.skills.put(31415, new AWAKENSKILL_31415());
-        AwakenSkillProcessor.skills.put(31417, new AWAKENSKILL_31417());
-        AwakenSkillProcessor.skills.put(31419, new AWAKENSKILL_31419());
-        AwakenSkillProcessor.skills.put(31422, new AWAKENSKILL_31422());
-        AwakenSkillProcessor.skills.put(31426, new AWAKENSKILL_31426());
-        AwakenSkillProcessor.skills.put(31427, new AWAKENSKILL_31427());
-        AwakenSkillProcessor.skills.put(31501, new AWAKENSKILL_31501());
-        AwakenSkillProcessor.skills.put(31502, new AWAKENSKILL_31502());
-        AwakenSkillProcessor.skills.put(31504, new AWAKENSKILL_31504());
-        AwakenSkillProcessor.skills.put(31506, new AWAKENSKILL_31506());
-        AwakenSkillProcessor.skills.put(51508, new AWAKENSKILL_31508());
-        AwakenSkillProcessor.skills.put(31510, new AWAKENSKILL_31510());
-        AwakenSkillProcessor.skills.put(31513, new AWAKENSKILL_31513());
-        AwakenSkillProcessor.skills.put(31514, new AWAKENSKILL_31514());
-        AwakenSkillProcessor.skills.put(31515, new AWAKENSKILL_31515());
-        AwakenSkillProcessor.skills.put(31311, new AWAKENSKILL_31311());
-        AwakenSkillProcessor.skills.put(31312, new AWAKENSKILL_31312());
-        AwakenSkillProcessor.skills.put(31401, new AWAKENSKILL_31401());
-        AwakenSkillProcessor.skills.put(31402, new AWAKENSKILL_31402());
-        AwakenSkillProcessor.skills.put(31404, new AWAKENSKILL_31404());
-        AwakenSkillProcessor.skills.put(31406, new AWAKENSKILL_31406());
-        AwakenSkillProcessor.skills.put(31408, new AWAKENSKILL_31408());
-        AwakenSkillProcessor.skills.put(31412, new AWAKENSKILL_31412());
-        AwakenSkillProcessor.skills.put(31414, new AWAKENSKILL_31414());
-        AwakenSkillProcessor.skills.put(31416, new AWAKENSKILL_31416());
-        AwakenSkillProcessor.skills.put(31503, new AWAKENSKILL_31503());
-        AwakenSkillProcessor.skills.put(31505, new AWAKENSKILL_31505());
-        AwakenSkillProcessor.skills.put(31507, new AWAKENSKILL_31507());
-        AwakenSkillProcessor.skills.put(31509, new AWAKENSKILL_31509());
-        AwakenSkillProcessor.skills.put(31511, new AWAKENSKILL_31511());
-        AwakenSkillProcessor.skills.put(51512, new AWAKENSKILL_31512());
-        AwakenSkillProcessor.skills.put(31516, new AWAKENSKILL_31516());
+        (AwakenSkillProcessor.skills = new HashMap()).put(Integer.valueOf(31303), new AWAKENSKILL_31303());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31305), new AWAKENSKILL_31305());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31307), new AWAKENSKILL_31307());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31310), new AWAKENSKILL_31310());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31313), new AWAKENSKILL_31313());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31315), new AWAKENSKILL_31315());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31316), new AWAKENSKILL_31316());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31317), new AWAKENSKILL_31317());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31318), new AWAKENSKILL_31318());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31319), new AWAKENSKILL_31319());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31320), new AWAKENSKILL_31320());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31323), new AWAKENSKILL_31323());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31324), new AWAKENSKILL_31324());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31325), new AWAKENSKILL_31325());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31327), new AWAKENSKILL_31327());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31418), new AWAKENSKILL_31418());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31421), new AWAKENSKILL_31421());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31424), new AWAKENSKILL_31424());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31301), new AWAKENSKILL_31301());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31302), new AWAKENSKILL_31302());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31306), new AWAKENSKILL_31306());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31321), new AWAKENSKILL_31321());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31322), new AWAKENSKILL_31322());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31405), new AWAKENSKILL_31405());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31517), new AWAKENSKILL_31517());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31304), new AWAKENSKILL_31304());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31308), new AWAKENSKILL_31308());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31309), new AWAKENSKILL_31309());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31314), new AWAKENSKILL_31314());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31403), new AWAKENSKILL_31403());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31407), new AWAKENSKILL_31407());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31410), new AWAKENSKILL_31410());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31411), new AWAKENSKILL_31411());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31413), new AWAKENSKILL_31413());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31415), new AWAKENSKILL_31415());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31417), new AWAKENSKILL_31417());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31419), new AWAKENSKILL_31419());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31422), new AWAKENSKILL_31422());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31426), new AWAKENSKILL_31426());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31427), new AWAKENSKILL_31427());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31501), new AWAKENSKILL_31501());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31502), new AWAKENSKILL_31502());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31504), new AWAKENSKILL_31504());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31506), new AWAKENSKILL_31506());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(51508), new AWAKENSKILL_31508());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31510), new AWAKENSKILL_31510());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31513), new AWAKENSKILL_31513());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31514), new AWAKENSKILL_31514());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31515), new AWAKENSKILL_31515());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31311), new AWAKENSKILL_31311());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31312), new AWAKENSKILL_31312());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31401), new AWAKENSKILL_31401());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31402), new AWAKENSKILL_31402());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31404), new AWAKENSKILL_31404());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31406), new AWAKENSKILL_31406());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31408), new AWAKENSKILL_31408());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31412), new AWAKENSKILL_31412());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31414), new AWAKENSKILL_31414());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31416), new AWAKENSKILL_31416());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31503), new AWAKENSKILL_31503());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31505), new AWAKENSKILL_31505());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31507), new AWAKENSKILL_31507());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31509), new AWAKENSKILL_31509());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31511), new AWAKENSKILL_31511());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(51512), new AWAKENSKILL_31512());
+        AwakenSkillProcessor.skills.put(Integer.valueOf(31516), new AWAKENSKILL_31516());
     }
 }

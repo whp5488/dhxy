@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain.vo;
 
 import java.io.Serializable;
@@ -10,11 +9,14 @@ public class SkillParameter implements Serializable
     private byte fightType;
     private byte priority;
     
+    public SkillParameter() {
+    }
+    
     public int getSerial() {
         return this.serial;
     }
     
-    public void setSerial(final int serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
     
@@ -22,7 +24,7 @@ public class SkillParameter implements Serializable
         return this.name;
     }
     
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -30,7 +32,7 @@ public class SkillParameter implements Serializable
         return this.fightType;
     }
     
-    public void setFightType(final byte fightType) {
+    public void setFightType(byte fightType) {
         this.fightType = fightType;
     }
     
@@ -38,7 +40,7 @@ public class SkillParameter implements Serializable
         return this.priority;
     }
     
-    public void setPriority(final byte priority) {
+    public void setPriority(byte priority) {
         this.priority = priority;
     }
 }

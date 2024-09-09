@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.skill.facade;
 
 import com.kitty.system.game.skill.message.ReqSuitSkillEffects;
@@ -27,38 +26,42 @@ public class SkillController
     }
     
     @RequestMapping
-    public void learnSkill(final IoSession session, final ReqLearnSkill reqLearnSkill) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void learnSkill(IoSession session, ReqLearnSkill reqLearnSkill) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.skillService.learnSkill(reqLearnSkill, role);
+        return;
     }
     
     @RequestMapping
-    public void skillEffects(final IoSession session, final ReqSkillEffects reqSkillEffects) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void skillEffects(IoSession session, ReqSkillEffects reqSkillEffects) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.skillService.skillEffects(role, reqSkillEffects.getSerial());
+        return;
     }
     
     @RequestMapping
-    public void activateSkillEffects(final IoSession session, final ReqActivateSkillEffects reqActivateSkillEffects) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void activateSkillEffects(IoSession session, ReqActivateSkillEffects reqActivateSkillEffects) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.skillService.activateSkillEffects(role, reqActivateSkillEffects);
+        return;
     }
     
     @RequestMapping
-    public void suitSkillEffects(final IoSession session, final ReqSuitSkillEffects reqSuitSkillEffects) {
-        final Role role = SessionUtils.getRoleBySession(session);
+    public void suitSkillEffects(IoSession session, ReqSuitSkillEffects reqSuitSkillEffects) {
+        Role role = SessionUtils.getRoleBySession(session);
         if (role == null) {
             return;
         }
         this.skillService.suitSkillEffects(role, reqSuitSkillEffects);
+        return;
     }
 }

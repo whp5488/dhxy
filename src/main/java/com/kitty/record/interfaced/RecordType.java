@@ -1,4 +1,3 @@
-
 package com.kitty.record.interfaced;
 
 public interface RecordType
@@ -8,6 +7,7 @@ public interface RecordType
     public static final short pet = 2;
     public static final short card = 3;
     public static final short rune = 4;
+    public static final short seal = 5;
     public static final short recharge = 999;
     public static final short rests = 1000;
     public static final byte increase = 1;

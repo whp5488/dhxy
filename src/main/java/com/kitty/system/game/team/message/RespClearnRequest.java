@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.team.message;
 
 import java.util.ArrayList;
@@ -13,14 +12,14 @@ public class RespClearnRequest extends Message
     private List<String> names;
     
     public RespClearnRequest() {
-        this.names = new ArrayList<String>();
+        this.names = new ArrayList<>();
     }
     
     public String getType() {
         return this.type;
     }
     
-    public void setType(final String type) {
+    public void setType(String type) {
         this.type = type;
     }
     
@@ -28,7 +27,7 @@ public class RespClearnRequest extends Message
         return this.names;
     }
     
-    public void setNames(final List<String> names) {
+    public void setNames(List<String> names) {
         this.names = names;
     }
 }

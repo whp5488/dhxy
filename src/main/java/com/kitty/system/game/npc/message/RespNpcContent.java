@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.npc.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -12,6 +11,9 @@ public class RespNpcContent extends Message
     private String npcName;
     private String talk;
     private String content;
+    
+    public RespNpcContent() {
+    }
     
     public int getId() {
         return this.id;
@@ -61,7 +63,7 @@ public class RespNpcContent extends Message
         if (!(o instanceof RespNpcContent)) {
             return false;
         }
-        final RespNpcContent other = (RespNpcContent)o;
+        RespNpcContent other = (RespNpcContent)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -71,43 +73,19 @@ public class RespNpcContent extends Message
         if (this.getIcon() != other.getIcon()) {
             return false;
         }
-        final Object this$npcName = this.getNpcName();
-        final Object other$npcName = other.getNpcName();
-        Label_0091: {
-            if (this$npcName == null) {
-                if (other$npcName == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$npcName.equals(other$npcName)) {
-                break Label_0091;
-            }
+        Object this$npcName = this.getNpcName();
+        Object other$npcName = other.getNpcName();
+        if (!((this$npcName != null) ? this$npcName.equals(other$npcName) : (other$npcName == null))) {
             return false;
         }
-        final Object this$talk = this.getTalk();
-        final Object other$talk = other.getTalk();
-        Label_0128: {
-            if (this$talk == null) {
-                if (other$talk == null) {
-                    break Label_0128;
-                }
-            }
-            else if (this$talk.equals(other$talk)) {
-                break Label_0128;
-            }
+        Object this$talk = this.getTalk();
+        Object other$talk = other.getTalk();
+        if (!((this$talk != null) ? this$talk.equals(other$talk) : (other$talk == null))) {
             return false;
         }
-        final Object this$content = this.getContent();
-        final Object other$content = other.getContent();
-        if (this$content == null) {
-            if (other$content == null) {
-                return true;
-            }
-        }
-        else if (this$content.equals(other$content)) {
-            return true;
-        }
-        return false;
+        Object this$content = this.getContent();
+        Object other$content = other.getContent();
+        return (this$content != null) ? this$content.equals(other$content) : (other$content == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -116,15 +94,15 @@ public class RespNpcContent extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getIcon();
-        final Object $npcName = this.getNpcName();
+        Object $npcName = this.getNpcName();
         result = result * 59 + (($npcName == null) ? 43 : $npcName.hashCode());
-        final Object $talk = this.getTalk();
+        Object $talk = this.getTalk();
         result = result * 59 + (($talk == null) ? 43 : $talk.hashCode());
-        final Object $content = this.getContent();
+        Object $content = this.getContent();
         result = result * 59 + (($content == null) ? 43 : $content.hashCode());
         return result;
     }

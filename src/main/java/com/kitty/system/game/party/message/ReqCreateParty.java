@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.party.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqCreateParty extends Message
     private String partyName;
     private String announce;
     private byte consent;
+    
+    public ReqCreateParty() {
+    }
     
     public String getPartyName() {
         return this.partyName;
@@ -43,34 +45,18 @@ public class ReqCreateParty extends Message
         if (!(o instanceof ReqCreateParty)) {
             return false;
         }
-        final ReqCreateParty other = (ReqCreateParty)o;
+        ReqCreateParty other = (ReqCreateParty)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$partyName = this.getPartyName();
-        final Object other$partyName = other.getPartyName();
-        Label_0065: {
-            if (this$partyName == null) {
-                if (other$partyName == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$partyName.equals(other$partyName)) {
-                break Label_0065;
-            }
+        Object this$partyName = this.getPartyName();
+        Object other$partyName = other.getPartyName();
+        if (!((this$partyName != null) ? this$partyName.equals(other$partyName) : (other$partyName == null))) {
             return false;
         }
-        final Object this$announce = this.getAnnounce();
-        final Object other$announce = other.getAnnounce();
-        if (this$announce == null) {
-            if (other$announce == null) {
-                return this.getConsent() == other.getConsent();
-            }
-        }
-        else if (this$announce.equals(other$announce)) {
-            return this.getConsent() == other.getConsent();
-        }
-        return false;
+        Object this$announce = this.getAnnounce();
+        Object other$announce = other.getAnnounce();
+        return ((this$announce != null) ? this$announce.equals(other$announce) : (other$announce == null)) && this.getConsent() == other.getConsent();
     }
     
     protected boolean canEqual(final Object other) {
@@ -79,11 +65,11 @@ public class ReqCreateParty extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $partyName = this.getPartyName();
+        Object $partyName = this.getPartyName();
         result = result * 59 + (($partyName == null) ? 43 : $partyName.hashCode());
-        final Object $announce = this.getAnnounce();
+        Object $announce = this.getAnnounce();
         result = result * 59 + (($announce == null) ? 43 : $announce.hashCode());
         result = result * 59 + this.getConsent();
         return result;
@@ -91,6 +77,6 @@ public class ReqCreateParty extends Message
     
     @Override
     public String toString() {
-        return "ReqCreateParty(partyName=" + this.getPartyName() + ", announce=" + this.getAnnounce() + ", consent=" + this.getConsent() + ")";
+        return "ReqCreateParty(partyName=" + this.getPartyName() + ", announce=" + this.getAnnounce() + ", consent=" + (int)this.getConsent() + ")";
     }
 }

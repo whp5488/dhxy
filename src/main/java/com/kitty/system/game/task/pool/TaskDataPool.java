@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.task.pool;
 
 import java.util.HashMap;
@@ -8,9 +7,8 @@ import com.kitty.common.utils.CalculateUtils;
 import com.kitty.system.game.vo.Npc;
 import com.kitty.mina.cache.DataCache;
 import com.kitty.common.utils.bean.BeanUtils;
-
+import java.util.Iterator;
 import java.util.ArrayList;
-
 import com.kitty.system.init.service.InitService;
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.init.domain.SysProvinceQuestion;
@@ -101,8 +99,11 @@ public class TaskDataPool
     public static Map<Integer, SysHallQuestion> hallQuestion;
     public static Map<Integer, SysProvinceQuestion> provinceQuestion;
     
+    public TaskDataPool() {
+    }
+    
     public static void load() {
-        final InitService initService = SpringUtils.getInitService();
+        InitService initService = SpringUtils.getInitService();
         initTaskMain(initService);
         initTaskSchool(initService);
         initTaskTreasureMap(initService);
@@ -142,54 +143,54 @@ public class TaskDataPool
         initDragonReward();
     }
     
-    private static void initTaskMoAward(final InitService initService) {
-        final List<SysDataTaskMoAward> awardList = initService.initTaskMoAward();
-        for (final SysDataTaskMoAward award : awardList) {
-            List<SysDataTaskMoAward> list = TaskDataPool.moAwardMap.get(award.getDungeon());
+    private static void initTaskMoAward(InitService initService) {
+        List<SysDataTaskMoAward> awardList = initService.initTaskMoAward();
+        for (SysDataTaskMoAward award : awardList) {
+            List<SysDataTaskMoAward> list = (List)TaskDataPool.moAwardMap.get(Integer.valueOf(award.getDungeon()));
             if (list == null) {
                 list = new ArrayList<>();
-                TaskDataPool.moAwardMap.put(award.getDungeon(), list);
+                TaskDataPool.moAwardMap.put(Integer.valueOf(award.getDungeon()), list);
             }
             list.add(award);
         }
     }
     
-    private static void initTaskKj(final InitService initService) {
+    private static void initTaskKj(InitService initService) {
         TaskDataPool.taskKjList = initService.initTaskKj();
-        for (final SysDataTaskKeju object : TaskDataPool.taskKjList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskKeju object : TaskDataPool.taskKjList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskMain(final InitService initService) {
+    public static void initTaskMain(InitService initService) {
         TaskDataPool.taskMainMap = initService.initTaskMain();
         SysDataTaskMain nextTask = null;
-        for (final Map.Entry<Integer, SysDataTaskMain> entry : TaskDataPool.taskMainMap.entrySet()) {
-            nextTask = TaskDataPool.taskMainMap.get(entry.getValue().getNextTaskSerial());
+        for (Map.Entry<Integer, SysDataTaskMain> entry : TaskDataPool.taskMainMap.entrySet()) {
+            nextTask = (SysDataTaskMain)TaskDataPool.taskMainMap.get(Integer.valueOf(((SysDataTaskMain)entry.getValue()).getNextTaskSerial()));
             if (nextTask == null) {
                 continue;
             }
-            nextTask.setPreviousId(entry.getValue().getSerial());
+            nextTask.setPreviousId(((SysDataTaskMain)entry.getValue()).getSerial());
         }
-        for (final Integer key : TaskDataPool.taskMainMap.keySet()) {
-            final SysDataTaskMain taskMain = TaskDataPool.taskMainMap.get(key);
-            final TaskSet taskSet = new TaskSet();
+        for (Integer key : TaskDataPool.taskMainMap.keySet()) {
+            SysDataTaskMain taskMain = (SysDataTaskMain)TaskDataPool.taskMainMap.get(key);
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, taskMain);
-            TaskDataPool.taskMap.put(taskMain.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(taskMain.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskSchool(final InitService initService) {
-        final Map<Integer, SysDataTaskSchool> taskSchoolMap = initService.initTaskSchool();
-        for (final Integer key : taskSchoolMap.keySet()) {
-            final SysDataTaskSchool taskSchool = taskSchoolMap.get(key);
-            final TaskSet taskSet = new TaskSet();
+    public static void initTaskSchool(InitService initService) {
+        Map<Integer, SysDataTaskSchool> taskSchoolMap = initService.initTaskSchool();
+        for (Integer key : taskSchoolMap.keySet()) {
+            SysDataTaskSchool taskSchool = (SysDataTaskSchool)taskSchoolMap.get(key);
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, taskSchool);
-            TaskDataPool.taskMap.put(taskSchool.getSerial(), taskSet);
-            final String value = String.valueOf(taskSchool.getSerial());
-            final int type = Integer.valueOf(value.substring(1));
+            TaskDataPool.taskMap.put(Integer.valueOf(taskSchool.getSerial()), taskSet);
+            String value = String.valueOf(taskSchool.getSerial());
+            int type = (int)Integer.valueOf(value.substring(1));
             if (type == 3) {
                 TaskDataPool.taskSchoolPurchase.add(taskSchool);
             }
@@ -199,296 +200,303 @@ public class TaskDataPool
         }
     }
     
-    public static void initTaskTreasureMap(final InitService initService) {
+    public static void initTaskTreasureMap(InitService initService) {
         TaskDataPool.taskTreasureMap = initService.initTaskTreasureMap();
-        for (final SysDataTaskTreasureMap object : TaskDataPool.taskTreasureMap) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskTreasureMap object : TaskDataPool.taskTreasureMap) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskParty(final InitService initService) {
+    public static void initTaskParty(InitService initService) {
         TaskDataPool.taskPartyList = initService.initTaskParty();
-        for (final SysDataTaskParty object : TaskDataPool.taskPartyList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskParty object : TaskDataPool.taskPartyList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskLoop(final InitService initService) {
+    public static void initTaskLoop(InitService initService) {
         TaskDataPool.taskLoopList = initService.initTaskLoop();
-        for (final SysDataTaskLoop object : TaskDataPool.taskLoopList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskLoop object : TaskDataPool.taskLoopList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskTower(final InitService initService) {
+    public static void initTaskTower(InitService initService) {
         TaskDataPool.taskTowerList = initService.initTaskTower();
-        for (final SysDataTaskTower object : TaskDataPool.taskTowerList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskTower object : TaskDataPool.taskTowerList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskLookFor(final InitService initService) {
+    public static void initTaskLookFor(InitService initService) {
         TaskDataPool.taskLookForList = initService.initTaskLookFor();
-        for (final SysDataTaskLookFor object : TaskDataPool.taskLookForList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskLookFor object : TaskDataPool.taskLookForList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskXm(final InitService initService) {
+    public static void initTaskXm(InitService initService) {
         TaskDataPool.taskXmList = initService.initTaskXm();
-        for (final SysDataTaskXm object : TaskDataPool.taskXmList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskXm object : TaskDataPool.taskXmList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskFive(final InitService initService) {
+    public static void initTaskFive(InitService initService) {
         TaskDataPool.taskFiveList = initService.initTaskFive();
-        for (final SysDataTaskFive object : TaskDataPool.taskFiveList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskFive object : TaskDataPool.taskFiveList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskCatchesGhosts(final InitService initService) {
+    public static void initTaskCatchesGhosts(InitService initService) {
         TaskDataPool.taskCatchesGhosts = initService.initTaskCatchesGhosts();
-        for (final SysDataTaskCatchesGhosts object : TaskDataPool.taskCatchesGhosts) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskCatchesGhosts object : TaskDataPool.taskCatchesGhosts) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskGodsCourt(final InitService initService) {
+    public static void initTaskGodsCourt(InitService initService) {
         TaskDataPool.taskGodsCourts = initService.initTaskGodsCourt();
-        for (final SysDataTaskGodsCourt object : TaskDataPool.taskGodsCourts) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskGodsCourt object : TaskDataPool.taskGodsCourts) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskCarnival(final InitService initService) {
+    public static void initTaskCarnival(InitService initService) {
         TaskDataPool.taskCarnivalList = initService.initTaskCarnival();
-        for (final SysDataTaskCarnival object : TaskDataPool.taskCarnivalList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskCarnival object : TaskDataPool.taskCarnivalList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskDragon(final InitService initService) {
+    public static void initTaskDragon(InitService initService) {
         TaskDataPool.taskDragonList = initService.initTaskDragon();
-        for (final SysDataTaskDragon object : TaskDataPool.taskDragonList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskDragon object : TaskDataPool.taskDragonList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskMo(final InitService initService) {
+    public static void initTaskMo(InitService initService) {
         TaskDataPool.taskMoList = initService.initTaskMo();
-        for (final SysDataTaskMo object : TaskDataPool.taskMoList) {
-            final TaskSet taskSet = new TaskSet();
+        for (SysDataTaskMo object : TaskDataPool.taskMoList) {
+            TaskSet taskSet = new TaskSet();
             BeanUtils.copyBeanProp(taskSet, object);
-            TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+            TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
         }
     }
     
-    public static void initTaskNpc(final InitService initService) {
+    public static void initTaskNpc(InitService initService) {
         TaskDataPool.taskNpcMap = initService.initTaskNpc();
-        for (final SysDataTaskNpc value : TaskDataPool.taskNpcMap.values()) {
+        for (SysDataTaskNpc value : TaskDataPool.taskNpcMap.values()) {
             if (value.getIsScene() == 1) {
-                DataCache.SCENE_TASK_NPC.put(value.getSerial(), new Npc(value));
+                DataCache.SCENE_TASK_NPC.put(Integer.valueOf(value.getSerial()), new Npc(value));
+            }
+            else {
+                continue;
             }
         }
     }
     
-    public static void initNpcName(final InitService initService) {
+    public static void initNpcName(InitService initService) {
         TaskDataPool.taskNpcNameList = initService.initNpcName();
     }
     
-    public static void initNpcNameType(final InitService initService) {
+    public static void initNpcNameType(InitService initService) {
         TaskDataPool.taskNpcNameTypeMap = initService.initNpcNameType();
     }
     
-    public static void initTaskFormula(final InitService initService) {
+    public static void initTaskFormula(InitService initService) {
         TaskDataPool.taskFormulaMap = initService.initTaskFormula();
     }
     
-    public static void initTaskFight(final InitService initService) {
+    public static void initTaskFight(InitService initService) {
         TaskDataPool.taskFightMap = initService.initTaskFight();
     }
     
-    public static void initTaskCondition(final InitService initService) {
+    public static void initTaskCondition(InitService initService) {
         TaskDataPool.taskConditionMap = initService.initTaskCondition();
     }
     
-    public static void initTaskEvent(final InitService initService) {
+    public static void initTaskEvent(InitService initService) {
         TaskDataPool.taskEventMap = initService.initTaskEvent();
     }
     
-    public static void initTaskEventForeign(final InitService initService) {
+    public static void initTaskEventForeign(InitService initService) {
         TaskDataPool.taskEventForeign = initService.initTaskEventForeign();
     }
     
-    public static void initTaskReward(final InitService initService) {
+    public static void initTaskReward(InitService initService) {
         TaskDataPool.taskRewardMap = initService.initTaskReward();
     }
     
-    public static void initTaskRewardDynamic(final InitService initService) {
+    public static void initTaskRewardDynamic(InitService initService) {
         TaskDataPool.taskRewardDynamicList = initService.initTaskRewardDynamic();
-        for (final SysDataTaskRewardDynamic obj : TaskDataPool.taskRewardDynamicList) {
-            TaskDataPool.taskRewardDynamicNumList.put(obj.getIdentify(), CalculateUtils.calculate(obj.getNumCalculate()).intValue());
-            TaskDataPool.taskRewardDynamicRateList.put(obj.getIdentify(), CalculateUtils.calculate(obj.getRateCalculate()).doubleValue());
+        for (SysDataTaskRewardDynamic obj : TaskDataPool.taskRewardDynamicList) {
+            TaskDataPool.taskRewardDynamicNumList.put(Integer.valueOf(obj.getIdentify()), Integer.valueOf(CalculateUtils.calculate(obj.getNumCalculate()).intValue()));
+            TaskDataPool.taskRewardDynamicRateList.put(Integer.valueOf(obj.getIdentify()), Double.valueOf(CalculateUtils.calculate(obj.getRateCalculate()).doubleValue()));
         }
     }
     
-    public static void initTaskRewardForeign(final InitService initService) {
+    public static void initTaskRewardForeign(InitService initService) {
         TaskDataPool.taskRewardForeign = initService.initTaskRewardForeign();
     }
     
-    public static void initWorldBoosList(final InitService initService) {
+    public static void initWorldBoosList(InitService initService) {
         TaskDataPool.worldBoosList = initService.initWorldBoos();
     }
     
-    public static void initPartyBanditList(final InitService initService) {
+    public static void initPartyBanditList(InitService initService) {
         TaskDataPool.partyBanditList = initService.initPartyBanditList();
     }
     
-    public static void initStarOfficerList(final InitService initService) {
+    public static void initStarOfficerList(InitService initService) {
         TaskDataPool.starOfficerList = initService.initStarOfficerList();
     }
     
-    public static void initSealDemonList(final InitService initService) {
+    public static void initSealDemonList(InitService initService) {
         TaskDataPool.sealDemonList = initService.initSealDemonList();
     }
     
-    public static void initThreeScopeDemonList(final InitService initService) {
+    public static void initThreeScopeDemonList(InitService initService) {
         TaskDataPool.threeScopeDemonList = initService.initThreeScopeDemonList();
     }
     
-    public static void initTaskSurround(final InitService initService) {
-        final List<SysDataTaskSurround> list = initService.initTaskSurround();
-        for (final SysDataTaskSurround object : list) {
+    public static void initTaskSurround(InitService initService) {
+        List<SysDataTaskSurround> list = initService.initTaskSurround();
+        for (SysDataTaskSurround object : list) {
             boolean flag = false;
             if (TaskType.CRUSADE_RENEGADE.equals(object.getTaskType())) {
-                final SysDataTaskCrusadeRenegade renegade = new SysDataTaskCrusadeRenegade();
+                SysDataTaskCrusadeRenegade renegade = new SysDataTaskCrusadeRenegade();
                 BeanUtils.copyBeanProp(renegade, object);
                 TaskDataPool.crusadeRenegadeList.add(renegade);
                 flag = true;
-            } else if (TaskType.XL.equals(object.getTaskType())) {
-                final SysDataTaskCrusadeRenegade renegade = new SysDataTaskCrusadeRenegade();
+            }
+            else if (TaskType.XL.equals(object.getTaskType())) {
+                SysDataTaskCrusadeRenegade renegade = new SysDataTaskCrusadeRenegade();
                 BeanUtils.copyBeanProp(renegade, object);
                 TaskDataPool.conquerAsuraList.add(renegade);
                 flag = true;
             }
             if (flag) {
-                final TaskSet taskSet = new TaskSet();
+                TaskSet taskSet = new TaskSet();
                 BeanUtils.copyBeanProp(taskSet, object);
-                TaskDataPool.taskMap.put(object.getSerial(), taskSet);
+                TaskDataPool.taskMap.put(Integer.valueOf(object.getSerial()), taskSet);
+            }
+            else {
+                continue;
             }
         }
     }
-
-    public static void initCountryQuestion(final InitService initService) {
+    
+    public static void initCountryQuestion(InitService initService) {
         TaskDataPool.countryQuestion = initService.initCountryQuestionLib();
-        for (final Integer key : TaskDataPool.countryQuestion.keySet()) {
-            final SysCountryQuestion question = TaskDataPool.countryQuestion.get(key);
+        for (Integer key : TaskDataPool.countryQuestion.keySet()) {
+            SysCountryQuestion question = (SysCountryQuestion)TaskDataPool.countryQuestion.get(key);
             TaskDataPool.questionMap.put(key, new Question(question.getSerial(), question.getAnswer()));
         }
     }
     
-    public static void initProvinceQuestion(final InitService initService) {
+    public static void initProvinceQuestion(InitService initService) {
         TaskDataPool.provinceQuestion = initService.initProvinceQuestion();
-        for (final Integer key : TaskDataPool.provinceQuestion.keySet()) {
-            final SysProvinceQuestion question = TaskDataPool.provinceQuestion.get(key);
+        for (Integer key : TaskDataPool.provinceQuestion.keySet()) {
+            SysProvinceQuestion question = (SysProvinceQuestion)TaskDataPool.provinceQuestion.get(key);
             TaskDataPool.questionMap.put(key, new Question(question.getSerial(), question.getAnswer(), question.getType()));
         }
     }
     
-    public static void initHallQuestion(final InitService initService) {
+    public static void initHallQuestion(InitService initService) {
         TaskDataPool.hallQuestion = initService.initHallQuestion();
-        for (final Integer key : TaskDataPool.hallQuestion.keySet()) {
-            final SysHallQuestion question = TaskDataPool.hallQuestion.get(key);
+        for (Integer key : TaskDataPool.hallQuestion.keySet()) {
+            SysHallQuestion question = (SysHallQuestion)TaskDataPool.hallQuestion.get(key);
             TaskDataPool.questionMap.put(key, new Question(question.getSerial(), question.getAnswer()));
         }
     }
     
     public static void initDragonReward() {
-        TaskDataPool.dragonRewardList.add(new Param(21064, 1, 1, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21070, 1, 1, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21071, 1, 1, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21067, 1, 2, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21069, 1, 1, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21068, 1, 1, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21066, 1, 2, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21065, 1, 1, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21063, 1, 5, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21062, 1, 5, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21061, 1, 5, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21059, 1, 5, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21060, 1, 5, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21058, 1, 5, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21057, 1, 5, 0, null));
-        TaskDataPool.dragonRewardList.add(new Param(21056, 1, 5, 0, null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21064), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21070), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21071), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21067), Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21069), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21068), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21066), Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21065), Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21063), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21062), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21061), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21059), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21060), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21058), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21057), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
+        TaskDataPool.dragonRewardList.add(new Param(Integer.valueOf(21056), Integer.valueOf(1), Integer.valueOf(5), Integer.valueOf(0), null));
     }
     
     static {
-        TaskDataPool.taskMap = new HashMap<Integer, TaskSet>();
-        TaskDataPool.taskMainMap = new HashMap<Integer, SysDataTaskMain>();
-        TaskDataPool.taskSchoolElse = new ArrayList<SysDataTaskSchool>();
-        TaskDataPool.taskSchoolPurchase = new ArrayList<SysDataTaskSchool>();
-        TaskDataPool.taskTreasureMap = new ArrayList<SysDataTaskTreasureMap>();
-        TaskDataPool.taskPartyList = new ArrayList<SysDataTaskParty>();
-        TaskDataPool.taskLoopList = new ArrayList<SysDataTaskLoop>();
-        TaskDataPool.taskTowerList = new ArrayList<SysDataTaskTower>();
-        TaskDataPool.taskLookForList = new ArrayList<SysDataTaskLookFor>();
-        TaskDataPool.taskXmList = new ArrayList<SysDataTaskXm>();
-        TaskDataPool.taskFiveList = new ArrayList<SysDataTaskFive>();
-        TaskDataPool.taskCatchesGhosts = new ArrayList<SysDataTaskCatchesGhosts>();
-        TaskDataPool.taskGodsCourts = new ArrayList<SysDataTaskGodsCourt>();
-        TaskDataPool.taskCarnivalList = new ArrayList<SysDataTaskCarnival>();
-        TaskDataPool.taskDragonList = new ArrayList<SysDataTaskDragon>();
-        TaskDataPool.taskMoList = new ArrayList<SysDataTaskMo>();
-        TaskDataPool.taskKjList = new ArrayList<SysDataTaskKeju>();
-        TaskDataPool.moAwardMap = new HashMap<Integer, List<SysDataTaskMoAward>>();
-        TaskDataPool.taskNpcMap = new HashMap<Integer, SysDataTaskNpc>();
-        TaskDataPool.taskNpcNameList = new ArrayList<SysDataTaskNpcName>();
-        TaskDataPool.taskNpcNameTypeMap = new HashMap<String, SysDataTaskNpcNameType>();
-        TaskDataPool.taskFormulaMap = new HashMap<Integer, SysDataTaskFormula>();
-        TaskDataPool.taskFightMap = new HashMap<Integer, SysDataTaskFight>();
-        TaskDataPool.taskConditionMap = new HashMap<Integer, SysDataTaskCondition>();
-        TaskDataPool.taskEventMap = new HashMap<Integer, SysDataTaskEvent>();
-        TaskDataPool.taskEventForeign = new ArrayList<SysDataTaskEventForeign>();
-        TaskDataPool.taskRewardMap = new HashMap<String, SysDataTaskReward>();
-        TaskDataPool.taskRewardDynamicList = new ArrayList<SysDataTaskRewardDynamic>();
-        TaskDataPool.taskRewardDynamicNumList = new HashMap<Integer, Integer>();
-        TaskDataPool.taskRewardDynamicRateList = new HashMap<Integer, Double>();
-        TaskDataPool.taskRewardForeign = new ArrayList<SysDataTaskForeign>();
-        TaskDataPool.dragonRewardList = new ArrayList<Param>();
-        TaskDataPool.partyBanditList = new ArrayList<SysDataPartyBandit>();
-        TaskDataPool.starOfficerList = new ArrayList<SysDataStarOfficer>();
-        TaskDataPool.worldBoosList = new ArrayList<SysDataWorldBoos>();
-        TaskDataPool.sealDemonList = new ArrayList<SysDataSealDemon>();
+        TaskDataPool.taskMap = new HashMap();
+        TaskDataPool.taskMainMap = new HashMap();
+        TaskDataPool.taskSchoolElse = new ArrayList<>();
+        TaskDataPool.taskSchoolPurchase = new ArrayList<>();
+        TaskDataPool.taskTreasureMap = new ArrayList<>();
+        TaskDataPool.taskPartyList = new ArrayList<>();
+        TaskDataPool.taskLoopList = new ArrayList<>();
+        TaskDataPool.taskTowerList = new ArrayList<>();
+        TaskDataPool.taskLookForList = new ArrayList<>();
+        TaskDataPool.taskXmList = new ArrayList<>();
+        TaskDataPool.taskFiveList = new ArrayList<>();
+        TaskDataPool.taskCatchesGhosts = new ArrayList<>();
+        TaskDataPool.taskGodsCourts = new ArrayList<>();
+        TaskDataPool.taskCarnivalList = new ArrayList<>();
+        TaskDataPool.taskDragonList = new ArrayList<>();
+        TaskDataPool.taskMoList = new ArrayList<>();
+        TaskDataPool.taskKjList = new ArrayList<>();
+        TaskDataPool.moAwardMap = new HashMap();
+        TaskDataPool.taskNpcMap = new HashMap();
+        TaskDataPool.taskNpcNameList = new ArrayList<>();
+        TaskDataPool.taskNpcNameTypeMap = new HashMap();
+        TaskDataPool.taskFormulaMap = new HashMap();
+        TaskDataPool.taskFightMap = new HashMap();
+        TaskDataPool.taskConditionMap = new HashMap();
+        TaskDataPool.taskEventMap = new HashMap();
+        TaskDataPool.taskEventForeign = new ArrayList<>();
+        TaskDataPool.taskRewardMap = new HashMap();
+        TaskDataPool.taskRewardDynamicList = new ArrayList<>();
+        TaskDataPool.taskRewardDynamicNumList = new HashMap();
+        TaskDataPool.taskRewardDynamicRateList = new HashMap();
+        TaskDataPool.taskRewardForeign = new ArrayList<>();
+        TaskDataPool.dragonRewardList = new ArrayList<>();
+        TaskDataPool.partyBanditList = new ArrayList<>();
+        TaskDataPool.starOfficerList = new ArrayList<>();
+        TaskDataPool.worldBoosList = new ArrayList<>();
+        TaskDataPool.sealDemonList = new ArrayList<>();
         TaskDataPool.threeScopeDemonList = new ArrayList<>();
         TaskDataPool.crusadeRenegadeList = new ArrayList<>();
         TaskDataPool.conquerAsuraList = new ArrayList<>();
-        TaskDataPool.questionMap = new HashMap<Integer, Question>();
-        TaskDataPool.countryQuestion = new HashMap<Integer, SysCountryQuestion>();
-        TaskDataPool.hallQuestion = new HashMap<Integer, SysHallQuestion>();
-        TaskDataPool.provinceQuestion = new HashMap<Integer, SysProvinceQuestion>();
+        TaskDataPool.questionMap = new HashMap();
+        TaskDataPool.countryQuestion = new HashMap();
+        TaskDataPool.hallQuestion = new HashMap();
+        TaskDataPool.provinceQuestion = new HashMap();
     }
 }

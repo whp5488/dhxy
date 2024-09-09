@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils.convert;
 
 import java.math.RoundingMode;
@@ -19,56 +18,59 @@ public class MoneyUtil
     private static final char ZERO_CHR = '0';
     private static final int SCALE = 0;
     
-    public static String fourFigure(final BigDecimal money) {
-        final NumberFormat numberFormat = new DecimalFormat("##.####");
+    public MoneyUtil() {
+    }
+    
+    public static String fourFigure(BigDecimal money) {
+        NumberFormat numberFormat = new DecimalFormat("##.####");
         return numberFormat.format(money);
     }
     
-    public static String symbols(final BigDecimal money) {
-        final NumberFormat numberFormat = new DecimalFormat("$##.####");
+    public static String symbols(BigDecimal money) {
+        NumberFormat numberFormat = new DecimalFormat("$##.####");
         return numberFormat.format(money);
     }
     
-    public static String partition(final BigDecimal money) {
-        final NumberFormat numberFormat = new DecimalFormat("#,###.####");
+    public static String partition(BigDecimal money) {
+        NumberFormat numberFormat = new DecimalFormat("#,###.####");
         return numberFormat.format(money);
     }
     
-    public static String change(final BigDecimal amount) {
-        final String greaterZeroToInt = greaterZeroToInt(amount);
-        final String itoRmbStr = itoRmbStr(greaterZeroToInt);
-        final BigDecimal lessZeroNum = amount.subtract(greaterZeroNum(amount));
-        final String lessZeroToInt = lessZeroToInt(lessZeroNum);
-        final String ftoRmbStr = ftoRmbStr(lessZeroToInt);
+    public static String change(BigDecimal amount) {
+        String greaterZeroToInt = greaterZeroToInt(amount);
+        String itoRmbStr = itoRmbStr(greaterZeroToInt);
+        BigDecimal lessZeroNum = amount.subtract(greaterZeroNum(amount));
+        String lessZeroToInt = lessZeroToInt(lessZeroNum);
+        String ftoRmbStr = ftoRmbStr(lessZeroToInt);
         return itoRmbStr + ftoRmbStr;
     }
     
-    private static String greaterZeroToInt(final BigDecimal amount) {
+    private static String greaterZeroToInt(BigDecimal amount) {
         if (amount == null) {
             return "0";
         }
         return amount.divide(new BigDecimal(1), 0, RoundingMode.DOWN).toString();
     }
     
-    private static BigDecimal greaterZeroNum(final BigDecimal amount) {
+    private static BigDecimal greaterZeroNum(BigDecimal amount) {
         return amount.divide(new BigDecimal(1), 0, RoundingMode.DOWN);
     }
     
-    private static String lessZeroToInt(final BigDecimal amount) {
-        final String intStr = amount.movePointRight(2).divide(new BigDecimal(1), 0, RoundingMode.HALF_UP).toBigInteger().toString();
+    private static String lessZeroToInt(BigDecimal amount) {
+        String intStr = amount.movePointRight(2).divide(new BigDecimal(1), 0, RoundingMode.HALF_UP).toBigInteger().toString();
         if (intStr.length() == 1) {
             return "0" + intStr;
         }
         return intStr;
     }
     
-    private static String itoRmbStr(final String numStr) {
-        final StringBuilder result = new StringBuilder();
+    private static String itoRmbStr(String numStr) {
+        StringBuilder result = new StringBuilder();
         if ("0".equals(numStr)) {
             return result.toString();
         }
-        final int len = numStr.length();
-        final int col = (len - 1) / 4;
+        int len = numStr.length();
+        int col = (len - 1) / 4;
         int row = (len - 1) % 4;
         int index = 0;
         for (int i = 0; i <= col; ++i) {
@@ -93,7 +95,7 @@ public class MoneyUtil
         return result.toString();
     }
     
-    private static String ftoRmbStr(final String numStr) {
+    private static String ftoRmbStr(String numStr) {
         String result = "";
         if (numStr.equals("00") || numStr.equals("0")) {
             return "整";
@@ -105,43 +107,44 @@ public class MoneyUtil
         result += MoneyUtil.RMB_ARR[numStr.charAt(1) - '0'];
         if (numStr.charAt(1) != '0') {
             result += MoneyUtil.LOW_UNIT_ARR[1];
+            return result;
         }
         return result;
     }
     
-    private static String ftoPctStr(final int bit, final int num) {
-        final NumberFormat percentFormat = NumberFormat.getPercentInstance();
+    private static String ftoPctStr(int bit, int num) {
+        NumberFormat percentFormat = NumberFormat.getPercentInstance();
         percentFormat.setMaximumFractionDigits(bit);
-        return percentFormat.format(num);
+        return percentFormat.format((long)num);
     }
     
-    public static String colours(final Long num) {
-        if (num == null || num <= 0L) {
+    public static String colours(Long num) {
+        if (num == null || (long)num <= 0L) {
             return "";
         }
         String msg = "";
-        if (num < 10000L) {
+        if ((long)num < 10000L) {
             msg = "#<r:255,g:255,b:255,SD:1>";
         }
-        else if (num < 100000L) {
+        else if ((long)num < 100000L) {
             msg = "#<r:160,g:255,b:150,SD:1>";
         }
-        else if (num < 1000000L) {
+        else if ((long)num < 1000000L) {
             msg = "#<r:255,g:116,b:255>";
         }
-        else if (num < 10000000L) {
+        else if ((long)num < 10000000L) {
             msg = "#<r:255,g:250,b:75,SD:1>";
         }
-        else if (num < 100000000L) {
+        else if ((long)num < 100000000L) {
             msg = "#<r:125,g:255,b:255>";
         }
-        else if (num < 1000000000L) {
+        else if ((long)num < 1000000000L) {
             msg = "#<r:94,g:255,b:94>";
         }
         else {
             msg = "#<r:244,g:183,b:87>";
         }
-        return msg + partition(new BigDecimal(num)) + "#";
+        return msg + partition(new BigDecimal((long)num)) + "#";
     }
     
     static {

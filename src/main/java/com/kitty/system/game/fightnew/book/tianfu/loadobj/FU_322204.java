@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.loadobj;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -17,30 +16,33 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_322204 extends TianFuProcessor
 {
+    public FU_322204() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (!effector.isPlayer()) {
             return null;
         }
-        final DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
-        final TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322204);
+        DayInCeFight dayInCeFight = ((PlayerFightObject)effector).getDayInCeFight();
+        TianFuObject tianFuObject = TianFuUtils.getTianFuObject(dayInCeFight, 322204);
         if (tianFuObject == null) {
             return null;
         }
-        final Integer status = (Integer)args[0];
-        if (status != null && (1002 == status || 1003 == status || 1004 == status || 1006 == status)) {
-            final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 322204);
-            final double percenta = 1.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
-            final int dist = PRO_DICT_TYPE.SH_DK.getDist();
-            final int time = ImbueUtil.getProRound(effector.getImbueMap(), dist);
+        Integer status = (Integer)args[0];
+        if (status != null && (1002 == (int)status || 1003 == (int)status || 1004 == (int)status || 1006 == (int)status)) {
+            SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 322204);
+            double percenta = 1.0 * TianFuUtils.getTianFuCount(tianFuObject.getLevel(), dayInCeFight.getLevel()) / 100.0;
+            int dist = PRO_DICT_TYPE.SH_DK.getDist();
+            int time = ImbueUtil.getProRound(effector.getImbueMap(), Integer.valueOf(dist));
             if (time <= 1) {
-                ImbueUtil.addRound(effector.getImbueMap(), dist, 1, percenta);
-                skillRecord.setT(effector.getId());
+                ImbueUtil.addRound(effector.getImbueMap(), Integer.valueOf(dist), 1, percenta);
+                skillRecord.setT((long)(int)effector.getId());
             }
         }
         return null;

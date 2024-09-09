@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -29,21 +28,13 @@ public class RespReplyEcho extends Message
         if (!(o instanceof RespReplyEcho)) {
             return false;
         }
-        final RespReplyEcho other = (RespReplyEcho)o;
+        RespReplyEcho other = (RespReplyEcho)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$peerTime = this.getPeerTime();
-        final Object other$peerTime = other.getPeerTime();
-        if (this$peerTime == null) {
-            if (other$peerTime == null) {
-                return true;
-            }
-        }
-        else if (this$peerTime.equals(other$peerTime)) {
-            return true;
-        }
-        return false;
+        Object this$peerTime = this.getPeerTime();
+        Object other$peerTime = other.getPeerTime();
+        return (this$peerTime != null) ? this$peerTime.equals(other$peerTime) : (other$peerTime == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -52,9 +43,9 @@ public class RespReplyEcho extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $peerTime = this.getPeerTime();
+        Object $peerTime = this.getPeerTime();
         result = result * 59 + (($peerTime == null) ? 43 : $peerTime.hashCode());
         return result;
     }

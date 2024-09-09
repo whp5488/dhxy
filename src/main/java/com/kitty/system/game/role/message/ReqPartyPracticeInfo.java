@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -7,6 +6,9 @@ import com.kitty.mina.message.Message;
 @MessageMeta(module = 28841)
 public class ReqPartyPracticeInfo extends Message
 {
+    public ReqPartyPracticeInfo() {
+    }
+    
     @Override
     public boolean equals(final Object o) {
         if (o == this) {
@@ -15,7 +17,7 @@ public class ReqPartyPracticeInfo extends Message
         if (!(o instanceof ReqPartyPracticeInfo)) {
             return false;
         }
-        final ReqPartyPracticeInfo other = (ReqPartyPracticeInfo)o;
+        ReqPartyPracticeInfo other = (ReqPartyPracticeInfo)o;
         return other.canEqual(this);
     }
     
@@ -25,7 +27,7 @@ public class ReqPartyPracticeInfo extends Message
     
     @Override
     public int hashCode() {
-        final int result = 1;
+        int result = 1;
         return result;
     }
     

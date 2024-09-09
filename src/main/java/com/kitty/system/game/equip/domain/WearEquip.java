@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.equip.domain;
 
 import com.kitty.common.db.Db4EquipService;
@@ -83,17 +82,17 @@ public class WearEquip extends BaseEntity<Long>
     public WearEquip() {
         this.refining = 0.0;
         this.productOrder = 0;
-        this.field = new ArrayList<FiedEquip>();
-        this.artifice = new ArrayList<FiedEquip>();
-        this.artificeGeneralHistory = new ArrayList<FiedEquip>();
-        this.artificeHighHistory = new ArrayList<List<FiedEquip>>();
-        this.artificeSuperHistory = new ArrayList<List<FiedEquip>>();
-        this.redoGeneralHistory = new ArrayList<FiedEquip>();
-        this.redoHighHistory = new ArrayList<List<FiedEquip>>();
-        this.redoSuperHistory = new ArrayList<List<FiedEquip>>();
-        this.purifyGeneralHistory = new ArrayList<FiedEquip>();
-        this.purifyHighHistory = new ArrayList<List<FiedEquip>>();
-        this.purifySuperHistory = new ArrayList<List<FiedEquip>>();
+        this.field = new ArrayList<>();
+        this.artifice = new ArrayList<>();
+        this.artificeGeneralHistory = new ArrayList<>();
+        this.artificeHighHistory = new ArrayList<>();
+        this.artificeSuperHistory = new ArrayList<>();
+        this.redoGeneralHistory = new ArrayList<>();
+        this.redoHighHistory = new ArrayList<>();
+        this.redoSuperHistory = new ArrayList<>();
+        this.purifyGeneralHistory = new ArrayList<>();
+        this.purifyHighHistory = new ArrayList<>();
+        this.purifySuperHistory = new ArrayList<>();
     }
     
     public void save() {
@@ -259,10 +258,5 @@ public class WearEquip extends BaseEntity<Long>
     
     public void setPurifySuperHistory(final List<List<FiedEquip>> purifySuperHistory) {
         this.purifySuperHistory = purifySuperHistory;
-    }
-    
-    @Override
-    public String toString() {
-        return "WearEquip(id=" + this.getId() + ", rId=" + this.getRId() + ", name=" + this.getName() + ", bd=" + this.getBd() + ", type=" + this.getType() + ", pos=" + this.getPos() + ", position=" + this.getPosition() + ", refining=" + this.getRefining() + ", productOrder=" + this.getProductOrder() + ", field=" + this.getField() + ", artifice=" + this.getArtifice() + ", artificeGeneralHistory=" + this.getArtificeGeneralHistory() + ", artificeHighHistory=" + this.getArtificeHighHistory() + ", artificeSuperHistory=" + this.getArtificeSuperHistory() + ", redoGeneralHistory=" + this.getRedoGeneralHistory() + ", redoHighHistory=" + this.getRedoHighHistory() + ", redoSuperHistory=" + this.getRedoSuperHistory() + ", purifyGeneralHistory=" + this.getPurifyGeneralHistory() + ", purifyHighHistory=" + this.getPurifyHighHistory() + ", purifySuperHistory=" + this.getPurifySuperHistory() + ")";
     }
 }

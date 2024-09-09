@@ -1,19 +1,16 @@
-
 package com.kitty.system.game.fightnew.book.monster.star18;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import com.kitty.system.game.fightnew.model.ActionDetailParam;
 import com.kitty.system.game.skill.domain.RoleSkill;
 import com.kitty.system.game.fightnew.book.monster.MonsterSkillUtils;
-import java.util.function.Function;
 import java.util.Comparator;
 import com.kitty.system.game.fightnew.utils.FightUtils;
 import com.kitty.system.game.fightnew.utils.SkillAi;
-import com.kitty.system.game.fightnew.model.ActionDetailParam;
 import com.kitty.system.game.fightnew.book.pet.PetPassiveSkillUtil;
 import com.kitty.system.game.fightnew.model.BattleUnit;
 import com.kitty.system.game.fightnew.messages.old.RespFightShouting;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.List;
 import com.kitty.system.game.fightnew.utils.SkillTargetPicker;
@@ -27,24 +24,27 @@ import com.kitty.system.game.fightnew.book.monster.MonsterSkillProcessor;
 
 public class MONSTERSKILL_30043 extends MonsterSkillProcessor
 {
+    public MONSTERSKILL_30043() {
+    }
+    
     @Override
-    public void beforeAttack(final Fight fight, final FightObject effector, final Object... args) {
+    public void beforeAttack(Fight fight, FightObject effector, Object... args) {
         if (fight.getSpecialMonsterType() == 1 && effector.getPos() == 10003 && effector.getName().equals("地飞星")) {
             if (effector.getSkillCoolMap().getInt(String.valueOf(30043)) > 0) {
                 return;
             }
-            final RespFightShouting fightShouting = SpringUtils.getBean(FightMessageNewService.class).fightShouting(effector, "掌握旷世奇功摄魂大法，真是孤芳自赏啊", 2000, 1000);
+            RespFightShouting fightShouting = ((FightMessageNewService)SpringUtils.getBean(FightMessageNewService.class)).fightShouting(effector, "掌握旷世奇功摄魂大法，真是孤芳自赏啊", 2000, 1000);
             ActionParamUtils.fightShouting(fight, effector, effector, 10, 10, 2, fightShouting);
-            effector.getSkillCoolMap().setv(String.valueOf(30043), (Object)2);
-            final int[] attackCounts = { 4, 5, 6 };
-            final int round = RandomUtil.round(0, attackCounts.length - 1);
+            effector.getSkillCoolMap().setv(String.valueOf(30043), Integer.valueOf(2));
+            int[] attackCounts = { 4, 5, 6 };
+            int round = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(attackCounts.length - 1));
             for (int count = attackCounts[round], i = 0; i < count; ++i) {
                 List<FightObject> targets = SkillTargetPicker.getFightObjects(fight, effector, true);
                 if (targets != null && targets.size() > 0) {
-                    targets = targets.stream().filter(obj -> obj.isPet()).collect(Collectors.toList());
+                    targets = (List)targets.stream().filter(obj -> obj.isPet()).collect(Collectors.toList());
                     if (targets != null && targets.size() > 0) {
-                        final int index = RandomUtil.round(0, targets.size() - 1);
-                        final FightObject targetPet = targets.get(index);
+                        int index = RandomUtil.round(Integer.valueOf(0), Integer.valueOf(targets.size() - 1));
+                        FightObject targetPet = (FightObject)targets.get(index);
                         this.excuteSkill(fight, effector, targetPet);
                     }
                 }
@@ -52,30 +52,31 @@ public class MONSTERSKILL_30043 extends MonsterSkillProcessor
         }
     }
     
-    private void excuteSkill(final Fight fight, final FightObject effector, final FightObject targetPet) {
-        RespFightShouting fightShouting = SpringUtils.getBean(FightMessageNewService.class).fightShouting(effector, "喝啊", 2000, 0);
+    private void excuteSkill(Fight fight, FightObject effector, FightObject targetPet) {
+        RespFightShouting fightShouting = ((FightMessageNewService)SpringUtils.getBean(FightMessageNewService.class)).fightShouting(effector, "喝啊", 2000, 0);
         ActionParamUtils.fightShouting(fight, effector, effector, 10, 10, 2, fightShouting);
-        final RoleSkill skillBy = effector.getSkillBy(30043);
-        final BattleUnit battleUnit = new BattleUnit(fight, effector, targetPet, skillBy);
+        RoleSkill skillBy = effector.getSkillBy(Integer.valueOf(30043));
+        BattleUnit battleUnit = new BattleUnit(fight, effector, targetPet, skillBy);
         battleUnit.setDoubleHit(7);
-        final ActionDetailParam actionDetailParam = PetPassiveSkillUtil.passivePhysics(fight, effector, targetPet, battleUnit, null, 30043);
+        ActionDetailParam actionDetailParam = PetPassiveSkillUtil.passivePhysics(fight, effector, targetPet, battleUnit, null, 30043);
         fight.getActionParam().getActionDetailParams().add(actionDetailParam);
         if (!targetPet.isFallDown()) {
-            final double percent = 0.6;
+            double percent = 0.6;
             if (SkillAi.canAffectOnPro(percent)) {
-                fightShouting = SpringUtils.getBean(FightMessageNewService.class).fightShouting(targetPet, "老大原来你在对面啊", 2000, 1000);
+                fightShouting = ((FightMessageNewService)SpringUtils.getBean(FightMessageNewService.class)).fightShouting(targetPet, "老大原来你在对面啊", 2000, 1000);
                 ActionParamUtils.fightShouting(fight, targetPet, targetPet, 10, 10, 2, fightShouting);
                 FightUtils.excutePetDisappear(fight, effector, targetPet);
-                final int petPos = this.getPetPos(fight, effector);
+                int petPos = this.getPetPos(fight, effector);
                 FightObject oldPet = null;
-                for (final FightObject obj : fight.getMySide(effector.getId())) {
+                for (FightObject obj : fight.getMySide((int)effector.getId())) {
                     if (petPos == obj.getPos()) {
                         oldPet = obj;
                         break;
                     }
+                    continue;
                 }
-                final List<FightObject> monsterList = fight.getListB().stream().sorted(Comparator.comparing(FightObject::getSerial).reversed()).collect(Collectors.toList());
-                final int monsterSerial = monsterList.get(0).getSerial() + 1;
+                List<FightObject> monsterList = (List)fight.getListB().stream().sorted(Comparator.comparing(FightObject::getSerial).reversed()).collect(Collectors.toList());
+                int monsterSerial = ((FightObject)monsterList.get(0)).getSerial() + 1;
                 targetPet.setSerial(monsterSerial);
                 MonsterSkillUtils.star18PetAppear(fight, effector, targetPet, petPos, false);
                 if (oldPet != null) {
@@ -86,27 +87,28 @@ public class MONSTERSKILL_30043 extends MonsterSkillProcessor
         }
     }
     
-    private int getPetPos(final Fight fight, final FightObject effector) {
-        final List<Integer> poss = new ArrayList<Integer>() {
+    private int getPetPos(Fight fight, FightObject effector) {
+        List<Integer> poss = new ArrayList<Integer>() {
             {
-                this.add(10102);
-                this.add(10104);
+                this.add(Integer.valueOf(10102));
+                this.add(Integer.valueOf(10104));
             }
         };
-        final List<Integer> possZ = new ArrayList<Integer>();
-        final List<FightObject> mySide = fight.getMySide(effector.getId());
+        List<Integer> possZ = new ArrayList<>();
+        List<FightObject> mySide = fight.getMySide((int)effector.getId());
         for (int i = 0; i < poss.size(); ++i) {
-            for (final FightObject obj : mySide) {
-                if (obj.getPos() == poss.get(i)) {
+            for (FightObject obj : mySide) {
+                if (obj.getPos() == (int)poss.get(i)) {
                     possZ.add(poss.get(i));
                     break;
                 }
+                continue;
             }
         }
         if (possZ.size() >= 2 || possZ.size() <= 0) {
             return 10102;
         }
         poss.remove(possZ.get(0));
-        return poss.get(0);
+        return (int)poss.get(0);
     }
 }

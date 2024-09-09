@@ -1,4 +1,3 @@
-
 package com.kitty.common.identity;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -17,18 +16,21 @@ public class IdentityEnt extends BaseEntity<Integer>
     @Column
     private int currId;
     
-    public static IdentityEnt valueOf(final int type, final int seed) {
-        final IdentityEnt ent = new IdentityEnt();
+    public IdentityEnt() {
+    }
+    
+    public static IdentityEnt valueOf(int type, int seed) {
+        IdentityEnt ent = new IdentityEnt();
         ent.type = type;
         ent.currId = seed;
         return ent;
     }
     
     public int getType() {
-        return this.type;
+        return (int)this.type;
     }
     
-    public void setType(final int type) {
+    public void setType(int type) {
         this.type = type;
     }
     
@@ -36,7 +38,7 @@ public class IdentityEnt extends BaseEntity<Integer>
         return this.currId;
     }
     
-    public void setCurrId(final int currId) {
+    public void setCurrId(int currId) {
         this.currId = currId;
     }
     
@@ -49,7 +51,7 @@ public class IdentityEnt extends BaseEntity<Integer>
         return this.type;
     }
     
-    public void setType(final Integer type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 }

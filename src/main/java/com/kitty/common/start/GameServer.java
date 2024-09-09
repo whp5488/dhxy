@@ -1,4 +1,3 @@
-
 package com.kitty.common.start;
 
 import org.apache.mina.core.session.IdleStatus;
@@ -8,28 +7,19 @@ import org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder;
 import org.apache.mina.transport.socket.nio.NioSession;
 import java.util.concurrent.Executor;
 import java.net.InetSocketAddress;
-import org.apache.mina.core.service.IoHandler;
-import com.kitty.mina.message.IMessageDispatcher;
 import com.kitty.mina.ServerSocketIoHandler;
 import com.kitty.mina.MessageDispatcher;
 import com.kitty.mina.filter.HeartbeatFilter;
 import com.kitty.mina.filter.ChatMessageFilter;
 import com.kitty.mina.filter.MessageTraceFilter;
 import com.kitty.mina.filter.ModuleEntranceFilter;
-import org.apache.mina.core.filterchain.IoFilter;
-import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import com.kitty.mina.codec.SerializerHelper;
-import org.apache.mina.core.session.IoSessionConfig;
-import org.apache.mina.core.service.IoProcessor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
-import java.nio.channels.spi.SelectorProvider;
 import org.apache.mina.core.service.SimpleIoProcessorPool;
 import org.apache.mina.transport.socket.nio.NioProcessor;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.Executors;
 import com.kitty.common.thread.NamedThreadFactory;
-import org.apache.mina.core.buffer.IoBufferAllocator;
 import org.apache.mina.core.buffer.SimpleBufferAllocator;
 import org.apache.mina.core.buffer.IoBuffer;
 import com.kitty.mina.task.TaskHandlerContext;
@@ -56,7 +46,7 @@ public class GameServer implements CommandLineRunner
         this.logger = LoggerFactory.getLogger(GameServer.class);
     }
     
-    public void run(final String... var1) throws Exception {
+    public void run(String... var1) throws Exception {
         this.initGameServer();
     }
     
@@ -66,15 +56,15 @@ public class GameServer implements CommandLineRunner
         TaskHandlerContext.INSTANCE.initialize();
         IoBuffer.setUseDirectBuffer(false);
         IoBuffer.setAllocator(new SimpleBufferAllocator());
-        final Executor executor = Executors.newCachedThreadPool(new NamedThreadFactory("SOCKET-IO-PROCESSOR"));
+        Executor executor = Executors.newCachedThreadPool(new NamedThreadFactory("SOCKET-IO-PROCESSOR"));
         int coreSize = Runtime.getRuntime().availableProcessors();
         if (coreSize > 16) {
             coreSize = 16;
         }
-        final SimpleIoProcessorPool<NioSession> processor = new SimpleIoProcessorPool<>(NioProcessor.class, executor, coreSize, null);
+        SimpleIoProcessorPool<NioSession> processor = new SimpleIoProcessorPool(NioProcessor.class, executor, coreSize, null);
         (GameServer.acceptor = new NioSocketAcceptor(processor)).setReuseAddress(true);
         GameServer.acceptor.getSessionConfig().setAll(this.getSessionConfig());
-        final DefaultIoFilterChainBuilder filterChain = GameServer.acceptor.getFilterChain();
+        DefaultIoFilterChainBuilder filterChain = GameServer.acceptor.getFilterChain();
         filterChain.addLast("codec", new ProtocolCodecFilter(SerializerHelper.getInstance().getCodecFactory()));
         filterChain.addLast("moduleEntrance", new ModuleEntranceFilter());
         filterChain.addLast("msgTrace", new MessageTraceFilter());
@@ -86,15 +76,15 @@ public class GameServer implements CommandLineRunner
             GameServer.acceptor.setDefaultLocalAddress(new InetSocketAddress(this.serverService.getPort()));
             GameServer.acceptor.bind();
         }
-        catch (final Exception e) {
+        catch (Exception e) {
             System.out.println("e = " + e);
         }
-        this.logger.warn("socket server start at port:{},", this.serverService.getPort());
+        this.logger.warn("socket service start at port:{},", Integer.valueOf(this.serverService.getPort()));
         this.logger.warn("start GameServer success!!");
     }
     
     private SocketSessionConfig getSessionConfig() {
-        final SocketSessionConfig config = new DefaultSocketSessionConfig();
+        SocketSessionConfig config = new DefaultSocketSessionConfig();
         config.setKeepAlive(false);
         config.setTcpNoDelay(true);
         config.setReuseAddress(true);

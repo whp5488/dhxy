@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -8,6 +7,9 @@ import com.kitty.mina.message.Message;
 public class ReqMarketSearchItem extends Message
 {
     private int serial;
+    
+    public ReqMarketSearchItem() {
+    }
     
     public void setSerial(final int serial) {
         this.serial = serial;

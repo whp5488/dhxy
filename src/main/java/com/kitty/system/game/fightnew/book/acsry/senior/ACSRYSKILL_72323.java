@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.acsry.senior;
 
 import com.kitty.system.game.fightRecord.domain.SkillRecord;
@@ -12,36 +11,39 @@ import com.kitty.system.game.fightnew.book.acsry.AcsrySkillProcessor;
 
 public class ACSRYSKILL_72323 extends AcsrySkillProcessor
 {
+    public ACSRYSKILL_72323() {
+    }
+    
     @Override
-    public void passive(final Fight fight, final FightObject fightObject, final Object... args) {
+    public void passive(Fight fight, FightObject fightObject, Object... args) {
         if (fightObject.isPlayer()) {
-            final PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
+            PlayerFightObject playerFightObject = (PlayerFightObject)fightObject;
             if (fight.getRound() % 2 == 1) {
-                final int baseInt = 100;
-                final double base = 0.03;
+                int baseInt = 100;
+                double base = 0.03;
                 double percent = 0.0;
-                final double maxPercent = 0.8;
-                final int round = 1;
-                final Role role = playerFightObject.getRole();
-                final Integer lx = role.getLx();
-                final Integer gg = role.getGg();
-                percent += lx / baseInt * base;
-                percent += gg / baseInt * base;
+                double maxPercent = 0.8;
+                int round = 1;
+                Role role = playerFightObject.getRole();
+                Integer lx = role.getLx();
+                Integer gg = role.getGg();
+                percent += (double)((int)lx / baseInt) * base;
+                percent += (double)((int)gg / baseInt) * base;
                 if (percent > maxPercent) {
                     percent = maxPercent;
                 }
-                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), (Object)round);
-                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), (Object)round);
-                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), (Object)round);
-                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), (Object)round);
-                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), (Object)round);
-                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_F.getDist() + "value", (Object)percent);
-                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_L.getDist() + "value", (Object)percent);
-                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_S.getDist() + "value", (Object)percent);
-                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_H.getDist() + "value", (Object)percent);
-                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_GH.getDist() + "value", (Object)percent);
-                final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, playerFightObject.getId(), 72323);
-                skillRecord.setT(playerFightObject.getId());
+                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_F.getDist()), Integer.valueOf(round));
+                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_L.getDist()), Integer.valueOf(round));
+                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_S.getDist()), Integer.valueOf(round));
+                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_H.getDist()), Integer.valueOf(round));
+                playerFightObject.getAcsryPropertyMap().setv(String.valueOf(PRO_DICT_TYPE.OMIT_K_GH.getDist()), Integer.valueOf(round));
+                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_F.getDist() + "value", Double.valueOf(percent));
+                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_L.getDist() + "value", Double.valueOf(percent));
+                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_S.getDist() + "value", Double.valueOf(percent));
+                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_H.getDist() + "value", Double.valueOf(percent));
+                playerFightObject.getAcsryPropertyMap().setv(PRO_DICT_TYPE.OMIT_K_GH.getDist() + "value", Double.valueOf(percent));
+                SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)playerFightObject.getId(), 72323);
+                skillRecord.setT((long)(int)playerFightObject.getId());
             }
         }
     }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.bag.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -35,7 +33,7 @@ public class RespDeleteItem extends Message
         if (!(o instanceof RespDeleteItem)) {
             return false;
         }
-        final RespDeleteItem other = (RespDeleteItem)o;
+        RespDeleteItem other = (RespDeleteItem)o;
         return other.canEqual(this) && this.getType() == other.getType() && this.getPos() == other.getPos();
     }
     
@@ -45,7 +43,7 @@ public class RespDeleteItem extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getPos();
@@ -54,10 +52,9 @@ public class RespDeleteItem extends Message
     
     @Override
     public String toString() {
-        return "RespDeleteItem(type=" + this.getType() + ", pos=" + this.getPos() + ")";
+        return "RespDeleteItem(type=" + (int)this.getType() + ", pos=" + this.getPos() + ")";
     }
     
-    @ConstructorProperties({ "type", "pos" })
     public RespDeleteItem(final byte type, final int pos) {
         this.type = type;
         this.pos = pos;

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.pet.senior;
 
 import com.kitty.system.game.skill.domain.RoleSkill;
@@ -22,65 +21,69 @@ import com.kitty.system.game.fightnew.book.SkillProcessor;
 
 public class SKILL_81032 extends SkillProcessor
 {
+    public SKILL_81032() {
+    }
+    
     @Override
-    public NutMap addition(final Addition addition, final Object... args) {
+    public NutMap addition(Addition addition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, Object... args) {
         return null;
     }
     
     @Override
-    public int targetCount(final Fight fight, final FightObject effector, final Object... args) {
+    public int targetCount(Fight fight, FightObject effector, Object... args) {
         return 1;
     }
     
     @Override
-    public Effect effect(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public Effect effect(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public void normalAttack(final Fight fight, final FightObject effector, final FightObject target, final ActionDetailParam actionDetailParam, final Object... args) {
-        final SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, effector.getId(), 81032);
-        final SysPetSkill petSkill = SkillDataPool.petSkillMap.get(81032);
+    public void normalAttack(Fight fight, FightObject effector, FightObject target, ActionDetailParam actionDetailParam, Object... args) {
+        SkillRecord skillRecord = FightParamPool.addSkillRecord(fight, 7, (long)(int)effector.getId(), 81032);
+        SysPetSkill petSkill = (SysPetSkill)SkillDataPool.petSkillMap.get(Integer.valueOf(81032));
         if (PetSkillEffectorUtil.checkCover(petSkill, fight, effector, target, false, args)) {
             return;
         }
         if (args.length < 2) {
             return;
         }
-        final Integer skillSerial = (Integer)args[1];
+        Integer skillSerial = (Integer)args[1];
         if (skillSerial != null && PetSkillEffectorUtil.isClash(petSkill, skillSerial)) {
             return;
         }
         double percent = 0.35;
-        final double pval = AcsryPetSkillUtil.getPval(80011, effector);
+        double pval = AcsryPetSkillUtil.getPval(80011, effector);
         if (pval > 0.0) {
             percent += pval;
         }
-        final boolean flag = SkillAi.canAffectOnPro(percent);
+        boolean flag = SkillAi.canAffectOnPro(percent);
         if (flag) {
-            final Object oldHurt = args[0];
-            final Integer hurt = Integer.parseInt(oldHurt.toString());
-            final Effect effect = new Effect();
-            effect.setHurt(BigDecimalUtil.decimalScaleIntegerDown(0, hurt * 0.5));
-            final FightObject newTarget = fight.getTargetNoCurrentTarget(effector.getId(), target.getId());
+            Object oldHurt = args[0];
+            Integer hurt = Integer.valueOf(Integer.parseInt(oldHurt.toString()));
+            Effect effect = new Effect();
+            effect.setHurt(BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Double.valueOf((double)(int)hurt * 0.5)));
+            FightObject newTarget = fight.getTargetNoCurrentTarget((int)effector.getId(), (int)target.getId());
             if (newTarget == null) {
                 return;
             }
-            final RoleSkill skillBy = effector.getSkillBy(81032);
-            final BattleUnit battleUnit = new BattleUnit(fight, effector, newTarget, skillBy);
+            RoleSkill skillBy = effector.getSkillBy(Integer.valueOf(81032));
+            BattleUnit battleUnit = new BattleUnit(fight, effector, newTarget, skillBy);
             battleUnit.setEffect(effect);
             PetPassiveSkillUtil.passivePhysics(fight, effector, newTarget, battleUnit, actionDetailParam, 81032);
-            skillRecord.setT(newTarget.getId());
+            skillRecord.setT((long)(int)newTarget.getId());
         }
+        return;
     }
     
     @Override
-    public int costMana(final RoleSkill skill, final Object... args) {
+    public int costMana(RoleSkill skill, Object... args) {
         return 0;
     }
 }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.messages.old;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -26,7 +24,7 @@ public class RespEndCombat extends Message
         if (!(o instanceof RespEndCombat)) {
             return false;
         }
-        final RespEndCombat other = (RespEndCombat)o;
+        RespEndCombat other = (RespEndCombat)o;
         return other.canEqual(this) && this.getFlag() == other.getFlag();
     }
     
@@ -36,7 +34,7 @@ public class RespEndCombat extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getFlag();
         return result;
@@ -44,10 +42,9 @@ public class RespEndCombat extends Message
     
     @Override
     public String toString() {
-        return "RespEndCombat(flag=" + this.getFlag() + ")";
+        return "RespEndCombat(flag=" + (int)this.getFlag() + ")";
     }
     
-    @ConstructorProperties({ "flag" })
     public RespEndCombat(final short flag) {
         this.flag = 1;
         this.flag = flag;

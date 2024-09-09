@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -10,6 +9,9 @@ public class ReqBuyFromStall extends Message
     private String id;
     private short amount;
     private String para;
+    
+    public ReqBuyFromStall() {
+    }
     
     public void setId(final String id) {
         this.id = id;

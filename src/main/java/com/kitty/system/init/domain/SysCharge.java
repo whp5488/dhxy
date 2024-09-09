@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -21,6 +20,9 @@ public class SysCharge implements Serializable
     @Comment("赠送积分")
     @Column("score")
     private long score;
+    
+    public SysCharge() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -62,7 +64,7 @@ public class SysCharge implements Serializable
         if (!(o instanceof SysCharge)) {
             return false;
         }
-        final SysCharge other = (SysCharge)o;
+        SysCharge other = (SysCharge)o;
         return other.canEqual(this) && this.getSerial() == other.getSerial() && this.getAmount() == other.getAmount() && this.getGive() == other.getGive() && this.getScore() == other.getScore();
     }
     
@@ -72,13 +74,13 @@ public class SysCharge implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getAmount();
-        final long $give = this.getGive();
+        long $give = this.getGive();
         result = result * 59 + (int)($give >>> 32 ^ $give);
-        final long $score = this.getScore();
+        long $score = this.getScore();
         result = result * 59 + (int)($score >>> 32 ^ $score);
         return result;
     }

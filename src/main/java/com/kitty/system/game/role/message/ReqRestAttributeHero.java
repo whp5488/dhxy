@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.role.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqRestAttributeHero extends Message
 {
     private Integer id;
     private byte type;
+    
+    public ReqRestAttributeHero() {
+    }
     
     public Integer getId() {
         return this.id;
@@ -34,21 +36,13 @@ public class ReqRestAttributeHero extends Message
         if (!(o instanceof ReqRestAttributeHero)) {
             return false;
         }
-        final ReqRestAttributeHero other = (ReqRestAttributeHero)o;
+        ReqRestAttributeHero other = (ReqRestAttributeHero)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null) {
-            if (other$id == null) {
-                return this.getType() == other.getType();
-            }
-        }
-        else if (this$id.equals(other$id)) {
-            return this.getType() == other.getType();
-        }
-        return false;
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        return ((this$id != null) ? this$id.equals(other$id) : (other$id == null)) && this.getType() == other.getType();
     }
     
     protected boolean canEqual(final Object other) {
@@ -57,9 +51,9 @@ public class ReqRestAttributeHero extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $id = this.getId();
+        Object $id = this.getId();
         result = result * 59 + (($id == null) ? 43 : $id.hashCode());
         result = result * 59 + this.getType();
         return result;
@@ -67,6 +61,6 @@ public class ReqRestAttributeHero extends Message
     
     @Override
     public String toString() {
-        return "ReqRestAttributeHero(id=" + this.getId() + ", type=" + this.getType() + ")";
+        return "ReqRestAttributeHero(id=" + this.getId() + ", type=" + (int)this.getType() + ")";
     }
 }

@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.activity.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
 
@@ -53,7 +51,7 @@ public class RespGangWarsGateLife extends Message
         if (!(o instanceof RespGangWarsGateLife)) {
             return false;
         }
-        final RespGangWarsGateLife other = (RespGangWarsGateLife)o;
+        RespGangWarsGateLife other = (RespGangWarsGateLife)o;
         return other.canEqual(this) && this.getSideLife() == other.getSideLife() && this.getEnemyLife() == other.getEnemyLife() && this.getType() == other.getType() && this.getStance() == other.getStance();
     }
     
@@ -63,7 +61,7 @@ public class RespGangWarsGateLife extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSideLife();
         result = result * 59 + this.getEnemyLife();
@@ -74,10 +72,9 @@ public class RespGangWarsGateLife extends Message
     
     @Override
     public String toString() {
-        return "RespGangWarsGateLife(sideLife=" + this.getSideLife() + ", enemyLife=" + this.getEnemyLife() + ", type=" + this.getType() + ", stance=" + this.getStance() + ")";
+        return "RespGangWarsGateLife(sideLife=" + (int)this.getSideLife() + ", enemyLife=" + (int)this.getEnemyLife() + ", type=" + (int)this.getType() + ", stance=" + (int)this.getStance() + ")";
     }
     
-    @ConstructorProperties({ "sideLife", "enemyLife", "type", "stance" })
     public RespGangWarsGateLife(final short sideLife, final short enemyLife, final byte type, final byte stance) {
         this.sideLife = 0;
         this.enemyLife = 0;

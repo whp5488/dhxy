@@ -1,7 +1,4 @@
-
 package com.kitty.system.game.friend.message.vo;
-
-import java.beans.ConstructorProperties;
 
 public class Pla
 {
@@ -86,24 +83,16 @@ public class Pla
         if (!(o instanceof Pla)) {
             return false;
         }
-        final Pla other = (Pla)o;
+        Pla other = (Pla)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getRei() != other.getRei()) {
@@ -118,30 +107,14 @@ public class Pla
         if (this.getStatus() != other.getStatus()) {
             return false;
         }
-        final Object this$close = this.getClose();
-        final Object other$close = other.getClose();
-        Label_0167: {
-            if (this$close == null) {
-                if (other$close == null) {
-                    break Label_0167;
-                }
-            }
-            else if (this$close.equals(other$close)) {
-                break Label_0167;
-            }
+        Object this$close = this.getClose();
+        Object other$close = other.getClose();
+        if (!((this$close != null) ? this$close.equals(other$close) : (other$close == null))) {
             return false;
         }
-        final Object this$groupId = this.getGroupId();
-        final Object other$groupId = other.getGroupId();
-        if (this$groupId == null) {
-            if (other$groupId == null) {
-                return true;
-            }
-        }
-        else if (this$groupId.equals(other$groupId)) {
-            return true;
-        }
-        return false;
+        Object this$groupId = this.getGroupId();
+        Object other$groupId = other.getGroupId();
+        return (this$groupId != null) ? this$groupId.equals(other$groupId) : (other$groupId == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -150,28 +123,27 @@ public class Pla
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getRei();
         result = result * 59 + this.getLevel();
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getStatus();
-        final Object $close = this.getClose();
+        Object $close = this.getClose();
         result = result * 59 + (($close == null) ? 43 : $close.hashCode());
-        final Object $groupId = this.getGroupId();
+        Object $groupId = this.getGroupId();
         result = result * 59 + (($groupId == null) ? 43 : $groupId.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "Pla(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", rei=" + this.getRei() + ", level=" + this.getLevel() + ", serial=" + this.getSerial() + ", status=" + this.getStatus() + ", close=" + this.getClose() + ", groupId=" + this.getGroupId() + ")";
+        return "Pla(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", rei=" + (int)this.getRei() + ", level=" + (int)this.getLevel() + ", serial=" + this.getSerial() + ", status=" + (int)this.getStatus() + ", close=" + this.getClose() + ", groupId=" + this.getGroupId() + ")";
     }
     
-    @ConstructorProperties({ "roleId", "name", "rei", "level", "serial", "status", "close", "groupId" })
     public Pla(final int roleId, final String name, final byte rei, final short level, final int serial, final byte status, final String close, final String groupId) {
         this.roleId = roleId;
         this.name = name;

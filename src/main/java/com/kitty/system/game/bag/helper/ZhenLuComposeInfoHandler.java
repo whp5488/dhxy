@@ -1,9 +1,7 @@
-
 package com.kitty.system.game.bag.helper;
 
 import java.util.Iterator;
 import java.util.Map;
-import com.kitty.mina.message.Message;
 import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.common.enter.FieldValue;
 import com.kitty.common.utils.JsonUtils;
@@ -19,26 +17,29 @@ import org.springframework.stereotype.Component;
 @Component("ZhenLuComposeInfo")
 public class ZhenLuComposeInfoHandler extends BagHandler
 {
+    public ZhenLuComposeInfoHandler() {
+    }
+    
     @Override
-    public String acceptOperate(final Role role, final Integer pos, final Integer num, final String param) {
-        final Map<Long, BagGoods> bagGoodsMap = this.bagService.getBagGoods(role);
-        final BagGoods goods = bagGoodsMap.values().stream().filter(item -> pos.equals(item.getPos())).findFirst().orElse(null);
+    public String acceptOperate(Role role, Integer pos, Integer num, String param) {
+        Map<Long, BagGoods> bagGoodsMap = this.bagService.getBagGoods(role);
+        BagGoods goods = bagGoodsMap.values().stream().filter(item -> pos.equals(item.getPos())).findFirst().orElse(null);
         if (goods == null) {
             return null;
         }
-        final SysOtherItem otherItem = ItemDataPool.data_other_item.get(goods.getSerial());
+        SysOtherItem otherItem = ItemDataPool.data_other_item.get(goods.getSerial());
         if (otherItem.getParam() == null || otherItem.getParam().isEmpty()) {
             return null;
         }
-        final RespZhenLuComposeInfo respComposeInfo = new RespZhenLuComposeInfo();
-        respComposeInfo.setSerial(otherItem.getSerial());
-        final List<Item> list = JsonUtils.string2Collection(otherItem.getParam(), List.class, Item.class);
-        final Iterator<Item> iterator = list.iterator();
+        RespZhenLuComposeInfo respComposeInfo = new RespZhenLuComposeInfo();
+        respComposeInfo.setSerial((int)otherItem.getSerial());
+        List<Item> list = (List)JsonUtils.string2Collection(otherItem.getParam(), List.class, Item.class);
+        Iterator<Item> iterator = list.iterator();
         while (iterator.hasNext()) {
-            Item item = iterator.next();
-            respComposeInfo.getList().add(new FieldValue(item.getItem(), item.getNum()));
+        	Item item = (Item)iterator.next();
+            respComposeInfo.getList().add(new FieldValue((int)item.getItem(), (int)item.getNum()));
         }
-        MessagePusher.pushMessage(role.getId(), respComposeInfo);
+        MessagePusher.pushMessage((long)role.getId(), respComposeInfo);
         return null;
     }
 }

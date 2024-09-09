@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.game.equip.domain.WearEquip;
 import com.kitty.system.game.equip.service.EquipService;
 import com.kitty.system.common.data.DataGlobalFunc;
@@ -32,31 +30,31 @@ public class PetRankingSource implements Serializable
     private List<Integer> special_icon;
     private List<FiedValue> list;
     
-    public PetRankingSource(final Role role, final Pet pet, final String petName, final int speed, final int attack) {
+    public PetRankingSource(Role role, Pet pet, String petName, int speed, int attack) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
-        this.petId = pet.getPetId();
-        this.roleId = pet.getRoleId();
-        this.petSerial = pet.getPetType();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
+        this.petId = (int)pet.getPetId();
+        this.roleId = (int)pet.getRoleId();
+        this.petSerial = (int)pet.getPetType();
         this.petName = petName;
         this.speed = speed;
-        this.life = pet.getMaxLife();
-        this.mana = pet.getMaxMana();
+        this.life = (int)pet.getMaxLife();
+        this.mana = (int)pet.getMaxMana();
         this.attack = attack;
-        this.score = pet.getScore();
+        this.score = (int)pet.getScore();
         this.rests(role);
     }
     
-    public void rests(final Role role) {
+    public void rests(Role role) {
         this.roleName = role.getName();
-        this.serial = role.getSerial();
-        final EquipService equipService = SpringUtils.getEquipService();
+        this.serial = (int)role.getSerial();
+        EquipService equipService = SpringUtils.getEquipService();
         this.weapon = role.getWeaponIcon();
         this.light_effect = equipService.getWearEffect(role);
-        final List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
+        List<WearEquip> wearEquips = equipService.getEquipValid(role, false);
         if (wearEquips.size() > 0) {
             this.gem = DataGlobalFunc.getWeaponGemNum(wearEquips);
         }
@@ -64,9 +62,9 @@ public class PetRankingSource implements Serializable
     }
     
     @Override
-    public boolean equals(final Object obj) {
-        if (obj instanceof PetRankingSource) {
-            final PetRankingSource petRankingSource = (PetRankingSource)obj;
+    public boolean equals(Object obj) {
+        if ((obj instanceof PetRankingSource)) {
+            PetRankingSource petRankingSource = (PetRankingSource)obj;
             return this.petId == petRankingSource.getPetId() && this.roleId == petRankingSource.getRoleId() && this.petSerial == petRankingSource.getPetSerial();
         }
         return false;
@@ -75,7 +73,7 @@ public class PetRankingSource implements Serializable
     @Override
     public int hashCode() {
         int result = 1;
-        final int prime = 31;
+        int prime = 31;
         result = (this.getPetId() + this.getRoleId() + this.petSerial) * prime;
         return result;
     }
@@ -208,13 +206,12 @@ public class PetRankingSource implements Serializable
         this.list = list;
     }
     
-    @ConstructorProperties({ "petId", "roleId", "roleName", "petSerial", "petName", "speed", "attack", "life", "mana", "score", "serial", "weapon", "gem", "light_effect", "special_icon", "list" })
     public PetRankingSource(final int petId, final int roleId, final String roleName, final int petSerial, final String petName, final int speed, final int attack, final int life, final int mana, final int score, final int serial, final int weapon, final int gem, final List<Integer> light_effect, final List<Integer> special_icon, final List<FiedValue> list) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.petId = petId;
         this.roleId = roleId;
         this.roleName = roleName;
@@ -236,8 +233,8 @@ public class PetRankingSource implements Serializable
     public PetRankingSource() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 }

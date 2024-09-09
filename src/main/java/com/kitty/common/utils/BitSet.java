@@ -1,4 +1,3 @@
-
 package com.kitty.common.utils;
 
 import java.util.Arrays;
@@ -10,7 +9,7 @@ public class BitSet
     
     private void initiate() {
         for (int i = 1; i <= 32; ++i) {
-            this.BV[i - 1] = (long)Math.pow(2.0, i - 1);
+            this.BV[i - 1] = (long)Math.pow(2.0, (double)(i - 1));
         }
     }
     
@@ -18,36 +17,36 @@ public class BitSet
         return new BitSet(0L);
     }
     
-    public BitSet(final long i32) {
+    public BitSet(long i32) {
         this.BV = new long[32];
         this.bit = new Boolean[32];
         this.initiate();
         this.set(i32);
     }
     
-    private void setI32(final int startPos, long i32) {
+    private void setI32(int startPos, long i32) {
         for (int j = 1; j <= 32; ++j) {
-            final int k = 33 - j - 1;
+            int k = 33 - j - 1;
             if (i32 >= this.BV[k]) {
-                this.bit[startPos + k] = true;
+                this.bit[startPos + k] = Boolean.valueOf(true);
                 i32 -= this.BV[k];
             }
             else {
-                this.bit[startPos + k] = false;
+                this.bit[startPos + k] = Boolean.valueOf(false);
             }
         }
     }
     
-    public void set(final long i32) {
-        final long[] nums = { i32 };
+    public void set(long i32) {
+        long[] nums = { i32 };
         int startPos = 0;
-        for (final long num : nums) {
+        for (long num : nums) {
             this.setI32(startPos, num);
             startPos += 32;
         }
     }
     
-    public void setBit(int index, final Boolean value) {
+    public void setBit(int index, Boolean value) {
         if (index >= 32) {
             index -= 32;
         }
@@ -55,6 +54,7 @@ public class BitSet
             return;
         }
         this.bit[index] = value;
+        return;
     }
     
     public void setBit(int index) {
@@ -64,19 +64,20 @@ public class BitSet
         if (index < 0 || index > this.bit.length) {
             return;
         }
-        this.bit[index] = true;
+        this.bit[index] = Boolean.valueOf(true);
+        return;
     }
     
-    public boolean isSet(final int index) {
-        return index >= 0 && index <= this.bit.length && this.bit[index];
+    public boolean isSet(int index) {
+        return index >= 0 && index <= this.bit.length && (boolean)this.bit[index];
     }
     
     public int getI32() {
         int i32 = 0;
         int j = 0;
-        for (final Boolean boo : this.bit) {
-            if (boo != null && boo) {
-                i32 += (int)this.BV[j];
+        for (Boolean boo : this.bit) {
+            if (boo != null && (boolean)boo) {
+                i32 = (int)((long)i32 + this.BV[j]);
             }
             ++j;
         }
@@ -84,14 +85,14 @@ public class BitSet
     }
     
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        final BitSet bitSet = (BitSet)o;
+        BitSet bitSet = (BitSet)o;
         return Arrays.equals(this.BV, bitSet.BV);
     }
 }

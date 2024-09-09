@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.activity.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -177,7 +176,7 @@ public class RespGangWarsMatchInfo extends Message
         if (!(o instanceof RespGangWarsMatchInfo)) {
             return false;
         }
-        final RespGangWarsMatchInfo other = (RespGangWarsMatchInfo)o;
+        RespGangWarsMatchInfo other = (RespGangWarsMatchInfo)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -187,17 +186,9 @@ public class RespGangWarsMatchInfo extends Message
         if (this.getMax() != other.getMax()) {
             return false;
         }
-        final Object this$sideName = this.getSideName();
-        final Object other$sideName = other.getSideName();
-        Label_0091: {
-            if (this$sideName == null) {
-                if (other$sideName == null) {
-                    break Label_0091;
-                }
-            }
-            else if (this$sideName.equals(other$sideName)) {
-                break Label_0091;
-            }
+        Object this$sideName = this.getSideName();
+        Object other$sideName = other.getSideName();
+        if (!((this$sideName != null) ? this$sideName.equals(other$sideName) : (other$sideName == null))) {
             return false;
         }
         if (this.getSideNum() != other.getSideNum()) {
@@ -218,17 +209,9 @@ public class RespGangWarsMatchInfo extends Message
         if (this.getSideCannonRonda() != other.getSideCannonRonda()) {
             return false;
         }
-        final Object this$enemyName = this.getEnemyName();
-        final Object other$enemyName = other.getEnemyName();
-        if (this$enemyName == null) {
-            if (other$enemyName == null) {
-                return this.getEnemyNum() == other.getEnemyNum() && this.getEnemyGateLife() == other.getEnemyGateLife() && this.getEnemyWinRonda() == other.getEnemyWinRonda() && this.getEnemyContestWinRonda() == other.getEnemyContestWinRonda() && this.getEnemyPylonRonda() == other.getEnemyPylonRonda() && this.getEnemyCannonRonda() == other.getEnemyCannonRonda();
-            }
-        }
-        else if (this$enemyName.equals(other$enemyName)) {
-            return this.getEnemyNum() == other.getEnemyNum() && this.getEnemyGateLife() == other.getEnemyGateLife() && this.getEnemyWinRonda() == other.getEnemyWinRonda() && this.getEnemyContestWinRonda() == other.getEnemyContestWinRonda() && this.getEnemyPylonRonda() == other.getEnemyPylonRonda() && this.getEnemyCannonRonda() == other.getEnemyCannonRonda();
-        }
-        return false;
+        Object this$enemyName = this.getEnemyName();
+        Object other$enemyName = other.getEnemyName();
+        return ((this$enemyName != null) ? this$enemyName.equals(other$enemyName) : (other$enemyName == null)) && this.getEnemyNum() == other.getEnemyNum() && this.getEnemyGateLife() == other.getEnemyGateLife() && this.getEnemyWinRonda() == other.getEnemyWinRonda() && this.getEnemyContestWinRonda() == other.getEnemyContestWinRonda() && this.getEnemyPylonRonda() == other.getEnemyPylonRonda() && this.getEnemyCannonRonda() == other.getEnemyCannonRonda();
     }
     
     protected boolean canEqual(final Object other) {
@@ -237,11 +220,11 @@ public class RespGangWarsMatchInfo extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getType();
         result = result * 59 + this.getMax();
-        final Object $sideName = this.getSideName();
+        Object $sideName = this.getSideName();
         result = result * 59 + (($sideName == null) ? 43 : $sideName.hashCode());
         result = result * 59 + this.getSideNum();
         result = result * 59 + this.getSideGateLife();
@@ -249,7 +232,7 @@ public class RespGangWarsMatchInfo extends Message
         result = result * 59 + this.getSideContestWinRonda();
         result = result * 59 + this.getSidePylonRonda();
         result = result * 59 + this.getSideCannonRonda();
-        final Object $enemyName = this.getEnemyName();
+        Object $enemyName = this.getEnemyName();
         result = result * 59 + (($enemyName == null) ? 43 : $enemyName.hashCode());
         result = result * 59 + this.getEnemyNum();
         result = result * 59 + this.getEnemyGateLife();
@@ -262,6 +245,6 @@ public class RespGangWarsMatchInfo extends Message
     
     @Override
     public String toString() {
-        return "RespGangWarsMatchInfo(type=" + this.getType() + ", max=" + this.getMax() + ", sideName=" + this.getSideName() + ", sideNum=" + this.getSideNum() + ", sideGateLife=" + this.getSideGateLife() + ", sideWinRonda=" + this.getSideWinRonda() + ", sideContestWinRonda=" + this.getSideContestWinRonda() + ", sidePylonRonda=" + this.getSidePylonRonda() + ", sideCannonRonda=" + this.getSideCannonRonda() + ", enemyName=" + this.getEnemyName() + ", enemyNum=" + this.getEnemyNum() + ", enemyGateLife=" + this.getEnemyGateLife() + ", enemyWinRonda=" + this.getEnemyWinRonda() + ", enemyContestWinRonda=" + this.getEnemyContestWinRonda() + ", enemyPylonRonda=" + this.getEnemyPylonRonda() + ", enemyCannonRonda=" + this.getEnemyCannonRonda() + ")";
+        return "RespGangWarsMatchInfo(type=" + (int)this.getType() + ", max=" + (int)this.getMax() + ", sideName=" + this.getSideName() + ", sideNum=" + (int)this.getSideNum() + ", sideGateLife=" + (int)this.getSideGateLife() + ", sideWinRonda=" + (int)this.getSideWinRonda() + ", sideContestWinRonda=" + (int)this.getSideContestWinRonda() + ", sidePylonRonda=" + (int)this.getSidePylonRonda() + ", sideCannonRonda=" + (int)this.getSideCannonRonda() + ", enemyName=" + this.getEnemyName() + ", enemyNum=" + (int)this.getEnemyNum() + ", enemyGateLife=" + (int)this.getEnemyGateLife() + ", enemyWinRonda=" + (int)this.getEnemyWinRonda() + ", enemyContestWinRonda=" + (int)this.getEnemyContestWinRonda() + ", enemyPylonRonda=" + (int)this.getEnemyPylonRonda() + ", enemyCannonRonda=" + (int)this.getEnemyCannonRonda() + ")";
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.bag.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -9,6 +8,9 @@ public class ReqItemUse extends Message
 {
     private short pos;
     private short num;
+    
+    public ReqItemUse() {
+    }
     
     public short getPos() {
         return this.pos;
@@ -34,7 +36,7 @@ public class ReqItemUse extends Message
         if (!(o instanceof ReqItemUse)) {
             return false;
         }
-        final ReqItemUse other = (ReqItemUse)o;
+        ReqItemUse other = (ReqItemUse)o;
         return other.canEqual(this) && this.getPos() == other.getPos() && this.getNum() == other.getNum();
     }
     
@@ -44,7 +46,7 @@ public class ReqItemUse extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getPos();
         result = result * 59 + this.getNum();
@@ -53,6 +55,6 @@ public class ReqItemUse extends Message
     
     @Override
     public String toString() {
-        return "ReqItemUse(pos=" + this.getPos() + ", num=" + this.getNum() + ")";
+        return "ReqItemUse(pos=" + (int)this.getPos() + ", num=" + (int)this.getNum() + ")";
     }
 }

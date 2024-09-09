@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.team.domain.vo;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -18,9 +16,8 @@ public class SmartTeam implements Serializable
         this.smartTeamMembers = smartTeamMembers;
     }
     
-    @ConstructorProperties({ "smartTeamMembers" })
     public SmartTeam(final List<SmartTeamMember> smartTeamMembers) {
-        this.smartTeamMembers = new ArrayList<SmartTeamMember>();
+        this.smartTeamMembers = new ArrayList<>();
         this.smartTeamMembers = smartTeamMembers;
     }
 }

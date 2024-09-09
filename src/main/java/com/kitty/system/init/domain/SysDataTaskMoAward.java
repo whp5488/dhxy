@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -46,6 +45,9 @@ public class SysDataTaskMoAward implements Serializable
     @Comment("副本")
     @Column("dungeon")
     private int dungeon;
+    
+    public SysDataTaskMoAward() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -151,141 +153,61 @@ public class SysDataTaskMoAward implements Serializable
         if (!(o instanceof SysDataTaskMoAward)) {
             return false;
         }
-        final SysDataTaskMoAward other = (SysDataTaskMoAward)o;
+        SysDataTaskMoAward other = (SysDataTaskMoAward)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
             return false;
         }
-        final Object this$renMale = this.getRenMale();
-        final Object other$renMale = other.getRenMale();
-        Label_0078: {
-            if (this$renMale == null) {
-                if (other$renMale == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$renMale.equals(other$renMale)) {
-                break Label_0078;
-            }
+        Object this$renMale = this.getRenMale();
+        Object other$renMale = other.getRenMale();
+        if (!((this$renMale != null) ? this$renMale.equals(other$renMale) : (other$renMale == null))) {
             return false;
         }
-        final Object this$renFemale = this.getRenFemale();
-        final Object other$renFemale = other.getRenFemale();
-        Label_0115: {
-            if (this$renFemale == null) {
-                if (other$renFemale == null) {
-                    break Label_0115;
-                }
-            }
-            else if (this$renFemale.equals(other$renFemale)) {
-                break Label_0115;
-            }
+        Object this$renFemale = this.getRenFemale();
+        Object other$renFemale = other.getRenFemale();
+        if (!((this$renFemale != null) ? this$renFemale.equals(other$renFemale) : (other$renFemale == null))) {
             return false;
         }
-        final Object this$xianMale = this.getXianMale();
-        final Object other$xianMale = other.getXianMale();
-        Label_0152: {
-            if (this$xianMale == null) {
-                if (other$xianMale == null) {
-                    break Label_0152;
-                }
-            }
-            else if (this$xianMale.equals(other$xianMale)) {
-                break Label_0152;
-            }
+        Object this$xianMale = this.getXianMale();
+        Object other$xianMale = other.getXianMale();
+        if (!((this$xianMale != null) ? this$xianMale.equals(other$xianMale) : (other$xianMale == null))) {
             return false;
         }
-        final Object this$xianFemale = this.getXianFemale();
-        final Object other$xianFemale = other.getXianFemale();
-        Label_0189: {
-            if (this$xianFemale == null) {
-                if (other$xianFemale == null) {
-                    break Label_0189;
-                }
-            }
-            else if (this$xianFemale.equals(other$xianFemale)) {
-                break Label_0189;
-            }
+        Object this$xianFemale = this.getXianFemale();
+        Object other$xianFemale = other.getXianFemale();
+        if (!((this$xianFemale != null) ? this$xianFemale.equals(other$xianFemale) : (other$xianFemale == null))) {
             return false;
         }
-        final Object this$moMale = this.getMoMale();
-        final Object other$moMale = other.getMoMale();
-        Label_0226: {
-            if (this$moMale == null) {
-                if (other$moMale == null) {
-                    break Label_0226;
-                }
-            }
-            else if (this$moMale.equals(other$moMale)) {
-                break Label_0226;
-            }
+        Object this$moMale = this.getMoMale();
+        Object other$moMale = other.getMoMale();
+        if (!((this$moMale != null) ? this$moMale.equals(other$moMale) : (other$moMale == null))) {
             return false;
         }
-        final Object this$moFemale = this.getMoFemale();
-        final Object other$moFemale = other.getMoFemale();
-        Label_0263: {
-            if (this$moFemale == null) {
-                if (other$moFemale == null) {
-                    break Label_0263;
-                }
-            }
-            else if (this$moFemale.equals(other$moFemale)) {
-                break Label_0263;
-            }
+        Object this$moFemale = this.getMoFemale();
+        Object other$moFemale = other.getMoFemale();
+        if (!((this$moFemale != null) ? this$moFemale.equals(other$moFemale) : (other$moFemale == null))) {
             return false;
         }
-        final Object this$guiMale = this.getGuiMale();
-        final Object other$guiMale = other.getGuiMale();
-        Label_0300: {
-            if (this$guiMale == null) {
-                if (other$guiMale == null) {
-                    break Label_0300;
-                }
-            }
-            else if (this$guiMale.equals(other$guiMale)) {
-                break Label_0300;
-            }
+        Object this$guiMale = this.getGuiMale();
+        Object other$guiMale = other.getGuiMale();
+        if (!((this$guiMale != null) ? this$guiMale.equals(other$guiMale) : (other$guiMale == null))) {
             return false;
         }
-        final Object this$guiFemale = this.getGuiFemale();
-        final Object other$guiFemale = other.getGuiFemale();
-        Label_0337: {
-            if (this$guiFemale == null) {
-                if (other$guiFemale == null) {
-                    break Label_0337;
-                }
-            }
-            else if (this$guiFemale.equals(other$guiFemale)) {
-                break Label_0337;
-            }
+        Object this$guiFemale = this.getGuiFemale();
+        Object other$guiFemale = other.getGuiFemale();
+        if (!((this$guiFemale != null) ? this$guiFemale.equals(other$guiFemale) : (other$guiFemale == null))) {
             return false;
         }
-        final Object this$longMale = this.getLongMale();
-        final Object other$longMale = other.getLongMale();
-        Label_0374: {
-            if (this$longMale == null) {
-                if (other$longMale == null) {
-                    break Label_0374;
-                }
-            }
-            else if (this$longMale.equals(other$longMale)) {
-                break Label_0374;
-            }
+        Object this$longMale = this.getLongMale();
+        Object other$longMale = other.getLongMale();
+        if (!((this$longMale != null) ? this$longMale.equals(other$longMale) : (other$longMale == null))) {
             return false;
         }
-        final Object this$longFemale = this.getLongFemale();
-        final Object other$longFemale = other.getLongFemale();
-        if (this$longFemale == null) {
-            if (other$longFemale == null) {
-                return this.getDungeon() == other.getDungeon();
-            }
-        }
-        else if (this$longFemale.equals(other$longFemale)) {
-            return this.getDungeon() == other.getDungeon();
-        }
-        return false;
+        Object this$longFemale = this.getLongFemale();
+        Object other$longFemale = other.getLongFemale();
+        return ((this$longFemale != null) ? this$longFemale.equals(other$longFemale) : (other$longFemale == null)) && this.getDungeon() == other.getDungeon();
     }
     
     protected boolean canEqual(final Object other) {
@@ -294,28 +216,28 @@ public class SysDataTaskMoAward implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
-        final Object $renMale = this.getRenMale();
+        Object $renMale = this.getRenMale();
         result = result * 59 + (($renMale == null) ? 43 : $renMale.hashCode());
-        final Object $renFemale = this.getRenFemale();
+        Object $renFemale = this.getRenFemale();
         result = result * 59 + (($renFemale == null) ? 43 : $renFemale.hashCode());
-        final Object $xianMale = this.getXianMale();
+        Object $xianMale = this.getXianMale();
         result = result * 59 + (($xianMale == null) ? 43 : $xianMale.hashCode());
-        final Object $xianFemale = this.getXianFemale();
+        Object $xianFemale = this.getXianFemale();
         result = result * 59 + (($xianFemale == null) ? 43 : $xianFemale.hashCode());
-        final Object $moMale = this.getMoMale();
+        Object $moMale = this.getMoMale();
         result = result * 59 + (($moMale == null) ? 43 : $moMale.hashCode());
-        final Object $moFemale = this.getMoFemale();
+        Object $moFemale = this.getMoFemale();
         result = result * 59 + (($moFemale == null) ? 43 : $moFemale.hashCode());
-        final Object $guiMale = this.getGuiMale();
+        Object $guiMale = this.getGuiMale();
         result = result * 59 + (($guiMale == null) ? 43 : $guiMale.hashCode());
-        final Object $guiFemale = this.getGuiFemale();
+        Object $guiFemale = this.getGuiFemale();
         result = result * 59 + (($guiFemale == null) ? 43 : $guiFemale.hashCode());
-        final Object $longMale = this.getLongMale();
+        Object $longMale = this.getLongMale();
         result = result * 59 + (($longMale == null) ? 43 : $longMale.hashCode());
-        final Object $longFemale = this.getLongFemale();
+        Object $longFemale = this.getLongFemale();
         result = result * 59 + (($longFemale == null) ? 43 : $longFemale.hashCode());
         result = result * 59 + this.getDungeon();
         return result;

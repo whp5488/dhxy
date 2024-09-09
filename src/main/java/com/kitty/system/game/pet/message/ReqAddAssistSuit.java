@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.pet.message;
 
 import java.util.List;
@@ -12,11 +11,14 @@ public class ReqAddAssistSuit extends Message
     private String name;
     private List<Integer> petIds;
     
+    public ReqAddAssistSuit() {
+    }
+    
     public Integer getSerial() {
         return this.serial;
     }
     
-    public void setSerial(final Integer serial) {
+    public void setSerial(Integer serial) {
         this.serial = serial;
     }
     
@@ -24,7 +26,7 @@ public class ReqAddAssistSuit extends Message
         return this.name;
     }
     
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
     
@@ -32,7 +34,7 @@ public class ReqAddAssistSuit extends Message
         return this.petIds;
     }
     
-    public void setPetIds(final List<Integer> petIds) {
+    public void setPetIds(List<Integer> petIds) {
         this.petIds = petIds;
     }
 }

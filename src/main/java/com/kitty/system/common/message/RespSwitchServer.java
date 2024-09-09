@@ -1,4 +1,3 @@
-
 package com.kitty.system.common.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -18,7 +17,7 @@ public class RespSwitchServer extends Message
         return this.result;
     }
     
-    public void setResult(final short result) {
+    public void setResult(short result) {
         this.result = result;
     }
     
@@ -26,7 +25,7 @@ public class RespSwitchServer extends Message
         return this.content;
     }
     
-    public void setContent(final String content) {
+    public void setContent(String content) {
         this.content = content;
     }
 }

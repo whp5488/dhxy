@@ -1,4 +1,3 @@
-
 package com.kitty.record;
 
 import java.util.Iterator;
@@ -27,7 +26,7 @@ public class FightRecordDataThread
     private final AtomicBoolean run;
     
     public FightRecordDataThread() {
-        this.queue = new BlockingUniqueQueue<FightRecordData>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -37,21 +36,20 @@ public class FightRecordDataThread
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("fight-record-data-service").newThread(new Worker()).start();
+        new NamedThreadFactory("fight-record-data-service").newThread(new FightRecordDataThread.Worker()).start();
         FightRecordDataThread.instance = this;
     }
     
-    public void add2Queue(final FightRecordData fightRecordData) {
+    public void add2Queue(FightRecordData fightRecordData) {
+    }
+    
+    public void add2Queue(long id, long createTime, byte[] data) {
+        FightRecordData fightRecordData = new FightRecordData(id, createTime, data);
         this.queue.add(fightRecordData);
     }
     
-    public void add2Queue(final long id, final long createTime, final byte[] data) {
-        final FightRecordData fightRecordData = new FightRecordData(id, createTime, data);
-        this.queue.add(fightRecordData);
-    }
-    
-    private void saveToDb(final FightRecordData fightRecordData) {
-        this.mongoTemplate.insert((Object)fightRecordData);
+    private void saveToDb(FightRecordData fightRecordData) {
+        this.mongoTemplate.insert(fightRecordData);
     }
     
     @PreDestroy
@@ -60,14 +58,14 @@ public class FightRecordDataThread
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[mongodb4FightRecord] 执行全部命令后关闭");
+        LoggerUtils.error("[mongodb4FightRecord] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<FightRecordData> it = this.queue.iterator();
+            Iterator<FightRecordData> it = this.queue.iterator();
             while (it.hasNext()) {
-                final FightRecordData obj = it.next();
+                FightRecordData obj = (FightRecordData)it.next();
                 it.remove();
                 this.saveToDb(obj);
             }
@@ -80,10 +78,10 @@ public class FightRecordDataThread
         public void run() {
             while (FightRecordDataThread.this.run.get()) {
                 try {
-                    final FightRecordData take = FightRecordDataThread.this.queue.take();
+                    FightRecordData take = (FightRecordData)FightRecordDataThread.this.queue.take();
                     FightRecordDataThread.this.saveToDb(take);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }

@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import java.util.Iterator;
@@ -24,7 +23,7 @@ public class Db4FightRecordService
     private final AtomicBoolean run;
     
     public Db4FightRecordService() {
-        this.queue = new BlockingUniqueQueue<FightRecord>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -34,24 +33,25 @@ public class Db4FightRecordService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-fight-record-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-fight-record-service").newThread(new Db4FightRecordService.Worker()).start();
         Db4FightRecordService.instance = this;
     }
     
-    public void add2Queue(final FightRecord record) {
+    public void add2Queue(FightRecord record) {
         if (record == null) {
             return;
         }
         this.queue.add(record);
+        return;
     }
     
-    private void saveToDb(final FightRecord record) {
+    private void saveToDb(FightRecord record) {
         record.doBeforeSave();
         if (record.isDelete()) {
-            this.dao.delete((Object)record);
+            this.dao.delete(record);
         }
         else {
-            this.dao.insertOrUpdate((Object)record);
+            this.dao.insertOrUpdate(record);
         }
     }
     
@@ -61,14 +61,14 @@ public class Db4FightRecordService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[Db4FightRecord] 执行全部命令后关闭");
+        LoggerUtils.error("[Db4FightRecord] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<FightRecord> it = this.queue.iterator();
+            Iterator<FightRecord> it = this.queue.iterator();
             while (it.hasNext()) {
-                final FightRecord next = it.next();
+                FightRecord next = (FightRecord)it.next();
                 it.remove();
                 this.saveToDb(next);
             }
@@ -82,10 +82,10 @@ public class Db4FightRecordService
             while (Db4FightRecordService.this.run.get()) {
                 FightRecord record = null;
                 try {
-                    record = Db4FightRecordService.this.queue.take();
+                    record = (FightRecord)Db4FightRecordService.this.queue.take();
                     Db4FightRecordService.this.saveToDb(record);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("公共数据(排查玩家数据)持久化队列", e);
                     e.printStackTrace();
                 }

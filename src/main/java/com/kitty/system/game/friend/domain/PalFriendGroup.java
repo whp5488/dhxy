@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.friend.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -23,7 +22,7 @@ public class PalFriendGroup extends BaseEntity<Long>
         return this.id;
     }
     
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
@@ -31,7 +30,7 @@ public class PalFriendGroup extends BaseEntity<Long>
         return this.rId;
     }
     
-    public void setrId(final long rId) {
+    public void setrId(long rId) {
         this.rId = rId;
     }
     
@@ -39,7 +38,7 @@ public class PalFriendGroup extends BaseEntity<Long>
         return this.groupName;
     }
     
-    public void setGroupName(final String groupName) {
+    public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
     
@@ -47,14 +46,14 @@ public class PalFriendGroup extends BaseEntity<Long>
         return this.sort;
     }
     
-    public void setSort(final short sort) {
+    public void setSort(short sort) {
         this.sort = sort;
     }
     
     public PalFriendGroup() {
     }
     
-    public PalFriendGroup(final Long id, final long rId, final String groupName, final short sort) {
+    public PalFriendGroup(Long id, long rId, String groupName, short sort) {
         this.id = id;
         this.rId = rId;
         this.groupName = groupName;

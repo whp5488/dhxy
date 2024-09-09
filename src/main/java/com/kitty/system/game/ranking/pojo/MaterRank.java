@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.ranking.pojo;
 
-import java.beans.ConstructorProperties;
 import java.util.ArrayList;
 import com.kitty.system.common.enter.FiedValue;
 import java.util.List;
@@ -117,24 +115,16 @@ public class MaterRank implements Serializable
         if (!(o instanceof MaterRank)) {
             return false;
         }
-        final MaterRank other = (MaterRank)o;
+        MaterRank other = (MaterRank)o;
         if (!other.canEqual(this)) {
             return false;
         }
         if (this.getRoleId() != other.getRoleId()) {
             return false;
         }
-        final Object this$name = this.getName();
-        final Object other$name = other.getName();
-        Label_0078: {
-            if (this$name == null) {
-                if (other$name == null) {
-                    break Label_0078;
-                }
-            }
-            else if (this$name.equals(other$name)) {
-                break Label_0078;
-            }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (!((this$name != null) ? this$name.equals(other$name) : (other$name == null))) {
             return false;
         }
         if (this.getSerial() != other.getSerial()) {
@@ -155,43 +145,19 @@ public class MaterRank implements Serializable
         if (this.getGem() != other.getGem()) {
             return false;
         }
-        final Object this$light_effect = this.getLight_effect();
-        final Object other$light_effect = other.getLight_effect();
-        Label_0193: {
-            if (this$light_effect == null) {
-                if (other$light_effect == null) {
-                    break Label_0193;
-                }
-            }
-            else if (this$light_effect.equals(other$light_effect)) {
-                break Label_0193;
-            }
+        Object this$light_effect = this.getLight_effect();
+        Object other$light_effect = other.getLight_effect();
+        if (!((this$light_effect != null) ? this$light_effect.equals(other$light_effect) : (other$light_effect == null))) {
             return false;
         }
-        final Object this$special_icon = this.getSpecial_icon();
-        final Object other$special_icon = other.getSpecial_icon();
-        Label_0230: {
-            if (this$special_icon == null) {
-                if (other$special_icon == null) {
-                    break Label_0230;
-                }
-            }
-            else if (this$special_icon.equals(other$special_icon)) {
-                break Label_0230;
-            }
+        Object this$special_icon = this.getSpecial_icon();
+        Object other$special_icon = other.getSpecial_icon();
+        if (!((this$special_icon != null) ? this$special_icon.equals(other$special_icon) : (other$special_icon == null))) {
             return false;
         }
-        final Object this$list = this.getList();
-        final Object other$list = other.getList();
-        if (this$list == null) {
-            if (other$list == null) {
-                return true;
-            }
-        }
-        else if (this$list.equals(other$list)) {
-            return true;
-        }
-        return false;
+        Object this$list = this.getList();
+        Object other$list = other.getList();
+        return (this$list != null) ? this$list.equals(other$list) : (other$list == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -200,10 +166,10 @@ public class MaterRank implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getRoleId();
-        final Object $name = this.getName();
+        Object $name = this.getName();
         result = result * 59 + (($name == null) ? 43 : $name.hashCode());
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getRelive();
@@ -211,27 +177,26 @@ public class MaterRank implements Serializable
         result = result * 59 + this.getScore();
         result = result * 59 + this.getWeapon();
         result = result * 59 + this.getGem();
-        final Object $light_effect = this.getLight_effect();
+        Object $light_effect = this.getLight_effect();
         result = result * 59 + (($light_effect == null) ? 43 : $light_effect.hashCode());
-        final Object $special_icon = this.getSpecial_icon();
+        Object $special_icon = this.getSpecial_icon();
         result = result * 59 + (($special_icon == null) ? 43 : $special_icon.hashCode());
-        final Object $list = this.getList();
+        Object $list = this.getList();
         result = result * 59 + (($list == null) ? 43 : $list.hashCode());
         return result;
     }
     
     @Override
     public String toString() {
-        return "MaterRank(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", serial=" + this.getSerial() + ", relive=" + this.getRelive() + ", level=" + this.getLevel() + ", score=" + this.getScore() + ", weapon=" + this.getWeapon() + ", gem=" + this.getGem() + ", light_effect=" + this.getLight_effect() + ", special_icon=" + this.getSpecial_icon() + ", list=" + this.getList() + ")";
+        return "MaterRank(roleId=" + this.getRoleId() + ", name=" + this.getName() + ", serial=" + this.getSerial() + ", relive=" + (int)this.getRelive() + ", level=" + (int)this.getLevel() + ", score=" + this.getScore() + ", weapon=" + this.getWeapon() + ", gem=" + this.getGem() + ", light_effect=" + this.getLight_effect() + ", special_icon=" + this.getSpecial_icon() + ", list=" + this.getList() + ")";
     }
     
-    @ConstructorProperties({ "roleId", "name", "serial", "relive", "level", "score", "weapon", "gem", "light_effect", "special_icon", "list" })
     public MaterRank(final int roleId, final String name, final int serial, final byte relive, final short level, final int score, final int weapon, final int gem, final List<Integer> light_effect, final List<Integer> special_icon, final List<FiedValue> list) {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.roleId = roleId;
         this.name = name;
         this.serial = serial;
@@ -248,8 +213,8 @@ public class MaterRank implements Serializable
     public MaterRank() {
         this.weapon = 0;
         this.gem = 0;
-        this.light_effect = new ArrayList<Integer>();
-        this.special_icon = new ArrayList<Integer>();
-        this.list = new ArrayList<FiedValue>();
+        this.light_effect = new ArrayList<>();
+        this.special_icon = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
 }

@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import com.kitty.system.enums.task.TaskType;
@@ -55,6 +54,9 @@ public class SysDataTaskTower implements Serializable
     @Comment("推荐等级")
     @Column("rec_grade")
     private int recGrade;
+    
+    public SysDataTaskTower() {
+    }
     
     public int getSerial() {
         return this.serial;
@@ -168,7 +170,7 @@ public class SysDataTaskTower implements Serializable
         if (!(o instanceof SysDataTaskTower)) {
             return false;
         }
-        final SysDataTaskTower other = (SysDataTaskTower)o;
+        SysDataTaskTower other = (SysDataTaskTower)o;
         if (!other.canEqual(this)) {
             return false;
         }
@@ -193,69 +195,29 @@ public class SysDataTaskTower implements Serializable
         if (this.getSubmitCondition() != other.getSubmitCondition()) {
             return false;
         }
-        final Object this$addTaskEvent = this.getAddTaskEvent();
-        final Object other$addTaskEvent = other.getAddTaskEvent();
-        Label_0156: {
-            if (this$addTaskEvent == null) {
-                if (other$addTaskEvent == null) {
-                    break Label_0156;
-                }
-            }
-            else if (this$addTaskEvent.equals(other$addTaskEvent)) {
-                break Label_0156;
-            }
+        Object this$addTaskEvent = this.getAddTaskEvent();
+        Object other$addTaskEvent = other.getAddTaskEvent();
+        if (!((this$addTaskEvent != null) ? this$addTaskEvent.equals(other$addTaskEvent) : (other$addTaskEvent == null))) {
             return false;
         }
-        final Object this$finishTaskEvent = this.getFinishTaskEvent();
-        final Object other$finishTaskEvent = other.getFinishTaskEvent();
-        Label_0193: {
-            if (this$finishTaskEvent == null) {
-                if (other$finishTaskEvent == null) {
-                    break Label_0193;
-                }
-            }
-            else if (this$finishTaskEvent.equals(other$finishTaskEvent)) {
-                break Label_0193;
-            }
+        Object this$finishTaskEvent = this.getFinishTaskEvent();
+        Object other$finishTaskEvent = other.getFinishTaskEvent();
+        if (!((this$finishTaskEvent != null) ? this$finishTaskEvent.equals(other$finishTaskEvent) : (other$finishTaskEvent == null))) {
             return false;
         }
-        final Object this$askEvent = this.getAskEvent();
-        final Object other$askEvent = other.getAskEvent();
-        Label_0230: {
-            if (this$askEvent == null) {
-                if (other$askEvent == null) {
-                    break Label_0230;
-                }
-            }
-            else if (this$askEvent.equals(other$askEvent)) {
-                break Label_0230;
-            }
+        Object this$askEvent = this.getAskEvent();
+        Object other$askEvent = other.getAskEvent();
+        if (!((this$askEvent != null) ? this$askEvent.equals(other$askEvent) : (other$askEvent == null))) {
             return false;
         }
-        final Object this$taskType = this.getTaskType();
-        final Object other$taskType = other.getTaskType();
-        Label_0267: {
-            if (this$taskType == null) {
-                if (other$taskType == null) {
-                    break Label_0267;
-                }
-            }
-            else if (this$taskType.equals(other$taskType)) {
-                break Label_0267;
-            }
+        Object this$taskType = this.getTaskType();
+        Object other$taskType = other.getTaskType();
+        if (!((this$taskType != null) ? this$taskType.equals(other$taskType) : (other$taskType == null))) {
             return false;
         }
-        final Object this$taskReward = this.getTaskReward();
-        final Object other$taskReward = other.getTaskReward();
-        if (this$taskReward == null) {
-            if (other$taskReward == null) {
-                return this.getRecGrade() == other.getRecGrade();
-            }
-        }
-        else if (this$taskReward.equals(other$taskReward)) {
-            return this.getRecGrade() == other.getRecGrade();
-        }
-        return false;
+        Object this$taskReward = this.getTaskReward();
+        Object other$taskReward = other.getTaskReward();
+        return ((this$taskReward != null) ? this$taskReward.equals(other$taskReward) : (other$taskReward == null)) && this.getRecGrade() == other.getRecGrade();
     }
     
     protected boolean canEqual(final Object other) {
@@ -264,7 +226,7 @@ public class SysDataTaskTower implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getSerial();
         result = result * 59 + this.getNextTaskSerial();
@@ -273,15 +235,15 @@ public class SysDataTaskTower implements Serializable
         result = result * 59 + this.getNeedFight();
         result = result * 59 + this.getGetCondition();
         result = result * 59 + this.getSubmitCondition();
-        final Object $addTaskEvent = this.getAddTaskEvent();
+        Object $addTaskEvent = this.getAddTaskEvent();
         result = result * 59 + (($addTaskEvent == null) ? 43 : $addTaskEvent.hashCode());
-        final Object $finishTaskEvent = this.getFinishTaskEvent();
+        Object $finishTaskEvent = this.getFinishTaskEvent();
         result = result * 59 + (($finishTaskEvent == null) ? 43 : $finishTaskEvent.hashCode());
-        final Object $askEvent = this.getAskEvent();
+        Object $askEvent = this.getAskEvent();
         result = result * 59 + (($askEvent == null) ? 43 : $askEvent.hashCode());
-        final Object $taskType = this.getTaskType();
+        Object $taskType = this.getTaskType();
         result = result * 59 + (($taskType == null) ? 43 : $taskType.hashCode());
-        final Object $taskReward = this.getTaskReward();
+        Object $taskReward = this.getTaskReward();
         result = result * 59 + (($taskReward == null) ? 43 : $taskReward.hashCode());
         result = result * 59 + this.getRecGrade();
         return result;

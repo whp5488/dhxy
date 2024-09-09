@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.enter.message;
 
-import java.beans.ConstructorProperties;
 import com.kitty.system.enums.war.wardef.LOGIC;
 import com.kitty.mina.annotation.MessageMeta;
 import com.kitty.mina.message.Message;
@@ -36,7 +34,7 @@ public class RespDisappear extends Message
         if (!(o instanceof RespDisappear)) {
             return false;
         }
-        final RespDisappear other = (RespDisappear)o;
+        RespDisappear other = (RespDisappear)o;
         return other.canEqual(this) && this.getId() == other.getId() && this.getType() == other.getType();
     }
     
@@ -46,7 +44,7 @@ public class RespDisappear extends Message
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
         result = result * 59 + this.getId();
         result = result * 59 + this.getType();
@@ -62,7 +60,6 @@ public class RespDisappear extends Message
         this.type = LOGIC.LOGICTYPE_HERO.getValue();
     }
     
-    @ConstructorProperties({ "id", "type" })
     public RespDisappear(final int id, final int type) {
         this.type = LOGIC.LOGICTYPE_HERO.getValue();
         this.id = id;

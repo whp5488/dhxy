@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.fightnew.book.tianfu.gattaca;
 
 import com.kitty.system.game.fightnew.imbue.utils.ImbueUtil;
@@ -12,22 +11,25 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_321105 extends TianFuProcessor
 {
+    public FU_321105() {
+    }
+    
     @Override
-    public NutMap addition(final TianFuAddition tianFuAddition, final Object... args) {
+    public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
     
     @Override
-    public NutMap passive(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
     
     @Override
-    public void beforeCountHurt(final Fight fight, final FightObject effector, final FightObject target, final Object... args) {
+    public void beforeCountHurt(Fight fight, FightObject effector, FightObject target, Object... args) {
         if (target != null && target.isPet() && args != null && args.length > 0) {
-            final TianFuAddition tianFuAddition = (TianFuAddition)args[0];
-            final double percenta = 1.0 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
-            final double percentb = 0.15 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+            TianFuAddition tianFuAddition = (TianFuAddition)args[0];
+            double percenta = 1.0 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
+            double percentb = 0.15 * TianFuUtils.getCountAddition(tianFuAddition) / 100.0;
             if (percenta != 0.0) {
                 ImbueUtil.addTemp(effector.getImbueMap(), PRO_DICT_TYPE.OMIT_K_F.getDist(), percenta);
                 ImbueUtil.addTemp(effector.getImbueMap(), PRO_DICT_TYPE.OMIT_K_L.getDist(), percenta);

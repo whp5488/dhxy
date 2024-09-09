@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.player.serializer.ipml;
 
 import com.kitty.system.game.role.domain.RoleOfflineNotice;
@@ -9,19 +8,22 @@ import com.kitty.system.game.player.serializer.IPlayerPropSerializer;
 
 public class PlayerOfflinNoticekSerializer implements IPlayerPropSerializer
 {
+    public PlayerOfflinNoticekSerializer() {
+    }
+    
     @Override
-    public void serialize(final Role player) {
+    public void serialize(Role player) {
         if (player.getOfflineNotice() != null) {
-            final String json = JsonUtils.object2String(player.getOfflineNotice());
+            String json = JsonUtils.object2String(player.getOfflineNotice());
             player.setOfflinNoticeJson(json);
         }
     }
     
     @Override
-    public void deserialize(final Role player) {
-        final String json = player.getOfflinNoticeJson();
-        if (StringUtils.isNotEmpty((CharSequence)json)) {
-            player.setOfflineNotice(JsonUtils.string2Object(json, RoleOfflineNotice.class));
+    public void deserialize(Role player) {
+        String json = player.getOfflinNoticeJson();
+        if (StringUtils.isNotEmpty(json)) {
+            player.setOfflineNotice((RoleOfflineNotice)JsonUtils.string2Object(json, RoleOfflineNotice.class));
         }
     }
 }

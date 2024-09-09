@@ -1,7 +1,5 @@
-
 package com.kitty.system.game.fightnew.spectator.pool;
 
-import java.beans.ConstructorProperties;
 import java.util.HashMap;
 import com.kitty.system.game.fightnew.messages.RespExcuteFight;
 import com.kitty.system.game.fightnew.messages.RespRoundStartParam;
@@ -25,60 +23,60 @@ public class FightRoundParam
     private Map<Integer, RespRoundStartParam> respRoundStartParamMap;
     private RespExcuteFight respExcuteFight;
     
-    public PetFightInParam getPetFightInParam(final int roleId) {
-        if (this.petFightInParamMap != null && this.petFightInParamMap.get(roleId) != null) {
-            return this.petFightInParamMap.get(roleId);
+    public PetFightInParam getPetFightInParam(int roleId) {
+        if (this.petFightInParamMap != null && this.petFightInParamMap.get(Integer.valueOf(roleId)) != null) {
+            return (PetFightInParam)this.petFightInParamMap.get(Integer.valueOf(roleId));
         }
         return null;
     }
     
-    public List<RefreshPet> getRefreshPets(final int roleId) {
-        if (this.petMap != null && this.petMap.get(roleId) != null) {
-            return this.petMap.get(roleId);
+    public List<RefreshPet> getRefreshPets(int roleId) {
+        if (this.petMap != null && this.petMap.get(Integer.valueOf(roleId)) != null) {
+            return (List)this.petMap.get(Integer.valueOf(roleId));
         }
         return null;
     }
     
-    public List<Integer> getStatusList(final int roleId) {
-        if (this.statusMap != null && this.statusMap.get(roleId) != null) {
-            return this.statusMap.get(roleId);
+    public List<Integer> getStatusList(int roleId) {
+        if (this.statusMap != null && this.statusMap.get(Integer.valueOf(roleId)) != null) {
+            return (List)this.statusMap.get(Integer.valueOf(roleId));
         }
         return null;
     }
     
-    public List<SkillParam> getSkillParamList(final int roleId) {
-        if (this.skillParamMap != null && this.skillParamMap.get(roleId) != null) {
-            return this.skillParamMap.get(roleId);
+    public List<SkillParam> getSkillParamList(int roleId) {
+        if (this.skillParamMap != null && this.skillParamMap.get(Integer.valueOf(roleId)) != null) {
+            return (List)this.skillParamMap.get(Integer.valueOf(roleId));
         }
         return null;
     }
     
-    public void addSkillParam(final int roleId, final List<SkillParam> skillParam) {
+    public void addSkillParam(int roleId, List<SkillParam> skillParam) {
         if (this.skillParamMap == null) {
-            this.skillParamMap = new HashMap<Integer, List<SkillParam>>();
+            this.skillParamMap = new HashMap();
         }
-        this.skillParamMap.put(roleId, skillParam);
+        this.skillParamMap.put(Integer.valueOf(roleId), skillParam);
     }
     
-    public void addPetFightInParam(final int roleId, final PetFightInParam petFightInParam) {
+    public void addPetFightInParam(int roleId, PetFightInParam petFightInParam) {
         if (this.petFightInParamMap == null) {
-            this.petFightInParamMap = new HashMap<Integer, PetFightInParam>();
+            this.petFightInParamMap = new HashMap();
         }
-        this.petFightInParamMap.put(roleId, petFightInParam);
+        this.petFightInParamMap.put(Integer.valueOf(roleId), petFightInParam);
     }
     
-    public void addRefreshPet(final int roleId, final List<RefreshPet> refreshPets) {
+    public void addRefreshPet(int roleId, List<RefreshPet> refreshPets) {
         if (this.petMap == null) {
-            this.petMap = new HashMap<Integer, List<RefreshPet>>();
+            this.petMap = new HashMap();
         }
-        this.petMap.put(roleId, refreshPets);
+        this.petMap.put(Integer.valueOf(roleId), refreshPets);
     }
     
-    public void addStatus(final int roleId, final List<Integer> status) {
+    public void addStatus(int roleId, List<Integer> status) {
         if (this.statusMap == null) {
-            this.statusMap = new HashMap<Integer, List<Integer>>();
+            this.statusMap = new HashMap();
         }
-        this.statusMap.put(roleId, status);
+        this.statusMap.put(Integer.valueOf(roleId), status);
     }
     
     public List<FightMember> getFightMemberA() {
@@ -153,7 +151,6 @@ public class FightRoundParam
         this.respExcuteFight = respExcuteFight;
     }
     
-    @ConstructorProperties({ "fightMemberA", "fightMemberB", "excuteFightParams", "petFightInParamMap", "petMap", "statusMap", "skillParamMap", "respRoundStartParamMap", "respExcuteFight" })
     public FightRoundParam(final List<FightMember> fightMemberA, final List<FightMember> fightMemberB, final List<ExcuteFightParam> excuteFightParams, final Map<Integer, PetFightInParam> petFightInParamMap, final Map<Integer, List<RefreshPet>> petMap, final Map<Integer, List<Integer>> statusMap, final Map<Integer, List<SkillParam>> skillParamMap, final Map<Integer, RespRoundStartParam> respRoundStartParamMap, final RespExcuteFight respExcuteFight) {
         this.fightMemberA = fightMemberA;
         this.fightMemberB = fightMemberB;

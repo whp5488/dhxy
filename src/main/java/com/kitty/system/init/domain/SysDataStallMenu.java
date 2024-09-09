@@ -1,4 +1,3 @@
-
 package com.kitty.system.init.domain;
 
 import org.nutz.dao.entity.annotation.Column;
@@ -21,6 +20,9 @@ public class SysDataStallMenu implements Serializable
     @Comment("0.正常，1.停用")
     @Column("status")
     private Integer categoryName;
+    
+    public SysDataStallMenu() {
+    }
     
     public Integer getSerial() {
         return this.serial;
@@ -62,60 +64,28 @@ public class SysDataStallMenu implements Serializable
         if (!(o instanceof SysDataStallMenu)) {
             return false;
         }
-        final SysDataStallMenu other = (SysDataStallMenu)o;
+        SysDataStallMenu other = (SysDataStallMenu)o;
         if (!other.canEqual(this)) {
             return false;
         }
-        final Object this$serial = this.getSerial();
-        final Object other$serial = other.getSerial();
-        Label_0065: {
-            if (this$serial == null) {
-                if (other$serial == null) {
-                    break Label_0065;
-                }
-            }
-            else if (this$serial.equals(other$serial)) {
-                break Label_0065;
-            }
+        Object this$serial = this.getSerial();
+        Object other$serial = other.getSerial();
+        if (!((this$serial != null) ? this$serial.equals(other$serial) : (other$serial == null))) {
             return false;
         }
-        final Object this$parentSerial = this.getParentSerial();
-        final Object other$parentSerial = other.getParentSerial();
-        Label_0102: {
-            if (this$parentSerial == null) {
-                if (other$parentSerial == null) {
-                    break Label_0102;
-                }
-            }
-            else if (this$parentSerial.equals(other$parentSerial)) {
-                break Label_0102;
-            }
+        Object this$parentSerial = this.getParentSerial();
+        Object other$parentSerial = other.getParentSerial();
+        if (!((this$parentSerial != null) ? this$parentSerial.equals(other$parentSerial) : (other$parentSerial == null))) {
             return false;
         }
-        final Object this$ancestors = this.getAncestors();
-        final Object other$ancestors = other.getAncestors();
-        Label_0139: {
-            if (this$ancestors == null) {
-                if (other$ancestors == null) {
-                    break Label_0139;
-                }
-            }
-            else if (this$ancestors.equals(other$ancestors)) {
-                break Label_0139;
-            }
+        Object this$ancestors = this.getAncestors();
+        Object other$ancestors = other.getAncestors();
+        if (!((this$ancestors != null) ? this$ancestors.equals(other$ancestors) : (other$ancestors == null))) {
             return false;
         }
-        final Object this$categoryName = this.getCategoryName();
-        final Object other$categoryName = other.getCategoryName();
-        if (this$categoryName == null) {
-            if (other$categoryName == null) {
-                return true;
-            }
-        }
-        else if (this$categoryName.equals(other$categoryName)) {
-            return true;
-        }
-        return false;
+        Object this$categoryName = this.getCategoryName();
+        Object other$categoryName = other.getCategoryName();
+        return (this$categoryName != null) ? this$categoryName.equals(other$categoryName) : (other$categoryName == null);
     }
     
     protected boolean canEqual(final Object other) {
@@ -124,15 +94,15 @@ public class SysDataStallMenu implements Serializable
     
     @Override
     public int hashCode() {
-        final int PRIME = 59;
+        int PRIME = 59;
         int result = 1;
-        final Object $serial = this.getSerial();
+        Object $serial = this.getSerial();
         result = result * 59 + (($serial == null) ? 43 : $serial.hashCode());
-        final Object $parentSerial = this.getParentSerial();
+        Object $parentSerial = this.getParentSerial();
         result = result * 59 + (($parentSerial == null) ? 43 : $parentSerial.hashCode());
-        final Object $ancestors = this.getAncestors();
+        Object $ancestors = this.getAncestors();
         result = result * 59 + (($ancestors == null) ? 43 : $ancestors.hashCode());
-        final Object $categoryName = this.getCategoryName();
+        Object $categoryName = this.getCategoryName();
         result = result * 59 + (($categoryName == null) ? 43 : $categoryName.hashCode());
         return result;
     }

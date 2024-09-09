@@ -1,4 +1,3 @@
-
 package com.kitty.system.game.market.message;
 
 import com.kitty.mina.annotation.MessageMeta;
@@ -12,13 +11,16 @@ public class ReqSetStallGoods extends Message
     private byte type;
     private short amount;
     
+    public ReqSetStallGoods() {
+    }
+    
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("{");
+        StringBuilder sb = new StringBuilder("{");
         sb.append("\"inventory\":\"").append(this.inventory).append('\"');
         sb.append(",\"price\":\"").append(this.price).append('\"');
-        sb.append(",\"type\":").append(this.type);
-        sb.append(",\"amount\":").append(this.amount);
+        sb.append(",\"type\":").append((int)this.type);
+        sb.append(",\"amount\":").append((int)this.amount);
         sb.append('}');
         return sb.toString();
     }

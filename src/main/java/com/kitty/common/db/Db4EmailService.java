@@ -1,4 +1,3 @@
-
 package com.kitty.common.db;
 
 import java.util.Iterator;
@@ -23,7 +22,7 @@ public class Db4EmailService
     private final AtomicBoolean run;
     
     public Db4EmailService() {
-        this.queue = new BlockingUniqueQueue<BaseEntity>();
+        this.queue = new BlockingUniqueQueue();
         this.run = new AtomicBoolean(true);
     }
     
@@ -33,24 +32,25 @@ public class Db4EmailService
     
     @PostConstruct
     private void init() {
-        new NamedThreadFactory("db-email-save-service").newThread(new Worker()).start();
+        new NamedThreadFactory("db-email-save-service").newThread(new Db4EmailService.Worker()).start();
         Db4EmailService.instance = this;
     }
     
-    public void add2Queue(final BaseEntity entity) {
+    public void add2Queue(BaseEntity entity) {
         if (entity == null) {
             return;
         }
         this.queue.add(entity);
+        return;
     }
     
-    private void saveToDb(final BaseEntity entity) {
+    private void saveToDb(BaseEntity entity) {
         entity.doBeforeSave();
         if (entity.isDelete()) {
-            this.dao.delete((Object)entity);
+            this.dao.delete(entity);
         }
         else {
-            this.dao.insertOrUpdate((Object)entity);
+            this.dao.insertOrUpdate(entity);
         }
     }
     
@@ -60,14 +60,14 @@ public class Db4EmailService
         while (!this.queue.isEmpty()) {
             this.saveAllBeforeShutDown();
         }
-        LoggerUtils.error("[Db4Email] 执行全部命令后关闭");
+        LoggerUtils.error("[Db4Email] 执行全部命令后关闭", new Object[0]);
     }
     
     private void saveAllBeforeShutDown() {
         while (!this.queue.isEmpty()) {
-            final Iterator<BaseEntity> it = this.queue.iterator();
+            Iterator<BaseEntity> it = this.queue.iterator();
             while (it.hasNext()) {
-                final BaseEntity next = it.next();
+                BaseEntity next = (BaseEntity)it.next();
                 it.remove();
                 this.saveToDb(next);
             }
@@ -81,10 +81,10 @@ public class Db4EmailService
             while (Db4EmailService.this.run.get()) {
                 BaseEntity entity = null;
                 try {
-                    entity = Db4EmailService.this.queue.take();
+                    entity = (BaseEntity)Db4EmailService.this.queue.take();
                     Db4EmailService.this.saveToDb(entity);
                 }
-                catch (final Exception e) {
+                catch (Exception e) {
                     LoggerUtils.error("邮件数据持久化队列", e);
                     e.printStackTrace();
                 }
