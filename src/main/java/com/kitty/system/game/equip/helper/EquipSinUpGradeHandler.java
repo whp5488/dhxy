@@ -120,7 +120,7 @@ public class EquipSinUpGradeHandler extends UpgradeHandler
             return true;
         }
         else if (grade == 5) {
-            final Integer goods = this.bagService.consumeBagGoods(role, 76001, 60, true, true, "5阶升6阶仙器");
+            final Integer goods = this.bagService.consumeBagGoods(role, 76001, 100, true, true, "5阶升6阶仙器");
             if (goods != null) {
                 MessagePusher.pushMessage(role, new RespNotifyMiscEx("升级材料数量不足"));
                 return false;

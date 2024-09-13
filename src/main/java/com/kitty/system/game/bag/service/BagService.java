@@ -134,6 +134,8 @@ public class BagService
     private PetService petService;
     @Autowired
     private BroadcastThread broadcastThread;
+    @Autowired
+    private AdminService adminService;
     
     public BagService() {
         this.logger = LoggerFactory.getLogger(BagService.class);
@@ -999,6 +1001,10 @@ public class BagService
                             this.consumeBagGoods(role, goods.getSerial(), 1, true, true, "使用物品-还原丹");
                             ((CardService)SpringUtils.getBean(CardService.class)).cardExpire(role);
                         }
+                    }else if (goods.getSerial() == 99016) {
+                        this.consumeBagGoods(role, goods.getSerial(), 1, true, true, "使用物品-充值");
+                        short status = this.adminService.customRecharge(role, (int)1);
+
                     }
                     else {
                         this.logger.error("使用道具未处理：{}", goods.getSerial());

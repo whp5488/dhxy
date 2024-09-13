@@ -82,7 +82,7 @@ public class SkillService
                                 if ((int)skill.getProficient() < (int)Const.skillExp) {
                                     hasExp = Const.skillExp;
                                 }
-                                skill.setProficient(hasExp);
+                                skill.setProficient(currentMax);
                                 role.getSkills().put(Integer.valueOf(reqLearnSkill.getSerial()), skill);
                                 RespUpdateSkill respUpdateSkill = new RespUpdateSkill();
                                 respUpdateSkill.setId((int)role.getRoleId());

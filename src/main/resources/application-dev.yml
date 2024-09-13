@@ -70,4 +70,4 @@ spring:
         max-idle: 8
         min-idle: 1
     port: 6379
-    timeout: 5000
+    timeout: 50000

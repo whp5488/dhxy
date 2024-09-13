@@ -12,26 +12,23 @@ import com.kitty.system.game.fightnew.book.tianfu.TianFuProcessor;
 
 public class FU_323501 extends TianFuProcessor
 {
-    public FU_323501() {
-    }
-    
     @Override
     public NutMap addition(TianFuAddition tianFuAddition, Object... args) {
         return null;
     }
-    
+
     @Override
     public NutMap passive(Fight fight, FightObject effector, FightObject target, Object... args) {
         return null;
     }
-    
+
     @Override
     public NutMap wearInstantlyTakeEffect(Role role, Pet pet, TianFuAddition tianFuAddition, Object... obj) {
         if (pet == null || tianFuAddition == null) {
             return null;
         }
-        int level = (int)pet.getPetLv();
-        if ((int)pet.getRebirth() < 3 || level < 120) {
+        int level = pet.getPetLv().intValue();
+        if (pet.getRebirth().intValue() < 3 || level < 120) {
             return null;
         }
         if (level > 180) {

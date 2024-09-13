@@ -17,7 +17,7 @@ public enum ActivityType
     FIVE_TASK("10009", "五环任务", 1, (byte)0, new ArrayList<>(), 0.0), 
     SEAL_OFFICER("10010", "封妖", 5, (byte)0, new ArrayList<>(), 5.0), 
     SCOPE_OFFICER("10011", "三界妖王", 3, (byte)0, new ArrayList<>(), 5.0), 
-    STAR_OFFICER("10012", "星官", 50, (byte)0, new ArrayList<>(), 5.0), 
+    STAR_OFFICER("10012", "星官", 200, (byte)0, new ArrayList<>(), 5.0),
     WORLD_BOOS_OFFICER("10013", "世界BOOS", 99999, (byte)0, new ArrayList<>(), 5.0), 
     DUJIE("10025", "渡劫", 9999, (byte)0, new ArrayList<>(), 5.0), 
     GODS_COURT_TASK("10014", "天庭降妖", 20, (byte)0, new ArrayList<>(), 5.0), 

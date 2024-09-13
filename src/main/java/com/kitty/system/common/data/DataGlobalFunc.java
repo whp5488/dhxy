@@ -106,7 +106,7 @@ public class DataGlobalFunc
         long exp = 1500000000L;
         if (type == LOGIC.LOGICTYPE_HERO.getValue()) {
             if (grade >= 1120) {
-                exp = 15000000000L;
+                exp = 150000000000L;
             }
         }
         else if (type == LOGIC.LOGICTYPE_PET.getValue()) {
@@ -157,7 +157,7 @@ public class DataGlobalFunc
     }
     
     public static Integer getRoleReborn(int rei, int race, int sex) {
-        if (rei >= 1 && rei <= 3) {
+        if (rei >= 1 && rei <= 4) {
             Map<Integer, SysReiEn> map = PartDataPool.reiEnMap;
             for (Integer key : map.keySet()) {
                 SysReiEn reiEn = map.get(key);
@@ -584,6 +584,9 @@ public class DataGlobalFunc
         if (levelExp == null) {
             return 0L;
         }
+        if (type == LOGIC.LOGICTYPE_PET.getValue() && rebirth >= 4){
+            return 4756820083L;
+        }
         return getNeedExp(rebirth, levelExp);
     }
     
@@ -604,6 +607,10 @@ public class DataGlobalFunc
             }
             case 3: {
                 needExp = levelExp.getNeedExpRei3();
+                break;
+            }
+            case 4: {
+                needExp = levelExp.getNeedExpRei4();
                 break;
             }
             default: {

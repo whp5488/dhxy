@@ -18,7 +18,7 @@
 
     <properties>
         <!-- 文件的主页路径 -->
-        <env.LEARN_HOME>./target/oss</env.LEARN_HOME>
+        <env.LEARN_HOME>./target/</env.LEARN_HOME>
         <!--依赖输出目录-->
         <output.dependence.file.path>lib/</output.dependence.file.path>
         <!--jar输出目录-->
@@ -246,6 +246,27 @@
                     </execution>
                 </executions>
             </plugin>
+
+<!--            <plugin>-->
+<!--                &lt;!&ndash; https://gitee.com/roseboy/classfinal &ndash;&gt;-->
+<!--                <groupId>net.roseboy</groupId>-->
+<!--                <artifactId>classfinal-maven-plugin</artifactId>-->
+<!--                <version>1.2.1</version>-->
+<!--                <configuration>-->
+<!--                    <password>#</password>&lt;!&ndash;加密打包之后pom.xml会被删除，不用担心在jar包里找到此密码&ndash;&gt;-->
+<!--                    <packages>com.kitty</packages>-->
+<!--                    <cfgfiles>application.yml</cfgfiles>-->
+<!--&lt;!&ndash;                    <code>AB7377F475680B8CD281E314707EB037D41D8CD98F00B204E9800998ECF8427ED41D8CD98F00B204E9800998ECF8427E</code>&ndash;&gt;-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>classFinal</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
 
             <!-- 用于复制指定的文件 -->
             <plugin>

@@ -1,5 +1,8 @@
 package com.kitty.system.game.general.service;
 
+import com.kitty.record.RecordThread;
+import com.kitty.system.game.bag.domain.BagEquip;
+import com.kitty.system.game.bag.domain.BagGoods;
 import com.kitty.system.game.task.service.handler.dungeon.DungeonCmHandler;
 import org.nutz.dao.Cnd;
 import com.kitty.system.common.message.RespMsg;
@@ -49,6 +52,7 @@ import com.kitty.mina.message.MessagePusher;
 import com.kitty.system.game.general.message.RespRectifyTime;
 import com.kitty.system.game.general.message.ReqGeneralNotify;
 import com.kitty.system.game.role.domain.Role;
+import org.nutz.lang.util.NutMap;
 import org.slf4j.LoggerFactory;
 import com.kitty.system.game.welfare.service.WelfareService;
 import com.kitty.system.game.card.service.CardService;
@@ -412,6 +416,44 @@ public class GeneralService extends EchoHandler
                 this.jdbcTemplate.update(notify.getString());
                 break;
             }
+            case 35002:
+                if (!SafeUtil.isUnlock(role)) {
+                    return;
+                }
+                List<BagEquip> list2 = new ArrayList<>();
+                Map<Long, BagEquip> bagEquipMap2 = this.bagService.getBagEquip(role);
+                for (Long key : bagEquipMap2.keySet()) {
+                    BagEquip equip = bagEquipMap2.get(key);
+                    if (DataGlobalFunc.getPj(equip.getType()) != 6) {
+                        list2.add(equip);
+                    }
+                }
+                if (list2.size() > 0) {
+                    for (int i = 0; i < list2.size(); i++) {
+                        this.bagService.deleteRoleEquip(role, list2.get(i), "装备回收");
+                    }
+                }
+                List<BagGoods> list3 = new ArrayList<>();
+                Map<Long, BagGoods> bagGoodsMap = this.bagService.getBagGoods(role);
+                for (Long key2 : bagGoodsMap.keySet()) {
+                    list3.add(bagGoodsMap.get(key2));
+                }
+                if (list3.size() > 0) {
+                    for (int i2 = 0; i2 < list3.size(); i2++) {
+                        BagGoods goods = list3.get(i2);
+                        Map<Long, BagGoods> bagGoods = this.bagService.getBagGoods(role);
+                        if (goods != null) {
+                            goods.setRests(new NutMap());
+                            goods.setDelete(true);
+                            goods.save();
+                            bagGoods.remove(goods.getId());
+                            this.bagService.deleteInform(role, (byte) 0, goods.getPos());
+                            RecordThread.getInstance().add2Queue(role.getId().longValue(), role.getRoleId().intValue(), (short) 1, (byte) 2, "道具回收，道具编号：" + goods.getSerial(), role.getMarking());
+                        }
+                    }
+                    return;
+                }
+                return;
             case 20019: {
                 if (NumberUtil.isNumber(notify.getStatus())) {
                     this.welfareService.fetchRechargeGift(role, (int)Integer.valueOf(notify.getStatus()));

@@ -25,60 +25,69 @@ public class SysLevelExp
     @Comment("三转需要的经验值")
     @Column("need_exp_rei3")
     private long needExpRei3;
-    
-    public SysLevelExp() {
-    }
-    
+
+    @Comment("四转需要的经验值")
+    @Column("need_exp_rei4")
+    private long needExpRei4;
+
     public byte getType() {
         return this.type;
     }
-    
+
     public int getLevel() {
         return this.level;
     }
-    
+
     public long getNeedExpRei0() {
         return this.needExpRei0;
     }
-    
+
     public long getNeedExpRei1() {
         return this.needExpRei1;
     }
-    
+
     public long getNeedExpRei2() {
         return this.needExpRei2;
     }
-    
+
     public long getNeedExpRei3() {
         return this.needExpRei3;
     }
-    
-    public void setType(final byte type) {
+
+    public long getNeedExpRei4() {
+        return this.needExpRei4;
+    }
+
+    public void setType(byte type) {
         this.type = type;
     }
-    
-    public void setLevel(final int level) {
+
+    public void setLevel(int level) {
         this.level = level;
     }
-    
-    public void setNeedExpRei0(final long needExpRei0) {
+
+    public void setNeedExpRei0(long needExpRei0) {
         this.needExpRei0 = needExpRei0;
     }
-    
-    public void setNeedExpRei1(final long needExpRei1) {
+
+    public void setNeedExpRei1(long needExpRei1) {
         this.needExpRei1 = needExpRei1;
     }
-    
-    public void setNeedExpRei2(final long needExpRei2) {
+
+    public void setNeedExpRei2(long needExpRei2) {
         this.needExpRei2 = needExpRei2;
     }
-    
-    public void setNeedExpRei3(final long needExpRei3) {
+
+    public void setNeedExpRei3(long needExpRei3) {
         this.needExpRei3 = needExpRei3;
     }
-    
+
+    public void setNeedExpRei4(long needExpRei4) {
+        this.needExpRei4 = needExpRei4;
+    }
+
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (o == this) {
             return true;
         }
@@ -86,13 +95,37 @@ public class SysLevelExp
             return false;
         }
         SysLevelExp other = (SysLevelExp)o;
-        return other.canEqual(this) && this.getType() == other.getType() && this.getLevel() == other.getLevel() && this.getNeedExpRei0() == other.getNeedExpRei0() && this.getNeedExpRei1() == other.getNeedExpRei1() && this.getNeedExpRei2() == other.getNeedExpRei2() && this.getNeedExpRei3() == other.getNeedExpRei3();
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        if (this.getType() != other.getType()) {
+            return false;
+        }
+        if (this.getLevel() != other.getLevel()) {
+            return false;
+        }
+        if (this.getNeedExpRei0() != other.getNeedExpRei0()) {
+            return false;
+        }
+        if (this.getNeedExpRei1() != other.getNeedExpRei1()) {
+            return false;
+        }
+        if (this.getNeedExpRei2() != other.getNeedExpRei2()) {
+            return false;
+        }
+        if (this.getNeedExpRei3() != other.getNeedExpRei3()) {
+            return false;
+        }
+        if (this.getNeedExpRei4() != other.getNeedExpRei4()) {
+            return false;
+        }
+        return true;
     }
-    
-    protected boolean canEqual(final Object other) {
+
+    protected boolean canEqual(Object other) {
         return other instanceof SysLevelExp;
     }
-    
+
     @Override
     public int hashCode() {
         int PRIME = 59;
@@ -107,11 +140,13 @@ public class SysLevelExp
         result = result * 59 + (int)($needExpRei3 >>> 32 ^ $needExpRei3);
         long $needExpRei4 = this.getNeedExpRei3();
         result = result * 59 + (int)($needExpRei4 >>> 32 ^ $needExpRei4);
+        long $needExpRei5 = this.getNeedExpRei4();
+        result = result * 59 + (int)($needExpRei5 >>> 32 ^ $needExpRei5);
         return result;
     }
-    
+
     @Override
     public String toString() {
-        return "SysLevelExp(type=" + (int)this.getType() + ", level=" + this.getLevel() + ", needExpRei0=" + this.getNeedExpRei0() + ", needExpRei1=" + this.getNeedExpRei1() + ", needExpRei2=" + this.getNeedExpRei2() + ", needExpRei3=" + this.getNeedExpRei3() + ")";
+        return "SysLevelExp(type=" + (int)this.getType() + ", level=" + this.getLevel() + ", needExpRei0=" + this.getNeedExpRei0() + ", needExpRei1=" + this.getNeedExpRei1() + ", needExpRei2=" + this.getNeedExpRei2() + ", needExpRei3=" + this.getNeedExpRei3() +", needExpRei4=" + this.getNeedExpRei4() + ")";
     }
 }

@@ -44,17 +44,17 @@ engine:
 # 内网通讯验证
 cxf:
   # cxf账号
-  username: moyec
+  username: moyec1
   # cxf密码
-  password: moyec
+  password: moyec1
   # 发送cxf地址
   sendIp: 127.0.0.1
   # 发送cxf端口
   sendPort: 90
   # 发送cxf账号
-  sendName: moyec
+  sendName: moyec1
   # 发送cxf密码
-  sendPwd: moyec
+  sendPwd: moyec1
 # 中心服配置
 cross:
   center:
@@ -64,7 +64,7 @@ cross:
     gamePort: 5011
 
 # 网关地址
-login_server_url: http://172.23.123.84:85
+login_server_url: http://127.0.0.1:85
 
 # 内网通讯验证
 send:
@@ -72,8 +72,6 @@ send:
   sendIp: 127.0.0.1
   # 网关服务端口
   sendPort: 85
-  sendName: 4kED4EItrU
-  sendPwd: 4kED4EItrU
 
 #短信服务Redis
 sms:

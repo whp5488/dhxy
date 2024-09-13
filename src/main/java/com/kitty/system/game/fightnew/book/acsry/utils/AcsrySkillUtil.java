@@ -2,6 +2,7 @@ package com.kitty.system.game.fightnew.book.acsry.utils;
 
 import com.kitty.common.utils.spring.SpringUtils;
 import com.kitty.system.enums.common.ACC_GRADE;
+import com.kitty.system.game.equip.service.EquipService;
 import com.kitty.system.init.domain.SysDataAcsrySuit;
 import java.util.Collections;
 import com.kitty.system.game.equip.pool.EquipDataPool;
@@ -601,7 +602,7 @@ public class AcsrySkillUtil
     
     public static List<Integer> getAcsrySkillList(Role role) {
         List<Integer> acsrySkillList = new ArrayList<>();
-        List<WearEquip> wearEquips = (List)DataCache.EQUIP_MAP.get(role.getId());
+        List<WearEquip> wearEquips = ((EquipService)SpringUtils.getBean(EquipService.class)).getEquipValid(role, false);
         List<String> suitTypes = new ArrayList<>();
         List<Byte> acsryProductOrders = new ArrayList<>();
         for (int i = 0; i < wearEquips.size(); ++i) {

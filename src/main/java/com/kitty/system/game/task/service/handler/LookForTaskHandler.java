@@ -105,8 +105,8 @@ public class LookForTaskHandler extends TaskHandler
         if ((int)role.getLevel() < 40) {
             return String.format("你等级不足#<R>%s#级，无法创建该副本。", Integer.valueOf(40));
         }
-        if (this.teamService.getTeamCount(role) < 3) {
-            return String.format("#<R>%s#中妖怪众多，少于#<R>%d#人的队伍进去是非常危险的。", "寻芳", Integer.valueOf(3));
+        if (this.teamService.getTeamCount(role) < 1) {
+            return String.format("#<R>%s#中妖怪众多，少于#<R>%d#人的队伍进去是非常危险的。", "寻芳", Integer.valueOf(1));
         }
         names = this.teamService.checkMember(role, memberRole -> (int)memberRole.getLevel() < 40);
         if (names != null) {
@@ -168,8 +168,8 @@ public class LookForTaskHandler extends TaskHandler
         if (SpringUtils.getFightNewService().isInFight(role)) {
             return "请老老实实打完你的战斗";
         }
-        if (this.teamService.getTeamCount(role) < 3) {
-            return String.format("队伍人数不足%d人，不能挑战", Integer.valueOf(3));
+        if (this.teamService.getTeamCount(role) < 1) {
+            return String.format("队伍人数不足%d人，不能挑战", Integer.valueOf(1));
         }
         return null;
     }

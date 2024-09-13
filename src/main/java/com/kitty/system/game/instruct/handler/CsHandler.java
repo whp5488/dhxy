@@ -1,5 +1,7 @@
 package com.kitty.system.game.instruct.handler;
 
+import com.kitty.system.game.activity.handler.time.StarOfficerHandler;
+import com.kitty.system.game.activity.handler.time.WorldBoosHandler;
 import com.kitty.system.game.team.service.TeamService;
 import org.nutz.dao.Dao;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -69,6 +71,14 @@ public class CsHandler implements NcFather
         }
         else {
             serial = Integer.valueOf(content);
+        }
+        if (serial.equals(Integer.valueOf(20010))) {
+            ((StarOfficerHandler) SpringUtils.getBean(StarOfficerHandler.class)).flushStarAfterServerStart();
+            return;
+        }
+        if (serial.equals(Integer.valueOf(20011))) {
+            ((WorldBoosHandler) SpringUtils.getBean(WorldBoosHandler.class)).flushBoosAfterServerStart();
+            return;
         }
         if (serial.equals(Integer.valueOf(2001))) {
             ((WelfareService)SpringUtils.getBean(WelfareService.class)).reqMagicBoxInfo(role, new ReqMagicBoxInfo());

@@ -753,7 +753,7 @@ public class PetService
             String exp_tips = "#<G>" + exp + "#点经验";
             long storageExp = DataGlobalFunc.storageExp((int)pet.getRebirth() * 1000 + (int)pet.getPetLv(), LOGIC.LOGICTYPE_PET.getValue());
             long totalExp = (pet.getExp() + exp > storageExp) ? storageExp : (pet.getExp() + exp);
-            long needExp = (long)BigDecimalUtil.decimalScaleIntegerDown(Integer.valueOf(0), Long.valueOf(FormulaHero.formula_petLvUpExp(lvLimit, pet.getPetLv(), Integer.valueOf((int)pet.getPetLv() + 1), pet.getRebirth())));
+            long needExp = (long)Long.valueOf(FormulaHero.formula_petLvUpExp(lvLimit, pet.getPetLv(), Integer.valueOf((int)pet.getPetLv() + 1), pet.getRebirth()));
             if (totalExp >= needExp && (int)pet.getPetLv() < (int)lvLimit) {
                 while (totalExp >= needExp) {
                     totalExp -= needExp;

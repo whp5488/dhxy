@@ -1151,6 +1151,44 @@ public class RoleService
             MessagePusher.pushMessage(role, new RespHint(13, (short)0));
             return;
         }
+
+        if (serial == 11041) {
+            serial = 11031;
+        }
+        if (serial == 11046) {
+            serial = 11036;
+        }
+
+        if (serial == 12041) {
+            serial = 12031;
+        }
+        if (serial == 12046) {
+            serial = 12036;
+        }
+
+        if (serial == 13041) {
+            serial = 13031;
+        }
+
+        if (serial == 13046) {
+            serial = 13036;
+        }
+
+        if (serial == 14041) {
+            serial = 14031;
+        }
+
+        if (serial == 14043) {
+            serial = 14033;
+        }
+
+        if (serial == 15041) {
+            serial = 15031;
+        }
+
+        if (serial == 15046) {
+            serial = 15036;
+        }
         SysHero hero = (SysHero)PartDataPool.heroMap.get(serial);
         if (hero != null) {
             RoleDayInCeService ceService = (RoleDayInCeService)SpringUtils.getBean(RoleDayInCeService.class);
@@ -1207,7 +1245,7 @@ public class RoleService
     public void changeRelive(Role role, Integer serial) {
         SysHero hero = (SysHero)PartDataPool.heroMap.get(serial);
         if (hero != null) {
-            if ((int)role.getRelive() < 3) {
+            if ((int)role.getRelive() < 4) {
                 for (Integer key : role.getSkills().keySet()) {
                     RoleSkill skill = (RoleSkill)role.getSkills().get(key);
                     if (skill.getSkillId().equals(Integer.valueOf(30041))) {
@@ -1472,7 +1510,7 @@ public class RoleService
                 int num = (int)role.getExtendBox().getPosition() + 1;
                 Item item = (Item)ConvertDataPool.bagExtend.get(Integer.valueOf(num));
                 if (item != null && this.deductCurrency(role, item.getItem(), (long)(int)item.getNum(), "扩展背包格子")) {
-                    role.getExtendBox().setPosition(Integer.valueOf(num));
+                    role.getExtendBox().setPosition(Integer.valueOf(num+100));
                     flag = true;
                 }
                 else {
@@ -1483,7 +1521,7 @@ public class RoleService
                 int numStore = (int)role.getExtendBox().getStorePosition() + 1;
                 Item itemStore = (Item)ConvertDataPool.storeExtend.get(Integer.valueOf(numStore));
                 if (itemStore != null && this.deductCurrency(role, itemStore.getItem(), (long)(int)itemStore.getNum(), "扩展仓库格子")) {
-                    role.getExtendBox().setStorePosition(Integer.valueOf(numStore));
+                    role.getExtendBox().setStorePosition(Integer.valueOf(numStore+100));
                     flag = true;
                 }
                 else {

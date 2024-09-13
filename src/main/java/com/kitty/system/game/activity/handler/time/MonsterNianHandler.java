@@ -130,6 +130,7 @@ public class MonsterNianHandler extends FightActivityHandler
                     this.petService.addExp(role, pet, calculate((int)pet.getPetLv(), (int)pet.getRebirth(), 2, ItemClassify.PET_EXP), true);
                 }
             }
+            this.specialReward(role);
         }
         return;
     }
